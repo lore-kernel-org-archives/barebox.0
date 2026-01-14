@@ -1,69 +1,58 @@
-Delivery-date: Wed, 14 Jan 2026 13:03:12 +0100
+Delivery-date: Wed, 14 Jan 2026 13:04:30 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vfzaj-001Dov-0z
+	id 1vfzby-001DqA-25
 	for lore@lore.pengutronix.de;
-	Wed, 14 Jan 2026 13:03:12 +0100
+	Wed, 14 Jan 2026 13:04:30 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vfzah-0008RY-0p
-	for lore@pengutronix.de; Wed, 14 Jan 2026 13:03:12 +0100
+	id 1vfzbx-0000Lq-M7
+	for lore@pengutronix.de; Wed, 14 Jan 2026 13:04:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=4HmGzPlrf6DA7zFtiK8KkdmL/JputZwnBpTcyVTIjXs=; b=in8vdF2ycbx0K0ryxRa4wKu2Vd
-	CWcmRVB85eQ2D4WXwB7JIvUu5ynFbwFijoN+M/mAxJncF9w7PxO5AoLPYFEvE9FQxJ3aeUh6xDhyd
-	T450ZenjI4LkBv4KAcyB5Ko/C9HVjSGZAow5in5VCrQNsEB+Uy+3Gqra3YpRjTIwd5tOd4lvztBJr
-	e1ZF2WCvImGy3WiZgOkUvNJaNN5/19LckAwezG25fGZxY+ZfPWIXky8qDtAubwus67oSljmeHM/J0
-	hmpGodJ7mcs7Rr1+HIzfDz3Ce/ykG08R1hnSYXXOBA3c9FEj9dnhWTAcHwlNVk2VHo/8YCzTf1ebU
-	5k7IJLDw==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Rk3PV4D0VfwM0QJoc1jaHGJek/9waDufjBvGDTQ1Dvk=; b=PH4JKJzYCq7Xy5XIcGIcf6W4zN
+	WQwHIm0YFWsJXC8KN4S1ggOqFXbSWQvW/LW8y1iQnUxYLIUy8p5STUM/FWuB6a0iwZ0if/NsNR8Ho
+	UILFSXR0xZVKv8IP9NlHbyKw0NVWypLuw8aed/iPaVIp34qH/0NiJrkCM4jDQA7Qyh1IXWyZd0sSB
+	KCVhKCfxsKvgQuv8TEXgL/o3anBFJjG4zOUCH6VzBSSVdFSJGlHFE+Eb5/LiKPeOgZXWpzMsozezM
+	5kg2IXpc4oM7DUZDTJKPCySqa498diPff5sZD4H3xiY5c5bRgkAQJxdrsTN9rwKc4+6DiaWYthFyx
+	ajcX5Trw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vfza3-000000094Vr-2Q3A;
-	Wed, 14 Jan 2026 12:02:31 +0000
+	id 1vfzbX-000000094xO-04mp;
+	Wed, 14 Jan 2026 12:04:03 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vfzZx-000000094TN-1NAN
+	id 1vfzbU-000000094wo-46lS
 	for barebox@lists.infradead.org;
-	Wed, 14 Jan 2026 12:02:27 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
+	Wed, 14 Jan 2026 12:04:02 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vfzZv-00084e-3l; Wed, 14 Jan 2026 13:02:23 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vfzZv-000a7X-1p;
-	Wed, 14 Jan 2026 13:02:22 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vfzZv-00000003xZ4-22Py;
-	Wed, 14 Jan 2026 13:02:22 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Marco Felsch <m.felsch@pengutronix.de>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 14 Jan 2026 13:00:59 +0100
-Message-ID: <20260114120221.941836-5-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260114120221.941836-1-a.fatoum@pengutronix.de>
-References: <20260114120221.941836-1-a.fatoum@pengutronix.de>
+	id 1vfzbT-0000Dc-GG; Wed, 14 Jan 2026 13:03:59 +0100
+Message-ID: <9d713960-8e94-43e4-acd7-c8fa910dad61@pengutronix.de>
+Date: Wed, 14 Jan 2026 13:03:59 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: Marco Felsch <m.felsch@pengutronix.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
+References: <20251110-v2025-09-0-topic-optee-of-handling-v1-0-8f0625ac5471@pengutronix.de>
+ <20251110-v2025-09-0-topic-optee-of-handling-v1-1-8f0625ac5471@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20251110-v2025-09-0-topic-optee-of-handling-v1-1-8f0625ac5471@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260114_040225_365972_012163D4 
-X-CRM114-Status: UNSURE (   8.92  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260114_040401_022576_7BC1FBD7 
+X-CRM114-Status: GOOD (  14.28  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,54 +74,51 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 5/5] pbl: string: add strncmp
+Subject: Re: [PATCH 01/23] pbl: compressed-dtb: add missing includes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Marco Felsch <m.felsch@pengutronix.de>
+Hi,
 
-For use by PBL code, import the barebox proper definition of strncmp
-into pbl/string.c.
+On 11/10/25 9:34 PM, Marco Felsch wrote:
+> Add missing includes else compressed-dtb.h depends on the include order.
+> 
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-v1 - > v2:
-  - split off preparatory patch from
-    https://lore.barebox.org/barebox/20251110-v2025-09-0-topic-optee-of-handling-v1-0-8f0625ac5471@pengutronix.de/T/#t
-  - add a commit message body
----
- pbl/string.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-diff --git a/pbl/string.c b/pbl/string.c
-index 528f62ef2055..89663fef3d6a 100644
---- a/pbl/string.c
-+++ b/pbl/string.c
-@@ -102,6 +102,21 @@ int strcmp(const char *cs, const char *ct)
- 	return res;
- }
- 
-+int strncmp(const char *cs, const char *ct, size_t count)
-+{
-+	register signed char __res = 0;
-+
-+	BUG_ON(!cs || !ct);
-+
-+	while (count) {
-+		if ((__res = *cs - *ct++) != 0 || !*cs++)
-+			break;
-+		count--;
-+	}
-+
-+	return __res;
-+}
-+
- int strcasecmp(const char *s1, const char *s2)
- {
- 	int c1, c2;
+I split out this patch in a series that I just sent.
+
+Cheers,
+Ahmad
+
+> ---
+>  include/compressed-dtb.h | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/include/compressed-dtb.h b/include/compressed-dtb.h
+> index cc5fbb2769847c0338a6e462e2d4bdd0d77f0174..ff7c932f5b01145cdad39e9d59f222b724b9f9d1 100644
+> --- a/include/compressed-dtb.h
+> +++ b/include/compressed-dtb.h
+> @@ -2,9 +2,11 @@
+>  #ifndef COMPRESSED_DTB_H_
+>  #define COMPRESSED_DTB_H_
+>  
+> +#include <linux/align.h>
+>  #include <linux/types.h>
+>  #include <linux/sizes.h>
+>  #include <asm/unaligned.h>
+> +#include <fdt.h>
+>  
+>  struct barebox_boarddata_compressed_dtb {
+>  #define BAREBOX_BOARDDATA_COMPRESSED_DTB_MAGIC 0x7b66bcbd
+> 
+
 -- 
-2.47.3
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
