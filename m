@@ -1,65 +1,58 @@
-Delivery-date: Thu, 15 Jan 2026 15:24:49 +0100
+Delivery-date: Thu, 15 Jan 2026 15:31:44 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgOHK-001ccC-0J
+	id 1vgOO0-001cgc-1b
 	for lore@lore.pengutronix.de;
-	Thu, 15 Jan 2026 15:24:49 +0100
+	Thu, 15 Jan 2026 15:31:44 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgOHJ-0000gK-4S
-	for lore@pengutronix.de; Thu, 15 Jan 2026 15:24:49 +0100
+	id 1vgONz-0001YO-GX
+	for lore@pengutronix.de; Thu, 15 Jan 2026 15:31:43 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=inPZeBdkX/WysGkvmebFq2kX1Ya+2AJuiTjTK38f/Ms=; b=RX138yzys9mzQ61vksVqxomlts
-	FeFsie7i3PhVHC4ZGYfeuhApEW/LVQNgjGPSawDGe94P/Az8KlwVq90Z3ODO21F2JAlsIf8mV886E
-	wTqEZi1gvYfbIbb4v5D8D4shpXTm5d1erB9qiIk6fCE2TqnhxVDczz1GnwcFj38kRZVLCUqzlwbMS
-	S86ZKdAj94zxBf1PEVmJZrq1OJaapR+CrpWcftPgOD2KMCzcXLeUdtCMznrmXzjpMh92E9jIJ6chD
-	sUlKfVPGX3eKuhI+aKergwBSwNP9Es8e41s8KrL+RnqfkSylbfnQnv9SBuZhfzvL/2t2GWtUfWQSj
-	VUwOx6ew==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=6c7f9iSzva4FM3l0cYqpHFWpT4m9KdtYz8sccrNDpZo=; b=ZZNNthxe9pZn5UnaAbWmkNu/sS
+	Dony/IfRsUqPtzq1C5swciSqikE0Mrh2VCUhVgzxVmo2cxjVyMe5AJh33AujRmqaZdnXGQBAUme57
+	CxrmMuwct45Y7MRItZ3/RLnFc6+V9Bi25BLTvbgvEC4apq7uv+nnBd+Ka+qonFw5cudHPqawAHTn+
+	Zsb8vio+/jkHS+LaNWRhbXeC5SoCdFl7dtMkQl58zMJ8d5ygjo+ED7ppvsq7TtH/TuDrwEHAD65IM
+	pSueJ10cevZB6vOza8aT958akiclS1kjqTt07yawQdvuhz+NL0INdJMCmd5Ym6Ud1TtMg1BcVs1iH
+	+9/uQk6A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgOGo-0000000CTjR-1vtJ;
-	Thu, 15 Jan 2026 14:24:18 +0000
+	id 1vgONW-0000000CULf-2Wdz;
+	Thu, 15 Jan 2026 14:31:14 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgOGl-0000000CTiw-2V1N
+	id 1vgONU-0000000CULD-2DSX
 	for barebox@lists.infradead.org;
-	Thu, 15 Jan 2026 14:24:17 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ejo@pengutronix.de>)
-	id 1vgOGi-0000ZB-L4; Thu, 15 Jan 2026 15:24:12 +0100
-Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ejo@pengutronix.de>)
-	id 1vgOGj-000le3-0Q;
-	Thu, 15 Jan 2026 15:24:12 +0100
-Received: from ejo by dude06.red.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ejo@pengutronix.de>)
-	id 1vgOGi-0000000EMY8-1io6;
-	Thu, 15 Jan 2026 15:24:12 +0100
-From: =?UTF-8?q?Enrico=20J=C3=B6rns?= <ejo@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: =?UTF-8?q?Enrico=20J=C3=B6rns?= <ejo@pengutronix.de>
-Date: Thu, 15 Jan 2026 15:24:01 +0100
-Message-ID: <20260115142410.3422704-1-ejo@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	Thu, 15 Jan 2026 14:31:13 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vgONS-0001S1-Qg; Thu, 15 Jan 2026 15:31:10 +0100
+Message-ID: <2eefe097-35f8-4016-9a67-7f4efbc1fec4@pengutronix.de>
+Date: Thu, 15 Jan 2026 15:31:10 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Marco Felsch <m.felsch@pengutronix.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
+References: <20251110-v2025-09-0-topic-optee-of-handling-v1-0-8f0625ac5471@pengutronix.de>
+ <20251110-v2025-09-0-topic-optee-of-handling-v1-17-8f0625ac5471@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <20251110-v2025-09-0-topic-optee-of-handling-v1-17-8f0625ac5471@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260115_062415_654367_7C630BCF 
-X-CRM114-Status: GOOD (  10.90  )
+X-CRM114-CacheID: sfid-20260115_063112_565051_F27A718D 
+X-CRM114-Status: GOOD (  15.59  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,49 +70,60 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] block: don't error while flushing when write support is disabled
+Subject: Re: [PATCH 17/23] handoff-data: Add BL32_DT_OVL entry
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-If write support for the underlying device is disabled (e.g. by
-disabling CONFIG_MCI_WRITE), blk->ops->write will be NULL.
-Unconditionally dereferencing/calling blk->ops->write() results in a
-NULL pointer dereference.
 
-Fix this by making chunk_flush() a noop for missing write support.
-Don't return an error since there should be nothing to flush if write
-support is disabled, anyway.
 
-Note that barebox currently does not prevent calling write/flush
-operations, even if CONFIG_MCI_WRITE and thus write support is actually
-disabled.
-But this should be handled on another level.
+On 11/10/25 9:34 PM, Marco Felsch wrote:
+> Add support to pass a BL32 provided FDT_OVL from pbl to barebox.
+> 
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 
-Signed-off-by: Enrico Jörns <ejo@pengutronix.de>
----
- common/block.c | 3 +++
- 1 file changed, 3 insertions(+)
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-diff --git a/common/block.c b/common/block.c
-index ca2ed37dbd..abd05eab39 100644
---- a/common/block.c
-+++ b/common/block.c
-@@ -60,6 +60,9 @@ static int chunk_flush(struct block_device *blk, struct chunk *chunk)
- 	if (!chunk->dirty)
- 		return 0;
- 
-+	if (!blk->ops->write)
-+		return 0;
-+
- 	len = writebuffer_io_len(blk, chunk);
- 	ret = blk->ops->write(blk, chunk->data, chunk->block_start, len);
- 	if (ret < 0)
+> ---
+>  include/pbl/handoff-data.h | 1 +
+>  pbl/handoff-data.c         | 2 ++
+>  2 files changed, 3 insertions(+)
+> 
+> diff --git a/include/pbl/handoff-data.h b/include/pbl/handoff-data.h
+> index 7552ed5fc35f351f71822d309095980eaa764f63..88b1e9c80331a279564c338e758bd4928861ed56 100644
+> --- a/include/pbl/handoff-data.h
+> +++ b/include/pbl/handoff-data.h
+> @@ -13,6 +13,7 @@ struct handoff_data {
+>  #define HANDOFF_DATA_EXTERNAL_DT	HANDOFF_DATA_BAREBOX(2)
+>  #define HANDOFF_DATA_ARM_MACHINE	HANDOFF_DATA_BAREBOX(3)
+>  #define HANDOFF_DATA_EFI		HANDOFF_DATA_BAREBOX(4)
+> +#define HANDOFF_DATA_BL32_DT_OVL	HANDOFF_DATA_BAREBOX(5)
+>  
+>  #define HANDOFF_DATA_BOARD(n)		(0x951726fb + (n))
+>  
+> diff --git a/pbl/handoff-data.c b/pbl/handoff-data.c
+> index 42e53f986bf14408f25cdf4434a5c284f8361401..2e1287cd69232d09b13384db3f1813737d67656e 100644
+> --- a/pbl/handoff-data.c
+> +++ b/pbl/handoff-data.c
+> @@ -189,6 +189,8 @@ static const char *handoff_data_entry_name(struct handoff_data_entry *hde)
+>  		return "handoff FDT (external)";
+>  	case HANDOFF_DATA_ARM_MACHINE:
+>  		return "ARM machine number";
+> +	case HANDOFF_DATA_BL32_DT_OVL:
+> +		return "handoff BL32 FDT overlay";
+>  	default:
+>  		sprintf(name, "handoff %08x", hde->cookie);
+>  		return name;
+> 
+
 -- 
-2.47.3
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
