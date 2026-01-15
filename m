@@ -1,57 +1,57 @@
-Delivery-date: Thu, 15 Jan 2026 11:47:09 +0100
+Delivery-date: Thu, 15 Jan 2026 13:00:13 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgKsg-001Z1v-0F
+	id 1vgM1N-001a4w-1m
 	for lore@lore.pengutronix.de;
-	Thu, 15 Jan 2026 11:47:09 +0100
+	Thu, 15 Jan 2026 13:00:13 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgKsf-0000Nu-3A
-	for lore@pengutronix.de; Thu, 15 Jan 2026 11:47:09 +0100
+	id 1vgM1M-0000rX-G6
+	for lore@pengutronix.de; Thu, 15 Jan 2026 13:00:13 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=864gnJw4z3qESROSVnlfH9GluofAIj187C7AakvC76U=; b=Q9VOklAfh5aG/s+FyPgQvSJePw
-	3wKo3TQju9vQQalk0XP78KFpL+P3OPMJS6FWUiV3Mx4kc2q5o5ajBltXq3evpxx4jH5ySpyGbOhQc
-	tce3hlqLReXz1nWs/e8CSmHy2nI6CcE+p2DTeNUZU+R5Gtdl625iknGpWRg0GBSSQf9HYD00daXrL
-	DIqCqUa9Dl6ZzShuwn750ZK8T4E7AczcMpPv7E+V5vCwO2h6NqE4+ec/wXKTUQl29gC54ysuc1GjB
-	0OgIpghREO8qA1ap2OeJOFHwQJnyATWoOQ5V1eyx8KK4XFYVQugKfBDjTnkLfLpyU2LlZ6StsRZ2/
-	mMcP1ECQ==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=fX8akHhFBB5pSs+8/t4LOfbLliQ64A2UQ5DZnYJ290Q=; b=aROXbLqiizpdW8qBWh6NozwfXm
+	rbLW9IqufR+dELVD+FeUYlpmNm8yhpxi/5kefODtwwumDYfgI+RBd5+9x52KLsTOJFq5RXz3ctR8F
+	fHH5AHldhsVOOQbtG3IsUDEG+z5fq+ltLdfEPp5Jvqr688ZsorAqLvv9sIg+XI+xGyMbof5RA/MTi
+	zRBoyMzTrUklHz2YSucy0kXmLwPn8WOwTOhBRM0rSw/yDGq6Y4wKcgztslc2cXug9KNq3EOCyTzGm
+	MjoeX/XRhKjveElMtswHGYbs4UOrcaZUPQfuuT8hUywzOaHviXkiKf6WW+wdUN25CI0bXwZW2QPjO
+	6PlQn+sg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgKsC-0000000CB2A-0391;
-	Thu, 15 Jan 2026 10:46:40 +0000
+	id 1vgM0l-0000000CHHe-0Umv;
+	Thu, 15 Jan 2026 11:59:35 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgKsA-0000000CB1h-0WJI
+	id 1vgM0f-0000000CHD7-3zMC
 	for barebox@lists.infradead.org;
-	Thu, 15 Jan 2026 10:46:39 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	Thu, 15 Jan 2026 11:59:32 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vgKs8-0000JE-Ej; Thu, 15 Jan 2026 11:46:36 +0100
-Message-ID: <beb2d064-bd5a-4d97-91be-55af7d81ecd2@pengutronix.de>
-Date: Thu, 15 Jan 2026 11:46:35 +0100
+	(envelope-from <a.fatoum@barebox.org>)
+	id 1vgM0e-0000JD-BY; Thu, 15 Jan 2026 12:59:28 +0100
+From: Ahmad Fatoum <a.fatoum@barebox.org>
+To: barebox@lists.infradead.org
+Cc: David Dgien <dgienda125@gmail.com>,
+	Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Thu, 15 Jan 2026 12:54:30 +0100
+Message-ID: <20260115115924.3428886-5-a.fatoum@barebox.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260115115924.3428886-1-a.fatoum@barebox.org>
+References: <20260115115924.3428886-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Stefano Manni <stefano.manni@gmail.com>,
- Barebox List <barebox@lists.infradead.org>
-References: <OR4V8T.50BC0FSNYML@gmail.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <OR4V8T.50BC0FSNYML@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260115_024638_167483_2D02B4B4 
-X-CRM114-Status: GOOD (  16.81  )
+X-CRM114-CacheID: sfid-20260115_035929_981716_F7E23932 
+X-CRM114-Status: UNSURE (   8.97  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,60 +69,37 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [RFC] board imx8qxp-mek
+Subject: [PATCH 04/12] ARM32: mark modules as incompatible with ARM_MMU_PERMISSIONS
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Stefano,
+The module code currently assumes RWX. This can be fixed if desired, but
+for now just reflect it in Kconfig to avoid the runtime panic.
 
-On 1/14/26 5:35 PM, Stefano Manni wrote:
-> Hi,
-> 
-> I'd like to add the board imx8qxp-mek from NXP.
-> Since the SoC is already supported by barebox, it should be quite
-> straightforward
-> to add the new board but I need to understand if the starting point is
-> u-boot [1]
-> or something else.
-> 
-> Any comment and recommendation is appreciated.
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+---
+ arch/arm/cpu/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I think you may have been misled by NXP's naming scheme.
-barebox indeed has good support for the i.MX8*M*, including
-i.MX8MQ, i.MX8MM, i.MX8MN and i.MX8MP.
-
-i.MX8Q (no M!) is a different SoC: It has different CPUs and importantly
-for barebox, very different startup than the i.MX8M as its internal
-Cortex-M4 (the SCU) is what first boots up in this SoC and one would
-first need to teach barebox how to communicate with this process as well
-as implement the new boot image format that is required.
-
-AFAIU, the Linux upstream situation for these other i.MX8's is also
-worse than for the i.MX8M.
-
-Cheers,
-Ahmad
-
-> [1] https://elixir.bootlin.com/u-boot/v2026.01/source/board/freescale/
-> imx8qxp_mek
-> 
-> Thank you.
-> Best,
-> Stefano
-> 
-> 
-> 
-> 
-
+diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+index fe0d1e470578..04b1585679f3 100644
+--- a/arch/arm/cpu/Kconfig
++++ b/arch/arm/cpu/Kconfig
+@@ -4,7 +4,7 @@ comment "Processor Type"
+ 
+ config CPU_32
+ 	bool
+-	select HAS_MODULES
++	select HAS_MODULES if !ARM_MMU_PERMISSIONS
+ 	select HAVE_MOD_ARCH_SPECIFIC
+ 	select HAS_DMA
+ 	select ARCH_HAS_ZERO_PAGE
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.47.3
 
 
 
