@@ -1,57 +1,56 @@
-Delivery-date: Thu, 15 Jan 2026 13:00:15 +0100
+Delivery-date: Thu, 15 Jan 2026 13:00:16 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgM1Q-001a6e-13
+	id 1vgM1R-001a73-0I
 	for lore@lore.pengutronix.de;
-	Thu, 15 Jan 2026 13:00:15 +0100
+	Thu, 15 Jan 2026 13:00:16 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgM1P-0000tj-Aw
-	for lore@pengutronix.de; Thu, 15 Jan 2026 13:00:15 +0100
+	id 1vgM1P-0000uE-V3
+	for lore@pengutronix.de; Thu, 15 Jan 2026 13:00:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=xeKrMs0HD4xf5P+htKs0zeadPe4d1qjMaC4rslMB074=; b=KC1FsRUmqeQMGghdeEEvwMcVRe
-	F1takTFv5nooJiBTtJPHua+uQZa9TUhaHAOxPbKfpdarVJWxnmEukmwfHMDf64RZdJAMu/PD9qhrz
-	J+O/hW8QNH0lXfvWhubK3v7idIZ29ERJFTu+8iIi08qTKTcgQV5ERwJTtLYxgdzg0a4KNnl2znXnV
-	kWH4w08F6DYVRzf7hN58vD7IjY2IC/KKwC+THBHhlDkR8H6sw9MhTRJ9PMXjXWM8K2c0UprtHRHX4
-	k5LuPclBBf7xYxPk7uAIo/hrszU4XVSVm/O/4ui5lzPl68ukThUzDF6dvOtLNrJ6BPLImCUC3Bobw
-	dHZtQQwA==;
+	bh=+ZNcDveH8YtjFadaCOTNAI4/pt2t6sqWZUoq1SEAhVs=; b=NKritsvHRZDVZjKjNshCNODZkA
+	CubPQpq6+eR6PUlkhs1CJMhk5uYSQUJDj/tq+yJyrscfICMxkRl5kXHsQwvcdaUqUZWujYbsEqCJa
+	YYMvjmIMGgkDVi2TePasM6pZVSEDv1fdiZUs4moNETnJvUo+TPOrMKNRIZ4c+ZcYeAZN0AIg7jOLi
+	ClTed0zzf8hjVsluUnuj7X3cqZLZJX5RMivMTIcuSLEWbkTX1p692YBovPwSqLm2m+l8+FlIQx6/V
+	AMZjDf9iubw0IDT5lHjoyU/Ym2k4u8xNcf5HdLPHHbvcTv+24Lrsp2HR58G9hv3XGOJ1pgRg/47VX
+	2SKiNgbQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgM0n-0000000CHK1-3bhM;
-	Thu, 15 Jan 2026 11:59:37 +0000
+	id 1vgM0m-0000000CHIy-3CiN;
+	Thu, 15 Jan 2026 11:59:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgM0j-0000000CHFW-1QCm
+	id 1vgM0i-0000000CHEc-0VEM
 	for barebox@lists.infradead.org;
-	Thu, 15 Jan 2026 11:59:34 +0000
+	Thu, 15 Jan 2026 11:59:33 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1vgM0h-0000JD-Jx; Thu, 15 Jan 2026 12:59:31 +0100
+	id 1vgM0g-0000JD-H8; Thu, 15 Jan 2026 12:59:30 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: David Dgien <dgienda125@gmail.com>,
-	Claude <noreply@claude.ai>,
 	Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Thu, 15 Jan 2026 12:54:36 +0100
-Message-ID: <20260115115924.3428886-11-a.fatoum@barebox.org>
+Date: Thu, 15 Jan 2026 12:54:34 +0100
+Message-ID: <20260115115924.3428886-9-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260115115924.3428886-1-a.fatoum@barebox.org>
 References: <20260115115924.3428886-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260115_035933_378030_85772F29 
-X-CRM114-Status: UNSURE (   8.47  )
+X-CRM114-CacheID: sfid-20260115_035932_189746_71E4F102 
+X-CRM114-Status: UNSURE (   9.72  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -74,57 +73,77 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 10/12] test: conftest: add support for describing FW_CFG environment in YAML
+Subject: [PATCH 08/12] ARM32: module: handle more relocations
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We can inject new environment files via FW_CFG with pytest --env.
-Add support for an env: key that allows manipulating the barebox
-environment with only the YAML.
+Compiling with arm-linux-gnueabihf-gcc (Debian 14.2.0-19) 14.2.0
+generates a few more relocation types than the module loader currently
+supports.
 
-Co-developed-by: Claude <noreply@claude.ai>
+Import support for them from Linux, so we can start automatically
+testing this feature.
+
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- conftest.py | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ arch/arm/include/asm/elf.h |  2 ++
+ arch/arm/lib32/module.c    | 20 ++++++++++++++++++++
+ 2 files changed, 22 insertions(+)
 
-diff --git a/conftest.py b/conftest.py
-index ef6ca221a5db..4241ebce7702 100644
---- a/conftest.py
-+++ b/conftest.py
-@@ -143,6 +143,12 @@ def strategy(request, target, pytestconfig):  # noqa: max-complexity=30
-     except KeyError:
-         features = []
+diff --git a/arch/arm/include/asm/elf.h b/arch/arm/include/asm/elf.h
+index 0b4704a4a561..f3b6e0dd37c3 100644
+--- a/arch/arm/include/asm/elf.h
++++ b/arch/arm/include/asm/elf.h
+@@ -29,9 +29,11 @@ typedef struct user_fp elf_fpregset_t;
  
-+    try:
-+        main = target.env.config.data["targets"]["main"]
-+        yaml_env = main["env"]
-+    except KeyError:
-+        yaml_env = {}
-+
-     try:
-         main = target.env.config.data["targets"]["main"]
-         qemu_bin = main["drivers"]["QEMUDriver"]["qemu_bin"]
-@@ -218,6 +224,19 @@ def strategy(request, target, pytestconfig):  # noqa: max-complexity=30
-         else:
-             pytest.exit("--env unsupported for target\n", 1)
+ #define R_ARM_NONE	0
+ #define R_ARM_PC24	1
++#define R_ARM_REL32	3
+ #define R_ARM_ABS32	2
+ #define R_ARM_CALL	28
+ #define R_ARM_JUMP24	29
++#define R_ARM_PREL31	42
  
-+    for envpath, value in yaml_env.items():
-+        if virtio:
-+            if value.startswith('@'):
-+                source = f"file='{value[1:]}'"
-+            else:
-+                source = f"string='{value}'"
-+
-+            strategy.append_qemu_args(
-+                '-fw_cfg', f'name=opt/org.barebox.env/{envpath},{source}'
-+            )
-+        else:
-+            pytest.exit("env unsupported for target\n", 1)
-+
-     if len(pytestconfig.option.bootarg) > 0:
-         strategy.append_qemu_bootargs(pytestconfig.option.bootarg)
+ #define R_ARM_THM_CALL		10
+ #define R_ARM_THM_JUMP24	30
+diff --git a/arch/arm/lib32/module.c b/arch/arm/lib32/module.c
+index 7214e3c73c3d..0cf04ea9faba 100644
+--- a/arch/arm/lib32/module.c
++++ b/arch/arm/lib32/module.c
+@@ -49,6 +49,9 @@ apply_relocate(Elf32_Shdr *sechdrs, const char *strtab, unsigned int symindex,
+ 		loc = dstsec->sh_addr + rel->r_offset;
  
+ 		switch (ELF32_R_TYPE(rel->r_info)) {
++		case R_ARM_NONE:
++			/* ignore */
++			break;
+ 		case R_ARM_ABS32:
+ 			*(u32 *)loc += sym->st_value;
+ 			break;
+@@ -90,6 +93,23 @@ apply_relocate(Elf32_Shdr *sechdrs, const char *strtab, unsigned int symindex,
+ 			*(u32 *)loc |= offset & 0x00ffffff;
+ 			break;
+ 
++		case R_ARM_PREL31:
++			offset = (*(s32 *)loc << 1) >> 1; /* sign extend */
++			offset += sym->st_value - loc;
++			if (offset >= 0x40000000 || offset < -0x40000000) {
++				pr_err("%s: section %u reloc %u sym '%s': relocation %u out of range (%#lx -> %#x)\n",
++				       module->name, relindex, i, strtab + sym->st_name,
++				       ELF32_R_TYPE(rel->r_info), loc,
++				       sym->st_value);
++				return -ENOEXEC;
++			}
++			*(u32 *)loc &= 0x80000000;
++			*(u32 *)loc |= offset & 0x7fffffff;
++			break;
++
++		case R_ARM_REL32:
++			*(u32 *)loc += sym->st_value - loc;
++			break;
+ 		default:
+ 			printf("%s: unknown relocation: %u\n",
+ 			       module->name, ELF32_R_TYPE(rel->r_info));
 -- 
 2.47.3
 
