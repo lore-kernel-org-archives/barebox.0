@@ -1,57 +1,56 @@
-Delivery-date: Thu, 15 Jan 2026 13:00:16 +0100
+Delivery-date: Thu, 15 Jan 2026 13:00:17 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgM1R-001a73-0I
+	id 1vgM1S-001a7V-16
 	for lore@lore.pengutronix.de;
-	Thu, 15 Jan 2026 13:00:16 +0100
+	Thu, 15 Jan 2026 13:00:17 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgM1P-0000uE-V3
-	for lore@pengutronix.de; Thu, 15 Jan 2026 13:00:16 +0100
+	id 1vgM1Q-0000uY-U5
+	for lore@pengutronix.de; Thu, 15 Jan 2026 13:00:17 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+ZNcDveH8YtjFadaCOTNAI4/pt2t6sqWZUoq1SEAhVs=; b=NKritsvHRZDVZjKjNshCNODZkA
-	CubPQpq6+eR6PUlkhs1CJMhk5uYSQUJDj/tq+yJyrscfICMxkRl5kXHsQwvcdaUqUZWujYbsEqCJa
-	YYMvjmIMGgkDVi2TePasM6pZVSEDv1fdiZUs4moNETnJvUo+TPOrMKNRIZ4c+ZcYeAZN0AIg7jOLi
-	ClTed0zzf8hjVsluUnuj7X3cqZLZJX5RMivMTIcuSLEWbkTX1p692YBovPwSqLm2m+l8+FlIQx6/V
-	AMZjDf9iubw0IDT5lHjoyU/Ym2k4u8xNcf5HdLPHHbvcTv+24Lrsp2HR58G9hv3XGOJ1pgRg/47VX
-	2SKiNgbQ==;
+	bh=zSx6H4FDHgskLc4IDbnnBDFNjnKnWVbNZth96/efVZc=; b=tR9fSTvSMVDEyekD53JLeStk2a
+	2Z3IBRcY/oCBAtPkUnSuRQd99KexcqpJBDEdZjegAEVZxDSeocbHZAuVETa93MK+VwlbuYbZhKAaT
+	59TzyEbWIOyTDXdkSr2Hj77zAU1YckoRv127xBL294mpJLWegF23CE1W/sXEL9b61+3H6oce9XMwd
+	D8dtLC1pnFGRrCeXkkRSYLX21Au7Ssxu0M78OyxSKY+KYPEqTvMVMbF6J4Y5IuxooQjv6FCyLjfxV
+	FmnPkffEUqnuLTz7YEIRKq/ezEIg+v2RxlZYpXhIRvZWgsOgQ0zm1iVUN07hIAKVWMcDbMhqvL1PU
+	kzJ74CMA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgM0m-0000000CHIy-3CiN;
-	Thu, 15 Jan 2026 11:59:36 +0000
+	id 1vgM0l-0000000CHHt-1oEd;
+	Thu, 15 Jan 2026 11:59:35 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgM0i-0000000CHEc-0VEM
+	id 1vgM0g-0000000CHD5-0mEL
 	for barebox@lists.infradead.org;
-	Thu, 15 Jan 2026 11:59:33 +0000
+	Thu, 15 Jan 2026 11:59:32 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1vgM0g-0000JD-H8; Thu, 15 Jan 2026 12:59:30 +0100
+	id 1vgM0d-0000JD-9f; Thu, 15 Jan 2026 12:59:27 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: David Dgien <dgienda125@gmail.com>,
 	Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Thu, 15 Jan 2026 12:54:34 +0100
-Message-ID: <20260115115924.3428886-9-a.fatoum@barebox.org>
+Date: Thu, 15 Jan 2026 12:54:28 +0100
+Message-ID: <20260115115924.3428886-3-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260115115924.3428886-1-a.fatoum@barebox.org>
 References: <20260115115924.3428886-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260115_035932_189746_71E4F102 
-X-CRM114-Status: UNSURE (   9.72  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260115_035930_220488_F2D010E0 
+X-CRM114-Status: GOOD (  17.98  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,77 +72,211 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 08/12] ARM32: module: handle more relocations
+Subject: [PATCH 02/12] ARM: qemu-virt: add image for use as -bios
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Compiling with arm-linux-gnueabihf-gcc (Debian 14.2.0-19) 14.2.0
-generates a few more relocation types than the module loader currently
-supports.
-
-Import support for them from Linux, so we can start automatically
-testing this feature.
+We previously used barebox-dt-2nd.img as image for Qemu Virt.
+Adding a dedicated image however allows us to use -kernel to specify,
+well, a kernel, which can make some testing scenarios more straight
+forward, once we implement support for barebox to lookup -kernel and
+-append QEMU options.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- arch/arm/include/asm/elf.h |  2 ++
- arch/arm/lib32/module.c    | 20 ++++++++++++++++++++
- 2 files changed, 22 insertions(+)
+ arch/arm/boards/Makefile                  |  1 +
+ arch/arm/boards/qemu-virt/Makefile        |  2 +-
+ arch/arm/boards/qemu-virt/lowlevel.c      | 80 +++++++++++++++++++++++
+ images/Makefile.vexpress                  |  5 ++
+ include/compressed-dtb.h                  |  1 +
+ test/arm/virt-el2@multi_v8_defconfig.yaml | 23 +++++++
+ test/arm/virt@multi_v8_defconfig.yaml     |  4 +-
+ 7 files changed, 113 insertions(+), 3 deletions(-)
+ create mode 100644 arch/arm/boards/qemu-virt/lowlevel.c
+ create mode 100644 test/arm/virt-el2@multi_v8_defconfig.yaml
 
-diff --git a/arch/arm/include/asm/elf.h b/arch/arm/include/asm/elf.h
-index 0b4704a4a561..f3b6e0dd37c3 100644
---- a/arch/arm/include/asm/elf.h
-+++ b/arch/arm/include/asm/elf.h
-@@ -29,9 +29,11 @@ typedef struct user_fp elf_fpregset_t;
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index 4c586de2a985..dd2f2c324e25 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -189,6 +189,7 @@ obj-$(CONFIG_MACH_RK3568_EVB)			+= rockchip-rk3568-evb/
+ obj-$(CONFIG_MACH_RK3568_BPI_R2PRO)			+= rockchip-rk3568-bpi-r2pro/
+ obj-$(CONFIG_MACH_PINE64_PINETAB2)		+= pine64-pinetab2/
+ obj-$(CONFIG_MACH_PINE64_QUARTZ64)		+= pine64-quartz64/
++obj-$(CONFIG_BOARD_ARM_VIRT)			+= qemu-virt/
+ obj-$(CONFIG_MACH_RADXA_ROCK3)			+= radxa-rock3/
+ obj-$(CONFIG_MACH_RADXA_ROCK5)			+= radxa-rock5/
+ obj-$(CONFIG_MACH_VARISCITE_DT8MCUSTOMBOARD_IMX8MP)	+= variscite-dt8mcustomboard-imx8mp/
+diff --git a/arch/arm/boards/qemu-virt/Makefile b/arch/arm/boards/qemu-virt/Makefile
+index ad283446eaf1..458f5209008d 100644
+--- a/arch/arm/boards/qemu-virt/Makefile
++++ b/arch/arm/boards/qemu-virt/Makefile
+@@ -1,3 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
  
- #define R_ARM_NONE	0
- #define R_ARM_PC24	1
-+#define R_ARM_REL32	3
- #define R_ARM_ABS32	2
- #define R_ARM_CALL	28
- #define R_ARM_JUMP24	29
-+#define R_ARM_PREL31	42
- 
- #define R_ARM_THM_CALL		10
- #define R_ARM_THM_JUMP24	30
-diff --git a/arch/arm/lib32/module.c b/arch/arm/lib32/module.c
-index 7214e3c73c3d..0cf04ea9faba 100644
---- a/arch/arm/lib32/module.c
-+++ b/arch/arm/lib32/module.c
-@@ -49,6 +49,9 @@ apply_relocate(Elf32_Shdr *sechdrs, const char *strtab, unsigned int symindex,
- 		loc = dstsec->sh_addr + rel->r_offset;
- 
- 		switch (ELF32_R_TYPE(rel->r_info)) {
-+		case R_ARM_NONE:
-+			/* ignore */
-+			break;
- 		case R_ARM_ABS32:
- 			*(u32 *)loc += sym->st_value;
- 			break;
-@@ -90,6 +93,23 @@ apply_relocate(Elf32_Shdr *sechdrs, const char *strtab, unsigned int symindex,
- 			*(u32 *)loc |= offset & 0x00ffffff;
- 			break;
- 
-+		case R_ARM_PREL31:
-+			offset = (*(s32 *)loc << 1) >> 1; /* sign extend */
-+			offset += sym->st_value - loc;
-+			if (offset >= 0x40000000 || offset < -0x40000000) {
-+				pr_err("%s: section %u reloc %u sym '%s': relocation %u out of range (%#lx -> %#x)\n",
-+				       module->name, relindex, i, strtab + sym->st_name,
-+				       ELF32_R_TYPE(rel->r_info), loc,
-+				       sym->st_value);
-+				return -ENOEXEC;
-+			}
-+			*(u32 *)loc &= 0x80000000;
-+			*(u32 *)loc |= offset & 0x7fffffff;
-+			break;
+-obj-y += board.o
++lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/qemu-virt/lowlevel.c b/arch/arm/boards/qemu-virt/lowlevel.c
+new file mode 100644
+index 000000000000..6397bf165d4c
+--- /dev/null
++++ b/arch/arm/boards/qemu-virt/lowlevel.c
+@@ -0,0 +1,80 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +
-+		case R_ARM_REL32:
-+			*(u32 *)loc += sym->st_value - loc;
-+			break;
- 		default:
- 			printf("%s: unknown relocation: %u\n",
- 			       module->name, ELF32_R_TYPE(rel->r_info));
++#include <linux/sizes.h>
++#include <asm/barebox-arm.h>
++#include <asm/reloc.h>
++#include <compressed-dtb.h>
++#include <debug_ll.h>
++#include <console.h>
++#include <stdio.h>
++#include <debug_ll/pl011.h>
++#include <pbl.h>
++
++#define RAM_BASE	0x40000000
++#define PL011_BASE	IOMEM(0x9000000)
++
++extern char __dtb_qemu_virt32_start[];
++extern char __dtb_qemu_virt64_start[];
++
++static void *find_fdt(void *r0)
++{
++	void *fdt, *ram = (void *)RAM_BASE;
++	const char *origin;
++
++	if (blob_is_fdt(ram)) {
++		origin = "-bios";
++		fdt = ram;
++	} else if (r0 >= ram && blob_is_fdt(r0)) {
++		origin = "-kernel";
++		fdt = r0;
++	} else if (IS_ENABLED(CONFIG_ARM32)) {
++		origin = "built-in";
++		fdt = __dtb_qemu_virt32_start;
++	} else {
++		origin = "built-in";
++		fdt = __dtb_qemu_virt64_start;
++	}
++
++	printf("Using %s device tree at %p\n", origin, fdt);
++	return fdt;
++}
++
++/*
++ * Entry point for QEMU virt firmware boot (-bios option).
++ *
++ * Memory layout:
++ *   0x00000000 - 0x08000000: Flash/ROM
++ *   0x08000000 - 0x40000000: Peripherals
++ *   0x40000000 - ...........: RAM
++ */
++static noinline void continue_qemu_virt_bios(ulong r0)
++{
++	ulong membase = RAM_BASE, memsize = SZ_32M - SZ_4M;
++	void *fdt;
++
++	pbl_set_putc(debug_ll_pl011_putc, PL011_BASE);
++
++	/* QEMU may put a DTB at the start of RAM */
++	fdt = find_fdt((void *)r0);
++
++	fdt_find_mem(fdt, &membase, &memsize);
++
++	barebox_arm_entry(membase, memsize, fdt);
++}
++
++ENTRY_FUNCTION_WITHSTACK(start_qemu_virt_bios, RAM_BASE + SZ_32M, r0, r1, r2)
++{
++
++	arm_cpu_lowlevel_init();
++
++	putc_ll('>');
++
++	if (get_pc() >= RAM_BASE)
++		relocate_to_current_adr();
++	else
++		relocate_to_adr_full(RAM_BASE + SZ_4M);
++
++	setup_c();
++
++	continue_qemu_virt_bios(r0);
++}
+diff --git a/images/Makefile.vexpress b/images/Makefile.vexpress
+index 11c49cca0cbd..81ab8caa4c24 100644
+--- a/images/Makefile.vexpress
++++ b/images/Makefile.vexpress
+@@ -10,3 +10,8 @@ image-$(CONFIG_MACH_VEXPRESS) += barebox-vexpress-ca9.img
+ pblb-$(CONFIG_MACH_VEXPRESS) += start_vexpress_ca15
+ FILE_barebox-vexpress-ca15.img = start_vexpress_ca15.pblb
+ image-$(CONFIG_MACH_VEXPRESS) += barebox-vexpress-ca15.img
++
++# Firmware image for -bios option
++pblb-$(CONFIG_BOARD_ARM_VIRT) += start_qemu_virt_bios
++FILE_barebox-qemu-virt.img = start_qemu_virt_bios.pblb
++image-$(CONFIG_BOARD_ARM_VIRT) += barebox-qemu-virt.img
+diff --git a/include/compressed-dtb.h b/include/compressed-dtb.h
+index cc5fbb276984..7441f9f6f650 100644
+--- a/include/compressed-dtb.h
++++ b/include/compressed-dtb.h
+@@ -5,6 +5,7 @@
+ #include <linux/types.h>
+ #include <linux/sizes.h>
+ #include <asm/unaligned.h>
++#include <fdt.h>
+ 
+ struct barebox_boarddata_compressed_dtb {
+ #define BAREBOX_BOARDDATA_COMPRESSED_DTB_MAGIC 0x7b66bcbd
+diff --git a/test/arm/virt-el2@multi_v8_defconfig.yaml b/test/arm/virt-el2@multi_v8_defconfig.yaml
+new file mode 100644
+index 000000000000..8aa514fb4179
+--- /dev/null
++++ b/test/arm/virt-el2@multi_v8_defconfig.yaml
+@@ -0,0 +1,23 @@
++targets:
++  main:
++    drivers:
++      QEMUDriver:
++        qemu_bin: qemu-system-aarch64
++        machine: virt,highmem=off
++        cpu: cortex-a57
++        memory: 1024M
++        kernel: barebox-dt-2nd.img
++        display: qemu-default
++      BareboxDriver:
++        prompt: 'barebox@[^:]+:[^ ]+ '
++        bootstring: 'commandline:'
++      BareboxTestStrategy: {}
++    features:
++      - virtio-mmio
++      - network
++      - barebox-state
++      - testfs
++images:
++  barebox-dt-2nd.img: !template "$LG_BUILDDIR/images/barebox-dt-2nd.img"
++imports:
++  -  ../strategy.py
+diff --git a/test/arm/virt@multi_v8_defconfig.yaml b/test/arm/virt@multi_v8_defconfig.yaml
+index 8aa514fb4179..2e654359709e 100644
+--- a/test/arm/virt@multi_v8_defconfig.yaml
++++ b/test/arm/virt@multi_v8_defconfig.yaml
+@@ -6,7 +6,7 @@ targets:
+         machine: virt,highmem=off
+         cpu: cortex-a57
+         memory: 1024M
+-        kernel: barebox-dt-2nd.img
++        bios: barebox-qemu-virt.img
+         display: qemu-default
+       BareboxDriver:
+         prompt: 'barebox@[^:]+:[^ ]+ '
+@@ -18,6 +18,6 @@ targets:
+       - barebox-state
+       - testfs
+ images:
+-  barebox-dt-2nd.img: !template "$LG_BUILDDIR/images/barebox-dt-2nd.img"
++  barebox-qemu-virt.img: !template "$LG_BUILDDIR/images/barebox-qemu-virt.img"
+ imports:
+   -  ../strategy.py
 -- 
 2.47.3
 
