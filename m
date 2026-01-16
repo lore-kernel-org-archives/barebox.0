@@ -1,57 +1,57 @@
-Delivery-date: Fri, 16 Jan 2026 17:07:54 +0100
+Delivery-date: Fri, 16 Jan 2026 17:07:57 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgmMc-00217Z-1j
+	id 1vgmMg-00217w-0R
 	for lore@lore.pengutronix.de;
-	Fri, 16 Jan 2026 17:07:54 +0100
+	Fri, 16 Jan 2026 17:07:57 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgmMY-0005hN-Ha
-	for lore@pengutronix.de; Fri, 16 Jan 2026 17:07:53 +0100
+	id 1vgmMb-0005kL-H8
+	for lore@pengutronix.de; Fri, 16 Jan 2026 17:07:57 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=FHVbuV3kLr62MH9Y3gAHttSWbtXkc9oVoH9PyUuwv50=; b=w9HleBej9wDhLOi1x4qpPdkVO5
-	29jCQHaIWbqqcFfDVXAnoU6kYXkyephxz8BzB4nvQTXhcliyJM5ieAxxI6V60zjoyE+g+BRIT+yyP
-	9W7uSI9SSZ1BYPTxsXQgN9a1H0E9UPNtHATSeaEYZHG4yCynYaKkQolox3yB8t8QUvmmwT6QIGwIw
-	ILBiTF5foVC6tY0JT+CMPuiarsRIwiVvK0nAlDEKsVPky4QYK5DO5YM2WCRBWNw2jVYignSJanFJ6
-	orhEG0+MVXE3VC2CouejNdBTwO1xShk5z1pakqxG6kMGYLxOqsbwp8xBFP/o9YtFMBUtj0fhKNQA0
-	uE5ubMqQ==;
+	bh=/UZdGvdPpr5eTikGAu/gslrFLWXYBGw026pMYy54Lzc=; b=Skl40+7Yxm/PiXzv9BrzsD2bKE
+	YB1uOBFTE6jjBzHYH/Pzn3XpvHupypo5gme5U6Wxv8XXgB6jg7BlfqjNfesOLWeSwysx89ZiwH7Kq
+	Kk8yREoAwwsMu9mnWATLza6u9+aGUOvSU8CY+9qPAIwjzY/q9yVU0h7GhhSZZuJtJ8QFj44PH7ts8
+	JDKPscCq8fSpTj8ef+umB3ebYIWhs/r3bTGxRVoD17ntJyNfIBh3wR8CSP+9G5OvJXF2GUlNr8zbX
+	zbr32onIN+KVSnYb4hqMAOQhSoV8Z+O0wMzdLbp/0XNOWwSykwvosXwoJhWqsQTKlKVDoJJqBW9mI
+	1QP+CJ1Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgmLu-0000000EQ5S-3C2L;
-	Fri, 16 Jan 2026 16:07:10 +0000
+	id 1vgmLq-0000000EPzt-00qb;
+	Fri, 16 Jan 2026 16:07:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgmLp-0000000EPyV-3IUP
+	id 1vgmLm-0000000EPuV-06mZ
 	for barebox@lists.infradead.org;
-	Fri, 16 Jan 2026 16:07:07 +0000
+	Fri, 16 Jan 2026 16:07:03 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1vgmLn-0004sd-BJ; Fri, 16 Jan 2026 17:07:03 +0100
+	id 1vgmLj-0004sd-Dp; Fri, 16 Jan 2026 17:06:59 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: David Dgien <dgienda125@gmail.com>,
 	Claude <noreply@claude.ai>,
 	Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Fri, 16 Jan 2026 17:06:36 +0100
-Message-ID: <20260116160654.3981425-14-a.fatoum@barebox.org>
+Date: Fri, 16 Jan 2026 17:06:29 +0100
+Message-ID: <20260116160654.3981425-7-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260116160654.3981425-1-a.fatoum@barebox.org>
 References: <20260116160654.3981425-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260116_080705_969616_9DD89317 
-X-CRM114-Status: GOOD (  17.99  )
+X-CRM114-CacheID: sfid-20260116_080702_399885_209ED227 
+X-CRM114-Status: GOOD (  20.34  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,386 +71,529 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,UPPERCASE_50_75
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 13/13] test: arm: add simple driver/command module test
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH 06/13] treewide: fix some missing EXPORT_SYMBOL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-To make sure that this experimental command support doesn't bitrot, add
-two tests to exercise it:
-
-  - The ECAM PCI driver module is loaded and we verify that PCI devices
-    are only detected after it was loaded
-
-  - The pm_domain command module is loaded and we verify that the
-    command only exists after it was loaded
-
-The pm_domain command was chosen, because the resulting module has no
-references to _GLOBAL_OFFSET_TABLE_ as this seems to be not yet supported.
-
-The hope is that modules32_defconfig will be removed in future in favor
-of a fragment that just enables modules on top of
-multi_v7_defconfig.yaml. This is not yet possible, however, because not
-all drivers have been fixed yet to be able to build with CONFIG_MODULES
-(repeated EXPORT_SYMBOL are a common issue for example).
+In preparation for testing ARM32 module support in CI, fix some
+EXPORT_SYMBOL around the tree, which we will rely on later.
 
 Co-developed-by: Claude <noreply@claude.ai>
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- .github/workflows/test-labgrid-pytest.yml |   4 +
- arch/arm/configs/modules32_defconfig      | 230 ++++++++++++++++++++++
- test/arm/modules32_defconfig.yaml         |  27 +++
- test/py/test_module.py                    |  54 +++++
- 4 files changed, 315 insertions(+)
- create mode 100644 arch/arm/configs/modules32_defconfig
- create mode 100644 test/arm/modules32_defconfig.yaml
- create mode 100644 test/py/test_module.py
+ arch/arm/lib32/Makefile            | 1 +
+ arch/arm/lib32/string.c            | 7 +++++++
+ common/bbu.c                       | 1 +
+ common/block.c                     | 2 ++
+ common/firmware.c                  | 1 +
+ common/globalvar.c                 | 1 +
+ common/machine_id.c                | 1 +
+ common/memory.c                    | 1 +
+ common/structio.c                  | 3 +++
+ drivers/base/bus.c                 | 2 ++
+ drivers/base/class.c               | 1 +
+ drivers/base/driver.c              | 1 +
+ drivers/base/platform.c            | 1 +
+ drivers/base/power.c               | 2 ++
+ drivers/clk/clk-bulk.c             | 2 +-
+ drivers/clk/clk.c                  | 1 +
+ drivers/firmware/arm_scmi/driver.c | 1 +
+ drivers/gpio/gpiolib.c             | 2 +-
+ drivers/hw_random/core.c           | 1 +
+ drivers/mtd/core.c                 | 1 +
+ drivers/net/dsa.c                  | 1 +
+ drivers/nvmem/core.c               | 1 +
+ drivers/of/base.c                  | 3 ++-
+ drivers/pci/pci.c                  | 2 ++
+ drivers/pinctrl/pinctrl.c          | 1 +
+ drivers/video/fb.c                 | 1 +
+ fs/pstore/platform.c               | 1 +
+ lib/parameter.c                    | 1 +
+ lib/string.c                       | 2 ++
+ lib/stringlist.c                   | 3 +++
+ lib/ucs2_string.c                  | 2 +-
+ net/eth.c                          | 1 +
+ net/net.c                          | 1 +
+ 33 files changed, 49 insertions(+), 4 deletions(-)
+ create mode 100644 arch/arm/lib32/string.c
 
-diff --git a/.github/workflows/test-labgrid-pytest.yml b/.github/workflows/test-labgrid-pytest.yml
-index d387f9e3867a..c06bc5f11faa 100644
---- a/.github/workflows/test-labgrid-pytest.yml
-+++ b/.github/workflows/test-labgrid-pytest.yml
-@@ -23,6 +23,10 @@ jobs:
-             lgenv: 'test/arm/*@multi_v7_defconfig.yaml'
-             defconfig: multi_v7_defconfig
+diff --git a/arch/arm/lib32/Makefile b/arch/arm/lib32/Makefile
+index cdfb992c0d5d..67c4f16f76ad 100644
+--- a/arch/arm/lib32/Makefile
++++ b/arch/arm/lib32/Makefile
+@@ -25,6 +25,7 @@ obj-pbl-y += reloc.o
+ obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memcpy.o
+ obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memmove.o
+ obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memset.o
++obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= string.o
+ obj-$(CONFIG_ARM_UNWIND) += unwind.o
+ obj-$(CONFIG_MODULES) += module.o
+ obj-$(CONFIG_ARM_MODULE_PLTS) += module-plts.o
+diff --git a/arch/arm/lib32/string.c b/arch/arm/lib32/string.c
+new file mode 100644
+index 000000000000..ad1113034be3
+--- /dev/null
++++ b/arch/arm/lib32/string.c
+@@ -0,0 +1,7 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#include <linux/string.h>
++#include <linux/export.h>
++
++EXPORT_SYMBOL(memcpy);
++EXPORT_SYMBOL(memset);
+diff --git a/common/bbu.c b/common/bbu.c
+index 00d415bcf826..07a51c112f0e 100644
+--- a/common/bbu.c
++++ b/common/bbu.c
+@@ -288,6 +288,7 @@ bool bbu_handlers_available(void)
+ {
+ 	return !list_empty(&bbu_image_handlers);
+ }
++EXPORT_SYMBOL(bbu_handlers_available);
  
-+          - ARCH: arm
-+            lgenv: 'test/arm/modules32_defconfig.yaml'
-+            defconfig: modules32_defconfig
-+
-           - ARCH: arm
-             lgenv: test/arm/multi_v8_defconfig.yaml
-             defconfig: multi_v8_defconfig
-diff --git a/arch/arm/configs/modules32_defconfig b/arch/arm/configs/modules32_defconfig
-new file mode 100644
-index 000000000000..0e32a4dd9c3e
---- /dev/null
-+++ b/arch/arm/configs/modules32_defconfig
-@@ -0,0 +1,230 @@
-+CONFIG_ARCH_LAYERSCAPE=y
-+CONFIG_ARCH_SAMSUNG=y
-+CONFIG_ARCH_VERSATILE=y
-+CONFIG_ARCH_VEXPRESS=y
-+CONFIG_MACH_VIRT=y
-+CONFIG_AEABI=y
-+CONFIG_ARM_BOARD_APPEND_ATAG=y
-+CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
-+CONFIG_ARM_EXCEPTIONS_PBL=y
-+CONFIG_ARM_UNWIND=y
-+# CONFIG_ARM_MMU_PERMISSIONS is not set
-+CONFIG_ARM_SEMIHOSTING=y
-+CONFIG_BOOT_ATAGS=y
-+CONFIG_ARM_BOOTM_FIP=y
-+CONFIG_NAME="modules32_defconfig"
-+CONFIG_MMU=y
-+CONFIG_MALLOC_SIZE=0x0
-+CONFIG_EXPERIMENTAL=y
-+CONFIG_MODULES=y
-+CONFIG_MODULES_ENVIRONMENT=y
-+CONFIG_KALLSYMS=y
-+CONFIG_PROMPT="barebox> "
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_MENU=y
-+# CONFIG_TIMESTAMP is not set
-+CONFIG_BOOTM_SHOW_TYPE=y
-+CONFIG_BOOTM_VERBOSE=y
-+CONFIG_BOOTM_INITRD=y
-+CONFIG_BOOTM_OFTREE_UIMAGE=y
-+CONFIG_BOOTM_AIMAGE=y
-+CONFIG_BOOTM_FITIMAGE=y
-+CONFIG_BLSPEC=y
-+CONFIG_CONSOLE_ALLOW_COLOR=y
-+CONFIG_PBL_CONSOLE=y
-+CONFIG_CONSOLE_RATP=y
-+CONFIG_RATP_CMD_I2C=y
-+CONFIG_RATP_CMD_GPIO=y
-+CONFIG_PARTITION_DISK_EFI=y
-+# CONFIG_PARTITION_DISK_EFI_GPT_NO_FORCE is not set
-+# CONFIG_PARTITION_DISK_EFI_GPT_COMPARE is not set
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE=y
-+CONFIG_TLV=y
-+CONFIG_STATE=y
-+CONFIG_BOOTCHOOSER=y
-+CONFIG_RESET_SOURCE=y
-+CONFIG_MACHINE_ID=y
-+CONFIG_FASTBOOT_CMD_OEM=y
-+CONFIG_CMD_CLASS=y
-+CONFIG_CMD_DMESG=y
-+CONFIG_LONGHELP=y
-+CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_IMD=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_ARM_MMUINFO=y
-+CONFIG_CMD_REGULATOR=y
-+CONFIG_CMD_PM_DOMAIN=m
-+CONFIG_CMD_BFETCH=y
-+CONFIG_CMD_MMC=y
-+CONFIG_CMD_MMC_EXTCSD=y
-+# CONFIG_CMD_BOOTU is not set
-+CONFIG_CMD_BOOTZ=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_LOADB=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_UIMAGE=y
-+CONFIG_CMD_BOOTCHOOSER=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_FINDMNT=y
-+CONFIG_CMD_UBIFORMAT=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_DEFAULTENV=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_MAGICVAR=y
-+CONFIG_CMD_MAGICVAR_HELP=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_FILETYPE=y
-+CONFIG_CMD_LN=y
-+CONFIG_CMD_MD5SUM=y
-+CONFIG_CMD_SHA1SUM=y
-+CONFIG_CMD_SHA224SUM=y
-+CONFIG_CMD_SHA256SUM=y
-+CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_LET=y
-+CONFIG_CMD_MSLEEP=y
-+CONFIG_CMD_READF=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_DHCP=y
-+CONFIG_CMD_MIITOOL=y
-+CONFIG_CMD_PING=y
-+CONFIG_CMD_TFTP=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_MENU=y
-+CONFIG_CMD_MENU_MANAGEMENT=y
-+CONFIG_CMD_MENUTREE=y
-+CONFIG_CMD_SPLASH=y
-+CONFIG_CMD_FBTEST=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_CRC_CMP=y
-+CONFIG_CMD_MEMTEST=y
-+CONFIG_CMD_MM=y
-+CONFIG_CMD_CLK=y
-+CONFIG_CMD_DETECT=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_I2C=y
-+CONFIG_CMD_LED=y
-+CONFIG_CMD_NANDTEST=y
-+CONFIG_CMD_POWEROFF=y
-+CONFIG_CMD_SPI=y
-+CONFIG_CMD_LED_TRIGGER=y
-+CONFIG_CMD_BAREBOX_UPDATE=y
-+CONFIG_CMD_LSMOD=y
-+CONFIG_CMD_OF_DIFF=y
-+CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_OF_PROPERTY=y
-+CONFIG_CMD_OF_DISPLAY_TIMINGS=y
-+CONFIG_CMD_OF_FIXUP_STATUS=y
-+CONFIG_CMD_OF_OVERLAY=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_CMD_TIME=y
-+CONFIG_CMD_TLV=y
-+CONFIG_NET=y
-+CONFIG_NET_NETCONSOLE=y
-+CONFIG_NET_FASTBOOT=y
-+CONFIG_NET_9P=y
-+CONFIG_NET_9P_VIRTIO=y
-+CONFIG_DEEP_PROBE_DEFAULT=y
-+CONFIG_OF_BAREBOX_DRIVERS=y
-+CONFIG_SERIAL_AMBA_PL011=y
-+CONFIG_DRIVER_SERIAL_NS16550=y
-+CONFIG_VIRTIO_CONSOLE=y
-+CONFIG_DRIVER_NET_SMC91111=y
-+CONFIG_AT803X_PHY=y
-+CONFIG_MICREL_PHY=y
-+CONFIG_REALTEK_PHY=y
-+CONFIG_SMSC_PHY=y
-+CONFIG_MDIO_BITBANG=y
-+CONFIG_MDIO_GPIO=y
-+CONFIG_MDIO_BUS_MUX_GPIO=y
-+CONFIG_DSA=y
-+CONFIG_DRIVER_NET_KSZ8873=y
-+CONFIG_DRIVER_SPI_GPIO=y
-+CONFIG_I2C=y
-+CONFIG_I2C_VERSATILE=y
-+CONFIG_I2C_MUX=y
-+CONFIG_MTD=y
-+CONFIG_MTD_RAW_DEVICE=y
-+CONFIG_MTD_CONCAT=y
-+CONFIG_MTD_DATAFLASH=y
-+CONFIG_MTD_M25P80=y
-+CONFIG_DRIVER_CFI=y
-+CONFIG_NAND=y
-+CONFIG_NAND_ALLOW_ERASE_BAD=y
-+CONFIG_MTD_UBI=y
-+CONFIG_MTD_UBI_FASTMAP=y
-+CONFIG_VIRTIO_BLK=y
-+CONFIG_DISK_AHCI=y
-+CONFIG_DISK_INTF_PLATFORM_IDE=y
-+CONFIG_VIDEO=y
-+CONFIG_DRIVER_VIDEO_FB_SSD1307=y
-+CONFIG_DRIVER_VIDEO_SIMPLEFB=y
-+CONFIG_DRIVER_VIDEO_EDID=y
-+CONFIG_DRIVER_VIDEO_BACKLIGHT=y
-+CONFIG_DRIVER_VIDEO_BACKLIGHT_PWM=y
-+CONFIG_DRIVER_VIDEO_SIMPLE_PANEL=y
-+CONFIG_DRIVER_VIDEO_DW_HDMI=y
-+CONFIG_MCI=y
-+CONFIG_MCI_STARTUP=y
-+CONFIG_MCI_MMC_BOOT_PARTITIONS=y
-+CONFIG_MCI_MMCI=y
-+CONFIG_COMMON_CLK_SCMI=y
-+CONFIG_MFD_DA9063=y
-+CONFIG_MFD_STMPE=y
-+CONFIG_LED=y
-+CONFIG_LED_GPIO=y
-+CONFIG_LED_GPIO_OF=y
-+CONFIG_LED_TRIGGERS=y
-+CONFIG_EEPROM_AT25=y
-+CONFIG_EEPROM_AT24=y
-+CONFIG_KEYBOARD_GPIO=y
-+CONFIG_INPUT_SPECIALKEYS=y
-+CONFIG_PWM=y
-+CONFIG_HWRNG=y
-+CONFIG_HW_RANDOM_VIRTIO=y
-+CONFIG_GPIO_74164=y
-+CONFIG_GPIO_GENERIC_PLATFORM=y
-+CONFIG_GPIO_STMPE=y
-+CONFIG_PINCTRL_SINGLE=y
-+CONFIG_REGULATOR=y
-+CONFIG_REGULATOR_FIXED=y
-+CONFIG_REGULATOR_ARM_SCMI=y
-+CONFIG_RESET_CONTROLLER=y
-+CONFIG_PCI_ECAM_GENERIC=m
-+CONFIG_ARM_SCMI_PROTOCOL=y
-+CONFIG_SYSCON_REBOOT_MODE=y
-+CONFIG_POWER_RESET_SYSCON=y
-+CONFIG_VIRTIO_MMIO=y
-+CONFIG_TEE=y
-+CONFIG_OPTEE=y
-+CONFIG_OPTEE_AVB_PERSISTENT_VALUES=y
-+CONFIG_FS_EXT4=y
-+CONFIG_FS_TFTP=y
-+CONFIG_FS_NFS=y
-+CONFIG_9P_FS=y
-+CONFIG_9P_FS_WRITE=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_UBIFS=y
-+CONFIG_FS_UBIFS_COMPRESSION_LZO=y
-+CONFIG_FS_UBIFS_COMPRESSION_ZLIB=y
-+CONFIG_FS_UBIFS_COMPRESSION_ZSTD=y
-+CONFIG_FS_UIMAGEFS=y
-+CONFIG_FS_SMHFS=y
-+CONFIG_FS_PSTORE=y
-+CONFIG_FS_PSTORE_CONSOLE=y
-+CONFIG_FS_PSTORE_RAMOOPS=y
-+CONFIG_FS_SQUASHFS=y
-+CONFIG_FS_RATP=y
-+CONFIG_FS_QEMU_FW_CFG=y
-+CONFIG_DIGEST_SHA1_ARM=y
-+CONFIG_DIGEST_SHA256_ARM=y
-+CONFIG_CRC8=y
-+CONFIG_PNG=y
-+CONFIG_NLS=y
-diff --git a/test/arm/modules32_defconfig.yaml b/test/arm/modules32_defconfig.yaml
-new file mode 100644
-index 000000000000..aa01881f0ecc
---- /dev/null
-+++ b/test/arm/modules32_defconfig.yaml
-@@ -0,0 +1,27 @@
-+targets:
-+  main:
-+    drivers:
-+      QEMUDriver:
-+        qemu_bin: qemu-system-arm
-+        machine: virt
-+        cpu: cortex-a7
-+        memory: 64M  # To avoid indirection via (unsupported) PLTs
-+        bios: barebox-qemu-virt.img
-+        display: qemu-default
-+      BareboxDriver:
-+        prompt: 'barebox@[^:]+:[^ ]+ '
-+        bootstring: 'commandline:'
-+      BareboxTestStrategy: {}
-+    features:
-+      - virtio-mmio
-+      - testfs
-+      - modules
-+    env:
-+      data/modules.env: !template "@$LG_BUILDDIR/defaultenv/barebox_modules_env"
-+      init/loadenv-modules: |
-+        #!/bin/sh
-+        loadenv /env/data/modules.env /modules
-+images:
-+  barebox-qemu-virt.img: !template "$LG_BUILDDIR/images/barebox-qemu-virt.img"
-+imports:
-+  - ../strategy.py
-diff --git a/test/py/test_module.py b/test/py/test_module.py
-new file mode 100644
-index 000000000000..de9112852651
---- /dev/null
-+++ b/test/py/test_module.py
-@@ -0,0 +1,54 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
-+import pytest
-+from .helper import skip_disabled
-+
-+
-+def test_insmod_driver(barebox, barebox_config, env):
-+    """Test that insmod works for drivers."""
-+    skip_disabled(barebox_config, "CONFIG_MODULES", "CONFIG_CMD_LSMOD")
-+
-+    if 'modules' not in env.get_target_features():
-+        pytest.skip("modules feature not enabled for this board")
-+
-+    [stdout], _, ret = barebox.run("lspci")
-+    assert ret != 0, "Test assumes all PCI drivers are modules"
-+    assert stdout == "No PCI bus detected"
-+
-+    # First load the module
-+    barebox.run_check("insmod /modules/drivers/pci/pci-ecam-generic.ko")
-+
-+    # Check lsmod output
-+    stdout = barebox.run_check("lsmod")
-+    output = "\n".join(stdout)
-+    assert "pci_ecam_generic" in output, \
-+        f"Module not found in lsmod output: {output}"
-+
-+    stdout, _, ret = barebox.run("lspci")
-+    assert ret == 0, "Loading PCI driver should result in PCI bus detection"
-+    assert len(stdout) > 1 or stdout[0] != "No PCI bus detected"
-+
-+
-+def test_insmod_command(barebox, barebox_config, env):
-+    """Test that insmod works for commands."""
-+    skip_disabled(barebox_config, "CONFIG_MODULES", "CONFIG_CMD_LSMOD")
-+
-+    if 'modules' not in env.get_target_features():
-+        pytest.skip("modules feature not enabled for this board")
-+
-+    [stdout], _, ret = barebox.run("pm_domain")
-+    assert ret != 0, "pm_domain shouldn't yet exist"
-+    assert stdout == "pm_domain: Command not found"
-+
-+    # First load the module
-+    barebox.run_check("insmod /modules/commands/pm_domain.ko")
-+
-+    # Check lsmod output
-+    stdout = barebox.run_check("lsmod")
-+    output = "\n".join(stdout)
-+    assert "pm_domain" in output, \
-+        f"Module not found in lsmod output: {output}"
-+
-+    stdout, _, ret = barebox.run("pm_domain")
-+    assert ret == 0, "pm_domain should exist now"
-+    assert stdout[0] != "pm_domain: Command not found"
+ /*
+  * print a list of all registered update handlers
+diff --git a/common/block.c b/common/block.c
+index e021b1a9666f..22597124a1b3 100644
+--- a/common/block.c
++++ b/common/block.c
+@@ -16,6 +16,7 @@
+ #include <file-list.h>
+ 
+ LIST_HEAD(block_device_list);
++EXPORT_SYMBOL(block_device_list);
+ 
+ /* a chunk of contiguous data */
+ struct chunk {
+@@ -583,6 +584,7 @@ const char *blk_type_str(enum blk_type type)
+ 		return "unknown";
+ 	}
+ }
++EXPORT_SYMBOL(blk_type_str);
+ 
+ int cdev_get_linux_root_and_opts(const struct cdev *partcdev, const char **root,
+ 				 const char **rootopts)
+diff --git a/common/firmware.c b/common/firmware.c
+index 264fc9d66dcc..31b75bd88ab5 100644
+--- a/common/firmware.c
++++ b/common/firmware.c
+@@ -87,6 +87,7 @@ struct firmware_mgr *firmwaremgr_find_by_node(struct device_node *np)
+ 
+ 	return NULL;
+ }
++EXPORT_SYMBOL(firmwaremgr_find_by_node);
+ 
+ /*
+  * firmwaremgr_list_handlers - list registered firmware device handlers
+diff --git a/common/globalvar.c b/common/globalvar.c
+index 127ecd5c6075..fcaa15179f68 100644
+--- a/common/globalvar.c
++++ b/common/globalvar.c
+@@ -21,6 +21,7 @@ struct device global_device = {
+ 	.name = "global",
+ 	.id = DEVICE_ID_SINGLE,
+ };
++EXPORT_SYMBOL(global_device);
+ 
+ struct device nv_device = {
+ 	.name = "nv",
+diff --git a/common/machine_id.c b/common/machine_id.c
+index e670886d8538..acc7aac52cf9 100644
+--- a/common/machine_id.c
++++ b/common/machine_id.c
+@@ -22,6 +22,7 @@ const void *machine_id_get_hashable(size_t *len)
+ 	*len = __machine_id_hashable_length;
+ 	return __machine_id_hashable;
+ }
++EXPORT_SYMBOL(machine_id_get_hashable);
+ 
+ /**
+  * machine_id_set_hashable - Provide per-board unique data
+diff --git a/common/memory.c b/common/memory.c
+index 49ff0ef619d5..1c18c5b38710 100644
+--- a/common/memory.c
++++ b/common/memory.c
+@@ -212,6 +212,7 @@ void *sbrk(ptrdiff_t increment)
+ }
+ 
+ LIST_HEAD(memory_banks);
++EXPORT_SYMBOL(memory_banks);
+ 
+ static int barebox_grow_memory_bank(struct memory_bank *bank, const char *name,
+ 				    const struct resource *newres)
+diff --git a/common/structio.c b/common/structio.c
+index 935c4628dd77..776dc1e902ab 100644
+--- a/common/structio.c
++++ b/common/structio.c
+@@ -3,6 +3,7 @@
+ #include <structio.h>
+ #include <command.h>
+ #include <device.h>
++#include <linux/export.h>
+ 
+ static struct bobject *active_capture;
+ 
+@@ -34,6 +35,7 @@ int structio_run_command(struct bobject **bret, const char *cmd)
+ 	*bret = bobj;
+ 	return 0;
+ }
++EXPORT_SYMBOL(structio_run_command);
+ 
+ int structio_devinfo(struct bobject **bret, struct device *dev)
+ {
+@@ -54,3 +56,4 @@ int structio_devinfo(struct bobject **bret, struct device *dev)
+ 	*bret = bobj;
+ 	return 0;
+ }
++EXPORT_SYMBOL(structio_devinfo);
+diff --git a/drivers/base/bus.c b/drivers/base/bus.c
+index 7ee5959e8b9f..9e5b43cd0ffa 100644
+--- a/drivers/base/bus.c
++++ b/drivers/base/bus.c
+@@ -10,6 +10,7 @@
+ #include <of.h>
+ 
+ DEFINE_DEV_CLASS(bus_class, "bus");
++EXPORT_SYMBOL(bus_class);
+ 
+ struct bus_type *get_bus_by_name(const char *name)
+ {
+@@ -22,6 +23,7 @@ struct bus_type *get_bus_by_name(const char *name)
+ 
+ 	return NULL;
+ }
++EXPORT_SYMBOL(get_bus_by_name);
+ 
+ int bus_register(struct bus_type *bus)
+ {
+diff --git a/drivers/base/class.c b/drivers/base/class.c
+index 693260fe22dc..d21d679f1acc 100644
+--- a/drivers/base/class.c
++++ b/drivers/base/class.c
+@@ -4,6 +4,7 @@
+ #include <linux/list.h>
+ 
+ LIST_HEAD(class_list);
++EXPORT_SYMBOL(class_list);
+ 
+ void class_register(struct class *class)
+ {
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 782cdfdfcecb..36a1fcda48c8 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -586,6 +586,7 @@ struct resource *dev_request_mem_resource(struct device *dev, int num)
+ 
+ 	return dev_request_iomem_resource(dev, res);
+ }
++EXPORT_SYMBOL(dev_request_mem_resource);
+ 
+ void __iomem *dev_request_mem_region_err_null(struct device *dev, int num)
+ {
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index ac7c473c8c7b..9e6718c6476c 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -28,6 +28,7 @@ int platform_driver_register(struct driver *drv)
+ 
+ 	return register_driver(drv);
+ }
++EXPORT_SYMBOL(platform_driver_register);
+ 
+ int platform_device_register(struct device *new_device)
+ {
+diff --git a/drivers/base/power.c b/drivers/base/power.c
+index cffd0436278a..543c85a3d9b8 100644
+--- a/drivers/base/power.c
++++ b/drivers/base/power.c
+@@ -361,6 +361,7 @@ bool genpd_is_active(void)
+ {
+ 	return have_genpd_providers && !list_empty(&gpd_list);
+ }
++EXPORT_SYMBOL(genpd_is_active);
+ 
+ static struct bus_type genpd_bus_type = {
+ 	.name		= "genpd",
+@@ -563,3 +564,4 @@ void pm_genpd_print(void)
+ 		printf("%-20s %6s\n", genpd->name,
+ 		       genpd->status == GPD_STATE_ACTIVE ? "on" : "off");
+ }
++EXPORT_SYMBOL(pm_genpd_print);
+diff --git a/drivers/clk/clk-bulk.c b/drivers/clk/clk-bulk.c
+index c16fed282b21..e34a1feff2a2 100644
+--- a/drivers/clk/clk-bulk.c
++++ b/drivers/clk/clk-bulk.c
+@@ -170,7 +170,7 @@ int __must_check clk_bulk_get_all_enabled(struct device *dev,
+ 
+ 	return num_clks;
+ }
+-EXPORT_SYMBOL_GPL(devm_clk_bulk_get_all_enabled);
++EXPORT_SYMBOL_GPL(clk_bulk_get_all_enabled);
+ 
+ /**
+  * clk_bulk_disable - gate a set of clocks
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index ac5b83cf8b40..5e385380cee2 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -29,6 +29,7 @@ bool clk_have_nonfixed_providers(void)
+ 
+ 	return false;
+ }
++EXPORT_SYMBOL(clk_have_nonfixed_providers);
+ 
+ static int clk_parent_enable(struct clk *clk)
+ {
+diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
+index bbb62dd5191a..5c69ea953c76 100644
+--- a/drivers/firmware/arm_scmi/driver.c
++++ b/drivers/firmware/arm_scmi/driver.c
+@@ -39,6 +39,7 @@ static DEFINE_SPINLOCK(protocol_lock);
+ 
+ /* List of all SCMI devices active in system */
+ LIST_HEAD(scmi_list);
++EXPORT_SYMBOL(scmi_list);
+ /* Protection for the entire list */
+ static DEFINE_MUTEX(scmi_list_mutex);
+ /* Track the unique id for the transfers for debug & profiling purpose */
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index e1493ffb6640..37a98995f2e8 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -662,7 +662,7 @@ struct gpio_desc *gpiod_request_one(unsigned gpio,
+ 
+ 	return desc;
+ }
+-EXPORT_SYMBOL_GPL(gpio_request_one);
++EXPORT_SYMBOL_GPL(gpiod_request_one);
+ 
+ 
+ /**
+diff --git a/drivers/hw_random/core.c b/drivers/hw_random/core.c
+index 7bc3c33319f9..9f73aa45bcec 100644
+--- a/drivers/hw_random/core.c
++++ b/drivers/hw_random/core.c
+@@ -102,6 +102,7 @@ struct hwrng *hwrng_get_first(void)
+ 	else
+ 		return list_first_entry(&hwrngs, struct hwrng, list);
+ }
++EXPORT_SYMBOL(hwrng_get_first);
+ 
+ int hwrng_register(struct device *dev, struct hwrng *rng)
+ {
+diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
+index bb579a8f5249..922105944d34 100644
+--- a/drivers/mtd/core.c
++++ b/drivers/mtd/core.c
+@@ -26,6 +26,7 @@
+ static LIST_HEAD(mtd_register_hooks);
+ 
+ DEFINE_DEV_CLASS(mtd_class, "mtd");
++EXPORT_SYMBOL(mtd_class);
+ 
+ /**
+  * mtd_buf_all_ff - check if buffer contains only 0xff
+diff --git a/drivers/net/dsa.c b/drivers/net/dsa.c
+index 667297e8fea3..8eb12522999f 100644
+--- a/drivers/net/dsa.c
++++ b/drivers/net/dsa.c
+@@ -7,6 +7,7 @@
+ #include <param.h>
+ 
+ LIST_HEAD(dsa_switch_list);
++EXPORT_SYMBOL(dsa_switch_list);
+ 
+ u32 dsa_user_ports(struct dsa_switch *ds)
+ {
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index 8e1cf400e5d8..0047bf188dd2 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -38,6 +38,7 @@ struct nvmem_cell {
+ };
+ 
+ DEFINE_DEV_CLASS(nvmem_class, "nvmem");
++EXPORT_SYMBOL(nvmem_class);
+ 
+ void nvmem_devices_print(void)
+ {
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index a26c1faa41d5..54fd458bd9a1 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -294,7 +294,7 @@ int of_alias_get_free_id(const char *stem)
+ 
+ 	return id + 1;
+ }
+-EXPORT_SYMBOL_GPL(of_alias_get_highest_id);
++EXPORT_SYMBOL_GPL(of_alias_get_free_id);
+ 
+ int of_alias_get_id_from(struct device_node *root, struct device_node *np,
+ 			 const char *stem)
+@@ -2072,6 +2072,7 @@ struct device_node *of_get_root_node(void)
+ {
+ 	return root_node;
+ }
++EXPORT_SYMBOL(of_get_root_node);
+ 
+ int of_set_root_node(struct device_node *node)
+ {
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index e6370b5c7f6e..32624fe05b56 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -48,6 +48,7 @@ void pci_controller_init(struct pci_controller *hose)
+ 
+ 	of_pci_bridge_init(hose->parent, hose);
+ }
++EXPORT_SYMBOL(pci_controller_init);
+ 
+ void register_pci_controller(struct pci_controller *hose)
+ {
+@@ -85,6 +86,7 @@ void register_pci_controller(struct pci_controller *hose)
+ 
+ 	return;
+ }
++EXPORT_SYMBOL(register_pci_controller);
+ 
+ /*
+  *  Wrappers for all PCI configuration access functions.  They just check
+diff --git a/drivers/pinctrl/pinctrl.c b/drivers/pinctrl/pinctrl.c
+index 2f85a0f08f08..01567aa5ae97 100644
+--- a/drivers/pinctrl/pinctrl.c
++++ b/drivers/pinctrl/pinctrl.c
+@@ -30,6 +30,7 @@ struct pinctrl_consumer_info {
+ };
+ 
+ LIST_HEAD(pinctrl_list);
++EXPORT_SYMBOL(pinctrl_list);
+ 
+ static struct pinctrl_device *pin_to_pinctrl(unsigned int pin)
+ {
+diff --git a/drivers/video/fb.c b/drivers/video/fb.c
+index 939368a0de68..bfc075039e9e 100644
+--- a/drivers/video/fb.c
++++ b/drivers/video/fb.c
+@@ -10,6 +10,7 @@
+ #include <init.h>
+ 
+ DEFINE_DEV_CLASS(fb_class, "fb");
++EXPORT_SYMBOL(fb_class);
+ 
+ static int fb_ioctl(struct cdev* cdev, unsigned int req, void *data)
+ {
+diff --git a/fs/pstore/platform.c b/fs/pstore/platform.c
+index 3157cc90d514..b72c7346e6a8 100644
+--- a/fs/pstore/platform.c
++++ b/fs/pstore/platform.c
+@@ -50,6 +50,7 @@ bool pstore_is_ready(void)
+ {
+ 	return pstore_ready;
+ }
++EXPORT_SYMBOL(pstore_is_ready);
+ 
+ void pstore_log(const char *str)
+ {
+diff --git a/lib/parameter.c b/lib/parameter.c
+index bf5dbbb05e6b..1243a12e8701 100644
+--- a/lib/parameter.c
++++ b/lib/parameter.c
+@@ -86,6 +86,7 @@ const char *bobject_get_param(bobject_t _bobj, const char *name)
+ 
+ 	return param->get(bobj, param);
+ }
++EXPORT_SYMBOL(bobject_get_param);
+ 
+ /**
+  * bobject_set_param - set a parameter of a barebox object to a new value
+diff --git a/lib/string.c b/lib/string.c
+index a55f98990032..302f87a60422 100644
+--- a/lib/string.c
++++ b/lib/string.c
+@@ -684,6 +684,7 @@ EXPORT_SYMBOL(__nokasan_default_memset);
+ #ifndef __HAVE_ARCH_MEMSET
+ void *memset(void *s, int c, size_t count) __alias(__default_memset);
+ void *__memset(void *s, int c, size_t count) __alias(__default_memset);
++EXPORT_SYMBOL(memset);
+ #endif
+ 
+ /**
+@@ -723,6 +724,7 @@ void *memcpy(void * dest, const void *src, size_t count)
+ 	__alias(__default_memcpy);
+ void *__memcpy(void * dest, const void *src, size_t count)
+ 	__alias(__default_memcpy);
++EXPORT_SYMBOL(memcpy);
+ #endif
+ 
+ void *mempcpy(void *dest, const void *src, size_t count)
+diff --git a/lib/stringlist.c b/lib/stringlist.c
+index 908fa3683c36..96e06c288d28 100644
+--- a/lib/stringlist.c
++++ b/lib/stringlist.c
+@@ -27,6 +27,7 @@ int string_list_add(struct string_list *sl, const char *str)
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL(string_list_add);
+ 
+ int string_list_add_asprintf(struct string_list *sl, const char *fmt, ...)
+ {
+@@ -50,6 +51,7 @@ int string_list_add_asprintf(struct string_list *sl, const char *fmt, ...)
+ 
+ 	return 0;
+ }
++EXPORT_SYMBOL(string_list_add_asprintf);
+ 
+ int string_list_add_sorted(struct string_list *sl, const char *str)
+ {
+@@ -126,6 +128,7 @@ char *string_list_join(const struct string_list *sl, const char *joinstr)
+ 
+ 	return str;
+ }
++EXPORT_SYMBOL(string_list_join);
+ 
+ void string_list_print_by_column(struct string_list *sl)
+ {
+diff --git a/lib/ucs2_string.c b/lib/ucs2_string.c
+index db3f34f6b70c..6f027010d3a5 100644
+--- a/lib/ucs2_string.c
++++ b/lib/ucs2_string.c
+@@ -113,7 +113,7 @@ ucs2_strcmp(const ucs2_char_t *a, const ucs2_char_t *b)
+ {
+ 	return ucs2_strncmp(a, b, ~0UL);
+ }
+-EXPORT_SYMBOL(ucs2_strncmp);
++EXPORT_SYMBOL(ucs2_strcmp);
+ 
+ unsigned long
+ ucs2_utf8size(const ucs2_char_t *src)
+diff --git a/net/eth.c b/net/eth.c
+index 857bd2ee70dd..4201ed1c6b66 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -22,6 +22,7 @@
+ #include <linux/stat.h>
+ 
+ DEFINE_DEV_CLASS(eth_class, "eth");
++EXPORT_SYMBOL(eth_class);
+ 
+ LIST_HEAD(ethaddr_list);
+ 
+diff --git a/net/net.c b/net/net.c
+index 9c5999604b67..60f325ec63de 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -364,6 +364,7 @@ IPaddr_t net_get_ip(struct eth_device *edev)
+ {
+ 	return edev->ipaddr;
+ }
++EXPORT_SYMBOL(net_get_ip);
+ 
+ void net_set_netmask(struct eth_device *edev, IPaddr_t nm)
+ {
 -- 
 2.47.3
 
