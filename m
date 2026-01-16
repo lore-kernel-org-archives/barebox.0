@@ -1,67 +1,56 @@
-Delivery-date: Fri, 16 Jan 2026 16:26:23 +0100
+Delivery-date: Fri, 16 Jan 2026 17:07:41 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgliS-0020Qa-0G
+	id 1vgmMP-00212z-2B
 	for lore@lore.pengutronix.de;
-	Fri, 16 Jan 2026 16:26:23 +0100
+	Fri, 16 Jan 2026 17:07:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgliR-0007PP-4i
-	for lore@pengutronix.de; Fri, 16 Jan 2026 16:26:23 +0100
+	id 1vgmMN-0005VP-Hh
+	for lore@pengutronix.de; Fri, 16 Jan 2026 17:07:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=KWAr5l0G59W3T7ffKSx2ZngEwAJSrNrOBv2Rlq2Fdyw=; b=cSkMD6a/NuY0TNwCT/4NVFi+3J
-	ZNamcYBGNgqJp3oTuNyFHIcChWP+gs18GZ/DqIA/TzN8d79Pbpn3zLBpeeumtCEEMI+Y5MBCvvKm4
-	+I5RNO7lbV75V0TcA+fUWXVgd6tzq6ALtmUKcPHWLa/s82FXrrKbtSPqZLaN7CvxN+UO6/K8McQCz
-	qsX9/LYXTTlTNKJI3Ap5WlQBNx2CqVv8LCS1StfO5IIvJ95G10/mxngLPl6yNzu3S8m7UR/NbfqfK
-	Qwa3Qh3uUv0tsuzYIoPqiz3rO/tHxnzijPea/9QCC9Lgf6kfbr9sxvNuM58JiZl02p/7kvcWVbSXt
-	Q4vKIg+Q==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=fX8akHhFBB5pSs+8/t4LOfbLliQ64A2UQ5DZnYJ290Q=; b=Pf12RJ4qvtQPMk1tFflTBb/tj+
+	i/JkH2byGqfMGZIYQet78cjfuf6+7O0OyIqgaCu6c5LHlMmJWCbWv7GcPz4WKH15P18KTuul1sVA6
+	M+2GJ8Kyvp3R25HQ89nOs2VuQ/pz2Oxi/nouZDp3mtUVpowvhWUSC8pUt2mNdW6vKDPh3St8je0pz
+	WEj5JT9dj7Y3GkXKBb13HjzwzOfLlWoL/K3Wu2G9ZKvx/+BpK0UPMOQwmV0VM3Fb5dHxoBehJqmpJ
+	VLmrY6H7IlCBJWyMmYK4ipJJfRbSE1pQjmAmD9bBPVlPjoMCexZn7AJq8McLWD8bDFPlS4fDWVep4
+	Jaj0AqgA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vglhy-0000000EMOk-1VP8;
-	Fri, 16 Jan 2026 15:25:54 +0000
+	id 1vgmLo-0000000EPyI-2zq3;
+	Fri, 16 Jan 2026 16:07:04 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vglhs-0000000EMMt-3OQ0
+	id 1vgmLk-0000000EPto-3Nno
 	for barebox@lists.infradead.org;
-	Fri, 16 Jan 2026 15:25:50 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vglho-0007Fv-Jt; Fri, 16 Jan 2026 16:25:44 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vglhp-000wZl-0J;
-	Fri, 16 Jan 2026 16:25:44 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vglho-00FWo9-0y;
-	Fri, 16 Jan 2026 16:25:44 +0100
-Date: Fri, 16 Jan 2026 16:25:44 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Holger Assmann <h.assmann@pengutronix.de>,
-	Fabian Pflug <f.pflug@pengutronix.de>
-Message-ID: <20260116152544.fpbwx7edrelvypfn@pengutronix.de>
-References: <20260116134948.3931720-1-a.fatoum@pengutronix.de>
+	Fri, 16 Jan 2026 16:07:02 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@barebox.org>)
+	id 1vgmLi-0004sd-0H; Fri, 16 Jan 2026 17:06:58 +0100
+From: Ahmad Fatoum <a.fatoum@barebox.org>
+To: barebox@lists.infradead.org
+Cc: David Dgien <dgienda125@gmail.com>,
+	Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Fri, 16 Jan 2026 17:06:28 +0100
+Message-ID: <20260116160654.3981425-6-a.fatoum@barebox.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260116160654.3981425-1-a.fatoum@barebox.org>
+References: <20260116160654.3981425-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260116134948.3931720-1-a.fatoum@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260116_072549_330901_8B58443D 
-X-CRM114-Status: UNSURE (   6.62  )
+X-CRM114-CacheID: sfid-20260116_080700_835229_F6D87C58 
+X-CRM114-Status: UNSURE (   9.00  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -80,25 +69,37 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: i.MX8M: atf: add debug messages just before TF-A
- jump
+Subject: [PATCH 05/13] ARM32: mark modules as incompatible with ARM_MMU_PERMISSIONS
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 26-01-16, Ahmad Fatoum wrote:
-> The handoff to TF-A has been a frequent source of hangs during board
-> bringup in the past for various reasons.
-> Add a debug print just before branching to TF-A and add a comment
-> explaining some possible issues to aid with future debugging.
-> 
-> Cc: Holger Assmann <h.assmann@pengutronix.de>
-> Cc: Fabian Pflug <f.pflug@pengutronix.de>
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+The module code currently assumes RWX. This can be fixed if desired, but
+for now just reflect it in Kconfig to avoid the runtime panic.
 
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+---
+ arch/arm/cpu/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+index fe0d1e470578..04b1585679f3 100644
+--- a/arch/arm/cpu/Kconfig
++++ b/arch/arm/cpu/Kconfig
+@@ -4,7 +4,7 @@ comment "Processor Type"
+ 
+ config CPU_32
+ 	bool
+-	select HAS_MODULES
++	select HAS_MODULES if !ARM_MMU_PERMISSIONS
+ 	select HAVE_MOD_ARCH_SPECIFIC
+ 	select HAS_DMA
+ 	select ARCH_HAS_ZERO_PAGE
+-- 
+2.47.3
+
 
 
