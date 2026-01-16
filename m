@@ -1,57 +1,66 @@
-Delivery-date: Fri, 16 Jan 2026 17:07:57 +0100
+Delivery-date: Fri, 16 Jan 2026 18:16:20 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgmMg-00217w-0R
+	id 1vgnQr-0022It-0T
 	for lore@lore.pengutronix.de;
-	Fri, 16 Jan 2026 17:07:57 +0100
+	Fri, 16 Jan 2026 18:16:20 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgmMb-0005kL-H8
-	for lore@pengutronix.de; Fri, 16 Jan 2026 17:07:57 +0100
+	id 1vgnQp-0008Q5-OK
+	for lore@pengutronix.de; Fri, 16 Jan 2026 18:16:20 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=/UZdGvdPpr5eTikGAu/gslrFLWXYBGw026pMYy54Lzc=; b=Skl40+7Yxm/PiXzv9BrzsD2bKE
-	YB1uOBFTE6jjBzHYH/Pzn3XpvHupypo5gme5U6Wxv8XXgB6jg7BlfqjNfesOLWeSwysx89ZiwH7Kq
-	Kk8yREoAwwsMu9mnWATLza6u9+aGUOvSU8CY+9qPAIwjzY/q9yVU0h7GhhSZZuJtJ8QFj44PH7ts8
-	JDKPscCq8fSpTj8ef+umB3ebYIWhs/r3bTGxRVoD17ntJyNfIBh3wR8CSP+9G5OvJXF2GUlNr8zbX
-	zbr32onIN+KVSnYb4hqMAOQhSoV8Z+O0wMzdLbp/0XNOWwSykwvosXwoJhWqsQTKlKVDoJJqBW9mI
-	1QP+CJ1Q==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
+	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=ApxzVbH0M+N1IsvPItQKFdwJli/4x6ZLhtoAErNHCb0=; b=jb4R2mfH9rLe+Y
+	DNqzE0GMmjBIJd7mLAGBPlKJYoNquL7wmlvT4iEVQLn/rUc7Pjw7NJ30QTKVnNIMi5kBvihai8RSk
+	D+4eiQiRBwuZ2ZLxReVOKVXYZPM/T6KxKca6XyWyW9UkhzPyPW4OWPai9Qk3nhrVRtQ30+H4Jb8jI
+	2vQXMM5R1EGUTp0si7IAjwLRm+FNPV6GR5WaHRAHPIe3agfUrHZ+sl1gexmNHdmtsWLw3HAIQYseG
+	hNLCTlprUTYbhWAfpq13r6lwj/5UutKdHcJcIH7fXp23EzPfnOgWhrF0Knib6BwAIJtuiccoC8nss
+	nyFz78y8MvXdAEVLwkmQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgmLq-0000000EPzt-00qb;
-	Fri, 16 Jan 2026 16:07:06 +0000
+	id 1vgnQF-0000000EYj3-0Tnq;
+	Fri, 16 Jan 2026 17:15:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgmLm-0000000EPuV-06mZ
+	id 1vgnQC-0000000EYiH-0Hjb
 	for barebox@lists.infradead.org;
-	Fri, 16 Jan 2026 16:07:03 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@barebox.org>)
-	id 1vgmLj-0004sd-Dp; Fri, 16 Jan 2026 17:06:59 +0100
-From: Ahmad Fatoum <a.fatoum@barebox.org>
+	Fri, 16 Jan 2026 17:15:41 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vgnQ6-0008Hi-Jf; Fri, 16 Jan 2026 18:15:34 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vgnQ7-000xQq-0H;
+	Fri, 16 Jan 2026 18:15:34 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vgnQ7-0000000AM7C-00vg;
+	Fri, 16 Jan 2026 18:15:34 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: David Dgien <dgienda125@gmail.com>,
-	Claude <noreply@claude.ai>,
-	Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Fri, 16 Jan 2026 17:06:29 +0100
-Message-ID: <20260116160654.3981425-7-a.fatoum@barebox.org>
+Date: Fri, 16 Jan 2026 18:15:14 +0100
+Message-ID: <20260116171530.2467685-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260116160654.3981425-1-a.fatoum@barebox.org>
-References: <20260116160654.3981425-1-a.fatoum@barebox.org>
+In-Reply-To: <20260116171530.2467685-1-a.fatoum@pengutronix.de>
+References: <20260116171530.2467685-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260116_080702_399885_209ED227 
-X-CRM114-Status: GOOD (  20.34  )
+X-CRM114-CacheID: sfid-20260116_091540_261053_1AB1DD66 
+X-CRM114-Status: GOOD (  20.10  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -63,537 +72,340 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 06/13] treewide: fix some missing EXPORT_SYMBOL
+Subject: [PATCH 2/2] boards: qemu-virt: add overlay for when first flash is secure-world only
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-In preparation for testing ARM32 module support in CI, fix some
-EXPORT_SYMBOL around the tree, which we will rely on later.
+When booting with OP-TEE, the first flash will be off-limits when
+barebox starts executing and the device tree will have the flash
+directly start at 0x4000000.
 
-Co-developed-by: Claude <noreply@claude.ai>
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+Detect this case and apply a different device tree overlay that
+references only the non-secure flash.
+
+To test this, one needs to prepare a flash image for QEMU with TF-A and
+barebox inside a FIP image.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/lib32/Makefile            | 1 +
- arch/arm/lib32/string.c            | 7 +++++++
- common/bbu.c                       | 1 +
- common/block.c                     | 2 ++
- common/firmware.c                  | 1 +
- common/globalvar.c                 | 1 +
- common/machine_id.c                | 1 +
- common/memory.c                    | 1 +
- common/structio.c                  | 3 +++
- drivers/base/bus.c                 | 2 ++
- drivers/base/class.c               | 1 +
- drivers/base/driver.c              | 1 +
- drivers/base/platform.c            | 1 +
- drivers/base/power.c               | 2 ++
- drivers/clk/clk-bulk.c             | 2 +-
- drivers/clk/clk.c                  | 1 +
- drivers/firmware/arm_scmi/driver.c | 1 +
- drivers/gpio/gpiolib.c             | 2 +-
- drivers/hw_random/core.c           | 1 +
- drivers/mtd/core.c                 | 1 +
- drivers/net/dsa.c                  | 1 +
- drivers/nvmem/core.c               | 1 +
- drivers/of/base.c                  | 3 ++-
- drivers/pci/pci.c                  | 2 ++
- drivers/pinctrl/pinctrl.c          | 1 +
- drivers/video/fb.c                 | 1 +
- fs/pstore/platform.c               | 1 +
- lib/parameter.c                    | 1 +
- lib/string.c                       | 2 ++
- lib/stringlist.c                   | 3 +++
- lib/ucs2_string.c                  | 2 +-
- net/eth.c                          | 1 +
- net/net.c                          | 1 +
- 33 files changed, 49 insertions(+), 4 deletions(-)
- create mode 100644 arch/arm/lib32/string.c
+ common/boards/qemu-virt/Makefile              |   2 +
+ common/boards/qemu-virt/board.c               |   9 +-
+ .../qemu-virt/qemu-virt-flash-nonsecure.dtso  |   8 ++
+ common/boards/qemu-virt/qemu-virt-flash.dtsi  | 105 ++++++++++++++++++
+ common/boards/qemu-virt/qemu-virt-flash.dtso  | 100 +----------------
+ common/boards/qemu-virt/qemu-virt-flash.h     |   4 +
+ 6 files changed, 128 insertions(+), 100 deletions(-)
+ create mode 100644 common/boards/qemu-virt/qemu-virt-flash-nonsecure.dtso
+ create mode 100644 common/boards/qemu-virt/qemu-virt-flash.dtsi
 
-diff --git a/arch/arm/lib32/Makefile b/arch/arm/lib32/Makefile
-index cdfb992c0d5d..67c4f16f76ad 100644
---- a/arch/arm/lib32/Makefile
-+++ b/arch/arm/lib32/Makefile
-@@ -25,6 +25,7 @@ obj-pbl-y += reloc.o
- obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memcpy.o
- obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memmove.o
- obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memset.o
-+obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= string.o
- obj-$(CONFIG_ARM_UNWIND) += unwind.o
- obj-$(CONFIG_MODULES) += module.o
- obj-$(CONFIG_ARM_MODULE_PLTS) += module-plts.o
-diff --git a/arch/arm/lib32/string.c b/arch/arm/lib32/string.c
+diff --git a/common/boards/qemu-virt/Makefile b/common/boards/qemu-virt/Makefile
+index 457ee5cdc6c9..8d0cf2773402 100644
+--- a/common/boards/qemu-virt/Makefile
++++ b/common/boards/qemu-virt/Makefile
+@@ -2,11 +2,13 @@
+ 
+ obj-y += board.o commandline.o
+ obj-y += qemu-virt-flash.dtbo.o
++obj-$(CONFIG_ARM) += qemu-virt-flash-nonsecure.dtbo.o
+ ifeq ($(CONFIG_RISCV),y)
+ DTC_CPP_FLAGS_qemu-virt-flash.dtbo := -DCONFIG_RISCV
+ endif
+ ifeq ($(CONFIG_ARM),y)
+ DTC_CPP_FLAGS_qemu-virt-flash.dtbo := -DCONFIG_ARM
++DTC_CPP_FLAGS_qemu-virt-flash-nonsecure.dtbo := -DCONFIG_ARM
+ endif
+ 
+ policy-y += qemu-virt-factory.sconfig
+diff --git a/common/boards/qemu-virt/board.c b/common/boards/qemu-virt/board.c
+index 1e3b647f11e5..f2f7beec35db 100644
+--- a/common/boards/qemu-virt/board.c
++++ b/common/boards/qemu-virt/board.c
+@@ -38,6 +38,7 @@ static inline void arm_virt_init(void) {}
+ #endif
+ 
+ extern char __dtbo_qemu_virt_flash_start[];
++extern char __dtbo_qemu_virt_flash_nonsecure_start[];
+ 
+ static const struct of_device_id virt_of_match[] = {
+ 	{ .compatible = "linux,dummy-virt", .data = arm_virt_init },
+@@ -73,8 +74,14 @@ static int virt_board_driver_init(void)
+ 	 * configurations, where the first flash bank is secure-world only
+ 	 */
+ 	flash = of_find_node_by_path(PARTS_TARGET_PATH_STR);
+-	if (flash && of_device_is_available(flash))
++	if (flash && of_device_is_available(flash)) {
+ 		of_overlay_apply_dtbo(root, __dtbo_qemu_virt_flash_start);
++	} else if (IS_ENABLED(CONFIG_ARM)) {
++		flash = of_find_node_by_path("/flash@4000000");
++		if (flash && of_device_is_available(flash))
++			of_overlay_apply_dtbo(root, __dtbo_qemu_virt_flash_nonsecure_start);
++	}
++
+ 
+ 	/* fragment may have added aliases to the DT */
+ 	of_alias_scan();
+diff --git a/common/boards/qemu-virt/qemu-virt-flash-nonsecure.dtso b/common/boards/qemu-virt/qemu-virt-flash-nonsecure.dtso
 new file mode 100644
-index 000000000000..ad1113034be3
+index 000000000000..9a0c9442145b
 --- /dev/null
-+++ b/arch/arm/lib32/string.c
-@@ -0,0 +1,7 @@
++++ b/common/boards/qemu-virt/qemu-virt-flash-nonsecure.dtso
+@@ -0,0 +1,8 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
 +
-+#include <linux/string.h>
-+#include <linux/export.h>
++/dts-v1/;
++/plugin/;
 +
-+EXPORT_SYMBOL(memcpy);
-+EXPORT_SYMBOL(memset);
-diff --git a/common/bbu.c b/common/bbu.c
-index 00d415bcf826..07a51c112f0e 100644
---- a/common/bbu.c
-+++ b/common/bbu.c
-@@ -288,6 +288,7 @@ bool bbu_handlers_available(void)
- {
- 	return !list_empty(&bbu_image_handlers);
- }
-+EXPORT_SYMBOL(bbu_handlers_available);
- 
- /*
-  * print a list of all registered update handlers
-diff --git a/common/block.c b/common/block.c
-index e021b1a9666f..22597124a1b3 100644
---- a/common/block.c
-+++ b/common/block.c
-@@ -16,6 +16,7 @@
- #include <file-list.h>
- 
- LIST_HEAD(block_device_list);
-+EXPORT_SYMBOL(block_device_list);
- 
- /* a chunk of contiguous data */
- struct chunk {
-@@ -583,6 +584,7 @@ const char *blk_type_str(enum blk_type type)
- 		return "unknown";
- 	}
- }
-+EXPORT_SYMBOL(blk_type_str);
- 
- int cdev_get_linux_root_and_opts(const struct cdev *partcdev, const char **root,
- 				 const char **rootopts)
-diff --git a/common/firmware.c b/common/firmware.c
-index 264fc9d66dcc..31b75bd88ab5 100644
---- a/common/firmware.c
-+++ b/common/firmware.c
-@@ -87,6 +87,7 @@ struct firmware_mgr *firmwaremgr_find_by_node(struct device_node *np)
- 
- 	return NULL;
- }
-+EXPORT_SYMBOL(firmwaremgr_find_by_node);
- 
- /*
-  * firmwaremgr_list_handlers - list registered firmware device handlers
-diff --git a/common/globalvar.c b/common/globalvar.c
-index 127ecd5c6075..fcaa15179f68 100644
---- a/common/globalvar.c
-+++ b/common/globalvar.c
-@@ -21,6 +21,7 @@ struct device global_device = {
- 	.name = "global",
- 	.id = DEVICE_ID_SINGLE,
- };
-+EXPORT_SYMBOL(global_device);
- 
- struct device nv_device = {
- 	.name = "nv",
-diff --git a/common/machine_id.c b/common/machine_id.c
-index e670886d8538..acc7aac52cf9 100644
---- a/common/machine_id.c
-+++ b/common/machine_id.c
-@@ -22,6 +22,7 @@ const void *machine_id_get_hashable(size_t *len)
- 	*len = __machine_id_hashable_length;
- 	return __machine_id_hashable;
- }
-+EXPORT_SYMBOL(machine_id_get_hashable);
- 
- /**
-  * machine_id_set_hashable - Provide per-board unique data
-diff --git a/common/memory.c b/common/memory.c
-index 49ff0ef619d5..1c18c5b38710 100644
---- a/common/memory.c
-+++ b/common/memory.c
-@@ -212,6 +212,7 @@ void *sbrk(ptrdiff_t increment)
- }
- 
- LIST_HEAD(memory_banks);
-+EXPORT_SYMBOL(memory_banks);
- 
- static int barebox_grow_memory_bank(struct memory_bank *bank, const char *name,
- 				    const struct resource *newres)
-diff --git a/common/structio.c b/common/structio.c
-index 935c4628dd77..776dc1e902ab 100644
---- a/common/structio.c
-+++ b/common/structio.c
-@@ -3,6 +3,7 @@
- #include <structio.h>
- #include <command.h>
- #include <device.h>
-+#include <linux/export.h>
- 
- static struct bobject *active_capture;
- 
-@@ -34,6 +35,7 @@ int structio_run_command(struct bobject **bret, const char *cmd)
- 	*bret = bobj;
- 	return 0;
- }
-+EXPORT_SYMBOL(structio_run_command);
- 
- int structio_devinfo(struct bobject **bret, struct device *dev)
- {
-@@ -54,3 +56,4 @@ int structio_devinfo(struct bobject **bret, struct device *dev)
- 	*bret = bobj;
- 	return 0;
- }
-+EXPORT_SYMBOL(structio_devinfo);
-diff --git a/drivers/base/bus.c b/drivers/base/bus.c
-index 7ee5959e8b9f..9e5b43cd0ffa 100644
---- a/drivers/base/bus.c
-+++ b/drivers/base/bus.c
-@@ -10,6 +10,7 @@
- #include <of.h>
- 
- DEFINE_DEV_CLASS(bus_class, "bus");
-+EXPORT_SYMBOL(bus_class);
- 
- struct bus_type *get_bus_by_name(const char *name)
- {
-@@ -22,6 +23,7 @@ struct bus_type *get_bus_by_name(const char *name)
- 
- 	return NULL;
- }
-+EXPORT_SYMBOL(get_bus_by_name);
- 
- int bus_register(struct bus_type *bus)
- {
-diff --git a/drivers/base/class.c b/drivers/base/class.c
-index 693260fe22dc..d21d679f1acc 100644
---- a/drivers/base/class.c
-+++ b/drivers/base/class.c
-@@ -4,6 +4,7 @@
- #include <linux/list.h>
- 
- LIST_HEAD(class_list);
-+EXPORT_SYMBOL(class_list);
- 
- void class_register(struct class *class)
- {
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 782cdfdfcecb..36a1fcda48c8 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -586,6 +586,7 @@ struct resource *dev_request_mem_resource(struct device *dev, int num)
- 
- 	return dev_request_iomem_resource(dev, res);
- }
-+EXPORT_SYMBOL(dev_request_mem_resource);
- 
- void __iomem *dev_request_mem_region_err_null(struct device *dev, int num)
- {
-diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-index ac7c473c8c7b..9e6718c6476c 100644
---- a/drivers/base/platform.c
-+++ b/drivers/base/platform.c
-@@ -28,6 +28,7 @@ int platform_driver_register(struct driver *drv)
- 
- 	return register_driver(drv);
- }
-+EXPORT_SYMBOL(platform_driver_register);
- 
- int platform_device_register(struct device *new_device)
- {
-diff --git a/drivers/base/power.c b/drivers/base/power.c
-index cffd0436278a..543c85a3d9b8 100644
---- a/drivers/base/power.c
-+++ b/drivers/base/power.c
-@@ -361,6 +361,7 @@ bool genpd_is_active(void)
- {
- 	return have_genpd_providers && !list_empty(&gpd_list);
- }
-+EXPORT_SYMBOL(genpd_is_active);
- 
- static struct bus_type genpd_bus_type = {
- 	.name		= "genpd",
-@@ -563,3 +564,4 @@ void pm_genpd_print(void)
- 		printf("%-20s %6s\n", genpd->name,
- 		       genpd->status == GPD_STATE_ACTIVE ? "on" : "off");
- }
-+EXPORT_SYMBOL(pm_genpd_print);
-diff --git a/drivers/clk/clk-bulk.c b/drivers/clk/clk-bulk.c
-index c16fed282b21..e34a1feff2a2 100644
---- a/drivers/clk/clk-bulk.c
-+++ b/drivers/clk/clk-bulk.c
-@@ -170,7 +170,7 @@ int __must_check clk_bulk_get_all_enabled(struct device *dev,
- 
- 	return num_clks;
- }
--EXPORT_SYMBOL_GPL(devm_clk_bulk_get_all_enabled);
-+EXPORT_SYMBOL_GPL(clk_bulk_get_all_enabled);
- 
- /**
-  * clk_bulk_disable - gate a set of clocks
-diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
-index ac5b83cf8b40..5e385380cee2 100644
---- a/drivers/clk/clk.c
-+++ b/drivers/clk/clk.c
-@@ -29,6 +29,7 @@ bool clk_have_nonfixed_providers(void)
- 
- 	return false;
- }
-+EXPORT_SYMBOL(clk_have_nonfixed_providers);
- 
- static int clk_parent_enable(struct clk *clk)
- {
-diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
-index bbb62dd5191a..5c69ea953c76 100644
---- a/drivers/firmware/arm_scmi/driver.c
-+++ b/drivers/firmware/arm_scmi/driver.c
-@@ -39,6 +39,7 @@ static DEFINE_SPINLOCK(protocol_lock);
- 
- /* List of all SCMI devices active in system */
- LIST_HEAD(scmi_list);
-+EXPORT_SYMBOL(scmi_list);
- /* Protection for the entire list */
- static DEFINE_MUTEX(scmi_list_mutex);
- /* Track the unique id for the transfers for debug & profiling purpose */
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index e1493ffb6640..37a98995f2e8 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -662,7 +662,7 @@ struct gpio_desc *gpiod_request_one(unsigned gpio,
- 
- 	return desc;
- }
--EXPORT_SYMBOL_GPL(gpio_request_one);
-+EXPORT_SYMBOL_GPL(gpiod_request_one);
- 
- 
- /**
-diff --git a/drivers/hw_random/core.c b/drivers/hw_random/core.c
-index 7bc3c33319f9..9f73aa45bcec 100644
---- a/drivers/hw_random/core.c
-+++ b/drivers/hw_random/core.c
-@@ -102,6 +102,7 @@ struct hwrng *hwrng_get_first(void)
- 	else
- 		return list_first_entry(&hwrngs, struct hwrng, list);
- }
-+EXPORT_SYMBOL(hwrng_get_first);
- 
- int hwrng_register(struct device *dev, struct hwrng *rng)
- {
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index bb579a8f5249..922105944d34 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -26,6 +26,7 @@
- static LIST_HEAD(mtd_register_hooks);
- 
- DEFINE_DEV_CLASS(mtd_class, "mtd");
-+EXPORT_SYMBOL(mtd_class);
- 
- /**
-  * mtd_buf_all_ff - check if buffer contains only 0xff
-diff --git a/drivers/net/dsa.c b/drivers/net/dsa.c
-index 667297e8fea3..8eb12522999f 100644
---- a/drivers/net/dsa.c
-+++ b/drivers/net/dsa.c
-@@ -7,6 +7,7 @@
- #include <param.h>
- 
- LIST_HEAD(dsa_switch_list);
-+EXPORT_SYMBOL(dsa_switch_list);
- 
- u32 dsa_user_ports(struct dsa_switch *ds)
- {
-diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-index 8e1cf400e5d8..0047bf188dd2 100644
---- a/drivers/nvmem/core.c
-+++ b/drivers/nvmem/core.c
-@@ -38,6 +38,7 @@ struct nvmem_cell {
- };
- 
- DEFINE_DEV_CLASS(nvmem_class, "nvmem");
-+EXPORT_SYMBOL(nvmem_class);
- 
- void nvmem_devices_print(void)
- {
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index a26c1faa41d5..54fd458bd9a1 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -294,7 +294,7 @@ int of_alias_get_free_id(const char *stem)
- 
- 	return id + 1;
- }
--EXPORT_SYMBOL_GPL(of_alias_get_highest_id);
-+EXPORT_SYMBOL_GPL(of_alias_get_free_id);
- 
- int of_alias_get_id_from(struct device_node *root, struct device_node *np,
- 			 const char *stem)
-@@ -2072,6 +2072,7 @@ struct device_node *of_get_root_node(void)
- {
- 	return root_node;
- }
-+EXPORT_SYMBOL(of_get_root_node);
- 
- int of_set_root_node(struct device_node *node)
- {
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index e6370b5c7f6e..32624fe05b56 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -48,6 +48,7 @@ void pci_controller_init(struct pci_controller *hose)
- 
- 	of_pci_bridge_init(hose->parent, hose);
- }
-+EXPORT_SYMBOL(pci_controller_init);
- 
- void register_pci_controller(struct pci_controller *hose)
- {
-@@ -85,6 +86,7 @@ void register_pci_controller(struct pci_controller *hose)
- 
- 	return;
- }
-+EXPORT_SYMBOL(register_pci_controller);
- 
- /*
-  *  Wrappers for all PCI configuration access functions.  They just check
-diff --git a/drivers/pinctrl/pinctrl.c b/drivers/pinctrl/pinctrl.c
-index 2f85a0f08f08..01567aa5ae97 100644
---- a/drivers/pinctrl/pinctrl.c
-+++ b/drivers/pinctrl/pinctrl.c
-@@ -30,6 +30,7 @@ struct pinctrl_consumer_info {
- };
- 
- LIST_HEAD(pinctrl_list);
-+EXPORT_SYMBOL(pinctrl_list);
- 
- static struct pinctrl_device *pin_to_pinctrl(unsigned int pin)
- {
-diff --git a/drivers/video/fb.c b/drivers/video/fb.c
-index 939368a0de68..bfc075039e9e 100644
---- a/drivers/video/fb.c
-+++ b/drivers/video/fb.c
-@@ -10,6 +10,7 @@
- #include <init.h>
- 
- DEFINE_DEV_CLASS(fb_class, "fb");
-+EXPORT_SYMBOL(fb_class);
- 
- static int fb_ioctl(struct cdev* cdev, unsigned int req, void *data)
- {
-diff --git a/fs/pstore/platform.c b/fs/pstore/platform.c
-index 3157cc90d514..b72c7346e6a8 100644
---- a/fs/pstore/platform.c
-+++ b/fs/pstore/platform.c
-@@ -50,6 +50,7 @@ bool pstore_is_ready(void)
- {
- 	return pstore_ready;
- }
-+EXPORT_SYMBOL(pstore_is_ready);
- 
- void pstore_log(const char *str)
- {
-diff --git a/lib/parameter.c b/lib/parameter.c
-index bf5dbbb05e6b..1243a12e8701 100644
---- a/lib/parameter.c
-+++ b/lib/parameter.c
-@@ -86,6 +86,7 @@ const char *bobject_get_param(bobject_t _bobj, const char *name)
- 
- 	return param->get(bobj, param);
- }
-+EXPORT_SYMBOL(bobject_get_param);
- 
- /**
-  * bobject_set_param - set a parameter of a barebox object to a new value
-diff --git a/lib/string.c b/lib/string.c
-index a55f98990032..302f87a60422 100644
---- a/lib/string.c
-+++ b/lib/string.c
-@@ -684,6 +684,7 @@ EXPORT_SYMBOL(__nokasan_default_memset);
- #ifndef __HAVE_ARCH_MEMSET
- void *memset(void *s, int c, size_t count) __alias(__default_memset);
- void *__memset(void *s, int c, size_t count) __alias(__default_memset);
-+EXPORT_SYMBOL(memset);
- #endif
- 
- /**
-@@ -723,6 +724,7 @@ void *memcpy(void * dest, const void *src, size_t count)
- 	__alias(__default_memcpy);
- void *__memcpy(void * dest, const void *src, size_t count)
- 	__alias(__default_memcpy);
-+EXPORT_SYMBOL(memcpy);
- #endif
- 
- void *mempcpy(void *dest, const void *src, size_t count)
-diff --git a/lib/stringlist.c b/lib/stringlist.c
-index 908fa3683c36..96e06c288d28 100644
---- a/lib/stringlist.c
-+++ b/lib/stringlist.c
-@@ -27,6 +27,7 @@ int string_list_add(struct string_list *sl, const char *str)
- 
- 	return 0;
- }
-+EXPORT_SYMBOL(string_list_add);
- 
- int string_list_add_asprintf(struct string_list *sl, const char *fmt, ...)
- {
-@@ -50,6 +51,7 @@ int string_list_add_asprintf(struct string_list *sl, const char *fmt, ...)
- 
- 	return 0;
- }
-+EXPORT_SYMBOL(string_list_add_asprintf);
- 
- int string_list_add_sorted(struct string_list *sl, const char *str)
- {
-@@ -126,6 +128,7 @@ char *string_list_join(const struct string_list *sl, const char *joinstr)
- 
- 	return str;
- }
-+EXPORT_SYMBOL(string_list_join);
- 
- void string_list_print_by_column(struct string_list *sl)
- {
-diff --git a/lib/ucs2_string.c b/lib/ucs2_string.c
-index db3f34f6b70c..6f027010d3a5 100644
---- a/lib/ucs2_string.c
-+++ b/lib/ucs2_string.c
-@@ -113,7 +113,7 @@ ucs2_strcmp(const ucs2_char_t *a, const ucs2_char_t *b)
- {
- 	return ucs2_strncmp(a, b, ~0UL);
- }
--EXPORT_SYMBOL(ucs2_strncmp);
-+EXPORT_SYMBOL(ucs2_strcmp);
- 
- unsigned long
- ucs2_utf8size(const ucs2_char_t *src)
-diff --git a/net/eth.c b/net/eth.c
-index 857bd2ee70dd..4201ed1c6b66 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -22,6 +22,7 @@
- #include <linux/stat.h>
- 
- DEFINE_DEV_CLASS(eth_class, "eth");
-+EXPORT_SYMBOL(eth_class);
- 
- LIST_HEAD(ethaddr_list);
- 
-diff --git a/net/net.c b/net/net.c
-index 9c5999604b67..60f325ec63de 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -364,6 +364,7 @@ IPaddr_t net_get_ip(struct eth_device *edev)
- {
- 	return edev->ipaddr;
- }
-+EXPORT_SYMBOL(net_get_ip);
- 
- void net_set_netmask(struct eth_device *edev, IPaddr_t nm)
- {
++#define USE_NONSECURE_SECOND_FLASH
++
++#include "qemu-virt-flash.dtsi"
+diff --git a/common/boards/qemu-virt/qemu-virt-flash.dtsi b/common/boards/qemu-virt/qemu-virt-flash.dtsi
+new file mode 100644
+index 000000000000..582c213c948e
+--- /dev/null
++++ b/common/boards/qemu-virt/qemu-virt-flash.dtsi
+@@ -0,0 +1,105 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++/dts-v1/;
++/plugin/;
++
++#include "qemu-virt-flash.h"
++
++&{PARTS_TARGET_PATH} {
++#ifdef VIRTUAL_REG
++	virtual-reg = <VIRTUAL_REG>;
++#endif
++	partitions {
++		compatible = "fixed-partitions";
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		partition@0 {
++			label = "initramfs";
++			reg = <0x0 0x3c00000>;
++		};
++
++		environment_flash: partition@3c00000 {
++			label = "barebox-environment";
++			reg = <0x3c00000 0x200000>;
++		};
++
++		backend_state_flash: partition@3e00000 {
++			label = "barebox-state";
++			reg = <0x3e00000 0x200000>;
++		};
++	};
++};
++
++&{/chosen} {
++	environment {
++		compatible = "barebox,environment";
++		device-path = ENV_DEVICE_PATH_STR;
++	};
++};
++
++&{/} {
++	aliases {
++		state = "/state";
++	};
++
++	state {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		compatible = "barebox,state";
++		magic = <0x290cf8c6>;
++		backend-type = "raw";
++		backend = < &backend_state_flash >;
++		backend-stridesize = <0x200>;
++
++		bootstate {
++			#address-cells = <1>;
++			#size-cells = <1>;
++
++			system0 {
++				#address-cells = <1>;
++				#size-cells = <1>;
++
++				remaining_attempts@0 {
++					reg = <0x0 0x4>;
++					type = "uint32";
++					default = <3>;
++				};
++
++				priority@4 {
++					reg = <0x4 0x4>;
++					type = "uint32";
++					default = <20>;
++				};
++			};
++
++			system1 {
++				#address-cells = <1>;
++				#size-cells = <1>;
++
++				remaining_attempts@8 {
++					reg = <0x8 0x4>;
++					type = "uint32";
++					default = <0>;
++				};
++
++				priority@c {
++					reg = <0xc 0x4>;
++					type = "uint32";
++					default = <0>;
++				};
++			};
++
++			last_chosen@10 {
++				reg = <0x10 0x4>;
++				type = "uint32";
++			};
++
++			attempts_locked@14 {
++				reg = <0x14 0x4>;
++				type = "uint32";
++			};
++		};
++	};
++};
++
+diff --git a/common/boards/qemu-virt/qemu-virt-flash.dtso b/common/boards/qemu-virt/qemu-virt-flash.dtso
+index 0020ecfcea98..ac9fd34787a6 100644
+--- a/common/boards/qemu-virt/qemu-virt-flash.dtso
++++ b/common/boards/qemu-virt/qemu-virt-flash.dtso
+@@ -3,102 +3,4 @@
+ /dts-v1/;
+ /plugin/;
+ 
+-#include "qemu-virt-flash.h"
+-
+-&{PARTS_TARGET_PATH} {
+-#ifdef CONFIG_ARM
+-	virtual-reg = <0x1000>;
+-#endif
+-	partitions {
+-		compatible = "fixed-partitions";
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-
+-		partition@0 {
+-			label = "initramfs";
+-			reg = <0x0 0x3c00000>;
+-		};
+-
+-		environment_flash: partition@3c00000 {
+-			label = "barebox-environment";
+-			reg = <0x3c00000 0x200000>;
+-		};
+-
+-		backend_state_flash: partition@3e00000 {
+-			label = "barebox-state";
+-			reg = <0x3e00000 0x200000>;
+-		};
+-	};
+-};
+-
+-&{/chosen} {
+-	environment {
+-		compatible = "barebox,environment";
+-		device-path = ENV_DEVICE_PATH_STR;
+-	};
+-};
+-
+-&{/} {
+-	aliases {
+-		state = "/state";
+-	};
+-
+-	state {
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-		compatible = "barebox,state";
+-		magic = <0x290cf8c6>;
+-		backend-type = "raw";
+-		backend = < &backend_state_flash >;
+-		backend-stridesize = <0x200>;
+-
+-		bootstate {
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-
+-			system0 {
+-				#address-cells = <1>;
+-				#size-cells = <1>;
+-
+-				remaining_attempts@0 {
+-					reg = <0x0 0x4>;
+-					type = "uint32";
+-					default = <3>;
+-				};
+-
+-				priority@4 {
+-					reg = <0x4 0x4>;
+-					type = "uint32";
+-					default = <20>;
+-				};
+-			};
+-
+-			system1 {
+-				#address-cells = <1>;
+-				#size-cells = <1>;
+-
+-				remaining_attempts@8 {
+-					reg = <0x8 0x4>;
+-					type = "uint32";
+-					default = <0>;
+-				};
+-
+-				priority@c {
+-					reg = <0xc 0x4>;
+-					type = "uint32";
+-					default = <0>;
+-				};
+-			};
+-
+-			last_chosen@10 {
+-				reg = <0x10 0x4>;
+-				type = "uint32";
+-			};
+-
+-			attempts_locked@14 {
+-				reg = <0x14 0x4>;
+-				type = "uint32";
+-			};
+-		};
+-	};
+-};
++#include "qemu-virt-flash.dtsi"
+diff --git a/common/boards/qemu-virt/qemu-virt-flash.h b/common/boards/qemu-virt/qemu-virt-flash.h
+index 85f67ff03057..e7c67b8e383a 100644
+--- a/common/boards/qemu-virt/qemu-virt-flash.h
++++ b/common/boards/qemu-virt/qemu-virt-flash.h
+@@ -8,9 +8,13 @@
+ #ifdef CONFIG_RISCV
+ #define PARTS_TARGET_PATH	/flash@20000000
+ #define ENV_DEVICE_PATH		/flash@20000000/partitions/partition@3c00000
++#elif defined(CONFIG_ARM) && defined(USE_NONSECURE_SECOND_FLASH)
++#define PARTS_TARGET_PATH	/flash@4000000
++#define ENV_DEVICE_PATH		/flash@4000000/partitions/partition@0
+ #elif defined CONFIG_ARM
+ #define PARTS_TARGET_PATH	/flash@0
+ #define ENV_DEVICE_PATH		/flash@0/partitions/partition@3c00000
++#define VIRTUAL_REG		0x1000
+ #else
+ #define PARTS_TARGET_PATH
+ #define ENV_DEVICE_PATH
 -- 
 2.47.3
 
