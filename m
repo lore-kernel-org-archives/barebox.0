@@ -1,74 +1,71 @@
-Delivery-date: Fri, 16 Jan 2026 16:17:21 +0100
+Delivery-date: Fri, 16 Jan 2026 16:26:20 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vglZi-0020KR-0f
+	id 1vgliO-0020QD-39
 	for lore@lore.pengutronix.de;
-	Fri, 16 Jan 2026 16:17:21 +0100
+	Fri, 16 Jan 2026 16:26:20 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vglZh-0005br-7a
-	for lore@pengutronix.de; Fri, 16 Jan 2026 16:17:21 +0100
+	id 1vgliO-0007P1-0G
+	for lore@pengutronix.de; Fri, 16 Jan 2026 16:26:20 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Dj417Q3hT3/QR1iuC+OGWWLwvWDvIYpQAjkZutcNlBM=; b=JFtu8ESyozjoDMS0Nvzw8KS+Dm
-	8yyhXUj/xXxKmYThxmHoOBqq/XSysVBCHd/yRVsJnoYvX9GG33w1Vs43+I+pzAN+9oaOS+m7zvR5G
-	D3yaYdbGh+cAvynkEHIaikQ7X3e1GbAfycu01VMcXYrSYRFigZ6TDcxhhUB4kGYn/PTVsdYeQ/2Lf
-	UGXLeqOvvMEjMBrr7ERKNl9ptARTL9zkp0avcwvrMy8WLn17GKlwipLfWMGwRtdrLoco17i/zU2Tv
-	M4N9fujvmceuWGKx+77VC6gcYbsfJNOHpGPDjjelTn2eFUOe7l/FdG0vDOTbong9bhdfDnGdNWAMc
-	n9saVRrQ==;
+	bh=B8fo8qIDjt2sbwRmVVh3RAsTOI7z2pgA9Sm+vPHEDh8=; b=MInvXmmIUw1rwtZaGa22cMupJz
+	xwytsjg5wzjbpoBDTirUGJ81pPpJGfKw1e7lUvbwcOxkkU0V/rocvsoXpkfFKAEudzoXi3RbsRL5A
+	Ka2luXNDtswwyioL9pLlJMJVOEFlXKhKyG1uc8lfEmFuGqFwuuWO1xhvp+avB/oaCozSDhLGxQnKo
+	6lx7bnXNcg9rjXFY2SXB+vBicczTXe6C8xMJOi2fkRXt0r010ZAJ8sqKRISHfc2eftHYT0+PLyKSL
+	2FZv51DujHsH3eUHKA/M1PoghBwyBGT/K7gWFt9gtP5fGNY/iulrcfZsLMJLJ9bL+FZfAzShjfolv
+	Ftl2D+eg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vglZ0-0000000EKuj-1P8I;
-	Fri, 16 Jan 2026 15:16:38 +0000
+	id 1vglhu-0000000EMOR-2bGm;
+	Fri, 16 Jan 2026 15:25:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vglYx-0000000EKuM-3GTF
+	id 1vglhr-0000000EMN1-14iQ
 	for barebox@lists.infradead.org;
-	Fri, 16 Jan 2026 15:16:37 +0000
+	Fri, 16 Jan 2026 15:25:49 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vglYu-0005Gx-Ne; Fri, 16 Jan 2026 16:16:32 +0100
+	id 1vglhp-0007G6-Lo; Fri, 16 Jan 2026 16:25:45 +0100
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vglYv-000wYy-0D;
-	Fri, 16 Jan 2026 16:16:32 +0100
+	id 1vglhq-000wZp-0U;
+	Fri, 16 Jan 2026 16:25:45 +0100
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vglYu-00FWlv-0w;
-	Fri, 16 Jan 2026 16:16:32 +0100
-Date: Fri, 16 Jan 2026 16:16:32 +0100
+	id 1vglhp-00FWoE-1G;
+	Fri, 16 Jan 2026 16:25:45 +0100
+Date: Fri, 16 Jan 2026 16:25:45 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@barebox.org>
-Cc: barebox@lists.infradead.org, David Dgien <dgienda125@gmail.com>
-Message-ID: <aWpWUM8I_h5EbeIQ@pengutronix.de>
-References: <20260115115924.3428886-1-a.fatoum@barebox.org>
- <20260115115924.3428886-3-a.fatoum@barebox.org>
- <aWn36P7Q9UKkpkkd@pengutronix.de>
- <84b47759-5755-4c55-9d50-2ee9e05ff6b8@barebox.org>
- <e5804811-a23c-4a23-a8bc-c75582260a54@barebox.org>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <aWpYeeaVBbFXVQ_T@pengutronix.de>
+References: <20260116091813.1370724-1-s.hauer@pengutronix.de>
+ <60f0bd53-ac1d-41a2-9045-afadece49722@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <e5804811-a23c-4a23-a8bc-c75582260a54@barebox.org>
+In-Reply-To: <60f0bd53-ac1d-41a2-9045-afadece49722@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260116_071635_816932_4205FF8C 
-X-CRM114-Status: GOOD (  24.27  )
+X-CRM114-CacheID: sfid-20260116_072547_292742_95803847 
+X-CRM114-Status: GOOD (  15.30  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,45 +87,26 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 02/12] ARM: qemu-virt: add image for use as -bios
+Subject: Re: [PATCH] treewide: Fix wrong EXPORT_SYMBOL()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Fri, Jan 16, 2026 at 01:52:46PM +0100, Ahmad Fatoum wrote:
+On Fri, Jan 16, 2026 at 11:17:01AM +0100, Ahmad Fatoum wrote:
 > Hello Sascha,
 > 
-> On 1/16/26 11:21 AM, Ahmad Fatoum wrote:
-> > Hi,
+> On 1/16/26 10:18, Sascha Hauer wrote:
+> > - duplicate EXPORT_SYMBOL_GPL(gpio_request_one), one should be
+> >   EXPORT_SYMBOL_GPL(gpiod_request_one) instead
+> > - duplicate EXPORT_SYMBOL(ucs2_strncmp), one should be
+> >   EXPORT_SYMBOL(ucs2_strcmp) instead
 > > 
-> > On 1/16/26 09:33, Sascha Hauer wrote:
-> >> On Thu, Jan 15, 2026 at 12:54:28PM +0100, Ahmad Fatoum wrote:
-> >>> +	printf("Using %s device tree at %p\n", origin, fdt);
-> >>
-> >> Doesn't make a difference for PBL, but I think pr_info would be more
-> >> appropriate here.
-> > 
-> > Sure.
-> > 
-> >>>  #define BAREBOX_BOARDDATA_COMPRESSED_DTB_MAGIC 0x7b66bcbd
-> >>> diff --git a/test/arm/virt-el2@multi_v8_defconfig.yaml b/test/arm/virt-el2@multi_v8_defconfig.yaml
-> >>> new file mode 100644
-> >>> index 000000000000..8aa514fb4179
-> >>> --- /dev/null
-> >>> +++ b/test/arm/virt-el2@multi_v8_defconfig.yaml
-> >>
-> >> You anticipated ARM32 above, how about adding these for
-> >> multi_v7_defconfig as well?
-> > 
-> > Ah, the name is misleading anyway, because it still runs in EL1 (which is good,
-> > as we can use hvc for PSCI, but I was not aware of that yet when I named the
-> > file).
-> > 
-> > I can rename and add a new v7 YAML in v2.
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > 
-> Are you done reading through the series or should I wait before sending
-> v2 some more?
+> Is this not a subset of
+> https://lore.barebox.org/barebox/20260115115924.3428886-6-a.fatoum@barebox.org/T/#u
 
-I'm done.
+Indeed, yes. I only read that you added missing EXPORT_SYMBOL, not
+removed duplicate ones. Ok, we can disregard this one.
 
 Sascha
 
