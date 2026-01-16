@@ -1,88 +1,88 @@
-Delivery-date: Fri, 16 Jan 2026 20:43:47 +0100
+Delivery-date: Fri, 16 Jan 2026 20:43:48 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgpjX-0024S0-2c
+	id 1vgpjY-0024Sb-1w
 	for lore@lore.pengutronix.de;
-	Fri, 16 Jan 2026 20:43:47 +0100
+	Fri, 16 Jan 2026 20:43:48 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgpjS-0001cO-Gb
-	for lore@pengutronix.de; Fri, 16 Jan 2026 20:43:47 +0100
+	id 1vgpjT-0001dB-QJ
+	for lore@pengutronix.de; Fri, 16 Jan 2026 20:43:48 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Ja4xzuoAaTJTQJGA85ygTNK5kD8Mgx697gl1be7pIYQ=; b=UpQiPZYwBE/YWIwpAhl9kLOiaY
-	FApBsqslt5fbg55HTFZPfy0ihODyJGbuVO3MZKLo+Pzn8U3g80D9vsjZMqLBJbXn1XzYU0WLr3ZfK
-	L4wXLVdidh5MP02gxZ+w1n/zM5g2VouOHdnnG1a0jAavVFSHR6V4Wu07pNRzrDqcaVZPyZkCKdpV6
-	AE09JM/CVCcZYRKHCnfsNSTscPNzvieZyKHiBCjfxI968+Fd19Vcl6K5EsGSxDtaRaDWxqeGHk1dt
-	61J4Bfzmw+fX5TbNVG1bqk5evaHbVIOwyWiq3pn2ZxjgCa38n+oLOhH9mtnHT5BrpKh60WnXiiJmV
-	cK3djUZA==;
+	bh=01v4XVFP8Q/pkBL/7bEL1aDcPpGUyUWePIzs3Zip6SQ=; b=Y0/eoKZC1wPVfAQgb9cyBPm7aO
+	gmLimkIdthsO6qoLe0ptTfKKlHG6pYIGN75YpFqcGxcQTdWTqxtM/tT8IQmM2Sfv4Qo3Oeh4/KWEA
+	9FhN4LDN0v/uDhXFCYhGcZzd2N3cxFChpHJMu5JRSBc70CoNJlnCFmVx/9hLtGK2uBxFp5CfM9By8
+	C/4hO+xoubBNZ7j4yKZM8edNQFR+n41rfURV/dhe1J/O+PB/8CclFxVTtbo3b2ASPGWr+MLoXM6ev
+	/yt5ma8b5VdRs18d46Xh2VNyRq/LEQCzRQCBEHPvl2WSQTx1OO4ziLwrrYWpZy7HXri5RHpS/Hddt
+	ZMPQBxiQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgpih-0000000EhoV-3e0Q;
-	Fri, 16 Jan 2026 19:42:55 +0000
-Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
+	id 1vgpik-0000000Ehre-0DwJ;
+	Fri, 16 Jan 2026 19:42:58 +0000
+Received: from mail-ed1-x534.google.com ([2a00:1450:4864:20::534])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgpid-0000000Ehj8-1PxO
+	id 1vgpif-0000000Ehkh-3RD3
 	for barebox@lists.infradead.org;
-	Fri, 16 Jan 2026 19:42:53 +0000
-Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-b871b6e0c70so380160966b.2
-        for <barebox@lists.infradead.org>; Fri, 16 Jan 2026 11:42:50 -0800 (PST)
+	Fri, 16 Jan 2026 19:42:55 +0000
+Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-64b58553449so4180551a12.1
+        for <barebox@lists.infradead.org>; Fri, 16 Jan 2026 11:42:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768592569; x=1769197369; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1768592572; x=1769197372; darn=lists.infradead.org;
         h=to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Ja4xzuoAaTJTQJGA85ygTNK5kD8Mgx697gl1be7pIYQ=;
-        b=GKsEDWu1Ijrci/gAVBubJsDYJj9/sQyAJrkB09eSH3YlT/Q1K0DQOR0mvs8Zg6o5WU
-         TH6RDq9P2FOtMuospPNLZ1APvqWJDrFteVyMUZjwVYgEH78IVDUx0EpF/UesP1/sJxSL
-         Cm2xgXB/XewRFEeUCkvKrTh37vLMSHOlRT8s35MLNnv7PiqtKFST2qraVFbX80L+Potp
-         FjJmwS4x4Fiw7AMgvp+rYotA+WWQGJ1Pn5BQJoL12yVnndKCEnfvkl2a/5eGEflEl6Pv
-         v5Vdd3sWZNf7zyrr60+ax3NwOpw81chP8aFZYfZirX/Pc20k+fAav3tqzv6Mp3MMM7ul
-         CsVQ==
+        bh=01v4XVFP8Q/pkBL/7bEL1aDcPpGUyUWePIzs3Zip6SQ=;
+        b=MokjaEcP7tlQWSoRsBJ4Nw3h62yIKa3S+Lcz5xHOmVfgPbxhY0YsvzAMVApzC4y5zw
+         VJTH/XSI+OxzMS3vjAe+ETAu7jiMrTCDw0q5csITcceGLLTy6KWSHCulpV+PSm8pXl+g
+         DhsMmwKHVJ2QHE3alcNecbeSJJARkl11ql81Ow6FG1LGixREfy+5C2TaYLR8xLiIXEN+
+         5w+vGHsZBSlmhGtdeqMF9LaIFy3vLfPHyrOpqApjnJJ/YWJP1nGaE5GySfB2+tA5Fo4i
+         0bWkBO7Ci/By5zhR5UtwkYQdfZLS4GY8xuQygzivGrzkNforxwnDRVMzsmLyqxLY56/p
+         uY/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768592569; x=1769197369;
+        d=1e100.net; s=20230601; t=1768592572; x=1769197372;
         h=to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=Ja4xzuoAaTJTQJGA85ygTNK5kD8Mgx697gl1be7pIYQ=;
-        b=sgkEqx9hwbogj96a0hTIW+SBfP0giyniwy8qKFD4XxBgUptar6OGtPjd2H79ColOlk
-         8AfK0MtUMdEcDRioe6U6XTl/1IPb2XWyYrMg/p7to+kH1DEqICjaYzXDBy7hXo+0Oqiq
-         x4eI5NtkglTARWgvlouTo1hbTjMdT3rYuLBl1vfdwle76NNYd4ixfYLuHYdv7tatcpQA
-         fZLjKvpsNvogxT7uzK+pRbi8Bj0jDcoBZNKKuejM/7JrXq2mhZXkrCWCFKoeVyitREYw
-         tGtguuVbjr/46CBW5ZeT0nTXaVYCbkIi59oqWtZwHj8zDn5tdpFcRy9RUHN22l6oNmSr
-         z/Xw==
-X-Forwarded-Encrypted: i=1; AJvYcCXUKEyTKi2C69Eur8vO6RY6YsEoYLP4HQwOFo1DMf5m4il2ZeboXkiDM4Grm+m8M3ttnoResxDT@lists.infradead.org
-X-Gm-Message-State: AOJu0YwKwPGE/NRIYPfip60yKb6mdAn643BdaYsTshcMAnYcKKaimImB
-	vSNm4WRqkLnmnXdAz1PAD+TALmPLEBboex4DjJQQHLPu9Q7cjUybcovsDOlcuw==
-X-Gm-Gg: AY/fxX78XX7dr2j7+P5El+bGPj+KvhQhENI8MNkeXma1C8eYr3Xf58HyyXIbfjG5VYT
-	rGFpUiTSzzH3LNb1thuHaotVy91yr0E81ZHajgXKO88rWQApsb5FSCmrnfBKAwfBj37aD8R4sEL
-	kDowFZEFR0WjlcSCf9J/QQPLUaNXi1XeXbQPFVt00lZ/XZzx5BnvmB8iEpn3dcV82A78k2JoSvQ
-	zOJJ5gl1O0ICTrbCtUR8uQAq9jieE1MhLYekKMDYyRo0rKpCr29xzj0i7egZmj2ZFppCktg8+Vy
-	wnRaLr+93UoNVAjt/WfP25o+h5JuIFu5ONFf0f5NPek5b83+/K9T61sba/YUzjw8RY5wzJAJ60d
-	1fvtGv1ydqPR7shKb6Y4Dvtx+9arBkTbiNldJMsN4mwQzpSKdcLHecMetuZk9RxQJLkWoqDvv0l
-	EPGE+CHkjOjyfnX434olObqIHfcthvNn7lluLUf5i39nq0JIx+UM0ljt10LscBLD0vX2BS/Fbfs
-	btAYgCuBAdDOqHEU9yaENMN5u0egNDCVgOsT2Wdi47wY4qQpEMiONNBMqxFkNrOKilBvP7hZICZ
-	P9C9djRrd9Fg/xTWo2i9Wo+pgt/bh+JiQfMLckJ/1Q==
-X-Received: by 2002:a17:907:dac:b0:b87:15a7:85ee with SMTP id a640c23a62f3a-b8796b7a7a0mr321133766b.47.1768592569293;
-        Fri, 16 Jan 2026 11:42:49 -0800 (PST)
+        bh=01v4XVFP8Q/pkBL/7bEL1aDcPpGUyUWePIzs3Zip6SQ=;
+        b=TZN8FOKqFmxVZGVMGz47PEMYh35T64rWxgdCcpboMA/9yiPmDQqado7136cTOlrbxB
+         vDC8sfBx9Yv6k4Eh5/K/6pjzAKheG1wrvY77R1kPQ9y2plreiG0I3QYxHKeuZ0t5+8Iq
+         6r3UwV+hikEVMzW5/RZacQ+n8zTypfcYxAZ0HtJhWPbsmLN53hfndRH5jVWB0MEJ2sM6
+         Sof7OG07ca/CFssBAQsC80WbTIiNISvveMiErwNMQEJcwWhn1FKQZc8NjdCtI7Ltt7TV
+         gK8NvzBlRuYNZiD+cquZ5fnfyfPJvnhJcA/UB3LRgNwwGEOdrocOMG/Y0v/3IuB2SCmO
+         BcHw==
+X-Forwarded-Encrypted: i=1; AJvYcCUyxtkX40mVvG1x6JWoPZXMjEuszCQ3yfrgVJAVepls4C+yhXYIozC+p4nzkcSTylMZuS0++Q/m@lists.infradead.org
+X-Gm-Message-State: AOJu0YwEu4nHEbLPTRL5bl2ygZGrTalZo90ueXq431snc0MgQp05Hxib
+	72Mm9evh/X0VUv5+PnuIO10FV87kLiSM04hB+k2cy7iRjxrUOhvuzNpr
+X-Gm-Gg: AY/fxX7kXGUh5aKLImwpUIqKH2ezZGSvfFetD+3FlLDd4UdYNPVyAgWtFeXjwqxSOaF
+	MlV3SgEoc9bZrz0Bsk70f8eZRUW5FmeJfkcDc3ff8mwonvu+KTKbWeSW6IHUxF7K9dHXaJYWN1Z
+	m9GrbTL5xRh1wx4dHHeAvi9Crl/wW5PxpLi4x9pzM/pD8kYA/3DCR172xmkfWdM/Ws7PFDpkSVp
+	076zY2+YZgcAFO8JyNSNDb2DhzQl0Q25F7dW7bW5drgw04zE+3y7SkIStdaovv3iSBZ69DBlQd3
+	6n6Mk89JBA+KbF6Lsi6qCWUHZF9ZJwxsr7Tdk/2c7GJF6HNXjGog8miDcvVwE692m+fqkHc6voA
+	ibgWR46xmaRWFtzuyvbTaJWQg9ypx2ct+c70dYG49c2+N3kMby7gZ1Xhw1qJgjRtuR5OQdq2lZs
+	u+Usvd155vxAmYFz90aRHGfuiz4KhrCUp9sLoODjdmuZ1FVFTLmlUih4oFAq4BhgYq/hRit26rh
+	SAaYWbOOLrNUE2ORBF2RzNjwp5kP/FynpycOeb9Z4Z0WiNlDtRR5zFkdO4gRRxX0DZkSrEZZqtR
+	SMvvLEd8NwjAPzvdxDsUEVKcUYZd6ErEKXUu0Y9FNA==
+X-Received: by 2002:a17:907:2d09:b0:b86:e938:1b3a with SMTP id a640c23a62f3a-b8792e37fc8mr309517266b.17.1768592571663;
+        Fri, 16 Jan 2026 11:42:51 -0800 (PST)
 Received: from [127.0.1.1] (2a02-8388-08be-f800-f96f-90ee-b1eb-797e.cable.dynamic.v6.surfer.at. [2a02:8388:8be:f800:f96f:90ee:b1eb:797e])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b87959c9fb0sm328166266b.43.2026.01.16.11.42.48
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b87959c9fb0sm328166266b.43.2026.01.16.11.42.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 11:42:49 -0800 (PST)
+        Fri, 16 Jan 2026 11:42:51 -0800 (PST)
 From: Sohaib Mohamed <sohaib.amhmd@gmail.com>
-Date: Fri, 16 Jan 2026 20:40:39 +0100
+Date: Fri, 16 Jan 2026 20:40:43 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260116-barebox-kickpi-v1-5-d11fbccd527a@gmail.com>
+Message-Id: <20260116-barebox-kickpi-v1-9-d11fbccd527a@gmail.com>
 References: <20260116-barebox-kickpi-v1-0-d11fbccd527a@gmail.com>
 In-Reply-To: <20260116-barebox-kickpi-v1-0-d11fbccd527a@gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -90,16 +90,16 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
  Sohaib Mohamed <sohaib.amhmd@gmail.com>, 
  BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768592564; l=11462;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768592564; l=3525;
  i=sohaib.amhmd@gmail.com; s=20251127; h=from:subject:message-id;
- bh=1eTCL1fYanjvbvaOIG9D93ENGUe/Z2L6PJBQ/8Ukvcw=;
- b=1cepPKoneVMLmcixo/fGV8YzFYBERfeN8favnMqnGV1vhXvVnNDQh+ltToIG+CpROWoMe+bch
- B5RjJT8Nj6hAsUCHpgvKmHrcCspQcBbGDiCzntlu+TzJFs21qkSFpEa
+ bh=atOKxYMM+B2U/C6Ydf6qAYRuZX0KU7ZgR8Iot/AsHGE=;
+ b=dBDXWcMBls8hdgBYO2q9T3AfSqm0jX6nXiMIa53sFfZVq4TaIid7vosZ/m2DKDGjErZDsGEgk
+ QW+9tff+G3DAZhKa/d4Y6IVlkElIqdtLrBpT6az6r5EJSjPrJckaulO
 X-Developer-Key: i=sohaib.amhmd@gmail.com; a=ed25519;
  pk=Q1nrPhN99EawVQo4UT9CZVAG4nQ2Zq/e3sfCABjccgk=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260116_114251_471409_D0B008E6 
-X-CRM114-Status: GOOD (  10.20  )
+X-CRM114-CacheID: sfid-20260116_114253_900225_6280D7CE 
+X-CRM114-Status: GOOD (  11.21  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -122,477 +122,94 @@ X-Spam-Status: No, score=-2.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 05/14] ARM: boards: Rockchip: Add device tree for kickpi k3
- board
+Subject: [PATCH 09/14] phy: rockchip-inno-usb2: Add support for RK3562 PHY
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add device tree for RK3562 KickPi K3 board with RK809 PMIC, eMMC/SD,
-PCIe, UARTs, I2C, and GPIO LEDs.
+Add support for the RK3562 PHY variant.
 
 Signed-off-by: Sohaib Mohamed <sohaib.amhmd@gmail.com>
 ---
- arch/arm/dts/rk3562-kickpi-k3.dtsi | 452 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 452 insertions(+)
+ drivers/phy/rockchip/phy-rockchip-inno-usb2.c | 52 ++++++++++++++++++++++++++-
+ 1 file changed, 51 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/dts/rk3562-kickpi-k3.dtsi b/arch/arm/dts/rk3562-kickpi-k3.dtsi
-new file mode 100644
-index 0000000000..77bd61cf30
---- /dev/null
-+++ b/arch/arm/dts/rk3562-kickpi-k3.dtsi
-@@ -0,0 +1,452 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (c) 2026, Sohaib Mohamed <sohaib.amhmd@gmail.com>
-+ */
-+
-+/dts-v1/;
-+
-+#include <dt-bindings/gpio/gpio.h>
-+#include <dt-bindings/input/input.h>
-+#include <dt-bindings/leds/common.h>
-+#include <dt-bindings/pinctrl/rockchip.h>
-+#include <arm64/rockchip/rk3562.dtsi>
-+
-+/ {
-+	model = "Rockchip RK3562 kickpi k3";
-+	compatible = "kickpi,rk3562-kickpi-k3", "rockchip,rk3562";
-+
-+	aliases {
-+		mmc0  = &sdhci;
-+		mmc1  = &sdmmc0;
-+		serial0 = &uart0;
-+	};
-+
-+	chosen {
-+		stdout-path = "console=serial0,1500000n8";
-+	};
-+
-+	vcc3v3_pcie20: regulator-vcc3v3-pcie20 {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vcc3v3_pcie20";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		enable-active-high;
-+		regulator-boot-on;
-+		regulator-always-on;
-+		gpios = <&gpio3 RK_PC5 GPIO_ACTIVE_HIGH>;
-+		startup-delay-us = <5000>;
-+		vin-supply = <&dc_12v>;
-+	};
-+
-+
-+	vcc5v0_usb: regulator-vcc5v0-usb {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vcc5v0_usb";
-+		regulator-always-on;
-+		regulator-boot-on;
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		vin-supply = <&dc_12v>;
-+	};
-+
-+	vcc5v0_usb_otg: regulator-vcc5v0-usb-otg {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vcc5v0_usb_otg";
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		enable-active-high;
-+		gpio = <&gpio3 RK_PC6 GPIO_ACTIVE_HIGH>;
-+		vin-supply = <&vcc5v0_usb>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&usb_otg_pwren>;
-+	};
-+
-+	dc_12v: regulator-dc-12v {
-+		compatible = "regulator-fixed";
-+		regulator-name = "dc_12v";
-+		regulator-always-on;
-+		regulator-boot-on;
-+		regulator-min-microvolt = <12000000>;
-+		regulator-max-microvolt = <12000000>;
-+	};
-+
-+	vcc5v0_sys: regulator-vcc5v0-sys {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vcc5v0_sys";
-+		regulator-always-on;
-+		regulator-boot-on;
-+		regulator-min-microvolt = <5000000>;
-+		regulator-max-microvolt = <5000000>;
-+		vin-supply = <&dc_12v>;
-+	};
-+
-+	vcc3v3_clk: regulator-vcc3v3-clk {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vcc3v3_clk";
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		vin-supply = <&vcc5v0_sys>;
-+	};
-+
-+	vcc3v3_sys: regulator-vcc-sys {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vcc3v3_sys";
-+		regulator-always-on;
-+		regulator-boot-on;
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		vin-supply = <&dc_12v>;
-+	};
-+
-+	vcc25_ddr: regulator-vcc25-ddr {
-+		compatible = "regulator-fixed";
-+		regulator-name = "vcc25_ddr";
-+		regulator-always-on;
-+		regulator-boot-on;
-+		regulator-min-microvolt = <2500000>;
-+		regulator-max-microvolt = <2500000>;
-+		vin-supply = <&vcc3v3_sys>;
-+	};
-+
-+	leds: leds {
-+		compatible = "gpio-leds";
-+		gpio3c0 {
-+			gpios = <&gpio3 RK_PC0 GPIO_ACTIVE_HIGH>;
-+			default-state = "on";
-+		};
-+		gpio3c1 {
-+			gpios = <&gpio3 RK_PC1 GPIO_ACTIVE_HIGH>;
-+			default-state = "on";
-+		};
-+		gpio0a6 {
-+			gpios = <&gpio0 RK_PA6 GPIO_ACTIVE_HIGH>;
-+			default-state = "on";
-+		};
-+		gpio4b6 {
-+			gpios = <&gpio4 RK_PB6 GPIO_ACTIVE_HIGH>;
-+			default-state = "on";
-+		};
-+
-+		work_led: work-led {
-+			gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_HIGH>;
-+			linux,default-trigger = "heartbeat";
-+		};
-+		fan: fan {
-+			gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_HIGH>;
-+			default-state = "on";
-+		};
-+	};
+diff --git a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+index 9805537c34..6b57522090 100644
+--- a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
++++ b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+@@ -394,7 +394,8 @@ static int rockchip_usb2phy_probe(struct device *dev)
+ 	rphy->dev = dev;
+ 
+ 	if (of_device_is_compatible(np, "rockchip,rv1108-usb2phy") ||
+-	    of_device_is_compatible(np, "rockchip,rk3568-usb2phy"))
++	    of_device_is_compatible(np, "rockchip,rk3568-usb2phy") ||
++	    of_device_is_compatible(np, "rockchip,rk3562-usb2phy"))
+ 		rphy->grf_base = syscon_regmap_lookup_by_phandle(np, "rockchip,usbgrf");
+ 	else
+ 		rphy->grf_base = syscon_node_to_regmap(dev->parent->of_node);
+@@ -857,6 +858,54 @@ static const struct rockchip_usb2phy_cfg rk3399_phy_cfgs[] = {
+ 	{ /* sentinel */ }
+ };
+ 
++static const struct rockchip_usb2phy_cfg rk3562_phy_cfgs[] = {
++	{
++		.reg = 0xff740000,
++		.num_ports	= 2,
++		.clkout_ctl	= { 0x0108, 4, 4, 1, 0 },
++		.port_cfgs	= {
++			[USB2PHY_PORT_OTG] = {
++				.phy_sus	= { 0x0100, 8, 0, 0, 0x1d1 },
++				.bvalid_det_en	= { 0x0110, 2, 2, 0, 1 },
++				.bvalid_det_st	= { 0x0114, 2, 2, 0, 1 },
++				.bvalid_det_clr = { 0x0118, 2, 2, 0, 1 },
++				.idfall_det_en	= { 0x0110, 5, 5, 0, 1 },
++				.idfall_det_st	= { 0x0114, 5, 5, 0, 1 },
++				.idfall_det_clr = { 0x0118, 5, 5, 0, 1 },
++				.idrise_det_en	= { 0x0110, 4, 4, 0, 1 },
++				.idrise_det_st	= { 0x0114, 4, 4, 0, 1 },
++				.idrise_det_clr = { 0x0118, 4, 4, 0, 1 },
++				.ls_det_en	= { 0x0110, 0, 0, 0, 1 },
++				.ls_det_st	= { 0x0114, 0, 0, 0, 1 },
++				.ls_det_clr	= { 0x0118, 0, 0, 0, 1 },
++				.utmi_avalid	= { 0x0120, 10, 10, 0, 1 },
++				.utmi_bvalid	= { 0x0120, 9, 9, 0, 1 },
++				.utmi_ls	= { 0x0120, 5, 4, 0, 1 },
++			},
++			[USB2PHY_PORT_HOST] = {
++				.phy_sus	= { 0x0104, 8, 0, 0x1d2, 0x1d1 },
++				.ls_det_en	= { 0x0110, 1, 1, 0, 1 },
++				.ls_det_st	= { 0x0114, 1, 1, 0, 1 },
++				.ls_det_clr	= { 0x0118, 1, 1, 0, 1 },
++				.utmi_ls	= { 0x0120, 17, 16, 0, 1 },
++				.utmi_hstdet	= { 0x0120, 19, 19, 0, 1 }
++			}
++		},
++		.chg_det = {
++			.cp_det		= { 0x0120, 24, 24, 0, 1 },
++			.dcp_det	= { 0x0120, 23, 23, 0, 1 },
++			.dp_det		= { 0x0120, 25, 25, 0, 1 },
++			.idm_sink_en	= { 0x0108, 8, 8, 0, 1 },
++			.idp_sink_en	= { 0x0108, 7, 7, 0, 1 },
++			.idp_src_en	= { 0x0108, 9, 9, 0, 1 },
++			.rdm_pdwn_en	= { 0x0108, 10, 10, 0, 1 },
++			.vdm_src_en	= { 0x0108, 12, 12, 0, 1 },
++			.vdp_src_en	= { 0x0108, 11, 11, 0, 1 },
++		},
++	},
++	{ /* sentinel */ }
 +};
 +
-+&i2c5 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&i2c5m0_xfer>;
-+	status = "okay";
-+};
-+
-+&uart4 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart4m0_xfer>;
-+	status = "okay";
-+};
-+
-+&combphy {
-+	status = "okay";
-+};
-+
-+&pcie2x1 {
-+	reset-gpios = <&gpio3 RK_PB0 GPIO_ACTIVE_HIGH>;
-+	vpcie3v3-supply = <&vcc3v3_pcie20>;
-+	status = "okay";
-+};
-+
-+&pinctrl {
-+	usb {
-+		usb_otg_pwren: usb-otg-pwren {
-+			rockchip,pins = <3 RK_PC6 RK_FUNC_GPIO &pcfg_pull_none>;
-+		};
-+	};
-+	headphone {
-+		hp_det: hp-det {
-+			rockchip,pins = <4 RK_PB1 RK_FUNC_GPIO &pcfg_pull_up>;
-+		};
-+	};
-+};
-+
-+&uart3 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart3m0_xfer>;
-+	status = "okay";
-+};
-+
-+&sdhci {
-+	bus-width = <8>;
-+	no-sdio;
-+	no-sd;
-+	non-removable;
-+	mmc-hs400-1_8v;
-+	mmc-hs400-enhanced-strobe;
-+	full-pwr-cycle-in-suspend;
-+	status = "okay";
-+};
-+
-+&sdmmc0 {
-+	no-sdio;
-+	no-mmc;
-+	bus-width = <4>;
-+	cap-mmc-highspeed;
-+	cap-sd-highspeed;
-+	disable-wp;
-+	sd-uhs-sdr104;
-+	vmmc-supply = <&vcc3v3_sd>;
-+	vqmmc-supply = <&vccio_sd>;
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&sdmmc0_bus4 &sdmmc0_clk &sdmmc0_cmd &sdmmc0_det>;
-+	status = "okay";
-+};
-+
-+&uart0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&uart0m0_xfer>;
-+	status = "okay";
-+};
-+
-+&i2c0 {
-+	status = "okay";
-+
-+	rk809: pmic@20 {
-+		compatible = "rockchip,rk809";
-+		reg = <0x20>;
-+		interrupt-parent = <&gpio0>;
-+		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
-+
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pmic_int>;
-+		rockchip,system-power-controller;
-+		wakeup-source;
-+		#clock-cells = <1>;
-+		clock-output-names = "rk808-clkout1", "rk808-clkout2";
-+		pmic-reset-func = <0>;
-+		not-save-power-en = <1>;
-+
-+		vcc1-supply = <&vcc3v3_sys>;
-+		vcc2-supply = <&vcc3v3_sys>;
-+		vcc3-supply = <&vcc3v3_sys>;
-+		vcc4-supply = <&vcc3v3_sys>;
-+		vcc5-supply = <&vcc3v3_sys>;
-+		vcc6-supply = <&vcc3v3_sys>;
-+		vcc7-supply = <&vcc3v3_sys>;
-+		vcc8-supply = <&vcc3v3_sys>;
-+		vcc9-supply = <&vcc3v3_sys>;
-+
-+		pwrkey {
-+			status = "okay";
-+		};
-+
-+		pinctrl_rk8xx: pinctrl_rk8xx {
-+			gpio-controller;
-+			#gpio-cells = <2>;
-+
-+			rk817_slppin_null: rk817_slppin_null {
-+				pins = "gpio_slp";
-+				function = "pin_fun0";
-+			};
-+
-+			rk817_slppin_slp: rk817_slppin_slp {
-+				pins = "gpio_slp";
-+				function = "pin_fun1";
-+			};
-+
-+			rk817_slppin_pwrdn: rk817_slppin_pwrdn {
-+				pins = "gpio_slp";
-+				function = "pin_fun2";
-+			};
-+
-+			rk817_slppin_rst: rk817_slppin_rst {
-+				pins = "gpio_slp";
-+				function = "pin_fun3";
-+			};
-+		};
-+
-+		regulators {
-+			vdd_logic: DCDC_REG1 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-min-microvolt = <500000>;
-+				regulator-max-microvolt = <1350000>;
-+				regulator-init-microvolt = <900000>;
-+				regulator-ramp-delay = <6001>;
-+				regulator-initial-mode = <0x2>;
-+				regulator-name = "vdd_logic";
-+				regulator-state-mem {
-+					regulator-off-in-suspend;
-+				};
-+			};
-+
-+			vdd_cpu: DCDC_REG2 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-min-microvolt = <500000>;
-+				regulator-max-microvolt = <1350000>;
-+				regulator-init-microvolt = <900000>;
-+				regulator-ramp-delay = <6001>;
-+				regulator-initial-mode = <0x2>;
-+				regulator-name = "vdd_cpu";
-+				regulator-state-mem {
-+					regulator-off-in-suspend;
-+				};
-+			};
-+
-+			vcc_ddr: DCDC_REG3 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-initial-mode = <0x2>;
-+				regulator-name = "vcc_ddr";
-+				regulator-state-mem {
-+					regulator-on-in-suspend;
-+				};
-+			};
-+
-+			vdd_gpu: DCDC_REG4 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-min-microvolt = <500000>;
-+				regulator-max-microvolt = <1350000>;
-+				regulator-init-microvolt = <900000>;
-+				regulator-ramp-delay = <6001>;
-+				regulator-initial-mode = <0x2>;
-+				regulator-name = "vdd_gpu";
-+				regulator-state-mem {
-+					regulator-off-in-suspend;
-+				};
-+			};
-+
-+			vcc2v8_dvp: LDO_REG1 {
-+				regulator-min-microvolt = <2800000>;
-+				regulator-max-microvolt = <2800000>;
-+				regulator-name = "vcc2v8_dvp";
-+				regulator-state-mem {
-+					regulator-off-in-suspend;
-+				};
-+			};
-+
-+			vdda_0v9: LDO_REG2 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-min-microvolt = <900000>;
-+				regulator-max-microvolt = <900000>;
-+				regulator-name = "vdda_0v9";
-+				regulator-state-mem {
-+					regulator-off-in-suspend;
-+				};
-+			};
-+
-+			vdda0v9_pmu: LDO_REG3 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-min-microvolt = <900000>;
-+				regulator-max-microvolt = <900000>;
-+				regulator-name = "vdda0v9_pmu";
-+				regulator-state-mem {
-+				regulator-on-in-suspend;
-+					regulator-suspend-microvolt = <900000>;
-+				};
-+			};
-+
-+			vccio_acodec: LDO_REG4 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-min-microvolt = <3000000>;
-+				regulator-max-microvolt = <3000000>;
-+				regulator-name = "vccio_acodec";
-+				regulator-state-mem {
-+					regulator-off-in-suspend;
-+				};
-+			};
-+
-+			vccio_sd: LDO_REG5 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <3300000>;
-+				regulator-name = "vccio_sd";
-+				regulator-state-mem {
-+					regulator-off-in-suspend;
-+				};
-+			};
-+
-+			vcc3v3_pmu: LDO_REG6 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-min-microvolt = <3300000>;
-+				regulator-max-microvolt = <3300000>;
-+				regulator-name = "vcc3v3_pmu";
-+				regulator-state-mem {
-+					regulator-on-in-suspend;
-+					regulator-suspend-microvolt = <3300000>;
-+				};
-+			};
-+
-+			vcca_1v8: LDO_REG7 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <1800000>;
-+				regulator-name = "vcca_1v8";
-+				regulator-state-mem {
-+					regulator-off-in-suspend;
-+				};
-+			};
-+
-+			vcca1v8_pmu: LDO_REG8 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <1800000>;
-+				regulator-name = "vcca1v8_pmu";
-+				regulator-state-mem {
-+				regulator-on-in-suspend;
-+					regulator-suspend-microvolt = <1800000>;
-+				};
-+			};
-+
-+			vcc1v8_dvp: LDO_REG9 {
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <1800000>;
-+				regulator-name = "vcc1v8_dvp";
-+				regulator-state-mem {
-+					regulator-off-in-suspend;
-+				};
-+			};
-+
-+			vcc_1v8: DCDC_REG5 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-min-microvolt = <1800000>;
-+				regulator-max-microvolt = <1800000>;
-+				regulator-name = "vcc_1v8";
-+				regulator-state-mem {
-+					regulator-off-in-suspend;
-+				};
-+			};
-+
-+			vcc_3v3: SWITCH_REG1 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-name = "vcc_3v3";
-+				regulator-state-mem {
-+					regulator-off-in-suspend;
-+				};
-+			};
-+
-+			vcc3v3_sd: SWITCH_REG2 {
-+				regulator-always-on;
-+				regulator-boot-on;
-+				regulator-name = "vcc3v3_sd";
-+				regulator-state-mem {
-+					regulator-off-in-suspend;
-+				};
-+			};
-+		};
-+	};
-+};
+ static const struct rockchip_usb2phy_cfg rv1108_phy_cfgs[] = {
+ 	{
+ 		.reg = 0x100,
+@@ -1040,6 +1089,7 @@ static const struct of_device_id rockchip_usb2phy_dt_match[] = {
+ 	{ .compatible = "rockchip,rk322x-usb2phy", .data = &rk322x_phy_cfgs },
+ 	{ .compatible = "rockchip,rk3308-usb2phy", .data = &rk3328_phy_cfgs },
+ 	{ .compatible = "rockchip,rk3328-usb2phy", .data = &rk3328_phy_cfgs },
++	{ .compatible = "rockchip,rk3562-usb2phy", .data = &rk3562_phy_cfgs },
+ 	{ .compatible = "rockchip,rk3368-usb2phy", .data = &rk3368_phy_cfgs },
+ 	{ .compatible = "rockchip,rk3399-usb2phy", .data = &rk3399_phy_cfgs },
+ 	{ .compatible = "rockchip,rk3568-usb2phy", .data = &rk3568_phy_cfgs },
 
 -- 
 2.43.0
