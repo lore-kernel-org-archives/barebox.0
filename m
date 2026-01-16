@@ -1,88 +1,88 @@
-Delivery-date: Fri, 16 Jan 2026 20:43:50 +0100
+Delivery-date: Fri, 16 Jan 2026 20:43:51 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgpja-0024TK-1F
+	id 1vgpjc-0024Tg-0R
 	for lore@lore.pengutronix.de;
-	Fri, 16 Jan 2026 20:43:49 +0100
+	Fri, 16 Jan 2026 20:43:51 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgpjV-0001f0-OV
-	for lore@pengutronix.de; Fri, 16 Jan 2026 20:43:49 +0100
+	id 1vgpjX-0001gv-Tf
+	for lore@pengutronix.de; Fri, 16 Jan 2026 20:43:51 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=9sbJjEOj48Cx3v4aBNJzFhGC3uuic/kotrQbhJu3b4k=; b=gATMFkQDUdXWYrCwZFqRW9Q0pf
-	kjPlVhrHcX10wniK8TqU0iXCQUe+qvpbhI04NyeShIIKTbtAIdfDiuYbgMzZjB0wR1NsrptQ7RrUF
-	mQnjpywMSb6L0SU8VD6wafwoZ+qwxkTIYP9Kr92n6Z5lWJUu7a7n2lx7xjCVjGkIgG53OCI57qWqD
-	qM/0eFyHlwLcR/vcpK444aUqET8BchAHRT8j3dB2uM5AO5M2rhDnUUCq1td3ngWuzy19neEUbtQKq
-	+75F1GRXezM/Ir5jXgme02Sr+bUo1sBnhCd6TR9zxI8YwaP+ubOrvEY7m7VC2AKwBwxs3kGdKSzGK
-	S/zeodSg==;
+	bh=qqyhyfz1VUeQ4TOf1A3ppHzrekHTUSgtvSPdKBVs9M4=; b=c5jCPdDdTfvucEbfKH03wZLJjR
+	RIGeH19mz2E7z3Q7pqXThaeqrfHHv4MHkWOH2hP0pY6MbtfrSAOsTg+3XcSjqbBUhp41LpjoS547E
+	HPZSxnl5QdY854RArqe4PB3D3PetHbvwewN4MrMNEPVJWp+taSyEpxHd6b1eWsNJ08+8IkPdV0x0m
+	ridiJdygA2VJvfTBBP3YW0ysTyHXQaxLqKKXZKn3CF++mEWhGA7wrmFm9wi23R6+zySP6YRy5ZrQl
+	HqBH50ZlxClh4U+bhWMKuxqKFJHRrbxuT8zZAl46rXlMkf973ecwezFGvlDJFZWxp8yGAhOERto1+
+	PAOj4//Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgpid-0000000Ehjp-2QgY;
-	Fri, 16 Jan 2026 19:42:51 +0000
-Received: from mail-ed1-x535.google.com ([2a00:1450:4864:20::535])
+	id 1vgpih-0000000Eho8-2CaY;
+	Fri, 16 Jan 2026 19:42:55 +0000
+Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgpia-0000000EhiB-1DKl
+	id 1vgpic-0000000Ehil-3NQz
 	for barebox@lists.infradead.org;
-	Fri, 16 Jan 2026 19:42:49 +0000
-Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-655af782859so2052902a12.2
-        for <barebox@lists.infradead.org>; Fri, 16 Jan 2026 11:42:47 -0800 (PST)
+	Fri, 16 Jan 2026 19:42:53 +0000
+Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-b874c00a3fcso391127966b.1
+        for <barebox@lists.infradead.org>; Fri, 16 Jan 2026 11:42:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768592566; x=1769197366; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1768592569; x=1769197369; darn=lists.infradead.org;
         h=to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=9sbJjEOj48Cx3v4aBNJzFhGC3uuic/kotrQbhJu3b4k=;
-        b=dIy+MZaWz6M0V8jUEr+ERd5UH2R8KwjSDyteLaP3kkmm8dfWukgtupXxy29hAXgzjq
-         8zbJooBT+z014DzFXDzwMqNMz0BjHidB1IOftgMfHHF39qNa2aQlkMZIJqMBb+rd/VZ6
-         KhOz4nRQfK/rhLCxmbsfWG5Fqm+4zLA2kboV63/C7oSS0L8dLrUDSEu3WdoQkj70TVEl
-         vmOz+Ouf4uK9pm80NL1R2s1ckIjeOxuxhacmJt4KFN0hxnHrzMGUIlSyYztSAXXu/AOn
-         fxPjjKEhqAWi2xQ7sX9eTw4hd7zMKEbr1ZkI8jIofV4dESUncZnplgF4dPyzmPgnkEx3
-         JPgA==
+        bh=qqyhyfz1VUeQ4TOf1A3ppHzrekHTUSgtvSPdKBVs9M4=;
+        b=knRE3nboBJQ1xJXx26VqzLnGSPvavwEvEDpfhlHPaIO0CVyPkrE0pCeTZ1gYXMBSd+
+         cjcXmTxmeYch0txg5o2svCogBAcQfk56XeGA+aoH5GUyWa36cqw/0Lfo+Yi6s2fI4PFm
+         4dbJxoRmXRU+EiX4JQv3ztvStlv5pM5KZvo60C4vYXajibpnQI+bgExalkiMFoyu2D1W
+         SYCKMhoMBHSf/GX7uVEjDLUs4BQwMYk9ZZruAkL8zQIyvowjKFUvW60NKddsbhvizJFC
+         pl7hwPfdCxJv/xKV78tJ/oPLn3CeL/N32Cff0cv2+tYdAMNsXwNdYpbPCl5eZlj/nib5
+         MGbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768592566; x=1769197366;
+        d=1e100.net; s=20230601; t=1768592569; x=1769197369;
         h=to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=9sbJjEOj48Cx3v4aBNJzFhGC3uuic/kotrQbhJu3b4k=;
-        b=Zw8X7KLQgDzpP+EF2fMUSN6Zjpc8jzgUxLMbGQBQIbXoBKn7pklSXexChCCmpp33Fa
-         bCh8YxtT9ZV0aLTB7HvXT1zLE+W69mmVaS//Qg3EjhWYuhJR7Tkkqp1R8Z2gEi8498pG
-         ksFX/g+rpubgznSJFnVMVGsH9vSd2nxwG42hY1YUy44TqfY5nunxIo9EZ2UkRzeFhj0l
-         G4F9gpP0t2AYRgJJUVzOtyJzkv6eWen2csc+OnrVPLjAnSmuJ5DJkRuKYhLpHXg5sO8l
-         MyO0NoImBEA67ruO7bd6aRPZaWtKuTg302xMkjG8ig2UlXELqXanC0bQK9RkTN8D49uw
-         hGJg==
-X-Forwarded-Encrypted: i=1; AJvYcCU3nC3U/ep3uKOCE85ay6akuDardV3UaMmu2rWHUFPtFT6TwUTvSmGiIp4dyOLLyjk1hijEEgnC@lists.infradead.org
-X-Gm-Message-State: AOJu0YwdOKqFTOtQcFSwQgfMktN5Oyo6pp9uyniv5wSyc0bWnKWi1j5B
-	HjkZgWgn/5W8XmbQa8+W+yiLQ8M8w08656UBfFl1I0Mx1aITfXsNk7Ci
-X-Gm-Gg: AY/fxX5x1tQJlz9geDGM2YD9R5L2j8bnpXPmo2pm9Gfnck0Ez5dcJ0ICFOywOCfrfnl
-	sEtjpp9j+P4aU/qXEAojxFbPWBNqUcoKH+h8+3lNUHOpqSi3q8xsaR5o60U+LZfAEKyUYtRbl6w
-	gFMo+qteKE4fyHAKCxWS64SznvhHxQghiXkEj1YKWdIZzH+2g9WGad1KxydK3HPIFUff3MLc5j0
-	NuvvDiWfI9wt9vvUB8vexSZjyri4+tLNWr9/D9pmm5lDk16eiQtVrQPEwZtlazmwzaHG4sKBGGu
-	hULGSiw91NqrMm3pL11hK1pwwJEGHqGPB8MMvEsfQe42crQFk0xg/QwQbUQV8+rSzQ5+Mhou+lF
-	4prR7ubIZnp+NPDC77tLT9QwzwWwnAWb+BsXn/RaXGmub8yTAJtmRhhm/GlicELOsvnU/RkRN3M
-	60K3xjb6Go3JWNbeRUkn9lkApkJUnMmzJmCRBzNFyFgdsKODbwHRMocc0tkuCgizcR1f7iJIu/j
-	rDngn7+MmxFPktCqR696m7XAHwgxWCds5E/XFZy+smQJpeJN3e54dIR2iiU4q/mZ9hN+lg5/xLJ
-	VK0Azrt7GX/CmDw6OE0gBZyGf3Mf+0iqw1DWMNO7dQ==
-X-Received: by 2002:a17:907:702:b0:b7f:e703:fd77 with SMTP id a640c23a62f3a-b8792e0c40fmr345548466b.11.1768592566048;
-        Fri, 16 Jan 2026 11:42:46 -0800 (PST)
+        bh=qqyhyfz1VUeQ4TOf1A3ppHzrekHTUSgtvSPdKBVs9M4=;
+        b=EEAl6KDfrKzfSKaqziFu1gdhyyb1Pk16E3VZi43aCfi77mA336JBpVivVP0jwUdBys
+         g89bvEn9BenPIFYvQrA/gPRxBpklOA+MpMpOhHFGXd03qmyKocO4/cLLokUBLh7fzPXX
+         HoA/e4ybK/m8yG05SHh2J/kAS4AO1lU+w1pyXFRMxxqPLoj0TRAdPGywTJ0zabGKinsy
+         P8Z7dtQt4l2rcPlFWydq2krK1oTcUgke1HuHbk9Bt2tZ1hw963Vl1yKjjFHVLEMyYPSU
+         f56wXWgFoYecg3dP3aSHlMLpKF7XomXneTblr8NAeYu1p6a3hEbmXCvo7wXRfb8BnzUH
+         alvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXvIMpcrlqFJWjDNLoFQnprWSBsK274sVrcbnKLjK3qyt6aDcCTdWVHBLSDvebqRPOr7Tgja3Kx@lists.infradead.org
+X-Gm-Message-State: AOJu0YzO8SM+FWw5SxsPGUAWKZ9givif3Hdu+nhbOT9yocp/pFFSGIkZ
+	Qs9pR2g0dZtOoKi/hOPq31z1LhfN3XMcb6O58KBXDf/zMtA9DSgo/lvd5+4gQw==
+X-Gm-Gg: AY/fxX76SQvey3vk2uPSBQxeV7ur4rN5nj/CdEu4cIQ7Y5MZuVywZEBXwMxch70ahhD
+	n4xgJx2S4DbhfDHU8KHnIWDPT3czdsGOaS6WfXWaZTCnekqf0E7FkMtREJvP0SCDLQSiH1pLKj5
+	hE0e4Y41hwBNn1Oczgx2fsf0UMA5uxH+7zspvjIlAz9tQ9kdr4wQTRKvRPmN2CVFkD6q8wkUrMu
+	xlhh+nkmSky8l9AFtGA+OF9RYenlrnbAuTKPHkCcUOg3Ab2Ci3leVE72REDsQfdQkBJ9PL/Pn3C
+	+celuZtiNZXXx7266+ao7NivVGklBQ5lNGeg8FFIMI4raJkNxx4LE2pR2Yx8HoVNU3JauLmsbrq
+	RxO92jsp7wnVVxItDI7BdObYS8PQaUqfxZdAf3xzJw6fvUNRIFHoG3tuiJaTd2EfwRjjf1JNaDJ
+	HcSCb/gr3P1cJcbyWNFXpjcWieN4KeyZ9F1wJV8Jj+sB9GB1cDfMBNbJl9e5QqYD1WplasnfCow
+	Ihzak3TRXSxGdtiJ5XGdBQgl0FJyw4dtg+lFoGxShlC6SwCyebxwfcvxevttdoGpH1C+ttAST4M
+	dE2kjD0HGrVNxYSlb6aIar/xR3cd6JBNDeWkH4H/3g==
+X-Received: by 2002:a17:907:1ca6:b0:b76:ece0:368e with SMTP id a640c23a62f3a-b879303e13cmr358652966b.47.1768592568691;
+        Fri, 16 Jan 2026 11:42:48 -0800 (PST)
 Received: from [127.0.1.1] (2a02-8388-08be-f800-f96f-90ee-b1eb-797e.cable.dynamic.v6.surfer.at. [2a02:8388:8be:f800:f96f:90ee:b1eb:797e])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b87959c9fb0sm328166266b.43.2026.01.16.11.42.45
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b87959c9fb0sm328166266b.43.2026.01.16.11.42.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 11:42:45 -0800 (PST)
+        Fri, 16 Jan 2026 11:42:48 -0800 (PST)
 From: Sohaib Mohamed <sohaib.amhmd@gmail.com>
-Date: Fri, 16 Jan 2026 20:40:35 +0100
+Date: Fri, 16 Jan 2026 20:40:38 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260116-barebox-kickpi-v1-1-d11fbccd527a@gmail.com>
+Message-Id: <20260116-barebox-kickpi-v1-4-d11fbccd527a@gmail.com>
 References: <20260116-barebox-kickpi-v1-0-d11fbccd527a@gmail.com>
 In-Reply-To: <20260116-barebox-kickpi-v1-0-d11fbccd527a@gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -90,16 +90,16 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
  Sohaib Mohamed <sohaib.amhmd@gmail.com>, 
  BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768592564; l=14544;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768592564; l=8726;
  i=sohaib.amhmd@gmail.com; s=20251127; h=from:subject:message-id;
- bh=W6m2kofJ7Xo4zSYCf4RxSJrxqXdKOAbhWnAOL9ooIVk=;
- b=G8dAd/yJ6tZ6qY+oT4pYGvWMZD5WWbFMJF64ccJ0KQj750G7V9DJnrPG/BqCIJFdGTg6jmm0C
- Bewae/N8Fi9BQ9uBkJBOV8Y1iy2jcEp0JLu3NifNbQ1BOmu7bfFEQdA
+ bh=QW3W/n6eVQYODCvSu2foMLt1m/qSCVeYcN7wAk0g9f8=;
+ b=wjHLFzoqSZKCKF5NmRuVaJiKnX6oQNmaEMusFC/P2JmhemOJbrpHkW+KRzwGbQmWhf5XKkPyW
+ ppxUMZZY4V+ABdh/Y3QSvfICNLfNt8PXuzEWr6vnRn/B1NBaFykUEdJ
 X-Developer-Key: i=sohaib.amhmd@gmail.com; a=ed25519;
  pk=Q1nrPhN99EawVQo4UT9CZVAG4nQ2Zq/e3sfCABjccgk=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260116_114248_479563_F0CBC2F6 
-X-CRM114-Status: GOOD (  25.70  )
+X-CRM114-CacheID: sfid-20260116_114250_896314_EC592B42 
+X-CRM114-Status: GOOD (  17.74  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -122,425 +122,268 @@ X-Spam-Status: No, score=-2.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 01/14] ARM: rockchip: Add initial RK3562 SoC support
+Subject: [PATCH 04/14] ARM: boards: Rockchip: add RK3562-EVB2 support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add basic RK3562 support including ATF integration, low-level init,
-debug UART configuration, and bootrom integration.
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+Add board support for RK3562-EVB2 with boot source detection and BBU
+handlers for eMMC and SD card.
 
 Co-developed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Sohaib Mohamed <sohaib.amhmd@gmail.com>
 ---
- arch/arm/mach-rockchip/Kconfig      |  4 ++++
- arch/arm/mach-rockchip/Makefile     |  1 +
- arch/arm/mach-rockchip/atf.c        | 38 +++++++++++++++++++++++++++++++++++++
- arch/arm/mach-rockchip/dmc.c        | 33 ++++++++++++++++++++++++++++++++
- arch/arm/mach-rockchip/rk3562.c     | 20 +++++++++++++++++++
- arch/arm/mach-rockchip/rockchip.c   |  4 ++++
- common/Kconfig.debug_ll             |  9 +++++++++
- firmware/Makefile                   |  2 ++
- include/mach/rockchip/atf.h         |  6 ++++++
- include/mach/rockchip/debug_ll.h    |  6 ++++++
- include/mach/rockchip/dmc.h         |  1 +
- include/mach/rockchip/rk3562-regs.h | 21 ++++++++++++++++++++
- include/mach/rockchip/rockchip.h    | 10 ++++++++++
- 13 files changed, 155 insertions(+)
+ arch/arm/boards/Makefile                        |  1 +
+ arch/arm/boards/rockchip-rk3562-evb2/.gitignore |  1 +
+ arch/arm/boards/rockchip-rk3562-evb2/Makefile   |  4 +++
+ arch/arm/boards/rockchip-rk3562-evb2/board.c    | 47 +++++++++++++++++++++++++
+ arch/arm/boards/rockchip-rk3562-evb2/lowlevel.c | 23 ++++++++++++
+ arch/arm/configs/multi_v8_defconfig             |  1 +
+ arch/arm/configs/rockchip_v8_defconfig          |  1 +
+ arch/arm/dts/Makefile                           |  1 +
+ arch/arm/dts/rk3562-evb2-v10.dts                |  9 +++++
+ arch/arm/dts/rk3562.dtsi                        | 40 +++++++++++++++++++++
+ arch/arm/mach-rockchip/Kconfig                  |  6 ++++
+ images/Makefile.rockchip                        |  1 +
+ 12 files changed, 135 insertions(+)
 
-diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
-index 6f6e43101c..a91e7db72d 100644
---- a/arch/arm/mach-rockchip/Kconfig
-+++ b/arch/arm/mach-rockchip/Kconfig
-@@ -27,6 +27,10 @@ config ARCH_ROCKCHIP_V8
- 	select CPU_V8
- 	select ARM_ATF
- 
-+config ARCH_RK3562
-+	bool
-+	select ARCH_ROCKCHIP_V8
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index 4c586de2a9..946af95560 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -185,6 +185,7 @@ obj-$(CONFIG_MACH_TQMLS1046A)			+= tqmls1046a/
+ obj-$(CONFIG_MACH_LS1021AIOT)			+= ls1021aiot/
+ obj-$(CONFIG_MACH_MNT_REFORM)			+= mnt-reform/
+ obj-$(CONFIG_MACH_SKOV_ARM9CPU)			+= skov-arm9cpu/
++obj-$(CONFIG_MACH_RK3562_EVB2)			+= rockchip-rk3562-evb2/
+ obj-$(CONFIG_MACH_RK3568_EVB)			+= rockchip-rk3568-evb/
+ obj-$(CONFIG_MACH_RK3568_BPI_R2PRO)			+= rockchip-rk3568-bpi-r2pro/
+ obj-$(CONFIG_MACH_PINE64_PINETAB2)		+= pine64-pinetab2/
+diff --git a/arch/arm/boards/rockchip-rk3562-evb2/.gitignore b/arch/arm/boards/rockchip-rk3562-evb2/.gitignore
+new file mode 100644
+index 0000000000..f458f794b5
+--- /dev/null
++++ b/arch/arm/boards/rockchip-rk3562-evb2/.gitignore
+@@ -0,0 +1 @@
++sdram-init.bin
+diff --git a/arch/arm/boards/rockchip-rk3562-evb2/Makefile b/arch/arm/boards/rockchip-rk3562-evb2/Makefile
+new file mode 100644
+index 0000000000..da63d2625f
+--- /dev/null
++++ b/arch/arm/boards/rockchip-rk3562-evb2/Makefile
+@@ -0,0 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
 +
- config ARCH_RK3568
- 	bool
- 	select ARCH_ROCKCHIP_V8
-diff --git a/arch/arm/mach-rockchip/Makefile b/arch/arm/mach-rockchip/Makefile
-index 40454d0284..9e2ef82221 100644
---- a/arch/arm/mach-rockchip/Makefile
-+++ b/arch/arm/mach-rockchip/Makefile
-@@ -4,6 +4,7 @@ obj-y += rockchip.o bootrom.o
- pbl-$(CONFIG_ARCH_ROCKCHIP_ATF) += atf.o
- obj-$(CONFIG_ARCH_RK3188) += rk3188.o
- obj-$(CONFIG_ARCH_RK3288) += rk3288.o
-+obj-pbl-$(CONFIG_ARCH_RK3562) += rk3562.o
- obj-pbl-$(CONFIG_ARCH_RK3568) += rk3568.o
- obj-pbl-$(CONFIG_ARCH_RK3576) += rk3576.o
- obj-pbl-$(CONFIG_ARCH_RK3588) += rk3588.o
-diff --git a/arch/arm/mach-rockchip/atf.c b/arch/arm/mach-rockchip/atf.c
-index c4ed84aae6..55d9918f3e 100644
---- a/arch/arm/mach-rockchip/atf.c
-+++ b/arch/arm/mach-rockchip/atf.c
-@@ -11,6 +11,7 @@
- #include <mach/rockchip/dmc.h>
- #include <mach/rockchip/rockchip.h>
- #include <mach/rockchip/bootrom.h>
-+#include <mach/rockchip/rk3562-regs.h>
- #include <mach/rockchip/rk3568-regs.h>
- #include <mach/rockchip/rk3576-regs.h>
- #include <mach/rockchip/rk3588-regs.h>
-@@ -132,6 +133,43 @@ static uintptr_t rk_load_optee(uintptr_t bl32, const void *bl32_image,
- 		   SOC##_BAREBOX_LOAD_ADDRESS, (uintptr_t)fdt);                 \
- } while (0)                                                                     \
- 
-+void rk3562_atf_load_bl31(void *fdt)
++obj-y += board.o
++lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/rockchip-rk3562-evb2/board.c b/arch/arm/boards/rockchip-rk3562-evb2/board.c
+new file mode 100644
+index 0000000000..d00815822e
+--- /dev/null
++++ b/arch/arm/boards/rockchip-rk3562-evb2/board.c
+@@ -0,0 +1,47 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#define pr_fmt(fmt) "rk3562-evb: " fmt
++
++#include <common.h>
++#include <init.h>
++#include <mach/rockchip/bbu.h>
++#include <aiodev.h>
++#include <bootsource.h>
++#include <environment.h>
++#include <globalvar.h>
++#include <magicvar.h>
++#include <deep-probe.h>
++
++static int rk3562_evb2_probe(struct device *dev)
 +{
-+	rockchip_atf_load_bl31(RK3562, rk3562_bl31_bin, rk3562_bl32_bin, fdt);
-+}
++	int emmc_bbu_flag = 0;
++	int sd_bbu_flag = 0;
 +
-+void __noreturn rk3562_barebox_entry(void *fdt)
-+{
-+	unsigned long membase, endmem;
-+
-+	membase = RK3562_DRAM_BOTTOM;
-+	endmem = rk3562_ram0_size();
-+
-+	rk_scratch = (void *)arm_mem_scratch(endmem);
-+
-+	if (current_el() == 3) {
-+		rk3562_lowlevel_init();
-+		rockchip_store_bootrom_iram(IOMEM(RK3562_IRAM_BASE));
-+
-+		/*
-+		 * The downstream TF-A doesn't cope with our device tree when
-+		 * CONFIG_OF_OVERLAY_LIVE is enabled, supposedly because it is
-+		 * too big for some reason. Otherwise it doesn't have any visible
-+		 * effect if we pass a device tree or not, except that the TF-A
-+		 * fills in the ethernet MAC address into the device tree.
-+		 * The upstream TF-A doesn't use the device tree at all.
-+		 *
-+		 * Pass NULL for now until we have a good reason to pass a real
-+		 * device tree.
-+		 */
-+		rk3562_atf_load_bl31(NULL);
-+		/* not reached when CONFIG_ARCH_ROCKCHIP_ATF */
++	if (bootsource_get() == BOOTSOURCE_MMC) {
++		if (bootsource_get_instance() == 2)
++			emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
++		else
++			sd_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
++	} else {
++		emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
 +	}
 +
-+	optee_set_membase(rk_scratch_get_optee_hdr());
-+	barebox_arm_entry(membase, endmem - membase, fdt);
-+}
-+
- void rk3568_atf_load_bl31(void *fdt)
- {
- 	rockchip_atf_load_bl31(RK3568, rk3568_bl31_bin, rk3568_bl32_bin, fdt);
-diff --git a/arch/arm/mach-rockchip/dmc.c b/arch/arm/mach-rockchip/dmc.c
-index 3cb17b9694..4c0b9c3975 100644
---- a/arch/arm/mach-rockchip/dmc.c
-+++ b/arch/arm/mach-rockchip/dmc.c
-@@ -16,12 +16,16 @@
- #include <mach/rockchip/dmc.h>
- #include <mach/rockchip/atf.h>
- #include <mach/rockchip/rk3399-regs.h>
-+#include <mach/rockchip/rk3562-regs.h>
- #include <mach/rockchip/rk3568-regs.h>
- #include <mach/rockchip/rk3576-regs.h>
- 
- #define RK3399_PMUGRF_OS_REG2		0x308
- #define RK3399_PMUGRF_OS_REG3		0x30C
- 
-+#define RK3562_PMUGRF_OS_REG2           0x208
-+#define RK3562_PMUGRF_OS_REG3           0x20c
-+
- #define RK3568_PMUGRF_OS_REG2           0x208
- #define RK3568_PMUGRF_OS_REG3           0x20c
- 
-@@ -29,6 +33,7 @@
- #define RK3576_PMUGRF_OS_REG3           0x20c
- 
- #define RK3399_INT_REG_START		0xf0000000
-+#define RK3562_INT_REG_START		RK3399_INT_REG_START
- #define RK3568_INT_REG_START		RK3399_INT_REG_START
- #define RK3576_INT_REG_START		0x10000000
- #define RK3588_INT_REG_START		RK3399_INT_REG_START
-@@ -155,6 +160,23 @@ resource_size_t rk3399_ram0_size(void)
- 	return size;
- }
- 
-+resource_size_t rk3562_ram0_size(void)
-+{
-+	void __iomem *pmugrf = IOMEM(RK3562_PMUGRF_BASE);
-+	u32 sys_reg2, sys_reg3;
-+	resource_size_t size;
-+
-+	sys_reg2 = readl(pmugrf + RK3562_PMUGRF_OS_REG2);
-+	sys_reg3 = readl(pmugrf + RK3562_PMUGRF_OS_REG3);
-+
-+	size = rockchip_sdram_size(sys_reg2, sys_reg3);
-+	size = min_t(resource_size_t, RK3562_INT_REG_START, size);
-+
-+	pr_debug("%s() = %llu\n", __func__, (u64)size);
-+
-+	return size;
-+}
-+
- resource_size_t rk3568_ram0_size(void)
- {
- 	void __iomem *pmugrf = IOMEM(RK3568_PMUGRF_BASE);
-@@ -314,6 +336,13 @@ static const struct rockchip_dmc_drvdata rk3399_drvdata = {
- 	.membase = RK3399_DRAM_BOTTOM,
- };
- 
-+static const struct rockchip_dmc_drvdata rk3562_drvdata = {
-+	.os_reg2 = RK3562_PMUGRF_OS_REG2,
-+	.os_reg3 = RK3562_PMUGRF_OS_REG3,
-+	.internal_registers_start = RK3562_INT_REG_START,
-+	.membase = RK3562_DRAM_BOTTOM,
-+};
-+
- static const struct rockchip_dmc_drvdata rk3568_drvdata = {
- 	.os_reg2 = RK3568_PMUGRF_OS_REG2,
- 	.os_reg3 = RK3568_PMUGRF_OS_REG3,
-@@ -342,6 +371,10 @@ static struct of_device_id rockchip_dmc_dt_ids[] = {
- 		.compatible = "rockchip,rk3399-dmc",
- 		.data = &rk3399_drvdata,
- 	},
-+	{
-+		.compatible = "rockchip,rk3562-dmc",
-+		.data = &rk3562_drvdata,
-+	},
- 	{
- 		.compatible = "rockchip,rk3568-dmc",
- 		.data = &rk3568_drvdata,
-diff --git a/arch/arm/mach-rockchip/rk3562.c b/arch/arm/mach-rockchip/rk3562.c
-new file mode 100644
-index 0000000000..9ab5b82695
---- /dev/null
-+++ b/arch/arm/mach-rockchip/rk3562.c
-@@ -0,0 +1,20 @@
-+// SPDX-License-Identifier:     GPL-2.0+
-+#include <common.h>
-+#include <io.h>
-+#include <bootsource.h>
-+#include <mach/rockchip/rk3562-regs.h>
-+#include <mach/rockchip/rockchip.h>
-+#include <asm/barebox-arm-head.h>
-+#include <mach/rockchip/bootrom.h>
-+
-+void rk3562_lowlevel_init(void)
-+{
-+	arm_cpu_lowlevel_init();
-+}
-+
-+int rk3562_init(void)
-+{
-+	rockchip_parse_bootrom_iram(rockchip_scratch_space()->iram);
++	rockchip_bbu_mmc_register("sd", sd_bbu_flag, "/dev/mmc1");
++	rockchip_bbu_mmc_register("emmc", emmc_bbu_flag, "/dev/mmc0");
 +
 +	return 0;
 +}
-diff --git a/arch/arm/mach-rockchip/rockchip.c b/arch/arm/mach-rockchip/rockchip.c
-index 0828f0fa72..ce1c06ff38 100644
---- a/arch/arm/mach-rockchip/rockchip.c
-+++ b/arch/arm/mach-rockchip/rockchip.c
-@@ -17,6 +17,8 @@ int rockchip_soc(void)
- 		__rockchip_soc = 3188;
- 	else if (of_machine_is_compatible("rockchip,rk3288"))
- 		__rockchip_soc = 3288;
-+	else if (of_machine_is_compatible("rockchip,rk3562"))
-+		__rockchip_soc = 3562;
- 	else if (of_machine_is_compatible("rockchip,rk3566"))
- 		__rockchip_soc = 3566;
- 	else if (of_machine_is_compatible("rockchip,rk3568"))
-@@ -49,6 +51,8 @@ static int rockchip_init(void)
- 		return rk3188_init();
- 	case 3288:
- 		return rk3288_init();
-+	case 3562:
-+		return rk3562_init();
- 	case 3566:
- 		return rk3568_init();
- 	case 3568:
-diff --git a/common/Kconfig.debug_ll b/common/Kconfig.debug_ll
-index a08d29859d..75d500862b 100644
---- a/common/Kconfig.debug_ll
-+++ b/common/Kconfig.debug_ll
-@@ -198,6 +198,14 @@ config DEBUG_ROCKCHIP_RK3288_UART
- 	  Say Y here if you want kernel low-level debugging support
- 	  on RK3288.
- 
-+config DEBUG_ROCKCHIP_RK3562_UART
-+	bool "RK3562 Debug UART"
-+	depends on ARCH_RK3562
-+	select DEBUG_ROCKCHIP_UART
-+	help
-+	  Say Y here if you want kernel low-level debugging support
-+	  on RK3562.
 +
- config DEBUG_ROCKCHIP_RK3568_UART
- 	bool "RK3568 Debug UART"
- 	depends on ARCH_RK3568
-@@ -430,6 +438,7 @@ config DEBUG_OMAP_UART_PORT
- config DEBUG_ROCKCHIP_UART_PORT
- 	int "RK3xxx UART debug port" if DEBUG_ROCKCHIP_RK3188_UART || \
- 				DEBUG_ROCKCHIP_RK3288_UART || \
-+				DEBUG_ROCKCHIP_RK3562_UART || \
- 				DEBUG_ROCKCHIP_RK3568_UART || \
- 				DEBUG_ROCKCHIP_RK3576_UART || \
- 				DEBUG_ROCKCHIP_RK3588_UART || \
-diff --git a/firmware/Makefile b/firmware/Makefile
-index 163055554d..f0204a8bf6 100644
---- a/firmware/Makefile
-+++ b/firmware/Makefile
-@@ -28,12 +28,14 @@ fw-external-$(CONFIG_FIRMWARE_IMX8MP_OPTEE) += imx8mp-bl32.bin
- fw-external-$(CONFIG_FIRMWARE_IMX93_OPTEE) += imx93-bl32.bin \
- 					      mx93a1-ahab-container.img
- fw-external-$(CONFIG_FIRMWARE_IMX93_OPTEE_A0) += mx93a0-ahab-container.img
-+pbl-firmware-$(CONFIG_ARCH_RK3562) += rk3562-bl31.bin
- pbl-firmware-$(CONFIG_ARCH_RK3568) += rk3568-bl31.bin
- pbl-firmware-$(CONFIG_ARCH_RK3576) += rk3576-bl31.bin
- pbl-firmware-$(CONFIG_ARCH_RK3588) += rk3588-bl31.bin
- ifeq ($(CONFIG_ARCH_ROCKCHIP_OPTEE),y)
- # We install BL31 & BL32 while already running in DRAM,
- # so fw-external is not needed
-+pbl-firmware-$(CONFIG_ARCH_RK3562) += rk3562-bl32.bin
- pbl-firmware-$(CONFIG_ARCH_RK3568) += rk3568-bl32.bin
- pbl-firmware-$(CONFIG_ARCH_RK3576) += rk3576-bl32.bin
- pbl-firmware-$(CONFIG_ARCH_RK3588) += rk3588-bl32.bin
-diff --git a/include/mach/rockchip/atf.h b/include/mach/rockchip/atf.h
-index 8fc2a4bebe..b8627a3598 100644
---- a/include/mach/rockchip/atf.h
-+++ b/include/mach/rockchip/atf.h
-@@ -5,6 +5,7 @@
- 
- /* First usable DRAM address. Lower mem is used for ATF and OP-TEE */
- #define RK3399_DRAM_BOTTOM		0xa00000
-+#define RK3562_DRAM_BOTTOM		0xa00000
- #define RK3568_DRAM_BOTTOM		0xa00000
- #define RK3576_DRAM_BOTTOM		0x40a00000
- #define RK3588_DRAM_BOTTOM		0xa00000
-@@ -19,6 +20,7 @@
-  * The values are taken from rkbin/RKTRUST/RK3*.ini: [BL32_OPTION] ADDR
-  */
- #define RK3399_OPTEE_LOAD_ADDRESS	0x8400000
-+#define RK3562_OPTEE_LOAD_ADDRESS	0x8400000
- #define RK3568_OPTEE_LOAD_ADDRESS	0x8400000
- #define RK3576_OPTEE_LOAD_ADDRESS	0x8400000
- #define RK3588_OPTEE_LOAD_ADDRESS	0x8400000
-@@ -35,22 +37,26 @@
-  * OP-TEE jumps to after initialization.
-  */
- #define RK3399_BAREBOX_LOAD_ADDRESS	(RK3399_DRAM_BOTTOM + 1024*1024)
-+#define RK3562_BAREBOX_LOAD_ADDRESS	(RK3562_DRAM_BOTTOM + 1024*1024)
- #define RK3568_BAREBOX_LOAD_ADDRESS	(RK3568_DRAM_BOTTOM + 1024*1024)
- #define RK3576_BAREBOX_LOAD_ADDRESS	(RK3576_DRAM_BOTTOM + 1024*1024)
- #define RK3588_BAREBOX_LOAD_ADDRESS	(RK3588_DRAM_BOTTOM + 1024*1024)
- 
- #ifndef __ASSEMBLY__
- #ifdef CONFIG_ARCH_ROCKCHIP_ATF
-+void rk3562_atf_load_bl31(void *fdt);
- void rk3568_atf_load_bl31(void *fdt);
- void rk3576_atf_load_bl31(void *fdt);
- void rk3588_atf_load_bl31(void *fdt);
- #else
-+static inline void rk3562_atf_load_bl31(void *fdt) { }
- static inline void rk3568_atf_load_bl31(void *fdt) { }
- static inline void rk3576_atf_load_bl31(void *fdt) { }
- static inline void rk3588_atf_load_bl31(void *fdt) { }
- #endif
- #endif
- 
-+void __noreturn rk3562_barebox_entry(void *fdt);
- void __noreturn rk3568_barebox_entry(void *fdt);
- void __noreturn rk3576_barebox_entry(void *fdt);
- void __noreturn rk3588_barebox_entry(void *fdt);
-diff --git a/include/mach/rockchip/debug_ll.h b/include/mach/rockchip/debug_ll.h
-index a51c2cda0b..941d1505e5 100644
---- a/include/mach/rockchip/debug_ll.h
-+++ b/include/mach/rockchip/debug_ll.h
-@@ -7,6 +7,7 @@
- #include <io.h>
- #include <mach/rockchip/rk3188-regs.h>
- #include <mach/rockchip/rk3288-regs.h>
-+#include <mach/rockchip/rk3562-regs.h>
- #include <mach/rockchip/rk3568-regs.h>
- #include <mach/rockchip/rk3576-regs.h>
- #include <mach/rockchip/rk3588-regs.h>
-@@ -24,6 +25,11 @@
- #define RK_DEBUG_UART_CLOCK	24000000
- #define RK_DEBUG_SOC		RK3288
- 
-+#elif defined CONFIG_DEBUG_ROCKCHIP_RK3562_UART
++static const struct of_device_id rk3562_evb2_of_match[] = {
++	{ .compatible = "rockchip,rk3562-evb2-v10" },
++	{ /* Sentinel */},
++};
 +
-+#define RK_DEBUG_UART_CLOCK	24000000
-+#define RK_DEBUG_SOC		RK3562
++static struct driver rk3562_evb2_board_driver = {
++	.name = "board-rk3562-evb",
++	.probe = rk3562_evb2_probe,
++	.of_compatible = rk3562_evb2_of_match,
++};
++coredevice_platform_driver(rk3562_evb2_board_driver);
 +
- #elif defined CONFIG_DEBUG_ROCKCHIP_RK3568_UART
- 
- #define RK_DEBUG_UART_CLOCK	24000000
-diff --git a/include/mach/rockchip/dmc.h b/include/mach/rockchip/dmc.h
-index a379ba3294..ddcf989a30 100644
---- a/include/mach/rockchip/dmc.h
-+++ b/include/mach/rockchip/dmc.h
-@@ -84,6 +84,7 @@ enum {
- #define SYS_REG_CS1_COL_MASK			3
- 
- resource_size_t rk3399_ram0_size(void);
-+resource_size_t rk3562_ram0_size(void);
- resource_size_t rk3568_ram0_size(void);
- resource_size_t rk3576_ram0_size(void);
- resource_size_t rk3588_ram0_size(void);
-diff --git a/include/mach/rockchip/rk3562-regs.h b/include/mach/rockchip/rk3562-regs.h
++BAREBOX_DEEP_PROBE_ENABLE(rk3562_evb2_of_match);
+diff --git a/arch/arm/boards/rockchip-rk3562-evb2/lowlevel.c b/arch/arm/boards/rockchip-rk3562-evb2/lowlevel.c
 new file mode 100644
-index 0000000000..e0a06e6427
+index 0000000000..474f1a1332
 --- /dev/null
-+++ b/include/mach/rockchip/rk3562-regs.h
-@@ -0,0 +1,21 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
++++ b/arch/arm/boards/rockchip-rk3562-evb2/lowlevel.c
+@@ -0,0 +1,23 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +
-+#ifndef __MACH_RK3562_REGS_H
-+#define __MACH_RK3562_REGS_H
++#include <common.h>
++#include <asm/barebox-arm.h>
++#include <mach/rockchip/hardware.h>
++#include <mach/rockchip/atf.h>
++#include <debug_ll.h>
 +
-+/* UART */
-+#define RK3562_UART0_BASE	0xff210000
-+#define RK3562_UART1_BASE	0xff670000
-+#define RK3562_UART2_BASE	0xff680000
-+#define RK3562_UART3_BASE	0xff690000
-+#define RK3562_UART4_BASE	0xff6a0000
-+#define RK3562_UART5_BASE	0xff6b0000
-+#define RK3562_UART6_BASE	0xff6c0000
-+#define RK3562_UART7_BASE	0xff6d0000
-+#define RK3562_UART8_BASE	0xff6e0000
-+#define RK3562_UART9_BASE	0xff6f0000
++extern char __dtb_rk3562_evb2_v10_start[];
 +
-+#define RK3562_IRAM_BASE	0xfe480000
-+#define RK3562_PMUGRF_BASE	0xff010000
-+
-+#endif /* __MACH_RK3562_REGS_H */
-diff --git a/include/mach/rockchip/rockchip.h b/include/mach/rockchip/rockchip.h
-index bb9597cb01..bf115b5576 100644
---- a/include/mach/rockchip/rockchip.h
-+++ b/include/mach/rockchip/rockchip.h
-@@ -23,6 +23,15 @@ static inline int rk3288_init(void)
- }
- #endif
- 
-+#ifdef CONFIG_ARCH_RK3562
-+int rk3562_init(void);
-+#else
-+static inline int rk3562_init(void)
++ENTRY_FUNCTION(start_rk3562_evb2, r0, r1, r2)
 +{
-+	return -ENOTSUPP;
-+}
-+#endif
++	putc_ll('>');
 +
- #ifdef CONFIG_ARCH_RK3568
- int rk3568_init(void);
- #define PMU_GRF		0xfdc20000
-@@ -53,6 +62,7 @@ static inline int rk3588_init(void)
- }
- #endif
++	if (current_el() == 3)
++		relocate_to_adr_full(RK3562_BAREBOX_LOAD_ADDRESS);
++	else
++		relocate_to_current_adr();
++
++	setup_c();
++
++	rk3562_barebox_entry(__dtb_rk3562_evb2_v10_start);
++}
+diff --git a/arch/arm/configs/multi_v8_defconfig b/arch/arm/configs/multi_v8_defconfig
+index e63bb46189..e576cecd89 100644
+--- a/arch/arm/configs/multi_v8_defconfig
++++ b/arch/arm/configs/multi_v8_defconfig
+@@ -29,6 +29,7 @@ CONFIG_MACH_TQMA93XX=y
+ CONFIG_MACH_NXP_IMX93_FRDM=y
+ CONFIG_IMX_IIM=y
+ CONFIG_MACH_BEAGLEPLAY=y
++CONFIG_MACH_RK3562_EVB2=y
+ CONFIG_MACH_RK3568_EVB=y
+ CONFIG_MACH_RK3568_BPI_R2PRO=y
+ CONFIG_MACH_PINE64_PINETAB2=y
+diff --git a/arch/arm/configs/rockchip_v8_defconfig b/arch/arm/configs/rockchip_v8_defconfig
+index f8f8ceb805..3e5f76077d 100644
+--- a/arch/arm/configs/rockchip_v8_defconfig
++++ b/arch/arm/configs/rockchip_v8_defconfig
+@@ -1,4 +1,5 @@
+ CONFIG_ARCH_ROCKCHIP=y
++CONFIG_MACH_RK3562_EVB2=y
+ CONFIG_MACH_RK3568_EVB=y
+ CONFIG_MACH_RK3568_BPI_R2PRO=y
+ CONFIG_MACH_PINE64_PINETAB2=y
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index a84e09e388..d5e37d3e4e 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -139,6 +139,7 @@ lwl-$(CONFIG_MACH_RADXA_ROCK5) += \
+ lwl-$(CONFIG_MACH_RADXA_CM3) += rk3566-cm3-io.dtb.o
+ lwl-$(CONFIG_MACH_PHYTEC_SOM_RK3288) += rk3288-phycore-som.dtb.o
+ lwl-$(CONFIG_MACH_REALQ7) += imx6q-dmo-edmqmx6.dtb.o
++lwl-$(CONFIG_MACH_RK3562_EVB2) += rk3562-evb2-v10.dtb.o
+ lwl-$(CONFIG_MACH_RK3568_EVB) += rk3568-evb1-v10.dtb.o
+ lwl-$(CONFIG_MACH_RK3568_BPI_R2PRO) += rk3568-bpi-r2-pro.dtb.o
+ lwl-$(CONFIG_MACH_RPI) += bcm2835-rpi.dtb.o
+diff --git a/arch/arm/dts/rk3562-evb2-v10.dts b/arch/arm/dts/rk3562-evb2-v10.dts
+new file mode 100644
+index 0000000000..40a5084ee3
+--- /dev/null
++++ b/arch/arm/dts/rk3562-evb2-v10.dts
+@@ -0,0 +1,9 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright (c) 2021 Rockchip Electronics Co., Ltd.
++ */
++
++/dts-v1/;
++
++#include <arm64/rockchip/rk3562-evb2-v10.dts>
++#include "rk3562.dtsi"
+diff --git a/arch/arm/dts/rk3562.dtsi b/arch/arm/dts/rk3562.dtsi
+new file mode 100644
+index 0000000000..f1a291d456
+--- /dev/null
++++ b/arch/arm/dts/rk3562.dtsi
+@@ -0,0 +1,40 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++
++/ {
++	aliases {
++		pmugrf.reboot_mode = &reboot_mode;
++		pwm0 = &pwm0;
++		pwm1 = &pwm1;
++		pwm2 = &pwm2;
++		pwm3 = &pwm3;
++		pwm4 = &pwm4;
++		pwm5 = &pwm5;
++		pwm6 = &pwm6;
++		pwm7 = &pwm7;
++		pwm8 = &pwm8;
++		pwm9 = &pwm9;
++		pwm10 = &pwm10;
++		pwm11 = &pwm11;
++		pwm12 = &pwm12;
++		pwm13 = &pwm13;
++		pwm14 = &pwm14;
++		pwm15 = &pwm15;
++		i2c0  = &i2c0;
++		i2c5  = &i2c5;
++		spi0  = &spi0;
++		spi1  = &spi1;
++		spi2  = &spi2;
++		spi3  = &sfc;
++	};
++
++	chosen {
++		barebox,bootsource-mmc0 = &sdhci;
++		barebox,bootsource-mmc1 = &sdmmc0;
++		barebox,bootsource-mmc2 = &sdmmc1;
++	};
++
++	dmc: memory-controller {
++		compatible = "rockchip,rk3562-dmc";
++		rockchip,pmu = <&pmu_grf>;
++	};
++};
+diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
+index a91e7db72d..d359307eb7 100644
+--- a/arch/arm/mach-rockchip/Kconfig
++++ b/arch/arm/mach-rockchip/Kconfig
+@@ -64,6 +64,12 @@ endif
  
-+void rk3562_lowlevel_init(void);
- void rk3568_lowlevel_init(void);
- void rk3576_lowlevel_init(void);
- void rk3588_lowlevel_init(void);
+ if 64BIT
+ 
++config MACH_RK3562_EVB2
++	select ARCH_RK3562
++	bool "RK3562 EVB2"
++	help
++	  Say Y here if you are using a RK3562 EVB2
++
+ config MACH_RK3568_EVB
+ 	select ARCH_RK3568
+ 	bool "RK3568 EVB"
+diff --git a/images/Makefile.rockchip b/images/Makefile.rockchip
+index 191ef15aab..1122db4629 100644
+--- a/images/Makefile.rockchip
++++ b/images/Makefile.rockchip
+@@ -37,6 +37,7 @@ pblb-$(CONFIG_MACH_PHYTEC_SOM_RK3288) += start_rk3288_phycore_som
+ FILE_barebox-rk3288-phycore-som.img = start_rk3288_phycore_som.pblb
+ image-$(CONFIG_MACH_PHYTEC_SOM_RK3288) += barebox-rk3288-phycore-som.img
+ 
++$(call build_rockchip_image, CONFIG_MACH_RK3562_EVB2, start_rk3562_evb2, rockchip-rk3562-evb2/sdram-init.bin, rk3562-evb2)
+ $(call build_rockchip_image, CONFIG_MACH_RK3568_EVB, start_rk3568_evb, rockchip-rk3568-evb/sdram-init.bin, rk3568-evb)
+ $(call build_rockchip_image, CONFIG_MACH_RK3568_BPI_R2PRO, start_rk3568_bpi_r2pro, rockchip-rk3568-bpi-r2pro/sdram-init.bin, rk3568-bpi-r2pro)
+ $(call build_rockchip_image, CONFIG_MACH_PINE64_PINETAB2, start_pinetab2_v0, pine64-pinetab2/sdram-init.bin, pinetab2-v0)
 
 -- 
 2.43.0
