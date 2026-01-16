@@ -1,74 +1,74 @@
-Delivery-date: Fri, 16 Jan 2026 09:36:09 +0100
+Delivery-date: Fri, 16 Jan 2026 09:36:10 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgfJR-001trM-3D
+	id 1vgfJS-001trh-2y
 	for lore@lore.pengutronix.de;
-	Fri, 16 Jan 2026 09:36:09 +0100
+	Fri, 16 Jan 2026 09:36:10 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgfJP-00087Q-3q
-	for lore@pengutronix.de; Fri, 16 Jan 2026 09:36:09 +0100
+	id 1vgfJR-00089w-3r
+	for lore@pengutronix.de; Fri, 16 Jan 2026 09:36:10 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=X/wd3vSzDWHcKzrDyqUfIzyS+WJy+VA8pRgwmO6vNDE=; b=tfhnIxysMXD5e/GADVBudpF4l4
-	ZnGf5ISKR9e5C01B313taTdSBB9yJIE58Ivdg6x2O5Af9Dc+8tzVvZeMQcLJUS5GZAoJlMa3JhgFH
-	Npr4oKMYj/zUzv2qtgqaKlclJjQ9Wz44tPCyp1Ck5b32xoUowXd1QjjN+YsosANclojK+D7r2ENuV
-	Y+OmkNGmOxWlwrW7uVKHZpaaMpe3ptfIkOvr++NQhor6Z1WvA1d8tBcOMme5kNy3FVC3O+w2+E2Nf
-	kMnueB1XsD5VM6YkjFyPXrhmSL9dxbl1u+GMN/1lNily/RrKcZyJXv9thjMH3SN7Gw2TdsduuM40t
-	6ZlQ118A==;
+	bh=joSLTv6d1ymzkBbvGFf2Y2bjqB94a4Kssu8Iucn89q0=; b=0yZhIR/9xytN1nsSHu3eh9YlFr
+	v4PHL0ZChIVk+XKAmFYIwb7VpS0CJYV6jdAVd+eYcje5i2BDcP9VubiODAkugu9G84WR1DfHFA0BY
+	4i8e4U9mNZtW5sR4fhegmUX26Hoag+Qj5bW81UfbR4rbpOnuzaw0MLCaTIAXMaNTnzU/yiXpDtqia
+	P23id57//CXzHdYPphivHFK4LrYpHOs4jH7tvaSR9XI+UAjubkjGh0Y6pG4C1Cmj8ydYDRN4HBnMm
+	s5SpWeLFiCBjw8M0K/usRTh1C3zWdfm22R7/bVDN2HG37kK0CTXhyxSkGK8aU7PDimnz14tzDEItW
+	iEQpWi5g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgfIn-0000000DlvA-2XG2;
-	Fri, 16 Jan 2026 08:35:29 +0000
+	id 1vgfIl-0000000DltR-2gR2;
+	Fri, 16 Jan 2026 08:35:27 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgfId-0000000Dlh9-1sZC
+	id 1vgfId-0000000Dlh5-12jN
 	for barebox@lists.infradead.org;
-	Fri, 16 Jan 2026 08:35:23 +0000
+	Fri, 16 Jan 2026 08:35:22 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vgfIb-0007TX-T3; Fri, 16 Jan 2026 09:35:17 +0100
+	id 1vgfIb-0007Sm-NH; Fri, 16 Jan 2026 09:35:17 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vgfIc-000tEI-18;
+	id 1vgfIc-000tE9-0W;
 	Fri, 16 Jan 2026 09:35:17 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vgewH-00000005hOg-1jml;
+	id 1vgewH-00000005hOg-1hSv;
 	Fri, 16 Jan 2026 09:12:13 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 16 Jan 2026 09:12:29 +0100
+Date: Fri, 16 Jan 2026 09:12:24 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260116-pbl-load-elf-v5-18-51d042021c5a@pengutronix.de>
+Message-Id: <20260116-pbl-load-elf-v5-13-51d042021c5a@pengutronix.de>
 References: <20260116-pbl-load-elf-v5-0-51d042021c5a@pengutronix.de>
 In-Reply-To: <20260116-pbl-load-elf-v5-0-51d042021c5a@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768551133; l=9788;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768551133; l=3576;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=mMWr+fGdksQ+F5+Jo2SU9Z0i6IMflW3XRSOtp5GgEcE=;
- b=uV9JycBqdirBwTfReEiGiyBf5Vgr9mfFbvkxiCNvYVkrp2hFteQZi3LzCbZJaxmZSyEkXOpR9
- u29RMuPR5T7Dc8Ko3XzWG0rE+Y95zaXiE9hXJZAnBt5agKpUzHnvOX1
+ bh=V2FksO4KTrNxERLL4JuExDG2THc4S+Gph6mAUPZOH+c=;
+ b=PHpdDKAklZSrGF4MuM6FI3XmsKVgwDSD4vfULcut+aQ2hSqZiroCrWnyQLGrSbF75pTcuCoLn
+ h8up4uosdRvAzz+rw3kFiK/UujKk2+odiZgSVqgoOuq26FjvDbnOETI
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260116_003519_647542_3CBAC640 
-X-CRM114-Status: GOOD (  24.03  )
+X-CRM114-CacheID: sfid-20260116_003519_290170_EC0BA1B8 
+X-CRM114-Status: GOOD (  12.81  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,301 +91,118 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v5 18/22] ARM: PBL: setup MMU with proper permissions from
- ELF segments
+Subject: [PATCH v5 13/22] mmu: add MAP_CACHED_RO mapping type
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Move complete MMU setup into PBL by leveraging ELF segment information
-to apply correct memory permissions before jumping to barebox proper.
+ARM32 and ARM64 have ARCH_MAP_CACHED_RO. We'll move parts of the MMU
+initialization to generic code later, so add a new mapping type to
+include/mmu.h.
 
-After ELF relocation, parse PT_LOAD segments and map each with
-permissions derived from p_flags:
-- Text segments (PF_R|PF_X): Read-only + executable (MAP_CODE)
-- Data segments (PF_R|PF_W): Read-write (MAP_CACHED)
-- RO data segments (PF_R): Read-only (MAP_CACHED_RO)
-
-This ensures barebox proper starts with full W^X protection already
-in place, eliminating the need for complex remapping in barebox proper.
-
-The framework is portable - common ELF parsing in pbl/mmu.c uses
-architecture-specific early_remap_range() exported from mmu_*.c.
-
-Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/mmu-common.c |  31 +++++++-------
- arch/arm/cpu/uncompress.c |  10 +++++
- include/pbl/mmu.h         |  38 +++++++++++++++++
- pbl/Makefile              |   1 +
- pbl/mmu.c                 | 105 ++++++++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 169 insertions(+), 16 deletions(-)
+ arch/arm/cpu/mmu-common.c | 4 ++--
+ arch/arm/cpu/mmu-common.h | 3 +--
+ arch/arm/cpu/mmu_32.c     | 4 ++--
+ arch/arm/cpu/mmu_64.c     | 2 +-
+ include/mmu.h             | 3 ++-
+ 5 files changed, 8 insertions(+), 8 deletions(-)
 
 diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
-index 67317f127c..4f3ad4a794 100644
+index a1431c0ff4..67317f127c 100644
 --- a/arch/arm/cpu/mmu-common.c
 +++ b/arch/arm/cpu/mmu-common.c
-@@ -109,28 +109,26 @@ static inline void remap_range_end(unsigned long start, unsigned long end,
- 	remap_range((void *)start, end - start, map_type);
- }
+@@ -22,7 +22,7 @@ const char *map_type_tostr(maptype_t map_type)
  
--static inline void remap_range_end_sans_text(unsigned long start, unsigned long end,
-+static inline void remap_range_end_sans_image(unsigned long start, unsigned long end,
- 					     unsigned map_type)
- {
--	unsigned long text_start = (unsigned long)&_stext;
--	unsigned long text_end = (unsigned long)&_etext;
-+	unsigned long image_start = (unsigned long)&__image_start;
-+	unsigned long image_end = (unsigned long)&__image_end;
- 
--	if (region_overlap_end_exclusive(start, end, text_start, text_end)) {
--		remap_range_end(start, text_start, MAP_CACHED);
--		/* skip barebox segments here, will be mapped later */
--		start = text_end;
-+	if (region_overlap_end_exclusive(start, end, image_start, image_end)) {
-+		remap_range_end(start, image_start, MAP_CACHED);
-+		/* skip barebox segments here, PBL has already mapped them */
-+		start = image_end;
+ 	switch (map_type) {
+ 	case ARCH_MAP_CACHED_RWX:	return "RWX";
+-	case ARCH_MAP_CACHED_RO:	return "RO";
++	case MAP_CACHED_RO:		return "RO";
+ 	case MAP_CACHED:		return "CACHED";
+ 	case MAP_UNCACHED:		return "UNCACHED";
+ 	case MAP_CODE:			return "CODE";
+@@ -158,7 +158,7 @@ static void mmu_remap_memory_banks(void)
  	}
  
-+	start = ALIGN(start, PAGE_SIZE);
-+
- 	remap_range_end(start, end, MAP_CACHED);
- }
+ 	remap_range((void *)code_start, code_size, MAP_CODE);
+-	remap_range((void *)rodata_start, rodata_size, ARCH_MAP_CACHED_RO);
++	remap_range((void *)rodata_start, rodata_size, MAP_CACHED_RO);
  
- static void mmu_remap_memory_banks(void)
- {
- 	struct memory_bank *bank;
--	unsigned long code_start = (unsigned long)&_stext;
--	unsigned long code_size = (unsigned long)&__start_rodata - (unsigned long)&_stext;
--	unsigned long rodata_start = (unsigned long)&__start_rodata;
--	unsigned long rodata_size = (unsigned long)&__end_rodata - rodata_start;
- 
- 	/*
- 	 * Early mmu init will have mapped everything but the initial memory area
-@@ -138,6 +136,10 @@ static void mmu_remap_memory_banks(void)
- 	 * all memory banks, so let's map all pages, excluding reserved memory areas
- 	 * and barebox text area cacheable.
- 	 *
-+	 * PBL has already set up the MMU with proper permissions for text, data
-+	 * and rodata based on ELF segment information, so we don't need to remap
-+	 * those here.
-+	 *
- 	 * This code will become much less complex once we switch over to using
- 	 * CONFIG_MEMORY_ATTRIBUTES for MMU as well.
- 	 */
-@@ -150,16 +152,13 @@ static void mmu_remap_memory_banks(void)
- 		/* Skip reserved regions */
- 		for_each_reserved_region(bank, rsv) {
- 			if (pos != rsv->start)
--				remap_range_end_sans_text(pos, rsv->start, MAP_CACHED);
-+				remap_range_end_sans_image(pos, rsv->start, MAP_CACHED);
- 			pos = rsv->end + 1;
- 		}
- 
--		remap_range_end_sans_text(pos, bank->res->end + 1, MAP_CACHED);
-+		remap_range_end_sans_image(pos, bank->res->end + 1, MAP_CACHED);
- 	}
- 
--	remap_range((void *)code_start, code_size, MAP_CODE);
--	remap_range((void *)rodata_start, rodata_size, MAP_CACHED_RO);
--
  	setup_trap_pages();
  }
+diff --git a/arch/arm/cpu/mmu-common.h b/arch/arm/cpu/mmu-common.h
+index a111e15a21..b42c421ffd 100644
+--- a/arch/arm/cpu/mmu-common.h
++++ b/arch/arm/cpu/mmu-common.h
+@@ -12,7 +12,6 @@
+ #include <linux/bits.h>
  
-diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
-index 10df5fcba9..9a9f391022 100644
---- a/arch/arm/cpu/uncompress.c
-+++ b/arch/arm/cpu/uncompress.c
-@@ -21,6 +21,7 @@
- #include <asm/unaligned.h>
- #include <compressed-dtb.h>
- #include <elf.h>
-+#include <pbl/mmu.h>
+ #define ARCH_MAP_CACHED_RWX	MAP_ARCH(2)
+-#define ARCH_MAP_CACHED_RO	MAP_ARCH(3)
  
- #include <debug_ll.h>
+ #define ARCH_MAP_FLAG_PAGEWISE	BIT(31)
  
-@@ -103,6 +104,15 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
- 	if (ret)
- 		panic("Failed to relocate ELF: %d\n", ret);
+@@ -32,7 +31,7 @@ static inline maptype_t arm_mmu_maybe_skip_permissions(maptype_t map_type)
+ 	switch (map_type & MAP_TYPE_MASK) {
+ 	case MAP_CODE:
+ 	case MAP_CACHED:
+-	case ARCH_MAP_CACHED_RO:
++	case MAP_CACHED_RO:
+ 		return ARCH_MAP_CACHED_RWX;
+ 	default:
+ 		return map_type;
+diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
+index caa41e1beb..eee1385a8f 100644
+--- a/arch/arm/cpu/mmu_32.c
++++ b/arch/arm/cpu/mmu_32.c
+@@ -304,7 +304,7 @@ static uint32_t get_pte_flags(maptype_t map_type)
+ 		switch (map_type & MAP_TYPE_MASK) {
+ 		case ARCH_MAP_CACHED_RWX:
+ 			return PTE_FLAGS_CACHED_V7_RWX;
+-		case ARCH_MAP_CACHED_RO:
++		case MAP_CACHED_RO:
+ 			return PTE_FLAGS_CACHED_RO_V7;
+ 		case MAP_CACHED:
+ 			return PTE_FLAGS_CACHED_V7;
+@@ -320,7 +320,7 @@ static uint32_t get_pte_flags(maptype_t map_type)
+ 		}
+ 	} else {
+ 		switch (map_type & MAP_TYPE_MASK) {
+-		case ARCH_MAP_CACHED_RO:
++		case MAP_CACHED_RO:
+ 		case MAP_CODE:
+ 			return PTE_FLAGS_CACHED_RO_V4;
+ 		case ARCH_MAP_CACHED_RWX:
+diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+index 56c6a21f2b..ddf1373ec0 100644
+--- a/arch/arm/cpu/mmu_64.c
++++ b/arch/arm/cpu/mmu_64.c
+@@ -159,7 +159,7 @@ static unsigned long get_pte_attrs(maptype_t map_type)
+ 		return attrs_xn() | MEM_ALLOC_WRITECOMBINE;
+ 	case MAP_CODE:
+ 		return CACHED_MEM | PTE_BLOCK_RO;
+-	case ARCH_MAP_CACHED_RO:
++	case MAP_CACHED_RO:
+ 		return attrs_xn() | CACHED_MEM | PTE_BLOCK_RO;
+ 	case ARCH_MAP_CACHED_RWX:
+ 		return CACHED_MEM;
+diff --git a/include/mmu.h b/include/mmu.h
+index f796198088..9f582f25e1 100644
+--- a/include/mmu.h
++++ b/include/mmu.h
+@@ -9,9 +9,10 @@
+ #define MAP_CACHED		1
+ #define MAP_FAULT		2
+ #define MAP_CODE		3
++#define MAP_CACHED_RO		4
  
-+	/*
-+	 * Now that the ELF image is relocated, we know the exact addresses
-+	 * of all segments. Set up MMU with proper permissions based on
-+	 * ELF segment flags (PF_R/W/X).
-+	 */
-+	ret = pbl_mmu_setup_from_elf(&elf, membase, memsize);
-+	if (ret)
-+		panic("Failed to setup MMU from ELF: %d\n", ret);
-+
- 	barebox = (void *)(unsigned long)elf.entry;
- 
- 	handoff_data_move(handoff_data);
-diff --git a/include/pbl/mmu.h b/include/pbl/mmu.h
-new file mode 100644
-index 0000000000..72537604e2
---- /dev/null
-+++ b/include/pbl/mmu.h
-@@ -0,0 +1,38 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef __PBL_MMU_H
-+#define __PBL_MMU_H
-+
-+#include <linux/types.h>
-+
-+struct elf_image;
-+
-+/**
-+ * pbl_mmu_setup_from_elf() - Configure MMU using ELF segment information
-+ * @elf: ELF image structure from elf_open_binary_into()
-+ * @membase: Base address of RAM
-+ * @memsize: Size of RAM
-+ *
-+ * This function sets up the MMU with proper permissions based on ELF
-+ * segment flags. It should be called after elf_load_inplace() has
-+ * relocated the barebox image.
-+ *
-+ * Segment permissions are mapped as follows:
-+ *   PF_R | PF_X  -> Read-only + executable (text)
-+ *   PF_R | PF_W  -> Read-write (data, bss)
-+ *   PF_R         -> Read-only (rodata)
-+ *
-+ * Return: 0 on success, negative error code on failure
-+ */
-+#if IS_ENABLED(CONFIG_MMU)
-+int pbl_mmu_setup_from_elf(struct elf_image *elf, unsigned long membase,
-+			    unsigned long memsize);
-+#else
-+static inline int pbl_mmu_setup_from_elf(struct elf_image *elf,
-+					 unsigned long membase,
-+					 unsigned long memsize)
-+{
-+	return 0;
-+}
-+#endif
-+
-+#endif /* __PBL_MMU_H */
-diff --git a/pbl/Makefile b/pbl/Makefile
-index f66391be7b..b78124cdcd 100644
---- a/pbl/Makefile
-+++ b/pbl/Makefile
-@@ -9,3 +9,4 @@ pbl-$(CONFIG_HAVE_IMAGE_COMPRESSION) += decomp.o
- pbl-$(CONFIG_LIBFDT) += fdt.o
- pbl-$(CONFIG_PBL_CONSOLE) += console.o
- obj-pbl-y += handoff-data.o
-+obj-pbl-$(CONFIG_MMU) += mmu.o
-diff --git a/pbl/mmu.c b/pbl/mmu.c
-new file mode 100644
-index 0000000000..744a76afa6
---- /dev/null
-+++ b/pbl/mmu.c
-@@ -0,0 +1,105 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+// SPDX-FileCopyrightText: 2025 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
-+
-+#define pr_fmt(fmt) "pbl-mmu: " fmt
-+
-+#include <common.h>
-+#include <elf.h>
-+#include <mmu.h>
-+#include <pbl/mmu.h>
-+#include <asm/mmu.h>
-+#include <linux/bits.h>
-+#include <linux/sizes.h>
-+
-+/*
-+ * Map ELF segment permissions (p_flags) to architecture MMU flags
-+ */
-+static unsigned int elf_flags_to_mmu_flags(u32 p_flags)
-+{
-+	bool readable = p_flags & PF_R;
-+	bool writable = p_flags & PF_W;
-+	bool executable = p_flags & PF_X;
-+
-+	if (readable && writable) {
-+		/* Data, BSS: Read-write, cached, non-executable */
-+		return MAP_CACHED;
-+	} else if (readable && executable) {
-+		/* Text: Read-only, cached, executable */
-+		return MAP_CODE;
-+	} else if (readable) {
-+		/* Read-only data: Read-only, cached, non-executable */
-+		return MAP_CACHED_RO;
-+	} else {
-+		/*
-+		 * Unusual: segment with no read permission.
-+		 * Map as uncached, non-executable for safety.
-+		 */
-+		pr_warn("Segment with unusual permissions: flags=0x%x\n", p_flags);
-+		return MAP_UNCACHED;
-+	}
-+}
-+
-+int pbl_mmu_setup_from_elf(struct elf_image *elf, unsigned long membase,
-+			    unsigned long memsize)
-+{
-+	void *phdr;
-+	int i = -1;
-+
-+	pr_debug("Setting up MMU from ELF segments\n");
-+	pr_debug("ELF loaded at: 0x%p - 0x%p\n", elf->low_addr, elf->high_addr);
-+
-+	/*
-+	 * Iterate through all PT_LOAD segments and set up MMU permissions
-+	 * based on the segment's p_flags
-+	 */
-+	elf_for_each_segment(phdr, elf, elf->hdr_buf) {
-+		i++;
-+
-+		if (elf_phdr_p_type(elf, phdr) != PT_LOAD)
-+			continue;
-+
-+		u64 p_vaddr = elf_phdr_p_vaddr(elf, phdr);
-+		u64 p_memsz = elf_phdr_p_memsz(elf, phdr);
-+		u32 p_flags = elf_phdr_p_flags(elf, phdr);
-+
-+		/*
-+		 * Calculate actual address after relocation.
-+		 * For ET_EXEC: reloc_offset is 0, use p_vaddr directly
-+		 * For ET_DYN: reloc_offset adjusts virtual to actual address
-+		 */
-+		unsigned long addr = p_vaddr + elf->reloc_offset;
-+		unsigned long size = p_memsz;
-+		unsigned long segment_end = addr + size;
-+
-+		/* Validate segment is within available memory */
-+		if (segment_end < addr || /* overflow check */
-+		    addr < membase ||
-+		    segment_end > membase + memsize) {
-+			pr_err("Segment %d outside memory bounds\n", i);
-+			return -EINVAL;
-+		}
-+
-+		/* Validate alignment - warn and round if needed */
-+		if (!IS_ALIGNED(size, PAGE_SIZE)) {
-+			pr_debug("Segment %d not page-aligned, rounding\n", i);
-+			size = ALIGN(size, PAGE_SIZE);
-+		}
-+
-+		unsigned int mmu_flags = elf_flags_to_mmu_flags(p_flags);
-+
-+		pr_debug("Segment %d: addr=0x%08lx size=0x%08lx flags=0x%x [%c%c%c] -> mmu_flags=0x%x\n",
-+			 i, addr, size, p_flags,
-+			 (p_flags & PF_R) ? 'R' : '-',
-+			 (p_flags & PF_W) ? 'W' : '-',
-+			 (p_flags & PF_X) ? 'X' : '-',
-+			 mmu_flags);
-+
-+		/*
-+		 * Remap this segment with proper permissions.
-+		 */
-+		remap_range((void *)addr, size, mmu_flags);
-+	}
-+
-+	pr_debug("MMU setup from ELF complete\n");
-+	return 0;
-+}
+ #ifdef CONFIG_ARCH_HAS_DMA_WRITE_COMBINE
+-#define MAP_WRITECOMBINE	4
++#define MAP_WRITECOMBINE	5
+ #else
+ #define MAP_WRITECOMBINE	MAP_UNCACHED
+ #endif
 
 -- 
 2.47.3
