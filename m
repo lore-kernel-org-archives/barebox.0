@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgpjX-0024Rp-26
+	id 1vgpjX-0024S0-2c
 	for lore@lore.pengutronix.de;
 	Fri, 16 Jan 2026 20:43:47 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgpjT-0001ci-1v
+	id 1vgpjS-0001cO-Gb
 	for lore@pengutronix.de; Fri, 16 Jan 2026 20:43:47 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,71 +18,71 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=I69kG2mGA/JvcdEOmJOCpUHIzUIVWuxOTl5P72f/L4w=; b=zz0dapmufb3e8ZCWzgq3wsLao1
-	CPU5rFmrQEQq+IxcjiPcQWtedZwDpnpTMqr0o+wkbkgNwMOONd1Wba112ct//b/FgMVGbbsd2WvbA
-	N0kV6H6vR0tiHhD4yt0yE5CMb0Kl6gVCQZZHJ4R1M1SeJUh//Zwow9V0mfoISnBnB1QpTHiZ6Z1nr
-	n8rncdeXmAh3XZO0fL703JwKVKxjrNFCC3f0BBeZh8mg+W8TYW+3pklNPUOI+c3lwmS14LY/l8OGp
-	pIniKdYVXpSwUBGLMGSxCSxHzwB1/+pRzzQ0Qx1VC674FnaLpbq8pTRHqFEsEjZRq5u+JNJr2Ijtv
-	7+nEGnFg==;
+	bh=Ja4xzuoAaTJTQJGA85ygTNK5kD8Mgx697gl1be7pIYQ=; b=UpQiPZYwBE/YWIwpAhl9kLOiaY
+	FApBsqslt5fbg55HTFZPfy0ihODyJGbuVO3MZKLo+Pzn8U3g80D9vsjZMqLBJbXn1XzYU0WLr3ZfK
+	L4wXLVdidh5MP02gxZ+w1n/zM5g2VouOHdnnG1a0jAavVFSHR6V4Wu07pNRzrDqcaVZPyZkCKdpV6
+	AE09JM/CVCcZYRKHCnfsNSTscPNzvieZyKHiBCjfxI968+Fd19Vcl6K5EsGSxDtaRaDWxqeGHk1dt
+	61J4Bfzmw+fX5TbNVG1bqk5evaHbVIOwyWiq3pn2ZxjgCa38n+oLOhH9mtnHT5BrpKh60WnXiiJmV
+	cK3djUZA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgpim-0000000EhvK-1jOM;
-	Fri, 16 Jan 2026 19:43:00 +0000
-Received: from mail-ej1-x62e.google.com ([2a00:1450:4864:20::62e])
+	id 1vgpih-0000000EhoV-3e0Q;
+	Fri, 16 Jan 2026 19:42:55 +0000
+Received: from mail-ej1-x62d.google.com ([2a00:1450:4864:20::62d])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgpih-0000000EhnB-45Tv
+	id 1vgpid-0000000Ehj8-1PxO
 	for barebox@lists.infradead.org;
-	Fri, 16 Jan 2026 19:42:57 +0000
-Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-b8707005183so398776366b.0
-        for <barebox@lists.infradead.org>; Fri, 16 Jan 2026 11:42:55 -0800 (PST)
+	Fri, 16 Jan 2026 19:42:53 +0000
+Received: by mail-ej1-x62d.google.com with SMTP id a640c23a62f3a-b871b6e0c70so380160966b.2
+        for <barebox@lists.infradead.org>; Fri, 16 Jan 2026 11:42:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768592574; x=1769197374; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1768592569; x=1769197369; darn=lists.infradead.org;
         h=to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=I69kG2mGA/JvcdEOmJOCpUHIzUIVWuxOTl5P72f/L4w=;
-        b=MNMuXzfZmpgoy2cESJgzh186iT/0N27Srao0yBRUZS3YiIztRRA7UA4bHOVEGIjO1L
-         H5BJwudikI3tPA12R2BaQRUxk05TwUQHCS+MScRWBH3vetFW0j/jG9taRd6urMXQGTqg
-         o/ZZ7ZfbV9XIXeF1PTPZM4xkcZSeGYXOotInnlS6MgO8uo2wLk1hWld9kY5IV/uN9tOM
-         fKyaxyLDsUvWHGVImrJMyukpPXhwMPHeEL3F70HijGel+CsyaVmHzmo34H+tSzGupSJJ
-         5RIK/4IKDyVWIFUtv4vjfCKxk4qZi9gtCQjPg27iTxIbpqtAJQZLRBOllcAA7q4CnMba
-         cVPA==
+        bh=Ja4xzuoAaTJTQJGA85ygTNK5kD8Mgx697gl1be7pIYQ=;
+        b=GKsEDWu1Ijrci/gAVBubJsDYJj9/sQyAJrkB09eSH3YlT/Q1K0DQOR0mvs8Zg6o5WU
+         TH6RDq9P2FOtMuospPNLZ1APvqWJDrFteVyMUZjwVYgEH78IVDUx0EpF/UesP1/sJxSL
+         Cm2xgXB/XewRFEeUCkvKrTh37vLMSHOlRT8s35MLNnv7PiqtKFST2qraVFbX80L+Potp
+         FjJmwS4x4Fiw7AMgvp+rYotA+WWQGJ1Pn5BQJoL12yVnndKCEnfvkl2a/5eGEflEl6Pv
+         v5Vdd3sWZNf7zyrr60+ax3NwOpw81chP8aFZYfZirX/Pc20k+fAav3tqzv6Mp3MMM7ul
+         CsVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768592574; x=1769197374;
+        d=1e100.net; s=20230601; t=1768592569; x=1769197369;
         h=to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=I69kG2mGA/JvcdEOmJOCpUHIzUIVWuxOTl5P72f/L4w=;
-        b=d0nliUzTc80cezBcSZ2lSunvO6g04YPI6//D/dDlIP4H1b1d7mTP5PRmgbeFjJLqv3
-         tDRVbLrDfUFrX+v45jAJdzSHB1W1RnlpYnMsBTR0yGespgH7nzNhnvX96OqRRSN7qPTW
-         FMnFg92pX+AFSivvSRG9ziWsF21QSQFPARu+jG8qdd1rHwiXuH1t1+sAsvRPHRvx1qqM
-         ll5E2YeaOF4/EtjDQ+dJYbs3wU68mJG6m6puaTjAkHadynlVQ4fvIVyCjq6YiaOHg7y6
-         BXoHBVR6JHtrKxhLDvdpzan/mXMTk29U1w/fUVgpPilyb1vUFldWpTHejNh9c7mOovnA
-         2Dmg==
-X-Forwarded-Encrypted: i=1; AJvYcCXdzOF4spM4+WQHY8mO2ueYiDEEGiFNgEnTdNzl4cZFpRq7p5NloWG26ww6qJYJ413CA6WXTWRJ@lists.infradead.org
-X-Gm-Message-State: AOJu0YzKMENMxGkzvNH/rz8h90gxYz/oj8875YshzVAzACAVciWd3+Kk
-	IKGPrQqauoJGOrfEOk5E0iq7NRo16ggEUj5bVvBOSUVScGgd/iNHpvrUe8nxvQ==
-X-Gm-Gg: AY/fxX4hE+aP+iRdzAIymnusfbYy9+YU3ce+Rjbs3qjgyNUHHh0BUEg3JVPIFr8w5nc
-	uOj96hvEBNmKw5XqXo2FlN6Bf/QF8Izbes51aYpVpP0iJKxIdLzaZaRZH/uob9EY4h2llDQOv+l
-	Bi7cg70Qk+vdSC18BXMiZXaVjXG19HkpxSkYyOrrNqK5+rfZwkw/XXcYEYH4Mjpw1Ogvo78Z19G
-	Z5FcIQ/koH+WbOTBaSysa0X9DfBeDZvBH2wYos4CpZwHnfCe5QHm4EmSogY7UeeijICTYo3RVPj
-	hRPjBsQZn6dd9K9GfS9ws3oeD9O3tTCEO9pUlOCACc3DVADr98EOtr3sKwabIvGYYqUpiAopHgu
-	Dlt8Eu8WO9KDuXNADTQNYLeRIaoscduLuzu0CSY8RhZ/N6R85HIGbIQ0EwHzfK+mJoDRJyd2vFZ
-	0haEhVOW8ek9rV3Ww48mkdfYqOcC4RC9bfTTRuwtj4LLc8hYLLJ1Q/Sp19wZdE3v2QOMJBBOBsq
-	Cq64ksqP+aX+YaKflEdvOvdtAUmpzbsaXpRHOmRIowa/7/oGz/WPkGxMd7n5lRTyNs07n0RkobW
-	bA0CrJigYtX4i44XZQWKIP/5Jsw3FwtDL5cV4IX/hA==
-X-Received: by 2002:a17:907:d716:b0:b87:efa:8786 with SMTP id a640c23a62f3a-b87932b09damr321729266b.55.1768592573906;
-        Fri, 16 Jan 2026 11:42:53 -0800 (PST)
+        bh=Ja4xzuoAaTJTQJGA85ygTNK5kD8Mgx697gl1be7pIYQ=;
+        b=sgkEqx9hwbogj96a0hTIW+SBfP0giyniwy8qKFD4XxBgUptar6OGtPjd2H79ColOlk
+         8AfK0MtUMdEcDRioe6U6XTl/1IPb2XWyYrMg/p7to+kH1DEqICjaYzXDBy7hXo+0Oqiq
+         x4eI5NtkglTARWgvlouTo1hbTjMdT3rYuLBl1vfdwle76NNYd4ixfYLuHYdv7tatcpQA
+         fZLjKvpsNvogxT7uzK+pRbi8Bj0jDcoBZNKKuejM/7JrXq2mhZXkrCWCFKoeVyitREYw
+         tGtguuVbjr/46CBW5ZeT0nTXaVYCbkIi59oqWtZwHj8zDn5tdpFcRy9RUHN22l6oNmSr
+         z/Xw==
+X-Forwarded-Encrypted: i=1; AJvYcCXUKEyTKi2C69Eur8vO6RY6YsEoYLP4HQwOFo1DMf5m4il2ZeboXkiDM4Grm+m8M3ttnoResxDT@lists.infradead.org
+X-Gm-Message-State: AOJu0YwKwPGE/NRIYPfip60yKb6mdAn643BdaYsTshcMAnYcKKaimImB
+	vSNm4WRqkLnmnXdAz1PAD+TALmPLEBboex4DjJQQHLPu9Q7cjUybcovsDOlcuw==
+X-Gm-Gg: AY/fxX78XX7dr2j7+P5El+bGPj+KvhQhENI8MNkeXma1C8eYr3Xf58HyyXIbfjG5VYT
+	rGFpUiTSzzH3LNb1thuHaotVy91yr0E81ZHajgXKO88rWQApsb5FSCmrnfBKAwfBj37aD8R4sEL
+	kDowFZEFR0WjlcSCf9J/QQPLUaNXi1XeXbQPFVt00lZ/XZzx5BnvmB8iEpn3dcV82A78k2JoSvQ
+	zOJJ5gl1O0ICTrbCtUR8uQAq9jieE1MhLYekKMDYyRo0rKpCr29xzj0i7egZmj2ZFppCktg8+Vy
+	wnRaLr+93UoNVAjt/WfP25o+h5JuIFu5ONFf0f5NPek5b83+/K9T61sba/YUzjw8RY5wzJAJ60d
+	1fvtGv1ydqPR7shKb6Y4Dvtx+9arBkTbiNldJMsN4mwQzpSKdcLHecMetuZk9RxQJLkWoqDvv0l
+	EPGE+CHkjOjyfnX434olObqIHfcthvNn7lluLUf5i39nq0JIx+UM0ljt10LscBLD0vX2BS/Fbfs
+	btAYgCuBAdDOqHEU9yaENMN5u0egNDCVgOsT2Wdi47wY4qQpEMiONNBMqxFkNrOKilBvP7hZICZ
+	P9C9djRrd9Fg/xTWo2i9Wo+pgt/bh+JiQfMLckJ/1Q==
+X-Received: by 2002:a17:907:dac:b0:b87:15a7:85ee with SMTP id a640c23a62f3a-b8796b7a7a0mr321133766b.47.1768592569293;
+        Fri, 16 Jan 2026 11:42:49 -0800 (PST)
 Received: from [127.0.1.1] (2a02-8388-08be-f800-f96f-90ee-b1eb-797e.cable.dynamic.v6.surfer.at. [2a02:8388:8be:f800:f96f:90ee:b1eb:797e])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b87959c9fb0sm328166266b.43.2026.01.16.11.42.53
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b87959c9fb0sm328166266b.43.2026.01.16.11.42.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 11:42:53 -0800 (PST)
+        Fri, 16 Jan 2026 11:42:49 -0800 (PST)
 From: Sohaib Mohamed <sohaib.amhmd@gmail.com>
-Date: Fri, 16 Jan 2026 20:40:46 +0100
+Date: Fri, 16 Jan 2026 20:40:39 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260116-barebox-kickpi-v1-12-d11fbccd527a@gmail.com>
+Message-Id: <20260116-barebox-kickpi-v1-5-d11fbccd527a@gmail.com>
 References: <20260116-barebox-kickpi-v1-0-d11fbccd527a@gmail.com>
 In-Reply-To: <20260116-barebox-kickpi-v1-0-d11fbccd527a@gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -90,16 +90,16 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
  Sohaib Mohamed <sohaib.amhmd@gmail.com>, 
  BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768592564; l=3628;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768592564; l=11462;
  i=sohaib.amhmd@gmail.com; s=20251127; h=from:subject:message-id;
- bh=G8nnb+MkLuzehn9M9qdbQqdC0ZjiJqi/1UozlhNU7mQ=;
- b=NGB84LX0LFYtAdvEkTyUQkTVEYwdJ8fX0qXHwxUHNLnSsjuJ3jzmN+6bPT+4L3vKzJbEtDkgV
- F8UP31CRwRGCmN5/Sj58TW3KewO1Y+RVzYhbT7dvUbVsCQxcZsZIbEP
+ bh=1eTCL1fYanjvbvaOIG9D93ENGUe/Z2L6PJBQ/8Ukvcw=;
+ b=1cepPKoneVMLmcixo/fGV8YzFYBERfeN8favnMqnGV1vhXvVnNDQh+ltToIG+CpROWoMe+bch
+ B5RjJT8Nj6hAsUCHpgvKmHrcCspQcBbGDiCzntlu+TzJFs21qkSFpEa
 X-Developer-Key: i=sohaib.amhmd@gmail.com; a=ed25519;
  pk=Q1nrPhN99EawVQo4UT9CZVAG4nQ2Zq/e3sfCABjccgk=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260116_114256_049242_F3A05E20 
-X-CRM114-Status: GOOD (  13.65  )
+X-CRM114-CacheID: sfid-20260116_114251_471409_D0B008E6 
+X-CRM114-Status: GOOD (  10.20  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -122,138 +122,477 @@ X-Spam-Status: No, score=-2.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 12/14] nvmem: rockchip-otp: Add RK3562 support
+Subject: [PATCH 05/14] ARM: boards: Rockchip: Add device tree for kickpi k3
+ board
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add RK3562 OTP support using rk3562-specific data configuration.
+Add device tree for RK3562 KickPi K3 board with RK809 PMIC, eMMC/SD,
+PCIe, UARTs, I2C, and GPIO LEDs.
 
 Signed-off-by: Sohaib Mohamed <sohaib.amhmd@gmail.com>
 ---
- drivers/nvmem/rockchip-otp.c | 89 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 89 insertions(+)
+ arch/arm/dts/rk3562-kickpi-k3.dtsi | 452 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 452 insertions(+)
 
-diff --git a/drivers/nvmem/rockchip-otp.c b/drivers/nvmem/rockchip-otp.c
-index 33b242c5bc..d2145bba52 100644
---- a/drivers/nvmem/rockchip-otp.c
-+++ b/drivers/nvmem/rockchip-otp.c
-@@ -51,6 +51,21 @@
- 
- #define OTPC_TIMEOUT			10000
- 
-+#define RK3562_NBYTES			2
+diff --git a/arch/arm/dts/rk3562-kickpi-k3.dtsi b/arch/arm/dts/rk3562-kickpi-k3.dtsi
+new file mode 100644
+index 0000000000..77bd61cf30
+--- /dev/null
++++ b/arch/arm/dts/rk3562-kickpi-k3.dtsi
+@@ -0,0 +1,452 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++/*
++ * Copyright (c) 2026, Sohaib Mohamed <sohaib.amhmd@gmail.com>
++ */
 +
-+/* RK3588 Register */
-+#define RK3582_OTPC_AUTO_CTRL	0x04
-+#define RK3582_OTPC_AUTO_EN		0x08
-+#define RK3582_OTPC_INT_ST		0x84
-+#define RK3582_OTPC_DOUT0		0x20
-+#define RK3582_NO_SECURE_OFFSET	0x300
-+#define RK3582_NBYTES			4
-+#define RK3582_BURST_NUM		1
-+#define RK3582_BURST_SHIFT		8
-+#define RK3582_ADDR_SHIFT		16
-+#define RK3582_AUTO_EN			BIT(0)
-+#define RK3582_RD_DONE			BIT(1)
++/dts-v1/;
 +
- #define RK3568_NBYTES			2
- 
- /* RK3588 Register */
-@@ -183,6 +198,65 @@ static int px30_otp_read(void *context, unsigned int offset,
- 	return ret;
- }
- 
-+static int rk3562_otp_read(void *context, unsigned int offset, void *val,
-+			   size_t bytes)
-+{
-+	struct rockchip_otp *otp = context;
-+	unsigned int addr_start, addr_end, addr_offset, addr_len;
-+	u32 out_value;
-+	u8 *buf;
-+	int ret = 0, i = 0;
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/input/input.h>
++#include <dt-bindings/leds/common.h>
++#include <dt-bindings/pinctrl/rockchip.h>
++#include <arm64/rockchip/rk3562.dtsi>
 +
-+	addr_start = rounddown(offset, RK3562_NBYTES) / RK3562_NBYTES;
-+	addr_end = roundup(offset + bytes, RK3562_NBYTES) / RK3562_NBYTES;
-+	addr_offset = offset % RK3562_NBYTES;
-+	addr_len = addr_end - addr_start;
++/ {
++	model = "Rockchip RK3562 kickpi k3";
++	compatible = "kickpi,rk3562-kickpi-k3", "rockchip,rk3562";
 +
-+	buf = kzalloc(array3_size(addr_len, RK3562_NBYTES, sizeof(*buf)),
-+		      GFP_KERNEL);
-+	if (!buf)
-+		return -ENOMEM;
++	aliases {
++		mmc0  = &sdhci;
++		mmc1  = &sdmmc0;
++		serial0 = &uart0;
++	};
 +
-+	ret = rockchip_otp_reset(otp);
-+	if (ret) {
-+		dev_err(otp->dev, "failed to reset otp phy\n");
-+		goto out;
-+	}
++	chosen {
++		stdout-path = "console=serial0,1500000n8";
++	};
 +
-+	ret = rockchip_otp_ecc_enable(otp, false);
-+	if (ret < 0) {
-+		dev_err(otp->dev, "rockchip_otp_ecc_enable err\n");
-+		goto out;
-+	}
-+
-+	writel(OTPC_USE_USER | OTPC_USE_USER_MASK, otp->base + OTPC_USER_CTRL);
-+	udelay(5);
-+	while (addr_len--) {
-+		writel(addr_start++ | OTPC_USER_ADDR_MASK,
-+		       otp->base + OTPC_USER_ADDR);
-+		writel(OTPC_USER_FSM_ENABLE | OTPC_USER_FSM_ENABLE_MASK,
-+		       otp->base + OTPC_USER_ENABLE);
-+		ret = rockchip_otp_wait_status(otp, OTPC_INT_STATUS, OTPC_USER_DONE);
-+		if (ret < 0) {
-+			dev_err(otp->dev, "timeout during read setup\n");
-+			goto read_end;
-+		}
-+		out_value = readl(otp->base + OTPC_USER_Q);
-+		memcpy(&buf[i], &out_value, RK3562_NBYTES);
-+		i += RK3562_NBYTES;
-+	}
-+
-+	memcpy(val, buf + addr_offset, bytes);
-+
-+read_end:
-+	writel(0x0 | OTPC_USE_USER_MASK, otp->base + OTPC_USER_CTRL);
-+out:
-+	kfree(buf);
-+
-+	return ret;
-+}
++	vcc3v3_pcie20: regulator-vcc3v3-pcie20 {
++		compatible = "regulator-fixed";
++		regulator-name = "vcc3v3_pcie20";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		enable-active-high;
++		regulator-boot-on;
++		regulator-always-on;
++		gpios = <&gpio3 RK_PC5 GPIO_ACTIVE_HIGH>;
++		startup-delay-us = <5000>;
++		vin-supply = <&dc_12v>;
++	};
 +
 +
- static int rk3568_otp_read(void *context, unsigned int offset, void *val,
- 			   size_t bytes)
- {
-@@ -328,6 +402,17 @@ static const struct rockchip_data px30_data = {
- 	.reg_read = px30_otp_read,
- };
- 
-+static const char * const rk3562_otp_clocks[] = {
-+	"usr", "sbpi", "apb", "phy",
++	vcc5v0_usb: regulator-vcc5v0-usb {
++		compatible = "regulator-fixed";
++		regulator-name = "vcc5v0_usb";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		vin-supply = <&dc_12v>;
++	};
++
++	vcc5v0_usb_otg: regulator-vcc5v0-usb-otg {
++		compatible = "regulator-fixed";
++		regulator-name = "vcc5v0_usb_otg";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		enable-active-high;
++		gpio = <&gpio3 RK_PC6 GPIO_ACTIVE_HIGH>;
++		vin-supply = <&vcc5v0_usb>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&usb_otg_pwren>;
++	};
++
++	dc_12v: regulator-dc-12v {
++		compatible = "regulator-fixed";
++		regulator-name = "dc_12v";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = <12000000>;
++		regulator-max-microvolt = <12000000>;
++	};
++
++	vcc5v0_sys: regulator-vcc5v0-sys {
++		compatible = "regulator-fixed";
++		regulator-name = "vcc5v0_sys";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		vin-supply = <&dc_12v>;
++	};
++
++	vcc3v3_clk: regulator-vcc3v3-clk {
++		compatible = "regulator-fixed";
++		regulator-name = "vcc3v3_clk";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		vin-supply = <&vcc5v0_sys>;
++	};
++
++	vcc3v3_sys: regulator-vcc-sys {
++		compatible = "regulator-fixed";
++		regulator-name = "vcc3v3_sys";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		vin-supply = <&dc_12v>;
++	};
++
++	vcc25_ddr: regulator-vcc25-ddr {
++		compatible = "regulator-fixed";
++		regulator-name = "vcc25_ddr";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = <2500000>;
++		regulator-max-microvolt = <2500000>;
++		vin-supply = <&vcc3v3_sys>;
++	};
++
++	leds: leds {
++		compatible = "gpio-leds";
++		gpio3c0 {
++			gpios = <&gpio3 RK_PC0 GPIO_ACTIVE_HIGH>;
++			default-state = "on";
++		};
++		gpio3c1 {
++			gpios = <&gpio3 RK_PC1 GPIO_ACTIVE_HIGH>;
++			default-state = "on";
++		};
++		gpio0a6 {
++			gpios = <&gpio0 RK_PA6 GPIO_ACTIVE_HIGH>;
++			default-state = "on";
++		};
++		gpio4b6 {
++			gpios = <&gpio4 RK_PB6 GPIO_ACTIVE_HIGH>;
++			default-state = "on";
++		};
++
++		work_led: work-led {
++			gpios = <&gpio0 RK_PC0 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "heartbeat";
++		};
++		fan: fan {
++			gpios = <&gpio0 RK_PC4 GPIO_ACTIVE_HIGH>;
++			default-state = "on";
++		};
++	};
 +};
 +
-+static const struct rockchip_data rk3562_data = {
-+	.size = 0x80,
-+	.clks = rk3562_otp_clocks,
-+	.num_clks = ARRAY_SIZE(rk3562_otp_clocks),
-+	.reg_read = rk3562_otp_read,
++&i2c5 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2c5m0_xfer>;
++	status = "okay";
 +};
 +
- static const char * const rk3568_otp_clocks[] = {
- 	"usr", "sbpi", "apb", "phy",
- };
-@@ -366,6 +451,10 @@ static __maybe_unused const struct of_device_id rockchip_otp_match[] = {
- 		.compatible = "rockchip,rk3308-otp",
- 		.data = &px30_data,
- 	},
-+	{
-+		.compatible = "rockchip,rk3562-otp",
-+		.data = &rk3562_data,
-+	},
- 	{
- 		.compatible = "rockchip,rk3568-otp",
- 		.data = &rk3568_data,
++&uart4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart4m0_xfer>;
++	status = "okay";
++};
++
++&combphy {
++	status = "okay";
++};
++
++&pcie2x1 {
++	reset-gpios = <&gpio3 RK_PB0 GPIO_ACTIVE_HIGH>;
++	vpcie3v3-supply = <&vcc3v3_pcie20>;
++	status = "okay";
++};
++
++&pinctrl {
++	usb {
++		usb_otg_pwren: usb-otg-pwren {
++			rockchip,pins = <3 RK_PC6 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
++	headphone {
++		hp_det: hp-det {
++			rockchip,pins = <4 RK_PB1 RK_FUNC_GPIO &pcfg_pull_up>;
++		};
++	};
++};
++
++&uart3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart3m0_xfer>;
++	status = "okay";
++};
++
++&sdhci {
++	bus-width = <8>;
++	no-sdio;
++	no-sd;
++	non-removable;
++	mmc-hs400-1_8v;
++	mmc-hs400-enhanced-strobe;
++	full-pwr-cycle-in-suspend;
++	status = "okay";
++};
++
++&sdmmc0 {
++	no-sdio;
++	no-mmc;
++	bus-width = <4>;
++	cap-mmc-highspeed;
++	cap-sd-highspeed;
++	disable-wp;
++	sd-uhs-sdr104;
++	vmmc-supply = <&vcc3v3_sd>;
++	vqmmc-supply = <&vccio_sd>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&sdmmc0_bus4 &sdmmc0_clk &sdmmc0_cmd &sdmmc0_det>;
++	status = "okay";
++};
++
++&uart0 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&uart0m0_xfer>;
++	status = "okay";
++};
++
++&i2c0 {
++	status = "okay";
++
++	rk809: pmic@20 {
++		compatible = "rockchip,rk809";
++		reg = <0x20>;
++		interrupt-parent = <&gpio0>;
++		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
++
++		pinctrl-names = "default";
++		pinctrl-0 = <&pmic_int>;
++		rockchip,system-power-controller;
++		wakeup-source;
++		#clock-cells = <1>;
++		clock-output-names = "rk808-clkout1", "rk808-clkout2";
++		pmic-reset-func = <0>;
++		not-save-power-en = <1>;
++
++		vcc1-supply = <&vcc3v3_sys>;
++		vcc2-supply = <&vcc3v3_sys>;
++		vcc3-supply = <&vcc3v3_sys>;
++		vcc4-supply = <&vcc3v3_sys>;
++		vcc5-supply = <&vcc3v3_sys>;
++		vcc6-supply = <&vcc3v3_sys>;
++		vcc7-supply = <&vcc3v3_sys>;
++		vcc8-supply = <&vcc3v3_sys>;
++		vcc9-supply = <&vcc3v3_sys>;
++
++		pwrkey {
++			status = "okay";
++		};
++
++		pinctrl_rk8xx: pinctrl_rk8xx {
++			gpio-controller;
++			#gpio-cells = <2>;
++
++			rk817_slppin_null: rk817_slppin_null {
++				pins = "gpio_slp";
++				function = "pin_fun0";
++			};
++
++			rk817_slppin_slp: rk817_slppin_slp {
++				pins = "gpio_slp";
++				function = "pin_fun1";
++			};
++
++			rk817_slppin_pwrdn: rk817_slppin_pwrdn {
++				pins = "gpio_slp";
++				function = "pin_fun2";
++			};
++
++			rk817_slppin_rst: rk817_slppin_rst {
++				pins = "gpio_slp";
++				function = "pin_fun3";
++			};
++		};
++
++		regulators {
++			vdd_logic: DCDC_REG1 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <500000>;
++				regulator-max-microvolt = <1350000>;
++				regulator-init-microvolt = <900000>;
++				regulator-ramp-delay = <6001>;
++				regulator-initial-mode = <0x2>;
++				regulator-name = "vdd_logic";
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vdd_cpu: DCDC_REG2 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <500000>;
++				regulator-max-microvolt = <1350000>;
++				regulator-init-microvolt = <900000>;
++				regulator-ramp-delay = <6001>;
++				regulator-initial-mode = <0x2>;
++				regulator-name = "vdd_cpu";
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc_ddr: DCDC_REG3 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-initial-mode = <0x2>;
++				regulator-name = "vcc_ddr";
++				regulator-state-mem {
++					regulator-on-in-suspend;
++				};
++			};
++
++			vdd_gpu: DCDC_REG4 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <500000>;
++				regulator-max-microvolt = <1350000>;
++				regulator-init-microvolt = <900000>;
++				regulator-ramp-delay = <6001>;
++				regulator-initial-mode = <0x2>;
++				regulator-name = "vdd_gpu";
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc2v8_dvp: LDO_REG1 {
++				regulator-min-microvolt = <2800000>;
++				regulator-max-microvolt = <2800000>;
++				regulator-name = "vcc2v8_dvp";
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vdda_0v9: LDO_REG2 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <900000>;
++				regulator-max-microvolt = <900000>;
++				regulator-name = "vdda_0v9";
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vdda0v9_pmu: LDO_REG3 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <900000>;
++				regulator-max-microvolt = <900000>;
++				regulator-name = "vdda0v9_pmu";
++				regulator-state-mem {
++				regulator-on-in-suspend;
++					regulator-suspend-microvolt = <900000>;
++				};
++			};
++
++			vccio_acodec: LDO_REG4 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <3000000>;
++				regulator-max-microvolt = <3000000>;
++				regulator-name = "vccio_acodec";
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vccio_sd: LDO_REG5 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-name = "vccio_sd";
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc3v3_pmu: LDO_REG6 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-name = "vcc3v3_pmu";
++				regulator-state-mem {
++					regulator-on-in-suspend;
++					regulator-suspend-microvolt = <3300000>;
++				};
++			};
++
++			vcca_1v8: LDO_REG7 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-name = "vcca_1v8";
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcca1v8_pmu: LDO_REG8 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-name = "vcca1v8_pmu";
++				regulator-state-mem {
++				regulator-on-in-suspend;
++					regulator-suspend-microvolt = <1800000>;
++				};
++			};
++
++			vcc1v8_dvp: LDO_REG9 {
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-name = "vcc1v8_dvp";
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc_1v8: DCDC_REG5 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-name = "vcc_1v8";
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc_3v3: SWITCH_REG1 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-name = "vcc_3v3";
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc3v3_sd: SWITCH_REG2 {
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-name = "vcc3v3_sd";
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++		};
++	};
++};
 
 -- 
 2.43.0
