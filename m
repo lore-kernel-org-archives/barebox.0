@@ -1,88 +1,88 @@
-Delivery-date: Fri, 16 Jan 2026 20:43:52 +0100
+Delivery-date: Fri, 16 Jan 2026 20:43:53 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgpjc-0024U1-3C
+	id 1vgpjd-0024UT-2S
 	for lore@lore.pengutronix.de;
-	Fri, 16 Jan 2026 20:43:52 +0100
+	Fri, 16 Jan 2026 20:43:53 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vgpjY-0001hR-K8
-	for lore@pengutronix.de; Fri, 16 Jan 2026 20:43:52 +0100
+	id 1vgpjZ-0001hr-9z
+	for lore@pengutronix.de; Fri, 16 Jan 2026 20:43:53 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3mBgAkFqEvBAP/exQIFb+WG6ZkZL2vCHu9NLqPwrz+A=; b=P+lFUWIY+pEaq6CSYUxfdx2Z+3
-	j9bXugqponKVEmAwBQCfIBejljnW68vqu1M8OzoLMNOCXJQG3OP81M9QLwQTqRXDSaQJ+yXz+pqK4
-	Nsiwu9KostFQqsG8Y8+/jlrDrQhonKBXx5HUN/MY+9nay9XVty8AgXqGX4CYbnGOm/0zQJ3fja4MM
-	J3idFL7iu9+0yEIxM9oOnOHwX0xamh2U9yMP8gRVsiANmqLz3dMIuA+01QX5JDdgGDtUKi/LLZxli
-	eLWnjfcOjNuDzczdhjWTX1f1nnT6fQOwUspliuksPoyrOhgs2FV4BQ8JudXvdt8PgXOlge6DmcxmR
-	yNqOimAQ==;
+	bh=+hrY+utJNHtEoRg4Y8+a5Q6mTvLnyJVpIqVwibKGt7M=; b=Kx8b+jQo+nVHAXpbfcnPWRLOyu
+	KnvM3500vFDxt/kVNh22gHv1PCZSsUKei7GXY1EA6/xtXlTYK+htRgu2Qhvp/pCfFJ1Hj6n43UWnr
+	WM4WvypjHKOk7hEPOXV7u9nhqPvL7h2+WDowDLxcot8H05ywzI/0x/tl7AXM/Mb1gl6yv/CL387UR
+	VnGG0E4egyVx+y3oeGr9JxraxPO3UzHTLphZo0FW77HzEg+2PA6EL1/d8Xkow3dYZxvmnmBDbXiPw
+	oeSOeArYlyiRsnLhFcgZhz/qR0XJgQBi6DSJ2Tlr+5lOFXVUtzAJSrm+29NR7124iWsj5fFXSlOKQ
+	b2ACJNeA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgpii-0000000EhpA-17x4;
-	Fri, 16 Jan 2026 19:42:56 +0000
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+	id 1vgpin-0000000EhwW-0N8b;
+	Fri, 16 Jan 2026 19:43:01 +0000
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vgpid-0000000EhjN-45Lj
+	id 1vgpij-0000000Ehoh-18dJ
 	for barebox@lists.infradead.org;
-	Fri, 16 Jan 2026 19:42:53 +0000
-Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-6505d3b84bcso3672985a12.3
-        for <barebox@lists.infradead.org>; Fri, 16 Jan 2026 11:42:51 -0800 (PST)
+	Fri, 16 Jan 2026 19:42:58 +0000
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-b87693c981fso433046866b.1
+        for <barebox@lists.infradead.org>; Fri, 16 Jan 2026 11:42:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768592570; x=1769197370; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1768592575; x=1769197375; darn=lists.infradead.org;
         h=to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=3mBgAkFqEvBAP/exQIFb+WG6ZkZL2vCHu9NLqPwrz+A=;
-        b=U4hSE/EG8yhbcYjx6YV/UTMojqLRzYbgrEgoDZMLe1i6zOdRyZwzXvyNR0oPxQI+vH
-         jxRiCvoCnFJPG19fe1+3tYuyD8W40g/YzpLK+3+SKoxfzXYn3nKaV0xJOGEVnqFccdy+
-         ubxwadUjbrDY2OD6+sStOkP6xROP5OmqiJTq+biKIfzIIJgLM4PergMpI13tqDvRBdpo
-         In1N74Wt1p4QFDyEv5cGrRx8H5g7BKAdeipklDldJSpwFeP/t7+mnTQ2A7wY/nlNjgAi
-         Wf6eGGnmVUNKBC+bxAAR6L+drgLi/DNidNKEyecNjaMOkMvUS7hOMxj+fBNqfK1Di9/A
-         dzqA==
+        bh=+hrY+utJNHtEoRg4Y8+a5Q6mTvLnyJVpIqVwibKGt7M=;
+        b=hApisMlZFNRVnu6ffHrv3WUqf8pBqqNWRa24AeVm9+Z1pFhUyS8TIkxtU0hm2R6/5O
+         g+d1Z0Brb+Jp6Tt75S3aUtVyznq3nADiLVwwk9rzKTi/ANO1aPKhKxJ0JeRSvg0X0dPI
+         1JGP6Nu7K+jr+Cmpn4AdvB1kGzUy4y43Plw/8Sv7OI0I+zZV92MihYbOFoC4+C9G2Ese
+         9pzzu6PyaJGpVSfSaHf+mbSY4BMLTukTrjnuOc9hMK6UaUf5CVy44UspzcbzLT9GyxfE
+         w0pm75XSQ+VcWvnjJlg+fzABYzNxdppPIxgqFQnhDeYgrB1L1ySmJo7UjSjBahn/wmFv
+         ANDQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768592570; x=1769197370;
+        d=1e100.net; s=20230601; t=1768592575; x=1769197375;
         h=to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=3mBgAkFqEvBAP/exQIFb+WG6ZkZL2vCHu9NLqPwrz+A=;
-        b=QnMe9ApUSur74/CjWlzN9Kmb06mwrQynIiV6uOy4LaErSZbl3tIDk6Bc9ceFYDtTEp
-         FT05hqQdDCXv4kxoOMBkWuyft/D6saCmhWUqBiyQ9z6IaHCnujU9Umf/M1fZvmAtT0lf
-         KqpQ1Cu5kGeDzfxciSq9mCZuzZYA5edGH4Q+ibzRozQqBG9Hcwj9TSDefaYlOoc1kdO0
-         ulQAsvSjGGuSVILCdUMJxdzHaQI+zPYiuWr1FOGxtaGUAKObnXa0w5At45KYcJMzFaow
-         RKCFmiE2+rwizq34pqAsroArvUIfoEkdshKjY9vRGeuc3eJtxqJy+oqPthSa0rEeUSWs
-         XdkA==
-X-Forwarded-Encrypted: i=1; AJvYcCV6MrfRGZ7xRvAYAImXPim0s/syjS9GTEEw8sitsc9mtSt+Zp+ouIUJnU2sQJ3905zJZ+wiz+oc@lists.infradead.org
-X-Gm-Message-State: AOJu0YwTYCxHI2ZlsDHp1HTM7uNVhyNv8qotv6XzShhl4jW3iplUE16g
-	VGwN3niRaqXxgdGrd5W4jb81SHxsIizDh63cJRJ0eLI5SEYxbnWanoLV
-X-Gm-Gg: AY/fxX7eFx0e0mwY1ore8zg1755G/yBUkNNmo8T39/IuPuA5SH2S/D3mLTiKDpvv0C/
-	4Urf0O7dUxpI0BefT61oWiEiDKMLkflL2g09d11srEpyQUSnbvALdUk4tcz12tOsmq4/cFjblzm
-	p4WG2gc3ig9j4pggFBF5TsszZ69h73sqrH//Abiw5yZVFzRbl1qRVeSueNvZDq7pN/3+jHkRz/r
-	JfWkpU9y9wViAeGFykVHuuwszIYDoCys5vusMaBJfb4dw1ze/JvFYqBaMf5fY2U2vR6kATRnq5l
-	5WZjFeNjYhmf/88z6FUUm1L2gwx/nq51YNLP/A0yC8Ni8ka9nTApEkyhBsvTcwCtJVxV0jSaNw7
-	Fp8IVIUY+dOIoeHw1g4F+d8QbfhZVCWy09cKi0F/ynkq9UEW+a2VuCjIrRB9WW9Amf5VLn3oF5D
-	+QzWIrhaQ836g9K0EEyfvAAX/xs2I4RGdunR3RU2z+eAJFchTQrV36Nj75QYAy93dMoetymugEV
-	G1hhkbX04ZvmMzdSw6hoUTqMDEMPAxm45i5qmQvnw1tA2WEFl6+OSyj0sYtCgzNlj/NJMV+cqgJ
-	dPLLU+2QfPtTdPjF2PnBgCtTvOHDd6Y1PHk4dG76kg==
-X-Received: by 2002:a17:907:7201:b0:b73:4d06:bc8 with SMTP id a640c23a62f3a-b8793038b15mr380323766b.53.1768592569892;
-        Fri, 16 Jan 2026 11:42:49 -0800 (PST)
+        bh=+hrY+utJNHtEoRg4Y8+a5Q6mTvLnyJVpIqVwibKGt7M=;
+        b=Mt0MPRQ5WJR8k575CQ2VoHJVXhefdwEQl57oD5UtFWUN6fOoxknamZHorcfZ3Fv4vq
+         pczpzUUENN/GHaZQwOMVhhR5LzxImeOmo2lJ6bK8fVsdOSTUAY+ZVdRRe7YawhvCiMP1
+         5mwPr4RV3ZDcVpFaGMJezyeUVcsH0nIyYxoE3jSgl8J1+GQmTnyqGOBNryqCrHcggpeN
+         mHMJV/hopvZUn1oxJUp3IpeJvxuZeGdqELYgOksY0+ZWtnSaoK7nbLCTuRGyHYYxI0fE
+         fRd3kpltMymsUfczl+5s+HENCY0DFXObM09R9hNA+OmUV/LVnRdqgem7jya6pFUJAqBN
+         XLdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVggnOtB84fXHsDbKS2lMKwVb1W0ySivSdkuKyK3wOot1PzWfuvsaujix/+nKlDIc/AgnpyyHrO@lists.infradead.org
+X-Gm-Message-State: AOJu0Yz/zae8CI19ikqonwmoq7X7XQDuLdEn0RSz1LWCSHvwUFI2or5W
+	LCxRbAM4jaUgCYzn+86VAjbA1e5LWD90hHPbDPpFdj5sWNboBHn51HiQ
+X-Gm-Gg: AY/fxX4bHtEafdLnHwgPcah3ddPaoLXs2npb847tHSIy5PI0x7mhPULI4XnmwL9ILso
+	ecX+RTBoCnVFeVKbS1m4UHcya1qvdVNKxnEmgXjRn9QqMBhA+Dhf9bFU6fqMSh0mAzJ5drWeWAE
+	cKcbzcEXWBunwO+Lq2uH5wvIwfFogJZIkSajyeQ0XYmcQnO7jJI9RkSXuPNhzn2LleiC8SBiqwr
+	+RjZyrSdrg+NvhaKvV9H+t8AgfC3jcufwpYhNNhUUj05l9xfzxeVauYV0OxlfrX0p2CxXOWFD3L
+	S8h9f/1Qb4yU+rqxqrJwRPsX3UI46PUsi4cw1v22L5Gh8/wEjh/124zKWHHC/KFe34DkRbo6EZj
+	fRdqmEh6+tgJNaKm0ms3c7nTtzq6xFAoRd6OxWp7Xub/u4snWLhG+V01slih7vWKLwZgtJvc484
+	5T3aaqZ9KPkNtvIDL3oeCq5Yki2ZayzAB4Y1m/NCS3EayjMUyaXQNQdyIhwt6RvdMNkzV/OwLhT
+	9KKEpIO1/rKpTOCEO1W3dHo4iG78Xd5SXxl/B7Dat7HPGrnrSa8KobwlYR77Vai+YDNE96Ayhpq
+	fR9guqlDFushMj4p+rRgk/8C23YC1TD0h1uSWthxWg==
+X-Received: by 2002:a17:907:a41:b0:b86:f558:ecaa with SMTP id a640c23a62f3a-b8792dc7e5amr410002766b.27.1768592575124;
+        Fri, 16 Jan 2026 11:42:55 -0800 (PST)
 Received: from [127.0.1.1] (2a02-8388-08be-f800-f96f-90ee-b1eb-797e.cable.dynamic.v6.surfer.at. [2a02:8388:8be:f800:f96f:90ee:b1eb:797e])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b87959c9fb0sm328166266b.43.2026.01.16.11.42.49
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b87959c9fb0sm328166266b.43.2026.01.16.11.42.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Jan 2026 11:42:49 -0800 (PST)
+        Fri, 16 Jan 2026 11:42:54 -0800 (PST)
 From: Sohaib Mohamed <sohaib.amhmd@gmail.com>
-Date: Fri, 16 Jan 2026 20:40:40 +0100
+Date: Fri, 16 Jan 2026 20:40:48 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260116-barebox-kickpi-v1-6-d11fbccd527a@gmail.com>
+Message-Id: <20260116-barebox-kickpi-v1-14-d11fbccd527a@gmail.com>
 References: <20260116-barebox-kickpi-v1-0-d11fbccd527a@gmail.com>
 In-Reply-To: <20260116-barebox-kickpi-v1-0-d11fbccd527a@gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -90,16 +90,16 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
  Sohaib Mohamed <sohaib.amhmd@gmail.com>, 
  BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768592564; l=8461;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768592564; l=6823;
  i=sohaib.amhmd@gmail.com; s=20251127; h=from:subject:message-id;
- bh=wJtCc1gXOy33r2Z8ebp4Fc15z2pVAO16X53eunoXas4=;
- b=bLilgK7lHRsFlUOVXdNC98S9oGwok9JTMw4Y0p4Yb1kupudmxqe7bVV4/oAtjyTJrRmny7TZL
- cJGBCPyDRS8BN/GunMyTW+sdBRqOGKEfO2rpaF7Rnm5YBGBeIt/H7OM
+ bh=CAk1wLBgWgbvFNIWuD4ZD1T6ejRWVUU/OejQB5ZdcyQ=;
+ b=V8WmBOVE40o8Q3lp+L8g4U8iKev2r41WEY/zJTEHwL3tiXEBfmjQU8bP3JGfAoxJsYr+89NbV
+ 52uOzhVWHkJBrqlSVbbaRVROk4UW8wANLFUw3mXcXevXWV+i+5LmUbv
 X-Developer-Key: i=sohaib.amhmd@gmail.com; a=ed25519;
  pk=Q1nrPhN99EawVQo4UT9CZVAG4nQ2Zq/e3sfCABjccgk=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260116_114252_111632_2741C3A6 
-X-CRM114-Status: GOOD (  19.73  )
+X-CRM114-CacheID: sfid-20260116_114257_473396_43779984 
+X-CRM114-Status: GOOD (  12.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -122,233 +122,199 @@ X-Spam-Status: No, score=-2.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 06/14] ARM: rockchip: Add RK3562 KickPi K3 board support
+Subject: [PATCH 14/14] phy: rockchip: naneng-combphy: Add RK3562 support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-KICKPI-K3 is a development board based on Rockchip RK3562, the main
-control chip. It has a quad-core 64-bit Cortex-A53 processor, a main
-frequency of up to 2.0GHz, low power consumption, and high performance.
+Add RK3562 naneng combphy support for PCIe and USB3 modes with SSC,
+CTLE, PLL configuration, and support for 24MHz/25MHz/100MHz reference
+clocks.
+NOTE: this commit is compile-tested Only. I tested only USB 2.0.
 
 Signed-off-by: Sohaib Mohamed <sohaib.amhmd@gmail.com>
 ---
- arch/arm/boards/Makefile                           |  1 +
- .../boards/rockchip-rk3562-kickpi-k3/.gitignore    |  1 +
- arch/arm/boards/rockchip-rk3562-kickpi-k3/Makefile |  4 ++
- arch/arm/boards/rockchip-rk3562-kickpi-k3/board.c  | 46 ++++++++++++++++++++++
- .../boards/rockchip-rk3562-kickpi-k3/lowlevel.c    | 23 +++++++++++
- arch/arm/configs/multi_v8_defconfig                |  1 +
- arch/arm/configs/rockchip_v8_defconfig             |  1 +
- arch/arm/dts/Makefile                              |  1 +
- arch/arm/dts/rk3562-kickpi-k3.dts                  | 10 +++++
- arch/arm/dts/rk3562-kickpi-k3.dtsi                 |  2 +-
- arch/arm/mach-rockchip/Kconfig                     |  6 +++
- images/Makefile.rockchip                           |  1 +
- 12 files changed, 96 insertions(+), 1 deletion(-)
+ drivers/phy/rockchip/phy-rockchip-naneng-combphy.c | 161 +++++++++++++++++++++
+ 1 file changed, 161 insertions(+)
 
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index 946af95560..2a8e85e0b3 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -186,6 +186,7 @@ obj-$(CONFIG_MACH_LS1021AIOT)			+= ls1021aiot/
- obj-$(CONFIG_MACH_MNT_REFORM)			+= mnt-reform/
- obj-$(CONFIG_MACH_SKOV_ARM9CPU)			+= skov-arm9cpu/
- obj-$(CONFIG_MACH_RK3562_EVB2)			+= rockchip-rk3562-evb2/
-+obj-$(CONFIG_MACH_RK3562_KICKPI_K3)		+= rockchip-rk3562-kickpi-k3/
- obj-$(CONFIG_MACH_RK3568_EVB)			+= rockchip-rk3568-evb/
- obj-$(CONFIG_MACH_RK3568_BPI_R2PRO)			+= rockchip-rk3568-bpi-r2pro/
- obj-$(CONFIG_MACH_PINE64_PINETAB2)		+= pine64-pinetab2/
-diff --git a/arch/arm/boards/rockchip-rk3562-kickpi-k3/.gitignore b/arch/arm/boards/rockchip-rk3562-kickpi-k3/.gitignore
-new file mode 100644
-index 0000000000..f458f794b5
---- /dev/null
-+++ b/arch/arm/boards/rockchip-rk3562-kickpi-k3/.gitignore
-@@ -0,0 +1 @@
-+sdram-init.bin
-diff --git a/arch/arm/boards/rockchip-rk3562-kickpi-k3/Makefile b/arch/arm/boards/rockchip-rk3562-kickpi-k3/Makefile
-new file mode 100644
-index 0000000000..da63d2625f
---- /dev/null
-+++ b/arch/arm/boards/rockchip-rk3562-kickpi-k3/Makefile
-@@ -0,0 +1,4 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
-+obj-y += board.o
-+lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/rockchip-rk3562-kickpi-k3/board.c b/arch/arm/boards/rockchip-rk3562-kickpi-k3/board.c
-new file mode 100644
-index 0000000000..9e96bafb88
---- /dev/null
-+++ b/arch/arm/boards/rockchip-rk3562-kickpi-k3/board.c
-@@ -0,0 +1,46 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#define pr_fmt(fmt) "rk3562-kickpi-k3: " fmt
-+
-+#include <bootsource.h>
-+#include <common.h>
-+#include <init.h>
-+#include <mach/rockchip/bbu.h>
-+#include <globalvar.h>
-+#include <deep-probe.h>
-+
-+static int rk3562_kickpi_k3_probe(struct device *dev)
+diff --git a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
+index 7951a109f5..4a2e5f11ee 100644
+--- a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
++++ b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
+@@ -402,6 +402,163 @@ static int rockchip_combphy_probe(struct device *dev)
+ 	return PTR_ERR_OR_ZERO(phy_provider);
+ }
+ 
++static int rk3562_combphy_cfg(struct rockchip_combphy_priv *priv)
 +{
-+	int emmc_bbu_flag = 0;
-+	int sd_bbu_flag = 0;
++	const struct rockchip_combphy_grfcfg *cfg = priv->cfg->grfcfg;
++	unsigned long rate;
++	u32 val;
 +
-+	if (bootsource_get() == BOOTSOURCE_MMC) {
-+		if (bootsource_get_instance() == 2)
-+			emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
-+		else
-+			sd_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
-+	} else {
-+		emmc_bbu_flag = BBU_HANDLER_FLAG_DEFAULT;
++	switch (priv->type) {
++	case PHY_TYPE_PCIE:
++		/* Set SSC downward spread spectrum */
++		rockchip_combphy_updatel(priv, PHYREG32_SSC_MASK,
++					 PHYREG32_SSC_DOWNWARD << PHYREG32_SSC_DIR_SHIFT,
++					 PHYREG32);
++
++		rockchip_combphy_param_write(priv->phy_grf, &cfg->con0_for_pcie, true);
++		rockchip_combphy_param_write(priv->phy_grf, &cfg->con1_for_pcie, true);
++		rockchip_combphy_param_write(priv->phy_grf, &cfg->con2_for_pcie, true);
++		rockchip_combphy_param_write(priv->phy_grf, &cfg->con3_for_pcie, true);
++		break;
++	case PHY_TYPE_USB3:
++		/* Set SSC downward spread spectrum */
++		rockchip_combphy_updatel(priv, PHYREG32_SSC_MASK,
++					 PHYREG32_SSC_DOWNWARD << PHYREG32_SSC_DIR_SHIFT,
++					 PHYREG32);
++
++		/* Enable adaptive CTLE for USB3.0 Rx */
++		rockchip_combphy_updatel(priv, PHYREG15_CTLE_EN,
++					 PHYREG15_CTLE_EN, PHYREG15);
++
++		/* Set PLL KVCO fine tuning signals */
++		rockchip_combphy_updatel(priv, PHYREG33_PLL_KVCO_MASK,
++					 BIT(3), PHYREG33);
++
++		/* Set PLL LPF R1 to su_trim[10:7]=1001 */
++		writel(PHYREG12_PLL_LPF_ADJ_VALUE, priv->mmio + PHYREG12);
++
++		/* Set PLL input clock divider 1/2 */
++		val = FIELD_PREP(PHYREG6_PLL_DIV_MASK, PHYREG6_PLL_DIV_2);
++		rockchip_combphy_updatel(priv, PHYREG6_PLL_DIV_MASK, val, PHYREG6);
++
++		/* Set PLL loop divider */
++		writel(PHYREG18_PLL_LOOP, priv->mmio + PHYREG18);
++
++		/* Set PLL KVCO to min and set PLL charge pump current to max */
++		writel(PHYREG11_SU_TRIM_0_7, priv->mmio + PHYREG11);
++
++		rockchip_combphy_param_write(priv->phy_grf, &cfg->pipe_sel_usb, true);
++		rockchip_combphy_param_write(priv->phy_grf, &cfg->pipe_txcomp_sel, false);
++		rockchip_combphy_param_write(priv->phy_grf, &cfg->pipe_txelec_sel, false);
++		rockchip_combphy_param_write(priv->phy_grf, &cfg->usb_mode_set, true);
++		break;
++	default:
++		dev_err(priv->dev, "incompatible PHY type\n");
++		return -EINVAL;
 +	}
 +
-+	rockchip_bbu_mmc_register("sd", sd_bbu_flag, "/dev/mmc1");
-+	rockchip_bbu_mmc_register("emmc", emmc_bbu_flag, "/dev/mmc0");
++	rate = clk_get_rate(priv->refclk);
++
++	switch (rate) {
++	case REF_CLOCK_24MHz:
++		if (priv->type == PHY_TYPE_USB3) {
++			/* Set ssc_cnt[9:0]=0101111101 & 31.5KHz */
++			val = FIELD_PREP(PHYREG15_SSC_CNT_MASK,
++					 PHYREG15_SSC_CNT_VALUE);
++			rockchip_combphy_updatel(priv, PHYREG15_SSC_CNT_MASK,
++						 val, PHYREG15);
++
++			writel(PHYREG16_SSC_CNT_VALUE, priv->mmio + PHYREG16);
++		}
++		break;
++	case REF_CLOCK_25MHz:
++		rockchip_combphy_param_write(priv->phy_grf, &cfg->pipe_clk_25m, true);
++		break;
++	case REF_CLOCK_100MHz:
++		rockchip_combphy_param_write(priv->phy_grf, &cfg->pipe_clk_100m, true);
++		if (priv->type == PHY_TYPE_PCIE) {
++			/* Gate_tx_pck_sel length select for L1ss support */
++			rockchip_combphy_updatel(priv, PHYREG13_CKRCV_AMP0,
++						 PHYREG13_CKRCV_AMP0,
++						 PHYREG30);
++			/* PLL KVCO tuning fine */
++			val = FIELD_PREP(PHYREG33_PLL_KVCO_MASK,
++					 PHYREG33_PLL_KVCO_VALUE);
++			rockchip_combphy_updatel(priv, PHYREG33_PLL_KVCO_MASK,
++						 val, PHYREG33);
++
++			/* Enable controlling random jitter, aka RMJ */
++			writel(0x4, priv->mmio + PHYREG12);
++
++			val = PHYREG6_PLL_DIV_2 << PHYREG6_PLL_DIV_SHIFT;
++			rockchip_combphy_updatel(priv, PHYREG6_PLL_DIV_MASK,
++						 val, PHYREG6);
++
++			writel(0x32, priv->mmio + PHYREG18);
++			writel(0xf0, priv->mmio + PHYREG11);
++		}
++		break;
++	default:
++		dev_err(priv->dev, "Unsupported rate: %lu\n", rate);
++		return -EINVAL;
++	}
++
++	if (priv->ext_refclk) {
++		rockchip_combphy_param_write(priv->phy_grf, &cfg->pipe_clk_ext, true);
++		if (priv->type == PHY_TYPE_PCIE && rate == REF_CLOCK_100MHz) {
++			val = PHYREG13_RESISTER_HIGH_Z << PHYREG13_RESISTER_SHIFT;
++			val |= PHYREG13_CKRCV_AMP0;
++			rockchip_combphy_updatel(priv, PHYREG13_RESISTER_MASK, val,
++						 PHYREG13);
++
++			val = readl(priv->mmio + PHYREG14);
++			val |= PHYREG14_CKRCV_AMP1;
++			writel(val, priv->mmio + PHYREG14);
++		}
++	}
++
++	if (priv->enable_ssc) {
++		val = readl(priv->mmio + PHYREG8);
++		val |= PHYREG8_SSC_EN;
++		writel(val, priv->mmio + PHYREG8);
++	}
 +
 +	return 0;
 +}
 +
-+static const struct of_device_id rk3562_kickpi_k3_of_match[] = {
-+	{
-+		.compatible = "kickpi,rk3562-kickpi-k3",
++static const struct rockchip_combphy_grfcfg rk3562_combphy_grfcfgs = {
++	/* pipe-phy-grf */
++	.pcie_mode_set		= { 0x0000, 5, 0, 0x00, 0x11 },
++	.usb_mode_set		= { 0x0000, 5, 0, 0x00, 0x04 },
++	.pipe_rxterm_set	= { 0x0000, 12, 12, 0x00, 0x01 },
++	.pipe_txelec_set	= { 0x0004, 1, 1, 0x00, 0x01 },
++	.pipe_txcomp_set	= { 0x0004, 4, 4, 0x00, 0x01 },
++	.pipe_clk_25m		= { 0x0004, 14, 13, 0x00, 0x01 },
++	.pipe_clk_100m		= { 0x0004, 14, 13, 0x00, 0x02 },
++	.pipe_phymode_sel	= { 0x0008, 1, 1, 0x00, 0x01 },
++	.pipe_rate_sel		= { 0x0008, 2, 2, 0x00, 0x01 },
++	.pipe_rxterm_sel	= { 0x0008, 8, 8, 0x00, 0x01 },
++	.pipe_txelec_sel	= { 0x0008, 12, 12, 0x00, 0x01 },
++	.pipe_txcomp_sel	= { 0x0008, 15, 15, 0x00, 0x01 },
++	.pipe_clk_ext		= { 0x000c, 9, 8, 0x02, 0x01 },
++	.pipe_sel_usb		= { 0x000c, 14, 13, 0x00, 0x01 },
++	.pipe_phy_status	= { 0x0034, 6, 6, 0x01, 0x00 },
++	.con0_for_pcie		= { 0x0000, 15, 0, 0x00, 0x1000 },
++	.con1_for_pcie		= { 0x0004, 15, 0, 0x00, 0x0000 },
++	.con2_for_pcie		= { 0x0008, 15, 0, 0x00, 0x0101 },
++	.con3_for_pcie		= { 0x000c, 15, 0, 0x00, 0x0200 },
++};
++
++static const struct rockchip_combphy_cfg rk3562_combphy_cfgs = {
++	.num_phys = 2,
++	.phy_ids = {
++		0xff750000
 +	},
-+	{ /* Sentinel */},
++	.grfcfg		= &rk3562_combphy_grfcfgs,
++	.combphy_cfg	= rk3562_combphy_cfg,
 +};
 +
-+static struct driver rk3562_kickpi_k3_board_driver = {
-+	.name = "board-rk3562-kickpi-k3",
-+	.probe = rk3562_kickpi_k3_probe,
-+	.of_compatible = rk3562_kickpi_k3_of_match,
-+};
-+coredevice_platform_driver(rk3562_kickpi_k3_board_driver);
 +
-+BAREBOX_DEEP_PROBE_ENABLE(rk3562_kickpi_k3_of_match);
-diff --git a/arch/arm/boards/rockchip-rk3562-kickpi-k3/lowlevel.c b/arch/arm/boards/rockchip-rk3562-kickpi-k3/lowlevel.c
-new file mode 100644
-index 0000000000..4afe83189d
---- /dev/null
-+++ b/arch/arm/boards/rockchip-rk3562-kickpi-k3/lowlevel.c
-@@ -0,0 +1,23 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <common.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/rockchip/hardware.h>
-+#include <mach/rockchip/atf.h>
-+#include <debug_ll.h>
-+
-+extern char __dtb_rk3562_kickpi_k3_start[];
-+
-+ENTRY_FUNCTION(start_rk3562_kickpi_k3, r0, r1, r2)
-+{
-+	putc_ll('>');
-+
-+	if (current_el() == 3)
-+		relocate_to_adr_full(RK3562_BAREBOX_LOAD_ADDRESS);
-+	else
-+		relocate_to_current_adr();
-+
-+	setup_c();
-+
-+	rk3562_barebox_entry(__dtb_rk3562_kickpi_k3_start);
-+}
-diff --git a/arch/arm/configs/multi_v8_defconfig b/arch/arm/configs/multi_v8_defconfig
-index e576cecd89..64ac712d4a 100644
---- a/arch/arm/configs/multi_v8_defconfig
-+++ b/arch/arm/configs/multi_v8_defconfig
-@@ -30,6 +30,7 @@ CONFIG_MACH_NXP_IMX93_FRDM=y
- CONFIG_IMX_IIM=y
- CONFIG_MACH_BEAGLEPLAY=y
- CONFIG_MACH_RK3562_EVB2=y
-+CONFIG_MACH_RK3562_KICKPI_K3=y
- CONFIG_MACH_RK3568_EVB=y
- CONFIG_MACH_RK3568_BPI_R2PRO=y
- CONFIG_MACH_PINE64_PINETAB2=y
-diff --git a/arch/arm/configs/rockchip_v8_defconfig b/arch/arm/configs/rockchip_v8_defconfig
-index 3e5f76077d..117117b047 100644
---- a/arch/arm/configs/rockchip_v8_defconfig
-+++ b/arch/arm/configs/rockchip_v8_defconfig
-@@ -1,5 +1,6 @@
- CONFIG_ARCH_ROCKCHIP=y
- CONFIG_MACH_RK3562_EVB2=y
-+CONFIG_MACH_RK3562_KICKPI_K3=y
- CONFIG_MACH_RK3568_EVB=y
- CONFIG_MACH_RK3568_BPI_R2PRO=y
- CONFIG_MACH_PINE64_PINETAB2=y
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index d5e37d3e4e..ac42a6a6ae 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -141,6 +141,7 @@ lwl-$(CONFIG_MACH_PHYTEC_SOM_RK3288) += rk3288-phycore-som.dtb.o
- lwl-$(CONFIG_MACH_REALQ7) += imx6q-dmo-edmqmx6.dtb.o
- lwl-$(CONFIG_MACH_RK3562_EVB2) += rk3562-evb2-v10.dtb.o
- lwl-$(CONFIG_MACH_RK3568_EVB) += rk3568-evb1-v10.dtb.o
-+lwl-$(CONFIG_MACH_RK3562_KICKPI_K3) += rk3562-kickpi-k3.dtb.o
- lwl-$(CONFIG_MACH_RK3568_BPI_R2PRO) += rk3568-bpi-r2-pro.dtb.o
- lwl-$(CONFIG_MACH_RPI) += bcm2835-rpi.dtb.o
- lwl-$(CONFIG_MACH_RPI2) += bcm2836-rpi-2.dtb.o
-diff --git a/arch/arm/dts/rk3562-kickpi-k3.dts b/arch/arm/dts/rk3562-kickpi-k3.dts
-new file mode 100644
-index 0000000000..78e0578d9d
---- /dev/null
-+++ b/arch/arm/dts/rk3562-kickpi-k3.dts
-@@ -0,0 +1,10 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+/*
-+ * Copyright (c) 2021 Rockchip Electronics Co., Ltd.
-+ *
-+ */
-+
-+/dts-v1/;
-+
-+#include "rk3562-kickpi-k3.dtsi"
-+#include "rk3562.dtsi"
-diff --git a/arch/arm/dts/rk3562-kickpi-k3.dtsi b/arch/arm/dts/rk3562-kickpi-k3.dtsi
-index 77bd61cf30..ad5349d7c4 100644
---- a/arch/arm/dts/rk3562-kickpi-k3.dtsi
-+++ b/arch/arm/dts/rk3562-kickpi-k3.dtsi
-@@ -22,7 +22,7 @@ aliases {
- 	};
+ static int rk3568_combphy_cfg(struct rockchip_combphy_priv *priv)
+ {
+ 	const struct rockchip_combphy_grfcfg *cfg = priv->cfg->grfcfg;
+@@ -1055,6 +1212,10 @@ static const struct rockchip_combphy_cfg rk3588_combphy_cfgs = {
+ };
  
- 	chosen {
--		stdout-path = "console=serial0,1500000n8";
-+		stdout-path = "serial0:1500000n8";
- 	};
- 
- 	vcc3v3_pcie20: regulator-vcc3v3-pcie20 {
-diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
-index d359307eb7..c1c96c545e 100644
---- a/arch/arm/mach-rockchip/Kconfig
-+++ b/arch/arm/mach-rockchip/Kconfig
-@@ -70,6 +70,12 @@ config MACH_RK3562_EVB2
- 	help
- 	  Say Y here if you are using a RK3562 EVB2
- 
-+config MACH_RK3562_KICKPI_K3
-+	select ARCH_RK3562
-+	bool "RK3562 KICKPI K3"
-+	help
-+	  Say Y here if you are using a RK3562 KICKPI K3
-+
- config MACH_RK3568_EVB
- 	select ARCH_RK3568
- 	bool "RK3568 EVB"
-diff --git a/images/Makefile.rockchip b/images/Makefile.rockchip
-index 1122db4629..7651f88d62 100644
---- a/images/Makefile.rockchip
-+++ b/images/Makefile.rockchip
-@@ -38,6 +38,7 @@ FILE_barebox-rk3288-phycore-som.img = start_rk3288_phycore_som.pblb
- image-$(CONFIG_MACH_PHYTEC_SOM_RK3288) += barebox-rk3288-phycore-som.img
- 
- $(call build_rockchip_image, CONFIG_MACH_RK3562_EVB2, start_rk3562_evb2, rockchip-rk3562-evb2/sdram-init.bin, rk3562-evb2)
-+$(call build_rockchip_image, CONFIG_MACH_RK3562_KICKPI_K3, start_rk3562_kickpi_k3, rockchip-rk3562-kickpi-k3/sdram-init.bin, rk3562-kickpi-k3)
- $(call build_rockchip_image, CONFIG_MACH_RK3568_EVB, start_rk3568_evb, rockchip-rk3568-evb/sdram-init.bin, rk3568-evb)
- $(call build_rockchip_image, CONFIG_MACH_RK3568_BPI_R2PRO, start_rk3568_bpi_r2pro, rockchip-rk3568-bpi-r2pro/sdram-init.bin, rk3568-bpi-r2pro)
- $(call build_rockchip_image, CONFIG_MACH_PINE64_PINETAB2, start_pinetab2_v0, pine64-pinetab2/sdram-init.bin, pinetab2-v0)
+ static const struct of_device_id rockchip_combphy_of_match[] = {
++	{
++		.compatible = "rockchip,rk3562-naneng-combphy",
++		.data = &rk3562_combphy_cfgs,
++	},
+ 	{
+ 		.compatible = "rockchip,rk3568-naneng-combphy",
+ 		.data = &rk3568_combphy_cfgs,
 
 -- 
 2.43.0
