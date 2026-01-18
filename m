@@ -1,67 +1,67 @@
-Delivery-date: Sun, 18 Jan 2026 20:58:55 +0100
+Delivery-date: Sun, 18 Jan 2026 21:12:01 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vhYvH-002mNv-1w
+	id 1vhZ7x-002mhY-2P
 	for lore@lore.pengutronix.de;
-	Sun, 18 Jan 2026 20:58:55 +0100
+	Sun, 18 Jan 2026 21:12:01 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vhYvG-0002gr-G4
-	for lore@pengutronix.de; Sun, 18 Jan 2026 20:58:55 +0100
+	id 1vhZ7w-00040J-JA
+	for lore@pengutronix.de; Sun, 18 Jan 2026 21:12:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:To:From:Date:Reply-To
 	:Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=PmFZPPVj7m1bDTR6eQNATL5jztwAxTnqx5wa+itR9CA=; b=RosbKoikozK5/b500wmNhbBXAd
-	ANm4Oig6HgztaP1MSl/sSbnyRDG09m3Yu1Fe7xaKiEsQpe9jroTLe01+kHxkWpCYCXEURPh0NhfQw
-	knl5wxEa4wtuGDMzAfy6LLzxMS3rgPq98XtO4O0bJ3lPJq4iUrrraH+n7ovEVEjN0WJ4MALXxm7SH
-	/oaTNaLieKRw6sk1RXjv/Kei4EHnTWs0PSQmefc7MufJ6b/9WDfY4fFVhvWsYjw3MqTcofIVL0zmM
-	6MdGhdot8fAWzLhdqonTMdogJ1eTtLmq7ZJqS9o24O7DoU1A6cX2RcgDCikvaBNNTE88VjT72bsYR
-	flGfdpdA==;
+	bh=D3WYdPUxNWqJH1Cp5IYAJLiJj1hoBgyCauMr1c78MNs=; b=KtXJ+ZyKcT8/qtgu8d3RyoMGy9
+	hIXuPUxxALiyTMwEImiddQfZndjBQST3ngw4iAQgSRb7q5TTSSn8N0aExyHOjhAh1SISlDqXGemi4
+	Gykck85acowi/KzN4KWYVFx9iSKcOkIDwHTc79yU9f/tsmc1lIZAmcY6YXCmG8jLiV/BImVCKoODl
+	8nrN8sl/uAPTRy2Z/fJ8gznShsQB9SuBZnYyevOQ6fENF9okWVjBHcLJIx83YGG9nbT4UmA6chYAa
+	JiGHioTErxOrEhYu/hlgS00oLxcUqz4aZ6ErmGWtofC0WaZ6scgHN0TgJJUaVXV/f66m6iRshDlpn
+	RscfA7ug==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vhYus-00000000rX9-17st;
-	Sun, 18 Jan 2026 19:58:30 +0000
+	id 1vhZ7S-00000000t65-24LY;
+	Sun, 18 Jan 2026 20:11:30 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vhYuo-00000000rW8-3j2n
+	id 1vhZ7Q-00000000t5H-0ioq
 	for barebox@lists.infradead.org;
-	Sun, 18 Jan 2026 19:58:28 +0000
+	Sun, 18 Jan 2026 20:11:29 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1vhYun-0002cW-1v; Sun, 18 Jan 2026 20:58:25 +0100
+	id 1vhZ7O-0003un-Dk; Sun, 18 Jan 2026 21:11:26 +0100
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1vhYun-001IEV-1j;
-	Sun, 18 Jan 2026 20:58:24 +0100
+	id 1vhZ7O-001IVl-2u;
+	Sun, 18 Jan 2026 21:11:26 +0100
 Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1vhYum-001cWc-2P;
-	Sun, 18 Jan 2026 20:58:24 +0100
-Date: Sun, 18 Jan 2026 20:58:24 +0100
+	id 1vhZ7O-001cm1-0T;
+	Sun, 18 Jan 2026 21:11:26 +0100
+Date: Sun, 18 Jan 2026 21:11:26 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <20260118195824.5vfg755fnkee4vyu@pengutronix.de>
+Message-ID: <20260118201126.vywp76jpisnpouub@pengutronix.de>
 References: <20251110-v2025-09-0-topic-optee-of-handling-v1-0-8f0625ac5471@pengutronix.de>
- <20251110-v2025-09-0-topic-optee-of-handling-v1-18-8f0625ac5471@pengutronix.de>
- <45729455-5317-40d3-a052-eb62688dfda3@pengutronix.de>
+ <20251110-v2025-09-0-topic-optee-of-handling-v1-19-8f0625ac5471@pengutronix.de>
+ <5dda172a-9321-4bdf-b5bf-9b80d22532d0@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <45729455-5317-40d3-a052-eb62688dfda3@pengutronix.de>
+In-Reply-To: <5dda172a-9321-4bdf-b5bf-9b80d22532d0@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260118_115826_953522_9A325B98 
-X-CRM114-Status: GOOD (  29.19  )
+X-CRM114-CacheID: sfid-20260118_121128_211336_C7E1F223 
+X-CRM114-Status: GOOD (  14.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,134 +84,35 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 18/23] security: optee: add optee_extract_fdto helper
+Subject: Re: [PATCH 19/23] security: optee: add helpers to apply OP-TEE FDTO
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Hi,
+
 On 26-01-15, Ahmad Fatoum wrote:
-> Hello Marco,
+> Hi,
 > 
 > On 11/10/25 9:34 PM, Marco Felsch wrote:
-> > Add a helper to extract the added OP-TEE FDT overlay fragments from the
-> > FDT provided via arg2 during the boot phase into a dedicated buffer.
-> > 
-> > The dedicated overlay buffer can be used later on by the PBL code to
-> > apply the overlay to the barebox runtime DTB and to the kernel DTB.
-> > 
-> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > ---
-> >  include/tee/optee.h |  6 ++++++
-> >  security/optee.c    | 44 ++++++++++++++++++++++++++++++++++++++++++++
-> >  2 files changed, 50 insertions(+)
-> > 
-> > diff --git a/include/tee/optee.h b/include/tee/optee.h
-> > index 10e829c04f8832c4c04771800f1963e25f425482..679662a6e6944da59d24d6268ebcf5dff19d0980 100644
-> > --- a/include/tee/optee.h
-> > +++ b/include/tee/optee.h
-> > @@ -37,6 +37,7 @@ int optee_verify_header (const struct optee_header *hdr);
-> >  
-> >  void optee_set_membase(const struct optee_header *hdr);
-> >  int optee_get_membase(u64 *membase);
-> > +int optee_extract_fdto(const void *fdt, void *fdto, unsigned int fdto_sz);
-> >  
-> >  #else
-> >  
-> > @@ -49,6 +50,11 @@ static inline int optee_get_membase(u64 *membase)
-> >  	return -ENOSYS;
-> >  }
-> >  
-> > +static inline int optee_extract_fdto(const void *fdt, void *fdto, unsigned int fdto_sz)
-> > +{
-> > +	return 0;
-> > +}
-> > +
-> >  #endif /* CONFIG_HAVE_OPTEE */
-> >  
-> >  #ifdef __PBL__
-> > diff --git a/security/optee.c b/security/optee.c
-> > index 422bc1c90924ba8ab266b1aa8d06e52c819d2010..3750bb6f496af990d77f3629b470b174dd7a7c7a 100644
-> > --- a/security/optee.c
-> > +++ b/security/optee.c
-> > @@ -5,7 +5,9 @@
-> >  #include <tee/optee.h>
-> >  #include <linux/printk.h>
-> >  #include <linux/errno.h>
-> > +#include <linux/libfdt.h>
-> >  #include <linux/limits.h>
-> > +#include <pbl.h>
-> >  
-> >  static u64 optee_membase = U64_MAX;
-> >  
-> > @@ -60,3 +62,45 @@ void optee_set_membase(const struct optee_header *hdr)
-> >  	optee_membase = (u64)hdr->init_load_addr_hi << 32;
-> >  	optee_membase |= hdr->init_load_addr_lo;
-> >  }
-> > +
-> > +int optee_extract_fdto(const void *fdt, void *fdto, unsigned int fdto_sz)
-> > +{
-> > +	int err;
-> > +	int subnode;
-> > +
-> > +	err = fdt_check_header(fdt);
-> > +	if (err) {
-> > +		pr_err("Invalid device tree blob: %s\n", fdt_strerror(err));
-> > +		return err;
-> > +	}
-> > +
-> > +	err = fdt_create_empty_tree(fdto, fdto_sz);
-> > +	if (err) {
-> > +		pr_err("Failed to initialize OP-TEE FDTO space: %s\n", fdt_strerror(err));
-> > +		return err;
-> > +	}
-> > +
-> > +	fdt_for_each_subnode(subnode, fdt, 0) {
-> > +		const char *name;
-> > +		int len;
-> > +
-> > +		name = fdt_get_name(fdt, subnode, &len);
-> > +		if (!name) {
-> > +			pr_warn("Failed to query FDT node name: %s\n", fdt_strerror(len));
-> > +			continue;
-> > +		}
-> > +
-> > +		if (strncmp(name, "fragment@", 9) != 0) {
-> > +			pr_debug("Skip node %s\n", name);
-> > +			continue;
-> > +		}
-> > +
-> > +		err |= fdt_copy_node(fdt, fdto, "/", name);
+> >  config OF_FIXUP_OPTEE
+> >  	def_bool y
+> >  	depends on HAVE_OPTEE && ARM
+> > +	select LIBFDT
 > 
-> Aren't these sequential error codes? OR'ing them will produce a
-> non-sensical error code if there are different error codes returned.
+> AFAIK, we use LIBFDT only in PBL as we don't want to unflatten the whole
+> tree there. Why would you want to use it in barebox proper?
 
-That's true.
-
-> Better change to:
-> 
-> 	ret = fdt_copy_node(fdt, fdto, "/", name);
-> 	if (ret)
-> 		err = ret;
-
-Hm, but this would hide previous errors too. Of course we could break
-the loop in the error case. I will add this to the v2.
-
-> with err being initialized as zero.
-
-Sure.
+I used it due to the fdt_check_header() check within
+optee_register_overlay(). I think we can drop this check and the LIBFDT
+since barebox PBL is creating the HANDOFF_DATA_BL32_DT_OVL entry.
 
 Regards,
   Marco
 
+
 > 
-> > +	}
-> > +
-> > +	/* Clear the FDTO memory to not supply incomplete overlays */
-> > +	if (err)
-> > +		memset(fdto, 0, fdto_sz);
-> > +
-> > +	return err;
-> > +}
-> > 
+> Thanks,
+> Ahmad
 > 
 > -- 
 > Pengutronix e.K.                  |                             |
