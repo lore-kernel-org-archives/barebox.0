@@ -1,67 +1,71 @@
-Delivery-date: Sun, 18 Jan 2026 19:28:11 +0100
+Delivery-date: Sun, 18 Jan 2026 20:10:01 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vhXVT-002l6f-1S
+	id 1vhY9x-002lZH-2y
 	for lore@lore.pengutronix.de;
-	Sun, 18 Jan 2026 19:28:11 +0100
+	Sun, 18 Jan 2026 20:10:01 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vhXVS-0003uE-Bi
-	for lore@pengutronix.de; Sun, 18 Jan 2026 19:28:10 +0100
+	id 1vhY9v-0007LE-EG
+	for lore@pengutronix.de; Sun, 18 Jan 2026 20:10:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:To:From:Date:Reply-To
-	:Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=M2DT9UQv6ycMfdYsyMA37GbDELzbZKWvaX34+lL7iO4=; b=3SfuzKKfdYou7MMC8lWjU5xUrD
-	xVYzB8BIrSqfW0v8a9aPx28qJ60dLkNmnG8Hs5Gko9A+0siT8mGF8p8u5ShXEE1OG9i4jaCk/Hadp
-	6O2XPMeEChvZe3TJ/Al5mfwK+5w/oSL0N3Higcu0BqflSpIVWMC/J+slIq2GA9nnL/begfo3ebcVT
-	IFW3JLBVDQepzSQLXiqaJlFDea3Ao9hOiktoblNgO8Ph17NYHEIhkLSCqRmnCrtMTdQGHyv4HhlvZ
-	F02BVk22lxB3scp1St1e8+VGRLsgI/L9K8GtmKp1lEsCtDxJpWZ72nn5dXet7sPiVXjxmMr9yxS5l
-	w9Ym+wCg==;
+	bh=K/dajMd3mXyBWUKzy7F5/aKGMfeF8dzB3bv6vmR0mK8=; b=lxIVWgY8BJxwPcMVm9p5mvIO+d
+	J3c80AB+QEdAx6bVr69fpBZrdC3H9bBAJhHb2x1JOiisolWH4iAPRVmovCU5krBO4igia7o4kFAsV
+	otWqhz4mRJpgeonaLEl3o7vOr966uU3md0YUwUxNbuP3R0r9xmTn45uYGsYI2rOY0GSxpejw42h5d
+	0EpoNuXu0ZLHT0FvNsfKUce1YuWWf9wl4OS8QPsWWT6m8N+r+9QKxcd3TULb/NsCI3DGdAppN9ld6
+	easR2TwQn3SYP7RQWqBhim6Rom3ThgLCotsujdmEdU28vkMlMT6oQ4/9P1uPs0KTNW0GqEeu+VKTO
+	Mod8TE0Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vhXV1-00000000j5B-0Hfo;
-	Sun, 18 Jan 2026 18:27:43 +0000
+	id 1vhY9E-00000000mGN-1Sfk;
+	Sun, 18 Jan 2026 19:09:16 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vhXUx-00000000j3n-3V3H
+	id 1vhY9B-00000000mFh-0FNH
 	for barebox@lists.infradead.org;
-	Sun, 18 Jan 2026 18:27:41 +0000
+	Sun, 18 Jan 2026 19:09:14 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1vhXUw-0003pR-51; Sun, 18 Jan 2026 19:27:38 +0100
+	id 1vhY99-0007Db-9E; Sun, 18 Jan 2026 20:09:11 +0100
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1vhXUw-001Hix-24;
-	Sun, 18 Jan 2026 19:27:37 +0100
+	id 1vhY99-001Hua-2U;
+	Sun, 18 Jan 2026 20:09:11 +0100
 Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1vhXUv-001bp9-2l;
-	Sun, 18 Jan 2026 19:27:37 +0100
-Date: Sun, 18 Jan 2026 19:27:37 +0100
+	id 1vhY98-001cCz-37;
+	Sun, 18 Jan 2026 20:09:10 +0100
+Date: Sun, 18 Jan 2026 20:09:10 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <20260118182737.bjdtfiqxvwsr3cbc@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Message-ID: <20260118190910.kz45bwlaujcq6bxz@pengutronix.de>
 References: <20251110-v2025-09-0-topic-optee-of-handling-v1-0-8f0625ac5471@pengutronix.de>
- <20251110-v2025-09-0-topic-optee-of-handling-v1-14-8f0625ac5471@pengutronix.de>
- <67f78008-804b-4732-bd94-2b2b7bda5ec8@pengutronix.de>
+ <20251110-v2025-09-0-topic-optee-of-handling-v1-4-8f0625ac5471@pengutronix.de>
+ <df2aa615-ac27-42d9-a1f2-38d0d6dd5b50@pengutronix.de>
+ <20260115132628.6ot2ph7auhq3ezfw@pengutronix.de>
+ <2c560076-4767-4bd1-b420-8f1d4c505a20@pengutronix.de>
+ <50ee3a64-a59f-42fc-a26b-cf8ff3176142@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <67f78008-804b-4732-bd94-2b2b7bda5ec8@pengutronix.de>
+In-Reply-To: <50ee3a64-a59f-42fc-a26b-cf8ff3176142@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260118_102739_871856_EB6FD7A1 
-X-CRM114-Status: GOOD (  32.53  )
+X-CRM114-CacheID: sfid-20260118_110913_126326_1C9DC1FF 
+X-CRM114-Status: GOOD (  28.02  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,7 +77,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: BAREBOX <barebox@lists.infradead.org>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -84,92 +87,71 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 14/23] ARM: i.MX: scratch: add OP-TEE FDTO support
+Subject: Re: [PATCH 04/23] ARM: i.MX8M: add support to pass DT via
+ imx8m{m,n,q,p}_load_and_start_image_via_tfa()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 Hi Ahmad,
 
 On 26-01-15, Ahmad Fatoum wrote:
-> Hello Marco,
+> Hi,
 > 
-> On 11/10/25 9:34 PM, Marco Felsch wrote:
-> > OP-TEE has the support to write DTB overlay fragments if enabled via
-> > OP-TEE config switch CFG_EXTERNAL_DTB_OVERLAY.
-> > 
-> > The overlay fragments are added to the exisiting DTB if OP-TEE was
-> > started with a DTB provided via arg2 or written to a stand-alone DTB
-> > overlay.
-> > 
-> > This adds a dedicated storage slot which can be passed to OP-TEE or be
-> > used by barebox to extract the added overlay fragment into it.
-> > 
-> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > ---
+> On 1/15/26 3:01 PM, Ahmad Fatoum wrote:
+> > I have grown to dislike the boilerplate nature of our PBL entry points.
+> > I want to rework this fully in the coming months, so I would prefer not
+> > to add intermediate breakage till then, so users can switch at once to
+> > the new model.
 > 
+> I think I need to clarify this a little:
 > 
-> > +config SCRATCH_FDTO_SIZE
-> > +	hex
-> > +	default 0x0
-> > +	default 0x4000 if PBL_EARLY_FDT_LOAD
-> > +	prompt "Scratch FDTO size"
-> > +	help
-> > +	  The size of possible FDT overlay areas used by BL3x binaries to store
-> > +	  runtime generated overlays. Can be 0x0 if early FDT support is not
-> > +	  requied e.g. during BL31 and BL32 stage.
-> 
-> I understand the need, but I dislike that we add such fine-grained
-> Kconfig symbols here. With Sascha's series to make barebox proper an
-> ELF, PBL will have more insight about how much space barebox proper
-> occupies and I intend to send a series after it to allow easier
-> allocation for hand-off data.
+> It's fine to break out-of-tree code. If it's some breakage that may
+> easily be missed by users, we add a migration guide entry.
+> That's why we have the guides in the first place.
 
-Don't get me wrong I don't like it either. To be honest, I really
-don't like the current firmware handling since it doesn't scale for
-multi-images.
+Good point, I missed to add an entry for it.
 
-> I will include provisions for passing around the device tree and an
-> overlay with that series, so please hold off sending your v2 until then.
+> In this case, I believe handover is a good solution on its own merits
+> and not introducing unnecessary breakage right now is a good side-effect.
 
-This series is on the list since quite a while. Unfortunately I didn't
-had the time to ping the ML since I was busy with other projects and
-also tried in the mean time to get the missing OP-TEE part mainline.
+I get your point regarding the unnecessary breakage. It would have been
+nice if we could have a TF-A loading abstraction within the PBL since
+loading the TF-A and (opt. OP-TEE OS) is mostly the same on each and
+every ARMv8-A SoC and we tend to adapt barebox rather than adapting the
+TF-A binary.
 
-However, I would like to get this mainline. Not sure how Sascha is going
-to pick the patchsets but for the purpose of converting behaviours I
-used a generic name like SCRATCH_FDTO_SIZE, instead of going the
-Rockchip way which defined a Rockchip specific variable (unfortunately).
+However I would like to mention that handover data was meant to be
+passing data between the PBL and barebox. We would repurpose the
+handover mechanism if we would use the handover data. In this case it
+could be re-used in several other places. Therefore I'm not a fan of
+this idea.
 
-However, I would like to get this series mainline ASAP since my customer
-is going to rely on the mechanism we implemented here. Furthermore it
-improves the situation for i.MX6/i.MX7 by a lot (with Fabians patchset).
+What do you think about adding the 'fdt' support only to the 'lowlevel'
+APIs:
+  - __imx8mp_load_and_start_image_via_tfa()
+  - __imx8mm_load_and_start_image_via_tfa()
+  - __imx8mn_load_and_start_image_via_tfa()
+?
+
+These APIs are most certainly not used by anyone who is using the
+current standard way of booting OP-TEE for these platforms. Of course we
+could also add helpers like:
+
+imx8mn_load_and_start_image_via_tfa_with_fdt()
+
+but the naming is becoming very clunky.
+
+> if it turns out to not work out of the box or complicate things in an
+> disproportionate manner, please let me know and we can re-evaluate.
+
+Please see my above points.
 
 Regards,
   Marco
 
-
 > 
 > Thanks,
 > Ahmad
-> 
-> 
-> > +
-> >  config MALLOC_ALIGNMENT
-> >  	hex
-> >  	default 8
-> > diff --git a/include/mach/imx/scratch.h b/include/mach/imx/scratch.h
-> > index 43bf55de48099f1662cd4331620a93303d4dd710..a9745a95732dd961dcae83ec46c3eaa078d62a16 100644
-> > --- a/include/mach/imx/scratch.h
-> > +++ b/include/mach/imx/scratch.h
-> > @@ -15,6 +15,7 @@ const struct optee_header *imx_scratch_get_optee_hdr(void);
-> >  void imx_scratch_save_optee_hdr(const struct optee_header *hdr);
-> >  
-> >  void imx_scratch_get_fdt(void **fdt, unsigned int *fdt_sz);
-> > +void imx_scratch_get_optee_fdto(void **fdto, unsigned int *fdto_sz);
-> >  
-> >  #define imx8mq_init_scratch_space() imx8m_init_scratch_space(32, true)
-> >  #define imx8mm_init_scratch_space() imx8m_init_scratch_space(32, true)
-> > 
 > 
 > -- 
 > Pengutronix e.K.                  |                             |
