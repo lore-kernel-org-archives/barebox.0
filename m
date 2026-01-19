@@ -1,68 +1,70 @@
-Delivery-date: Mon, 19 Jan 2026 12:21:19 +0100
+Delivery-date: Mon, 19 Jan 2026 12:27:14 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vhnJw-0030ky-0V
+	id 1vhnPf-0030qX-0N
 	for lore@lore.pengutronix.de;
-	Mon, 19 Jan 2026 12:21:19 +0100
+	Mon, 19 Jan 2026 12:27:14 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vhnJv-0001Te-6W
-	for lore@pengutronix.de; Mon, 19 Jan 2026 12:21:19 +0100
+	id 1vhnPe-0002fd-4R
+	for lore@pengutronix.de; Mon, 19 Jan 2026 12:27:14 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=PWNL4pVYyczgmjeWO3aFrS9H96tMJwD0Rfn9QG+upN4=; b=DUed0daBbxv0TPkWb1SrjoWd1p
-	XB19ZZExrJ6fl+a60NGvweh3NyubZNGtvD654MHgKc/TOYYw4UMewLMY7ZqMbQSlzFeOxAUvMjTgM
-	FzX54EV7hqDXBNwgCVXzn2LkJ+dC4k2nEAkrUCfloyR2nXqw1SL7oEt9UDfzLk2ePxcwtDERQbqhC
-	+n9wI5IoBysL49PlpasOz8kzileVDyxE4366nNmEbquFhZkBr8PbgwrTN+9Pb0nXgupiQMH6ablup
-	0ytqHmP5Ar3AAhtDXNvPaNuGdJTpXCKCqcVv3pUWNHSdcdvedTJViW5/s/BaBp+BY4v5Sqm9qxMXj
-	h03FiYTg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=MHc+8dcAwc1xqrDGZeXQF62o7TmHuc7VYTt33S/lJYM=; b=3hrDNL1qAghHdW8Zr03DAl2yIS
+	DpFGZ8159JbdPJCtqWGaRwcZhxPlA7x00STPGjBoRpybgKeo1VOT8PtEsWKDQxUp+QQ/vTRzBVe1m
+	qgUKllvapQCsNJGeI9I+3r9iL53JvUN3g2eJ1Oc8vsWebILAQQxpiqJEDRjBodRTuryu1aln/GkuM
+	Aez+MWEjSWEuan48M2hR8BgTGtdTl0qzcyALHrMYzSZcUuLVg0r7jcuabc9SGTd/rAP9dmKaU1+kh
+	Os/XKIXDPpnQCqt0lFWaiMmfxjTrUYf/flTfiEdXnbBPA/2lEknEmlwAEqlQFebstqPvFaSLKYziI
+	9tSM9TNw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vhnJE-00000001sQg-43Ev;
-	Mon, 19 Jan 2026 11:20:36 +0000
+	id 1vhnP7-00000001tTK-45ZF;
+	Mon, 19 Jan 2026 11:26:42 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vhnJ0-00000001sPh-37Jx
+	id 1vhnOw-00000001tR3-0mXp
 	for barebox@lists.infradead.org;
-	Mon, 19 Jan 2026 11:20:35 +0000
+	Mon, 19 Jan 2026 11:26:37 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vhnIy-0001H6-PK; Mon, 19 Jan 2026 12:20:20 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1vhnOu-0002R6-5Q; Mon, 19 Jan 2026 12:26:28 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vhnIz-001P4I-0q;
-	Mon, 19 Jan 2026 12:20:20 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vhnIy-00000003oRA-2GN4;
-	Mon, 19 Jan 2026 12:20:20 +0100
+	(envelope-from <sha@pengutronix.de>)
+	id 1vhnOu-001P4n-22;
+	Mon, 19 Jan 2026 12:26:27 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vhnOt-003NIf-2j;
+	Mon, 19 Jan 2026 12:26:27 +0100
+Date: Mon, 19 Jan 2026 12:26:27 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20260119111058.3120441-1-a.fatoum@barebox.org>
-References: <20260119111058.3120441-1-a.fatoum@barebox.org>
-Message-Id: <176882162053.908837.3446108345105174567.b4-ty@pengutronix.de>
-Date: Mon, 19 Jan 2026 12:20:20 +0100
+To: Ahmad Fatoum <a.fatoum@barebox.org>
+Cc: barebox@lists.infradead.org
+Message-ID: <aW4U4_oW-TftHzGa@pengutronix.de>
+References: <20260116101404.3954872-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260116101404.3954872-1-a.fatoum@barebox.org>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260119_032025_735174_0A601D9B 
-X-CRM114-Status: UNSURE (   7.77  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260119_032632_980128_29807BFC 
+X-CRM114-Status: GOOD (  19.37  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,29 +86,41 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] gitignore: ignore Labgrid --lg-log's console_main
+Subject: Re: [PATCH] test: py: add dry run check for FIT image
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Mon, 19 Jan 2026 12:10:57 +0100, Ahmad Fatoum wrote:
-> Calling pytest with --lg-log generates a console_main with the log
-> output, which leads often to false positives for me when searching
-> strings with ripgrep.
+On Fri, Jan 16, 2026 at 11:14:03AM +0100, Ahmad Fatoum wrote:
+> A dry run should not alter system state in a way that would inhibit
+> normal operation or repeated dry runs.
 > 
-> Add the file to .gitignore to fix this.
+> The FIT image boot in the test suite, however, reduces the VFS root's
+> reference count beyond the initial value before the bootm.
 > 
+> This leads to a warning on boot that can be reproduced by repeating the
+> dry run multiple times:
 > 
-> [...]
+>   FAILED test/py/test_fit.py::test_fit_dryrun -
+> 	AssertionError: ['WARNING: at fs/fs.c:255/mntput()!',
+> 			 'WARNING: refcount for mount "/" becomes negative']
+> 
+> Add a regression test for this issue.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+> ---
+> @Sascha, given that you introduced the warning, maybe you are interested
+> in looking into this? :-)
+> I am not sure if it's 9PFS related. It's reproducible with:
 
-Applied, thanks!
+No, it's not 9pfs related. It's the O_TMPFILE creation that bites us
+here. I've sent a fix.
 
-[1/1] gitignore: ignore Labgrid --lg-log's console_main
-      https://git.pengutronix.de/cgit/barebox/commit/?id=3b5b05469175 (link may not be stable)
+Sascha
 
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
