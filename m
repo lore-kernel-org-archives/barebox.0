@@ -1,71 +1,68 @@
-Delivery-date: Mon, 19 Jan 2026 12:14:03 +0100
+Delivery-date: Mon, 19 Jan 2026 12:21:19 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vhnCt-0030fj-2M
+	id 1vhnJw-0030ky-0V
 	for lore@lore.pengutronix.de;
-	Mon, 19 Jan 2026 12:14:03 +0100
+	Mon, 19 Jan 2026 12:21:19 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vhnCs-0000DX-Np
-	for lore@pengutronix.de; Mon, 19 Jan 2026 12:14:03 +0100
+	id 1vhnJv-0001Te-6W
+	for lore@pengutronix.de; Mon, 19 Jan 2026 12:21:19 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=FNCbuDb781msTy595YVoDr+qu73DAEam4URWa+/x9Xk=; b=zWV/4rD49FQJcAvoIxbz9y+gDH
-	K0KDbmR1Qe22CwJOavTZX5AXx4Yuy1t5BJBzeKZZLmhka2BJsjPHP+OOCUEP1KV7gwovkOWX5RuF5
-	ekCvORhW4ZsiQMQzyV3mMsbYuApP+LUYDRDRNtmKy53L0po+Gghs23EKYojwpvscMAwAMUTpvPF8L
-	RyM7JxMCnlphZ0+vW1vUob5Nv4dW0ZK4YvrRXXJixBWT1SC6P0I1CAICpNzlPDEaPivTxyLXuHgQW
-	rd8zaTy+DMLpYGfA2OScekTjBW7+SjPnW7sHoss+kkj0NgfHgC9U4U+vtqf6A1M1A59k3GH5Ph1dQ
-	aiJXHUQA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=PWNL4pVYyczgmjeWO3aFrS9H96tMJwD0Rfn9QG+upN4=; b=DUed0daBbxv0TPkWb1SrjoWd1p
+	XB19ZZExrJ6fl+a60NGvweh3NyubZNGtvD654MHgKc/TOYYw4UMewLMY7ZqMbQSlzFeOxAUvMjTgM
+	FzX54EV7hqDXBNwgCVXzn2LkJ+dC4k2nEAkrUCfloyR2nXqw1SL7oEt9UDfzLk2ePxcwtDERQbqhC
+	+n9wI5IoBysL49PlpasOz8kzileVDyxE4366nNmEbquFhZkBr8PbgwrTN+9Pb0nXgupiQMH6ablup
+	0ytqHmP5Ar3AAhtDXNvPaNuGdJTpXCKCqcVv3pUWNHSdcdvedTJViW5/s/BaBp+BY4v5Sqm9qxMXj
+	h03FiYTg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vhnCU-00000001rrW-2Shv;
-	Mon, 19 Jan 2026 11:13:38 +0000
+	id 1vhnJE-00000001sQg-43Ev;
+	Mon, 19 Jan 2026 11:20:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vhnCN-00000001rrA-0mvD
+	id 1vhnJ0-00000001sPh-37Jx
 	for barebox@lists.infradead.org;
-	Mon, 19 Jan 2026 11:13:36 +0000
+	Mon, 19 Jan 2026 11:20:35 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vhnCL-00005k-By; Mon, 19 Jan 2026 12:13:29 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vhnIy-0001H6-PK; Mon, 19 Jan 2026 12:20:20 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vhnCL-001P3S-2j;
-	Mon, 19 Jan 2026 12:13:29 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vhnCL-003N2G-0G;
-	Mon, 19 Jan 2026 12:13:29 +0100
-Date: Mon, 19 Jan 2026 12:13:29 +0100
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vhnIz-001P4I-0q;
+	Mon, 19 Jan 2026 12:20:20 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vhnIy-00000003oRA-2GN4;
+	Mon, 19 Jan 2026 12:20:20 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@barebox.org>
-Cc: barebox@lists.infradead.org
-Message-ID: <aW4R2e0i8N5NF-OM@pengutronix.de>
-References: <20260115120748.3433463-1-a.fatoum@barebox.org>
- <20260115120748.3433463-5-a.fatoum@barebox.org>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
+In-Reply-To: <20260119111058.3120441-1-a.fatoum@barebox.org>
+References: <20260119111058.3120441-1-a.fatoum@barebox.org>
+Message-Id: <176882162053.908837.3446108345105174567.b4-ty@pengutronix.de>
+Date: Mon, 19 Jan 2026 12:20:20 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260115120748.3433463-5-a.fatoum@barebox.org>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260119_031333_338838_AC1E9EBC 
-X-CRM114-Status: GOOD (  22.97  )
+X-CRM114-CacheID: sfid-20260119_032025_735174_0A601D9B 
+X-CRM114-Status: UNSURE (   7.77  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,61 +84,29 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 4/6] common: boards: qemu: process some standard fw_cfg
- keys
+Subject: Re: [PATCH] gitignore: ignore Labgrid --lg-log's console_main
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Thu, Jan 15, 2026 at 01:06:12PM +0100, Ahmad Fatoum wrote:
-> While we have FW_CFG support as file system, there is a number of keys
-> that precede the keys in the file system, which can be useful in some
-> scenarios.
-> 
-> Add support for QEMU -uuid, -kernel, -initrd, -append options as well as
-> a /boot/qemu_fw_cfg script that continues booting according to the latter
-> three options.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
-> ---
->  common/boards/Kconfig                         |   8 +
->  common/boards/Makefile                        |   1 +
->  common/boards/qemu/Makefile                   |   4 +
->  .../defaultenv-qemu_fw_cfg/boot/qemu_fw_cfg   |  12 +
->  common/boards/qemu/fw_cfg.c                   | 208 ++++++++++++++++++
->  drivers/firmware/Kconfig                      |   1 +
->  6 files changed, 234 insertions(+)
->  create mode 100644 common/boards/qemu/Makefile
->  create mode 100755 common/boards/qemu/defaultenv-qemu_fw_cfg/boot/qemu_fw_cfg
->  create mode 100644 common/boards/qemu/fw_cfg.c
-> 
-> diff --git a/common/boards/Kconfig b/common/boards/Kconfig
-> index 74947316954b..a9e1b75a7641 100644
-> --- a/common/boards/Kconfig
-> +++ b/common/boards/Kconfig
-> @@ -1,5 +1,13 @@
->  # SPDX-License-Identifier: GPL-2.0-only
->  
-> +config BOARD_QEMU
-> +	bool "Extra support for QEMU-emulated boards" if COMPILE_TEST
-> +
-> +config BOARD_QEMU_VIRT
-> +	bool
-> +	select OF_OVERLAY
-> +	select BOARD_QEMU
-> +
->  config BOARD_QEMU_VIRT
->  	bool
->  	select OF_OVERLAY
 
-You likely intended to just add "select BOARD_QEMU" instead of
-duplicating the option. I'll fix that while applying.
+On Mon, 19 Jan 2026 12:10:57 +0100, Ahmad Fatoum wrote:
+> Calling pytest with --lg-log generates a console_main with the log
+> output, which leads often to false positives for me when searching
+> strings with ripgrep.
+> 
+> Add the file to .gitignore to fix this.
+> 
+> 
+> [...]
 
-Sascha
+Applied, thanks!
 
+[1/1] gitignore: ignore Labgrid --lg-log's console_main
+      https://git.pengutronix.de/cgit/barebox/commit/?id=3b5b05469175 (link may not be stable)
+
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
