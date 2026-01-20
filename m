@@ -1,92 +1,73 @@
-Delivery-date: Tue, 20 Jan 2026 15:56:22 +0100
+Delivery-date: Tue, 20 Jan 2026 16:05:16 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1viD9a-003QFJ-17
+	id 1viDIC-003QYJ-2E
 	for lore@lore.pengutronix.de;
-	Tue, 20 Jan 2026 15:56:21 +0100
+	Tue, 20 Jan 2026 16:05:16 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1viD9Z-000054-Cg
-	for lore@pengutronix.de; Tue, 20 Jan 2026 15:56:21 +0100
+	id 1viDIB-0002AI-Kx
+	for lore@pengutronix.de; Tue, 20 Jan 2026 16:05:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:Content-Transfer-Encoding
-	:Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Cc:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=SFIzWldALGhIySNG/ShRViEb8jXJuEcmYbP+uFibNCY=; b=hnD/msVryjPT5H77F7+grfEiq/
-	dR60XiKR2cKmvn6iTnuFeWO/c7WAK85FQWZgP2LhMqiR345ZSZjLgB0ss91doyjCKAAcdcNLvsiEc
-	zX+DuZtGGJkW1DGJfSlMA7qAUKJgWSeIr34kCUIxL6Ujo5eXvIbT6of22ghQDtOwz60aTFckO5RcZ
-	0TLjAmvdc1bOI9q2h8D72cRUuZOEQ6IGLluzzNLZUaLQrJPbTlwta+tKgTdlXtylOCuH0Ydeo02Dl
-	a26NdDQVLApyLOZe6UJe9MjzFdz24/6Ibn50kbspnjFOdVWzMeQdi57sqAxdMiDTwrBSZW7UWU9jn
-	TpiIc3TA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Uh7oX298M0+4bYZH94t8c08WfsbSub8bWGp2rpWYhCA=; b=BnuRYl04A8Ee0+twXdr2CqEXsB
+	P2WjE3b/qqkqXcR5EvdAOrT3uFW0GhNCwH7Ad6KXAbk957SWP0dDWlbkySTjNOFXSMwUgdZvgoMYr
+	F51Rbej+LCs/v9ONVbbH4EJCgcUJ+piSun2MJPlu/W2b0QqU/9rTPeMcMnaLzkWypI/mgJxraOAGw
+	JUDdGMr4m2WciheyqOxZ7cPFPHrLXnYOPjho19noRTL9hXkHaFMPUR6ZfKwdT1brqGLlGTm+Qjb/Q
+	u6qEoFAbtMRnxDKibEfrtB2JEEjSiN2giv++zGT83lnuRoCqPkFYUJliy87g6rcfoaFITAfDEn3/A
+	M2VbyLHA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viD90-000000041wu-3wtc;
-	Tue, 20 Jan 2026 14:55:46 +0000
+	id 1viDHe-000000042wS-3Q9W;
+	Tue, 20 Jan 2026 15:04:42 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viD90-000000041wk-0ror
+	id 1viDHd-000000042vw-2jBW
 	for barebox@bombadil.infradead.org;
-	Tue, 20 Jan 2026 14:55:46 +0000
+	Tue, 20 Jan 2026 15:04:41 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Cc:To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Sender:Reply-To:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=SFIzWldALGhIySNG/ShRViEb8jXJuEcmYbP+uFibNCY=; b=qLVGHzOk/MARz/OdU/ukYjPVHA
-	eU6S2oEaLxxoGePliq56Ivj6ZR4kdWnqD7uJMcAXwASPZLUPgH9RhwKyIrOWuCR3nClT3XwbivwBG
-	4VWKK0WKL9E52QnkiFZRwvsaBu1DRPOyDa1hsco3N1C9meQ1p8YPqNFkRQvD60JT8jbF7aXO9i5hv
-	+Op/PyPCTpD2muQCgZUg1fZt3BWdtumzScWKg67d+AbyV3kNvZ/RPLc6MRGYamltsbS7s802yQSGV
-	ftLyth0Wm6umZBQQ53zdsfF6oZCRIOJy3c0VXH98hsL8fusY32k85LO/DJKYEnGOgZQ0EeeyHITHY
-	05sdjKFg==;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+	:In-Reply-To:From:References:To:Subject:MIME-Version:Date:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description;
+	bh=Uh7oX298M0+4bYZH94t8c08WfsbSub8bWGp2rpWYhCA=; b=JBBzNCNRd5R7MVO8k9x5/aVtRZ
+	5uy1+u4+mDvc93skzgRWvEirxKyqyHj6pRd/Ng+DSPuYgwJdH8x1UAQ6tlS/2Ja3OiC1nsVvsWc0t
+	2aw3DfFxI0aEwMYGcs8fQbcWbbbCfEg249M59s00+6ScBNy2bTWKPBhbyPEm6a8ogI+jRbhnX8KmH
+	VuJdaW6dMw4DxrUexTfjqjKmQbhiEBXY1B1FpwcnVUjcOi1ePUbfzwBdZz/uCPVjlt9bm/37X3moE
+	IcCtOTpbej/D4lZ/VcXbinRkjG1NaEsJ47/jjj56tbMbhRxrOW0hMTRSligp8ZZD/3p6Q7f6t6BfV
+	SFiBwc+w==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viD8x-0000000EGF3-1LDx
+	id 1viDHa-0000000EH9N-2IQW
 	for barebox@lists.infradead.org;
-	Tue, 20 Jan 2026 14:55:45 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1viD8o-0008Ht-Vg; Tue, 20 Jan 2026 15:55:34 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1viD8p-001bKX-1P;
-	Tue, 20 Jan 2026 15:55:34 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1viD8o-00000000RaZ-2ng4;
-	Tue, 20 Jan 2026 15:55:34 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 20 Jan 2026 15:55:30 +0100
-Message-Id: <20260120-android-image-v1-0-820595a1b8a4@pengutronix.de>
+	Tue, 20 Jan 2026 15:04:40 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1viDHZ-0001v6-Oz; Tue, 20 Jan 2026 16:04:37 +0100
+Message-ID: <758e79dc-56df-491c-919f-906cdb91c56c@pengutronix.de>
+Date: Tue, 20 Jan 2026 16:04:37 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ BAREBOX <barebox@lists.infradead.org>
+References: <20260120-android-image-v1-0-820595a1b8a4@pengutronix.de>
+ <20260120-android-image-v1-2-820595a1b8a4@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <20260120-android-image-v1-2-820595a1b8a4@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAGKXb2kC/x2MQQqAIBAAvyJ7TtClIvpKdDB3qz2koRCB+Pek4
- zDMFMichDPMqkDiR7LE0MB2CvzpwsFaqDGgwdFYNNoFSlFIy+WaJO+Qhs1P3BtozZ14l/f/LWu
- tHxZIEnRfAAAA
-X-Change-ID: 20260120-android-image-dca2d5bc8e40
-To: BAREBOX <barebox@lists.infradead.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768920934; l=1065;
- i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=OrR2466lD3znAit1FGAjfiqpbsZ/iMDe88xAEWmrwkM=;
- b=cUROAc7KJDN0jug8q14rhO7VtwQSwXsyJLu+Z8xA1Jyv3KND89xbm4Ka+ErO0H7g95syu79Ui
- FgnpIvtIruaBF9wtG+WUTFqCzNNxwvdPTLum/J3FcLaUqJu2DG+3rFc
-X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
- pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260120_145543_574491_2A0D59E4 
-X-CRM114-Status: UNSURE (   8.32  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260120_150438_829306_A5076903 
+X-CRM114-Status: GOOD (  17.25  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -108,38 +89,77 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 0/2] Android image support
+Subject: Re: [PATCH 2/2] bootm: add generic android image handler
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Android images are particularly useful with fastboot. The fastboot host
-tool encapsulates boot images in its own rudimentary image format which
-we can't boot directly. This series replaces the existing ARM32/zImage
-only Android image handler with a generic handler which only passes the
-extracted Kernel/initrd image on to bootm.
+Hello Sascha,
 
-Sascha
+On 1/20/26 3:55 PM, Sascha Hauer wrote:
+> +	if (kernel)
+> +		bootm_data.os_file = kernel;
+> +
+> +	if (initrd)
+> +		bootm_data.initrd_file = initrd;
+> +
+> +	close(fd);
+> +
+> +	ret = bootm_boot(&bootm_data);
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
-Sascha Hauer (2):
-      libfile: copy_fd: add size argument
-      bootm: add generic android image handler
+Two quick comments:
 
- arch/arm/lib32/bootm.c       | 174 -------------------------------------------
- common/Makefile              |   1 +
- common/bootm-android-image.c | 154 ++++++++++++++++++++++++++++++++++++++
- common/firmware.c            |   2 +-
- include/libfile.h            |   2 +-
- lib/libfile.c                |  37 ++++++++-
- 6 files changed, 190 insertions(+), 180 deletions(-)
----
-base-commit: 0024921364eb4c8bc8089fdc198440b0d67a239f
-change-id: 20260120-android-image-dca2d5bc8e40
+I think this feature will not be usable when
+CONFIG_BOOTM_OFTREE_FALLBACK is disabled, which is a shame, because I
+think normal deployments should disable that option to avoid unexpected
+fallback behavior.
 
-Best regards,
+Here the fallback is expected though. Would it be possible to change
+this, so the barebox oftree is passed along explicitly to avoid falling
+into the fallback?
+
+On a related note, this will probably trigger a warning on every boot if
+the barebox device tree has a state node. Maybe we could mark dupes of
+the barebox device tree as such (maybe set device_node::dev to a special
+value?!), so we can skip the warning? This also bothered me with EFI
+boot, which always passes the barebox DT along and leaves it to grub or
+whatever to decide whether it wants to use it or if it wants to use
+another DT it finds itself.
+
+Thanks!
+Ahmad
+
+> +
+> +err_close:
+> +	close(fd);
+> +
+> +	if (kernel)
+> +		unlink(kernel);
+> +	if (initrd)
+> +		unlink(initrd);
+> +err:
+> +	free(hdr);
+> +
+> +	return ret;
+> +}
+> +
+> +static struct image_handler aimage_bootm_handler = {
+> +	.name = "Android boot image",
+> +	.bootm = do_bootm_aimage,
+> +	.filetype = filetype_aimage,
+> +};
+> +
+> +static int bootm_aimage_register(void)
+> +{
+> +	return register_image_handler(&aimage_bootm_handler);
+> +}
+> +late_initcall(bootm_aimage_register);
+> 
+
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
