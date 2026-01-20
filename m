@@ -1,73 +1,81 @@
-Delivery-date: Tue, 20 Jan 2026 16:05:16 +0100
+Delivery-date: Tue, 20 Jan 2026 16:59:43 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1viDIC-003QYJ-2E
+	id 1viE8u-003RGf-1C
 	for lore@lore.pengutronix.de;
-	Tue, 20 Jan 2026 16:05:16 +0100
+	Tue, 20 Jan 2026 16:59:43 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1viDIB-0002AI-Kx
-	for lore@pengutronix.de; Tue, 20 Jan 2026 16:05:16 +0100
+	id 1viE8t-0008U8-Dk
+	for lore@pengutronix.de; Tue, 20 Jan 2026 16:59:43 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Uh7oX298M0+4bYZH94t8c08WfsbSub8bWGp2rpWYhCA=; b=BnuRYl04A8Ee0+twXdr2CqEXsB
-	P2WjE3b/qqkqXcR5EvdAOrT3uFW0GhNCwH7Ad6KXAbk957SWP0dDWlbkySTjNOFXSMwUgdZvgoMYr
-	F51Rbej+LCs/v9ONVbbH4EJCgcUJ+piSun2MJPlu/W2b0QqU/9rTPeMcMnaLzkWypI/mgJxraOAGw
-	JUDdGMr4m2WciheyqOxZ7cPFPHrLXnYOPjho19noRTL9hXkHaFMPUR6ZfKwdT1brqGLlGTm+Qjb/Q
-	u6qEoFAbtMRnxDKibEfrtB2JEEjSiN2giv++zGT83lnuRoCqPkFYUJliy87g6rcfoaFITAfDEn3/A
-	M2VbyLHA==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=a6K/JMkN5SH+V17aH5kAa1mYHWhJtSWh2mNBLkRan6o=; b=IQ90doOQGUS+NXWUfaZ/vQpSJf
+	SIXNn5/Nozphd+nhA+3zQSHsEzSs8F5s93tIkz+v5G447F2T/E614AvrEmYImXZOp8oWykG5u3ukX
+	qfuKvRmgFET1OW0R4aJmoe/Qa1WEEeWMQZFX2fM+T+s07NSLFs3jSUP3T6W+R8W/Xqhpya19Idddp
+	2gP3b5710Qy7hL2Z4S8wDHsQQWRyTZATFxv6atBCi8wyIDVdTZNb2HTtXM36KYadAhH9Jf4MWji09
+	I25HfrEg+NCqxFFTSpHmfDeyMyb48C/7BPGBJEgZMsCDx3SGSlfMhwJwOxbhhU6JCWfbE38SuVAOo
+	LOYHXQDQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viDHe-000000042wS-3Q9W;
-	Tue, 20 Jan 2026 15:04:42 +0000
+	id 1viE8M-000000047OU-3wJ2;
+	Tue, 20 Jan 2026 15:59:10 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viDHd-000000042vw-2jBW
+	id 1viE8L-000000047OL-2mU5
 	for barebox@bombadil.infradead.org;
-	Tue, 20 Jan 2026 15:04:41 +0000
+	Tue, 20 Jan 2026 15:59:09 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:In-Reply-To:From:References:To:Subject:MIME-Version:Date:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description;
-	bh=Uh7oX298M0+4bYZH94t8c08WfsbSub8bWGp2rpWYhCA=; b=JBBzNCNRd5R7MVO8k9x5/aVtRZ
-	5uy1+u4+mDvc93skzgRWvEirxKyqyHj6pRd/Ng+DSPuYgwJdH8x1UAQ6tlS/2Ja3OiC1nsVvsWc0t
-	2aw3DfFxI0aEwMYGcs8fQbcWbbbCfEg249M59s00+6ScBNy2bTWKPBhbyPEm6a8ogI+jRbhnX8KmH
-	VuJdaW6dMw4DxrUexTfjqjKmQbhiEBXY1B1FpwcnVUjcOi1ePUbfzwBdZz/uCPVjlt9bm/37X3moE
-	IcCtOTpbej/D4lZ/VcXbinRkjG1NaEsJ47/jjj56tbMbhRxrOW0hMTRSligp8ZZD/3p6Q7f6t6BfV
-	SFiBwc+w==;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=a6K/JMkN5SH+V17aH5kAa1mYHWhJtSWh2mNBLkRan6o=; b=ID8CsqvekOcz70XiUvKrVNY+p0
+	sV4KMUVZQ9iol1bYtluvciipUjjuamVrrE8+u5lWFmWE7H82zKztYJgTw4H/dlZX1tnS/v7yBYTR3
+	1vRR0nrFGtRsqB1bma7b54JggprdLKHfJXm0CfqBcp7hZ57eKsAaWWqWVyACNIOtfDQkr2lRDunak
+	g1yd+d6d/SZ/16CGeDksteIkR3CzMq5C32pmKbGXQ98KW4tGUojQBu/ZwxJxnVJ5VTqLuq8rbXrAm
+	cb23xxxhNBtKm/R7+QzFu21nbZ6a+4zHnoBH4E1uy91+Y3BluklP3kSESRPcqojhd9vRtjsYDIX3c
+	JvigQ3SA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viDHa-0000000EH9N-2IQW
+	id 1viE8J-0000000EMdR-0A75
 	for barebox@lists.infradead.org;
-	Tue, 20 Jan 2026 15:04:40 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Tue, 20 Jan 2026 15:59:08 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1viDHZ-0001v6-Oz; Tue, 20 Jan 2026 16:04:37 +0100
-Message-ID: <758e79dc-56df-491c-919f-906cdb91c56c@pengutronix.de>
-Date: Tue, 20 Jan 2026 16:04:37 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- BAREBOX <barebox@lists.infradead.org>
-References: <20260120-android-image-v1-0-820595a1b8a4@pengutronix.de>
- <20260120-android-image-v1-2-820595a1b8a4@pengutronix.de>
+	id 1viE8G-0008K6-R5; Tue, 20 Jan 2026 16:59:04 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1viE8H-001bm0-10;
+	Tue, 20 Jan 2026 16:59:04 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1viE8H-0000000BY7R-0xbB;
+	Tue, 20 Jan 2026 16:59:04 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20260120-android-image-v1-2-820595a1b8a4@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 20 Jan 2026 16:58:59 +0100
+Message-ID: <20260120155902.2752563-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260120_150438_829306_A5076903 
-X-CRM114-Status: GOOD (  17.25  )
+X-CRM114-CacheID: sfid-20260120_155907_134003_CD970A52 
+X-CRM114-Status: UNSURE (   7.96  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,77 +97,37 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/2] bootm: add generic android image handler
+Subject: [PATCH master] pmdomain: rockchip: enable driver by default
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Sascha,
+Failure to enable the driver leads to annoying warnings in the best
+case:
 
-On 1/20/26 3:55 PM, Sascha Hauer wrote:
-> +	if (kernel)
-> +		bootm_data.os_file = kernel;
-> +
-> +	if (initrd)
-> +		bootm_data.initrd_file = initrd;
-> +
-> +	close(fd);
-> +
-> +	ret = bootm_boot(&bootm_data);
+  WARNING: rockchip-dw-pcie 3c0000000.pcie@fe260000.of: power domain not found (ignoring)
 
-Two quick comments:
+and to hangs in the worst case. The defconfigs already enable the
+device, but it should really be default y whenever CONFIG_ARCH_ROCKCHIP=y.
 
-I think this feature will not be usable when
-CONFIG_BOOTM_OFTREE_FALLBACK is disabled, which is a shame, because I
-think normal deployments should disable that option to avoid unexpected
-fallback behavior.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/pmdomain/rockchip/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Here the fallback is expected though. Would it be possible to change
-this, so the barebox oftree is passed along explicitly to avoid falling
-into the fallback?
-
-On a related note, this will probably trigger a warning on every boot if
-the barebox device tree has a state node. Maybe we could mark dupes of
-the barebox device tree as such (maybe set device_node::dev to a special
-value?!), so we can skip the warning? This also bothered me with EFI
-boot, which always passes the barebox DT along and leaves it to grub or
-whatever to decide whether it wants to use it or if it wants to use
-another DT it finds itself.
-
-Thanks!
-Ahmad
-
-> +
-> +err_close:
-> +	close(fd);
-> +
-> +	if (kernel)
-> +		unlink(kernel);
-> +	if (initrd)
-> +		unlink(initrd);
-> +err:
-> +	free(hdr);
-> +
-> +	return ret;
-> +}
-> +
-> +static struct image_handler aimage_bootm_handler = {
-> +	.name = "Android boot image",
-> +	.bootm = do_bootm_aimage,
-> +	.filetype = filetype_aimage,
-> +};
-> +
-> +static int bootm_aimage_register(void)
-> +{
-> +	return register_image_handler(&aimage_bootm_handler);
-> +}
-> +late_initcall(bootm_aimage_register);
-> 
-
+diff --git a/drivers/pmdomain/rockchip/Kconfig b/drivers/pmdomain/rockchip/Kconfig
+index 0ee292b45b31..05c6c73bbcc5 100644
+--- a/drivers/pmdomain/rockchip/Kconfig
++++ b/drivers/pmdomain/rockchip/Kconfig
+@@ -5,6 +5,7 @@ config ROCKCHIP_PM_DOMAINS
+ 	bool "Rockchip generic power domain"
+ 	depends on REGULATOR
+ 	select PM_GENERIC_DOMAINS
++	default ARCH_ROCKCHIP
+ 	help
+ 	  Say y here to enable power domain support.
+ 	  The PMU is dedicated for managing the power of the whole chip and may
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.47.3
 
 
 
