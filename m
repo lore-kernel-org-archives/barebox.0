@@ -1,83 +1,80 @@
-Delivery-date: Tue, 20 Jan 2026 17:12:02 +0100
+Delivery-date: Tue, 20 Jan 2026 17:12:06 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1viEKo-003Rao-1c
+	id 1viEKt-003Rb9-09
 	for lore@lore.pengutronix.de;
-	Tue, 20 Jan 2026 17:12:02 +0100
+	Tue, 20 Jan 2026 17:12:06 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1viEKn-0001Vp-BH
-	for lore@pengutronix.de; Tue, 20 Jan 2026 17:12:02 +0100
+	id 1viEKs-0001Xb-1T
+	for lore@pengutronix.de; Tue, 20 Jan 2026 17:12:06 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=VWF+nrZgjWJIUoG9GJAqGltkU0pgRfEyh7nUjFtNYbM=; b=cJVehqXdvBS56h
-	pZtat2LgwqpSvl9oC6IEOtNyV9x4bNcKbXhRe5e1MP5s9ks0U1CJrzZVz8YnMMoVva72pTjbQ27Wz
-	kREs4gBEGXNJZgzY/Wml7cjiuK2R71+bTmISAv2TdZkM3WzAe9y8I+ahcYo9nnT1cojEOZiV7Y//v
-	ZTrOu3pn8YSgUSGrPsXPs8e/oXqyKhpuG+qttyihCz3OTwHcFEsCU7R7CwO74ZeOt2CrBC/KBMlgl
-	iUE9m+G2f6hx1QEfMcu7aBMdE7/STjfUTqP/hzVezHrnQhRHf6E2nxBgdaNVzxqOzSSzl+Mb+84Wm
-	VCllG9yO4J9QFakrtOjQ==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=30OU4toLqo6ei+bk1wVzJInqIYw19Vfc7p6865CNeOk=; b=CIBwQfNnxiSSmHKD8WsSStZSLs
+	Apa0Zb95glnJJ2mQWT6cz93ojbRBtBv69WxydzNj6LaJKC5bS1AwOXbloDLpdcLugm2b3XEzrUOHJ
+	uNK0s18JLWn/MAmLZzBSvj6J+x1ZAxAewJcRySWIe0MHBBwTjIiYNffheVnfN4cemzXZYid6RPtz7
+	QPFGkhb1ZWyMVey75XMv85nG2B0n5aDyVAopY2xkTc8M9vO8Ui8kmws4/ya2+fS+oNbmZNeDBAK22
+	8yJwRuw77+IKBYmR1kVjti2Vjt6sv6kawvM9PHXvy5UUIvBpqnfdNgqv3iRDzPyIFXpiW3sEyFubn
+	WIlzAcww==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viEKM-000000048Nz-2ED6;
+	id 1viEKM-000000048No-103w;
 	Tue, 20 Jan 2026 16:11:34 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viEKL-000000048NX-0Eyf
+	id 1viEKK-000000048NW-3tJC
 	for barebox@bombadil.infradead.org;
-	Tue, 20 Jan 2026 16:11:33 +0000
+	Tue, 20 Jan 2026 16:11:32 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Cc:To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Sender:Reply-To:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=VWF+nrZgjWJIUoG9GJAqGltkU0pgRfEyh7nUjFtNYbM=; b=oM0DJEWcxRY7mdwKiGxLJYXHLq
-	maiGWGjq74oCXgOOtlfZi3gf3+0shfBjHIfPKvBLhtD3Jlt9pn4tW+c5zk6GtiMC3UcGkNjzFbrMx
-	ktKpR2liM9oOy/09wI+WvRavCJX0Ewi0nSOCfvBc5fGV5XIVqN2zCODxj54gpNW2PNt2BwXFR+qOw
-	Ix3d+jdw2wfmRT7ht5WVG306vX4UySfA3vmd/MhmNugxAHBGXKHXnZigwmzRh5E7maOvyTkz/9xrr
-	5b5ZOP/BqIJcNdpqRxk7NK0kiRraAm9+O353sf2+ozwxhkHymXdWd7ggeu+OEu9mkonm72DRgzMxl
-	FovRgPbQ==;
+	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Sender:Reply-To:Content-ID:Content-Description;
+	bh=30OU4toLqo6ei+bk1wVzJInqIYw19Vfc7p6865CNeOk=; b=kYQQwcf2qBuvvxG1py9gh+A3FH
+	VPagyydmj22N/x+udIR5Zpua2wRZj6bz5yriE/DAsD0ZCJQI6CCASpV6vaduPg/LJWf9f/urHeqMg
+	xfPNKLE/FFchSVRJoWbTgqPFKQiSXQsHjF4BgtdqhyVn4yFJNzQtgrDuwt1ltTmBM65/mYXqNbQxx
+	Qaxr/PZo6QBzahDvxc5x+SGxTC9HVrEMH01sruxZ1ADCBap/ofcX8QRRPArheUtyK0z87BJBvIdjd
+	EDkU5pSuuL9W2NsNBogW56g2GFIgQ25qbBYMwP37A0DeSF/AtBgX10AgmVYaSeyEGMNkfPprclcy7
+	/yZ+yqow==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viEKI-0000000ENhN-02tm
+	id 1viEKI-0000000ENhP-02yA
 	for barebox@lists.infradead.org;
-	Tue, 20 Jan 2026 16:11:32 +0000
+	Tue, 20 Jan 2026 16:11:31 +0000
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <jre@pengutronix.de>)
-	id 1viEKH-0001Ie-Bk; Tue, 20 Jan 2026 17:11:29 +0100
+	id 1viEKH-0001Ie-F5; Tue, 20 Jan 2026 17:11:29 +0100
 From: Jonas Rebmann <jre@pengutronix.de>
-Date: Tue, 20 Jan 2026 17:11:10 +0100
-Message-Id: <20260120-tlv_bind_serial-v3-0-91db0e4b07fb@pengutronix.de>
+Date: Tue, 20 Jan 2026 17:11:12 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAB6pb2kC/3XNTQqDMBCG4auUrJtiJv7RVe9RiiRm1AGJkthgE
- e/exFVBunwHvmc25tERena/bMxhIE+TjSGvF9YOyvbIycRmkEEhhAC+jKHRZE2ThmrkutaQq7I
- zucpYXM0OO1oP8fmKPZBfJvc5HgSRrv+tILjgpazbDgCKQqrHjLZ/L26ytN4MsgQG+EWqMwIJy
- dpKC5RYC31C9n3/Auw+jVD4AAAA
-X-Change-ID: 20251112-tlv_bind_serial-b8b24a6fd4a0
+Message-Id: <20260120-tlv_bind_serial-v3-2-91db0e4b07fb@pengutronix.de>
+References: <20260120-tlv_bind_serial-v3-0-91db0e4b07fb@pengutronix.de>
+In-Reply-To: <20260120-tlv_bind_serial-v3-0-91db0e4b07fb@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Jonas Rebmann <jre@pengutronix.de>
 X-Mailer: b4 0.15-dev-7abec
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1681; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=HHSE0m2RvfSqVcGp9xe63Tya8H5t40u/SwSAKEt7+QY=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjMX6mtJC8at1zCO545XT7YInZRFV+14vb+DdVHtyx6t
- q9to/q2jlIWBjEuBlkxRZZYNTkFIWP/62aVdrEwc1iZQIYwcHEKwEQizRkZHn//zd0689Odky+K
- rTaV7jRYLlPHNJHbOUBTcadSfqppOCPD9Rff1U/1ODixpx+5ut1p57tdZ8+6l/GseCvyYfqb2y8
- PcgEA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2236; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=KkOLobFq+MMtTlX9/R6iMvp00SIjgYarGcTQmpFXSGE=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjMX2mwRCF92aoN4ounJJ5O63wu0vnibMjq2C/MklkeN
+ +ZxCT5q6yhlYRDjYpAVU2SJVZNTEDL2v25WaRcLM4eVCWQIAxenAEzkciUjww7no+Kn7Xfb2V2X
+ 2NL6LD3E4u7U21yzVL44ZfAfz2R/8Jbhr3jwtoO3TFfN05nq6FYRtFk8Tf5wRUdkn1WdIQeb+p1
+ mfgA=
 X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
  fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260120_161130_174782_3F533A76 
-X-CRM114-Status: UNSURE (   9.65  )
+X-CRM114-CacheID: sfid-20260120_161130_179518_71719E8C 
+X-CRM114-Status: UNSURE (   8.85  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -100,50 +97,56 @@ X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v3 0/2] Bind TLV to SoC-UID register value
+Subject: [PATCH v3 2/2] bareboxtlv-generator: add raw "bytes"-format
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This series includes a mechanism for binding a TLV to a specific unit
-via the units SoC unique ID. This is to prevent interchange of the TLV
-in question between unit, which may be needed in certain secure boot
-scenarios.
+Stores a byte sequence up to the maximum supported length of 65'535
+bytes, encoded from and decoded to a hexadecimal representation.
 
-As this is the first TLV field using a raw binary field, include support
-for such a field type in the bareboxtlv-generator.
+Whitespace in the input string is skipped, allowing for arbitrary
+grouping of the hexadecimal digits in the yaml input data.
 
 Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
-Changes in v3:
-- Switch to using barebox_get_soc_uid_bin instead of comparing string
-  representations, update comments accordingly
-- Include bareboxtlv-generator support for binary fields
-- Print expected/found SoC uids as eror on mismatch
-- Don't mix dashes and underscores in property name
-- Link to v2: https://lore.barebox.org/barebox/20251117-tlv_bind_serial-v2-1-60c7b1e3e81b@pengutronix.de
+ scripts/bareboxtlv-generator/bareboxtlv-generator.py | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-Changes in v2:
-- Switch to using barebox_get_soc_uid and rename and reword everything
-  accordingly (serial number -> soc uid)
-- Init tlv_register_default as late_initcall instead of device_initcall
-- Link to v1: https://lore.barebox.org/barebox/20251112-tlv_bind_serial-v1-1-638cf222553a@pengutronix.de
+diff --git a/scripts/bareboxtlv-generator/bareboxtlv-generator.py b/scripts/bareboxtlv-generator/bareboxtlv-generator.py
+index aa243d8b06..1fd5a45d43 100755
+--- a/scripts/bareboxtlv-generator/bareboxtlv-generator.py
++++ b/scripts/bareboxtlv-generator/bareboxtlv-generator.py
+@@ -320,6 +320,18 @@ class FactoryDataset:
+                 if len(bin) > 2**16 - 1:
+                     raise ValueError(f"String {name} is too long!")
+ 
++            elif tag_format == "bytes":
++                try:
++                    bin = bytes.fromhex(value)
++                except ValueError:
++                    raise ValueError(f"{name}: Invalid hex string for bytes format")
++                if "length" in tag:
++                    if tag["length"]!=len(bin):
++                        raise ValueError(f"{name}: schema requires this byte sequence to be {tag["length"]} bytes but the given sequence is {len(bin)} byte long.")
++                fmt = f"{len(bin)}s"
++                if len(bin) > 2**16 - 1:
++                    raise ValueError(f"Bytes {name} is too long!")
++
+             elif tag_format == "decimal":
+                 fmtl = tag["length"]
+                 if fmtl == 1:
+@@ -451,6 +463,8 @@ class FactoryDataset:
+                 value = struct.unpack_from(fmt, bin, data_ptr)[0]
+             elif tag_schema["format"] == "string":
+                 value = bin[data_ptr : data_ptr + tag_len].decode("UTF-8")  # noqa E203
++            elif tag_schema["format"] == "bytes":
++                value = bin[data_ptr : data_ptr + tag_len].hex()
+             elif tag_schema["format"] == "mac-sequence":
+                 if tag_len != 7:
+                     raise ValueError(f"Tag {name} has wrong length {hex(tag_len)} but expected 0x7.")
 
----
-Jonas Rebmann (2):
-      tlv: Add tlv_bind_soc_uid mapping
-      bareboxtlv-generator: add raw "bytes"-format
-
- common/tlv/barebox.c                               | 25 +++++++++++++++++++++-
- include/tlv/tlv.h                                  |  1 +
- .../bareboxtlv-generator/bareboxtlv-generator.py   | 14 ++++++++++++
- 3 files changed, 39 insertions(+), 1 deletion(-)
----
-base-commit: 0024921364eb4c8bc8089fdc198440b0d67a239f
-change-id: 20251112-tlv_bind_serial-b8b24a6fd4a0
-
-Best regards,
---  
-Jonas Rebmann <jre@pengutronix.de>
+-- 
+2.51.2.535.g419c72cb8a
 
 
 
