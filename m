@@ -1,72 +1,81 @@
-Delivery-date: Tue, 20 Jan 2026 11:50:38 +0100
+Delivery-date: Tue, 20 Jan 2026 13:23:21 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vi9Jn-003MJR-0Q
+	id 1viAlV-003NpP-1d
 	for lore@lore.pengutronix.de;
-	Tue, 20 Jan 2026 11:50:38 +0100
+	Tue, 20 Jan 2026 13:23:21 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vi9Jm-0000vZ-4a
-	for lore@pengutronix.de; Tue, 20 Jan 2026 11:50:38 +0100
+	id 1viAlU-0005Qq-HQ
+	for lore@pengutronix.de; Tue, 20 Jan 2026 13:23:21 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=UIRgMaLwuH1DWzkXwVd2AB/kIN1s79D83O8SFTi+/u4=; b=vF0R7mIuwigFZkUmVQ2FRtkqyU
-	qQebSAa7hR6AZ8JEjXJZRWt6N5s3wGN7mSyYypoNf023WkyglKMMcNPiebPzDgE4a4qKitQhF+6tF
-	6DK5Jue5F/hhs4oOgTHwK+9aiGcSHx1qDFOsseNZijCD6jdmfpqisiolppcE2Q+Sem3+soWWVeFxr
-	oTjKyvf6gF9Tizoj9MpKJtHZy3Nl1OQtMLSAZp4cP6on0TnMKaB1dbRytwSmPv7Sw+FXoyUQ0x9Pl
-	qgskdHsTSyMO2Eh604kKzwi6TSNUlDzyajUMx6tq5uDkb8gU1MJL6kogfmgD6w1cNIJpmlgTPSg7S
-	csUGUKEw==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=R6H5X53V4qDPzNduZny/oj4cK9OVA10nnhfZ202I0A4=; b=icy5UVgOqgExgipblbn21cqTBZ
+	dXxdyyX6WoYh6P8gVJSyGA9Ao5gV9DBJIRUOanqlC2nc8BT3f/MkodZ+uRBkCpdYwjZitKJDxHfgG
+	rrW3PUP2dD6N6v7iCuX0IgGuLs/qJFiArDzPwBvzDKH1NmE219hvVgyMh4itOzPT3ygbbglVHgNew
+	Badmg2JO5ScwdccpaKxTP1WCYLmZoejbLYv9zA0YF1R5LRGmcKTEe/OPtGGjib+GyU0HdsFRf4Z61
+	N3VbJE9NIStICfG0l399YN3zP5pIpvr3gIzqhsvoT88g1X72zZNmCueaxblmxZNyt2xdInM1aoWsF
+	wO8fwxcQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vi9JE-00000003ecV-3hve;
-	Tue, 20 Jan 2026 10:50:04 +0000
+	id 1viAkx-00000003p92-3mAO;
+	Tue, 20 Jan 2026 12:22:47 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vi9JC-00000003ec7-32PA
+	id 1viAkv-00000003p6s-34od
 	for barebox@bombadil.infradead.org;
-	Tue, 20 Jan 2026 10:50:02 +0000
+	Tue, 20 Jan 2026 12:22:45 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=UIRgMaLwuH1DWzkXwVd2AB/kIN1s79D83O8SFTi+/u4=; b=Vpp7kwTgSj9twSNwRXP7F5jnXS
-	MBf2lgVxt9iEtSJldgtc570Z0Zs1q9wsXPy4by4DMu+NmNT0tRnSbxkC40jcSbtdf6HcqNTWenmAd
-	jTdi/XOfahrkwhdbAQr1MGN/GPRBchlKsqt1h8AYEGzmP66ruBDXq0eZMMFZc49snB79JnbBIK8pI
-	llFe67OINA2pEthii1jB4ZNtas39emLnVgpPbc9kQu8RjRJU9vmoCr+PSDXvfdWVJKtfojmD+gAhk
-	wua63HiOcYgVWLlqW3Ae2U2qNf6y3ww7bzfLgRu5jN8rtDLUiucVgFuQGrYCRbBzgDrWSICXAt2XH
-	ga+DpMpw==;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=R6H5X53V4qDPzNduZny/oj4cK9OVA10nnhfZ202I0A4=; b=kM3lfkTo7D9T1FUs8opfd0etZY
+	3GeqnS66OMN5u403bPk6at5Yy1+nRY8nlaZaQnUKd7F9AAWu1/3buOsLr0mERb/QLGvmplCGv8XpI
+	J/e+W0311hhWv2oaGpENLCRVOc1y6SoZWEaH7kBwWBBPlbRsvQUnNpH9uIjf6fDIVFBw+kdsxcLtx
+	lBpC03JA0hoolixVGpwhOOupN1fKC/1isLGzi99XCRVnakBcaHy/jZOck6e627zX9DgRj9BWcEi03
+	uaS7da4WOukPVVJ2yUpFkBNIeKXOpZ3MZcGbndc7yIEY2w5XI76UdqR2hu8aaq/FiKLqmEsC+CQc7
+	IOn5bYdA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vi9J9-0000000DqSV-2Urr
+	id 1viAks-0000000E0iK-2lAV
 	for barebox@lists.infradead.org;
-	Tue, 20 Jan 2026 10:50:01 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@barebox.org>)
-	id 1vi9J8-0000mK-0g; Tue, 20 Jan 2026 11:49:58 +0100
-From: Ahmad Fatoum <a.fatoum@barebox.org>
+	Tue, 20 Jan 2026 12:22:44 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1viAkr-0005J2-BA; Tue, 20 Jan 2026 13:22:41 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1viAkr-001aA3-2f;
+	Tue, 20 Jan 2026 13:22:41 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1viAkr-00000002cDY-377f;
+	Tue, 20 Jan 2026 13:22:41 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
-	Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Tue, 20 Jan 2026 11:49:53 +0100
-Message-ID: <20260120104957.41978-2-a.fatoum@barebox.org>
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Tue, 20 Jan 2026 13:22:36 +0100
+Message-ID: <20260120122240.623440-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260120104957.41978-1-a.fatoum@barebox.org>
-References: <20260120104957.41978-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260120_104959_800385_D166E5DD 
-X-CRM114-Status: GOOD (  10.69  )
+X-CRM114-CacheID: sfid-20260120_122242_788278_CFBB31B1 
+X-CRM114-Status: UNSURE (   8.31  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,56 +93,49 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] efi: loader: remove dependency on LIBFDT
+Subject: [PATCH] ARM: configs: multi: enable CONFIG_BOOT_OVERRIDE
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-LIBFDT is often available, because CONFIG_BOARD_GENERIC_DT pulls it in,
-but in the normal case, we unflatten DT and have no need for libfdt at
-all.
+From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-Remove the libfdt dependency from the EFI loader code by opencoding the
-magic check.
+The override mechanism is becoming an increasingly useful development
+aid, so enable it in the multi defconfigs.
 
-Fixes: 229bc3b37e64 ("efi: loader: implement bootm handler")
-Reported-by: Leonard Göhrs <l.goehrs@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- efi/loader/bootm.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ arch/arm/configs/multi_v7_defconfig | 1 +
+ arch/arm/configs/multi_v8_defconfig | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/efi/loader/bootm.c b/efi/loader/bootm.c
-index dffe53bcf9c8..da664847def8 100644
---- a/efi/loader/bootm.c
-+++ b/efi/loader/bootm.c
-@@ -124,15 +124,20 @@ static efi_status_t copy_fdt(void **fdtp)
-  */
- static efi_status_t efi_install_fdt(void *fdt)
- {
-+	const struct fdt_header *hdr = fdt;
- 	/*
- 	 * The EBBR spec requires that we have either an FDT or an ACPI table
- 	 * but not both.
- 	 */
- 	efi_status_t ret;
- 
--	/* Install device tree */
--	if (fdt_check_header(fdt)) {
--		pr_err("invalid device tree\n");
-+	if (hdr->magic != cpu_to_fdt32(FDT_MAGIC)) {
-+		pr_err("bad magic: 0x%08x\n", fdt32_to_cpu(hdr->magic));
-+		return EFI_LOAD_ERROR;
-+	}
-+
-+	if (hdr->version != cpu_to_fdt32(17)) {
-+		pr_err("bad dt version: 0x%08x\n", fdt32_to_cpu(hdr->version));
- 		return EFI_LOAD_ERROR;
- 	}
- 
+diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
+index 688fd1c7c19e..5db25fd1a74b 100644
+--- a/arch/arm/configs/multi_v7_defconfig
++++ b/arch/arm/configs/multi_v7_defconfig
+@@ -103,6 +103,7 @@ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_AUTO_COMPLETE=y
+ CONFIG_MENU=y
+ # CONFIG_TIMESTAMP is not set
++CONFIG_BOOT_OVERRIDE=y
+ CONFIG_BOOTM_SHOW_TYPE=y
+ CONFIG_BOOTM_VERBOSE=y
+ CONFIG_BOOTM_INITRD=y
+diff --git a/arch/arm/configs/multi_v8_defconfig b/arch/arm/configs/multi_v8_defconfig
+index 73a2d5feef37..2ceeec4a3180 100644
+--- a/arch/arm/configs/multi_v8_defconfig
++++ b/arch/arm/configs/multi_v8_defconfig
+@@ -55,6 +55,7 @@ CONFIG_PROMPT="barebox> "
+ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_AUTO_COMPLETE=y
+ CONFIG_MENU=y
++CONFIG_BOOT_OVERRIDE=y
+ CONFIG_BOOTM_SHOW_TYPE=y
+ CONFIG_BOOTM_VERBOSE=y
+ CONFIG_BOOTM_INITRD=y
 -- 
 2.47.3
 
