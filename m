@@ -1,79 +1,89 @@
-Delivery-date: Tue, 20 Jan 2026 14:41:50 +0100
+Delivery-date: Tue, 20 Jan 2026 15:56:20 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1viBzS-003P47-1Y
+	id 1viD9Y-003QEm-2x
 	for lore@lore.pengutronix.de;
-	Tue, 20 Jan 2026 14:41:50 +0100
+	Tue, 20 Jan 2026 15:56:20 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1viBzR-0007he-9q
-	for lore@pengutronix.de; Tue, 20 Jan 2026 14:41:49 +0100
+	id 1viD9X-0008W5-Ds
+	for lore@pengutronix.de; Tue, 20 Jan 2026 15:56:20 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=y7clhgab3nPGX7wTRXQMilY0ocpO8c2wFe45tm7eNq0=; b=oV+AVdyq6nWnURQMjiXS4QfuLN
-	L9UQPwts4pbzYqKWFbCwhoDEqI/9p5Pv32qw6vVNq9m8KlnRg/TVJQ6U1kJxu2XeFTvrltZQhR1kZ
-	a3bnUmpLMcRumgSpmhkDnwLdhIeU8t1oGRqR4KU4RzazzrQlE8VgFxurke/XnXh0oZM+1yAHNlxu+
-	UNdpMdVkMEFPjdkNcJB9r8WrP/b+uf5wP812R2TDuHVmt8Icxjh4T+GzAC09WtSEuptTmOUEdCdRP
-	p6iv27NVHLLDFrQ0nRayN6OAA6l7jUc8DfwVAzZTdgZl2Jc9pq+Jd+egAafcSZaB+3n/ybNVCObIU
-	zwilSE5g==;
+	bh=ENACjZMo25FJA97cPgLOq07eaVDz8JRJ0Qy10hxb9Jc=; b=y05YTfy6N2943WI2taxuTLYLS4
+	WupwPt6IaqWiEwO8ZSjszbHgDnvwafboY+eZiMJ0/l4aoNp5Pb1cdM/wMx99DmeFuZiwthc0ombrE
+	URfrXRlC935ZGJvFc+LWJ98yf/bBNvqRNVn2iYbIfSNvTyYJrSZlUtIp48KabIOdFQIO2p9kpdIf3
+	gm7dryKCzjQ5/rnbPD+Am0XoDfYAS6/iupgeKf4Rs5EoaOvgnr7m+cCs1yfd+wtjXAjBxjkyv+bZo
+	pfZzO7KIKv41L6skFAveyeIuiDBfJc8oJiQrHnc3MgjmijncTeHm66CC2VzPUIdWboirwziScWYjz
+	ySsVuIeg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viByr-00000003vMD-0dVh;
-	Tue, 20 Jan 2026 13:41:13 +0000
+	id 1viD99-000000041zR-0yrY;
+	Tue, 20 Jan 2026 14:55:55 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viByq-00000003vM6-0PaR
+	id 1viD98-000000041yn-0eON
 	for barebox@bombadil.infradead.org;
-	Tue, 20 Jan 2026 13:41:12 +0000
+	Tue, 20 Jan 2026 14:55:54 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=y7clhgab3nPGX7wTRXQMilY0ocpO8c2wFe45tm7eNq0=; b=ZCV/FVPf7/QL56HR21sOo6sBzQ
-	FcSB+52V5Sx5BC2dZe7dy94gu2QyZxlLN/scha/yz/r7I/fpyuJNZLfyPck8F+VBWiZ4Z5n9FIunJ
-	DTI9qRoEtve5ShxzEBD84xQMG21cR06cs98Ij4yi94LTUycg0XYXHwfpbSy6G4/f2ufW2VNjgiCbf
-	cuC/BRHEVtoU8bXsML0NViRxfV8DvA/lDW5jyN1GVz8eatg/H4opN0fDn/eUxElw8XUaKM6ZL4OUo
-	uZ4K5U9FNxzXwHYkY+m74IGoL97ZkYAmeaXEK/4XmZUMWX+zeOBmcRYD15CqH95k3s4ofd2/hegrZ
-	gFbpm1JA==;
+	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Sender:Reply-To:Content-ID:Content-Description;
+	bh=ENACjZMo25FJA97cPgLOq07eaVDz8JRJ0Qy10hxb9Jc=; b=JeZbJyEYtY7Sr7O4ZFq3HN4VLU
+	CiYOBjesNZYsPeokhQKonnqChnW4NPHK9ATlslV0dNqh4+9+++SPNSUwKrxXShQeidVv9MN2A8pVT
+	q0/lnzgVI8CAq09Os0KWRZJmllp5oDyO6XAcQMMJtOQ04cXI3Op+Au8tB5JmYeDtQNRGUE5ZuCmOz
+	peteFDetpCGG4OndG0vUW0lWtlZDXzcErDZsY5N1vXMCD0lEP2zzCAdhVJCNiX+yoPjpcs/bZthrE
+	vFDuGy0rJicYg8//gX7rPtjuIdvzQUUsmh1kgEk3v+E3+E4AxWU4St1a9o6Fh1XDkQ8dEgIo82z5n
+	9PRA+rTQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viBym-0000000E8Rq-49CJ
+	id 1viD95-0000000EGFM-1RIc
 	for barebox@lists.infradead.org;
-	Tue, 20 Jan 2026 13:41:11 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1viBym-0007Uo-5j; Tue, 20 Jan 2026 14:41:08 +0100
-Message-ID: <b4339f2e-e306-4f84-a43b-751ef7b4ed55@pengutronix.de>
-Date: Tue, 20 Jan 2026 14:41:06 +0100
+	Tue, 20 Jan 2026 14:55:53 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1viD8o-0008Hu-Vn; Tue, 20 Jan 2026 15:55:34 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1viD8p-001bKY-1Q;
+	Tue, 20 Jan 2026 15:55:34 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1viD8o-00000000RaZ-2p5C;
+	Tue, 20 Jan 2026 15:55:34 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 20 Jan 2026 15:55:32 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Renaud Barbier <Renaud.Barbier@ametek.com>,
- Barebox List <barebox@lists.infradead.org>
-Cc: Lucas Stach <lst@pengutronix.de>
-References: <BL0PR07MB5665EA1D980C39F834845849EC1C9@BL0PR07MB5665.namprd07.prod.outlook.com>
- <9bb964dc-3c24-7c70-b007-759c3aa85511@pengutronix.de>
- <874d52d0-f476-53cf-1331-72f80bffacbd@pengutronix.de>
- <BN8PR07MB69932217E808C9DB9435411FECD6A@BN8PR07MB6993.namprd07.prod.outlook.com>
- <9923f2ef-cbce-44a1-86bf-6aaf829d3008@pengutronix.de>
- <SJ0PR07MB9766972613A435D5377F3EBDEC84A@SJ0PR07MB9766.namprd07.prod.outlook.com>
- <SJ0PR07MB9766897F421E8809B42266ABEC8EA@SJ0PR07MB9766.namprd07.prod.outlook.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <SJ0PR07MB9766897F421E8809B42266ABEC8EA@SJ0PR07MB9766.namprd07.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260120-android-image-v1-2-820595a1b8a4@pengutronix.de>
+References: <20260120-android-image-v1-0-820595a1b8a4@pengutronix.de>
+In-Reply-To: <20260120-android-image-v1-0-820595a1b8a4@pengutronix.de>
+To: BAREBOX <barebox@lists.infradead.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768920934; l=9734;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=XaPmP7+gZyWcywm311IrKuOxWqHc+bwaq0YO9NRn7Y8=;
+ b=e4WyV+Dywo2mQKjvBf5Y41X150BjPrzUFelKn8bjParyJU4+ZarBPYBUhFCXF/UJscCR4vEDe
+ P8Z6lcwvYkeCYMHWfD5iTwu/rayRAu9cWn8URDFWbAjHGIQQwMw/xNr
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260120_134109_169708_24CC91AB 
-X-CRM114-Status: GOOD (  32.13  )
+X-CRM114-CacheID: sfid-20260120_145551_600926_2306E57F 
+X-CRM114-Status: GOOD (  25.87  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -95,149 +105,390 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: PCIE on LS1021A
+Subject: [PATCH 2/2] bootm: add generic android image handler
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Renaud,
+An Android image handler is particularly useful for use with fastboot.
+The fastboot protocol supports a "boot" command which can be used to
+boot a kernel via fastboot. The fastboot host tool encapsulates the
+Kernel binary in a Android image format which is then transferred.
 
-On 1/13/26 7:26 PM, Renaud Barbier wrote:
-> Changing the NVME to the  PCIe2 bus and fixing a few things in the MMU support, I am now able to detect the NVME:
-> 
-> nvme pci-126f:2263.0: serial: A012410180629000000
-> nvme pci-126f:2263.0: model: SM681GEF AGS
-> nvme pci-126f:2263.0: firmware: TFX7GB
-> 
-> barebox:/ ls /dev/nvme0n1
-> barebox:/ ls /dev/nvme0n1*
-> /dev/nvme0n1                        /dev/nvme0n1.0
-> /dev/nvme0n1.1                      /dev/nvme0n1.2
-> /dev/nvme0n1.3                      /dev/nvme0n1.4
-> ...
-> 
-> Thanks to the following remapping:
-> /* PCIe1 Config and memory area remapping */
-> map_io_sections(0x4000000000ULL, IOMEM(0x24000000), 192 << 20); /* PCIE1 conf space */
-> //map_io_sections(0x4040000000ULL, IOMEM(0x40000000), 128 << 20); /* PCIE1 mem space */
-> 
->  /* PCIe2 Config and memory area remapping */
-> map_io_sections(0x4800000000ULL, IOMEM(0x34000000), 192 << 20); /* PCIe2 config space */
-> map_io_sections(0x4840000000ULL, IOMEM(0x50000000), 128 << 20); /* PCIE2 mem space */
-> 
-> For some reason, I had to comment out the remapping of the PCIe1 MEM space as the system hangs just after detecting the NVME device.
-> The PCIe1 device node is not even enabled. 
-> If you have a clue, let me know.
+This patch brings us an image handler which extracts the Kernel binary
+and optionally an initrd and passes this on to bootm.
 
-I don't have an idea off the top of my head sorry.
-If you have something roughly working, it would be good if you could
-check it works with qemu-system-arm -M virt,highmem=on and send an
-initial patch series?
+We previously already had an Android image handler, but this is very
+limited and replaced with this patch. The existing handler was only
+supported on ARM32 and only zImages. It hasn't seen any active changes
+for more than 10 years.
 
-Cheers,
-Ahmad
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/lib32/bootm.c       | 174 -------------------------------------------
+ common/Makefile              |   1 +
+ common/bootm-android-image.c | 154 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 155 insertions(+), 174 deletions(-)
 
-> 
-> Cheers,
-> Renaud
-> 
-> 
-> 
-> 
->> -----Original Message-----
->> From: barebox <barebox-bounces@lists.infradead.org> On Behalf Of Renaud
->> Barbier
->> Sent: 07 January 2026 09:44
->> To: Ahmad Fatoum <a.fatoum@pengutronix.de>; Barebox List
->> <barebox@lists.infradead.org>
->> Cc: Lucas Stach <lst@pengutronix.de>
->> Subject: RE: PCIE on LS1021A
->>
->> ***NOTICE*** This came from an external source. Use caution when
->> replying, clicking links, or opening attachments.
->>
->> Based on your information and U-boot and I have started to work on the LPAE
->> support. So far full of debugging and hacks.
->>
->> It is based on the mmu_32.c file. As I have failed to use the 3 MMU tables,
->> at present I am using only 2 as  in u-boot.
->> The 64-bit PCI space is remapped with:
->> map_io_sections(0x4000000000ULL ,IOMEM(0x24000000UL), 192 << 20);
->>
->> To detect the NVME device, the virtulal address 0x24000000 is hard-coded
->> into the functions dw_pcie_[wr|rd]_other_conf of drivers/pci/pcie-
->> designware-host.c as follows:
->> if (bus->primary == pp->root_bus_nr) {
->>                   type = PCIE_ATU_TYPE_CFG0;
->>                   cpu_addr = pp->cfg0_base;
->>                   cfg_size = pp->cfg0_size;
->>                   pp->va_cfg0_base = IOMEM(0x24000000); /* XXX */
->>                   va_cfg_base = pp->va_cfg0_base;
->>
->> What is the method to pass the address to the driver?
->>
->> And I get the following:
->> layerscape-pcie 3400000.pcie@3400000.of: host bridge /soc/pcie@3400000
->> ranges:
->> layerscape-pcie 3400000.pcie@3400000.of: Parsing ranges property...
->> layerscape-pcie 3400000.pcie@3400000.of:       IO
->> 0x4000010000..0x400001ffff -> 0x0000000000
->> layerscape-pcie 3400000.pcie@3400000.of:      MEM
->> 0x4040000000..0x407fffffff -> 0x0040000000
->>
->> ERROR: io_bus_addr = 0x0, io_base = 0x4000010000
->> ERROR: mem_bus_addr = 0x4040000000 -> Based on Linux output, the
->> mem_bus_addr should be as above 0x4000.0000 to be programmed in the
->> ATU target register.
->> ERROR: mem_base = 0x4040000000, offset = 0x0
->>
->> ERROR: layerscape-pcie 3400000.pcie@3400000.of: iATU unroll: disabled
->>
->> pci: pci_scan_bus for bus 0
->> pci:  last_io = 0x00010000, last_mem = 0x40000000, last_mem_pref =
->> 0x00000000
->> pci: class = 00000604, hdr_type = 00000001
->> pci: 00:00 [1957:0e0a]
->> pci: pci_scan_bus for bus 1
->> pci:  last_io = 0x00010000, last_mem = 0x40000000, last_mem_pref =
->> 0x00000000
->>
->> pci: class = 00000108, hdr_type = 00000000
->> pci: 01:00 [126f:2263] -> NVME device found
->> pci: pbar0: mask=ffffc004 NP-MEM 16384 bytes
->> ERROR: pci: &&&  sub = 0x2263, 0x126f kind = NP-MEM&&&
->> ERROR: pci: &&& write BAR 0x10 = 0x40000000 &&& ...
->> pci: pci_scan_bus returning with max=02
->> pci: bridge NP limit at 0x40100000
->> pci: bridge IO limit at 0x00010000
->> pci: pbar0: mask=ff000000 NP-MEM 16777216 bytes
->> pci: pbar1: mask=fc000000 NP-MEM 67108864 bytes
->> pci: pci_scan_bus returning with max=02
->> ERROR: nvme pci-126f:2263.0: enabling bus mastering
->>
->> Then, the system hangs on the instruction 3 lines below:
->> ERROR: nvme_pci_enable : 0x4000001c -> Fails to access the NVME CSTS
->> register. It does not matter if mem_bus_addr is set to 0x4000.0000 to
->> program the ATU to translate the address 0x40.4000.0000 to 0x4000.0000.
->> if (readl(dev->bar + NVME_REG_CSTS) == -1)
->>
->> 0x4000.0000 is also the quadSPI memory area. So I guess I should remap the
->> access too.
->>
->> Unhappily, my work is now at a stop as there is a hardware failure on my
->> system.
->>
->> Note: the MMU may not be set properly as the out of-band fails to on TX
->> timeout. I can reach the prompt after the NVME probing failed.
->>
->>
->>
-> 
+diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
+index dca4fec020..2ae132d435 100644
+--- a/arch/arm/lib32/bootm.c
++++ b/arch/arm/lib32/bootm.c
+@@ -567,180 +567,6 @@ static struct image_handler socfpga_xload_handler = {
+ 	.filetype = filetype_socfpga_xload,
+ };
+ 
+-#include <aimage.h>
+-
+-static int aimage_load_resource(int fd, struct resource *r, void* buf, int ps)
+-{
+-	int ret;
+-	void *image = (void *)r->start;
+-	unsigned to_read = ps - resource_size(r) % ps;
+-
+-	ret = read_full(fd, image, resource_size(r));
+-	if (ret < 0)
+-		return ret;
+-
+-	ret = read_full(fd, buf, to_read);
+-	if (ret < 0)
+-		printf("could not read dummy %u\n", to_read);
+-
+-	return ret;
+-}
+-
+-static int do_bootm_aimage(struct image_data *data)
+-{
+-	struct resource *snd_stage_res;
+-	int fd, ret;
+-	struct android_header __header, *header;
+-	void *buf;
+-	int to_read;
+-	struct android_header_comp *cmp;
+-	unsigned long mem_free;
+-	unsigned long mem_start, mem_size;
+-
+-	ret = sdram_start_and_size(&mem_start, &mem_size);
+-	if (ret)
+-		return ret;
+-
+-	fd = open(data->os_file, O_RDONLY);
+-	if (fd < 0) {
+-		perror("open");
+-		return 1;
+-	}
+-
+-	header = &__header;
+-	ret = read(fd, header, sizeof(*header));
+-	if (ret < sizeof(*header)) {
+-		printf("could not read %s\n", data->os_file);
+-		goto err_out;
+-	}
+-
+-	printf("Android Image for '%s'\n", header->name);
+-
+-	/*
+-	 * As on tftp we do not support lseek and we will just have to seek
+-	 * for the size of a page - 1 max just buffer instead to read to dummy
+-	 * data
+-	 */
+-	buf = xmalloc(header->page_size);
+-
+-	to_read = header->page_size - sizeof(*header);
+-	ret = read_full(fd, buf, to_read);
+-	if (ret < 0) {
+-		printf("could not read dummy %d from %s\n", to_read, data->os_file);
+-		goto err_out;
+-	}
+-
+-	cmp = &header->kernel;
+-	data->os_res = request_sdram_region("akernel", cmp->load_addr, cmp->size,
+-					    MEMTYPE_LOADER_CODE, MEMATTRS_RWX);
+-	if (!data->os_res) {
+-		pr_err("Cannot request region 0x%08x - 0x%08x, using default load address\n",
+-				cmp->load_addr, cmp->size);
+-
+-		data->os_address = mem_start + PAGE_ALIGN(cmp->size * 4);
+-		data->os_res = request_sdram_region("akernel", data->os_address, cmp->size,
+-						    MEMTYPE_LOADER_CODE, MEMATTRS_RWX);
+-		if (!data->os_res) {
+-			pr_err("Cannot request region 0x%08x - 0x%08x\n",
+-					cmp->load_addr, cmp->size);
+-			ret = -ENOMEM;
+-			goto err_out;
+-		}
+-	}
+-
+-	ret = aimage_load_resource(fd, data->os_res, buf, header->page_size);
+-	if (ret < 0) {
+-		perror("could not read kernel");
+-		goto err_out;
+-	}
+-
+-	/*
+-	 * fastboot always expect a ramdisk
+-	 * in barebox we can be less restrictive
+-	 */
+-	cmp = &header->ramdisk;
+-	if (cmp->size) {
+-		data->initrd_res = request_sdram_region("ainitrd", cmp->load_addr, cmp->size,
+-							MEMTYPE_LOADER_DATA, MEMATTRS_RW);
+-		if (!data->initrd_res) {
+-			ret = -ENOMEM;
+-			goto err_out;
+-		}
+-
+-		ret = aimage_load_resource(fd, data->initrd_res, buf, header->page_size);
+-		if (ret < 0) {
+-			perror("could not read initrd");
+-			goto err_out;
+-		}
+-	}
+-
+-	if (!getenv("aimage_noverwrite_bootargs"))
+-		linux_bootargs_overwrite(header->cmdline);
+-
+-	if (!getenv("aimage_noverwrite_tags"))
+-		armlinux_set_bootparams((void *)(unsigned long)header->tags_addr);
+-
+-	cmp = &header->second_stage;
+-	if (cmp->size) {
+-		void (*second)(void);
+-
+-		snd_stage_res = request_sdram_region("asecond", cmp->load_addr, cmp->size,
+-						     MEMTYPE_LOADER_CODE, MEMATTRS_RWX);
+-		if (!snd_stage_res) {
+-			ret = -ENOMEM;
+-			goto err_out;
+-		}
+-
+-		ret = aimage_load_resource(fd, snd_stage_res, buf, header->page_size);
+-		if (ret < 0) {
+-			perror("could not read initrd");
+-			goto err_out;
+-		}
+-
+-		second = (void*)snd_stage_res->start;
+-		shutdown_barebox();
+-
+-		second();
+-
+-		restart_machine(0);
+-	}
+-
+-	close(fd);
+-
+-	/*
+-	 * Put devicetree right after initrd if present or after the kernel
+-	 * if not.
+-	 */
+-	if (data->initrd_res)
+-		mem_free = PAGE_ALIGN(data->initrd_res->end);
+-	else
+-		mem_free = PAGE_ALIGN(data->os_res->end + SZ_1M);
+-
+-	return __do_bootm_linux(data, mem_free, 0, NULL);
+-
+-err_out:
+-	linux_bootargs_overwrite(NULL);
+-	close(fd);
+-
+-	return ret;
+-}
+-
+-static struct image_handler aimage_handler = {
+-	.name = "ARM Android Image",
+-	.bootm = do_bootm_aimage,
+-	.filetype = filetype_aimage,
+-};
+-
+-#ifdef CONFIG_BOOTM_AIMAGE
+-BAREBOX_MAGICVAR(aimage_noverwrite_bootargs, "Disable overwrite of the bootargs with the one present in aimage");
+-BAREBOX_MAGICVAR(aimage_noverwrite_tags, "Disable overwrite of the tags addr with the one present in aimage");
+-#endif
+-
+-static struct binfmt_hook binfmt_aimage_hook = {
+-	.type = filetype_aimage,
+-	.exec = "bootm",
+-};
+-
+ static struct binfmt_hook binfmt_arm_zimage_hook = {
+ 	.type = filetype_arm_zimage,
+ 	.exec = "bootm",
+diff --git a/common/Makefile b/common/Makefile
+index 36dee5f7a9..54120d3d8a 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -28,6 +28,7 @@ obj-$(CONFIG_BINFMT)		+= binfmt.o
+ obj-$(CONFIG_BLOCK)		+= block.o
+ obj-$(CONFIG_BLSPEC)		+= blspec.o
+ obj-$(CONFIG_BOOTM)		+= bootm.o booti.o
++obj-$(CONFIG_BOOTM_AIMAGE)	+= bootm-android-image.o
+ obj-$(CONFIG_CMD_LOADS)		+= s_record.o
+ obj-$(CONFIG_MEMTEST)		+= memtest.o
+ obj-$(CONFIG_COMMAND_SUPPORT)	+= command.o
+diff --git a/common/bootm-android-image.c b/common/bootm-android-image.c
+new file mode 100644
+index 0000000000..cb86123659
+--- /dev/null
++++ b/common/bootm-android-image.c
+@@ -0,0 +1,154 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#define pr_fmt(fmt) "android-image: " fmt
++
++#include <bootm.h>
++#include <aimage.h>
++#include <init.h>
++#include <fcntl.h>
++#include <libfile.h>
++#include <linux/fs.h>
++#include <linux/sizes.h>
++#include <linux/align.h>
++#include <unistd.h>
++#include <filetype.h>
++
++static char *aimage_copy_component(int from, size_t ofs, size_t size)
++{
++	char *path;
++	int to, ret;
++	loff_t pos;
++
++	path = make_temp("aimage");
++	if (!path) {
++		ret = -ENOMEM;
++		goto err;
++	}
++
++	pos = lseek(from, ofs, SEEK_SET);
++	if (pos < 0) {
++		ret = -errno;
++		goto err;
++	}
++
++	to = open(path, O_CREAT | O_WRONLY);
++	if (to < 0) {
++		ret = to;
++		goto err;
++	}
++
++	ret = copy_fd(from, to, size);
++
++	close(to);
++
++	if (!ret)
++		return path;
++err:
++	free(path);
++
++	return ERR_PTR(ret);
++}
++
++static int do_bootm_aimage(struct image_data *img_data)
++{
++	struct bootm_data bootm_data = {
++		.oftree_file = img_data->oftree_file,
++		.initrd_file = img_data->initrd_file,
++		.tee_file = img_data->tee_file,
++		.verbose = img_data->verbose,
++		.verify = img_data->verify,
++		.force = img_data->force,
++		.dryrun = img_data->dryrun,
++		.initrd_address = img_data->initrd_address,
++		.os_address = img_data->os_address,
++		.os_entry = img_data->os_entry,
++	};
++	struct android_header *hdr;
++	int fd, ret;
++	char *kernel = NULL, *initrd = NULL;
++	size_t ofs;
++
++	hdr = xmalloc(sizeof(*hdr));
++
++	fd = open(img_data->os_file, O_RDONLY);
++	if (fd < 0) {
++		ret = fd;
++		goto err;
++	}
++
++	ret = read_full(fd, hdr, sizeof(*hdr));
++	if (ret < 0)
++		goto err_close;
++
++	if (ret < sizeof(*hdr)) {
++		ret = -EINVAL;
++		goto err_close;
++	}
++
++	if (file_detect_type(hdr, sizeof(*hdr)) != filetype_aimage) {
++		pr_err("Image is not an Android image\n");
++		ret = -EINVAL;
++		goto err;
++	}
++
++	if (hdr->page_size < sizeof(*hdr) || hdr->page_size > SZ_64K) {
++		pr_err("Invalid page_size 0x%08x\n", hdr->page_size);
++		ret = -EINVAL;
++		goto err_close;
++	}
++
++	ofs = hdr->page_size;
++	if (hdr->kernel.size) {
++		kernel = aimage_copy_component(fd, ofs, hdr->kernel.size);
++		if (IS_ERR(kernel)) {
++			kernel = NULL;
++			ret = PTR_ERR(kernel);
++			goto err_close;
++		}
++	}
++
++	ofs += ALIGN(hdr->kernel.size, hdr->page_size);
++
++	if (hdr->ramdisk.size) {
++		initrd = aimage_copy_component(fd, ofs, hdr->ramdisk.size);
++		if (IS_ERR(initrd)) {
++			initrd = NULL;
++			ret = PTR_ERR(initrd);
++			goto err_close;
++		}
++	}
++
++	if (kernel)
++		bootm_data.os_file = kernel;
++
++	if (initrd)
++		bootm_data.initrd_file = initrd;
++
++	close(fd);
++
++	ret = bootm_boot(&bootm_data);
++
++err_close:
++	close(fd);
++
++	if (kernel)
++		unlink(kernel);
++	if (initrd)
++		unlink(initrd);
++err:
++	free(hdr);
++
++	return ret;
++}
++
++static struct image_handler aimage_bootm_handler = {
++	.name = "Android boot image",
++	.bootm = do_bootm_aimage,
++	.filetype = filetype_aimage,
++};
++
++static int bootm_aimage_register(void)
++{
++	return register_image_handler(&aimage_bootm_handler);
++}
++late_initcall(bootm_aimage_register);
 
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.47.3
 
 
 
