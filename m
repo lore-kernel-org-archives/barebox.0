@@ -1,66 +1,66 @@
-Delivery-date: Wed, 21 Jan 2026 12:38:11 +0100
+Delivery-date: Wed, 21 Jan 2026 13:00:41 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1viWXM-003kLF-06
+	id 1viWt8-003kdj-11
 	for lore@lore.pengutronix.de;
-	Wed, 21 Jan 2026 12:38:11 +0100
+	Wed, 21 Jan 2026 13:00:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1viWXL-000458-0O
-	for lore@pengutronix.de; Wed, 21 Jan 2026 12:38:11 +0100
+	id 1viWt7-0006y2-8o
+	for lore@pengutronix.de; Wed, 21 Jan 2026 13:00:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=4cOC30NpBILfMOn/c1wDYarSQ3P43d9c3tkxqPAcU+M=; b=3L3tgASfS1Wtbho87HQxfHj2g1
-	uHTUgE8QslZ2dDsyhPJP5eWu5ynGkMzqAArvt3rC8Pys59gjNxpAuhijlcyZOvA9T2Ukn5Ix6aOx7
-	OUG4OTwU8FOyMHPgICX/LcHP+4Bx/E8vknnErpFram8/9mfjZ7OnBmbloUe4Wrgv4RJeSRe4vaxhA
-	KZozePy57LOEVCNUJNScq7RgnDPW0dfJj+IUSZhfHddrI1Q9BzFYnXhZRC6s6IIXO1pZJMSmZx22M
-	Ir3o91b64QyEhiGU8Vd89XYhZBo6n+dZwaudvYSO1PO8RmE395SYhVLX3oOfgtut23eyIQ3U6jbZO
-	MAsgu67A==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=pkifcsr7n22KRKJ20fL8Tcw9JAca3BfPiMmvo/+9y5E=; b=GGDgVjQmKejpypDonBsTX/MX0z
+	2Oyr8PfspkhPoOdsOHeOnS80v9UsIdpieDWrLox5IWzeZS0QxyYDjhQJn+mtlDIyEtsit7xtyltYH
+	oFsgRUkOSER0PF24vQ6dQU9v6kXFE9ZH+b5TBzz4pHkg2jrJ8/ztqT24SX5siEgD5nspeU6NPAqwk
+	HtfWhJ85G0g6/TDm29+50gfraFjXw9z+3sfzRuNwIXQFK/yOaGk9DlnCx1+ziA0GVr/1vgLhyonfL
+	/2lQ074iucBTkYW96qveWCCGSxNLjytuZMo261JKF+RkDQntvikwP551r3yIzLPH6ahq0Lanx47Ky
+	Gx44TTMg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viWWu-00000005MRm-0YB1;
-	Wed, 21 Jan 2026 11:37:44 +0000
+	id 1viWsV-00000005NYY-0MEx;
+	Wed, 21 Jan 2026 12:00:03 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viWWs-00000005MQe-327B
+	id 1viWsR-00000005NXV-31p3
 	for barebox@lists.infradead.org;
-	Wed, 21 Jan 2026 11:37:43 +0000
+	Wed, 21 Jan 2026 12:00:01 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1viWWq-0003rJ-5I; Wed, 21 Jan 2026 12:37:40 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <mfe@pengutronix.de>)
+	id 1viWsP-0006oh-8G; Wed, 21 Jan 2026 12:59:57 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1viWWq-001k2B-1i;
-	Wed, 21 Jan 2026 12:37:39 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1viWWq-00000006G8i-1t4O;
-	Wed, 21 Jan 2026 12:37:39 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	"Claude Sonnet 4.5" <noreply@anthropic.com>
-Date: Wed, 21 Jan 2026 12:36:46 +0100
-Message-ID: <20260121113738.1485637-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	(envelope-from <mfe@pengutronix.de>)
+	id 1viWsP-001k5M-2N;
+	Wed, 21 Jan 2026 12:59:57 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1viWsO-0076cu-38;
+	Wed, 21 Jan 2026 12:59:56 +0100
+Date: Wed, 21 Jan 2026 12:59:56 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20260121115956.vmladw473234n5q2@pengutronix.de>
+References: <20260121113234.1438699-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260121113234.1438699-1-a.fatoum@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260121_033742_784631_32A5E6FA 
-X-CRM114-Status: GOOD (  15.74  )
+X-CRM114-CacheID: sfid-20260121_035959_759786_5536CFBF 
+X-CRM114-Status: GOOD (  26.62  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,78 +78,89 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 1/4] of: fdt: implement of_del_reserve_entry
+Subject: Re: [PATCH 1/2] of: base: add new barebox,status property
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-OF_MAX_RESERVE_MAP is only 16 and we have instances in the code that add
-reserve entries in device tree fixups, which means it can be exhausted
-when fixups are applied repeatedly.
+On 26-01-21, Ahmad Fatoum wrote:
+> I am confronted with an occasional hang on the Radxa Rock 3A during
+> PCI probe. The board has no PCI devices connected.
+> 
+> This hang doesn't happen in Linux and doesn't happen on the QNAP
+> TS433-eU, which is also RK3568, but actually has PCIe devices, which are
+> probed normally.
+> 
+> For such purposes, add a barebox,status property as setting the status
+> to disabled, would impact Linux as well if barebox were to pass along
+> its own device tree, e.g. when installing the UEFI device tree
+> configuration table.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Whether it's still apt in 2026 to use reserve entries is a different
-discussion, but let's just add a way to delete reserved entries again in
-cleanup code.
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
 
-Co-developed-by: Claude Sonnet 4.5 <noreply@anthropic.com>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/of/fdt.c | 24 ++++++++++++++++++++++++
- include/of.h     |  1 +
- 2 files changed, 25 insertions(+)
+> ---
+> v1 -> v2:
+>   - rework to make clearer when to use the new property. (Marco)
+>   - add example with UEFI device tree configuration table into commit
+>     message (Marco)
+> ---
+>  .../devicetree/bindings/barebox/barebox,status.rst | 14 ++++++++++++++
+>  drivers/of/base.c                                  |  4 +++-
+>  2 files changed, 17 insertions(+), 1 deletion(-)
+>  create mode 100644 Documentation/devicetree/bindings/barebox/barebox,status.rst
+> 
+> diff --git a/Documentation/devicetree/bindings/barebox/barebox,status.rst b/Documentation/devicetree/bindings/barebox/barebox,status.rst
+> new file mode 100644
+> index 000000000000..03f484cdcfe1
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/barebox/barebox,status.rst
+> @@ -0,0 +1,14 @@
+> +barebox,status property
+> +=======================
+> +
+> +barebox interprets ``barebox,status`` the same as it does ``status``,
+> +but gives the barebox-specific property precedence if both exist.
+> +
+> +The purpose of this property is to keep the ``status`` property of the
+> +upstream DT, imported from Linux, untouched.
+> +
+> +Using ``barebox,status`` may be necessary to temporarily workaround
+> +barebox drivers that misbehave on a given board; Disabling the driver
+> +may be undesirable if it can handle other instances of the same device
+> +on the board or if barebox is being built to support other boards
+> +at the same time, where the driver functions correctly.
+> diff --git a/drivers/of/base.c b/drivers/of/base.c
+> index 54fd458bd9a1..4e83a757a4e9 100644
+> --- a/drivers/of/base.c
+> +++ b/drivers/of/base.c
+> @@ -2149,7 +2149,9 @@ int of_device_is_available(const struct device_node *device)
+>  	const char *status;
+>  	int statlen;
+>  
+> -	status = of_get_property(device, "status", &statlen);
+> +	status = of_get_property(device, "barebox,status", &statlen);
+> +	if (status == NULL)
+> +		status = of_get_property(device, "status", &statlen);
+>  	if (status == NULL)
+>  		return 1;
+>  
+> -- 
+> 2.47.3
+> 
+> 
 
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index f2f4aa03de2d..ea763cf7a52a 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -651,6 +651,30 @@ int of_add_reserve_entry(resource_size_t start, resource_size_t end)
- 	return 0;
- }
- 
-+void of_del_reserve_entry(resource_size_t start, resource_size_t end)
-+{
-+	int i, index = -1;
-+
-+	/* Find the entry with matching start and end addresses */
-+	for (i = 0; i < of_reserve_map.num_entries; i++) {
-+		if (of_reserve_map.start[i] == start && of_reserve_map.end[i] == end) {
-+			index = i;
-+			break;
-+		}
-+	}
-+
-+	if (index < 0)
-+		return;
-+
-+	/* Shift all subsequent entries up to close the gap */
-+	for (i = index; i < of_reserve_map.num_entries - 1; i++) {
-+		of_reserve_map.start[i] = of_reserve_map.start[i + 1];
-+		of_reserve_map.end[i] = of_reserve_map.end[i + 1];
-+	}
-+
-+	of_reserve_map.num_entries--;
-+}
-+
- struct of_reserve_map *of_get_reserve_map(void)
- {
- 	return &of_reserve_map;
-diff --git a/include/of.h b/include/of.h
-index ef4430c52862..ba8d1e358d41 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -77,6 +77,7 @@ struct of_reserve_map {
- };
- 
- int of_add_reserve_entry(resource_size_t start, resource_size_t end);
-+void of_del_reserve_entry(resource_size_t start, resource_size_t end);
- void of_clean_reserve_map(void);
- void fdt_add_reserve_map(void *fdt);
- void fdt_print_reserve_map(const void *fdt);
 -- 
-2.47.3
+#gernperDu 
+#CallMeByMyFirstName
 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
 
 
