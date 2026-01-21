@@ -1,66 +1,68 @@
-Delivery-date: Wed, 21 Jan 2026 12:22:53 +0100
+Delivery-date: Wed, 21 Jan 2026 12:33:11 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1viWIX-003k8Y-1P
+	id 1viWSV-003kFZ-1b
 	for lore@lore.pengutronix.de;
-	Wed, 21 Jan 2026 12:22:53 +0100
+	Wed, 21 Jan 2026 12:33:11 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1viWIW-00017z-DS
-	for lore@pengutronix.de; Wed, 21 Jan 2026 12:22:52 +0100
+	id 1viWSU-00031A-GH
+	for lore@pengutronix.de; Wed, 21 Jan 2026 12:33:10 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=AOLVc1zlCn7thn9hN1I4PDOXDHJmW/rzjHvSg36pRkI=; b=Dx8ez43lT89z/5WxspbBOkJEle
-	PrARlRsPiS3qAIs6wGEqfKN5WIzLDLfOfmMA3RI+KznSDq82gKmvA8tQxSuhmcD3vKLCj3B5T8qMu
-	WPoakyQdQ+ZAcXpqgyiJKvN5DLf5YTuueaZ37GwYU+ioa+0VX9/KE2ZdOEPIx3c0nQsYqAzQXs9f8
-	+8I4LO6KupxFbptNQFpAuSzXRnpXXZ7dy6SM/076kS+eMhSAugfFCINS659FMNYuRIKIzI806RJSE
-	ihPL1FjIe6S0Ox/5bVuwtbxjkmLPnKPM0/6jcznrLznouF+Px06WFPls0g2jG6rRaxzjDp7PUDqms
-	5b5/v3Eg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=ONVykiRf6xTjQp4zIi7a73SMNmqcxxM8FdKfiQ6z0zI=; b=uUB7W3KJ796KiHRA+z72sISdwe
+	LxINmUEfByqDRXTXbV8IxL7+/5lWcrSqN29EJ2ziLEx+Wn4t4aIua0k86PeSglA+7w/EXYf3+1eLL
+	kbltr0DTPv7T1RDmVWBDGCK+vVImU9zYec4c7RxSTs2yJPU8YwwD+J72JX7xStCVtAJuoxSRQauyE
+	jVzAKUkTnSzs2Z28Oi0NiJ1W1162wwkH8/+qvZFeZiXgIGKtmx0iKMeMZ3r0Q8QaZoaCxz5poezRK
+	LT+Gp9QH01w0S0IxZlGa0EhcTgG7hI3y6aPl2ZZN7ts9sS3005jDpl0GWiyTvMXM0LzitsDPaPtWA
+	wwz3sC2w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viWHy-00000005LRJ-1rW7;
-	Wed, 21 Jan 2026 11:22:18 +0000
+	id 1viWS8-00000005LsV-0aR9;
+	Wed, 21 Jan 2026 11:32:48 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viWHv-00000005LQg-2AMk
+	id 1viWS6-00000005Lrq-0bAP
 	for barebox@lists.infradead.org;
-	Wed, 21 Jan 2026 11:22:17 +0000
+	Wed, 21 Jan 2026 11:32:47 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1viWHt-00012K-CY; Wed, 21 Jan 2026 12:22:13 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1viWRv-0002kY-KC; Wed, 21 Jan 2026 12:32:35 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1viWHt-001jwA-2m;
-	Wed, 21 Jan 2026 12:22:13 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1viWHt-0076CD-0J;
-	Wed, 21 Jan 2026 12:22:13 +0100
-Date: Wed, 21 Jan 2026 12:22:13 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20260121112213.yo7eyytvssk3vufj@pengutronix.de>
-References: <20260120181333.3375979-1-a.fatoum@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1viWRw-001jx2-0J;
+	Wed, 21 Jan 2026 12:32:35 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1viWRw-000000063wC-042A;
+	Wed, 21 Jan 2026 12:32:35 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: mfe@pengutronix.de,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 21 Jan 2026 12:31:28 +0100
+Message-ID: <20260121113234.1438699-2-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260121113234.1438699-1-a.fatoum@pengutronix.de>
+References: <20260121113234.1438699-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260120181333.3375979-1-a.fatoum@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260121_032215_558638_242D5315 
-X-CRM114-Status: GOOD (  24.78  )
+X-CRM114-CacheID: sfid-20260121_033246_182756_40A1D8E2 
+X-CRM114-Status: GOOD (  13.72  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,91 +80,64 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] of: base: add new barebox,status property
+Subject: [PATCH 2/2] arm: dts: rk356x: rock3a: disable pcie3x2
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 26-01-20, Ahmad Fatoum wrote:
-> I am confronted with an occasional hang on the Radxa Rock 3A during
-> PCI probe. The board has no PCI devices connected.
-> 
-> This hang doesn't happen in Linux and doesn't happen on the QNAP
-> TS433-eU, which is also RK3568, but actually has PCIe devices, which are
-> probed normally.
-> 
-> For such purposes, add a barebox,status property as setting the status
-> to disabled, would impact Linux as well if barebox were to pass along
-> its own device tree.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  .../devicetree/bindings/barebox/barebox,status.rst        | 8 ++++++++
->  drivers/of/base.c                                         | 4 +++-
->  2 files changed, 11 insertions(+), 1 deletion(-)
->  create mode 100644 Documentation/devicetree/bindings/barebox/barebox,status.rst
-> 
-> diff --git a/Documentation/devicetree/bindings/barebox/barebox,status.rst b/Documentation/devicetree/bindings/barebox/barebox,status.rst
-> new file mode 100644
-> index 000000000000..06524b218fb1
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/barebox/barebox,status.rst
-> @@ -0,0 +1,8 @@
-> +barebox,status property
-> +=======================
-> +
-> +barebox interprets ``barebox,status`` the same as it does ``status``,
-> +but gives the former precedence if both exist.
-> +
-> +Use this property only for devices for which barebox has a driver, but
-> +that barebox should not be probing on a per-board basis.
+The board hangs occasionally on PCI probe after:
 
-I would rephrase the 2nd sentence a bit:
+  phy7: lane number 0, val 1
 
-"""
-The purpose of this property is to keep the status property of the
-upstream DT, provided by Linux, untouched.
+On other boots, it continues to:
 
-This may be necessary to temporary workaround broken barebox drivers on
-a per-board basis in case you can't disable the driver due to a
-multi-config build.
-"""
+  rockchip-dw-pcie 3c0800000.pcie@fe280000.of: Phy link never came up
 
-Regards,
-  Marco
+In both cases, the hang affects the second PCIe host controller
+to probe and the first probe never hangs:
 
+  rockchip-dw-pcie 3c0000000.pcie@fe260000.of: Phy link never came up
 
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index 54fd458bd9a1..4e83a757a4e9 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -2149,7 +2149,9 @@ int of_device_is_available(const struct device_node *device)
->  	const char *status;
->  	int statlen;
->  
-> -	status = of_get_property(device, "status", &statlen);
-> +	status = of_get_property(device, "barebox,status", &statlen);
-> +	if (status == NULL)
-> +		status = of_get_property(device, "status", &statlen);
->  	if (status == NULL)
->  		return 1;
->  
-> -- 
-> 2.47.3
-> 
-> 
-> 
+This hang happens on the very first read access to the PCI controller
+at register PCIE_ATU_VIEWPORT. Reading Linux code, the first access
+seems to be to PCIE_VERSION_NUMBER (0x8F8), but accessing that in
+barebox equally hangs from time to time.
 
+My board doesn't have any PCIe devices connected and this hang
+doesn't happen in Linux and doesn't happen on the QNAP
+TS433-eU, which is also RK3568, but actually has PCIe devices, which are
+probed normally.
+
+Disable the device in barebox, so the board is usable with
+rockchip_v8_defconfig, which enables the PCI driver.
+barebox,status is used, so the Linux device tree is not affected.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v1 -> v2:
+  - add short comment explaining why we disable this device in particular
+---
+ arch/arm/dts/rk3568-rock-3a.dts | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/arch/arm/dts/rk3568-rock-3a.dts b/arch/arm/dts/rk3568-rock-3a.dts
+index bcbfab14a580..4834a85b367a 100644
+--- a/arch/arm/dts/rk3568-rock-3a.dts
++++ b/arch/arm/dts/rk3568-rock-3a.dts
+@@ -55,3 +55,8 @@ environment_sd: partition@408000 {
+ 		};
+ 	};
+ };
++
++/* Device driver probe occasionally hangs, but pcie2x1 is fine... */
++&pcie3x2 {
++	barebox,status = "disabled";
++};
 -- 
-#gernperDu 
-#CallMeByMyFirstName
+2.47.3
 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
 
 
