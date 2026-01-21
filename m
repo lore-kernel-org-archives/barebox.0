@@ -1,80 +1,72 @@
-Delivery-date: Wed, 21 Jan 2026 08:57:08 +0100
+Delivery-date: Wed, 21 Jan 2026 09:10:13 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1viT5Q-003gbi-2Z
+	id 1viTI5-003gzg-1f
 	for lore@lore.pengutronix.de;
-	Wed, 21 Jan 2026 08:57:08 +0100
+	Wed, 21 Jan 2026 09:10:13 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1viT5O-0006UR-Mz
-	for lore@pengutronix.de; Wed, 21 Jan 2026 08:57:08 +0100
+	id 1viTI4-00007q-GB
+	for lore@pengutronix.de; Wed, 21 Jan 2026 09:10:13 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=psgGzN7KlCJ+Q1VZfzppWdHOl92HrjoADaOYb1ecY/0=; b=fEkqVrKPyan55ifrkTBpznqGyG
-	ohDG/o/qw/oaMqED/p4Dkscq6A+PqvuX/aoZ0u/HxY9FEZmwI2rIFYggKuL+H0E9zZ9aDWKopmEDN
-	bJRaRF/PFCUC6FvkaHPKuyxlO05G91FExG5IxDdKebOo3HWFFzoVWr3YnsMN5ADF7GZ0BXS0I0+kV
-	uH2SYE9EtyayZaWSpMdk3oG/tMYohcyEPN+n0eBNoTXh5vXS4POTTUfT4HbilKgLfYIQWWJe+C9a3
-	pPp0YMuH9/VwAOur6PB9cFToc38eH/d9+CZkhI5spbJ3lA+PHL9CrX2GrYLb4nCEwHX0UwTmDZocV
-	4fP+JzUA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=2EKd+78YxxPa9KQpYd0QhteMFUoCyrTF24pd6bixS68=; b=Sir5ohI+8PyJoDP/SIuDBsFUPx
+	xqW7rNVa6xYlU3P2hXA1aCcVVme45BmDRVL27Kxsd1q8/i/S77jg/gPGR11ClVrUsaplw77oBsMn1
+	NWToqjmqi3NHvm+8Lmf/uy89LhFVOf1FAQ4HPXUPpIPFvQXwNZIqFbybBZRRIcopAKqiiApfw5xJz
+	+hZCFOR9xDgvedJnsiCy4fgE7L42mFoCYsOYikT34P+OIdaISd9MCsMyeYJ0f7AUQMdMlqS0uXjcu
+	oEbeQAELbmMdnQTupjRs0Q9iEEQhNNHc6DJvMTSbi8Dpubsgqf9hijd6HMgM1gQBle/jrlpBAiTk7
+	/ylrGzLA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viT4n-000000052vj-2y4L;
-	Wed, 21 Jan 2026 07:56:29 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viT4m-000000052vX-0VVB
-	for barebox@bombadil.infradead.org;
-	Wed, 21 Jan 2026 07:56:28 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=psgGzN7KlCJ+Q1VZfzppWdHOl92HrjoADaOYb1ecY/0=; b=HCWEawpQ1gtNjF+bjm4L5dcl28
-	cCKIaGrpuiWS8xE37ZzFZDMPCzvGtzNuJ8j0yU+PXuYmARobXSBN/2FmKFySPeOaQ50CKyGKB8kGz
-	bJPSHbn5J/SqR2C74jzRHFJto5YKTKVCAHUUJ8eqLJUbZVQwp2CV0XT8CvFZn+OGilm/p6O4PWVmz
-	S8K0J9SaEumgP1YXNy8Z90KsP/rCwlwsV3TAIMS9b6xn/hSP9uN8ai1iuoLq20IbXc2xwXMhdCtfF
-	uuW9wfDr4yY8qrrUaJPJXDzv7M1FJ4TawbBPZxUelqLUDeXPvWrE7BhX3ZlTsiwRQPC1X+9efACS4
-	0jsZlspg==;
+	id 1viTHc-000000053v4-0pjP;
+	Wed, 21 Jan 2026 08:09:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1viT4i-0000000FYi9-3xIG
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1viTHZ-000000053uX-1ngR
 	for barebox@lists.infradead.org;
-	Wed, 21 Jan 2026 07:56:27 +0000
+	Wed, 21 Jan 2026 08:09:43 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1viT4i-0006J1-BX; Wed, 21 Jan 2026 08:56:24 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <sha@pengutronix.de>)
+	id 1viTHV-0008Sf-MU; Wed, 21 Jan 2026 09:09:37 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1viT4i-001iLW-2f;
-	Wed, 21 Jan 2026 08:56:24 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1viT4i-0000000GOHp-37T0;
-	Wed, 21 Jan 2026 08:56:24 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 21 Jan 2026 08:56:22 +0100
-Message-ID: <20260121075623.3906595-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	(envelope-from <sha@pengutronix.de>)
+	id 1viTHW-001iRc-0Z;
+	Wed, 21 Jan 2026 09:09:37 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1viTHV-0074Dk-1K;
+	Wed, 21 Jan 2026 09:09:37 +0100
+Date: Wed, 21 Jan 2026 09:09:37 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Message-ID: <aXCJwR366e11cIMM@pengutronix.de>
+References: <20260120-android-image-v1-0-820595a1b8a4@pengutronix.de>
+ <20260120-android-image-v1-2-820595a1b8a4@pengutronix.de>
+ <758e79dc-56df-491c-919f-906cdb91c56c@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <758e79dc-56df-491c-919f-906cdb91c56c@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260121_075625_360435_7B5BC93E 
-X-CRM114-Status: GOOD (  31.63  )
+X-CRM114-CacheID: sfid-20260121_000941_467032_A683D995 
+X-CRM114-Status: GOOD (  26.62  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -92,871 +84,74 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] net: phy: realtek: sync with Linux v6.19 state
+Subject: Re: [PATCH 2/2] bootm: add generic android image handler
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The BeaglePlay has a RTL8211F-VD Gigabit Ethernet PHY at mdio0-phy00,
-which detects link up, but fails to communicate when used with the
-barebox generic PHY driver.
+On Tue, Jan 20, 2026 at 04:04:37PM +0100, Ahmad Fatoum wrote:
+> Hello Sascha,
+> 
+> On 1/20/26 3:55 PM, Sascha Hauer wrote:
+> > +	if (kernel)
+> > +		bootm_data.os_file = kernel;
+> > +
+> > +	if (initrd)
+> > +		bootm_data.initrd_file = initrd;
+> > +
+> > +	close(fd);
+> > +
+> > +	ret = bootm_boot(&bootm_data);
+> 
+> Two quick comments:
+> 
+> I think this feature will not be usable when
+> CONFIG_BOOTM_OFTREE_FALLBACK is disabled, which is a shame, because I
+> think normal deployments should disable that option to avoid unexpected
+> fallback behavior.
+> 
+> Here the fallback is expected though. Would it be possible to change
+> this, so the barebox oftree is passed along explicitly to avoid falling
+> into the fallback?
 
-The Linux Realtek PHY driver already matches the RTL8211F-VD PHY's
-ID, so bring the barebox driver up to date.
+When a user chooses to disable CONFIG_BOOTM_OFTREE_FALLBACK to avoid
+using the internal device tree as a fallback then this decision should
+be universally honoured. Explicitly inserting the internal device tree
+in special cases contradicts this.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/net/phy/phy-core.c     |  54 +++++
- drivers/net/phy/phy.c          |  63 +++++
- drivers/net/phy/realtek.c      | 411 ++++++++++++++++++++++++++++++++-
- include/linux/phy.h            |  19 ++
- include/linux/string_choices.h |  79 +++++++
- 5 files changed, 614 insertions(+), 12 deletions(-)
+Note that I have used this feature with a FIT image which carries its
+own device tree, so I wasn't affected.
 
-diff --git a/drivers/net/phy/phy-core.c b/drivers/net/phy/phy-core.c
-index b12f54ed3878..85e8c4b3e2c7 100644
---- a/drivers/net/phy/phy-core.c
-+++ b/drivers/net/phy/phy-core.c
-@@ -23,6 +23,37 @@ int phy_modify(struct phy_device *phydev, u32 regnum, u16 mask, u16 set)
- 	return ret < 0 ? ret : 0;
- }
- 
-+/**
-+ * phy_modify_changed - Function for modifying a PHY register
-+ * @phydev: the phy_device struct
-+ * @regnum: register number to modify
-+ * @mask: bit mask of bits to clear
-+ * @set: new value of bits set in mask to write to @regnum
-+ *
-+ * NOTE: MUST NOT be called from interrupt context,
-+ * because the bus read/write functions may wait for an interrupt
-+ * to conclude the operation.
-+ *
-+ * Returns negative errno, 0 if there was no change, and 1 in case of change
-+ */
-+int phy_modify_changed(struct phy_device *phydev, u32 regnum, u16 mask, u16 set)
-+{
-+	int new, ret;
-+
-+	ret = phy_read(phydev, regnum);
-+	if (ret < 0)
-+		return ret;
-+
-+	new = (ret & ~mask) | set;
-+	if (new == ret)
-+		return 0;
-+
-+	ret = phy_write(phydev, regnum, (ret & ~mask) | set);
-+
-+	return ret < 0 ? ret : 1;
-+}
-+EXPORT_SYMBOL_GPL(phy_modify_changed);
-+
- static int phy_read_page(struct phy_device *phydev)
- {
- 	struct phy_driver *phydrv = to_phy_driver(phydev->dev.driver);
-@@ -184,3 +215,26 @@ int phy_modify_paged(struct phy_device *phydev, int page, u32 regnum,
- 
- 	return phy_restore_page(phydev, oldpage, ret);
- }
-+
-+/**
-+ * phy_modify_paged_changed() - Function for modifying a paged register
-+ * @phydev: a pointer to a &struct phy_device
-+ * @page: the page for the phy
-+ * @regnum: register number
-+ * @mask: bit mask of bits to clear
-+ * @set: bit mask of bits to set
-+ *
-+ * Returns negative errno, 0 if there was no change, and 1 in case of change
-+ */
-+int phy_modify_paged_changed(struct phy_device *phydev, int page, u32 regnum,
-+			     u16 mask, u16 set)
-+{
-+	int ret = 0, oldpage;
-+
-+	oldpage = phy_select_page(phydev, page);
-+	if (oldpage >= 0)
-+		ret = phy_modify_changed(phydev, regnum, mask, set);
-+
-+	return phy_restore_page(phydev, oldpage, ret);
-+}
-+EXPORT_SYMBOL(phy_modify_paged_changed);
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 9635c816c330..5ca3d9254af8 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -1077,6 +1077,69 @@ int genphy_config_init(struct phy_device *phydev)
- 	return 0;
- }
- 
-+/**
-+ * phy_poll_reset - Safely wait until a PHY reset has properly completed
-+ * @phydev: The PHY device to poll
-+ *
-+ * Description: According to IEEE 802.3, Section 2, Subsection 22.2.4.1.1, as
-+ *   published in 2008, a PHY reset may take up to 0.5 seconds.  The MII BMCR
-+ *   register must be polled until the BMCR_RESET bit clears.
-+ *
-+ *   Furthermore, any attempts to write to PHY registers may have no effect
-+ *   or even generate MDIO bus errors until this is complete.
-+ *
-+ *   Some PHYs (such as the Marvell 88E1111) don't entirely conform to the
-+ *   standard and do not fully reset after the BMCR_RESET bit is set, and may
-+ *   even *REQUIRE* a soft-reset to properly restart autonegotiation.  In an
-+ *   effort to support such broken PHYs, this function is separate from the
-+ *   standard phy_init_hw() which will zero all the other bits in the BMCR
-+ *   and reapply all driver-specific and board-specific fixups.
-+ */
-+static int phy_poll_reset(struct phy_device *phydev)
-+{
-+	/* Poll until the reset bit clears (50ms per retry == 0.6 sec) */
-+	int ret, val;
-+
-+	ret = phy_read_poll_timeout(phydev, MII_BMCR, val, !(val & BMCR_RESET),
-+				    600000);
-+	if (ret)
-+		return ret;
-+	/* Some chips (smsc911x) may still need up to another 1ms after the
-+	 * BMCR_RESET bit is cleared before they are usable.
-+	 */
-+	mdelay(1);
-+	return 0;
-+}
-+
-+int genphy_soft_reset(struct phy_device *phydev)
-+{
-+	u16 res = BMCR_RESET;
-+	int ret;
-+
-+	if (phydev->autoneg == AUTONEG_ENABLE)
-+		res |= BMCR_ANRESTART;
-+
-+	ret = phy_modify(phydev, MII_BMCR, BMCR_ISOLATE, res);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Clause 22 states that setting bit BMCR_RESET sets control registers
-+	 * to their default value. Therefore the POWER DOWN bit is supposed to
-+	 * be cleared after soft reset.
-+	 */
-+
-+	ret = phy_poll_reset(phydev);
-+	if (ret)
-+		return ret;
-+
-+	/* BMCR may be reset to defaults */
-+	if (phydev->autoneg == AUTONEG_DISABLE)
-+		ret = genphy_setup_forced(phydev);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL(genphy_soft_reset);
-+
- int phy_driver_register(struct phy_driver *phydrv)
- {
- 	phydrv->drv.bus = &mdio_bus_type;
-diff --git a/drivers/net/phy/realtek.c b/drivers/net/phy/realtek.c
-index 8ab3d630912b..77d7b9aaf20b 100644
---- a/drivers/net/phy/realtek.c
-+++ b/drivers/net/phy/realtek.c
-@@ -1,6 +1,6 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
--/*
-- * drivers/net/phy/realtek.c
-+// SPDX-License-Identifier: GPL-2.0+
-+// SPDX-Comment: Origin-URL: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/phy/realtek/realtek_main.c?id=4f0638b12451112de4138689fa679315c8d388dc
-+/* drivers/net/phy/realtek.c
-  *
-  * Driver for Realtek PHYs
-  *
-@@ -11,6 +11,8 @@
- #include <common.h>
- #include <init.h>
- #include <linux/bitops.h>
-+#include <linux/mdio.h>
-+#include <linux/string_choices.h>
- #include <linux/phy.h>
- 
- #define RTL821x_PHYSR				0x11
-@@ -20,23 +22,102 @@
- #define RTL821x_INER				0x12
- #define RTL8211B_INER_INIT			0x6400
- #define RTL8211E_INER_LINK_STATUS		BIT(10)
-+#define RTL8211F_INER_PME			BIT(7)
- #define RTL8211F_INER_LINK_STATUS		BIT(4)
- 
- #define RTL821x_INSR				0x13
- 
-+#define RTL821x_EXT_PAGE_SELECT			0x1e
-+
- #define RTL821x_PAGE_SELECT			0x1f
- 
- #define RTL8211F_INSR				0x1d
- 
-+#define RTL821x_SET_EXT_PAGE			0x07
-+
-+/* RTL8211E extension page 164/0xa4 */
-+#define RTL8211E_RGMII_EXT_PAGE			0xa4
-+#define RTL8211E_RGMII_DELAY			0x1c
-+#define RTL8211E_CTRL_DELAY			BIT(13)
-+#define RTL8211E_TX_DELAY			BIT(12)
-+#define RTL8211E_RX_DELAY			BIT(11)
-+#define RTL8211E_DELAY_MASK			GENMASK(13, 11)
-+
-+/* RTL8211F PHY configuration */
-+#define RTL8211F_PHYCR_PAGE			0xa43
-+#define RTL8211F_PHYCR1				0x18
-+#define RTL8211F_ALDPS_PLL_OFF			BIT(1)
-+#define RTL8211F_ALDPS_ENABLE			BIT(2)
-+#define RTL8211F_ALDPS_XTAL_OFF			BIT(12)
-+
-+#define RTL8211F_PHYCR2				0x19
-+#define RTL8211F_CLKOUT_EN			BIT(0)
-+#define RTL8211F_PHYCR2_PHY_EEE_ENABLE		BIT(5)
-+
-+/* RTL8211F(D)(I)-VD-CG CLKOUT configuration is specified via magic values
-+ * to undocumented register pages. The names here do not reflect the datasheet.
-+ * Unlike other PHY models, CLKOUT configuration does not go through PHYCR2.
-+ */
-+#define RTL8211FVD_CLKOUT_PAGE			0xd05
-+#define RTL8211FVD_CLKOUT_REG			0x11
-+#define RTL8211FVD_CLKOUT_EN			BIT(8)
-+
-+/* RTL8211F RGMII configuration */
-+#define RTL8211F_RGMII_PAGE			0xd08
-+
-+#define RTL8211F_TXCR				0x11
- #define RTL8211F_TX_DELAY			BIT(8)
-+
-+#define RTL8211F_RXCR				0x15
- #define RTL8211F_RX_DELAY			BIT(3)
- 
- #define RTL8201F_ISR				0x1e
- #define RTL8201F_IER				0x13
- 
-+#define RTL821x_EXT_PAGE_SELECT			0x1e
-+
-+/* RTL822X_VND2_XXXXX registers are only accessible when phydev->is_c45
-+ * is set, they cannot be accessed by C45-over-C22.
-+ */
-+#define RTL822X_VND2_C22_REG(reg)		(0xa400 + 2 * (reg))
-+
-+#define RTL8221B_VND2_INER			0xa4d2
-+#define RTL8221B_VND2_INER_LINK_STATUS		BIT(4)
-+
-+#define RTL8221B_VND2_INSR			0xa4d4
-+
- #define RTL8366RB_POWER_SAVE			0x15
- #define RTL8366RB_POWER_SAVE_ON			BIT(12)
- 
-+#define RTL_VND2_PHYSR				0xa434
-+#define RTL_VND2_PHYSR_DUPLEX			BIT(3)
-+#define RTL_VND2_PHYSR_SPEEDL			GENMASK(5, 4)
-+#define RTL_VND2_PHYSR_SPEEDH			GENMASK(10, 9)
-+#define RTL_VND2_PHYSR_MASTER			BIT(11)
-+#define RTL_VND2_PHYSR_SPEED_MASK		(RTL_VND2_PHYSR_SPEEDL | RTL_VND2_PHYSR_SPEEDH)
-+
-+#define	RTL_MDIO_AN_10GBT_STAT			0xa5d6
-+
-+#define RTL_GENERIC_PHYID			0x001cc800
-+#define RTL_8211FVD_PHYID			0x001cc878
-+#define RTL_8221B				0x001cc840
-+#define RTL_8221B_VB_CG				0x001cc849
-+#define RTL_8221B_VM_CG				0x001cc84a
-+#define RTL_8251B				0x001cc862
-+#define RTL_8261C				0x001cc890
-+
-+MODULE_DESCRIPTION("Realtek PHY driver");
-+MODULE_AUTHOR("Johnson Leung");
-+MODULE_LICENSE("GPL");
-+
-+struct rtl821x_priv {
-+	bool enable_aldps;
-+	bool disable_clk_out;
-+	struct clk *clk;
-+	/* rtl8211f */
-+	u16 iner;
-+};
-+
- static int rtl821x_read_page(struct phy_device *phydev)
- {
- 	return phy_read(phydev, RTL821x_PAGE_SELECT);
-@@ -47,6 +128,28 @@ static int rtl821x_write_page(struct phy_device *phydev, int page)
- 	return phy_write(phydev, RTL821x_PAGE_SELECT, page);
- }
- 
-+static int rtl821x_probe(struct phy_device *phydev)
-+{
-+	struct device *dev = &phydev->dev;
-+	struct rtl821x_priv *priv;
-+
-+	priv = xzalloc(sizeof(*priv));
-+
-+	priv->clk = clk_get_optional_enabled(dev, NULL);
-+	if (IS_ERR(priv->clk))
-+		return dev_err_probe(dev, PTR_ERR(priv->clk),
-+				     "failed to get phy clock\n");
-+
-+	priv->enable_aldps = of_property_read_bool(dev->of_node,
-+						   "realtek,aldps-enable");
-+	priv->disable_clk_out = of_property_read_bool(dev->of_node,
-+						      "realtek,clkout-disable");
-+
-+	phydev->priv = priv;
-+
-+	return 0;
-+}
-+
- static int rtl8211_config_aneg(struct phy_device *phydev)
- {
- 	int ret;
-@@ -78,9 +181,8 @@ static int rtl8211c_config_init(struct phy_device *phydev)
- 	return genphy_config_init(phydev);
- }
- 
--static int rtl8211f_config_init(struct phy_device *phydev)
-+static int rtl8211f_config_rgmii_delay(struct phy_device *phydev)
- {
--	struct device *dev = &phydev->dev;
- 	u16 val_txdly, val_rxdly;
- 	int ret;
- 
-@@ -109,23 +211,169 @@ static int rtl8211f_config_init(struct phy_device *phydev)
- 		return 0;
- 	}
- 
--	ret = phy_modify_paged(phydev, 0xd08, 0x11, RTL8211F_TX_DELAY,
--			       val_txdly);
-+	ret = phy_modify_paged_changed(phydev, RTL8211F_RGMII_PAGE,
-+				       RTL8211F_TXCR, RTL8211F_TX_DELAY,
-+				       val_txdly);
- 	if (ret < 0) {
--		dev_err(dev, "Failed to update the TX delay register\n");
-+		phydev_err(phydev, "Failed to update the TX delay register: %pe\n",
-+			   ERR_PTR(ret));
- 		return ret;
-+	} else if (ret) {
-+		phydev_dbg(phydev,
-+			   "%s 2ns TX delay (and changing the value from pin-strapping RXD1 or the bootloader)\n",
-+			   str_enable_disable(val_txdly));
-+	} else {
-+		phydev_dbg(phydev,
-+			   "2ns TX delay was already %s (by pin-strapping RXD1 or bootloader configuration)\n",
-+			   str_enabled_disabled(val_txdly));
- 	}
- 
--	ret = phy_modify_paged(phydev, 0xd08, 0x15, RTL8211F_RX_DELAY,
--			       val_rxdly);
-+	ret = phy_modify_paged_changed(phydev, RTL8211F_RGMII_PAGE,
-+				       RTL8211F_RXCR, RTL8211F_RX_DELAY,
-+				       val_rxdly);
- 	if (ret < 0) {
--		dev_err(dev, "Failed to update the RX delay register\n");
-+		phydev_err(phydev, "Failed to update the RX delay register: %pe\n",
-+			   ERR_PTR(ret));
- 		return ret;
-+	} else if (ret) {
-+		phydev_dbg(phydev,
-+			   "%s 2ns RX delay (and changing the value from pin-strapping RXD0 or the bootloader)\n",
-+			   str_enable_disable(val_rxdly));
-+	} else {
-+		phydev_dbg(phydev,
-+			   "2ns RX delay was already %s (by pin-strapping RXD0 or bootloader configuration)\n",
-+			   str_enabled_disabled(val_rxdly));
- 	}
- 
- 	return 0;
- }
- 
-+static int rtl8211f_config_clk_out(struct phy_device *phydev)
-+{
-+	struct rtl821x_priv *priv = phydev->priv;
-+	struct phy_driver *drv = to_phy_driver(phydev->dev.driver);
-+	int ret;
-+
-+	/* The value is preserved if the device tree property is absent */
-+	if (!priv->disable_clk_out)
-+		return 0;
-+
-+	if (drv->phy_id == RTL_8211FVD_PHYID)
-+		ret = phy_modify_paged(phydev, RTL8211FVD_CLKOUT_PAGE,
-+				       RTL8211FVD_CLKOUT_REG,
-+				       RTL8211FVD_CLKOUT_EN, 0);
-+	else
-+		ret = phy_modify_paged(phydev, RTL8211F_PHYCR_PAGE,
-+				       RTL8211F_PHYCR2, RTL8211F_CLKOUT_EN, 0);
-+	if (ret)
-+		return ret;
-+
-+	return genphy_soft_reset(phydev);
-+}
-+
-+/* Advance Link Down Power Saving (ALDPS) mode changes crystal/clock behaviour,
-+ * which causes the RXC clock signal to stop for tens to hundreds of
-+ * milliseconds.
-+ *
-+ * Some MACs need the RXC clock to support their internal RX logic, so ALDPS is
-+ * only enabled based on an opt-in device tree property.
-+ */
-+static int rtl8211f_config_aldps(struct phy_device *phydev)
-+{
-+	struct rtl821x_priv *priv = phydev->priv;
-+	u16 mask = RTL8211F_ALDPS_PLL_OFF |
-+		   RTL8211F_ALDPS_ENABLE |
-+		   RTL8211F_ALDPS_XTAL_OFF;
-+
-+	/* The value is preserved if the device tree property is absent */
-+	if (!priv->enable_aldps)
-+		return 0;
-+
-+	return phy_modify_paged(phydev, RTL8211F_PHYCR_PAGE, RTL8211F_PHYCR1,
-+				mask, mask);
-+}
-+
-+static int rtl8211f_config_phy_eee(struct phy_device *phydev)
-+{
-+	/* Disable PHY-mode EEE so LPI is passed to the MAC */
-+	return phy_modify_paged(phydev, RTL8211F_PHYCR_PAGE, RTL8211F_PHYCR2,
-+				RTL8211F_PHYCR2_PHY_EEE_ENABLE, 0);
-+}
-+
-+static int rtl8211f_config_init(struct phy_device *phydev)
-+{
-+	struct device *dev = &phydev->dev;
-+	int ret;
-+
-+	ret = rtl8211f_config_aldps(phydev);
-+	if (ret) {
-+		dev_err(dev, "aldps mode configuration failed: %pe\n",
-+			ERR_PTR(ret));
-+		return ret;
-+	}
-+
-+	ret = rtl8211f_config_rgmii_delay(phydev);
-+	if (ret)
-+		return ret;
-+
-+	ret = rtl8211f_config_clk_out(phydev);
-+	if (ret) {
-+		dev_err(dev, "clkout configuration failed: %pe\n",
-+			ERR_PTR(ret));
-+		return ret;
-+	}
-+
-+	return rtl8211f_config_phy_eee(phydev);
-+}
-+
-+static int rtl8211e_config_init(struct phy_device *phydev)
-+{
-+	int ret = 0, oldpage;
-+	u16 val;
-+
-+	/* enable TX/RX delay for rgmii-* modes, and disable them for rgmii. */
-+	switch (phydev->interface) {
-+	case PHY_INTERFACE_MODE_RGMII:
-+		val = RTL8211E_CTRL_DELAY | 0;
-+		break;
-+	case PHY_INTERFACE_MODE_RGMII_ID:
-+		val = RTL8211E_CTRL_DELAY | RTL8211E_TX_DELAY | RTL8211E_RX_DELAY;
-+		break;
-+	case PHY_INTERFACE_MODE_RGMII_RXID:
-+		val = RTL8211E_CTRL_DELAY | RTL8211E_RX_DELAY;
-+		break;
-+	case PHY_INTERFACE_MODE_RGMII_TXID:
-+		val = RTL8211E_CTRL_DELAY | RTL8211E_TX_DELAY;
-+		break;
-+	default: /* the rest of the modes imply leaving delays as is. */
-+		return 0;
-+	}
-+
-+	/* According to a sample driver there is a 0x1c config register on the
-+	 * 0xa4 extension page (0x7) layout. It can be used to disable/enable
-+	 * the RX/TX delays otherwise controlled by RXDLY/TXDLY pins.
-+	 * The configuration register definition:
-+	 * 14 = reserved
-+	 * 13 = Force Tx RX Delay controlled by bit12 bit11,
-+	 * 12 = RX Delay, 11 = TX Delay
-+	 * 10:0 = Test && debug settings reserved by realtek
-+	 */
-+	oldpage = phy_select_page(phydev, 0x7);
-+	if (oldpage < 0)
-+		goto err_restore_page;
-+
-+	ret = phy_write(phydev, RTL821x_EXT_PAGE_SELECT, 0xa4);
-+	if (ret)
-+		goto err_restore_page;
-+
-+	ret = phy_modify(phydev, 0x1c, RTL8211E_CTRL_DELAY
-+			 | RTL8211E_TX_DELAY | RTL8211E_RX_DELAY,
-+			 val);
-+
-+err_restore_page:
-+	return phy_restore_page(phydev, oldpage, ret);
-+}
-+
- static int rtl8366rb_config_init(struct phy_device *phydev)
- {
- 	int ret;
-@@ -137,17 +385,91 @@ static int rtl8366rb_config_init(struct phy_device *phydev)
- 	ret = phy_set_bits(phydev, RTL8366RB_POWER_SAVE,
- 			   RTL8366RB_POWER_SAVE_ON);
- 	if (ret) {
--		dev_err(&phydev->dev, "error enabling power management\n");
-+		dev_err(&phydev->dev,
-+			"error enabling power management\n");
- 	}
- 
- 	return ret;
- }
- 
-+/* get actual speed to cover the downshift case */
-+static void rtlgen_decode_physr(struct phy_device *phydev, int val)
-+{
-+	/* bit 3
-+	 * 0: Half Duplex
-+	 * 1: Full Duplex
-+	 */
-+	if (val & RTL_VND2_PHYSR_DUPLEX)
-+		phydev->duplex = DUPLEX_FULL;
-+	else
-+		phydev->duplex = DUPLEX_HALF;
-+
-+	switch (val & RTL_VND2_PHYSR_SPEED_MASK) {
-+	case 0x0000:
-+		phydev->speed = SPEED_10;
-+		break;
-+	case 0x0010:
-+		phydev->speed = SPEED_100;
-+		break;
-+	case 0x0020:
-+		phydev->speed = SPEED_1000;
-+		break;
-+	case 0x0200:
-+		phydev->speed = SPEED_10000;
-+		break;
-+	case 0x0210:
-+		phydev->speed = SPEED_2500;
-+		break;
-+	default:
-+		break;
-+	}
-+}
-+
-+static int rtlgen_read_status(struct phy_device *phydev)
-+{
-+	int ret, val;
-+
-+	ret = genphy_read_status(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (!phydev->link)
-+		return 0;
-+
-+	val = phy_read_paged(phydev, 0xa43, 0x12);
-+	if (val < 0)
-+		return val;
-+
-+	rtlgen_decode_physr(phydev, val);
-+
-+	return 0;
-+}
-+
-+static int rtl822x_read_status(struct phy_device *phydev)
-+{
-+	int lpadv, ret;
-+
-+	ret = rtlgen_read_status(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (phydev->autoneg == AUTONEG_DISABLE)
-+		return 0;
-+
-+	lpadv = phy_read_mmd(phydev, MDIO_MMD_VEND2, RTL_MDIO_AN_10GBT_STAT);
-+	if (lpadv < 0)
-+		return lpadv;
-+
-+	return 0;
-+}
-+
- static struct phy_driver realtek_drvs[] = {
- 	{
- 		PHY_ID_MATCH_EXACT(0x00008201),
- 		.drv.name	= "RTL8201CP Ethernet",
- 		.features	= PHY_BASIC_FEATURES,
-+		.read_page	= rtl821x_read_page,
-+		.write_page	= rtl821x_write_page,
- 	}, {
- 		PHY_ID_MATCH_EXACT(0x001cc816),
- 		.drv.name	= "RTL8201F Fast Ethernet",
-@@ -158,6 +480,13 @@ static struct phy_driver realtek_drvs[] = {
- 		PHY_ID_MATCH_EXACT(0x001cc840),
- 		.drv.name	= "RTL8226B_RTL8221B 2.5Gbps PHY",
- 		.features	= PHY_GBIT_FEATURES,
-+		.read_status	= rtl822x_read_status,
-+		.read_page	= rtl821x_read_page,
-+		.write_page	= rtl821x_write_page,
-+	}, {
-+		PHY_ID_MATCH_MODEL(0x001cc880),
-+		.drv.name	= "RTL8208 Fast Ethernet",
-+		.features	= PHY_BASIC_FEATURES,
- 		.read_page	= rtl821x_read_page,
- 		.write_page	= rtl821x_write_page,
- 	}, {
-@@ -165,28 +494,41 @@ static struct phy_driver realtek_drvs[] = {
- 		.drv.name	= "RTL8211 Gigabit Ethernet",
- 		.features	= PHY_GBIT_FEATURES,
- 		.config_aneg	= rtl8211_config_aneg,
-+		.read_page	= rtl821x_read_page,
-+		.write_page	= rtl821x_write_page,
- 	}, {
- 		PHY_ID_MATCH_EXACT(0x001cc912),
- 		.drv.name	= "RTL8211B Gigabit Ethernet",
- 		.features	= PHY_GBIT_FEATURES,
-+		.read_page	= rtl821x_read_page,
-+		.write_page	= rtl821x_write_page,
- 	}, {
- 		PHY_ID_MATCH_EXACT(0x001cc913),
- 		.drv.name	= "RTL8211C Gigabit Ethernet",
- 		.features	= PHY_GBIT_FEATURES,
- 		.config_init	= rtl8211c_config_init,
-+		.read_page	= rtl821x_read_page,
-+		.write_page	= rtl821x_write_page,
- 	}, {
- 		PHY_ID_MATCH_EXACT(0x001cc914),
- 		.drv.name	= "RTL8211DN Gigabit Ethernet",
- 		.features	= PHY_GBIT_FEATURES,
-+		.read_page	= rtl821x_read_page,
-+		.write_page	= rtl821x_write_page,
- 	}, {
- 		PHY_ID_MATCH_EXACT(0x001cc915),
- 		.drv.name	= "RTL8211E Gigabit Ethernet",
- 		.features	= PHY_GBIT_FEATURES,
-+		.config_init	= &rtl8211e_config_init,
-+		.read_page	= rtl821x_read_page,
-+		.write_page	= rtl821x_write_page,
- 	}, {
- 		PHY_ID_MATCH_EXACT(0x001cc916),
- 		.drv.name	= "RTL8211F Gigabit Ethernet",
- 		.features	= PHY_GBIT_FEATURES,
-+		.probe		= rtl821x_probe,
- 		.config_init	= &rtl8211f_config_init,
-+		.read_status	= rtlgen_read_status,
- 		.read_page	= rtl821x_read_page,
- 		.write_page	= rtl821x_write_page,
- 	}, {
-@@ -196,11 +538,56 @@ static struct phy_driver realtek_drvs[] = {
- 		.config_init	= &rtl8211f_config_init,
- 		.read_page	= rtl821x_read_page,
- 		.write_page	= rtl821x_write_page,
-+	}, {
-+		PHY_ID_MATCH_EXACT(RTL_8211FVD_PHYID),
-+		.drv.name	= "RTL8211F-VD Gigabit Ethernet",
-+		.features	= PHY_GBIT_FEATURES,
-+		.probe		= rtl821x_probe,
-+		.config_init	= &rtl8211f_config_init,
-+		.read_status	= rtlgen_read_status,
-+		.read_page	= rtl821x_read_page,
-+		.write_page	= rtl821x_write_page,
-+	}, {
-+		PHY_ID_MATCH_EXACT(0x001cc838),
-+		.drv.name	= "RTL8226-CG 2.5Gbps PHY",
-+		.features	= PHY_GBIT_FEATURES,
-+		.read_status	= rtl822x_read_status,
-+		.read_page	= rtl821x_read_page,
-+		.write_page	= rtl821x_write_page,
-+	}, {
-+		PHY_ID_MATCH_EXACT(0x001cc848),
-+		.drv.name	= "RTL8226B-CG_RTL8221B-CG 2.5Gbps PHY",
-+		.features	= PHY_GBIT_FEATURES,
-+		.read_status	= rtl822x_read_status,
-+		.read_page	= rtl821x_read_page,
-+		.write_page	= rtl821x_write_page,
-+	}, {
-+		PHY_ID_MATCH_EXACT(0x001cc849),
-+		.drv.name	= "RTL8221B-VB-CG 2.5Gbps PHY",
-+		.features	= PHY_GBIT_FEATURES,
-+		.read_status	= rtl822x_read_status,
-+		.read_page	= rtl821x_read_page,
-+		.write_page	= rtl821x_write_page,
-+	}, {
-+		PHY_ID_MATCH_EXACT(0x001cc84a),
-+		.drv.name	= "RTL8221B-VM-CG 2.5Gbps PHY",
-+		.features	= PHY_GBIT_FEATURES,
-+		.read_status	= rtl822x_read_status,
-+		.read_page	= rtl821x_read_page,
-+		.write_page	= rtl821x_write_page,
- 	}, {
- 		PHY_ID_MATCH_EXACT(0x001cc961),
- 		.drv.name	= "RTL8366RB Gigabit Ethernet",
- 		.features	= PHY_GBIT_FEATURES,
- 		.config_init	= &rtl8366rb_config_init,
-+	}, {
-+		PHY_ID_MATCH_EXACT(0x001cc942),
-+		.drv.name	= "RTL8365MB-VC Gigabit Ethernet",
-+		.features	= PHY_GBIT_FEATURES,
-+	}, {
-+		PHY_ID_MATCH_EXACT(0x001cc960),
-+		.drv.name	= "RTL8366S Gigabit Ethernet",
-+		.features	= PHY_GBIT_FEATURES,
- 	},
- };
- 
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 04b82d63a51e..26b1136b8a5d 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -15,6 +15,7 @@
- #include <linux/list.h>
- #include <linux/ethtool.h>
- #include <linux/mii.h>
-+#include <linux/iopoll.h>
- 
- #define PHY_DEFAULT_FEATURES    (SUPPORTED_Autoneg | \
- 				 SUPPORTED_TP | \
-@@ -452,11 +453,27 @@ int phy_read_paged(struct phy_device *phydev, int page, u32 regnum);
- int phy_write_paged(struct phy_device *phydev, int page, u32 regnum, u16 val);
- int phy_modify_paged(struct phy_device *phydev, int page, u32 regnum,
- 		     u16 mask, u16 set);
-+int phy_modify_paged_changed(struct phy_device *phydev, int page, u32 regnum,
-+			     u16 mask, u16 set);
- 
- struct phy_device *phy_device_create(struct mii_bus *bus, int addr, int phy_id);
- int phy_register_device(struct phy_device* dev);
- void phy_unregister_device(struct phy_device *phydev);
- 
-+#define phy_read_poll_timeout(phydev, regnum, val, cond, \
-+				timeout_us) \
-+({ \
-+	int __ret, __val; \
-+	__ret = read_poll_timeout(__val = phy_read, val, \
-+				  __val < 0 || (cond), \
-+		timeout_us, phydev, regnum); \
-+	if (__val < 0) \
-+		__ret = __val; \
-+	if (__ret) \
-+		dev_err(&((phydev)->dev), "%s failed: %d\n", __func__, __ret); \
-+	__ret; \
-+})
-+
- /**
-  * phy_read - Convenience function for reading a given PHY register
-  * @phydev: the phy_device struct
-@@ -479,6 +496,7 @@ static inline int phy_write(struct phy_device *phydev, u32 regnum, u16 val)
- }
- 
- int phy_modify(struct phy_device *phydev, u32 regnum, u16 mask, u16 set);
-+int phy_modify_changed(struct phy_device *phydev, u32 regnum, u16 mask, u16 set);
- 
- /**
-  * phy_set_bits - Convenience function for setting bits in a PHY register
-@@ -531,6 +549,7 @@ int phy_update_status(struct phy_device *phydev);
- int phy_wait_aneg_done(struct phy_device *phydev);
- 
- /* Generic PHY support and helper functions */
-+int genphy_soft_reset(struct phy_device *phydev);
- int genphy_config_init(struct phy_device *phydev);
- int genphy_restart_aneg(struct phy_device *phydev);
- int genphy_config_aneg(struct phy_device *phydev);
-diff --git a/include/linux/string_choices.h b/include/linux/string_choices.h
-index 265573343f54..ee84087d4b26 100644
---- a/include/linux/string_choices.h
-+++ b/include/linux/string_choices.h
-@@ -2,8 +2,87 @@
- #ifndef _LINUX_STRING_CHOICES_H_
- #define _LINUX_STRING_CHOICES_H_
- 
-+/*
-+ * Here provide a series of helpers in the str_$TRUE_$FALSE format (you can
-+ * also expand some helpers as needed), where $TRUE and $FALSE are their
-+ * corresponding literal strings. These helpers can be used in the printing
-+ * and also in other places where constant strings are required. Using these
-+ * helpers offers the following benefits:
-+ *  1) Reducing the hardcoding of strings, which makes the code more elegant
-+ *     through these simple literal-meaning helpers.
-+ *  2) Unifying the output, which prevents the same string from being printed
-+ *     in various forms, such as enable/disable, enabled/disabled, en/dis.
-+ *  3) Deduping by the linker, which results in a smaller binary file.
-+ */
-+
- #include <linux/types.h>
- 
-+static inline const char *str_assert_deassert(bool v)
-+{
-+	return v ? "assert" : "deassert";
-+}
-+#define str_deassert_assert(v)		str_assert_deassert(!(v))
-+
-+static inline const char *str_enable_disable(bool v)
-+{
-+	return v ? "enable" : "disable";
-+}
-+#define str_disable_enable(v)		str_enable_disable(!(v))
-+
-+static inline const char *str_enabled_disabled(bool v)
-+{
-+	return v ? "enabled" : "disabled";
-+}
-+#define str_disabled_enabled(v)		str_enabled_disabled(!(v))
-+
-+static inline const char *str_hi_lo(bool v)
-+{
-+	return v ? "hi" : "lo";
-+}
-+#define str_lo_hi(v)		str_hi_lo(!(v))
-+
-+static inline const char *str_high_low(bool v)
-+{
-+	return v ? "high" : "low";
-+}
-+#define str_low_high(v)		str_high_low(!(v))
-+
-+static inline const char *str_input_output(bool v)
-+{
-+	return v ? "input" : "output";
-+}
-+#define str_output_input(v)	str_input_output(!(v))
-+
-+static inline const char *str_on_off(bool v)
-+{
-+	return v ? "on" : "off";
-+}
-+#define str_off_on(v)		str_on_off(!(v))
-+
-+static inline const char *str_read_write(bool v)
-+{
-+	return v ? "read" : "write";
-+}
-+#define str_write_read(v)		str_read_write(!(v))
-+
-+static inline const char *str_true_false(bool v)
-+{
-+	return v ? "true" : "false";
-+}
-+#define str_false_true(v)		str_true_false(!(v))
-+
-+static inline const char *str_up_down(bool v)
-+{
-+	return v ? "up" : "down";
-+}
-+#define str_down_up(v)		str_up_down(!(v))
-+
-+static inline const char *str_yes_no(bool v)
-+{
-+	return v ? "yes" : "no";
-+}
-+#define str_no_yes(v)		str_yes_no(!(v))
-+
- /**
-  * str_plural - Return the simple pluralization based on English counts
-  * @num: Number used for deciding pluralization
+We currently only support version 1 of the Android image format. Since
+version 2 the image can also embed a device tree which can be passed
+with the --dtb option to the fastboot command, so the solution to
+address your concerns should be adding support for version 2.
+
+I would consider this a future enhancement though.
+
+> 
+> On a related note, this will probably trigger a warning on every boot if
+> the barebox device tree has a state node. Maybe we could mark dupes of
+> the barebox device tree as such (maybe set device_node::dev to a special
+> value?!), so we can skip the warning?
+
+You mean this warning?
+
+dev_warn(&state->dev, "Warning: Kernel devicetree contains state node, replacing it\n");
+
+We could mark it as duplicate as you suggested. Another possibility
+would be to delete state nodes while duplicating the internal device tree.
+
+Sascha
+
+
 -- 
-2.47.3
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
