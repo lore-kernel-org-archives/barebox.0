@@ -1,67 +1,67 @@
-Delivery-date: Fri, 23 Jan 2026 14:20:17 +0100
+Delivery-date: Fri, 23 Jan 2026 14:20:18 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vjH5F-004UYX-2c
+	id 1vjH5G-004UYs-2J
 	for lore@lore.pengutronix.de;
-	Fri, 23 Jan 2026 14:20:17 +0100
+	Fri, 23 Jan 2026 14:20:18 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vjH5D-0003za-G4
-	for lore@pengutronix.de; Fri, 23 Jan 2026 14:20:17 +0100
+	id 1vjH5E-0003zd-8g
+	for lore@pengutronix.de; Fri, 23 Jan 2026 14:20:18 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Bk8pCwLw8o8Hvc99hDsct0K2ah69Ap4JHB4EkIGUeRI=; b=Bfx2rmgYcMYiQlHtMa3sFNYfU2
-	3TFUMFQ68BpMeZUK5xtJynS7SU5eFIso0oWuiytX61HA5M02GRhysLXsKxRWY5N7zPKWqCKVL62sI
-	bIJxhNAbmM5nVaX/bArkwfkS0vlwIJlJ+o2hMuI97fLDHU+2GGBB7ZsAVzLc+3d9Pehw2jZkcqlhY
-	VIfG8vwa/tvXQ6IEuW59dsODQJDdSPMQqkU6Oz7kUv+9Ux1b7x1zoUPvkIvkjq0cQRjoZ9fJM3lqW
-	KcSdOhS3ua4DM8yT32efDay2G/bCWJ0p2LCV25l6I8kvZU0C3gnt4k9s3+wNN4gU5CT90ET6iWRMA
-	t/RHDNuA==;
+	bh=uiD7KSEiFCAcNc8nOpDzne/mtq9q3Z0a31q2hg5SloQ=; b=yRwBA3nGYU8FWJ0v1P6dVdSP6h
+	Tq/WIct0Ddy3eVS6aKhXa9T8sMFlprl4p8DDAKZ4m1DbJadoS+k6jVveFF6ZQaLsCf3fhs7dyCKus
+	HKZlMHDcOLTfJWu5PUt6PUtZItzyiuDu7YN9F4Irs6iyx3CkRj3wTbrH9M2deGjYrndZdNf/JEa24
+	bIVBZcNhmDlAKR7qHkT/BbejivAJjxMHDqlwWiDBm5pSTNtGQ0YiyQrqIks2Fo2pb+cQq/IyoqQTp
+	IE7yj7mtbFqRoJTwf8HSFA/J+Ne96kh/uclcPl8Re9ZZGx/vrVkmj+3T38I9LtKqNSW43PbEWRcYU
+	O+gu3/2w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vjH4c-00000008x0y-0Gkl;
-	Fri, 23 Jan 2026 13:19:38 +0000
+	id 1vjH4b-00000008x0g-39B9;
+	Fri, 23 Jan 2026 13:19:37 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vjH4V-00000008wt1-3P73
+	id 1vjH4V-00000008wt2-3MU7
 	for barebox@lists.infradead.org;
 	Fri, 23 Jan 2026 13:19:35 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vjH4S-0003lR-9N; Fri, 23 Jan 2026 14:19:28 +0100
+	id 1vjH4S-0003lP-7T; Fri, 23 Jan 2026 14:19:28 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vjH4S-0026Br-2R;
+	id 1vjH4S-0026Bo-2H;
 	Fri, 23 Jan 2026 14:19:28 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vjH4S-0000000DmY8-2nuW;
-	Fri, 23 Jan 2026 14:19:28 +0100
+	id 1vjH4S-0000000DmY8-2ahq;
+	Fri, 23 Jan 2026 14:19:27 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 23 Jan 2026 14:17:12 +0100
-Message-ID: <20260123131922.2663665-3-a.fatoum@pengutronix.de>
+Date: Fri, 23 Jan 2026 14:17:11 +0100
+Message-ID: <20260123131922.2663665-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260123131922.2663665-1-a.fatoum@pengutronix.de>
 References: <20260123131922.2663665-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260123_051932_163129_E74871AB 
-X-CRM114-Status: GOOD (  37.95  )
+X-CRM114-CacheID: sfid-20260123_051932_156094_FC2612D4 
+X-CRM114-Status: GOOD (  21.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,552 +83,424 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH master 2/3] common: elf: split barebox proper-only ELF support from the rest
+Subject: [PATCH master 1/3] elf: rename elf.h to <linux/elf.h>
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-common/elf.c contains code that's only relevant to barebox proper, code
-that is only used by the PBL and code that is used for both.
-
-This works when we compile with linker garbage collection, but we don't
-do this on sandbox. Sandbox is a PBL-only platform nowadays, so this
-leads to linker errors as without LTO, the linker can't determine that
-e.g. the reference to list_sort is ultimately unused in PBL.
-
-Instead of stubbing out the functions needed, let's reorganize the
-different parts.
-
-- lib: contains the ELF parts that need no allocation and are usable
-       both from barebox proper and PBL
-- common: contains the ELF parts only usable to barebox proper
-
-This structure may be useful in the future as well to more clearly
-differentiate when something should go into lib/ and when it should go
-into common/: With above suggested scheme implemented thoroughly, there
-should be no obj-pbl-y at all in common/ and lib would contain library
-function that are useful for either PBL, proper or both.
+To differentiate barebox-specific API from universal ELF definitions,
+move everything from elf.h into linux/elf.h and have elf.h include the
+new header. This is in preparation for the next commit, which will move
+things out of <linux/elf.h>, but now that we got the file addition out
+of the way, the diff will be better readable.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/Makefile     |   2 +-
- common/elf.c        | 338 --------------------------------------------
- include/elf.h       |  13 ++
- include/lib/elf.h   |  75 ++++++++++
- include/linux/elf.h |  67 ++-------
- lib/Makefile        |   1 +
- lib/elf.c           | 329 ++++++++++++++++++++++++++++++++++++++++++
- 7 files changed, 428 insertions(+), 397 deletions(-)
- create mode 100644 include/lib/elf.h
- create mode 100644 lib/elf.c
+ include/elf.h       | 522 +-------------------------------------------
+ include/linux/elf.h | 521 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 525 insertions(+), 518 deletions(-)
+ create mode 100644 include/linux/elf.h
 
-diff --git a/common/Makefile b/common/Makefile
-index 7393510a551b..ac39ee4e3ed5 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -14,7 +14,7 @@ obj-y				+= misc.o
- obj-pbl-y			+= memsize.o
- obj-y				+= resource.o
- obj-pbl-y			+= bootsource.o
--obj-pbl-$(CONFIG_ELF)		+= elf.o
-+obj-$(CONFIG_ELF)		+= elf.o
- obj-y				+= restart.o
- obj-y				+= poweroff.o
- obj-y				+= slice.o
-diff --git a/common/elf.c b/common/elf.c
-index 62b60c082d20..296ff3ec7d4c 100644
---- a/common/elf.c
-+++ b/common/elf.c
-@@ -3,7 +3,6 @@
-  * Copyright (c) 2018 Pengutronix, Oleksij Rempel <o.rempel@pengutronix.de>
-  */
- 
--#include <common.h>
- #include <elf.h>
- #include <errno.h>
- #include <fcntl.h>
-@@ -20,18 +19,6 @@ struct elf_segment {
- 	void *phdr;
- };
- 
--static void *elf_phdr_relocated_paddr(struct elf_image *elf, void *phdr)
--{
--	void *dst;
--
--	if (elf->reloc_offset)
--		dst = (void *)(unsigned long)(elf->reloc_offset + elf_phdr_p_vaddr(elf, phdr));
--	else
--		dst = (void *)(unsigned long)elf_phdr_p_paddr(elf, phdr);
--
--	return dst;
--}
--
- static int elf_request_region(struct elf_image *elf, resource_size_t start,
- 			      resource_size_t size, void *phdr)
- {
-@@ -269,61 +256,6 @@ static int load_elf_image_segments(struct elf_image *elf)
- 	return ret;
- }
- 
--static int elf_check_image(struct elf_image *elf, void *buf)
--{
--	u16 e_type;
--
--	if (memcmp(buf, ELFMAG, SELFMAG)) {
--		pr_err("ELF magic not found.\n");
--		return -EINVAL;
--	}
--
--	elf->class = ((char *) buf)[EI_CLASS];
--
--	e_type = elf_hdr_e_type(elf, buf);
--	if (e_type != ET_EXEC && e_type != ET_DYN) {
--		pr_err("Unsupported ELF type: %u (only ET_EXEC and ET_DYN supported)\n", e_type);
--		return -ENOEXEC;
--	}
--
--	if (elf->class != ELF_CLASS)
--		return -EINVAL;
--
--	elf->type = e_type;
--
--	if (!elf_hdr_e_phnum(elf, buf)) {
--		pr_err("No phdr found.\n");
--		return -ENOEXEC;
--	}
--
--	return 0;
--}
--
--static void elf_init_struct(struct elf_image *elf)
--{
--	INIT_LIST_HEAD(&elf->list);
--	elf->low_addr = (void *) (unsigned long) -1;
--	elf->high_addr = 0;
--	elf->filename = NULL;
--}
--
--int elf_open_binary_into(struct elf_image *elf, void *buf)
--{
--	int ret;
--
--	memset(elf, 0, sizeof(*elf));
--	elf_init_struct(elf);
--
--	elf->hdr_buf = buf;
--	ret = elf_check_image(elf, buf);
--	if (ret)
--		return ret;
--
--	elf->entry = elf_hdr_e_entry(elf, elf->hdr_buf);
--
--	return 0;
--}
--
- struct elf_image *elf_open_binary(void *buf)
- {
- 	int ret;
-@@ -428,149 +360,6 @@ struct elf_image *elf_open(const char *filename)
- 	return elf_check_init(filename);
- }
- 
--void elf_set_load_address(struct elf_image *elf, void *addr)
--{
--	elf->load_address = addr;
--}
--
--static void *elf_find_dynamic_segment(struct elf_image *elf)
--{
--	void *buf = elf->hdr_buf;
--	void *phdr = buf + elf_hdr_e_phoff(elf, buf);
--
--	elf_for_each_segment(phdr, elf, buf) {
--		if (elf_phdr_p_type(elf, phdr) == PT_DYNAMIC)
--			return elf_phdr_relocated_paddr(elf, phdr);
--	}
--
--	return NULL;  /* No PT_DYNAMIC segment */
--}
--
--/**
-- * elf_parse_dynamic_section - Parse the dynamic section and extract relocation info
-- * @elf: ELF image structure
-- * @dyn_seg: Pointer to the PT_DYNAMIC segment
-- * @rel_out: Output pointer to the relocation table (either REL or RELA)
-- * @relsz_out: Output size of the relocation table in bytes
-- * @is_rela: flag indicating RELA (true) vs REL (false) format is expected
-- *
-- * This is a generic function that works for both 32-bit and 64-bit ELF files,
-- * and handles both REL and RELA relocation formats.
-- *
-- * Returns: 0 on success, -EINVAL on error
-- */
--static int elf_parse_dynamic_section(struct elf_image *elf, const void *dyn_seg,
--				     void **rel_out, u64 *relsz_out, void **symtab,
--				     bool is_rela)
--{
--	const void *dyn = dyn_seg;
--	void *rel = NULL, *rela = NULL;
--	u64 relsz = 0, relasz = 0;
--	u64 relent = 0, relaent = 0;
--	phys_addr_t base = (phys_addr_t)elf->reloc_offset;
--	size_t expected_rel_size, expected_rela_size;
--
--	/* Calculate expected sizes based on ELF class */
--	if (ELF_CLASS == ELFCLASS32) {
--		expected_rel_size = sizeof(Elf32_Rel);
--		expected_rela_size = sizeof(Elf32_Rela);
--	} else {
--		expected_rel_size = sizeof(Elf64_Rel);
--		expected_rela_size = sizeof(Elf64_Rela);
--	}
--
--	/* Iterate through dynamic entries until DT_NULL */
--	while (elf_dyn_d_tag(elf, dyn) != DT_NULL) {
--		unsigned long tag = elf_dyn_d_tag(elf, dyn);
--
--		switch (tag) {
--		case DT_REL:
--			/* REL table address - needs to be adjusted by load offset */
--			rel = (void *)(unsigned long)(base + elf_dyn_d_ptr(elf, dyn));
--			break;
--		case DT_RELSZ:
--			relsz = elf_dyn_d_val(elf, dyn);
--			break;
--		case DT_RELENT:
--			relent = elf_dyn_d_val(elf, dyn);
--			break;
--		case DT_RELA:
--			/* RELA table address - needs to be adjusted by load offset */
--			rela = (void *)(unsigned long)(base + elf_dyn_d_ptr(elf, dyn));
--			break;
--		case DT_RELASZ:
--			relasz = elf_dyn_d_val(elf, dyn);
--			break;
--		case DT_RELAENT:
--			relaent = elf_dyn_d_val(elf, dyn);
--			break;
--		case DT_SYMTAB:
--			*symtab = (void *)(unsigned long)(base + elf_dyn_d_val(elf, dyn));
--			break;
--		default:
--			break;
--		}
--
--		dyn += elf_size_of_dyn(elf);
--	}
--
--	/* Check that we found exactly one relocation type */
--	if (rel && rela) {
--		pr_err("ELF has both REL and RELA relocations\n");
--		return -EINVAL;
--	}
--
--	if (rel && !is_rela) {
--		/* REL relocations */
--		if (!relsz || relent != expected_rel_size) {
--			pr_debug("No REL relocations or invalid relocation info\n");
--			return -EINVAL;
--		}
--		*rel_out = rel;
--		*relsz_out = relsz;
--
--		return 0;
--	} else if (rela && is_rela) {
--		/* RELA relocations */
--		if (!relasz || relaent != expected_rela_size) {
--			pr_debug("No RELA relocations or invalid relocation info\n");
--			return -EINVAL;
--		}
--		*rel_out = rela;
--		*relsz_out = relasz;
--
--		return 0;
--	}
--
--	pr_debug("No relocations found in dynamic section\n");
--
--	return -EINVAL;
--}
--
--int elf_parse_dynamic_section_rel(struct elf_image *elf, const void *dyn_seg,
--				     void **rel_out, u64 *relsz_out, void **symtab)
--{
--	return elf_parse_dynamic_section(elf, dyn_seg, rel_out, relsz_out, symtab,
--					 false);
--}
--
--int elf_parse_dynamic_section_rela(struct elf_image *elf, const void *dyn_seg,
--				     void **rel_out, u64 *relsz_out, void **symtab)
--{
--	return elf_parse_dynamic_section(elf, dyn_seg, rel_out, relsz_out, symtab,
--					 true);
--}
--
--/*
-- * Weak default implementation for architectures that don't support
-- * ELF relocations yet. Can be overridden by arch-specific implementation.
-- */
--int __weak elf_apply_relocations(struct elf_image *elf, const void *dyn_seg)
--{
--	pr_warn("ELF relocations not supported for this architecture\n");
--	return -ENOSYS;
--}
--
- static int elf_relocate(struct elf_image *elf)
- {
- 	void *dyn_seg;
-@@ -634,130 +423,3 @@ void elf_close(struct elf_image *elf)
- 
- 	free(elf);
- }
--
--/**
-- * elf_load_inplace() - Apply dynamic relocations to an ELF binary in place
-- * @elf: ELF image previously opened with elf_open_binary()
-- *
-- * This function applies dynamic relocations to an ELF binary that is already
-- * loaded at its target address in memory. Unlike elf_load(), this does not
-- * allocate memory or copy segments - it only modifies the existing image.
-- *
-- * This is useful for self-relocating loaders or when the ELF has been loaded
-- * by external means (e.g., loaded by firmware or another bootloader).
-- *
-- * The ELF image must have been previously opened with elf_open_binary().
-- *
-- * For ET_DYN (position-independent) binaries, the relocation offset is
-- * calculated relative to the first executable PT_LOAD segment (.text section).
-- *
-- * For ET_EXEC binaries, no relocation is applied as they are expected to
-- * be at their link-time addresses.
-- *
-- * Returns: 0 on success, negative error code on failure
-- */
--int elf_load_inplace(struct elf_image *elf)
--{
--	const void *dyn_seg;
--	void *buf, *phdr;
--	void *elf_buf;
--	int ret;
--	u64 text_vaddr = U64_MAX;
--	u64 text_vaddr_min = U64_MAX;
--	u64 text_offset = U64_MAX;
--
--	buf = elf->hdr_buf;
--	elf_buf = elf->hdr_buf;
--
--	/*
--	 * First pass: Clear BSS segments (p_memsz > p_filesz) and find lowest
--	 * virtual address.
--	 * BSS clearing must be done before relocations as uninitialized data
--	 * must be zeroed per C standard.
--	 */
--	phdr = buf + elf_hdr_e_phoff(elf, buf);
--	elf_for_each_segment(phdr, elf, buf) {
--		if (elf_phdr_p_type(elf, phdr) == PT_LOAD) {
--			u64 p_offset = elf_phdr_p_offset(elf, phdr);
--			u64 p_filesz = elf_phdr_p_filesz(elf, phdr);
--			u64 p_memsz = elf_phdr_p_memsz(elf, phdr);
--
--			/* Clear BSS (uninitialized data) */
--			if (p_filesz < p_memsz) {
--				void *bss_start = elf_buf + p_offset + p_filesz;
--				size_t bss_size = p_memsz - p_filesz;
--				memset(bss_start, 0x00, bss_size);
--			}
--
--			text_vaddr = elf_phdr_p_vaddr(elf, phdr);
--
--			if (text_vaddr < text_vaddr_min) {
--				text_vaddr_min = text_vaddr;
--				text_offset = p_offset;
--			}
--		}
--	}
--
--	text_vaddr = text_vaddr_min;
--
--	/*
--	 * Calculate relocation offset for the in-place binary.
--	 * For ET_DYN, we need to find the first PT_LOAD segment
--	 * and use it as the relocation base.
--	 */
--	if (elf->type == ET_DYN) {
--
--		if (text_vaddr == U64_MAX) {
--			pr_err("No PT_LOAD segment found\n");
--			ret = -EINVAL;
--			goto out;
--		}
--
--		/*
--		 * Calculate relocation offset relative to .text section:
--		 * - .text is at file offset text_offset, so in memory at: elf_buf + text_offset
--		 * - .text has virtual address text_vaddr
--		 * - reloc_offset = (actual .text address) - (virtual .text address)
--		 */
--		elf->reloc_offset = ((unsigned long)elf_buf + text_offset) - text_vaddr;
--
--		pr_debug("In-place ELF relocation: text_vaddr=0x%llx, text_offset=0x%llx, "
--			 "load_addr=%p, offset=0x%08lx\n",
--			 text_vaddr, text_offset, elf_buf, elf->reloc_offset);
--
--		/* Adjust entry point to point to relocated image */
--		elf->entry += elf->reloc_offset;
--	} else {
--		/*
--		 * ET_EXEC binaries are at their link-time addresses,
--		 * no relocation needed
--		 */
--		elf->reloc_offset = 0;
--	}
--
--	/* Find PT_DYNAMIC segment */
--	dyn_seg = elf_find_dynamic_segment(elf);
--	if (!dyn_seg) {
--		/*
--		 * No PT_DYNAMIC segment found.
--		 * This is fine for statically-linked binaries or
--		 * binaries without relocations.
--		 */
--		pr_debug("No PT_DYNAMIC segment found\n");
--		ret = 0;
--		goto out;
--	}
--
--	/* Apply architecture-specific relocations */
--	ret = elf_apply_relocations(elf, dyn_seg);
--	if (ret) {
--		pr_err("In-place relocation failed: %d\n", ret);
--		goto out;
--	}
--
--	pr_debug("In-place ELF relocation completed successfully\n");
--	return 0;
--
--out:
--	return ret;
--}
 diff --git a/include/elf.h b/include/elf.h
-index 872f9e39fee4..8afa5e56570b 100644
+index f54145e4af37..872f9e39fee4 100644
 --- a/include/elf.h
 +++ b/include/elf.h
-@@ -2,6 +2,19 @@
- #ifndef __ELF_H
- #define __ELF_H
+@@ -1,521 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+-#ifndef _LINUX_ELF_H
+-#define _LINUX_ELF_H
++#ifndef __ELF_H
++#define __ELF_H
  
-+#include <linux/types.h>
-+#include <linux/list.h>
- #include <linux/elf.h>
-+#include <lib/elf.h>
-+
-+static inline size_t elf_get_mem_size(struct elf_image *elf)
-+{
-+	return elf->high_addr - elf->low_addr;
-+}
-+
-+struct elf_image *elf_open_binary(void *buf);
-+struct elf_image *elf_open(const char *filename);
-+void elf_close(struct elf_image *elf);
-+int elf_load(struct elf_image *elf);
+-#include <linux/types.h>
+-#include <linux/list.h>
+-//#include <linux/auxvec.h>
+-//#include <linux/elf-em.h>
+-#include <asm/elf.h>
++#include <linux/elf.h>
  
- #endif /* __ELF_H */
-diff --git a/include/lib/elf.h b/include/lib/elf.h
-new file mode 100644
-index 000000000000..1521c81df6a7
---- /dev/null
-+++ b/include/lib/elf.h
-@@ -0,0 +1,75 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/* ELF utility functions that require no allocations */
-+#ifndef _LIB_ELF_H
-+#define _LIB_ELF_H
-+
-+#include <linux/types.h>
-+#include <linux/list.h>
-+
-+struct elf_image {
-+	struct list_head list;
-+	u8 class;
-+	u16 type;		/* ET_EXEC or ET_DYN */
-+	u64 entry;
-+	void *low_addr;
-+	void *high_addr;
-+	void *hdr_buf;
-+	const char *filename;
-+	void *load_address;	/* User-specified load address (NULL = use p_paddr) */
-+	void *base_load_addr;	/* Calculated base address for ET_DYN */
-+	unsigned long reloc_offset;	/* Offset between p_vaddr and actual load address */
-+};
-+
-+static inline void elf_init_struct(struct elf_image *elf)
-+{
-+	INIT_LIST_HEAD(&elf->list);
-+	elf->low_addr = (void *) (unsigned long) -1;
-+	elf->high_addr = 0;
-+	elf->filename = NULL;
-+}
-+
-+int elf_check_image(struct elf_image *elf, void *buf);
-+int elf_open_binary_into(struct elf_image *elf, void *buf);
-+
-+/*
-+ * Set the load address for the ELF file.
-+ * Must be called before elf_load().
-+ * If not set, ET_EXEC uses p_paddr, ET_DYN uses lowest p_paddr.
-+ */
-+void elf_set_load_address(struct elf_image *elf, void *addr);
-+
-+/*
-+ * Parse the dynamic section and extract relocation information.
-+ * This is a generic function that works for both 32-bit and 64-bit ELF files,
-+ * and handles both REL and RELA relocation formats.
-+ * Returns 0 on success, -EINVAL on error.
-+ */
-+void *elf_find_dynamic_segment(struct elf_image *elf);
-+
-+/*
-+ * Parse the dynamic section and extract relocation information.
-+ * This is a generic function that works for both 32-bit and 64-bit ELF files,
-+ * and handles both REL and RELA relocation formats.
-+ * Returns 0 on success, -EINVAL on error.
-+ */
-+int elf_parse_dynamic_section_rel(struct elf_image *elf, const void *dyn_seg,
-+				  void **rel_out, u64 *relsz_out, void **symtab);
-+int elf_parse_dynamic_section_rela(struct elf_image *elf, const void *dyn_seg,
-+				   void **rel_out, u64 *relsz_out, void **symtab);
-+
-+/*
-+ * Apply dynamic relocations to an ELF binary already loaded in memory.
-+ * This modifies the ELF image in place without allocating new memory.
-+ * Useful for self-relocating loaders or externally loaded binaries.
-+ * The elf parameter must have been previously opened with elf_open_binary().
-+ */
-+int elf_load_inplace(struct elf_image *elf);
-+
-+/*
-+ * Architecture-specific relocation handler.
-+ * Returns 0 on success, -ENOSYS if architecture doesn't support relocations,
-+ * other negative error codes on failure.
-+ */
-+int elf_apply_relocations(struct elf_image *elf, const void *dyn_seg);
-+
-+#endif
-diff --git a/include/linux/elf.h b/include/linux/elf.h
-index f54145e4af37..f670ed82a077 100644
---- a/include/linux/elf.h
-+++ b/include/linux/elf.h
-@@ -7,6 +7,7 @@
- //#include <linux/auxvec.h>
- //#include <linux/elf-em.h>
- #include <asm/elf.h>
-+#include <lib/elf.h>
- 
- struct file;
- 
-@@ -391,64 +392,6 @@ extern Elf64_Dyn _DYNAMIC [];
- 
- #endif
- 
+-struct file;
+-
+-#ifndef elf_read_implies_exec
+-  /* Executables for which elf_read_implies_exec() returns TRUE will
+-     have the READ_IMPLIES_EXEC personality flag set automatically.
+-     Override in asm/elf.h as needed.  */
+-# define elf_read_implies_exec(ex, have_pt_gnu_stack)	0
+-#endif
+-
+-/* 32-bit ELF base types. */
+-typedef __u32	Elf32_Addr;
+-typedef __u16	Elf32_Half;
+-typedef __u32	Elf32_Off;
+-typedef __s32	Elf32_Sword;
+-typedef __u32	Elf32_Word;
+-
+-/* 64-bit ELF base types. */
+-typedef __u64	Elf64_Addr;
+-typedef __u16	Elf64_Half;
+-typedef __s16	Elf64_SHalf;
+-typedef __u64	Elf64_Off;
+-typedef __s32	Elf64_Sword;
+-typedef __u32	Elf64_Word;
+-typedef __u64	Elf64_Xword;
+-typedef __s64	Elf64_Sxword;
+-
+-/* These constants are for the segment types stored in the image headers */
+-#define PT_NULL    0
+-#define PT_LOAD    1
+-#define PT_DYNAMIC 2
+-#define PT_INTERP  3
+-#define PT_NOTE    4
+-#define PT_SHLIB   5
+-#define PT_PHDR    6
+-#define PT_TLS     7               /* Thread local storage segment */
+-#define PT_LOOS    0x60000000      /* OS-specific */
+-#define PT_HIOS    0x6fffffff      /* OS-specific */
+-#define PT_LOPROC  0x70000000
+-#define PT_HIPROC  0x7fffffff
+-#define PT_GNU_EH_FRAME		0x6474e550
+-
+-#define PT_GNU_STACK	(PT_LOOS + 0x474e551)
+-
+-/* These constants define the different elf file types */
+-#define ET_NONE   0
+-#define ET_REL    1
+-#define ET_EXEC   2
+-#define ET_DYN    3
+-#define ET_CORE   4
+-#define ET_LOPROC 0xff00
+-#define ET_HIPROC 0xffff
+-
+-/* This is the info that is needed to parse the dynamic section of the file */
+-#define DT_NULL		0
+-#define DT_NEEDED	1
+-#define DT_PLTRELSZ	2
+-#define DT_PLTGOT	3
+-#define DT_HASH		4
+-#define DT_STRTAB	5
+-#define DT_SYMTAB	6
+-#define DT_RELA		7
+-#define DT_RELASZ	8
+-#define DT_RELAENT	9
+-#define DT_STRSZ	10
+-#define DT_SYMENT	11
+-#define DT_INIT		12
+-#define DT_FINI		13
+-#define DT_SONAME	14
+-#define DT_RPATH 	15
+-#define DT_SYMBOLIC	16
+-#define DT_REL	        17
+-#define DT_RELSZ	18
+-#define DT_RELENT	19
+-#define DT_PLTREL	20
+-#define DT_DEBUG	21
+-#define DT_TEXTREL	22
+-#define DT_JMPREL	23
+-#define DT_ENCODING	32
+-#define OLD_DT_LOOS	0x60000000
+-#define DT_LOOS		0x6000000d
+-#define DT_HIOS		0x6ffff000
+-#define DT_VALRNGLO	0x6ffffd00
+-#define DT_VALRNGHI	0x6ffffdff
+-#define DT_ADDRRNGLO	0x6ffffe00
+-#define DT_ADDRRNGHI	0x6ffffeff
+-#define DT_VERSYM	0x6ffffff0
+-#define DT_RELACOUNT	0x6ffffff9
+-#define DT_RELCOUNT	0x6ffffffa
+-#define DT_FLAGS_1	0x6ffffffb
+-#define DT_VERDEF	0x6ffffffc
+-#define	DT_VERDEFNUM	0x6ffffffd
+-#define DT_VERNEED	0x6ffffffe
+-#define	DT_VERNEEDNUM	0x6fffffff
+-#define OLD_DT_HIOS     0x6fffffff
+-#define DT_LOPROC	0x70000000
+-#define DT_HIPROC	0x7fffffff
+-
+-/* This info is needed when parsing the symbol table */
+-#define STB_LOCAL  0
+-#define STB_GLOBAL 1
+-#define STB_WEAK   2
+-
+-#define STT_NOTYPE  0
+-#define STT_OBJECT  1
+-#define STT_FUNC    2
+-#define STT_SECTION 3
+-#define STT_FILE    4
+-#define STT_COMMON  5
+-#define STT_TLS     6
+-
+-#define ELF_ST_BIND(x)		((x) >> 4)
+-#define ELF_ST_TYPE(x)		(((unsigned int) x) & 0xf)
+-#define ELF32_ST_BIND(x)	ELF_ST_BIND(x)
+-#define ELF32_ST_TYPE(x)	ELF_ST_TYPE(x)
+-#define ELF64_ST_BIND(x)	ELF_ST_BIND(x)
+-#define ELF64_ST_TYPE(x)	ELF_ST_TYPE(x)
+-
+-typedef struct dynamic{
+-  Elf32_Sword d_tag;
+-  union{
+-    Elf32_Sword	d_val;
+-    Elf32_Addr	d_ptr;
+-  } d_un;
+-} Elf32_Dyn;
+-
+-typedef struct {
+-  Elf64_Sxword d_tag;		/* entry tag value */
+-  union {
+-    Elf64_Xword d_val;
+-    Elf64_Addr d_ptr;
+-  } d_un;
+-} Elf64_Dyn;
+-
+-/* The following are used with relocations */
+-#define ELF32_R_SYM(x) ((x) >> 8)
+-#define ELF32_R_TYPE(x) ((x) & 0xff)
+-
+-#define ELF64_R_SYM(i)			((i) >> 32)
+-#define ELF64_R_TYPE(i)			((i) & 0xffffffff)
+-
+-typedef struct elf32_rel {
+-  Elf32_Addr	r_offset;
+-  Elf32_Word	r_info;
+-} Elf32_Rel;
+-
+-typedef struct elf64_rel {
+-  Elf64_Addr r_offset;	/* Location at which to apply the action */
+-  Elf64_Xword r_info;	/* index and type of relocation */
+-} Elf64_Rel;
+-
+-typedef struct elf32_rela{
+-  Elf32_Addr	r_offset;
+-  Elf32_Word	r_info;
+-  Elf32_Sword	r_addend;
+-} Elf32_Rela;
+-
+-typedef struct elf64_rela {
+-  Elf64_Addr r_offset;	/* Location at which to apply the action */
+-  Elf64_Xword r_info;	/* index and type of relocation */
+-  Elf64_Sxword r_addend;	/* Constant addend used to compute value */
+-} Elf64_Rela;
+-
+-typedef struct elf32_sym{
+-  Elf32_Word	st_name;
+-  Elf32_Addr	st_value;
+-  Elf32_Word	st_size;
+-  unsigned char	st_info;
+-  unsigned char	st_other;
+-  Elf32_Half	st_shndx;
+-} Elf32_Sym;
+-
+-typedef struct elf64_sym {
+-  Elf64_Word st_name;		/* Symbol name, index in string tbl */
+-  unsigned char	st_info;	/* Type and binding attributes */
+-  unsigned char	st_other;	/* No defined meaning, 0 */
+-  Elf64_Half st_shndx;		/* Associated section index */
+-  Elf64_Addr st_value;		/* Value of the symbol */
+-  Elf64_Xword st_size;		/* Associated symbol size */
+-} Elf64_Sym;
+-
+-
+-#define EI_NIDENT	16
+-
+-typedef struct elf32_hdr{
+-  unsigned char	e_ident[EI_NIDENT];
+-  Elf32_Half	e_type;
+-  Elf32_Half	e_machine;
+-  Elf32_Word	e_version;
+-  Elf32_Addr	e_entry;  /* Entry point */
+-  Elf32_Off	e_phoff;
+-  Elf32_Off	e_shoff;
+-  Elf32_Word	e_flags;
+-  Elf32_Half	e_ehsize;
+-  Elf32_Half	e_phentsize;
+-  Elf32_Half	e_phnum;
+-  Elf32_Half	e_shentsize;
+-  Elf32_Half	e_shnum;
+-  Elf32_Half	e_shstrndx;
+-} Elf32_Ehdr;
+-
+-typedef struct elf64_hdr {
+-  unsigned char	e_ident[EI_NIDENT];	/* ELF "magic number" */
+-  Elf64_Half e_type;
+-  Elf64_Half e_machine;
+-  Elf64_Word e_version;
+-  Elf64_Addr e_entry;		/* Entry point virtual address */
+-  Elf64_Off e_phoff;		/* Program header table file offset */
+-  Elf64_Off e_shoff;		/* Section header table file offset */
+-  Elf64_Word e_flags;
+-  Elf64_Half e_ehsize;
+-  Elf64_Half e_phentsize;
+-  Elf64_Half e_phnum;
+-  Elf64_Half e_shentsize;
+-  Elf64_Half e_shnum;
+-  Elf64_Half e_shstrndx;
+-} Elf64_Ehdr;
+-
+-/* These constants define the permissions on sections in the program
+-   header, p_flags. */
+-#define PF_R		0x4
+-#define PF_W		0x2
+-#define PF_X		0x1
+-
+-typedef struct elf32_phdr{
+-  Elf32_Word	p_type;
+-  Elf32_Off	p_offset;
+-  Elf32_Addr	p_vaddr;
+-  Elf32_Addr	p_paddr;
+-  Elf32_Word	p_filesz;
+-  Elf32_Word	p_memsz;
+-  Elf32_Word	p_flags;
+-  Elf32_Word	p_align;
+-} Elf32_Phdr;
+-
+-typedef struct elf64_phdr {
+-  Elf64_Word p_type;
+-  Elf64_Word p_flags;
+-  Elf64_Off p_offset;		/* Segment file offset */
+-  Elf64_Addr p_vaddr;		/* Segment virtual address */
+-  Elf64_Addr p_paddr;		/* Segment physical address */
+-  Elf64_Xword p_filesz;		/* Segment size in file */
+-  Elf64_Xword p_memsz;		/* Segment size in memory */
+-  Elf64_Xword p_align;		/* Segment alignment, file & memory */
+-} Elf64_Phdr;
+-
+-/* sh_type */
+-#define SHT_NULL	0
+-#define SHT_PROGBITS	1
+-#define SHT_SYMTAB	2
+-#define SHT_STRTAB	3
+-#define SHT_RELA	4
+-#define SHT_HASH	5
+-#define SHT_DYNAMIC	6
+-#define SHT_NOTE	7
+-#define SHT_NOBITS	8
+-#define SHT_REL		9
+-#define SHT_SHLIB	10
+-#define SHT_DYNSYM	11
+-#define SHT_NUM		12
+-#define SHT_LOPROC	0x70000000
+-#define SHT_HIPROC	0x7fffffff
+-#define SHT_LOUSER	0x80000000
+-#define SHT_HIUSER	0xffffffff
+-
+-/* sh_flags */
+-#define SHF_WRITE	0x1
+-#define SHF_ALLOC	0x2
+-#define SHF_EXECINSTR	0x4
+-#define SHF_MASKPROC	0xf0000000
+-
+-/* special section indexes */
+-#define SHN_UNDEF	0
+-#define SHN_LORESERVE	0xff00
+-#define SHN_LOPROC	0xff00
+-#define SHN_HIPROC	0xff1f
+-#define SHN_ABS		0xfff1
+-#define SHN_COMMON	0xfff2
+-#define SHN_HIRESERVE	0xffff
+-
+-typedef struct elf32_shdr {
+-  Elf32_Word	sh_name;
+-  Elf32_Word	sh_type;
+-  Elf32_Word	sh_flags;
+-  Elf32_Addr	sh_addr;
+-  Elf32_Off	sh_offset;
+-  Elf32_Word	sh_size;
+-  Elf32_Word	sh_link;
+-  Elf32_Word	sh_info;
+-  Elf32_Word	sh_addralign;
+-  Elf32_Word	sh_entsize;
+-} Elf32_Shdr;
+-
+-typedef struct elf64_shdr {
+-  Elf64_Word sh_name;		/* Section name, index in string tbl */
+-  Elf64_Word sh_type;		/* Type of section */
+-  Elf64_Xword sh_flags;		/* Miscellaneous section attributes */
+-  Elf64_Addr sh_addr;		/* Section virtual addr at execution */
+-  Elf64_Off sh_offset;		/* Section file offset */
+-  Elf64_Xword sh_size;		/* Size of section in bytes */
+-  Elf64_Word sh_link;		/* Index of another section */
+-  Elf64_Word sh_info;		/* Additional section information */
+-  Elf64_Xword sh_addralign;	/* Section alignment */
+-  Elf64_Xword sh_entsize;	/* Entry size if section holds table */
+-} Elf64_Shdr;
+-
+-#define	EI_MAG0		0		/* e_ident[] indexes */
+-#define	EI_MAG1		1
+-#define	EI_MAG2		2
+-#define	EI_MAG3		3
+-#define	EI_CLASS	4
+-#define	EI_DATA		5
+-#define	EI_VERSION	6
+-#define	EI_OSABI	7
+-#define	EI_PAD		8
+-
+-#define	ELFMAG0		0x7f		/* EI_MAG */
+-#define	ELFMAG1		'E'
+-#define	ELFMAG2		'L'
+-#define	ELFMAG3		'F'
+-#define	ELFMAG		"\177ELF"
+-#define	SELFMAG		4
+-
+-#define	ELFCLASSNONE	0		/* EI_CLASS */
+-#define	ELFCLASS32	1
+-#define	ELFCLASS64	2
+-#define	ELFCLASSNUM	3
+-
+-#define ELFDATANONE	0		/* e_ident[EI_DATA] */
+-#define ELFDATA2LSB	1
+-#define ELFDATA2MSB	2
+-
+-#define EV_NONE		0		/* e_version, EI_VERSION */
+-#define EV_CURRENT	1
+-#define EV_NUM		2
+-
+-#define ELFOSABI_NONE	0
+-#define ELFOSABI_LINUX	3
+-
+-#ifndef ELF_OSABI
+-#define ELF_OSABI ELFOSABI_NONE
+-#endif
+-
+-/* Notes used in ET_CORE */
+-#define NT_PRSTATUS	1
+-#define NT_PRFPREG	2
+-#define NT_PRPSINFO	3
+-#define NT_TASKSTRUCT	4
+-#define NT_AUXV		6
+-#define NT_PRXFPREG     0x46e62b7f      /* copied from gdb5.1/include/elf/common.h */
+-
+-
+-/* Note header in a PT_NOTE section */
+-typedef struct elf32_note {
+-  Elf32_Word	n_namesz;	/* Name size */
+-  Elf32_Word	n_descsz;	/* Content size */
+-  Elf32_Word	n_type;		/* Content type */
+-} Elf32_Nhdr;
+-
+-/* Note header in a PT_NOTE section */
+-typedef struct elf64_note {
+-  Elf64_Word n_namesz;	/* Name size */
+-  Elf64_Word n_descsz;	/* Content size */
+-  Elf64_Word n_type;	/* Content type */
+-} Elf64_Nhdr;
+-
+-#if ELF_CLASS == ELFCLASS32
+-
+-extern Elf32_Dyn _DYNAMIC [];
+-#define elfhdr		elf32_hdr
+-#define elf_phdr	elf32_phdr
+-#define elf_note	elf32_note
+-#define elf_addr_t	Elf32_Off
+-
+-#else
+-
+-extern Elf64_Dyn _DYNAMIC [];
+-#define elfhdr		elf64_hdr
+-#define elf_phdr	elf64_phdr
+-#define elf_note	elf64_note
+-#define elf_addr_t	Elf64_Off
+-
+-#endif
+-
 -struct elf_image {
 -	struct list_head list;
 -	u8 class;
@@ -687,371 +559,604 @@ index f54145e4af37..f670ed82a077 100644
 -int elf_parse_dynamic_section_rela(struct elf_image *elf, const void *dyn_seg,
 -				   void **rel_out, u64 *relsz_out, void **symtab);
 -
- #define ELF_GET_FIELD(__s, __field, __type) \
- static inline __type elf_##__s##_##__field(struct elf_image *elf, void *arg) { \
- 	if (elf->class == ELFCLASS32) \
-@@ -479,6 +422,14 @@ static inline unsigned long elf_size_of_phdr(struct elf_image *elf)
- 		return sizeof(Elf64_Phdr);
- }
- 
-+static inline void *elf_phdr_relocated_paddr(struct elf_image *elf, void *phdr)
-+{
-+	if (elf->reloc_offset)
-+		return (void *)(unsigned long)(elf->reloc_offset + elf_phdr_p_vaddr(elf, phdr));
-+	else
-+		return (void *)(unsigned long)elf_phdr_p_paddr(elf, phdr);
-+}
-+
- #define elf_for_each_segment(phdr, elf, buf) \
- 	for (phdr = (void *)buf + elf_hdr_e_phoff(elf, buf); \
- 	     phdr < (void *)buf + elf_hdr_e_phoff(elf, buf) + \
-diff --git a/lib/Makefile b/lib/Makefile
-index 6d259dd94e16..9f27d3413990 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -3,6 +3,7 @@
- obj-y			+= bobject.o
- obj-y			+= bcd.o
- obj-y			+= term.o
-+obj-pbl-$(CONFIG_ELF)	+= elf.o
- obj-$(CONFIG_BOOTSTRAP)	+= bootstrap/
- obj-pbl-y		+= ctype.o
- obj-y			+= rbtree.o
-diff --git a/lib/elf.c b/lib/elf.c
+-#define ELF_GET_FIELD(__s, __field, __type) \
+-static inline __type elf_##__s##_##__field(struct elf_image *elf, void *arg) { \
+-	if (elf->class == ELFCLASS32) \
+-		return (__type) ((struct elf32_##__s *) arg)->__field; \
+-	else \
+-		return (__type) ((struct elf64_##__s *) arg)->__field; \
+-}
+-
+-ELF_GET_FIELD(hdr, e_entry, u64)
+-ELF_GET_FIELD(hdr, e_phnum, u16)
+-ELF_GET_FIELD(hdr, e_phoff, u64)
+-ELF_GET_FIELD(hdr, e_phentsize, u16)
+-ELF_GET_FIELD(hdr, e_type, u16)
+-ELF_GET_FIELD(hdr, e_machine, u16)
+-ELF_GET_FIELD(phdr, p_paddr, u64)
+-ELF_GET_FIELD(phdr, p_vaddr, u64)
+-ELF_GET_FIELD(phdr, p_filesz, u64)
+-ELF_GET_FIELD(phdr, p_memsz, u64)
+-ELF_GET_FIELD(phdr, p_type, u32)
+-ELF_GET_FIELD(phdr, p_offset, u64)
+-ELF_GET_FIELD(phdr, p_flags, u32)
+-
+-static inline unsigned long elf_size_of_phdr(struct elf_image *elf)
+-{
+-	if (elf->class == ELFCLASS32)
+-		return sizeof(Elf32_Phdr);
+-	else
+-		return sizeof(Elf64_Phdr);
+-}
+-
+-#define elf_for_each_segment(phdr, elf, buf) \
+-	for (phdr = (void *)buf + elf_hdr_e_phoff(elf, buf); \
+-	     phdr < (void *)buf + elf_hdr_e_phoff(elf, buf) + \
+-	     elf_hdr_e_phnum(elf, buf) * elf_size_of_phdr(elf); \
+-	     phdr = (void *)phdr + elf_size_of_phdr(elf))
+-
+-/* Dynamic section accessors */
+-static inline s64 elf_dyn_d_tag(struct elf_image *elf, const void *arg)
+-{
+-	if (elf->class == ELFCLASS32)
+-		return (s64)((Elf32_Dyn *)arg)->d_tag;
+-	else
+-		return (s64)((Elf64_Dyn *)arg)->d_tag;
+-}
+-
+-static inline u64 elf_dyn_d_val(struct elf_image *elf, const void *arg)
+-{
+-	if (elf->class == ELFCLASS32)
+-		return (u64)((Elf32_Dyn *)arg)->d_un.d_val;
+-	else
+-		return (u64)((Elf64_Dyn *)arg)->d_un.d_val;
+-}
+-
+-static inline u64 elf_dyn_d_ptr(struct elf_image *elf, const void *arg)
+-{
+-	if (elf->class == ELFCLASS32)
+-		return (u64)((Elf32_Dyn *)arg)->d_un.d_ptr;
+-	else
+-		return (u64)((Elf64_Dyn *)arg)->d_un.d_ptr;
+-}
+-
+-static inline unsigned long elf_size_of_dyn(struct elf_image *elf)
+-{
+-	if (elf->class == ELFCLASS32)
+-		return sizeof(Elf32_Dyn);
+-	else
+-		return sizeof(Elf64_Dyn);
+-}
+-
+-#endif /* _LINUX_ELF_H */
++#endif /* __ELF_H */
+diff --git a/include/linux/elf.h b/include/linux/elf.h
 new file mode 100644
-index 000000000000..fb2dd9cedb10
+index 000000000000..f54145e4af37
 --- /dev/null
-+++ b/lib/elf.c
-@@ -0,0 +1,329 @@
-+// SPDX-License-Identifier: GPL-2.0
++++ b/include/linux/elf.h
+@@ -0,0 +1,521 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _LINUX_ELF_H
++#define _LINUX_ELF_H
++
++#include <linux/types.h>
++#include <linux/list.h>
++//#include <linux/auxvec.h>
++//#include <linux/elf-em.h>
++#include <asm/elf.h>
++
++struct file;
++
++#ifndef elf_read_implies_exec
++  /* Executables for which elf_read_implies_exec() returns TRUE will
++     have the READ_IMPLIES_EXEC personality flag set automatically.
++     Override in asm/elf.h as needed.  */
++# define elf_read_implies_exec(ex, have_pt_gnu_stack)	0
++#endif
++
++/* 32-bit ELF base types. */
++typedef __u32	Elf32_Addr;
++typedef __u16	Elf32_Half;
++typedef __u32	Elf32_Off;
++typedef __s32	Elf32_Sword;
++typedef __u32	Elf32_Word;
++
++/* 64-bit ELF base types. */
++typedef __u64	Elf64_Addr;
++typedef __u16	Elf64_Half;
++typedef __s16	Elf64_SHalf;
++typedef __u64	Elf64_Off;
++typedef __s32	Elf64_Sword;
++typedef __u32	Elf64_Word;
++typedef __u64	Elf64_Xword;
++typedef __s64	Elf64_Sxword;
++
++/* These constants are for the segment types stored in the image headers */
++#define PT_NULL    0
++#define PT_LOAD    1
++#define PT_DYNAMIC 2
++#define PT_INTERP  3
++#define PT_NOTE    4
++#define PT_SHLIB   5
++#define PT_PHDR    6
++#define PT_TLS     7               /* Thread local storage segment */
++#define PT_LOOS    0x60000000      /* OS-specific */
++#define PT_HIOS    0x6fffffff      /* OS-specific */
++#define PT_LOPROC  0x70000000
++#define PT_HIPROC  0x7fffffff
++#define PT_GNU_EH_FRAME		0x6474e550
++
++#define PT_GNU_STACK	(PT_LOOS + 0x474e551)
++
++/* These constants define the different elf file types */
++#define ET_NONE   0
++#define ET_REL    1
++#define ET_EXEC   2
++#define ET_DYN    3
++#define ET_CORE   4
++#define ET_LOPROC 0xff00
++#define ET_HIPROC 0xffff
++
++/* This is the info that is needed to parse the dynamic section of the file */
++#define DT_NULL		0
++#define DT_NEEDED	1
++#define DT_PLTRELSZ	2
++#define DT_PLTGOT	3
++#define DT_HASH		4
++#define DT_STRTAB	5
++#define DT_SYMTAB	6
++#define DT_RELA		7
++#define DT_RELASZ	8
++#define DT_RELAENT	9
++#define DT_STRSZ	10
++#define DT_SYMENT	11
++#define DT_INIT		12
++#define DT_FINI		13
++#define DT_SONAME	14
++#define DT_RPATH 	15
++#define DT_SYMBOLIC	16
++#define DT_REL	        17
++#define DT_RELSZ	18
++#define DT_RELENT	19
++#define DT_PLTREL	20
++#define DT_DEBUG	21
++#define DT_TEXTREL	22
++#define DT_JMPREL	23
++#define DT_ENCODING	32
++#define OLD_DT_LOOS	0x60000000
++#define DT_LOOS		0x6000000d
++#define DT_HIOS		0x6ffff000
++#define DT_VALRNGLO	0x6ffffd00
++#define DT_VALRNGHI	0x6ffffdff
++#define DT_ADDRRNGLO	0x6ffffe00
++#define DT_ADDRRNGHI	0x6ffffeff
++#define DT_VERSYM	0x6ffffff0
++#define DT_RELACOUNT	0x6ffffff9
++#define DT_RELCOUNT	0x6ffffffa
++#define DT_FLAGS_1	0x6ffffffb
++#define DT_VERDEF	0x6ffffffc
++#define	DT_VERDEFNUM	0x6ffffffd
++#define DT_VERNEED	0x6ffffffe
++#define	DT_VERNEEDNUM	0x6fffffff
++#define OLD_DT_HIOS     0x6fffffff
++#define DT_LOPROC	0x70000000
++#define DT_HIPROC	0x7fffffff
++
++/* This info is needed when parsing the symbol table */
++#define STB_LOCAL  0
++#define STB_GLOBAL 1
++#define STB_WEAK   2
++
++#define STT_NOTYPE  0
++#define STT_OBJECT  1
++#define STT_FUNC    2
++#define STT_SECTION 3
++#define STT_FILE    4
++#define STT_COMMON  5
++#define STT_TLS     6
++
++#define ELF_ST_BIND(x)		((x) >> 4)
++#define ELF_ST_TYPE(x)		(((unsigned int) x) & 0xf)
++#define ELF32_ST_BIND(x)	ELF_ST_BIND(x)
++#define ELF32_ST_TYPE(x)	ELF_ST_TYPE(x)
++#define ELF64_ST_BIND(x)	ELF_ST_BIND(x)
++#define ELF64_ST_TYPE(x)	ELF_ST_TYPE(x)
++
++typedef struct dynamic{
++  Elf32_Sword d_tag;
++  union{
++    Elf32_Sword	d_val;
++    Elf32_Addr	d_ptr;
++  } d_un;
++} Elf32_Dyn;
++
++typedef struct {
++  Elf64_Sxword d_tag;		/* entry tag value */
++  union {
++    Elf64_Xword d_val;
++    Elf64_Addr d_ptr;
++  } d_un;
++} Elf64_Dyn;
++
++/* The following are used with relocations */
++#define ELF32_R_SYM(x) ((x) >> 8)
++#define ELF32_R_TYPE(x) ((x) & 0xff)
++
++#define ELF64_R_SYM(i)			((i) >> 32)
++#define ELF64_R_TYPE(i)			((i) & 0xffffffff)
++
++typedef struct elf32_rel {
++  Elf32_Addr	r_offset;
++  Elf32_Word	r_info;
++} Elf32_Rel;
++
++typedef struct elf64_rel {
++  Elf64_Addr r_offset;	/* Location at which to apply the action */
++  Elf64_Xword r_info;	/* index and type of relocation */
++} Elf64_Rel;
++
++typedef struct elf32_rela{
++  Elf32_Addr	r_offset;
++  Elf32_Word	r_info;
++  Elf32_Sword	r_addend;
++} Elf32_Rela;
++
++typedef struct elf64_rela {
++  Elf64_Addr r_offset;	/* Location at which to apply the action */
++  Elf64_Xword r_info;	/* index and type of relocation */
++  Elf64_Sxword r_addend;	/* Constant addend used to compute value */
++} Elf64_Rela;
++
++typedef struct elf32_sym{
++  Elf32_Word	st_name;
++  Elf32_Addr	st_value;
++  Elf32_Word	st_size;
++  unsigned char	st_info;
++  unsigned char	st_other;
++  Elf32_Half	st_shndx;
++} Elf32_Sym;
++
++typedef struct elf64_sym {
++  Elf64_Word st_name;		/* Symbol name, index in string tbl */
++  unsigned char	st_info;	/* Type and binding attributes */
++  unsigned char	st_other;	/* No defined meaning, 0 */
++  Elf64_Half st_shndx;		/* Associated section index */
++  Elf64_Addr st_value;		/* Value of the symbol */
++  Elf64_Xword st_size;		/* Associated symbol size */
++} Elf64_Sym;
++
++
++#define EI_NIDENT	16
++
++typedef struct elf32_hdr{
++  unsigned char	e_ident[EI_NIDENT];
++  Elf32_Half	e_type;
++  Elf32_Half	e_machine;
++  Elf32_Word	e_version;
++  Elf32_Addr	e_entry;  /* Entry point */
++  Elf32_Off	e_phoff;
++  Elf32_Off	e_shoff;
++  Elf32_Word	e_flags;
++  Elf32_Half	e_ehsize;
++  Elf32_Half	e_phentsize;
++  Elf32_Half	e_phnum;
++  Elf32_Half	e_shentsize;
++  Elf32_Half	e_shnum;
++  Elf32_Half	e_shstrndx;
++} Elf32_Ehdr;
++
++typedef struct elf64_hdr {
++  unsigned char	e_ident[EI_NIDENT];	/* ELF "magic number" */
++  Elf64_Half e_type;
++  Elf64_Half e_machine;
++  Elf64_Word e_version;
++  Elf64_Addr e_entry;		/* Entry point virtual address */
++  Elf64_Off e_phoff;		/* Program header table file offset */
++  Elf64_Off e_shoff;		/* Section header table file offset */
++  Elf64_Word e_flags;
++  Elf64_Half e_ehsize;
++  Elf64_Half e_phentsize;
++  Elf64_Half e_phnum;
++  Elf64_Half e_shentsize;
++  Elf64_Half e_shnum;
++  Elf64_Half e_shstrndx;
++} Elf64_Ehdr;
++
++/* These constants define the permissions on sections in the program
++   header, p_flags. */
++#define PF_R		0x4
++#define PF_W		0x2
++#define PF_X		0x1
++
++typedef struct elf32_phdr{
++  Elf32_Word	p_type;
++  Elf32_Off	p_offset;
++  Elf32_Addr	p_vaddr;
++  Elf32_Addr	p_paddr;
++  Elf32_Word	p_filesz;
++  Elf32_Word	p_memsz;
++  Elf32_Word	p_flags;
++  Elf32_Word	p_align;
++} Elf32_Phdr;
++
++typedef struct elf64_phdr {
++  Elf64_Word p_type;
++  Elf64_Word p_flags;
++  Elf64_Off p_offset;		/* Segment file offset */
++  Elf64_Addr p_vaddr;		/* Segment virtual address */
++  Elf64_Addr p_paddr;		/* Segment physical address */
++  Elf64_Xword p_filesz;		/* Segment size in file */
++  Elf64_Xword p_memsz;		/* Segment size in memory */
++  Elf64_Xword p_align;		/* Segment alignment, file & memory */
++} Elf64_Phdr;
++
++/* sh_type */
++#define SHT_NULL	0
++#define SHT_PROGBITS	1
++#define SHT_SYMTAB	2
++#define SHT_STRTAB	3
++#define SHT_RELA	4
++#define SHT_HASH	5
++#define SHT_DYNAMIC	6
++#define SHT_NOTE	7
++#define SHT_NOBITS	8
++#define SHT_REL		9
++#define SHT_SHLIB	10
++#define SHT_DYNSYM	11
++#define SHT_NUM		12
++#define SHT_LOPROC	0x70000000
++#define SHT_HIPROC	0x7fffffff
++#define SHT_LOUSER	0x80000000
++#define SHT_HIUSER	0xffffffff
++
++/* sh_flags */
++#define SHF_WRITE	0x1
++#define SHF_ALLOC	0x2
++#define SHF_EXECINSTR	0x4
++#define SHF_MASKPROC	0xf0000000
++
++/* special section indexes */
++#define SHN_UNDEF	0
++#define SHN_LORESERVE	0xff00
++#define SHN_LOPROC	0xff00
++#define SHN_HIPROC	0xff1f
++#define SHN_ABS		0xfff1
++#define SHN_COMMON	0xfff2
++#define SHN_HIRESERVE	0xffff
++
++typedef struct elf32_shdr {
++  Elf32_Word	sh_name;
++  Elf32_Word	sh_type;
++  Elf32_Word	sh_flags;
++  Elf32_Addr	sh_addr;
++  Elf32_Off	sh_offset;
++  Elf32_Word	sh_size;
++  Elf32_Word	sh_link;
++  Elf32_Word	sh_info;
++  Elf32_Word	sh_addralign;
++  Elf32_Word	sh_entsize;
++} Elf32_Shdr;
++
++typedef struct elf64_shdr {
++  Elf64_Word sh_name;		/* Section name, index in string tbl */
++  Elf64_Word sh_type;		/* Type of section */
++  Elf64_Xword sh_flags;		/* Miscellaneous section attributes */
++  Elf64_Addr sh_addr;		/* Section virtual addr at execution */
++  Elf64_Off sh_offset;		/* Section file offset */
++  Elf64_Xword sh_size;		/* Size of section in bytes */
++  Elf64_Word sh_link;		/* Index of another section */
++  Elf64_Word sh_info;		/* Additional section information */
++  Elf64_Xword sh_addralign;	/* Section alignment */
++  Elf64_Xword sh_entsize;	/* Entry size if section holds table */
++} Elf64_Shdr;
++
++#define	EI_MAG0		0		/* e_ident[] indexes */
++#define	EI_MAG1		1
++#define	EI_MAG2		2
++#define	EI_MAG3		3
++#define	EI_CLASS	4
++#define	EI_DATA		5
++#define	EI_VERSION	6
++#define	EI_OSABI	7
++#define	EI_PAD		8
++
++#define	ELFMAG0		0x7f		/* EI_MAG */
++#define	ELFMAG1		'E'
++#define	ELFMAG2		'L'
++#define	ELFMAG3		'F'
++#define	ELFMAG		"\177ELF"
++#define	SELFMAG		4
++
++#define	ELFCLASSNONE	0		/* EI_CLASS */
++#define	ELFCLASS32	1
++#define	ELFCLASS64	2
++#define	ELFCLASSNUM	3
++
++#define ELFDATANONE	0		/* e_ident[EI_DATA] */
++#define ELFDATA2LSB	1
++#define ELFDATA2MSB	2
++
++#define EV_NONE		0		/* e_version, EI_VERSION */
++#define EV_CURRENT	1
++#define EV_NUM		2
++
++#define ELFOSABI_NONE	0
++#define ELFOSABI_LINUX	3
++
++#ifndef ELF_OSABI
++#define ELF_OSABI ELFOSABI_NONE
++#endif
++
++/* Notes used in ET_CORE */
++#define NT_PRSTATUS	1
++#define NT_PRFPREG	2
++#define NT_PRPSINFO	3
++#define NT_TASKSTRUCT	4
++#define NT_AUXV		6
++#define NT_PRXFPREG     0x46e62b7f      /* copied from gdb5.1/include/elf/common.h */
++
++
++/* Note header in a PT_NOTE section */
++typedef struct elf32_note {
++  Elf32_Word	n_namesz;	/* Name size */
++  Elf32_Word	n_descsz;	/* Content size */
++  Elf32_Word	n_type;		/* Content type */
++} Elf32_Nhdr;
++
++/* Note header in a PT_NOTE section */
++typedef struct elf64_note {
++  Elf64_Word n_namesz;	/* Name size */
++  Elf64_Word n_descsz;	/* Content size */
++  Elf64_Word n_type;	/* Content type */
++} Elf64_Nhdr;
++
++#if ELF_CLASS == ELFCLASS32
++
++extern Elf32_Dyn _DYNAMIC [];
++#define elfhdr		elf32_hdr
++#define elf_phdr	elf32_phdr
++#define elf_note	elf32_note
++#define elf_addr_t	Elf32_Off
++
++#else
++
++extern Elf64_Dyn _DYNAMIC [];
++#define elfhdr		elf64_hdr
++#define elf_phdr	elf64_phdr
++#define elf_note	elf64_note
++#define elf_addr_t	Elf64_Off
++
++#endif
++
++struct elf_image {
++	struct list_head list;
++	u8 class;
++	u16 type;		/* ET_EXEC or ET_DYN */
++	u64 entry;
++	void *low_addr;
++	void *high_addr;
++	void *hdr_buf;
++	const char *filename;
++	void *load_address;	/* User-specified load address (NULL = use p_paddr) */
++	void *base_load_addr;	/* Calculated base address for ET_DYN */
++	unsigned long reloc_offset;	/* Offset between p_vaddr and actual load address */
++};
++
++static inline size_t elf_get_mem_size(struct elf_image *elf)
++{
++	return elf->high_addr - elf->low_addr;
++}
++
++int elf_open_binary_into(struct elf_image *elf, void *buf);
++struct elf_image *elf_open_binary(void *buf);
++struct elf_image *elf_open(const char *filename);
++void elf_close(struct elf_image *elf);
++int elf_load(struct elf_image *elf);
++
 +/*
-+ * Copyright (c) 2018 Pengutronix, Oleksij Rempel <o.rempel@pengutronix.de>
-+ *
-+ * ELF parts that need no extra allocations for use both in barebox PBL and proper.
++ * Set the load address for the ELF file.
++ * Must be called before elf_load().
++ * If not set, ET_EXEC uses p_paddr, ET_DYN uses lowest p_paddr.
 + */
++void elf_set_load_address(struct elf_image *elf, void *addr);
 +
-+#include <lib/elf.h>
-+#include <linux/elf.h>
-+#include <errno.h>
-+#include <linux/string.h>
-+#include <linux/printk.h>
++/*
++ * Apply dynamic relocations to an ELF binary already loaded in memory.
++ * This modifies the ELF image in place without allocating new memory.
++ * Useful for self-relocating loaders or externally loaded binaries.
++ * The elf parameter must have been previously opened with elf_open_binary().
++ */
++int elf_load_inplace(struct elf_image *elf);
 +
-+int elf_check_image(struct elf_image *elf, void *buf)
-+{
-+	u16 e_type;
++/*
++ * Architecture-specific relocation handler.
++ * Returns 0 on success, -ENOSYS if architecture doesn't support relocations,
++ * other negative error codes on failure.
++ */
++int elf_apply_relocations(struct elf_image *elf, const void *dyn_seg);
 +
-+	if (memcmp(buf, ELFMAG, SELFMAG)) {
-+		pr_err("ELF magic not found.\n");
-+		return -EINVAL;
-+	}
-+
-+	elf->class = ((char *) buf)[EI_CLASS];
-+
-+	e_type = elf_hdr_e_type(elf, buf);
-+	if (e_type != ET_EXEC && e_type != ET_DYN) {
-+		pr_err("Unsupported ELF type: %u (only ET_EXEC and ET_DYN supported)\n", e_type);
-+		return -ENOEXEC;
-+	}
-+
-+	if (elf->class != ELF_CLASS)
-+		return -EINVAL;
-+
-+	elf->type = e_type;
-+
-+	if (!elf_hdr_e_phnum(elf, buf)) {
-+		pr_err("No phdr found.\n");
-+		return -ENOEXEC;
-+	}
-+
-+	return 0;
-+}
-+
-+int elf_open_binary_into(struct elf_image *elf, void *buf)
-+{
-+	int ret;
-+
-+	memset(elf, 0, sizeof(*elf));
-+	elf_init_struct(elf);
-+
-+	elf->hdr_buf = buf;
-+	ret = elf_check_image(elf, buf);
-+	if (ret)
-+		return ret;
-+
-+	elf->entry = elf_hdr_e_entry(elf, elf->hdr_buf);
-+
-+	return 0;
-+}
-+
-+void elf_set_load_address(struct elf_image *elf, void *addr)
-+{
-+	elf->load_address = addr;
-+}
-+
-+void *elf_find_dynamic_segment(struct elf_image *elf)
-+{
-+	void *buf = elf->hdr_buf;
-+	void *phdr = buf + elf_hdr_e_phoff(elf, buf);
-+
-+	elf_for_each_segment(phdr, elf, buf) {
-+		if (elf_phdr_p_type(elf, phdr) == PT_DYNAMIC)
-+			return elf_phdr_relocated_paddr(elf, phdr);
-+	}
-+
-+	return NULL;  /* No PT_DYNAMIC segment */
-+}
-+
-+/**
-+ * elf_parse_dynamic_section - Parse the dynamic section and extract relocation info
-+ * @elf: ELF image structure
-+ * @dyn_seg: Pointer to the PT_DYNAMIC segment
-+ * @rel_out: Output pointer to the relocation table (either REL or RELA)
-+ * @relsz_out: Output size of the relocation table in bytes
-+ * @is_rela: flag indicating RELA (true) vs REL (false) format is expected
-+ *
++/*
++ * Parse the dynamic section and extract relocation information.
 + * This is a generic function that works for both 32-bit and 64-bit ELF files,
 + * and handles both REL and RELA relocation formats.
-+ *
-+ * Returns: 0 on success, -EINVAL on error
++ * Returns 0 on success, -EINVAL on error.
 + */
-+static int elf_parse_dynamic_section(struct elf_image *elf, const void *dyn_seg,
-+				     void **rel_out, u64 *relsz_out, void **symtab,
-+				     bool is_rela)
-+{
-+	const void *dyn = dyn_seg;
-+	void *rel = NULL, *rela = NULL;
-+	u64 relsz = 0, relasz = 0;
-+	u64 relent = 0, relaent = 0;
-+	phys_addr_t base = (phys_addr_t)elf->reloc_offset;
-+	size_t expected_rel_size, expected_rela_size;
-+
-+	/* Calculate expected sizes based on ELF class */
-+	if (ELF_CLASS == ELFCLASS32) {
-+		expected_rel_size = sizeof(Elf32_Rel);
-+		expected_rela_size = sizeof(Elf32_Rela);
-+	} else {
-+		expected_rel_size = sizeof(Elf64_Rel);
-+		expected_rela_size = sizeof(Elf64_Rela);
-+	}
-+
-+	/* Iterate through dynamic entries until DT_NULL */
-+	while (elf_dyn_d_tag(elf, dyn) != DT_NULL) {
-+		unsigned long tag = elf_dyn_d_tag(elf, dyn);
-+
-+		switch (tag) {
-+		case DT_REL:
-+			/* REL table address - needs to be adjusted by load offset */
-+			rel = (void *)(unsigned long)(base + elf_dyn_d_ptr(elf, dyn));
-+			break;
-+		case DT_RELSZ:
-+			relsz = elf_dyn_d_val(elf, dyn);
-+			break;
-+		case DT_RELENT:
-+			relent = elf_dyn_d_val(elf, dyn);
-+			break;
-+		case DT_RELA:
-+			/* RELA table address - needs to be adjusted by load offset */
-+			rela = (void *)(unsigned long)(base + elf_dyn_d_ptr(elf, dyn));
-+			break;
-+		case DT_RELASZ:
-+			relasz = elf_dyn_d_val(elf, dyn);
-+			break;
-+		case DT_RELAENT:
-+			relaent = elf_dyn_d_val(elf, dyn);
-+			break;
-+		case DT_SYMTAB:
-+			*symtab = (void *)(unsigned long)(base + elf_dyn_d_val(elf, dyn));
-+			break;
-+		default:
-+			break;
-+		}
-+
-+		dyn += elf_size_of_dyn(elf);
-+	}
-+
-+	/* Check that we found exactly one relocation type */
-+	if (rel && rela) {
-+		pr_err("ELF has both REL and RELA relocations\n");
-+		return -EINVAL;
-+	}
-+
-+	if (rel && !is_rela) {
-+		/* REL relocations */
-+		if (!relsz || relent != expected_rel_size) {
-+			pr_debug("No REL relocations or invalid relocation info\n");
-+			return -EINVAL;
-+		}
-+		*rel_out = rel;
-+		*relsz_out = relsz;
-+
-+		return 0;
-+	} else if (rela && is_rela) {
-+		/* RELA relocations */
-+		if (!relasz || relaent != expected_rela_size) {
-+			pr_debug("No RELA relocations or invalid relocation info\n");
-+			return -EINVAL;
-+		}
-+		*rel_out = rela;
-+		*relsz_out = relasz;
-+
-+		return 0;
-+	}
-+
-+	pr_debug("No relocations found in dynamic section\n");
-+
-+	return -EINVAL;
-+}
-+
 +int elf_parse_dynamic_section_rel(struct elf_image *elf, const void *dyn_seg,
-+				     void **rel_out, u64 *relsz_out, void **symtab)
-+{
-+	return elf_parse_dynamic_section(elf, dyn_seg, rel_out, relsz_out, symtab,
-+					 false);
-+}
-+
++				  void **rel_out, u64 *relsz_out, void **symtab);
 +int elf_parse_dynamic_section_rela(struct elf_image *elf, const void *dyn_seg,
-+				     void **rel_out, u64 *relsz_out, void **symtab)
-+{
-+	return elf_parse_dynamic_section(elf, dyn_seg, rel_out, relsz_out, symtab,
-+					 true);
++				   void **rel_out, u64 *relsz_out, void **symtab);
++
++#define ELF_GET_FIELD(__s, __field, __type) \
++static inline __type elf_##__s##_##__field(struct elf_image *elf, void *arg) { \
++	if (elf->class == ELFCLASS32) \
++		return (__type) ((struct elf32_##__s *) arg)->__field; \
++	else \
++		return (__type) ((struct elf64_##__s *) arg)->__field; \
 +}
 +
-+/*
-+ * Weak default implementation for architectures that don't support
-+ * ELF relocations yet. Can be overridden by arch-specific implementation.
-+ */
-+int __weak elf_apply_relocations(struct elf_image *elf, const void *dyn_seg)
++ELF_GET_FIELD(hdr, e_entry, u64)
++ELF_GET_FIELD(hdr, e_phnum, u16)
++ELF_GET_FIELD(hdr, e_phoff, u64)
++ELF_GET_FIELD(hdr, e_phentsize, u16)
++ELF_GET_FIELD(hdr, e_type, u16)
++ELF_GET_FIELD(hdr, e_machine, u16)
++ELF_GET_FIELD(phdr, p_paddr, u64)
++ELF_GET_FIELD(phdr, p_vaddr, u64)
++ELF_GET_FIELD(phdr, p_filesz, u64)
++ELF_GET_FIELD(phdr, p_memsz, u64)
++ELF_GET_FIELD(phdr, p_type, u32)
++ELF_GET_FIELD(phdr, p_offset, u64)
++ELF_GET_FIELD(phdr, p_flags, u32)
++
++static inline unsigned long elf_size_of_phdr(struct elf_image *elf)
 +{
-+	pr_warn("ELF relocations not supported for this architecture\n");
-+	return -ENOSYS;
++	if (elf->class == ELFCLASS32)
++		return sizeof(Elf32_Phdr);
++	else
++		return sizeof(Elf64_Phdr);
 +}
 +
-+/**
-+ * elf_load_inplace() - Apply dynamic relocations to an ELF binary in place
-+ * @elf: ELF image previously opened with elf_open_binary()
-+ *
-+ * This function applies dynamic relocations to an ELF binary that is already
-+ * loaded at its target address in memory. Unlike elf_load(), this does not
-+ * allocate memory or copy segments - it only modifies the existing image.
-+ *
-+ * This is useful for self-relocating loaders or when the ELF has been loaded
-+ * by external means (e.g., loaded by firmware or another bootloader).
-+ *
-+ * The ELF image must have been previously opened with elf_open_binary().
-+ *
-+ * For ET_DYN (position-independent) binaries, the relocation offset is
-+ * calculated relative to the first executable PT_LOAD segment (.text section).
-+ *
-+ * For ET_EXEC binaries, no relocation is applied as they are expected to
-+ * be at their link-time addresses.
-+ *
-+ * Returns: 0 on success, negative error code on failure
-+ */
-+int elf_load_inplace(struct elf_image *elf)
++#define elf_for_each_segment(phdr, elf, buf) \
++	for (phdr = (void *)buf + elf_hdr_e_phoff(elf, buf); \
++	     phdr < (void *)buf + elf_hdr_e_phoff(elf, buf) + \
++	     elf_hdr_e_phnum(elf, buf) * elf_size_of_phdr(elf); \
++	     phdr = (void *)phdr + elf_size_of_phdr(elf))
++
++/* Dynamic section accessors */
++static inline s64 elf_dyn_d_tag(struct elf_image *elf, const void *arg)
 +{
-+	const void *dyn_seg;
-+	void *buf, *phdr;
-+	void *elf_buf;
-+	int ret;
-+	u64 text_vaddr = U64_MAX;
-+	u64 text_vaddr_min = U64_MAX;
-+	u64 text_offset = U64_MAX;
-+
-+	buf = elf->hdr_buf;
-+	elf_buf = elf->hdr_buf;
-+
-+	/*
-+	 * First pass: Clear BSS segments (p_memsz > p_filesz) and find lowest
-+	 * virtual address.
-+	 * BSS clearing must be done before relocations as uninitialized data
-+	 * must be zeroed per C standard.
-+	 */
-+	phdr = buf + elf_hdr_e_phoff(elf, buf);
-+	elf_for_each_segment(phdr, elf, buf) {
-+		if (elf_phdr_p_type(elf, phdr) == PT_LOAD) {
-+			u64 p_offset = elf_phdr_p_offset(elf, phdr);
-+			u64 p_filesz = elf_phdr_p_filesz(elf, phdr);
-+			u64 p_memsz = elf_phdr_p_memsz(elf, phdr);
-+
-+			/* Clear BSS (uninitialized data) */
-+			if (p_filesz < p_memsz) {
-+				void *bss_start = elf_buf + p_offset + p_filesz;
-+				size_t bss_size = p_memsz - p_filesz;
-+				memset(bss_start, 0x00, bss_size);
-+			}
-+
-+			text_vaddr = elf_phdr_p_vaddr(elf, phdr);
-+
-+			if (text_vaddr < text_vaddr_min) {
-+				text_vaddr_min = text_vaddr;
-+				text_offset = p_offset;
-+			}
-+		}
-+	}
-+
-+	text_vaddr = text_vaddr_min;
-+
-+	/*
-+	 * Calculate relocation offset for the in-place binary.
-+	 * For ET_DYN, we need to find the first PT_LOAD segment
-+	 * and use it as the relocation base.
-+	 */
-+	if (elf->type == ET_DYN) {
-+
-+		if (text_vaddr == U64_MAX) {
-+			pr_err("No PT_LOAD segment found\n");
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+
-+		/*
-+		 * Calculate relocation offset relative to .text section:
-+		 * - .text is at file offset text_offset, so in memory at: elf_buf + text_offset
-+		 * - .text has virtual address text_vaddr
-+		 * - reloc_offset = (actual .text address) - (virtual .text address)
-+		 */
-+		elf->reloc_offset = ((unsigned long)elf_buf + text_offset) - text_vaddr;
-+
-+		pr_debug("In-place ELF relocation: text_vaddr=0x%llx, text_offset=0x%llx, "
-+			 "load_addr=%p, offset=0x%08lx\n",
-+			 text_vaddr, text_offset, elf_buf, elf->reloc_offset);
-+
-+		/* Adjust entry point to point to relocated image */
-+		elf->entry += elf->reloc_offset;
-+	} else {
-+		/*
-+		 * ET_EXEC binaries are at their link-time addresses,
-+		 * no relocation needed
-+		 */
-+		elf->reloc_offset = 0;
-+	}
-+
-+	/* Find PT_DYNAMIC segment */
-+	dyn_seg = elf_find_dynamic_segment(elf);
-+	if (!dyn_seg) {
-+		/*
-+		 * No PT_DYNAMIC segment found.
-+		 * This is fine for statically-linked binaries or
-+		 * binaries without relocations.
-+		 */
-+		pr_debug("No PT_DYNAMIC segment found\n");
-+		ret = 0;
-+		goto out;
-+	}
-+
-+	/* Apply architecture-specific relocations */
-+	ret = elf_apply_relocations(elf, dyn_seg);
-+	if (ret) {
-+		pr_err("In-place relocation failed: %d\n", ret);
-+		goto out;
-+	}
-+
-+	pr_debug("In-place ELF relocation completed successfully\n");
-+	return 0;
-+
-+out:
-+	return ret;
++	if (elf->class == ELFCLASS32)
++		return (s64)((Elf32_Dyn *)arg)->d_tag;
++	else
++		return (s64)((Elf64_Dyn *)arg)->d_tag;
 +}
++
++static inline u64 elf_dyn_d_val(struct elf_image *elf, const void *arg)
++{
++	if (elf->class == ELFCLASS32)
++		return (u64)((Elf32_Dyn *)arg)->d_un.d_val;
++	else
++		return (u64)((Elf64_Dyn *)arg)->d_un.d_val;
++}
++
++static inline u64 elf_dyn_d_ptr(struct elf_image *elf, const void *arg)
++{
++	if (elf->class == ELFCLASS32)
++		return (u64)((Elf32_Dyn *)arg)->d_un.d_ptr;
++	else
++		return (u64)((Elf64_Dyn *)arg)->d_un.d_ptr;
++}
++
++static inline unsigned long elf_size_of_dyn(struct elf_image *elf)
++{
++	if (elf->class == ELFCLASS32)
++		return sizeof(Elf32_Dyn);
++	else
++		return sizeof(Elf64_Dyn);
++}
++
++#endif /* _LINUX_ELF_H */
 -- 
 2.47.3
 
