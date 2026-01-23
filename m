@@ -1,68 +1,68 @@
-Delivery-date: Fri, 23 Jan 2026 09:26:13 +0100
+Delivery-date: Fri, 23 Jan 2026 09:36:42 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vjCUg-004Q4b-0U
+	id 1vjCeo-004QAm-2q
 	for lore@lore.pengutronix.de;
-	Fri, 23 Jan 2026 09:26:13 +0100
+	Fri, 23 Jan 2026 09:36:42 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vjCUf-00044W-62
-	for lore@pengutronix.de; Fri, 23 Jan 2026 09:26:13 +0100
+	id 1vjCen-0005lv-UF
+	for lore@pengutronix.de; Fri, 23 Jan 2026 09:36:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
 	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ovA1mhPx1QNDLO6uxuMchraJftOXTIr8fMg6WutmfNM=; b=x3c6vvV6zfmwxtGkcfxnsE5ZGo
-	4/AF+zVqj2A1TwR3XUAcJezeWPIlk+EuhXMOYapddM8PEb2VXqgwcFTLgBOWVCIocNa+Wqh4JKBdm
-	utiYiyJUv8YDGU1tj8y+PIAANIsudWaaN9Czn4oa3EHq68ShDx4w1FFGroyxsgOTUBqo/yOBoIwlb
-	eG1hK2JwKxIEiNHdzSSJRRnQyw6ufb7NieV7RDRRHMibFWn9JrpkzEU9Oj08XctKLPcxrHs3eOYMC
-	iNYOgbKJvpdc/OnD6nsptkVVvdl1X8Q7ONeW6KH/9rQ5gS32otuenHD5+Dhz4orodcS0/0WtCFGIN
-	DCQQ4Now==;
+	bh=xOnr/AiBKvDhMlaAJRkAvBP0tTMYqhQUV361BkkDvmo=; b=4XtNQSq49tpqYuF+sIEDm283ZX
+	94q5Cfbgov9NAdahHo90J5hbp0Ptl3BQ9Jbb0vWS3NvILnHzTooC+WjFQ369LpqNjAC8lbxIUEe6k
+	aK3EBhY6Rwndwo281J8aGA9+SeA2zf2DIYtIJ5Fsd1ciLp2BXN5bHs7mhQnHqIbNyRI+ZgYRb3XGU
+	lMFlBk5VXv7ObO8VT/3GIjVrcTgAB4WSwt9It7/65030INFRMSF6hC0hY0qgvZRJ5uQ/giXOBEb+y
+	qppNTpI39uytlHVpSAWiSV2GVikWV42wmMA9R8zvypxbWksHFqv3bHvPqR9tP8SkV93xUwZLAv0fl
+	hdIo7zvw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vjCUD-00000008ShC-1ZAa;
-	Fri, 23 Jan 2026 08:25:45 +0000
+	id 1vjCeL-00000008Ue7-2EXD;
+	Fri, 23 Jan 2026 08:36:13 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vjCUB-00000008SfO-1SyH
+	id 1vjCeI-00000008Udb-13b1
 	for barebox@lists.infradead.org;
-	Fri, 23 Jan 2026 08:25:44 +0000
+	Fri, 23 Jan 2026 08:36:11 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vjCU9-0003pg-IR; Fri, 23 Jan 2026 09:25:41 +0100
+	id 1vjCeG-0005gX-Gb; Fri, 23 Jan 2026 09:36:08 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vjCUA-0023sH-0A;
-	Fri, 23 Jan 2026 09:25:41 +0100
+	id 1vjCeG-0023xp-3C;
+	Fri, 23 Jan 2026 09:36:08 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vjCU9-0000000GG5V-1LsD;
-	Fri, 23 Jan 2026 09:25:41 +0100
+	id 1vjCeG-0000000GGnD-16NZ;
+	Fri, 23 Jan 2026 09:36:08 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20260120122732.634300-1-a.fatoum@pengutronix.de>
-References: <20260120122732.634300-1-a.fatoum@pengutronix.de>
-Message-Id: <176915674131.3874916.15254571518244891927.b4-ty@pengutronix.de>
-Date: Fri, 23 Jan 2026 09:25:41 +0100
+In-Reply-To: <20260120122713.633785-1-a.fatoum@pengutronix.de>
+References: <20260120122713.633785-1-a.fatoum@pengutronix.de>
+Message-Id: <176915736825.3877624.935471879216809681.b4-ty@pengutronix.de>
+Date: Fri, 23 Jan 2026 09:36:08 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260123_002543_389043_5430D0C2 
-X-CRM114-Status: UNSURE (   8.72  )
+X-CRM114-CacheID: sfid-20260123_003610_298671_96EBC568 
+X-CRM114-Status: UNSURE (   6.63  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,26 +85,26 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] commands: test: add support for [[ -v
- var_to_check_existence ]]
+Subject: Re: [PATCH] net: make default netboot artifact directory
+ configurable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Tue, 20 Jan 2026 13:27:20 +0100, Ahmad Fatoum wrote:
-> We currently have no way to differentiate between a variable that's set
-> and one that's empty, but this would be useful for scripts that source
-> other scripts for customization and want to verify if some variables
-> have been explicitly set to be empty or not, e.g. an initrd override
-> that's empty would mean to omit the initrd as opposed to not setting it,
-> which means to attempt no override.
+On Tue, 20 Jan 2026 13:27:03 +0100, Ahmad Fatoum wrote:
+> The artifacts we currently look up exclusively via TFTP could be equally
+> well in a virtfs, NFS or in the future a HTTP web server.
+> 
+> To allow users and tests to override the directory, move it into a
+> globalvar.
+> 
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] commands: test: add support for [ -v var_to_check_existence ]
-      https://git.pengutronix.de/cgit/barebox/commit/?id=516400780338 (link may not be stable)
+[1/1] net: make default netboot artifact directory configurable
+      https://git.pengutronix.de/cgit/barebox/commit/?id=22b04802237a (link may not be stable)
 
 Best regards,
 -- 
