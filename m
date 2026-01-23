@@ -1,77 +1,87 @@
-Delivery-date: Fri, 23 Jan 2026 10:27:54 +0100
+Delivery-date: Fri, 23 Jan 2026 10:46:53 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vjDSL-004R0T-2c
+	id 1vjDkk-004RGe-0U
 	for lore@lore.pengutronix.de;
-	Fri, 23 Jan 2026 10:27:54 +0100
+	Fri, 23 Jan 2026 10:46:53 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vjDSK-0005VU-PP
-	for lore@pengutronix.de; Fri, 23 Jan 2026 10:27:53 +0100
+	id 1vjDkj-0000Nx-22
+	for lore@pengutronix.de; Fri, 23 Jan 2026 10:46:53 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=pH1zsDZJjJ+sauqKNfCg0TvFGLjfXSvH7A7CyCZhHoQ=; b=KfNleK8umpRTvdR0emLrtWdjsC
-	PWkoWE5NroEFNOvHanJO8s6Xoq/wpCgMHFjJkev/KD4unHKE1vbk6FeyAxQ2wOlMY3HH9LiPV+DbH
-	T6MyT44ugvjxbosFjpV02hzd4dUxCV3xgqvTy8UA+DvBxe7CYte/Ampq/cwXJjuyjXmTm09OOMVoW
-	HeKisx12rw2oXs0omlUBPuxRmQfv3SX+ycPDQblQ2qGxrl+Jm5tRXLzcKa6D4K0Rez86vzp0sTTLA
-	zGKhYSFMzTaTN3Wfl+MTwYOhSNoGpnPRaEqT96MBVJddBR/CwBcBGX09n8nAqPmqGTjGk9JMQfUbf
-	Q8CSlm9w==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=AqmFUXD8aTfFsd0QTRLXBMtbdnUMfLx6OCnwFk/37Tg=; b=jh64cu5620rZexdJidGMbcvs/R
+	1GAGv1DwaaPBHyBaY+jy0eolzpqjyPZaULt4KZWjVpFuRmhGIkuD3eh/FFnfzZcXX8brQqEyUmFV8
+	RTmFFGsn20EC+psgcFT/8k2RapkUhVikIXlBHJ/8VBpSqlTRL79xKdaqMtAHI7xzqiKiCslIVztU4
+	aHCpp6dp8cI1WTqPJiB9GReZ0weu7C78W4lz7hblfwV0ipDXd0hj5Bk32e3dByC7enMzm9nYnYGQ1
+	fNbKRD7gtzddtyM+/8Hxwc68umwSrwfBto/R1XaNHzPBhx+ns+UeAfK2vAviX7IKMddZ/8skVYqJv
+	OHKbQ7eQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vjDRw-00000008ZK6-2xno;
-	Fri, 23 Jan 2026 09:27:28 +0000
+	id 1vjDkB-00000008c1n-2pxH;
+	Fri, 23 Jan 2026 09:46:19 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vjDRu-00000008ZJ2-2OhX
+	id 1vjDkA-00000008c1b-1G0F
 	for barebox@bombadil.infradead.org;
-	Fri, 23 Jan 2026 09:27:26 +0000
+	Fri, 23 Jan 2026 09:46:18 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=pH1zsDZJjJ+sauqKNfCg0TvFGLjfXSvH7A7CyCZhHoQ=; b=UKApa7mAgfeKHLrDGbnpD+TiIQ
-	oHMSwcTg1gbLsd5nnA3eYqw1I7Cb8E/FLJShEvWfweERd5rSz8h9WfjDT5Oyo3+M1OHyOtb77SL3u
-	dR11ndo+5lFfPVQMywB1Wm8g9tzYSSw4vaEGN5yBh4HXpoqIZ8/4dC/uI9IPftm6nPhIO9/V71dYj
-	/gABkwS2l8m9/tRtKYgcG5fkbjgbv6050f1VYKZMilq16Kr3DT3rgCgOz5YgDPPEeo9BtPVebx7an
-	8HRjjsbohxMuOjOuIwxQf2mxS7gr5vhRWp0A62OnNJQ1XRFKE7WGfUN3na5E5DPCTs4O34Eq5qZC3
-	hWVz7f3g==;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=AqmFUXD8aTfFsd0QTRLXBMtbdnUMfLx6OCnwFk/37Tg=; b=GyFr5lWdEjJvNlo1HMh/QgnhZn
+	8sP8S1lAXHRCg+vN3D1XJJrj3SefWcXrcO9rdI+RF9q2IFRk7No/heDmKQHkk3sZ+ODnIdqnmAEwa
+	c5dnu7AmwmIO48X2T7/HvcxoPe2h6mAEbZ+re4cd5GWPtHZHoyktaC9Nk5Y0Ui49s1/1gMSTkAsUb
+	3QvdUHe0FZIRWtNxok05a4t051uIq8g0u6VwYBlSIeZyJj15M81isbDijo8POpIaSMHzQUzGVMtly
+	FoagCdlPxHQ0a7DGX5JQVjyxdgDUkdE3FpIhtcAG8Kh5NXC1bQ9Q23CuiZru3PWJNSg0Q4gNtzjtL
+	Tc2CWGew==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vjDRr-000000022MC-0mHd
+	id 1vjDk7-000000024oG-103V
 	for barebox@lists.infradead.org;
-	Fri, 23 Jan 2026 09:27:25 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vjDRn-0005NV-Dr; Fri, 23 Jan 2026 10:27:19 +0100
-Message-ID: <d482031d-a2c1-42d8-aaff-ecce2dacce81@pengutronix.de>
-Date: Fri, 23 Jan 2026 10:27:18 +0100
+	Fri, 23 Jan 2026 09:46:17 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vjDk4-0000Gm-Oj; Fri, 23 Jan 2026 10:46:12 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vjDk5-0024PZ-0E;
+	Fri, 23 Jan 2026 10:46:12 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vjDk4-00AtcZ-0y;
+	Fri, 23 Jan 2026 10:46:12 +0100
+Date: Fri, 23 Jan 2026 10:46:12 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Sohaib Mohamed <sohaib.amhmd@gmail.com>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	BAREBOX <barebox@lists.infradead.org>
+Message-ID: <aXNDZFjT0rABB7G3@pengutronix.de>
+References: <20260116-barebox-kickpi-v1-0-d11fbccd527a@gmail.com>
+ <20260116-barebox-kickpi-v1-6-d11fbccd527a@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Marco Felsch <m.felsch@pengutronix.de>
-Cc: Fabian Pfitzner <f.pfitzner@pengutronix.de>,
- BAREBOX <barebox@lists.infradead.org>
-References: <20260119-fpf-imx8mp-frdm-v1-0-13fac69eda23@pengutronix.de>
- <20260119-fpf-imx8mp-frdm-v1-1-13fac69eda23@pengutronix.de>
- <20260119152437.nenxd336vgenmlib@pengutronix.de>
- <aXM8iigmqbfe3h2k@pengutronix.de>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <aXM8iigmqbfe3h2k@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260116-barebox-kickpi-v1-6-d11fbccd527a@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260123_092723_370850_216ED3EC 
-X-CRM114-Status: GOOD (  13.14  )
+X-CRM114-CacheID: sfid-20260123_094615_442974_9596C70A 
+X-CRM114-Status: GOOD (  24.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,39 +99,99 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/3] ARM: i.MX8MP: add imx8mp-frdm board
+Subject: Re: [PATCH 06/14] ARM: rockchip: Add RK3562 KickPi K3 board support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Sascha,
-
-On 1/23/26 10:16, Sascha Hauer wrote:
->> @Ahmad @Sascha
->>
->> Do we have a proper driver for the bbu? In that case we could drop the
->> whole board.c :-)
+On Fri, Jan 16, 2026 at 08:40:40PM +0100, Sohaib Mohamed wrote:
+> KICKPI-K3 is a development board based on Rockchip RK3562, the main
+> control chip. It has a quad-core 64-bit Cortex-A53 processor, a main
+> frequency of up to 2.0GHz, low power consumption, and high performance.
 > 
-> No we don't have that yet. Would be nice to have, but requires some
-> thinking. I think this would require yet another barebox specific device
-> tree binding which is not a nice thing to have.
-
-Another possibility would be to register it in SoC code as it's mostly
-the same across boards anyway. In that case, boards would only need
-an opt-in/opt-out and optionally a way to register different/additional
-names for the update handlers..
-
-Cheers,
-Ahmad
-
+> Signed-off-by: Sohaib Mohamed <sohaib.amhmd@gmail.com>
+> ---
+>  arch/arm/boards/Makefile                           |  1 +
+>  .../boards/rockchip-rk3562-kickpi-k3/.gitignore    |  1 +
+>  arch/arm/boards/rockchip-rk3562-kickpi-k3/Makefile |  4 ++
+>  arch/arm/boards/rockchip-rk3562-kickpi-k3/board.c  | 46 ++++++++++++++++++++++
+>  .../boards/rockchip-rk3562-kickpi-k3/lowlevel.c    | 23 +++++++++++
+>  arch/arm/configs/multi_v8_defconfig                |  1 +
+>  arch/arm/configs/rockchip_v8_defconfig             |  1 +
+>  arch/arm/dts/Makefile                              |  1 +
+>  arch/arm/dts/rk3562-kickpi-k3.dts                  | 10 +++++
+>  arch/arm/dts/rk3562-kickpi-k3.dtsi                 |  2 +-
+>  arch/arm/mach-rockchip/Kconfig                     |  6 +++
+>  images/Makefile.rockchip                           |  1 +
+>  12 files changed, 96 insertions(+), 1 deletion(-)
 > 
-> Sascha
-> 
-> 
+> diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+> index 946af95560..2a8e85e0b3 100644
+> --- a/arch/arm/boards/Makefile
+> +++ b/arch/arm/boards/Makefile
+> @@ -186,6 +186,7 @@ obj-$(CONFIG_MACH_LS1021AIOT)			+= ls1021aiot/
+>  obj-$(CONFIG_MACH_MNT_REFORM)			+= mnt-reform/
+>  obj-$(CONFIG_MACH_SKOV_ARM9CPU)			+= skov-arm9cpu/
+>  obj-$(CONFIG_MACH_RK3562_EVB2)			+= rockchip-rk3562-evb2/
+> +obj-$(CONFIG_MACH_RK3562_KICKPI_K3)		+= rockchip-rk3562-kickpi-k3/
+>  obj-$(CONFIG_MACH_RK3568_EVB)			+= rockchip-rk3568-evb/
+>  obj-$(CONFIG_MACH_RK3568_BPI_R2PRO)			+= rockchip-rk3568-bpi-r2pro/
+>  obj-$(CONFIG_MACH_PINE64_PINETAB2)		+= pine64-pinetab2/
+> diff --git a/arch/arm/boards/rockchip-rk3562-kickpi-k3/.gitignore b/arch/arm/boards/rockchip-rk3562-kickpi-k3/.gitignore
+> new file mode 100644
+> index 0000000000..f458f794b5
+> --- /dev/null
+> +++ b/arch/arm/boards/rockchip-rk3562-kickpi-k3/.gitignore
+> @@ -0,0 +1 @@
+> +sdram-init.bin
+> diff --git a/arch/arm/boards/rockchip-rk3562-kickpi-k3/Makefile b/arch/arm/boards/rockchip-rk3562-kickpi-k3/Makefile
+> new file mode 100644
+> index 0000000000..da63d2625f
+> --- /dev/null
+> +++ b/arch/arm/boards/rockchip-rk3562-kickpi-k3/Makefile
+> @@ -0,0 +1,4 @@
+> +# SPDX-License-Identifier: GPL-2.0-only
+> +
+> +obj-y += board.o
+> +lwl-y += lowlevel.o
+> diff --git a/arch/arm/boards/rockchip-rk3562-kickpi-k3/board.c b/arch/arm/boards/rockchip-rk3562-kickpi-k3/board.c
+> new file mode 100644
+> index 0000000000..9e96bafb88
+> --- /dev/null
+> +++ b/arch/arm/boards/rockchip-rk3562-kickpi-k3/board.c
+> @@ -0,0 +1,46 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +
+> +#define pr_fmt(fmt) "rk3562-kickpi-k3: " fmt
+> +
+> +#include <bootsource.h>
+> +#include <common.h>
+> +#include <init.h>
+> +#include <mach/rockchip/bbu.h>
+> +#include <globalvar.h>
+> +#include <deep-probe.h>
 
+Clean up a bit globalvar.h and deep-probe.h are not yet needed.
+
+> diff --git a/arch/arm/dts/rk3562-kickpi-k3.dtsi b/arch/arm/dts/rk3562-kickpi-k3.dtsi
+> index 77bd61cf30..ad5349d7c4 100644
+> --- a/arch/arm/dts/rk3562-kickpi-k3.dtsi
+> +++ b/arch/arm/dts/rk3562-kickpi-k3.dtsi
+> @@ -22,7 +22,7 @@ aliases {
+>  	};
+>  
+>  	chosen {
+> -		stdout-path = "console=serial0,1500000n8";
+> +		stdout-path = "serial0:1500000n8";
+>  	};
+
+This was just introduced in a previous patch. Please squash this hunk in
+there.
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
