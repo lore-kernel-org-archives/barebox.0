@@ -1,69 +1,68 @@
-Delivery-date: Fri, 23 Jan 2026 09:18:54 +0100
+Delivery-date: Fri, 23 Jan 2026 09:26:13 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vjCNb-004Q0G-0w
+	id 1vjCUg-004Q4b-0U
 	for lore@lore.pengutronix.de;
-	Fri, 23 Jan 2026 09:18:54 +0100
+	Fri, 23 Jan 2026 09:26:13 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vjCNa-0002wC-B4
-	for lore@pengutronix.de; Fri, 23 Jan 2026 09:18:54 +0100
+	id 1vjCUf-00044W-62
+	for lore@pengutronix.de; Fri, 23 Jan 2026 09:26:13 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
 	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=PhcJ91cZGWShtGhhi9Mon/+vx+besivZjnn6Sy5AVKA=; b=z0ubc/438/yiYwHkTKy36BhIf2
-	XN8cOCGiWLkw17RgKVWVTkQSvuPKlkqtxuS15ZkYGnvFJ7u7knm7wVBuJ63gKz7HbYcRJ2PHDZkfJ
-	uunUhbOTcIgjhVhLBkzFpZ7Bck/OjtU3gWXgdxpcJwB2Q9+sPGMaievGazYvMiY8sS+oLvHRRQn4v
-	puKpsL7xkTUtZ1pE2M+xVel2ETEUmoy9hp0lxmTYMY/gLLvUPBmeu21HWta/PT6Hp3+Vt3LBojg6v
-	l9hDaro96UyklQcoHLtRc5sGtLDXokpo3ar8nl2ErY6h7Mf2BtDlKjTSHVAbev009FT7HGZTAagyZ
-	Qg5Qa/dg==;
+	bh=ovA1mhPx1QNDLO6uxuMchraJftOXTIr8fMg6WutmfNM=; b=x3c6vvV6zfmwxtGkcfxnsE5ZGo
+	4/AF+zVqj2A1TwR3XUAcJezeWPIlk+EuhXMOYapddM8PEb2VXqgwcFTLgBOWVCIocNa+Wqh4JKBdm
+	utiYiyJUv8YDGU1tj8y+PIAANIsudWaaN9Czn4oa3EHq68ShDx4w1FFGroyxsgOTUBqo/yOBoIwlb
+	eG1hK2JwKxIEiNHdzSSJRRnQyw6ufb7NieV7RDRRHMibFWn9JrpkzEU9Oj08XctKLPcxrHs3eOYMC
+	iNYOgbKJvpdc/OnD6nsptkVVvdl1X8Q7ONeW6KH/9rQ5gS32otuenHD5+Dhz4orodcS0/0WtCFGIN
+	DCQQ4Now==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vjCND-00000008Ryo-2Uwv;
-	Fri, 23 Jan 2026 08:18:31 +0000
+	id 1vjCUD-00000008ShC-1ZAa;
+	Fri, 23 Jan 2026 08:25:45 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vjCNB-00000008Ry9-0ayR
+	id 1vjCUB-00000008SfO-1SyH
 	for barebox@lists.infradead.org;
-	Fri, 23 Jan 2026 08:18:30 +0000
+	Fri, 23 Jan 2026 08:25:44 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vjCN9-0002qt-G4; Fri, 23 Jan 2026 09:18:27 +0100
+	id 1vjCU9-0003pg-IR; Fri, 23 Jan 2026 09:25:41 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vjCN9-0023rb-2X;
-	Fri, 23 Jan 2026 09:18:27 +0100
+	id 1vjCUA-0023sH-0A;
+	Fri, 23 Jan 2026 09:25:41 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vjCN9-0000000GFzF-0ErB;
-	Fri, 23 Jan 2026 09:18:27 +0100
+	id 1vjCU9-0000000GG5V-1LsD;
+	Fri, 23 Jan 2026 09:25:41 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>, 
- "Claude Sonnet 4.5" <noreply@anthropic.com>
-In-Reply-To: <20260120122741.634724-1-a.fatoum@pengutronix.de>
-References: <20260120122741.634724-1-a.fatoum@pengutronix.de>
-Message-Id: <176915630705.3874526.6412306748946205328.b4-ty@pengutronix.de>
-Date: Fri, 23 Jan 2026 09:18:27 +0100
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+In-Reply-To: <20260120122732.634300-1-a.fatoum@pengutronix.de>
+References: <20260120122732.634300-1-a.fatoum@pengutronix.de>
+Message-Id: <176915674131.3874916.15254571518244891927.b4-ty@pengutronix.de>
+Date: Fri, 23 Jan 2026 09:25:41 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260123_001829_188482_19A6FCD4 
-X-CRM114-Status: UNSURE (   8.23  )
+X-CRM114-CacheID: sfid-20260123_002543_389043_5430D0C2 
+X-CRM114-Status: UNSURE (   8.72  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -86,25 +85,26 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] commands: cd: implement support for cd - and $OLDPWD
+Subject: Re: [PATCH] commands: test: add support for [[ -v
+ var_to_check_existence ]]
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Tue, 20 Jan 2026 13:27:35 +0100, Ahmad Fatoum wrote:
-> We have no $PWD an we would have to populate it globally, because all of
-> barebox shares a single working directory. What we can easily do however
-> is populate $OLDPWD to give shell scripts a way to resolve some
-> artifacts relatively and then revert back to the original working
-> directory, so implement that as well as cd -.
-> 
+On Tue, 20 Jan 2026 13:27:20 +0100, Ahmad Fatoum wrote:
+> We currently have no way to differentiate between a variable that's set
+> and one that's empty, but this would be useful for scripts that source
+> other scripts for customization and want to verify if some variables
+> have been explicitly set to be empty or not, e.g. an initrd override
+> that's empty would mean to omit the initrd as opposed to not setting it,
+> which means to attempt no override.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] commands: cd: implement support for cd - and $OLDPWD
-      https://git.pengutronix.de/cgit/barebox/commit/?id=11558f18b0fc (link may not be stable)
+[1/1] commands: test: add support for [ -v var_to_check_existence ]
+      https://git.pengutronix.de/cgit/barebox/commit/?id=516400780338 (link may not be stable)
 
 Best regards,
 -- 
