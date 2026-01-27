@@ -1,68 +1,68 @@
-Delivery-date: Tue, 27 Jan 2026 08:22:49 +0100
+Delivery-date: Tue, 27 Jan 2026 08:23:10 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vkdPV-005omu-1a
+	id 1vkdPr-005onj-07
 	for lore@lore.pengutronix.de;
-	Tue, 27 Jan 2026 08:22:49 +0100
+	Tue, 27 Jan 2026 08:23:10 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vkdPU-0001aA-IF
-	for lore@pengutronix.de; Tue, 27 Jan 2026 08:22:48 +0100
+	id 1vkdPp-0001iD-BQ
+	for lore@pengutronix.de; Tue, 27 Jan 2026 08:23:10 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=BvaI9Fg+VozvVP7OD4xPCwOsle2xFu6Jckl7cR3RKkw=; b=Ckv5PPB8bXwdTVqC2e6RPpdOP7
-	Q6QTUIYSJ4DG9DqYcvbr7WoBRlmp/q7VO5x4mm1pDkAFkHxip8YIBMKRyXlmSgo1d4m+xW6tI8kVF
-	4sN4vbn9JaK3b/SEAiI45Rm3Q8SNRL/eyJT4IwNj4nc2fi13icdbkOb8k2zjcD7at9xt65Cd+PJ6D
-	HJoJkpCG/3KDkgA01gLSQHwZ22spdwnrwcrelvhg7273bPdBXjA4T7hQhkLKuXABhVdzw55VF4vDS
-	nCleWZ2XEhMGC5//prmJ6N6PqECOGMDQ3bJvw7Dtg4dQ87Pbqsi5tj2v96Dv6PFRVnguIw3E0t3Fl
-	wofgpNqA==;
+	bh=Sy4P8QOvPEvXCWDcJGlz0fv8wUhSS3rb+bRcBB1BwQo=; b=h1em0Bx232Cvr0CjJ8o0k5fAKH
+	naNO+q9ZscSCYJGb1R/z+hqSv1D80rE+dbsG2SY5ojOuiELt48phwsdlS2vpVz0qCxErKDSH/AHRX
+	3cHvse2ojF164el8T/DUfhGaI7Zws4i87/INAUUwIrPd3ZUrh8OTIFPo6Pe9m7rcu6QzGB1yxo2Tw
+	GAP7E8VCGfq8Koey0iAYq8sfyNNZxXq+70/SaduOUOxVvi9LReaw/cgHhNXUCvPdPMSK+Wsayz/vG
+	R2pafL2PpfVxQeuTg9hdVEFYl+rwvdCn0LsoxM+Pts7FSL8S+cgoKzsU8UvU1oIVLzjU1AS9SuB8a
+	fC6xjQKQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vkdP4-0000000DlnI-1fTj;
-	Tue, 27 Jan 2026 07:22:22 +0000
+	id 1vkdPS-0000000DlxW-28R8;
+	Tue, 27 Jan 2026 07:22:46 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vkdP1-0000000DlmR-26qb
+	id 1vkdPP-0000000Dlw0-19h0
 	for barebox@lists.infradead.org;
-	Tue, 27 Jan 2026 07:22:21 +0000
+	Tue, 27 Jan 2026 07:22:45 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vkdOz-0001Vz-Ly; Tue, 27 Jan 2026 08:22:17 +0100
+	id 1vkdPN-0001ZS-PK; Tue, 27 Jan 2026 08:22:41 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vkdP0-002i9H-0W;
-	Tue, 27 Jan 2026 08:22:17 +0100
+	id 1vkdPO-002i9L-0r;
+	Tue, 27 Jan 2026 08:22:41 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vkdOz-000000050Az-3gLS;
-	Tue, 27 Jan 2026 08:22:17 +0100
+	id 1vkdPO-000000052v8-043j;
+	Tue, 27 Jan 2026 08:22:41 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: bst@pengutronix.de
-In-Reply-To: <20260126172458.1761664-1-a.fatoum@pengutronix.de>
-References: <20260126172458.1761664-1-a.fatoum@pengutronix.de>
-Message-Id: <176949853740.1191459.16865223804510018366.b4-ty@pengutronix.de>
-Date: Tue, 27 Jan 2026 08:22:17 +0100
+To: Barebox List <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20260126130422.3897277-1-s.hauer@pengutronix.de>
+References: <20260126130422.3897277-1-s.hauer@pengutronix.de>
+Message-Id: <176949856154.1202404.13561282966271179938.b4-ty@pengutronix.de>
+Date: Tue, 27 Jan 2026 08:22:41 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260126_232219_792355_700B026F 
-X-CRM114-Status: UNSURE (   9.44  )
+X-CRM114-CacheID: sfid-20260126_232243_325136_C46FDA53 
+X-CRM114-Status: UNSURE (   9.24  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,26 +85,28 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] serial: efi-stdio: fix repeated carriage return with
- putc callback
+Subject: Re: [PATCH] usb: fastboot: increase max answer size to 256
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 26 Jan 2026 18:24:14 +0100, Ahmad Fatoum wrote:
-> A console driver can populate the console_device::puts callback instead
-> of having the console core substitute __console_puts, if it can implement
-> the operation in a more performant manner than the repeated calls to
-> console_device::putc that occur otherwise.
-> Whether provided by driver or by console core, console_device::puts
-> is responsible for converting LF characters to CRLF.
+On Mon, 26 Jan 2026 14:04:22 +0100, Sascha Hauer wrote:
+> Initial fasboot specification allowed at maximum 64 characters as
+> answer. This has been increased to 256 [1]. Allow for longer answer
+> sizes.
+> 
+> While at it use a define for the maximum answer length to avoid
+> repeating the hardcoded number. Also allow the answer to be exactly
+> the maximum length. Previous implementation used a 64 byte string
+> which included the '\0' string end and limited the usable size to
+> 63 bytes. Now we can use the full 256 bytes.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] serial: efi-stdio: fix repeated carriage return with putc callback
-      https://git.pengutronix.de/cgit/barebox/commit/?id=0c457166c68e (link may not be stable)
+[1/1] usb: fastboot: increase max answer size to 256
+      https://git.pengutronix.de/cgit/barebox/commit/?id=d9e213023295 (link may not be stable)
 
 Best regards,
 -- 
