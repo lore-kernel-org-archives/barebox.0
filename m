@@ -1,67 +1,78 @@
-Delivery-date: Tue, 27 Jan 2026 10:04:37 +0100
+Delivery-date: Tue, 27 Jan 2026 13:13:28 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vkf01-005qLO-2F
+	id 1vkhwm-005tL5-2T
 	for lore@lore.pengutronix.de;
-	Tue, 27 Jan 2026 10:04:37 +0100
+	Tue, 27 Jan 2026 13:13:28 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vkezv-0004Rh-KF
-	for lore@pengutronix.de; Tue, 27 Jan 2026 10:04:37 +0100
+	id 1vkhwl-00016I-QJ
+	for lore@pengutronix.de; Tue, 27 Jan 2026 13:13:28 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0D7UYVOVGk4Bzu5HQEDKEgMx6qRsAL0R4A8VcWZ6UsA=; b=4ktgL4QAdBcykJCMFGDZzfPsCT
-	CD/BffGLNQ2L7JjEfPZPd7sOarAFHdPL7QFIS0kZcUF93D+A9GMC1970Ba/oTYUeuj8zH8xEJ/mj3
-	doiCRFTyNwbIPt3UpQY0/LTK//WsLkaMjghwd5IK2zXCaG9bEzqkTAyl6JBcsa2AbreOzFhukGae+
-	bQ34Jbe+nhZ8U14TSz4eAVDV2qkAMxUCJh5hch87lkHzfnJcQA/fcC9laR3RMCb8oMpTX/rUXJdKE
-	XZgpK9dolqPKnRi/cmpwdie0ev+s2asdnar2aOZi0blbM7CrdIeElM6YlDTaFK5cU0W1aY3PrUlnh
-	OIU8EKBw==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=UhGi7rmAl2lMvNFuXS5rlJfSSXiQmmrJY8zanZajZaA=; b=qvn3ay2Lg+pHzVX9/RKpugmXZi
+	NhrDeT6Ib+877VlZVWsK1vN49MWOe6nZMRKVaZQ/tOUNF2XWXcPAlG8MYl9nuX+Sq04IeJwrynlbM
+	gPjVnAKTf/h9/2HXyMXUtORF84CopgipwWL5mzFbKiujKbTvz4gL2tNMsojutACAzR7fSoLmfHDHn
+	n5ajQxfFr78pF14fl9zDD9Q840aZw0kAMKWqb3stq+g9DlxFEeStsbRn7Fz8hQYVG5Y5fJdVxse7k
+	ybFi57rtwuLbnUG7cF7YCmuv2kV5fW3AdEYm4MnJ3oGs+CCAKnBw0T/7teFS773x3ZRF5yFCShrl6
+	6lnLh7jQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vkezD-0000000Dtsh-1o73;
-	Tue, 27 Jan 2026 09:03:47 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1vkhvx-0000000EDK8-1OIy;
+	Tue, 27 Jan 2026 12:12:37 +0000
+Received: from uk-relay3.ametek.com ([89.191.218.232] helo=uk-relay13.ametek.com)
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vkez2-0000000DtmU-0P52
+	id 1vkhvs-0000000EDH2-3scq
 	for barebox@lists.infradead.org;
-	Tue, 27 Jan 2026 09:03:44 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vkez0-00045Z-Cb; Tue, 27 Jan 2026 10:03:34 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vkez0-002iiF-2n;
-	Tue, 27 Jan 2026 10:03:34 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vkeht-0000000FmwP-0YyZ;
-	Tue, 27 Jan 2026 09:45:52 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	Tue, 27 Jan 2026 12:12:35 +0000
+DKIM-Signature: v=1; a=rsa-sha256; d=ametek.com; s=ukrelaysnew; c=relaxed/simple;
+	q=dns/txt; i=@ametek.com; t=1769515941; x=1772107941;
+	h=From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=+SzZsF4S4muOZ9213XTG+9O9whm/4FKpK9IqKou33FU=;
+	b=DCDri8ZOp0n5I3dgBPS3unZrVOmmXTkZV3PAhhi3QV6bhWjXxOxE3zFE/Wh5wbJj
+	KfMoHnA3g8sHupgHppMNma6He9hH7zKSto7/346qOxW70hO2UlCzsYrro0y8spzc
+	UYLRnQO+NWTrJt+OGMHgSplnV1kBI62tvpAe+Kx/kpYIZaMPBgpl9DcwAGarF0D7
+	9AWr3uNNpsp4YDZYvz0bd/qXeghjP4YndEu7RzubKjUWyptwshCsg+Mvuzw107c/
+	W0o4n4TeAINEQ9Yy6vyuVj+SfKPY+u+qawqmV9P4rnA5BeI8hmObG0xuhR1+lpuf
+	bjNTINAuIMz4Mc59yUWI7g==;
+X-AuditID: ac1001d4-33b8d640000daae5-b2-6978aba5156c
+Received: from uk-edi-aba-ow01.ametek.com ( [10.175.96.158])
+	by uk-relay13.ametek.com (Symantec Mail Security) with SMTP id AC.FF.43749.5ABA8796; Tue, 27 Jan 2026 12:12:21 +0000 (GMT)
+From: Renaud Barbier <renaud.barbier@ametek.com>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 27 Jan 2026 09:39:20 +0100
-Message-ID: <20260127084546.3751357-11-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260127084546.3751357-1-a.fatoum@pengutronix.de>
-References: <20260127084546.3751357-1-a.fatoum@pengutronix.de>
+Cc: Renaud Barbier <renaud.barbier@ametek.com>
+Date: Tue, 27 Jan 2026 12:12:15 +0000
+Message-ID: <20260127121217.3896902-1-renaud.barbier@ametek.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrNJMWRmVeSWpSXmKPExsXCtT5hnu7S1RWZBn9PylmcWNzPbDH9bZAD
+	k8e8nQEem5fUBzBFcdmkpOZklqUW6dslcGWc3fmQueAuW8Xb04+YGhjfsHQxcnJICJhIPF13
+	kqmLkYtDSGAno8T3zdPAEmwCBhL/jn5lA7FFBOQl5u5vYwWxmQX0JDouTGQCsYUFrCUWHD0D
+	ZrMIqErcO34GqIaDg1fAQeLdOy+I+fISi3csZwaxeQUEJU7OfMICMUZeonnrbOYJjNyzkKRm
+	IUktYGRaxShamq1blJqTWGlorJeYm1qSmq2XnJ+7iRHo/zUCjFd2MN759EHvECMTB+MhRgkO
+	ZiURXv5lpZlCvCmJlVWpRfnxRaU5qcWHGKU5WJTEedfu+RAnJJCeCDQlNbUgtQgmy8TBKdXA
+	lFT4ULtp+r3SSA3dxG0fX7x58PZdWPKxmIgPInPYSqI7z3ZsKCzrmaGz8fHOhiMc4XYX737c
+	Ne14+spDrRsy5G+WNVpqKqopJ3JcseVNqrrTVpnFbvj2u8WxI5PZPsn4x06pZ3V/t6QgR2Ve
+	agITz5oL+5PvLP5pbSb19taZcrsPERezFyRdjHUvq68yCFxxMSl9fkRamV/11DdsST6Vzfl1
+	RVovZ4Z985R7/fTAn7DP8yr14l9Lz86cVbSytjj+/tur4r+5bNiT9vaYXNk5Wadf9LJrsvLS
+	goUc58R/H5818cxsH/W1W1+VsVQpLedcphO2Y6f2+gUK3wIdRNq6/th/YHjFZ50b2/38W6eJ
+	EltxRqKRqZkWc1FxIgDOAeRScAIAAA==
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260127_010336_292103_D36CFE9F 
-X-CRM114-Status: GOOD (  19.09  )
+X-CRM114-CacheID: sfid-20260127_041233_339407_110FAD26 
+X-CRM114-Status: UNSURE (   8.33  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,229 +90,37 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-2.9 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 10/15] bootm: rename image_data::os/initrd with _uimage suffix
+Subject: [PATCH 0/2] net: expand gianfar support to ls1021a
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We will use the generic unadorned for the incoming loadable support, so
-add a _uimage suffix to the uimage-only members to make the association
-clearer.
+This patch adds limited support for the Ethernet controller on the NXP
+LS1021A:
+    * Only one port has been tested i.e enet1.
+    * The PHY negotiation has been limited to 100Mbits-FD.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/powerpc/lib/ppclinux.c |  2 +-
- common/bootm-uimage.c       | 38 ++++++++++++++++++-------------------
- common/bootm.c              | 12 ++++++------
- include/bootm.h             |  4 ++--
- 4 files changed, 28 insertions(+), 28 deletions(-)
+This is in view of later testing LPAE MMU support with a device doing
+DMA transfer.
 
-diff --git a/arch/powerpc/lib/ppclinux.c b/arch/powerpc/lib/ppclinux.c
-index eda2539e6125..4e9693cbad60 100644
---- a/arch/powerpc/lib/ppclinux.c
-+++ b/arch/powerpc/lib/ppclinux.c
-@@ -30,7 +30,7 @@ static struct fdt_header *bootm_relocate_fdt(struct image_data *data,
- 		 */
- 		if (os < (void *)fdt->totalsize) {
- 			os = (void *)PAGE_ALIGN((phys_addr_t)os +
--					data->os->header.ih_size);
-+					data->os_uimage->header.ih_size);
- 			os += fdt->totalsize;
- 			if (os < LINUX_TLB1_MAX_ADDR)
- 				os = LINUX_TLB1_MAX_ADDR;
-diff --git a/common/bootm-uimage.c b/common/bootm-uimage.c
-index 609b678e1d4a..b32ed5b0e95f 100644
---- a/common/bootm-uimage.c
-+++ b/common/bootm-uimage.c
-@@ -29,7 +29,7 @@ int bootm_load_uimage_os(struct image_data *data, unsigned long load_address)
- 
- 	num = uimage_part_num(data->os_part);
- 
--	data->os_res = uimage_load_to_sdram(data->os,
-+	data->os_res = uimage_load_to_sdram(data->os_uimage,
- 		num, load_address);
- 	if (!data->os_res)
- 		return -ENOMEM;
-@@ -42,21 +42,21 @@ static int bootm_open_initrd_uimage(struct image_data *data)
- 	int ret;
- 
- 	if (strcmp(data->os_file, data->initrd_file)) {
--		data->initrd = uimage_open(data->initrd_file);
--		if (!data->initrd)
-+		data->initrd_uimage = uimage_open(data->initrd_file);
-+		if (!data->initrd_uimage)
- 			return -EINVAL;
- 
- 		if (bootm_get_verify_mode() > BOOTM_VERIFY_NONE) {
--			ret = uimage_verify(data->initrd);
-+			ret = uimage_verify(data->initrd_uimage);
- 			if (ret) {
- 				pr_err("Checking data crc failed with %pe\n",
- 					ERR_PTR(ret));
- 				return ret;
- 			}
- 		}
--		uimage_print_contents(data->initrd);
-+		uimage_print_contents(data->initrd_uimage);
- 	} else {
--		data->initrd = data->os;
-+		data->initrd_uimage = data->os_uimage;
- 	}
- 
- 	return 0;
-@@ -90,7 +90,7 @@ bootm_load_uimage_initrd(struct image_data *data, unsigned long load_address)
- 
- 	num = uimage_part_num(data->initrd_part);
- 
--	res = uimage_load_to_sdram(data->initrd,
-+	res = uimage_load_to_sdram(data->initrd_uimage,
- 		num, load_address);
- 	if (!res)
- 		return ERR_PTR(-ENOMEM);
-@@ -110,9 +110,9 @@ int bootm_open_oftree_uimage(struct image_data *data, size_t *size,
- 	pr_info("Loading devicetree from '%s'@%d\n", oftree, num);
- 
- 	if (!strcmp(data->os_file, oftree)) {
--		of_handle = data->os;
-+		of_handle = data->os_uimage;
- 	} else if (!strcmp(data->initrd_file, oftree)) {
--		of_handle = data->initrd;
-+		of_handle = data->initrd_uimage;
- 	} else {
- 		of_handle = uimage_open(oftree);
- 		if (!of_handle)
-@@ -141,12 +141,12 @@ int bootm_open_uimage(struct image_data *data)
- {
- 	int ret;
- 
--	data->os = uimage_open(data->os_file);
--	if (!data->os)
-+	data->os_uimage = uimage_open(data->os_file);
-+	if (!data->os_uimage)
- 		return -EINVAL;
- 
- 	if (bootm_get_verify_mode() > BOOTM_VERIFY_NONE) {
--		ret = uimage_verify(data->os);
-+		ret = uimage_verify(data->os_uimage);
- 		if (ret) {
- 			pr_err("Checking data crc failed with %pe\n",
- 					ERR_PTR(ret));
-@@ -154,23 +154,23 @@ int bootm_open_uimage(struct image_data *data)
- 		}
- 	}
- 
--	uimage_print_contents(data->os);
-+	uimage_print_contents(data->os_uimage);
- 
--	if (IH_ARCH == IH_ARCH_INVALID || data->os->header.ih_arch != IH_ARCH) {
-+	if (IH_ARCH == IH_ARCH_INVALID || data->os_uimage->header.ih_arch != IH_ARCH) {
- 		pr_err("Unsupported Architecture 0x%x\n",
--		       data->os->header.ih_arch);
-+		       data->os_uimage->header.ih_arch);
- 		return -EINVAL;
- 	}
- 
- 	if (data->os_address == UIMAGE_SOME_ADDRESS)
--		data->os_address = data->os->header.ih_load;
-+		data->os_address = data->os_uimage->header.ih_load;
- 
- 	return 0;
- }
- 
- void bootm_close_uimage(struct image_data *data)
- {
--	if (data->initrd && data->initrd != data->os)
--		uimage_close(data->initrd);
--	uimage_close(data->os);
-+	if (data->initrd_uimage && data->initrd_uimage != data->os_uimage)
-+		uimage_close(data->initrd_uimage);
-+	uimage_close(data->os_uimage);
- }
-diff --git a/common/bootm.c b/common/bootm.c
-index a2301ea72458..7fe0afe24ce8 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -33,7 +33,7 @@ static bool uimage_check(struct image_handler *handler,
- 			 enum filetype detected_filetype)
- {
- 	return detected_filetype == filetype_uimage &&
--		handler->ih_os == data->os->header.ih_os;
-+		handler->ih_os == data->os_uimage->header.ih_os;
- }
- 
- static bool filetype_check(struct image_handler *handler,
-@@ -208,7 +208,7 @@ static int uimage_part_num(const char *partname)
- 
- static inline bool image_is_uimage(struct image_data *data)
- {
--	return IS_ENABLED(CONFIG_BOOTM_UIMAGE) && data->os;
-+	return IS_ENABLED(CONFIG_BOOTM_UIMAGE) && data->os_uimage;
- }
- 
- static bool bootm_get_override(char **oldpath, const char *newpath)
-@@ -322,7 +322,7 @@ bootm_load_initrd(struct image_data *data, ulong load_address, ulong end_address
- 
- 	if (type == filetype_uimage) {
- 		res = bootm_load_uimage_initrd(data, load_address);
--		if (data->initrd->header.ih_type == IH_TYPE_MULTI)
-+		if (data->initrd_uimage->header.ih_type == IH_TYPE_MULTI)
- 			initrd_part = data->initrd_part;
- 
- 	} else if (initrd) {
-@@ -496,7 +496,7 @@ int bootm_get_os_size(struct image_data *data)
- 	int ret;
- 
- 	if (image_is_uimage(data))
--		return uimage_get_size(data->os, uimage_part_num(data->os_part));
-+		return uimage_get_size(data->os_uimage, uimage_part_num(data->os_part));
- 	if (data->os_fit)
- 		return data->fit_kernel_size;
- 	if (!data->os_file)
-@@ -744,7 +744,7 @@ int bootm_boot(struct bootm_data *bootm_data)
- 
- 	pr_info("\nLoading %s '%s'", file_type_to_string(data->kernel_type), data->os_file);
- 	if (data->kernel_type == filetype_uimage &&
--			data->os->header.ih_type == IH_TYPE_MULTI)
-+			data->os_uimage->header.ih_type == IH_TYPE_MULTI)
- 		pr_info(", multifile image %d", uimage_part_num(data->os_part));
- 	pr_info("\n");
- 
-@@ -758,7 +758,7 @@ int bootm_boot(struct bootm_data *bootm_data)
- 		pr_err("no image handler found for image type %s\n",
- 		       file_type_to_string(data->kernel_type));
- 		if (data->kernel_type == filetype_uimage)
--			pr_err("and OS type: %d\n", data->os->header.ih_os);
-+			pr_err("and OS type: %d\n", data->os_uimage->header.ih_os);
- 		ret = -ENODEV;
- 		goto err_out;
- 	}
-diff --git a/include/bootm.h b/include/bootm.h
-index bdabba23f2b9..ef979807505d 100644
---- a/include/bootm.h
-+++ b/include/bootm.h
-@@ -59,7 +59,7 @@ struct image_data {
- 	struct resource *os_res;
- 
- 	/* if os is an uImage this will be provided */
--	struct uimage_handle *os;
-+	struct uimage_handle *os_uimage;
- 
- 	/* if os is a FIT image this will be provided */
- 	struct fit_handle *os_fit;
-@@ -84,7 +84,7 @@ struct image_data {
- 	struct resource *initrd_res;
- 
- 	/* if initrd is an uImage this will be provided */
--	struct uimage_handle *initrd;
-+	struct uimage_handle *initrd_uimage;
- 	char *initrd_part;
- 
- 	/* otherwise only the filename will be provided */
+Renaud Barbier (2):
+  net: gianfar: add device tree support
+  ARM: ls1021a: initial Ethernet and mdio configuration
+
+ arch/arm/boards/ls1021aiot/board.c       |  35 +++
+ arch/arm/configs/layerscape_v7_defconfig |   7 +
+ arch/arm/dts/fsl-ls1021a-iot.dts         |  28 +++
+ arch/powerpc/include/asm/dma.h           |  35 ++-
+ drivers/net/Kconfig                      |   2 +-
+ drivers/net/gianfar.c                    | 261 ++++++++++++++++++++---
+ drivers/net/gianfar.h                    |  36 ++++
+ 7 files changed, 370 insertions(+), 34 deletions(-)
+
 -- 
-2.47.3
+2.43.0
 
 
 
