@@ -1,71 +1,72 @@
-Delivery-date: Tue, 27 Jan 2026 08:13:06 +0100
+Delivery-date: Tue, 27 Jan 2026 08:20:55 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vkdG7-005oh7-0M
+	id 1vkdNf-005olU-2I
 	for lore@lore.pengutronix.de;
-	Tue, 27 Jan 2026 08:13:06 +0100
+	Tue, 27 Jan 2026 08:20:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vkdG6-0000gX-43
-	for lore@pengutronix.de; Tue, 27 Jan 2026 08:13:06 +0100
+	id 1vkdNe-0001Og-OT
+	for lore@pengutronix.de; Tue, 27 Jan 2026 08:20:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=koCt6H5z73+pu/GNhuLZJ57WNHW89N19uqagsLGisPE=; b=h264FldPVvjGzeKHzknACM/QEV
-	keVjwieJltjypXuZkhfWFc+DQXfDqii3jtAGxwVhVzLakmMjJwR2gZkfhqblx2wmucFCQ7/3FjKEb
-	NihDK1Z9ZOe17Ugb7PvzEWmfZykGvkvsk2qvrQaumcO7/xpC7U/6JX7Vw87D92Np8171dd6uEAsP4
-	Bo1xkbyMksNZJ2hmFMLOW0ev+ib68IcVit/2FsAUkJogcmSHLgzVSwS1u+ozQlS/7CzBxrYtmhmMY
-	RgKJB5lhkNNVQjuOxDnua1amX39iCwy7KzaIRX1d0FqIFSaPcNartM/idT5b35KLxD1CoIrajivpp
-	/SMtPRCw==;
+	bh=8efOtcxw84kpHlgFevsV7GXkGBXIFC7BT9KwQYWDB0w=; b=MLkYRlzhaCPJzwGhbL4dqHDLK9
+	aUaHNWOVXvkOSQGANy8mzqG1I9xjbtKDEpzuHThnKMklrePMHB1pbPw8CThvEsC34lZa/dIos8YlR
+	KRmB9QD5IENfmFDOLZU1aruHn2KnMu8sSa9Pb6I3BhZL+Eiipo/b7hLXzAfZThQt7bO7UVF6B1hY4
+	AjW8R2bRY/Am+kRejfXz+AAdmHgZihhggeuNevhrHH7keIso/g7/79QVdEoeN77qWBna4yxKskBBQ
+	ArUFbt5H+szG3Z2+11yAO0Z9P2tqzO6l8gHnSh/Nyl+O13GyEZbtQ/6gOmIlBRPUc7zzuIxz9AWmq
+	G8e0WlFw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vkdFT-0000000Dkt4-2heV;
-	Tue, 27 Jan 2026 07:12:27 +0000
+	id 1vkdNI-0000000DlbB-43WV;
+	Tue, 27 Jan 2026 07:20:32 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vkdFQ-0000000DksP-4BSU
+	id 1vkdNG-0000000DlaC-1zc6
 	for barebox@lists.infradead.org;
-	Tue, 27 Jan 2026 07:12:26 +0000
+	Tue, 27 Jan 2026 07:20:31 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vkdFM-0000bh-KR; Tue, 27 Jan 2026 08:12:20 +0100
+	id 1vkdNE-0001Jl-9W; Tue, 27 Jan 2026 08:20:28 +0100
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vkdFN-002i8S-0N;
-	Tue, 27 Jan 2026 08:12:20 +0100
+	id 1vkdNE-002i97-2U;
+	Tue, 27 Jan 2026 08:20:28 +0100
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1vkdFM-000lOk-0v;
-	Tue, 27 Jan 2026 08:12:20 +0100
-Date: Tue, 27 Jan 2026 08:12:20 +0100
+	id 1vkdND-000lQY-36;
+	Tue, 27 Jan 2026 08:20:27 +0100
+Date: Tue, 27 Jan 2026 08:20:27 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <aXhlVIO0EW8LudEM@pengutronix.de>
-References: <20260126130422.3897277-1-s.hauer@pengutronix.de>
- <20260126135336.ewilribmhw2xtsnb@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Message-ID: <aXhnO4xuW-R3TBZP@pengutronix.de>
+References: <20251117-soc-uid-v2-0-a2415bf9133d@pengutronix.de>
+ <20251117-soc-uid-v2-6-a2415bf9133d@pengutronix.de>
+ <c9f90894-52ac-4090-b4a9-8d82b735e56e@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260126135336.ewilribmhw2xtsnb@pengutronix.de>
+In-Reply-To: <c9f90894-52ac-4090-b4a9-8d82b735e56e@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260126_231225_038077_920ABD19 
-X-CRM114-Status: GOOD (  19.94  )
+X-CRM114-CacheID: sfid-20260126_232030_515956_DC7FFB6F 
+X-CRM114-Status: GOOD (  19.52  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,45 +88,27 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] usb: fastboot: increase max answer size to 256
+Subject: Re: [PATCH v2 6/9] nvmem: ocotp: Fix SoC ID reading for i.MX8MP
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Jan 26, 2026 at 02:53:36PM +0100, Marco Felsch wrote:
-> Hi Sascha,
+On Mon, Jan 26, 2026 at 12:20:08PM +0100, Ahmad Fatoum wrote:
+> Hi,
 > 
-> On 26-01-26, Sascha Hauer wrote:
+> On 11/17/25 9:35 AM, Sascha Hauer wrote:
+> > On i.MX8MP the SoC ID is stored at 0x420/0x430, not on 0x410/0x420 as on
+> > other i.MX8M SoCs. Also on i.MX8MP the SoC ID is 128bit and not 64bit
+> > with the upper bits stored at 0xe00/0xe10.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > 
-> ..
-> > While at it use a define for the maximum answer length to avoid
-> > repeating the hardcoded number. Also allow the answer to be exactly
-> > the maximum length. Previous implementation used a 64 byte string
-> > which included the '\0' string end and limited the usable size to
-> > 63 bytes. Now we can use the full 256 bytes.
-> 
-> ...
-> 
-> > +#define FASTBOOT_MAX_RESPONSE_SIZE 256
-> > +
-> >  int fastboot_tx_print(struct fastboot *fb, enum fastboot_msg_type type,
-> >  		      const char *fmt, ...)
-> >  {
-> >  	struct va_format vaf;
-> > -	char buf[64];
-> > +	char buf[FASTBOOT_MAX_RESPONSE_SIZE + 1];
-> 
-> So the new size of 256 bytes don't include the '\0' at the end?
+> As this has implications for user space (e.g. journald quotas are per
+> directory and machine id changes the dir), this deserves a mention in
+> the migration guide.
 
-We need the '\0' for printing the string with pr_info(), but it doesn't
-go over the wire.
+Right. I added one.
 
-> 
-> In that case feel free to add my:
-> 
-> Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-
-Thanks
- Sascha
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
