@@ -1,57 +1,67 @@
-Delivery-date: Tue, 27 Jan 2026 09:09:02 +0100
+Delivery-date: Tue, 27 Jan 2026 09:46:39 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vke8E-005pa4-1Y
+	id 1vkeie-005q5p-0I
 	for lore@lore.pengutronix.de;
-	Tue, 27 Jan 2026 09:09:02 +0100
+	Tue, 27 Jan 2026 09:46:39 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vke8D-0005UV-Ex
-	for lore@pengutronix.de; Tue, 27 Jan 2026 09:09:01 +0100
+	id 1vkeic-000117-Fb
+	for lore@pengutronix.de; Tue, 27 Jan 2026 09:46:39 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=A9Ox5qHX0Bx9la/Rp+VqpSRf7tRE897q7o/E+7RkECw=; b=hwQRgiEaqaDH2mJ4STPIXRTdxx
-	2hk8Pk3ZKnMolBRxFmOsQkVC7MSKBdTlLSBIbX0DBzc2LE9iaxmsa2ColMRXgM3BOgHVKs6YoOpuc
-	HSKwSBsYqLI+nXMkpClj5FGEjkuv7J0e5DYilU+UqQdH94GS6rhpkBlueEdUfxRXcAiCW1LRzpepp
-	PmZJhS1lsJ7JUSBtXyIoOL7u8nEHamlsIvcyCAGrY2VIf8oJpW2a9WFvsxOnzOjv0tezSYvzTHgFz
-	DCXNwQ7bIdbaXrUAgNX9AhAhga6TYfJuuolGUWnJnRA7MF5l/JHa0YKw/oTwKe8ltpYyld0/RilYB
-	170pkGvg==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=eGuA+wWx+PHdnxw8OGMC/TuzIpKzu90uOzeeCiBAJBY=; b=b/nKxcsMi3nncY3BUvk6hPbUjO
+	ynBtPYSAlW4jRJFZQkmUeJCiy3yV1cXO7V7p0EwDv66Et2Cyc3OkpCYL/qVxefAcwoRXNUwPaPv4T
+	fzZF7m2s/VRekLIde939NG7C5hTCycwKB8CSBklvwY/my1O4xI/t36q/+rvxQI6jydwjdNPz22aLX
+	/tOTHwCTY018NRlf5+7cY0S5v20B03w+ilqwyGaON2cLHFzXn51RR3+ncV+SZoOgA1Ib3ocAm0fQB
+	jT4ImJu1kbA7+ARNgEjJHNBzkAY5VyHwc1klSJSOmuoXTF4PNlO4c8UvuwjozE14wR07mdYGq2Pkq
+	jCP0zt+w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vke7k-0000000DolJ-42CM;
-	Tue, 27 Jan 2026 08:08:34 +0000
+	id 1vkei3-0000000DrSS-0hPx;
+	Tue, 27 Jan 2026 08:46:03 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vke7i-0000000Dokd-3TKg
+	id 1vkehu-0000000DrDz-1lZJ
 	for barebox@lists.infradead.org;
-	Tue, 27 Jan 2026 08:08:32 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Tue, 27 Jan 2026 08:45:59 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vke7g-0005QK-UX; Tue, 27 Jan 2026 09:08:29 +0100
-Message-ID: <3e85922f-5b46-4bac-b634-052f34307851@pengutronix.de>
-Date: Tue, 27 Jan 2026 09:08:28 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
- "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-References: <20260126091952.4009991-1-a.fatoum@pengutronix.de>
-Content-Language: en-US
+	id 1vkehs-0000WX-Sj; Tue, 27 Jan 2026 09:45:52 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vkeht-002ig8-16;
+	Tue, 27 Jan 2026 09:45:52 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vkeht-0000000FmwP-0NNm;
+	Tue, 27 Jan 2026 09:45:52 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260126091952.4009991-1-a.fatoum@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 27 Jan 2026 09:39:19 +0100
+Message-ID: <20260127084546.3751357-10-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260127084546.3751357-1-a.fatoum@pengutronix.de>
+References: <20260127084546.3751357-1-a.fatoum@pengutronix.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260127_000830_871221_35833643 
-X-CRM114-Status: GOOD (  18.50  )
+X-CRM114-CacheID: sfid-20260127_004554_847907_83370122 
+X-CRM114-Status: GOOD (  13.47  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,70 +83,91 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] test: py: add xfail test for surprising hush quoting
- behavior
+Subject: [PATCH 09/15] resource: implement resize_region
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello,
+resize_region allows enlarging or reducing a region end while checking
+for conflicts. This is less effort than removing a region and
+reallocating it.
 
-On 1/26/26 10:19, Ahmad Fatoum wrote:
-> When mixing both double quotes and single quotes in a command and
-> passing it through labgrid, the quoting labgrid does on top will exceed
-> barebox hush's abilities. Fixing this is likely an involved matter, but
-> let's add a test that's expected to fail, so this can be revisited in
-> the future.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ common/resource.c      | 45 ++++++++++++++++++++++++++++++++++++++++++
+ include/linux/ioport.h |  2 ++
+ 2 files changed, 47 insertions(+)
 
-Please dismiss this patch. Despite it being xfail (expected to fail),
-it triggers a CI breakage for multi_v8_defconfig that I don't yet
-understand[1].
-
-[1]: https://github.com/a3f/barebox/actions/runs/21372244214/job/61519530966
-
-> ---
->  test/py/test_shell.py | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
-> diff --git a/test/py/test_shell.py b/test/py/test_shell.py
-> index 6591b3097be3..50ae497fc6c3 100644
-> --- a/test/py/test_shell.py
-> +++ b/test/py/test_shell.py
-> @@ -2,6 +2,7 @@
->  
->  from .helper import skip_disabled
->  import json
-> +import pytest
->  
->  
->  def test_barebox_true(barebox, barebox_config):
-> @@ -18,6 +19,19 @@ def test_barebox_false(barebox, barebox_config):
->      assert returncode == 1
->  
->  
-> +@pytest.mark.xfail(reason="barebox Hush quote handling is bogus")
-> +def test_shell_quoting(barebox):
-> +    # Labgrid will write this command to a file and execute that and add
-> +    # extra quoting in the process, which we want hush to be able to handle
-> +    # Below is equivalent to
-> +    # echo > testcmd 'echo > /tmp/script '"'"'var="A B"'"'"''; sh testcmd
-> +    barebox.console.sendline(r"""echo -o testcmd 'echo -o /tmp/script '"'"'var="A B"'"'"''; sh testcmd""")
-> +    barebox._await_prompt()
-> +    assert barebox.run_check('cat testcmd') == [r"""echo -o /tmp/script 'var="A B"'"""]
-> +    assert barebox.run_check('cat /tmp/script') == [r'''var="A B"''']
-> +    assert barebox.run_check('source /tmp/script && echo "$var"') == "A B"
-> +
-> +
->  def test_barebox_md5sum(barebox, barebox_config):
->      skip_disabled(barebox_config, "CONFIG_CMD_MD5SUM", "CONFIG_CMD_ECHO")
->  
-
-
+diff --git a/common/resource.c b/common/resource.c
+index e391d268e0bb..39867da63b69 100644
+--- a/common/resource.c
++++ b/common/resource.c
+@@ -92,6 +92,51 @@ struct resource *__request_region(struct resource *parent,
+ 	return new;
+ }
+ 
++int resize_region(struct resource *res, resource_size_t size)
++{
++	struct resource *parent;
++	struct resource *next;
++	resource_size_t newend;
++
++	if (!res)
++		return 0;
++	if (!size)
++		return release_region(res);
++
++	if (size == resource_size(res))
++		return 0;
++
++	if (size < resource_size(res)) {
++		res->end = res->start + size - 1;
++		return 0;
++	}
++
++	parent = res->parent;
++	if (!parent)
++		return -EINVAL;
++
++	if (check_add_overflow(res->start, size - 1, &newend))
++		return -EINVAL;
++
++	if (newend > parent->end)
++		return -EINVAL;
++
++	/*
++	 * parent->children is the list_head that anchors the ordered list of
++	 * children. If res is not the last entry, the immediate next entry is
++	 * the only sibling we must check.
++	 */
++	if (res->sibling.next != &parent->children) {
++		next = list_next_entry(res, sibling);
++
++		if (newend >= next->start)
++			return -EBUSY;
++	}
++
++	res->end = newend;
++	return 0;
++}
++
+ /*
+  * release a region previously requested with request_*_region
+  */
+diff --git a/include/linux/ioport.h b/include/linux/ioport.h
+index 5baae0dae10a..8f9191d1c6be 100644
+--- a/include/linux/ioport.h
++++ b/include/linux/ioport.h
+@@ -272,6 +272,8 @@ static inline void resource_set_range(struct resource *res,
+ 	resource_set_size(res, size);
+ }
+ 
++int resize_region(struct resource *res, resource_size_t size);
++
+ #define region_is_gap(region) ((region)->flags & IORESOURCE_UNSET)
+ 
+ struct resource *resource_iter_first(struct resource *current, struct resource *gap);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.47.3
+
 
 
