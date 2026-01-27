@@ -1,67 +1,67 @@
-Delivery-date: Tue, 27 Jan 2026 09:46:39 +0100
+Delivery-date: Tue, 27 Jan 2026 09:46:40 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vkeie-005q5z-0r
+	id 1vkeie-005q6M-2w
 	for lore@lore.pengutronix.de;
-	Tue, 27 Jan 2026 09:46:39 +0100
+	Tue, 27 Jan 2026 09:46:40 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vkeic-000118-I2
-	for lore@pengutronix.de; Tue, 27 Jan 2026 09:46:39 +0100
+	id 1vkeid-00011j-Ix
+	for lore@pengutronix.de; Tue, 27 Jan 2026 09:46:40 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=iwLcgZgxqnHru9jgJu7t8930J02gHxi/lfXcjKvUKOM=; b=NAZXXvitcho3dbvN5HKq7SI/qK
-	HbMPQPt55ZV8jlAGS8KZAzN4W1QTNJHzsNkBTWqRlesLBHNtDt7zubmJzZ13vgzkJGzYjED+3UlQ3
-	Vf4+dWSYZoM1q5Yq0oqO7F7FZwVYoCu3c0sAlhAdx0GoSGJvv89AI4TuraEnORYrG+P86gd6aM7bj
-	5HVYrLUa+GPj6PFtPBMVig8+XC9TEMYA8gk9H/qlkYJ3p2lPxiCTIHz4K8PtNFXvdguAc/0SEsih5
-	IG12fJlc5oI6dUGOzZ6djLN2B0RCnn+n6E+slyYBIfoA7E3QfAmcfIOztHeYwZ+6snYfNgcK8DqxB
-	bVMC0Ddg==;
+	bh=oGlDVpferu/DsUaKasZQWqhbLK87Ev/tE13U7gDpS5M=; b=bMDT/XyIE56Y35BQYGWUQbc3AG
+	WKp3tpwpbwsDUgRV9NQrH1dkb6yhUKeOCDztvcjDzs/jWuk6CK9f4ZgAuy8SU6LIUprZfCocRUXvw
+	CzAPaUoyiGT7r7j8gHhrC8BFAWN8at8ZffiFAQWzXTiwladOMeZ+l122EUBNPeT+HpHG2gfS/Mpjk
+	L0vT33FUyw4X3BBUF2eyOebABXsQFmJTGRxUySLVBzPI5sJgyOmM9RP9ePTiPl5q7Li4Stf982Cm3
+	5a9mvigegTr3o8xcGu5OQYI6sPcAfMs1gUw4j7ynDTkBnu037FgeBHLbmAAOk2Cbvasfm0RIJ3s21
+	B5PYxldw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vkehy-0000000DrMQ-47kQ;
-	Tue, 27 Jan 2026 08:45:58 +0000
+	id 1vkei1-0000000DrPa-1U18;
+	Tue, 27 Jan 2026 08:46:01 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vkehu-0000000DrDy-1gb4
+	id 1vkehu-0000000DrDj-1Lwl
 	for barebox@lists.infradead.org;
-	Tue, 27 Jan 2026 08:45:56 +0000
+	Tue, 27 Jan 2026 08:45:57 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vkehs-0000W4-Qn; Tue, 27 Jan 2026 09:45:52 +0100
+	id 1vkehs-0000Vi-Fd; Tue, 27 Jan 2026 09:45:52 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vkeht-002ifw-0f;
+	id 1vkehs-002ifg-37;
 	Tue, 27 Jan 2026 09:45:52 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vkehs-0000000FmwP-40Bp;
+	id 1vkehs-0000000FmwP-313K;
 	Tue, 27 Jan 2026 09:45:52 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 27 Jan 2026 09:39:16 +0100
-Message-ID: <20260127084546.3751357-7-a.fatoum@pengutronix.de>
+Date: Tue, 27 Jan 2026 09:39:11 +0100
+Message-ID: <20260127084546.3751357-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260127084546.3751357-1-a.fatoum@pengutronix.de>
 References: <20260127084546.3751357-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260127_004554_646369_E742FA9E 
-X-CRM114-Status: GOOD (  12.22  )
+X-CRM114-CacheID: sfid-20260127_004554_691068_B219585C 
+X-CRM114-Status: GOOD (  11.78  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,80 +83,87 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 06/15] bootm: cache os_file for appendroot purposes
+Subject: [PATCH 01/15] FIT: implement fit_count_images
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Even if we were to use an override, we want appendroot to follow the
-original file as the root device can already be overridden by
-$global.bootm.root_dev.
+A FIT image can contain multiple images of the same type, e.g. a device
+tree followed by overlays or multiple initrds.
 
-Therefore cache os_file to make it easier to reorder execution during
-the incoming refactor.
+To allow checking for that case, let's implement fit_count_images().
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/bootm.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ common/image-fit.c  | 12 ++++--------
+ include/image-fit.h | 27 +++++++++++++++++++++++++--
+ 2 files changed, 29 insertions(+), 10 deletions(-)
 
-diff --git a/common/bootm.c b/common/bootm.c
-index 17c94b281eb2..a2301ea72458 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -548,6 +548,7 @@ static int bootm_image_name_and_part(const char *name, char **filename, char **p
-  */
- int bootm_boot(struct bootm_data *bootm_data)
- {
-+	char *os_file;
- 	struct image_data *data;
- 	struct image_handler *handler;
- 	int ret;
-@@ -575,9 +576,11 @@ int bootm_boot(struct bootm_data *bootm_data)
- 	data->os_entry = bootm_data->os_entry;
- 	data->efi_boot = bootm_data->efi_boot;
- 
--	ret = read_file_2(data->os_file, &size, &data->os_header, PAGE_SIZE);
-+	os_file = xstrdup(data->os_file);
-+
-+	ret = read_file_2(os_file, &size, &data->os_header, PAGE_SIZE);
- 	if (ret < 0 && ret != -EFBIG) {
--		pr_err("could not open %s: %pe\n", data->os_file, ERR_PTR(ret));
-+		pr_err("could not open %s: %pe\n", os_file, ERR_PTR(ret));
- 		goto err_out;
- 	}
- 	if (size < PAGE_SIZE)
-@@ -655,11 +658,11 @@ int bootm_boot(struct bootm_data *bootm_data)
- 			if (root_cdev)
- 				cdev_close(root_cdev);
- 		} else {
--			struct fs_device *fsdev = get_fsdevice_by_path(AT_FDCWD, data->os_file);
-+			struct fs_device *fsdev = get_fsdevice_by_path(AT_FDCWD, os_file);
- 			if (fsdev)
- 				fsdev_get_linux_root_options(fsdev, &root, &rootopts);
- 			else
--				pr_err("no fsdevice under path: %s\n", data->os_file);
-+				pr_err("no fsdevice under path: %s\n", os_file);
- 		}
- 
- 		if (!root) {
-@@ -739,8 +742,7 @@ int bootm_boot(struct bootm_data *bootm_data)
- 		free(hostname_bootarg);
- 	}
- 
--	pr_info("\nLoading %s '%s'", file_type_to_string(data->kernel_type),
--		data->os_file);
-+	pr_info("\nLoading %s '%s'", file_type_to_string(data->kernel_type), data->os_file);
- 	if (data->kernel_type == filetype_uimage &&
- 			data->os->header.ih_type == IH_TYPE_MULTI)
- 		pr_info(", multifile image %d", uimage_part_num(data->os_part));
-@@ -798,6 +800,7 @@ int bootm_boot(struct bootm_data *bootm_data)
- 	free(data->oftree_file);
- 	free(data->initrd_file);
- 	free(data->tee_file);
-+	free(os_file);
- 	free(data);
- 
+diff --git a/common/image-fit.c b/common/image-fit.c
+index 26bd8e265b25..85096aff31e6 100644
+--- a/common/image-fit.c
++++ b/common/image-fit.c
+@@ -495,19 +495,15 @@ static int fit_image_verify_signature(struct fit_handle *handle,
  	return ret;
+ }
+ 
+-bool fit_has_image(struct fit_handle *handle, void *configuration,
+-		   const char *name)
++int fit_count_images(struct fit_handle *handle, void *configuration,
++		     const char *name)
+ {
+-	const char *unit;
+ 	struct device_node *conf_node = configuration;
+ 
+ 	if (!conf_node)
+-		return false;
++		return -EINVAL;
+ 
+-	if (of_property_read_string(conf_node, name, &unit))
+-		return false;
+-
+-	return true;
++	return of_property_count_strings(conf_node, name);
+ }
+ 
+ static int fit_get_address(struct device_node *image, const char *property,
+diff --git a/include/image-fit.h b/include/image-fit.h
+index c332f77bd374..31b8b54e272d 100644
+--- a/include/image-fit.h
++++ b/include/image-fit.h
+@@ -34,8 +34,31 @@ struct fit_handle *fit_open_buf(const void *buf, size_t len, bool verbose,
+ void *fit_open_configuration(struct fit_handle *handle, const char *name,
+ 			     bool (*match_valid)(struct fit_handle *handle,
+ 						 struct device_node *config));
+-bool fit_has_image(struct fit_handle *handle, void *configuration,
+-		   const char *name);
++/**
++ * fit_count_images() - count images of a given type in a FIT configuration
++ * @handle: FIT handle as returned by fit_open() or fit_open_buf()
++ * @configuration: configuration node as returned by fit_open_configuration()
++ * @name: image type property name (e.g., "kernel", "fdt", "ramdisk")
++ *
++ * Return: number of images on success, negative error code on failure
++ */
++int fit_count_images(struct fit_handle *handle, void *configuration,
++		     const char *name);
++
++/**
++ * fit_has_image() - check if a FIT configuration contains an image type
++ * @handle: FIT handle as returned by fit_open() or fit_open_buf()
++ * @configuration: configuration node as returned by fit_open_configuration()
++ * @name: image type property name (e.g., "kernel", "fdt", "ramdisk")
++ *
++ * Return: true if at least one image of the given type exists, false otherwise
++ */
++static inline bool fit_has_image(struct fit_handle *handle, void *configuration,
++				 const char *name)
++{
++	return fit_count_images(handle, configuration, name) > 0;
++}
++
+ int fit_open_image(struct fit_handle *handle, void *configuration,
+ 		   const char *name, const void **outdata,
+ 		   unsigned long *outsize);
 -- 
 2.47.3
 
