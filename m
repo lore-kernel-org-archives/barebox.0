@@ -1,68 +1,67 @@
-Delivery-date: Tue, 27 Jan 2026 10:04:33 +0100
+Delivery-date: Tue, 27 Jan 2026 10:04:34 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vkezx-005qJv-2m
+	id 1vkezz-005qKH-0p
 	for lore@lore.pengutronix.de;
-	Tue, 27 Jan 2026 10:04:33 +0100
+	Tue, 27 Jan 2026 10:04:34 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vkezs-0004Ql-Qv
-	for lore@pengutronix.de; Tue, 27 Jan 2026 10:04:33 +0100
+	id 1vkezu-0004R0-4g
+	for lore@pengutronix.de; Tue, 27 Jan 2026 10:04:34 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=lSg1rEgYy3eErJjb3c2iSK8LEpicLKsA+DLLTpnPxlo=; b=MolD/P98f/KhIlbL9DmucQjZr0
-	sCe5I6v0UJzUUIS9uSHQl8ig+M1fb4Srb1iZC5ssSYVqiXQCIjaB0i+8S1clNXylZ33GU+XNQy7N0
-	qLNiBWakIpJZ3IzHqAmdisiMSG+QfWjLmG4VsGhbAzKkkwfJyhrgrWwNmvQvZU9ioVGifso8BDhPm
-	G+HKEwTLkLqGZtW2rEnRoA+3f97X506HyDg0+exJz/Rv0EDYcyxKFZntDZI3l5APUU0Wl7Zd+INjT
-	S3RNVNSjiz4/v+eojETNPVuCRBTjw5WR7ZZTppCbRiA9sbN988LJsZh86ZUa/9jUhd+zO8uzdE+Cp
-	7UkTnBxg==;
+	bh=z6sE9g2tW/7/uzitMu5x8T9AqXlvxH+saOA+EHu6Scg=; b=S7CFZU3/G/Qo7ldlcDKBXM4ms8
+	qbgsBOVzZSVuMGZvToRTJZIc49VRV+pRxaBPSQT2HScftCeGHg8GeIog5EwcImQGVz19FUEyu72Sq
+	GndcUDnxRGGxW4Yj8uyaB245Zi3Vcp/tOAWSyBk3ePV0jd0k7keql7I1vWCbRx9r8tyzWgRjcbQ4g
+	wxwvXu+SUg22a5qhDnzJ6v4H3B4ESdqqcobFnpZZ6RbttDjz/dz69IZphebZYxAaSrPSxb/LZstlw
+	WvOVcCiLRK8YLpijAh9wJYX+a0Zw1O7ii5xFoebWMMy25C5DR2t1rR0DXOOBaS71GAimiXO+RegEb
+	VUPiZguw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vkezD-0000000DtsO-0Koz;
-	Tue, 27 Jan 2026 09:03:47 +0000
+	id 1vkezC-0000000DtrL-1QP6;
+	Tue, 27 Jan 2026 09:03:46 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vkez2-0000000Dtmc-1Vo2
+	id 1vkez2-0000000DtmV-0Ohx
 	for barebox@lists.infradead.org;
 	Tue, 27 Jan 2026 09:03:43 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vkez0-000460-Sa; Tue, 27 Jan 2026 10:03:34 +0100
+	id 1vkez0-00045a-FJ; Tue, 27 Jan 2026 10:03:34 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vkez1-002iiT-0j;
+	id 1vkez0-002iiI-34;
 	Tue, 27 Jan 2026 10:03:34 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vkeht-0000000FmwP-1IRa;
+	id 1vkeht-0000000FmwP-0k5y;
 	Tue, 27 Jan 2026 09:45:52 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	"Claude Sonnet v4.5" <noreply@anthropic.com>
-Date: Tue, 27 Jan 2026 09:39:24 +0100
-Message-ID: <20260127084546.3751357-15-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 27 Jan 2026 09:39:21 +0100
+Message-ID: <20260127084546.3751357-12-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260127084546.3751357-1-a.fatoum@pengutronix.de>
 References: <20260127084546.3751357-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260127_010336_411985_70972587 
-X-CRM114-Status: GOOD (  10.97  )
+X-CRM114-CacheID: sfid-20260127_010336_132280_9ACB54EF 
+X-CRM114-Status: GOOD (  10.74  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,34 +83,53 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 14/15] efi: payload: bootm: fix memory corruption on initrd load error
+Subject: [PATCH 11/15] uimage: record original file name in uimage_handle
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-initrd is a pointer to a pointer and its only used place the pointed at
-pointer on stack. Freeing it will this trigger memory corruption.
+The struct uimage_handle only stores the file name if header->ih_name
+if empty. To make it possible to always get a descriptive name for when
+bootm-uimage is switched over to loadables, let's store the filename
+in the uimage_handle.
 
-Fix this by actually freeing the heap buffer.
-
-Reported-by: Claude Sonnet v4.5 <noreply@anthropic.com>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- efi/payload/bootm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ common/uimage.c | 2 ++
+ include/image.h | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/efi/payload/bootm.c b/efi/payload/bootm.c
-index 38bc8b23f215..f1f60e2eaa54 100644
---- a/efi/payload/bootm.c
-+++ b/efi/payload/bootm.c
-@@ -161,7 +161,7 @@ static int efi_load_ramdisk(struct image_data *data, void **initrd)
- 	return 0;
+diff --git a/common/uimage.c b/common/uimage.c
+index 5f7087475709..d34205572510 100644
+--- a/common/uimage.c
++++ b/common/uimage.c
+@@ -183,6 +183,7 @@ struct uimage_handle *uimage_open(const char *filename)
+ 	 * fd is now at the first data word
+ 	 */
+ 	handle->fd = fd;
++	handle->filename = xstrdup(filename);
  
- free_mem:
--	free(initrd);
-+	free(initrd_mem);
+ 	return handle;
+ err_out:
+@@ -212,6 +213,7 @@ void uimage_close(struct uimage_handle *handle)
+ 	}
  
- 	return ret;
+ 	free(handle->name);
++	free(handle->filename);
+ 	free(handle);
  }
+ EXPORT_SYMBOL(uimage_close);
+diff --git a/include/image.h b/include/image.h
+index d9a1b8f3ee02..769523d6fcaf 100644
+--- a/include/image.h
++++ b/include/image.h
+@@ -312,6 +312,7 @@ void *uimage_load_to_buf(struct uimage_handle *handle, int image_no,
+ struct uimage_handle {
+ 	struct image_header header;
+ 	char *name;
++	char *filename;
+ 	char *copy;
+ 	struct uimage_handle_data ihd[MAX_MULTI_IMAGE_COUNT];
+ 	int nb_data_entries;
 -- 
 2.47.3
 
