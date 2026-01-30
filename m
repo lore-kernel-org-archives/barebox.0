@@ -1,106 +1,104 @@
-Delivery-date: Fri, 30 Jan 2026 06:18:08 +0100
+Delivery-date: Fri, 30 Jan 2026 06:18:09 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vlgtU-006s2m-2w
+	id 1vlgtV-006s3b-2j
 	for lore@lore.pengutronix.de;
-	Fri, 30 Jan 2026 06:18:08 +0100
+	Fri, 30 Jan 2026 06:18:09 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vlgtQ-0002S4-HB
-	for lore@pengutronix.de; Fri, 30 Jan 2026 06:18:08 +0100
+	id 1vlgtR-0002Sn-Jt
+	for lore@pengutronix.de; Fri, 30 Jan 2026 06:18:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=wNx7bnetbGrfUACSFTT+Owavf1QdrNf3ILFsHasGQnQ=; b=2x9OaGXL8qWval
-	jH1H7yqrMEbkMPD9VhlXdI1UZeQwae/R7XH88iK0t2POvie7fsV6hdTkpIJs6H8l+yzO2tmVx8s86
-	o/z+x4zZCj3pPkUO0mpPl9CnHq0sygAGnluedKXrCV79mwqlJRY2QfjEuuXslGS/A9p7Hv2M8Y4X3
-	1qsKUxpvAN/2qwx2xrYQ7Sldld0wW5yWFB2MILW7iiWJkkzlK5GUG+dbgpsZ6eZeFC8yi1nYGAwuc
-	0b+nrPZdiAR/P62Q+vHYyYHRm1OiPRw99oF9Y3zq1LGORAI7kR+gj48WhOeuknX6SyMIayCZaZr5d
-	n2/NWriNgtKF6Fp590Cw==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=uR9KMq1vDNPuV+Ry9W+ALgykUnTr734PDpJAAtbZJ3E=; b=e+Sm515YuRMe9g9DeS49Qcee9e
+	GR9/VitB3e+q2GEqAeqgj/46NnSrPg3q8cjdxyHrWGrrQpvz54HAOiZaBRsSCxCe2Z7wyehwXqfxa
+	eSq7c3gBVJ7gS+NCvNcpvwlIU+mN/bbCin3uOtpAcCt8OlzZLzs4Gses+hzHfhnXRO9a8j4AXxTcQ
+	TQ9dtFsscvtRPu+VGFra5v0TFu+OQaWTp+10AsZoWoQET3dOAhB4mZn9tF1xEqX8AOMiK1rg11KeZ
+	voWI1AID8Di14psoMtwqK0J3T2QhS/VE1wp+QeBktkwWSBjYy66xY0dpODauJzcZvp87Knc6BomaS
+	98iX/MdQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vlgsc-0000000122Z-3HCN;
-	Fri, 30 Jan 2026 05:17:14 +0000
-Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
+	id 1vlgsl-000000012Ac-2rIs;
+	Fri, 30 Jan 2026 05:17:23 +0000
+Received: from mail-wr1-x435.google.com ([2a00:1450:4864:20::435])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vlgsZ-0000000121J-2wrV
+	id 1vlgsf-0000000123D-2xFx
 	for barebox@lists.infradead.org;
-	Fri, 30 Jan 2026 05:17:13 +0000
-Received: by mail-wr1-x429.google.com with SMTP id ffacd0b85a97d-42fb2314eb0so1471853f8f.2
-        for <barebox@lists.infradead.org>; Thu, 29 Jan 2026 21:17:10 -0800 (PST)
+	Fri, 30 Jan 2026 05:17:19 +0000
+Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-43246af170aso1099927f8f.0
+        for <barebox@lists.infradead.org>; Thu, 29 Jan 2026 21:17:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769750229; x=1770355029; darn=lists.infradead.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wNx7bnetbGrfUACSFTT+Owavf1QdrNf3ILFsHasGQnQ=;
-        b=hoRsDZTIK6wtHeZ6Sd65nUDHh7pAiv7zBFVKPhsu76FSyDjF9xOOAZ4SjlZEKEGCuW
-         Cl6lNrt1+9Axk9bCC/fzBVbjunTd4YFmuW3mLTsIIlIw75ZGjq6Jj+61VlYlVJD5gHIr
-         GiH5eycKrX4HMZcL4KqdYhaJoiKurAXi2zL0y5Uvaju3bgnT6QvepS7AurZipNsnwVi9
-         f8SN3HBMGVrow/B/JHc28c+nMeFP2MyJvgbWfOt2lB+jMQ9W3D3K1YVJbjHMGjGmEo17
-         teYpMpPfFPO2jgQDsYq5i4RGb8H30+LgBFPctDHx4N04wg5gfTrv0mzPeKqdpXKyYoMs
-         wiXA==
+        d=gmail.com; s=20230601; t=1769750236; x=1770355036; darn=lists.infradead.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uR9KMq1vDNPuV+Ry9W+ALgykUnTr734PDpJAAtbZJ3E=;
+        b=D1m4ml350adlkgsstqjBKapLe5+huB/LgXJ/1SQ+eFH7sw7Op6U74VSLH+lIe4M5cj
+         IrLf2xdhWUzIsWE7f+1f8EIVcquD8JUy4NORN3cSD+VyZvorNXnkNJNU+RlDW+Vok7Cm
+         Zc+EJvq0h8kxHcSihq+mIvNr+O68QFjVLTQTsACREzd1itJkTCwjGYfn7xZY1Ee5AYR7
+         kzEGii3EUq8l72AIQweHosTlXuEwe3A7MpGIPP0ccH0dm0q9+P6sPlMu2THzmPJPQPFV
+         NhmLUixG0Bz5FDkbihATpAhuOZ6JkxmT3gU4kcW2r9oqG5jErN5QOzbghLcDVlHT/64j
+         nlYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769750229; x=1770355029;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wNx7bnetbGrfUACSFTT+Owavf1QdrNf3ILFsHasGQnQ=;
-        b=fuGrEjxz/fXur40iFUqVJVdCz01ig/Kmv4JhWgxARE+z/ftuATP2/UZwpiSESnWvk/
-         AzDgZB/h0IsmGO260l/rrdt88gnhgegp/X8KHTj/+PPrYdPRufkY11CosyW4vaOmfQXT
-         KlFv0B/mtyH6yaGd9MaQdBxLaAKdP1CW/pdeOy0qpzv3sr6FUB8mb3FhbFBKnkvKhy7P
-         EZbhbohtq/dlKFWbXG2IV2DzOBol5d3ppHR/hFBHqpgHW83XYX1+HD6pKfqPMkFx+wpN
-         MUt88czr9kzDrMZMdOrqx1zvqPWJQVzBXgwd0e9zRhYsf8jb9XlaRTGx1sAs0UYOtcKy
-         sXgw==
-X-Forwarded-Encrypted: i=1; AJvYcCUxJi22t8JenvBLZIQN9893sof8ZYaIIk6OKjKTdfZM7pqEAN6kXbDFh8C6zYNz+CnVoYwyt5AC@lists.infradead.org
-X-Gm-Message-State: AOJu0YxptGsYD0v9vMIXMSrw7sc6H7lt4mPKsjjhcNSsVOIWK4V5mOoC
-	tiHI6ecJJcbWLUKU1nvdR/mF31NGrjKSHqe84yay9nA5IAV6dCW/8zhk6twOMg==
-X-Gm-Gg: AZuq6aL7TjB+p9ANjTfX06HVd5GvcetPeA+Kzjq/Rx1kA9gl9zsiLRJguz2Rv0Jt3NN
-	2dr0CiUHfdCn7fES5/ToeYgQYcxlkT9dgyT9OywKXEWgi1TRTuye/MiFB540815vzhVALCQIAgu
-	F/7uczg/6wI9/H1r7fwUaXyTl6JlTvfZqeG6SHL4qdNhHfjtA5lyDU78EDBqcrggCvn4oT8RmAF
-	BXBwuytDIB7K4hF0gCmUzcXloUxrdp0M7/eUb6f0RjNdCP5Yqql8P7NIoyQBIjN6AIeEn9xfzUq
-	53LY7UsEJp734BUVPxrYi7gUoN1jOQMP1TGmjVjJ2ty5Xx4xGFjJCBtcmy/8xSBjwypmf0QMfwB
-	vwaETegqj+rC88iqQXEGeRbcoQ21hULIq2uAFzRDAeKZ6wnchkW4vWyu4Fqfj1NqdYQ+l9jhK4B
-	97gm+lE4ErA6Vg1YNaAnRHrtzUat2PumBYVy9m1oIDkULAc9ny67Q+II+MnyPbPWsOy0gH4qt6c
-	PI3cxw3ioHsK1dKEUFhThaSaOQ4jOvKt3ym/l+tcW0VV6Wn/poWrTTfiD/9PUm7OTCwMhFANf+W
-	ru7oeZrBwZC3IaL5u9gXMjxew4Z1eP9Te/7RiTxrhg==
-X-Received: by 2002:a05:6000:1849:b0:435:9f41:d43 with SMTP id ffacd0b85a97d-435f3a72b51mr2676087f8f.15.1769750228878;
-        Thu, 29 Jan 2026 21:17:08 -0800 (PST)
+        d=1e100.net; s=20230601; t=1769750236; x=1770355036;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=uR9KMq1vDNPuV+Ry9W+ALgykUnTr734PDpJAAtbZJ3E=;
+        b=bFkS6ldAXw9T2UV/jXlx2ZpZAUwjU8VZpjZmTp3PgfWo/HDmhN25z8D9ps1Gg4GX6e
+         hqKvjCnpV2HfALrf0FQ7pRHAluXfzGIORe2N1tJVQGtWPadaDlPP95Eert3fbfKjqkGD
+         IKiDT7A4lHgP3gzri4Wi45LyPK6ORP5r2I5akgcZrsyVPYpPMqCZ5GDUuhTfWIZCnfTq
+         3v2BZq3x4ru3OVwZ9QBSrH51qqt3Xnlky/xapAPHbuSuwD6Cbd987zY7KBk1cMS7TDX+
+         fzXotpf1Peivnb7RU1Q2jjJjGuOvwcRiw2n0b3iGWN/p5G7vwWxau8dhnAnMqXSISkq/
+         JFhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV0lfswFTXFWYUJIfAtZp767/BH8N9O6g3P7KbP3DMVNib6rC9edssd9Hgf0Ufid128YcMXpwjm@lists.infradead.org
+X-Gm-Message-State: AOJu0YybJDQI+Rh3sR3OrllgamImzoxQKGHmnbRCRz6albcnUTw8vKp8
+	FeTI8lpeIhzQCOhj6qWXeldc72P4cxLARen80yEkuihL5FYbaGDWpiSIPwtF7g==
+X-Gm-Gg: AZuq6aKGnGLxMu7jIyKEM3pw3+C6dWC4hIefCVSDSRTyy0/rWPr+2unl78RLeE8Ch2h
+	HnCwqsQFn7yZIkfRby9QKTHqRq974LGuXiLilS3JldwoCRfD4VXz5+lg+TRaGZNRi07BTiH/+hc
+	1aFpXcjrymnO/JIvpPiqnfWcRygIZVUIOopPu+YWxvI5kYh+Yld5+KWK4OTnixZA67D2CLK2ncD
+	DZ+4NxIq7GsYb8406ffFXYlYP3P/DrzX+s6N/UumGQUnUZ80reFvGp8Aa/s6HQAQr4z1kBPNOz/
+	3CcKDcgooIRpGt4XLe1hrQBdk7uTRLoYXgYEjozOCEUrKwpN07UKZeoOazAb4BI3+FUecE+OcIX
+	MBEX3xtzLv0ri86izB1sFYwxOM9rJGlt4eSDzIN2ohFGf0x3EgdNwsxfG8V64ejClsuStt33X/F
+	RkO8+lhCnsqelEpa5Kx3Ty5KFMNoyGMo3SV1MT1QHAmyVk/Pi/0FzKFxo5bq0cIylHpZHFV5+Vf
+	LD3ac1qvuwJuo4iN4xk0Uv5FRnMZPD3dRVUrbD7oJfW6vSQ2O/R+K20p/5jhSgyW+MVOpFEN2Sy
+	847nLgBW8KoXeSMyBIFCd94gJ8dm/rcQmDhs/ZoZAg==
+X-Received: by 2002:a05:6000:2384:b0:430:fd0e:a502 with SMTP id ffacd0b85a97d-435ea2102b6mr7081791f8f.22.1769750235620;
+        Thu, 29 Jan 2026 21:17:15 -0800 (PST)
 Received: from [127.0.1.1] (2a02-8388-08be-f800-ad12-b37c-7013-7685.cable.dynamic.v6.surfer.at. [2a02:8388:8be:f800:ad12:b37c:7013:7685])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e10e4762sm18943088f8f.6.2026.01.29.21.17.08
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e10e4762sm18943088f8f.6.2026.01.29.21.17.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Jan 2026 21:17:08 -0800 (PST)
+        Thu, 29 Jan 2026 21:17:14 -0800 (PST)
 From: Sohaib Mohamed <sohaib.amhmd@gmail.com>
-Date: Fri, 30 Jan 2026 06:16:52 +0100
-Message-Id: <20260130-barebox-kickpi-v2-0-d27cf94a39b6@gmail.com>
+Date: Fri, 30 Jan 2026 06:16:59 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMQ+fGkC/x2MQQqAIBAAvyJ7TjALib4SHdS2WgQVhRDEv2ddB
- uYwUyFjIsywsgoJH8oUfBc5MLC39hdyOrqDFFKJcRLc6IQmFO7IukhcLoealTIfoEcx4UnlH25
- 7ay90IdwJYAAAAA==
-X-Change-ID: 20260130-barebox-kickpi-28d6466b6466
+Message-Id: <20260130-barebox-kickpi-v2-7-d27cf94a39b6@gmail.com>
+References: <20260130-barebox-kickpi-v2-0-d27cf94a39b6@gmail.com>
+In-Reply-To: <20260130-barebox-kickpi-v2-0-d27cf94a39b6@gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
-Cc: Sohaib Mohamed <sohaib.amhmd@gmail.com>, 
- Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Sohaib Mohamed <sohaib.amhmd@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1769750228; l=4735;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1769750228; l=4338;
  i=sohaib.amhmd@gmail.com; s=20251127; h=from:subject:message-id;
- bh=CX5e4si1mYNszq8CGKiL3/p95ozeZm4g3IL+79vHdQU=;
- b=SWt6qG3TNIeQgvyR8EBmx8gLoy2ERpYA51biz4v7MmoyBVqgAPbtbJ8tK6CDxu5/iYjxUtKFZ
- SZmRvkMDagsAmTz9Vy5U9tx2MwzRRwIbHQIeSsHTG6+iNUh5KIwhBD5
+ bh=np2Vvjldy7I4J3H3ZjkUmd6ayiVONorHN1VFbGHevbI=;
+ b=n/rFAu90jzosLtZX+pjxJHlCTuk64XSkFxhFhWzuFU1XEzqDp3mSreSBMglCqNeM5AEhNfKt4
+ 0pQXiSesMfpDpbrhApLyYtEwMEZbclsaavzEiin9hUGZ1bhFpGZXIx5
 X-Developer-Key: i=sohaib.amhmd@gmail.com; a=ed25519;
  pk=Q1nrPhN99EawVQo4UT9CZVAG4nQ2Zq/e3sfCABjccgk=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260129_211711_798963_89F9E5D2 
-X-CRM114-Status: GOOD (  13.01  )
+X-CRM114-CacheID: sfid-20260129_211717_877869_FEE7E843 
+X-CRM114-Status: GOOD (  11.00  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -123,102 +121,119 @@ X-Spam-Status: No, score=-2.1 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 00/14] ARM: rockchip: Add initial RK3562 SoC support
+Subject: [PATCH v2 07/14] pmdomain: rockchip: Add RK3562 power domain
+ support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-All essential changes and additions required to boot the RK3562.
-Includes board support for the RK3562-EVB2 and KickPi K3.
+Add basic power domain controller support for RK3562 SoC including
+GPU, NPU, VDPU, VEPU, RGA, VI, VO, and PHP domains with clock gating
+configurations.
 
-The GMAC driver is still missing from the upstream Linux device tree
-and can be added in a future update. The rest is straightforward port from
-the mainline Linux kernel.
+Note: This implementation does not handle nested power domain
+hierarchies if present on this SoC.
 
----
-Changes in v2:
-- Remove unused header includes (globalvar.h and deep-probe.h) from board.c
-- Fix "serial0:1500000n8" (squashed into the original commit)
-- Link to v1: https://lore.barebox.org/r/20260116-barebox-kickpi-v1-0-eb253c439421@gmail.com/
----
-
-To: Sascha Hauer <s.hauer@pengutronix.de>
-To: open list:BAREBOX <barebox@lists.infradead.org>
 Signed-off-by: Sohaib Mohamed <sohaib.amhmd@gmail.com>
-
 ---
-Ahmad Fatoum (3):
-      clk: rockchip: add RK3562 clock and reset driver support
-      pinctrl: rockchip: sync driver with Linux
-      ARM: boards: Rockchip: add RK3562-EVB2 support
+ drivers/pmdomain/rockchip/pm-domains.c | 47 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 47 insertions(+)
 
-Sohaib Mohamed (11):
-      ARM: rockchip: Add initial RK3562 SoC support
-      ARM: boards: Rockchip: Add device tree for kickpi k3 board
-      ARM: rockchip: Add RK3562 KickPi K3 board support
-      pmdomain: rockchip: Add RK3562 power domain support
-      aiodev: rockchip_saradc: Add RK3562 support
-      phy: rockchip-inno-usb2: Add support for RK3562 PHY
-      rockchip-rng: Add RK3562 support
-      mci: sdhci: rockchip-dwcmshc: Add RK3562 support
-      nvmem: rockchip-otp: Add RK3562 support
-      phy: rockchip: inno-dsidphy: Add RK3562 support
-      phy: rockchip: naneng-combphy: Add RK3562 support
+diff --git a/drivers/pmdomain/rockchip/pm-domains.c b/drivers/pmdomain/rockchip/pm-domains.c
+index a30ff8fb22..4916515f27 100644
+--- a/drivers/pmdomain/rockchip/pm-domains.c
++++ b/drivers/pmdomain/rockchip/pm-domains.c
+@@ -32,6 +32,7 @@
+ #include <dt-bindings/power/rk3399-power.h>
+ #include <dt-bindings/power/rk3568-power.h>
+ #include <dt-bindings/power/rockchip,rk3576-power.h>
++#include <dt-bindings/power/rockchip,rk3562-power.h>
+ #include <dt-bindings/power/rk3588-power.h>
+ 
+ #define readx_poll_timeout_atomic(op, addr, val, cond, poll_time, timeout_us) \
+@@ -133,6 +134,21 @@ struct rockchip_pmu {
+ 	.active_wakeup = wakeup,			\
+ }
+ 
++#define DOMAIN_M_G_SD(_name, pwr, status, req, idle, ack, g_mask, mem, wakeup, keepon)	\
++{							\
++	.name = _name,					\
++	.pwr_w_mask = (pwr) << 16,			\
++	.pwr_mask = (pwr),				\
++	.status_mask = (status),			\
++	.req_w_mask = (req) << 16,			\
++	.req_mask = (req),				\
++	.idle_mask = (idle),				\
++	.ack_mask = (ack),				\
++	.clk_ungate_mask = (g_mask),			\
++	.active_wakeup = wakeup,			\
++}
++
++
+ #define DOMAIN_M_O_R(_name, p_offset, pwr, status, m_offset, m_status, r_status, r_offset, req, idle, ack, wakeup, regulator)	\
+ {							\
+ 	.name = _name,					\
+@@ -202,6 +218,9 @@ struct rockchip_pmu {
+ #define DOMAIN_RK3568(name, pwr, req, wakeup)		\
+ 	DOMAIN_M(name, pwr, pwr, req, req, req, wakeup)
+ 
++#define DOMAIN_RK3562(name, pwr, req, g_mask, mem, wakeup)		\
++	DOMAIN_M_G_SD(name, pwr, pwr, req, req, req, g_mask, mem, wakeup, false)
++
+ #define DOMAIN_RK3576(name, p_offset, pwr, status, r_status, r_offset, req, idle, g_mask, wakeup)	\
+ 	DOMAIN_M_O_R_G(name, p_offset, pwr, status, 0, r_status, r_status, r_offset, req, idle, idle, g_mask, wakeup)
+ 
+@@ -1099,6 +1118,18 @@ static const struct rockchip_domain_info rk3399_pm_domains[] = {
+ 	[RK3399_PD_SDIOAUDIO]	= DOMAIN_RK3399("sdioaudio", BIT(31), BIT(31), BIT(29), true),
+ };
+ 
++static const struct rockchip_domain_info rk3562_pm_domains[] = {
++					     /* name           pwr     req     g_mask  mem wakeup */
++	[RK3562_PD_GPU]		= DOMAIN_RK3562("gpu",         BIT(0), BIT(1), BIT(1), 0, false),
++	[RK3562_PD_NPU]		= DOMAIN_RK3562("npu",         BIT(1), BIT(2), BIT(2), 0, false),
++	[RK3562_PD_VDPU]	= DOMAIN_RK3562("vdpu",        BIT(2), BIT(6), BIT(6), 0, false),
++	[RK3562_PD_VEPU]	= DOMAIN_RK3562("vepu",        BIT(3), BIT(7), BIT(7) | BIT(3), 0, false),
++	[RK3562_PD_RGA]		= DOMAIN_RK3562("rga",         BIT(4), BIT(5), BIT(5) | BIT(4), 0, false),
++	[RK3562_PD_VI]		= DOMAIN_RK3562("vi",          BIT(5), BIT(3), BIT(3), 0, false),
++	[RK3562_PD_VO]		= DOMAIN_RK3562("vo",  BIT(6), BIT(4), BIT(4), 16, false),
++	[RK3562_PD_PHP]		= DOMAIN_RK3562("php",         BIT(7), BIT(8), BIT(8), 0, false),
++};
++
+ static const struct rockchip_domain_info rk3568_pm_domains[] = {
+ 	[RK3568_PD_NPU]		= DOMAIN_RK3568("npu",  BIT(1), BIT(2),  false),
+ 	[RK3568_PD_GPU]		= DOMAIN_RK3568("gpu",  BIT(0), BIT(1),  false),
+@@ -1300,6 +1331,18 @@ static const struct rockchip_pmu_info rk3399_pmu = {
+ 	.domain_info = rk3399_pm_domains,
+ };
+ 
++static const struct rockchip_pmu_info rk3562_pmu = {
++	.pwr_offset = 0x210,
++	.status_offset = 0x230,
++	.req_offset = 0x110,
++	.idle_offset = 0x128,
++	.ack_offset = 0x120,
++	.clk_ungate_offset = 0x140,
++
++	.num_domains = ARRAY_SIZE(rk3562_pm_domains),
++	.domain_info = rk3562_pm_domains,
++};
++
+ static const struct rockchip_pmu_info rk3568_pmu = {
+ 	.pwr_offset = 0xa0,
+ 	.status_offset = 0x98,
+@@ -1390,6 +1433,10 @@ static const struct of_device_id rockchip_pm_domain_dt_match[] = {
+ 		.compatible = "rockchip,rk3366-power-controller",
+ 		.data = (void *)&rk3366_pmu,
+ 	},
++	{
++		.compatible = "rockchip,rk3562-power-controller",
++		.data = (void *)&rk3562_pmu,
++	},
+ 	{
+ 		.compatible = "rockchip,rk3368-power-controller",
+ 		.data = (void *)&rk3368_pmu,
 
- arch/arm/boards/Makefile                           |    2 +
- arch/arm/boards/rockchip-rk3562-evb2/.gitignore    |    1 +
- arch/arm/boards/rockchip-rk3562-evb2/Makefile      |    4 +
- arch/arm/boards/rockchip-rk3562-evb2/board.c       |   47 +
- arch/arm/boards/rockchip-rk3562-evb2/lowlevel.c    |   23 +
- .../boards/rockchip-rk3562-kickpi-k3/.gitignore    |    1 +
- arch/arm/boards/rockchip-rk3562-kickpi-k3/Makefile |    4 +
- arch/arm/boards/rockchip-rk3562-kickpi-k3/board.c  |   44 +
- .../boards/rockchip-rk3562-kickpi-k3/lowlevel.c    |   23 +
- arch/arm/configs/multi_v8_defconfig                |    2 +
- arch/arm/configs/rockchip_v8_defconfig             |    2 +
- arch/arm/dts/Makefile                              |    2 +
- arch/arm/dts/rk3562-evb2-v10.dts                   |    9 +
- arch/arm/dts/rk3562-kickpi-k3.dts                  |   10 +
- arch/arm/dts/rk3562-kickpi-k3.dtsi                 |  452 ++++++++
- arch/arm/dts/rk3562.dtsi                           |   40 +
- arch/arm/mach-rockchip/Kconfig                     |   16 +
- arch/arm/mach-rockchip/Makefile                    |    1 +
- arch/arm/mach-rockchip/atf.c                       |   38 +
- arch/arm/mach-rockchip/dmc.c                       |   33 +
- arch/arm/mach-rockchip/rk3562.c                    |   20 +
- arch/arm/mach-rockchip/rockchip.c                  |    4 +
- common/Kconfig.debug_ll                            |    9 +
- drivers/aiodev/rockchip_saradc.c                   |    7 +
- drivers/clk/rockchip/Makefile                      |    1 +
- drivers/clk/rockchip/clk-rk3562.c                  | 1098 ++++++++++++++++++++
- drivers/clk/rockchip/clk.c                         |    2 +-
- drivers/clk/rockchip/clk.h                         |  268 ++++-
- drivers/clk/rockchip/rst-rk3562.c                  |  430 ++++++++
- drivers/hw_random/rockchip-rng.c                   |    4 +
- drivers/mci/rockchip-dwcmshc-sdhci.c               |    3 +
- drivers/mfd/syscon.c                               |   18 +
- drivers/nvmem/rockchip-otp.c                       |   89 ++
- drivers/phy/rockchip/phy-rockchip-inno-dsidphy.c   |    3 +
- drivers/phy/rockchip/phy-rockchip-inno-usb2.c      |   52 +-
- drivers/phy/rockchip/phy-rockchip-naneng-combphy.c |  161 +++
- drivers/pinctrl/pinctrl-rockchip.c                 |  768 +++++++++++++-
- drivers/pinctrl/pinctrl-rockchip.h                 |   52 +-
- drivers/pmdomain/rockchip/pm-domains.c             |   47 +
- firmware/Makefile                                  |    2 +
- images/Makefile.rockchip                           |    2 +
- include/mach/rockchip/atf.h                        |    6 +
- include/mach/rockchip/debug_ll.h                   |    6 +
- include/mach/rockchip/dmc.h                        |    1 +
- include/mach/rockchip/rk3562-regs.h                |   21 +
- include/mach/rockchip/rockchip.h                   |   10 +
- include/mfd/syscon.h                               |    8 +
- 47 files changed, 3797 insertions(+), 49 deletions(-)
----
-base-commit: 15ea9c02849d8e53c69078c88fa6df57dcce864e
-change-id: 20260130-barebox-kickpi-28d6466b6466
-
-Best regards,
 -- 
-Sohaib Mohamed <sohaib.amhmd@gmail.com>
+2.43.0
 
 
 
