@@ -3,103 +3,104 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vlgtU-006s2l-2Z
+	id 1vlgtU-006s2m-2w
 	for lore@lore.pengutronix.de;
 	Fri, 30 Jan 2026 06:18:08 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vlgtR-0002Sg-91
+	id 1vlgtQ-0002S4-HB
 	for lore@pengutronix.de; Fri, 30 Jan 2026 06:18:08 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=gBesHqYemKoSXFi/vr+jiaHa4ITKCDmHsF0zGN7HsEk=; b=EBndmb3qWwIeCgTCy2PlHZjP6i
-	QQBZdKzyTRHzhixDQPfALREri2MtxKnWDi4yRo/7mnRDVnK9DPBZ+v9+bOkjb06vomhQE292SoD5m
-	16erVbyRKVb33Td/KIHmb3+FpRNjQ2fBPyrfvWtCv6+oQ7cdbnYGCiGDE94VJtNnCn2Ew9h2atF+4
-	xN/VriTosnhoxvvsSfSh34PlMOufDqjcmskw/yD+2p0V2Gj+o5IHPZ51pH97T7lE7MBERf0+keLMz
-	8X2l5+IL/ToZrSQ6p5+kf2RrI63vuFdMrHZRIB0fDcgyHia1/EsV9cso+tGqO/T5nXoDRWae0jBv0
-	XFSE/EBw==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=wNx7bnetbGrfUACSFTT+Owavf1QdrNf3ILFsHasGQnQ=; b=2x9OaGXL8qWval
+	jH1H7yqrMEbkMPD9VhlXdI1UZeQwae/R7XH88iK0t2POvie7fsV6hdTkpIJs6H8l+yzO2tmVx8s86
+	o/z+x4zZCj3pPkUO0mpPl9CnHq0sygAGnluedKXrCV79mwqlJRY2QfjEuuXslGS/A9p7Hv2M8Y4X3
+	1qsKUxpvAN/2qwx2xrYQ7Sldld0wW5yWFB2MILW7iiWJkkzlK5GUG+dbgpsZ6eZeFC8yi1nYGAwuc
+	0b+nrPZdiAR/P62Q+vHYyYHRm1OiPRw99oF9Y3zq1LGORAI7kR+gj48WhOeuknX6SyMIayCZaZr5d
+	n2/NWriNgtKF6Fp590Cw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vlgso-000000012Eq-3BFu;
-	Fri, 30 Jan 2026 05:17:26 +0000
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+	id 1vlgsc-0000000122Z-3HCN;
+	Fri, 30 Jan 2026 05:17:14 +0000
+Received: from mail-wr1-x429.google.com ([2a00:1450:4864:20::429])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vlgsh-00000001255-2hRc
+	id 1vlgsZ-0000000121J-2wrV
 	for barebox@lists.infradead.org;
-	Fri, 30 Jan 2026 05:17:21 +0000
-Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-4359108fd24so1004692f8f.2
-        for <barebox@lists.infradead.org>; Thu, 29 Jan 2026 21:17:19 -0800 (PST)
+	Fri, 30 Jan 2026 05:17:13 +0000
+Received: by mail-wr1-x429.google.com with SMTP id ffacd0b85a97d-42fb2314eb0so1471853f8f.2
+        for <barebox@lists.infradead.org>; Thu, 29 Jan 2026 21:17:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769750238; x=1770355038; darn=lists.infradead.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gBesHqYemKoSXFi/vr+jiaHa4ITKCDmHsF0zGN7HsEk=;
-        b=ZmhbpWdFjt+ErGgqJXtTW2RW/3LYkxMwdkru+2oJaQs+AJfNhHcVfLCAf89cRWjAHw
-         5B9KOFCxpcpwe0emnF+wiq4Gt5HCZlSArmJMvS4FZQPJVaebNCzX3Tck6mY3ZjDmVQEy
-         fMOvupWg63xenmdr4ovLJ47cXnVKWJwmR1nuU25jjpz56rL8UUh04zGCOj7RQJteWdpN
-         peWRxyxmq2AMpjycjzIcTpYLqwts4IDOzIjObHmCUbaplESvQlEuV+P1MnK09ksPhgs8
-         G0xHK6Ybgs1rFtAyRNbzmmha4h92BuQ+4X2s548mOyvXoa3Xtus+5YaHnV9/lgeQqe2W
-         yfaQ==
+        d=gmail.com; s=20230601; t=1769750229; x=1770355029; darn=lists.infradead.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wNx7bnetbGrfUACSFTT+Owavf1QdrNf3ILFsHasGQnQ=;
+        b=hoRsDZTIK6wtHeZ6Sd65nUDHh7pAiv7zBFVKPhsu76FSyDjF9xOOAZ4SjlZEKEGCuW
+         Cl6lNrt1+9Axk9bCC/fzBVbjunTd4YFmuW3mLTsIIlIw75ZGjq6Jj+61VlYlVJD5gHIr
+         GiH5eycKrX4HMZcL4KqdYhaJoiKurAXi2zL0y5Uvaju3bgnT6QvepS7AurZipNsnwVi9
+         f8SN3HBMGVrow/B/JHc28c+nMeFP2MyJvgbWfOt2lB+jMQ9W3D3K1YVJbjHMGjGmEo17
+         teYpMpPfFPO2jgQDsYq5i4RGb8H30+LgBFPctDHx4N04wg5gfTrv0mzPeKqdpXKyYoMs
+         wiXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769750238; x=1770355038;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=gBesHqYemKoSXFi/vr+jiaHa4ITKCDmHsF0zGN7HsEk=;
-        b=oxGqJu7RYRap/ruM2+RFh+4uLN//Cs7Hu6Dge2bYoyT8lNg8SRawP6fKEE1gXqr5jU
-         wquUM1IN8P/i7Y62pKO6OhKnduMnkcwGz50+3yCIP7iDK4SaJBwJRQksXLiw/uSzRTJn
-         uhR8yc38zCiKIXeyp1qR9Ne5WT6bMrh8O6T7b2LAg08nPm1we0iBmkbnCo8ViU7Q1/Yy
-         1bG2o50z5eEaiif7CNJCTMvkEqhJymV+WwcBRqiinRkdZlg9jo69uXLZ97npEdEakq74
-         Y+JMCAakOYRSd9zKVIv4y1FhpqMyHUX1CxrvNX/kkDs5b6O8JLplAcqLWUagxCWGCE99
-         XouQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUz4r/nB4Jg+9mxMBZtUn+5bUbCrnuyVvxU8hSd9WhEfWpTfTL2tktoDsLYL0B/avk2toxK5ZDb@lists.infradead.org
-X-Gm-Message-State: AOJu0Yz4vHWj7vYuh9z+cGqvq37r7A6ncs2yf3kD9YK9pBqN8VqIUglK
-	QRjchW5N658wwWXInjTejPsFtzd/CArKK8eyu2zAICOuZjbYLp2Khck1
-X-Gm-Gg: AZuq6aJcjR1I5LIFuSSJnlf7UDvB2h2CgoB12rdeWam0TVHxjoSHRSqSx0bNCNHTlnb
-	HvROoCvvZoDVB1GOh2vex/OOBAmZspKuup8X7ROVZSphpLG1l5e0Mz6lkPv7/rdgycclKSPlfD8
-	oBls3361aZ8Ask2q+VFHnVCt21Uksv7LFpbXPcHZuVV85fOp6/TVXusvDD/F8F3ORw2Q6ZatqMV
-	3t1Sidh1MmSNbwRcXHT1VH21W+QedwrmFNBoyitMTyRh2vwffamTmYieVnYn2vCMrbCLJGQwZx8
-	ymvr/MPoHFYqcyFEjbvnScDBh6ymm5Wefzi76+dA4Mj1LWxC1WXqhZLjWcB51gW5vFim5UDM/zL
-	fx2R7zygyiBsARVcUsJFTILrx7CmWoV2ozlQEP5NpHUPVanRKd5ouY8DP/CaTMseKX3wd7zYLRz
-	KvyH0ZXCU2247jWqqfufvK2BOeaa4OxxxgiAh75M2Vl6diL/Q33MKdR2CVIs6+X1DL2BPCk8jqE
-	jNqydq38GtZQDrGly18uhq/z1PauYksXXR0JuUSZOymMZaZf5jlkdoTH3JGwhgRrt23WubYHpAJ
-	rmRCRzsXSImkGhkklghprePWGod84M+lwJJhGU0hJA==
-X-Received: by 2002:a05:6000:4304:b0:432:aa61:a06e with SMTP id ffacd0b85a97d-435f3aafcf6mr2514140f8f.32.1769750237933;
-        Thu, 29 Jan 2026 21:17:17 -0800 (PST)
+        d=1e100.net; s=20230601; t=1769750229; x=1770355029;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wNx7bnetbGrfUACSFTT+Owavf1QdrNf3ILFsHasGQnQ=;
+        b=fuGrEjxz/fXur40iFUqVJVdCz01ig/Kmv4JhWgxARE+z/ftuATP2/UZwpiSESnWvk/
+         AzDgZB/h0IsmGO260l/rrdt88gnhgegp/X8KHTj/+PPrYdPRufkY11CosyW4vaOmfQXT
+         KlFv0B/mtyH6yaGd9MaQdBxLaAKdP1CW/pdeOy0qpzv3sr6FUB8mb3FhbFBKnkvKhy7P
+         EZbhbohtq/dlKFWbXG2IV2DzOBol5d3ppHR/hFBHqpgHW83XYX1+HD6pKfqPMkFx+wpN
+         MUt88czr9kzDrMZMdOrqx1zvqPWJQVzBXgwd0e9zRhYsf8jb9XlaRTGx1sAs0UYOtcKy
+         sXgw==
+X-Forwarded-Encrypted: i=1; AJvYcCUxJi22t8JenvBLZIQN9893sof8ZYaIIk6OKjKTdfZM7pqEAN6kXbDFh8C6zYNz+CnVoYwyt5AC@lists.infradead.org
+X-Gm-Message-State: AOJu0YxptGsYD0v9vMIXMSrw7sc6H7lt4mPKsjjhcNSsVOIWK4V5mOoC
+	tiHI6ecJJcbWLUKU1nvdR/mF31NGrjKSHqe84yay9nA5IAV6dCW/8zhk6twOMg==
+X-Gm-Gg: AZuq6aL7TjB+p9ANjTfX06HVd5GvcetPeA+Kzjq/Rx1kA9gl9zsiLRJguz2Rv0Jt3NN
+	2dr0CiUHfdCn7fES5/ToeYgQYcxlkT9dgyT9OywKXEWgi1TRTuye/MiFB540815vzhVALCQIAgu
+	F/7uczg/6wI9/H1r7fwUaXyTl6JlTvfZqeG6SHL4qdNhHfjtA5lyDU78EDBqcrggCvn4oT8RmAF
+	BXBwuytDIB7K4hF0gCmUzcXloUxrdp0M7/eUb6f0RjNdCP5Yqql8P7NIoyQBIjN6AIeEn9xfzUq
+	53LY7UsEJp734BUVPxrYi7gUoN1jOQMP1TGmjVjJ2ty5Xx4xGFjJCBtcmy/8xSBjwypmf0QMfwB
+	vwaETegqj+rC88iqQXEGeRbcoQ21hULIq2uAFzRDAeKZ6wnchkW4vWyu4Fqfj1NqdYQ+l9jhK4B
+	97gm+lE4ErA6Vg1YNaAnRHrtzUat2PumBYVy9m1oIDkULAc9ny67Q+II+MnyPbPWsOy0gH4qt6c
+	PI3cxw3ioHsK1dKEUFhThaSaOQ4jOvKt3ym/l+tcW0VV6Wn/poWrTTfiD/9PUm7OTCwMhFANf+W
+	ru7oeZrBwZC3IaL5u9gXMjxew4Z1eP9Te/7RiTxrhg==
+X-Received: by 2002:a05:6000:1849:b0:435:9f41:d43 with SMTP id ffacd0b85a97d-435f3a72b51mr2676087f8f.15.1769750228878;
+        Thu, 29 Jan 2026 21:17:08 -0800 (PST)
 Received: from [127.0.1.1] (2a02-8388-08be-f800-ad12-b37c-7013-7685.cable.dynamic.v6.surfer.at. [2a02:8388:8be:f800:ad12:b37c:7013:7685])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e10e4762sm18943088f8f.6.2026.01.29.21.17.17
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e10e4762sm18943088f8f.6.2026.01.29.21.17.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Jan 2026 21:17:17 -0800 (PST)
+        Thu, 29 Jan 2026 21:17:08 -0800 (PST)
 From: Sohaib Mohamed <sohaib.amhmd@gmail.com>
-Date: Fri, 30 Jan 2026 06:17:02 +0100
+Date: Fri, 30 Jan 2026 06:16:52 +0100
+Message-Id: <20260130-barebox-kickpi-v2-0-d27cf94a39b6@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260130-barebox-kickpi-v2-10-d27cf94a39b6@gmail.com>
-References: <20260130-barebox-kickpi-v2-0-d27cf94a39b6@gmail.com>
-In-Reply-To: <20260130-barebox-kickpi-v2-0-d27cf94a39b6@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAMQ+fGkC/x2MQQqAIBAAvyJ7TjALib4SHdS2WgQVhRDEv2ddB
+ uYwUyFjIsywsgoJH8oUfBc5MLC39hdyOrqDFFKJcRLc6IQmFO7IukhcLoealTIfoEcx4UnlH25
+ 7ay90IdwJYAAAAA==
+X-Change-ID: 20260130-barebox-kickpi-28d6466b6466
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
-Cc: Sohaib Mohamed <sohaib.amhmd@gmail.com>
+Cc: Sohaib Mohamed <sohaib.amhmd@gmail.com>, 
+ Ahmad Fatoum <a.fatoum@pengutronix.de>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1769750228; l=727;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1769750228; l=4735;
  i=sohaib.amhmd@gmail.com; s=20251127; h=from:subject:message-id;
- bh=YEiPsfv2L0nLCLe/bO4FAaeuAdS+a/2qHoiaSlax/pg=;
- b=DWQppQUGvurPc47BHsXZpdRlNShmRCfWW+pkKXU2FTy7RELyOBeLZT3LBBWfs6sMc4xpCaAKQ
- XUDXistS18AD6XFjgwgBbnuukO7mDDks6+VFJoIbo2+frgOg6dCf4Xp
+ bh=CX5e4si1mYNszq8CGKiL3/p95ozeZm4g3IL+79vHdQU=;
+ b=SWt6qG3TNIeQgvyR8EBmx8gLoy2ERpYA51biz4v7MmoyBVqgAPbtbJ8tK6CDxu5/iYjxUtKFZ
+ SZmRvkMDagsAmTz9Vy5U9tx2MwzRRwIbHQIeSsHTG6+iNUh5KIwhBD5
 X-Developer-Key: i=sohaib.amhmd@gmail.com; a=ed25519;
  pk=Q1nrPhN99EawVQo4UT9CZVAG4nQ2Zq/e3sfCABjccgk=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260129_211719_718492_7F70B624 
-X-CRM114-Status: UNSURE (   9.07  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260129_211711_798963_89F9E5D2 
+X-CRM114-Status: GOOD (  13.01  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -122,35 +123,102 @@ X-Spam-Status: No, score=-2.1 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 10/14] rockchip-rng: Add RK3562 support
+Subject: [PATCH v2 00/14] ARM: rockchip: Add initial RK3562 SoC support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add compatible string for RK3562 RNG support.
+All essential changes and additions required to boot the RK3562.
+Includes board support for the RK3562-EVB2 and KickPi K3.
 
-Signed-off-by: Sohaib Mohamed <sohaib.amhmd@gmail.com>
+The GMAC driver is still missing from the upstream Linux device tree
+and can be added in a future update. The rest is straightforward port from
+the mainline Linux kernel.
+
 ---
- drivers/hw_random/rockchip-rng.c | 4 ++++
- 1 file changed, 4 insertions(+)
+Changes in v2:
+- Remove unused header includes (globalvar.h and deep-probe.h) from board.c
+- Fix "serial0:1500000n8" (squashed into the original commit)
+- Link to v1: https://lore.barebox.org/r/20260116-barebox-kickpi-v1-0-eb253c439421@gmail.com/
+---
 
-diff --git a/drivers/hw_random/rockchip-rng.c b/drivers/hw_random/rockchip-rng.c
-index 8856a3883e..f1f4c4cb12 100644
---- a/drivers/hw_random/rockchip-rng.c
-+++ b/drivers/hw_random/rockchip-rng.c
-@@ -193,6 +193,10 @@ static const struct of_device_id rk_rng_dt_match[] = {
- 		.compatible = "rockchip,cryptov1-rng",
- 		.data = &rk_rng_v1_soc_data,
- 	},
-+	{
-+		.compatible = "rockchip,rk3562-rng",
-+		.data = &rk_rng_v2_soc_data,
-+	},
- 	{
- 		.compatible = "rockchip,rk3568-rng",
- 		.data = &rk_rng_v2_soc_data,
+To: Sascha Hauer <s.hauer@pengutronix.de>
+To: open list:BAREBOX <barebox@lists.infradead.org>
+Signed-off-by: Sohaib Mohamed <sohaib.amhmd@gmail.com>
 
+---
+Ahmad Fatoum (3):
+      clk: rockchip: add RK3562 clock and reset driver support
+      pinctrl: rockchip: sync driver with Linux
+      ARM: boards: Rockchip: add RK3562-EVB2 support
+
+Sohaib Mohamed (11):
+      ARM: rockchip: Add initial RK3562 SoC support
+      ARM: boards: Rockchip: Add device tree for kickpi k3 board
+      ARM: rockchip: Add RK3562 KickPi K3 board support
+      pmdomain: rockchip: Add RK3562 power domain support
+      aiodev: rockchip_saradc: Add RK3562 support
+      phy: rockchip-inno-usb2: Add support for RK3562 PHY
+      rockchip-rng: Add RK3562 support
+      mci: sdhci: rockchip-dwcmshc: Add RK3562 support
+      nvmem: rockchip-otp: Add RK3562 support
+      phy: rockchip: inno-dsidphy: Add RK3562 support
+      phy: rockchip: naneng-combphy: Add RK3562 support
+
+ arch/arm/boards/Makefile                           |    2 +
+ arch/arm/boards/rockchip-rk3562-evb2/.gitignore    |    1 +
+ arch/arm/boards/rockchip-rk3562-evb2/Makefile      |    4 +
+ arch/arm/boards/rockchip-rk3562-evb2/board.c       |   47 +
+ arch/arm/boards/rockchip-rk3562-evb2/lowlevel.c    |   23 +
+ .../boards/rockchip-rk3562-kickpi-k3/.gitignore    |    1 +
+ arch/arm/boards/rockchip-rk3562-kickpi-k3/Makefile |    4 +
+ arch/arm/boards/rockchip-rk3562-kickpi-k3/board.c  |   44 +
+ .../boards/rockchip-rk3562-kickpi-k3/lowlevel.c    |   23 +
+ arch/arm/configs/multi_v8_defconfig                |    2 +
+ arch/arm/configs/rockchip_v8_defconfig             |    2 +
+ arch/arm/dts/Makefile                              |    2 +
+ arch/arm/dts/rk3562-evb2-v10.dts                   |    9 +
+ arch/arm/dts/rk3562-kickpi-k3.dts                  |   10 +
+ arch/arm/dts/rk3562-kickpi-k3.dtsi                 |  452 ++++++++
+ arch/arm/dts/rk3562.dtsi                           |   40 +
+ arch/arm/mach-rockchip/Kconfig                     |   16 +
+ arch/arm/mach-rockchip/Makefile                    |    1 +
+ arch/arm/mach-rockchip/atf.c                       |   38 +
+ arch/arm/mach-rockchip/dmc.c                       |   33 +
+ arch/arm/mach-rockchip/rk3562.c                    |   20 +
+ arch/arm/mach-rockchip/rockchip.c                  |    4 +
+ common/Kconfig.debug_ll                            |    9 +
+ drivers/aiodev/rockchip_saradc.c                   |    7 +
+ drivers/clk/rockchip/Makefile                      |    1 +
+ drivers/clk/rockchip/clk-rk3562.c                  | 1098 ++++++++++++++++++++
+ drivers/clk/rockchip/clk.c                         |    2 +-
+ drivers/clk/rockchip/clk.h                         |  268 ++++-
+ drivers/clk/rockchip/rst-rk3562.c                  |  430 ++++++++
+ drivers/hw_random/rockchip-rng.c                   |    4 +
+ drivers/mci/rockchip-dwcmshc-sdhci.c               |    3 +
+ drivers/mfd/syscon.c                               |   18 +
+ drivers/nvmem/rockchip-otp.c                       |   89 ++
+ drivers/phy/rockchip/phy-rockchip-inno-dsidphy.c   |    3 +
+ drivers/phy/rockchip/phy-rockchip-inno-usb2.c      |   52 +-
+ drivers/phy/rockchip/phy-rockchip-naneng-combphy.c |  161 +++
+ drivers/pinctrl/pinctrl-rockchip.c                 |  768 +++++++++++++-
+ drivers/pinctrl/pinctrl-rockchip.h                 |   52 +-
+ drivers/pmdomain/rockchip/pm-domains.c             |   47 +
+ firmware/Makefile                                  |    2 +
+ images/Makefile.rockchip                           |    2 +
+ include/mach/rockchip/atf.h                        |    6 +
+ include/mach/rockchip/debug_ll.h                   |    6 +
+ include/mach/rockchip/dmc.h                        |    1 +
+ include/mach/rockchip/rk3562-regs.h                |   21 +
+ include/mach/rockchip/rockchip.h                   |   10 +
+ include/mfd/syscon.h                               |    8 +
+ 47 files changed, 3797 insertions(+), 49 deletions(-)
+---
+base-commit: 15ea9c02849d8e53c69078c88fa6df57dcce864e
+change-id: 20260130-barebox-kickpi-28d6466b6466
+
+Best regards,
 -- 
-2.43.0
+Sohaib Mohamed <sohaib.amhmd@gmail.com>
 
 
 
