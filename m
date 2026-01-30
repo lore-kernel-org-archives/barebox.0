@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vlgtS-006s1q-1G
+	id 1vlgtS-006s1g-0j
 	for lore@lore.pengutronix.de;
 	Fri, 30 Jan 2026 06:18:05 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vlgtO-0002QA-0H
+	id 1vlgtN-0002QC-U8
 	for lore@pengutronix.de; Fri, 30 Jan 2026 06:18:05 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,88 +18,87 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=yzqm76AM4BpcRl1nshmsyad1zItQGXhRRWYRjE8Ax7M=; b=gepjdjEchUYQuQkpmnb/67fL1y
-	Etp/pXfUYoDPT2CrDD80zXd8QAeE5tmPuHHBAUjReodF4yoKI+/brMsx/ssYKrglEDGV+ZmbzC9FU
-	yjBMnwAeb4vVGag9eIydye0zfW5FgnCMNfuDGYl0cOVsK+TV5mHyNYlcv25IUEla7Jdp51oAHZ2Gi
-	YEADN6+h8E1UjyQl4nB5xa54C30vJNPxFThGIqAriCUQDD4oxy0w4P4JJntQUne9/rDF8nDVQW9w+
-	BISkK52iiCFirRT1omxNLP2f/UhG+PKip/XdsmHXNYnsr+yPjSNkV61JLgHOY3ub7oOjg0Cn6tIlX
-	uBxepq5Q==;
+	bh=I69kG2mGA/JvcdEOmJOCpUHIzUIVWuxOTl5P72f/L4w=; b=CfNlcwvL38QlRYOCAp51cS0dq8
+	T9cLw+JY+o6A9P2Og0EBnWoOadn9xXsGu5Z3MBkvCcdg3yVJ2jd5caHH/b93QJxrimxw+KiUTSZ0Q
+	Ta8VyXtwgbLHDIwo+NjEWBZxY9X/0xQfhjPfj8nLff34woKqd0VFNt+ZzGFGzUQ7cKaTR1ZYj6Xpr
+	fF0wQ0qy+xjOXXn9hYHwHCOpNi4zKIMN22/wlOJGxg+EAEm6HDtaU6JIULaSZwM2AZsaSBiR6Go6m
+	BbXUG8CabngkeFGSLSN0D4MqGQdcQAhpkVZNYMCXDsn3faS6/CTLpZpDLR2BXe0sqQwXvz83Ith9R
+	xXgyAgoQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vlgsm-000000012Ay-00LW;
-	Fri, 30 Jan 2026 05:17:24 +0000
-Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
+	id 1vlgsp-000000012Gt-3oVa;
+	Fri, 30 Jan 2026 05:17:27 +0000
+Received: from mail-wm1-x333.google.com ([2a00:1450:4864:20::333])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vlgsg-0000000123W-1Qoy
+	id 1vlgsj-0000000126x-15uY
 	for barebox@lists.infradead.org;
-	Fri, 30 Jan 2026 05:17:19 +0000
-Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-42fb2314f52so1025420f8f.0
-        for <barebox@lists.infradead.org>; Thu, 29 Jan 2026 21:17:17 -0800 (PST)
+	Fri, 30 Jan 2026 05:17:22 +0000
+Received: by mail-wm1-x333.google.com with SMTP id 5b1f17b1804b1-47ee07570deso14180145e9.1
+        for <barebox@lists.infradead.org>; Thu, 29 Jan 2026 21:17:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769750236; x=1770355036; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1769750240; x=1770355040; darn=lists.infradead.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=yzqm76AM4BpcRl1nshmsyad1zItQGXhRRWYRjE8Ax7M=;
-        b=W9D9GFvmY4rsBuv2kwnOsmzi46K+KXuUfGWj1oYB1Eh4i4eBrqpi0hT6JMVyagtodY
-         7u1P3nSCvBpsONs1jWNjiNrH5Hwf0DuLjqOJt3T90iEG8XcrXB+nEugyvXlXpTzJDP6f
-         +qwuJr/b7Qyio+oWYv+AvobV2eNye2pNm0AaG8mai8YuDHUMQ0+jYVJc+DW5zDPmaqOA
-         wghv6vcc2+mq/GbtecOdBOqmA/xjYxB1rCHRNjappcQ2dUQo7hyA25mj8HCvLkLsj4ra
-         om3L0q0+f/J0wUPORsaDR3XbDdlAcX2038UTXYiXWDu5ssYAwqOKA6KuBDrk4ALXqrWm
-         BkVQ==
+        bh=I69kG2mGA/JvcdEOmJOCpUHIzUIVWuxOTl5P72f/L4w=;
+        b=eo8tN5tFe7QDHWfbDO14cBqy10FH3wjXZzNvb30880MgnHiVF7r2HBWv7WN3EcLXkk
+         0bSydyQ4oDoEeieI77s9Lbb2JWVy2/B+2icEHDAMPMhu5XkCLQkiizvh1jNmzk08mOOy
+         Lnb9+qEy1sQt2W+/t/2825SIwDOEpVuwlNvQfmwKBfNEiuW5xpw1s+2Ud9AsGaMIMqm7
+         JLRscYa7zIW1g6oTyc8Avk9s46JMrGtNe3x+Or5rYSwBS3o2StX1C0mUBcqQxIjGkyrz
+         724dBu8d7QqYIrUapUUkCCr4rrLV/n8jDWfnnbZP1hxlA85/Mcxf3GHT6c/RsNMrriqC
+         rJZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769750236; x=1770355036;
+        d=1e100.net; s=20230601; t=1769750240; x=1770355040;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=yzqm76AM4BpcRl1nshmsyad1zItQGXhRRWYRjE8Ax7M=;
-        b=Kc3D3CZ8wPxvCzm7GMd/QPvZF1y5QCvvIERLKnlop2BSjX3FKqlnVydp1i2aRrfCFv
-         PwCZ+HIoHArCJchCvhXSGhhKShIKXtiuje3QNlmt0Y0CGSZRFC/UXYi0GEIlcIWWb0QJ
-         7ClJfvTAD7bwa0lMWqRLfcfHsybi9/UPP0ltaZJkz57OH3Wf7FCADflN2Hd3IU3MCNqP
-         GpUotbFQJG6ycjOT4MlGSsvbp0suakHqqW1FAT+Y5eKQceLimH9Zi1v6Ej2z/GJI4NnQ
-         z7ZyRX231hFYVdfRfI+8d7gOco3xMxAwdamaUbUXEwl88dN8Ljh3SFLyVIIv52Zf4U09
-         kTlg==
-X-Forwarded-Encrypted: i=1; AJvYcCX29ceqw4jDIdspmBx4kUi8GSEest72bBsFU8qm7AGnsJmZr2C9bEB5tV/kju4XoqgCEKsbfEpt@lists.infradead.org
-X-Gm-Message-State: AOJu0Yz8wAGkOZSaibUPiVZ4gzzhSMECzpzjvCYPj/2rdJzlHlE37ZNl
-	QWDW5xBfTUZuYu1p4CA0wxw4mVWr10QUsd7txVxHFuz76LsvtUAxp3ao
-X-Gm-Gg: AZuq6aLtbaEcLVUKELoGNKGuinouOdld/iUGyR6qi4AjqoFU9+PwS1OcZrXnBadZJvZ
-	yCzShCeW79je5Msjhih2OlWyR8Iw0Fc1UHQzDLnqO0xCTYsSOm6prRth+85Ep31SXQneyf/yhPR
-	++2cAraoXrELx89UdXrFeo60yUCMzF38La8CaA+QtxM3eW4vv+dPZ2rHn7Sf63ler65FfZMSvxj
-	7AX+R9ZiS3Nq9NRjMsv1OGgRyY9gwnKGnuAzMtYNRu3plWVqwOq1LIXHrSh/PD4ycRadl4ERgke
-	pxmvcFw0RKUds6DmoLswXj9LV9t8W7MlRdAI2Zio7J1EWAmoFP3PKLhZySoNRU9EMClPTdBSXoL
-	6quKw/M3u9Y8J2gvzOEVhoQw5Sk5Hvqk7l5xgMv/WGkG1h7E6UidkwZrgzfVSt9kI88tb3zFgYe
-	aDNky1X2x/h54BWb6mkskxJqEb6STL5g3ZDK0/tym2Ujk0bMdCMoMtpsLXWuB05FtQjCUG1S5jb
-	zgIQgMXdqmiU8YziIk4B2OXAXyPjup6xLUe41bnE1dTp+U41d7OqzY82reaxJN+Hk8mv6+RsV3L
-	a5XG8haB+nBotLa3Z+Iy2AfQ5eautsl50W/b67y6XQ==
-X-Received: by 2002:a05:6000:220c:b0:435:8f18:9539 with SMTP id ffacd0b85a97d-435f3a6cd84mr2597511f8f.9.1769750236316;
-        Thu, 29 Jan 2026 21:17:16 -0800 (PST)
+        bh=I69kG2mGA/JvcdEOmJOCpUHIzUIVWuxOTl5P72f/L4w=;
+        b=EYL/m43xwka7ljtaTGM225dOm90Vc/fZIM271ebXyfWQftYt90VbUCmh+anInf0Hjr
+         bMwqrQXJTtf3pV9e1rXO8tOGzwHNU2Xb74HKB7esHJXQxtC3G7/9bhlPvbV1wV/1R0uS
+         YlT4o/WJ7iXb+a4Rk3pza29zl4iHm9nqN/qskE9Sn2A4q9i4ZmIogw0tN/2bMTcrsHah
+         RgX5+hsMEUlnO5XYm1fhIMTZEm4C6ROiSut5gYbO3bc2TMU3XyjqjXidmoPvqPz6xwCM
+         TFZHAd0OoNWWN1NtlG32A2nSaEbSKOYeu5j9kYoqL6rgabUW/jShag1leWA+7z2zab0m
+         +YRw==
+X-Forwarded-Encrypted: i=1; AJvYcCVP42PboR+XaubjeWpNFaWYIV8F0sdwJng8J6qzWAu9tUvFj03FRcBKvGBAfFOQyM98uRyCpRn7@lists.infradead.org
+X-Gm-Message-State: AOJu0YxXTSKEoqMDrpyWibBc8yhXKSWLHl4Pptsx/nahaZCLUbNBhj29
+	aW37z7Hc7WlW9Ve9DQjb3yHKKPuewI11nt7lE4Iqg/KH2pfkmT6ZXFqy
+X-Gm-Gg: AZuq6aJomhzDBdcHocxn57Ui0qXZ98h/D1En+PCWoMtKcWAeSEph6Q8UNC1oWYy3JdX
+	mY4+DvrWweiHYJs4HiRm1EpN6MegUgQYa+qSY0UeZC29cC+vU5dWitbQSmuYQtj+aS7URKPS+N2
+	rd+fl0u6UnctM+DkXilbU9DkB0FRu66kj5vtJILJ6Nwl4Rw90SnRghOW8i8Qckw4Kz50E2wL8lv
+	D0BqYY/RECCbrN5e+eQZkogu81Hyzp4Fygl/2WXfXFIz0uA1cnQ429L9/48XSZludGbiuTPjLAY
+	HUE5mgD5ruSEAKNjroHOgLv+H5oSOBwreV8zAhlA/cMTlSZgWUcGzApENJXQ/NkoJ/A3jA1311N
+	eAT6PWY2Vj3AKe6K1rjxHVjVM8d0lfEeS8hHAnzJYBFc2qUYAe0C90mvB8eN5Jdekc1vaCJ9K2k
+	GJAmBf2w2f1z3cA/OTWqa+S6piA0Q44j6yhpqZAAxM61PsRujUk940tw34BhBKhTgS920thRjzi
+	W1TPHPBN8HeHYIWM/w6agRJei8zOQAjtjZDPxUWKfAi3Qd3SWuV1qTR3oQGrYqO1+NLgd5Jwmzb
+	hpGnanlydHKmYYx12KBXHkgt6qUg/1RUiEVAPivGCnfdGbqtTeJN
+X-Received: by 2002:a05:600c:1f92:b0:47a:8088:439c with SMTP id 5b1f17b1804b1-482db4a873emr19785985e9.35.1769750239617;
+        Thu, 29 Jan 2026 21:17:19 -0800 (PST)
 Received: from [127.0.1.1] (2a02-8388-08be-f800-ad12-b37c-7013-7685.cable.dynamic.v6.surfer.at. [2a02:8388:8be:f800:ad12:b37c:7013:7685])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e10e4762sm18943088f8f.6.2026.01.29.21.17.15
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e10e4762sm18943088f8f.6.2026.01.29.21.17.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Jan 2026 21:17:15 -0800 (PST)
+        Thu, 29 Jan 2026 21:17:19 -0800 (PST)
 From: Sohaib Mohamed <sohaib.amhmd@gmail.com>
-Date: Fri, 30 Jan 2026 06:17:00 +0100
+Date: Fri, 30 Jan 2026 06:17:04 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260130-barebox-kickpi-v2-8-d27cf94a39b6@gmail.com>
+Message-Id: <20260130-barebox-kickpi-v2-12-d27cf94a39b6@gmail.com>
 References: <20260130-barebox-kickpi-v2-0-d27cf94a39b6@gmail.com>
 In-Reply-To: <20260130-barebox-kickpi-v2-0-d27cf94a39b6@gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Sohaib Mohamed <sohaib.amhmd@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1769750228; l=1257;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1769750228; l=3628;
  i=sohaib.amhmd@gmail.com; s=20251127; h=from:subject:message-id;
- bh=WskhJIAbrX+kmHNRkv/HERBUF0Toh90TRf4JNlrnw40=;
- b=E2n/td7HXisDi8dxkZ/SyMm5vzntI/qQGBQOtT8eT8O84erS3lNebXP7s0KYihUehfNIjFLSi
- lMhhTQ2HAtBB+N+XKBiPVCyKcxjgwqRFhMeTAx/8YWthNrGxeUpIp0h
+ bh=G8nnb+MkLuzehn9M9qdbQqdC0ZjiJqi/1UozlhNU7mQ=;
+ b=rIM0sa1wmgmTQHDjmEL6wFvFOj0xwKE8k3kBfrtKcv6Hf+OeshIAh02p55bja6vEzG/HeQbMh
+ i+vi21Mibp5AxSMhWn/URCF+hdfTe8fEMSYh0K94fq6IIdxuYKkleru
 X-Developer-Key: i=sohaib.amhmd@gmail.com; a=ed25519;
  pk=Q1nrPhN99EawVQo4UT9CZVAG4nQ2Zq/e3sfCABjccgk=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260129_211718_408729_6E755F9F 
-X-CRM114-Status: UNSURE (   8.83  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260129_211721_779531_694CF399 
+X-CRM114-Status: GOOD (  14.16  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -122,43 +121,138 @@ X-Spam-Status: No, score=-2.1 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 08/14] aiodev: rockchip_saradc: Add RK3562 support
+Subject: [PATCH v2 12/14] nvmem: rockchip-otp: Add RK3562 support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The RK3562 has a SARADC v2 with 8 channels and 12 bit resolution.
-compile-tested Only.
+Add RK3562 OTP support using rk3562-specific data configuration.
 
 Signed-off-by: Sohaib Mohamed <sohaib.amhmd@gmail.com>
 ---
- drivers/aiodev/rockchip_saradc.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/nvmem/rockchip-otp.c | 89 ++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 89 insertions(+)
 
-diff --git a/drivers/aiodev/rockchip_saradc.c b/drivers/aiodev/rockchip_saradc.c
-index f1efab5233..d4cb1f4fbe 100644
---- a/drivers/aiodev/rockchip_saradc.c
-+++ b/drivers/aiodev/rockchip_saradc.c
-@@ -256,6 +256,12 @@ static int rockchip_saradc_probe(struct device *dev)
+diff --git a/drivers/nvmem/rockchip-otp.c b/drivers/nvmem/rockchip-otp.c
+index 33b242c5bc..d2145bba52 100644
+--- a/drivers/nvmem/rockchip-otp.c
++++ b/drivers/nvmem/rockchip-otp.c
+@@ -51,6 +51,21 @@
+ 
+ #define OTPC_TIMEOUT			10000
+ 
++#define RK3562_NBYTES			2
++
++/* RK3588 Register */
++#define RK3582_OTPC_AUTO_CTRL	0x04
++#define RK3582_OTPC_AUTO_EN		0x08
++#define RK3582_OTPC_INT_ST		0x84
++#define RK3582_OTPC_DOUT0		0x20
++#define RK3582_NO_SECURE_OFFSET	0x300
++#define RK3582_NBYTES			4
++#define RK3582_BURST_NUM		1
++#define RK3582_BURST_SHIFT		8
++#define RK3582_ADDR_SHIFT		16
++#define RK3582_AUTO_EN			BIT(0)
++#define RK3582_RD_DONE			BIT(1)
++
+ #define RK3568_NBYTES			2
+ 
+ /* RK3588 Register */
+@@ -183,6 +198,65 @@ static int px30_otp_read(void *context, unsigned int offset,
  	return ret;
  }
  
-+static const struct rockchip_saradc_cfg rk3562_saradc_cfg = {
-+	.num_bits = 12,
-+	.num_channels = 8,
-+	.read = rockchip_saradc_read_v2,
-+};
++static int rk3562_otp_read(void *context, unsigned int offset, void *val,
++			   size_t bytes)
++{
++	struct rockchip_otp *otp = context;
++	unsigned int addr_start, addr_end, addr_offset, addr_len;
++	u32 out_value;
++	u8 *buf;
++	int ret = 0, i = 0;
 +
- static const struct rockchip_saradc_cfg rk3568_saradc_cfg = {
- 	.num_bits = 10,
- 	.num_channels = 8,
-@@ -276,6 +282,7 @@ static const struct rockchip_saradc_cfg rk3588_saradc_cfg = {
++	addr_start = rounddown(offset, RK3562_NBYTES) / RK3562_NBYTES;
++	addr_end = roundup(offset + bytes, RK3562_NBYTES) / RK3562_NBYTES;
++	addr_offset = offset % RK3562_NBYTES;
++	addr_len = addr_end - addr_start;
++
++	buf = kzalloc(array3_size(addr_len, RK3562_NBYTES, sizeof(*buf)),
++		      GFP_KERNEL);
++	if (!buf)
++		return -ENOMEM;
++
++	ret = rockchip_otp_reset(otp);
++	if (ret) {
++		dev_err(otp->dev, "failed to reset otp phy\n");
++		goto out;
++	}
++
++	ret = rockchip_otp_ecc_enable(otp, false);
++	if (ret < 0) {
++		dev_err(otp->dev, "rockchip_otp_ecc_enable err\n");
++		goto out;
++	}
++
++	writel(OTPC_USE_USER | OTPC_USE_USER_MASK, otp->base + OTPC_USER_CTRL);
++	udelay(5);
++	while (addr_len--) {
++		writel(addr_start++ | OTPC_USER_ADDR_MASK,
++		       otp->base + OTPC_USER_ADDR);
++		writel(OTPC_USER_FSM_ENABLE | OTPC_USER_FSM_ENABLE_MASK,
++		       otp->base + OTPC_USER_ENABLE);
++		ret = rockchip_otp_wait_status(otp, OTPC_INT_STATUS, OTPC_USER_DONE);
++		if (ret < 0) {
++			dev_err(otp->dev, "timeout during read setup\n");
++			goto read_end;
++		}
++		out_value = readl(otp->base + OTPC_USER_Q);
++		memcpy(&buf[i], &out_value, RK3562_NBYTES);
++		i += RK3562_NBYTES;
++	}
++
++	memcpy(val, buf + addr_offset, bytes);
++
++read_end:
++	writel(0x0 | OTPC_USE_USER_MASK, otp->base + OTPC_USER_CTRL);
++out:
++	kfree(buf);
++
++	return ret;
++}
++
++
+ static int rk3568_otp_read(void *context, unsigned int offset, void *val,
+ 			   size_t bytes)
+ {
+@@ -328,6 +402,17 @@ static const struct rockchip_data px30_data = {
+ 	.reg_read = px30_otp_read,
  };
  
- static const struct of_device_id of_rockchip_saradc_match[] = {
-+	{ .compatible = "rockchip,rk3562-saradc", .data = &rk3562_saradc_cfg },
- 	{ .compatible = "rockchip,rk3568-saradc", .data = &rk3568_saradc_cfg },
- 	{ .compatible = "rockchip,rk3576-saradc", .data = &rk3576_saradc_cfg },
- 	{ .compatible = "rockchip,rk3588-saradc", .data = &rk3588_saradc_cfg },
++static const char * const rk3562_otp_clocks[] = {
++	"usr", "sbpi", "apb", "phy",
++};
++
++static const struct rockchip_data rk3562_data = {
++	.size = 0x80,
++	.clks = rk3562_otp_clocks,
++	.num_clks = ARRAY_SIZE(rk3562_otp_clocks),
++	.reg_read = rk3562_otp_read,
++};
++
+ static const char * const rk3568_otp_clocks[] = {
+ 	"usr", "sbpi", "apb", "phy",
+ };
+@@ -366,6 +451,10 @@ static __maybe_unused const struct of_device_id rockchip_otp_match[] = {
+ 		.compatible = "rockchip,rk3308-otp",
+ 		.data = &px30_data,
+ 	},
++	{
++		.compatible = "rockchip,rk3562-otp",
++		.data = &rk3562_data,
++	},
+ 	{
+ 		.compatible = "rockchip,rk3568-otp",
+ 		.data = &rk3568_data,
 
 -- 
 2.43.0
