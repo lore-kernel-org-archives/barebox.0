@@ -1,73 +1,68 @@
-Delivery-date: Mon, 02 Feb 2026 16:47:28 +0100
+Delivery-date: Tue, 03 Feb 2026 11:20:02 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vmw9A-0085oF-1j
+	id 1vnDVr-008Mqb-16
 	for lore@lore.pengutronix.de;
-	Mon, 02 Feb 2026 16:47:28 +0100
+	Tue, 03 Feb 2026 11:20:02 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vmw99-000740-Hh
-	for lore@pengutronix.de; Mon, 02 Feb 2026 16:47:28 +0100
+	id 1vnDVq-00029l-AS
+	for lore@pengutronix.de; Tue, 03 Feb 2026 11:20:02 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=W5zcSlCb7p4Z3f1dzfYSlfdTd89r8YATI6Bg14psVx4=; b=QXMo75tH8xet247d+7TQRC6XM/
-	evJE+h95h0AVj7grv4JepZMbmPanNvWiPFCVKtDyv1MYPfcie0LPV/4M/a+KQ3HJI+hrYCM6czdZE
-	LCFKW4n6MF3GXWgBUxNMg957jJ/G+9wFoATdCe637pp/MTd5fkX5ZFSGIDnZnHnO+DHE7nvfHBy78
-	UW7XDOmuAwVKdWlx/zHKVx3B7n2Yb6wElADurwfOeM4K43Wc3y+Uja0vuM6sW+9ug9R1jLVhjgxNc
-	edKq8tPEhT10sDTMeTgHQcmHqyzG0Gm0M6mxdkfkfCf40zOoAxpYFMSgvEZiPtotaGaAML8cB4TlC
-	7cXvgzPA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=A9K+UDOtArN64USyVdUEAG6FHAIADMQZVwMPj9sbruU=; b=b/q52tucV7TRgH9jHCahffUyIO
+	/9Zmgy+7CZgCL3R0ilhZzEaGwxWUPWwePCcpE0KnoHyFoA6bfgL43QRLToyGZkeXGs8bvmpfrXh6X
+	R1W4wWPba5uvTPlukf8f/kkN57KCRcgN43MvEH11Tus1gmGr/nJsnVFkG37nD1QCprQWkYzl7OrMS
+	ExUQn4LCsbShiyTqtY8Ry+EXfE2yEH+wQFDC90fHSRCc0TkIjktuqokPc9s5P3u1WZlgpgaMWK1oy
+	JqyqpNbGmLFloWHObEd6vEcCF9xMXs8OtE1TPwZIREUml2KgJCJc0IlM9DDbQm16J0iy8edMxZgM8
+	4nyiGeAQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vmw8Y-00000005D6g-4ARO;
-	Mon, 02 Feb 2026 15:46:51 +0000
+	id 1vnDVE-00000006SoQ-1GtS;
+	Tue, 03 Feb 2026 10:19:24 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vmw8W-00000005D6A-1pXk
+	id 1vnDVB-00000006Sns-3Jih
 	for barebox@lists.infradead.org;
-	Mon, 02 Feb 2026 15:46:49 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vmw8T-0006yf-9X; Mon, 02 Feb 2026 16:46:45 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vmw8T-003l8M-2V;
-	Mon, 02 Feb 2026 16:46:45 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vmw8S-00CESK-3B;
-	Mon, 02 Feb 2026 16:46:45 +0100
-Date: Mon, 2 Feb 2026 16:46:44 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>
-Message-ID: <20260202154644.xy2qp4yebahkexoq@pengutronix.de>
-References: <20251110-v2025-09-0-topic-optee-of-handling-v1-0-8f0625ac5471@pengutronix.de>
- <20251110-v2025-09-0-topic-optee-of-handling-v1-4-8f0625ac5471@pengutronix.de>
- <df2aa615-ac27-42d9-a1f2-38d0d6dd5b50@pengutronix.de>
- <20260115132628.6ot2ph7auhq3ezfw@pengutronix.de>
- <2c560076-4767-4bd1-b420-8f1d4c505a20@pengutronix.de>
- <50ee3a64-a59f-42fc-a26b-cf8ff3176142@pengutronix.de>
- <20260118190910.kz45bwlaujcq6bxz@pengutronix.de>
- <44808e88-0688-4e56-a9e8-7f1f7227fa7a@pengutronix.de>
+	Tue, 03 Feb 2026 10:19:23 +0000
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <jre@pengutronix.de>)
+	id 1vnDV8-00020D-RB; Tue, 03 Feb 2026 11:19:18 +0100
+From: Jonas Rebmann <jre@pengutronix.de>
+Date: Tue, 03 Feb 2026 11:19:17 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <44808e88-0688-4e56-a9e8-7f1f7227fa7a@pengutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260203-stm32-generic-v1-1-6fa7a2df3cee@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAKTLgWkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDIwNj3eKSXGMj3fTUPKC+ZF1TC4NkcwMzM0MzC0MloJ6CotS0zAqwedG
+ xtbUAAGpjU18AAAA=
+X-Change-ID: 20260203-stm32-generic-580c70661681
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>
+Cc: Jonas Rebmann <jre@pengutronix.de>
+X-Mailer: b4 0.15-dev-7abec
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1251; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=b2NPHJLIGT9/HHQ5yiCiMEs9OIswWEy2if0TdkyfQXg=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYshsPL0sclHS6btTw5TbVmetyf5a+IC31lR/ue5Zv4Xz8
+ 3ifzgp+2VHKwiDGxSArpsgSqyanIGTsf92s0i4WZg4rE8gQBi5OAZjImm8M/6snm1zuWXDz19/m
+ hJLK07ar1dytKtiufwicUPLP8dsfXgVGhrPXNH9uY/N40KdlWue4kfOcBg/n7iXa1w5PmP6hT4Z
+ 1BwsA
+X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
+ fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260202_074648_472304_06C50316 
-X-CRM114-Status: GOOD (  24.09  )
+X-CRM114-CacheID: sfid-20260203_021921_837088_DB3D6F41 
+X-CRM114-Status: UNSURE (   8.26  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,63 +80,55 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 04/23] ARM: i.MX8M: add support to pass DT via
- imx8m{m,n,q,p}_load_and_start_image_via_tfa()
+Subject: [PATCH] ARM: stm32mp: Make ARCH_STM32MP13 and ARCH_STM32MP157
+ selectable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Ahmad,
+ARCH_STM32MP13 and ARCH_STM32MP157 are automatically selected if a
+dependent machine is selected. However, without any machine selected,
+CONFIG_ARCH_STM32MP still enables build of the
+barebox-stm32mp-generic.img image, which, provided a dtb, is functional
+without requiring further board specific code.
 
-thanks for your input, please see below.
+In this case ARCH_STM32MP13 and/or ARCH_STM32MP157 need to be explicitly
+enabled for the SoC to be fully functional (e.g. clocks).
 
-On 26-01-22, Ahmad Fatoum wrote:
-> Hello Marco,
-> 
-> On 1/18/26 8:09 PM, Marco Felsch wrote:
-> > Hi Ahmad,
-> > 
-> > On 26-01-15, Ahmad Fatoum wrote:
-> > I get your point regarding the unnecessary breakage. It would have been
-> > nice if we could have a TF-A loading abstraction within the PBL since
-> > loading the TF-A and (opt. OP-TEE OS) is mostly the same on each and
-> > every ARMv8-A SoC and we tend to adapt barebox rather than adapting the
-> > TF-A binary.
-> 
-> Sure, I would also love to have a generic flow for that and that's one
-> reason, why I want to restructure our early PBL code and want to avoid
-> extra API breakage till then.
-> 
-> > However I would like to mention that handover data was meant to be
-> > passing data between the PBL and barebox. We would repurpose the
-> > handover mechanism if we would use the handover data. In this case it
-> > could be re-used in several other places. Therefore I'm not a fan of
-> > this idea.
-> 
-> My original thought is that we could use the same DT later for passing
-> to barebox proper as well, so we are really just moving the addition of
-> the handoff entry earlier.
-> 
-> I see now that this doesn't really work as barebox can be chainloaded at
-> EL2/1 and in that case, the initial setting of the oftree handoff data
-> would've been lost.
-> 
-> > What do you think about adding the 'fdt' support only to the 'lowlevel'
-> > APIs:
-> >   - __imx8mp_load_and_start_image_via_tfa()
-> >   - __imx8mm_load_and_start_image_via_tfa()
-> >   - __imx8mn_load_and_start_image_via_tfa()
-> > ?
-> 
-> Sure, I can live with that.
+Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+---
+ arch/arm/mach-stm32mp/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Okay, I dropped the imx8m*_load_and_start_image_via_tfa() changes but
-kept the changes for __imx8m*_load_and_start_image_via_tfa().
+diff --git a/arch/arm/mach-stm32mp/Kconfig b/arch/arm/mach-stm32mp/Kconfig
+index 54ce644d73..18a0bf284b 100644
+--- a/arch/arm/mach-stm32mp/Kconfig
++++ b/arch/arm/mach-stm32mp/Kconfig
+@@ -8,11 +8,11 @@ config ARCH_NR_GPIO
+ 
+ config ARCH_STM32MP13
+ 	select ARM_PSCI_CLIENT
+-	bool
++	bool "Support STM32MP153-based chips"
+ 
+ config ARCH_STM32MP157
+ 	select ARM_PSCI_CLIENT
+-	bool
++	bool "Support STM32MP157-based chips"
+ 
+ config MACH_STM32MP13XX_DK
+ 	select ARCH_STM32MP13
 
-Regards,
-  Marco
+---
+base-commit: 378bc32467af0afbbcb9d9e3cc1bfd5fb429a826
+change-id: 20260203-stm32-generic-580c70661681
+
+Best regards,
+--  
+Jonas Rebmann <jre@pengutronix.de>
+
 
 
