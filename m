@@ -1,73 +1,57 @@
-Delivery-date: Wed, 04 Feb 2026 21:02:18 +0100
+Delivery-date: Wed, 04 Feb 2026 21:02:19 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vnj4s-008rqI-2Q
+	id 1vnj4t-008rqx-29
 	for lore@lore.pengutronix.de;
-	Wed, 04 Feb 2026 21:02:18 +0100
+	Wed, 04 Feb 2026 21:02:19 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vnj4r-000615-27
-	for lore@pengutronix.de; Wed, 04 Feb 2026 21:02:18 +0100
+	id 1vnj4s-000620-4R
+	for lore@pengutronix.de; Wed, 04 Feb 2026 21:02:19 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=hwgnaRjaBpp9GljUxw9j8BrnlEYndu7Ok0GFofg0GYg=; b=RMXMIyglWVF0VWmCQ/TgFdJx17
-	TfJbV3+fpKqH8gfJHOxnmB3jQuk986B2jGZ1R9Nu93qAjkstmlbPIBy0i9G03ELc5mCY4WmCYbBK3
-	od71+dkM0Sw5789yI4tkr4H/XV484Cg6gEUA2f5wJEwDBCC4tpWlFhO9DRLiPeXqWVBILocEO48Hx
-	vB0BTC0tzfXoUFxdBxN4hVQItm9FZzXTCb/CITIcoWbu1WEqlgERzu81qLBKFr3Ali6VGfVIZ81qN
-	yjxBZw6zUdpkHdICJZDuznooMHy3bXAtRfOgjadN3nhS1dUVEXm3IQkDUaa+vGLBsn1Yr9Hlhqk2B
-	+sfRUhbw==;
+	bh=TA7M2rWdc4udFZcY+QEDOJAPMuKNnTuR/gypYfDD0u8=; b=nggru7IZNyLkIoNONzFWX0YSnj
+	yQ6zqLULLHr6yQBCcD7dYZivq40iS6KujiM0/xqr1gESf/wbFI6IUBYmf485jHfa7Nua70zNdkrX5
+	tznhGGqMR2kN/mySZjE14eS+XA6FSYzG7+KOwB+KUnNql+SJRmkLJG0f8dxwNSByPcymOmJv7XaKd
+	v3b1tVN2lFnXpHxZ+RXZBucAzoReFbsHzHKZ1Wj6g9FDTsevlFnoBs9Ld3lLK7U28MBgRUd+Fr8f4
+	GmSQUpUVGLcJo1iu3eb/Hu92RodtssHa5h90x5ijqXDqrc1u4tw4oxZdmtNwhH4TnGn5IORurP8OM
+	tkoXpPLA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vnj4F-000000091Cm-17gp;
-	Wed, 04 Feb 2026 20:01:39 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vnj4D-00000009194-3vKd
-	for barebox@bombadil.infradead.org;
+	id 1vnj4D-0000000919l-2KdC;
 	Wed, 04 Feb 2026 20:01:37 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=hwgnaRjaBpp9GljUxw9j8BrnlEYndu7Ok0GFofg0GYg=; b=ot4wHRdtC51yNF4m76dzWrp+XL
-	BLaZrzhOp9cVB/v1ddPZOyxSAZm6IOBMoktiPj8dY3VOq93Wuy9wg1Anja7NNDlQhlBlPgg3O82XG
-	TjfG87RQSgES/kvHdxNxGQZz7vAWFRcH6BcdruxgRSaMMwGmIKRNTR3TYBm4nzXHPukFYRYlifc3X
-	ZuzGrYynGcvs0FbCBf14eE7ed9p56phl9NutUKx+7Q/PG+3gRp7V2qz7pLHSpL1IGOUV4rcwc+UEL
-	yyCswqjBpK3b0YJs5VfqhcMl1JLlu80BC9rebkc+AXEHtpomdh+CA0/23q1sqxi7z2NkXO2ld0l9A
-	v+zx97Pg==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vnj44-00000001BQN-0wmr
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vnj4A-0000000914I-2GmQ
 	for barebox@lists.infradead.org;
 	Wed, 04 Feb 2026 20:01:35 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1vnj40-0005Eh-Tu; Wed, 04 Feb 2026 21:01:24 +0100
+	id 1vnj41-0005Eh-2C; Wed, 04 Feb 2026 21:01:25 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Wed, 04 Feb 2026 21:01:23 +0100
+Date: Wed, 04 Feb 2026 21:01:27 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260204-v2025-09-0-topic-optee-of-handling-v2-7-da075e6818e0@pengutronix.de>
+Message-Id: <20260204-v2025-09-0-topic-optee-of-handling-v2-11-da075e6818e0@pengutronix.de>
 References: <20260204-v2025-09-0-topic-optee-of-handling-v2-0-da075e6818e0@pengutronix.de>
 In-Reply-To: <20260204-v2025-09-0-topic-optee-of-handling-v2-0-da075e6818e0@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
-Cc: Marco Felsch <m.felsch@pengutronix.de>, 
- Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Marco Felsch <m.felsch@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260204_200132_665365_95602486 
-X-CRM114-Status: GOOD (  11.57  )
+X-CRM114-CacheID: sfid-20260204_120134_616610_60F03452 
+X-CRM114-Status: GOOD (  13.60  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,75 +73,100 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 07/15] ARM: i.MX8M: esdctl: drop ddrc base from
- imx8m_ddrc_sdram_size
+Subject: [PATCH v2 11/15] security: optee: add optee_handoff_overlay helper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-All i.MX8M use the same DDRC MMIO address. Therefore drop the ddrc param
-from imx8m_ddrc_sdram_size() and set it locally.
+Add a helper to pass the OP-TEE provided overlay to barebox via the
+handoff mechanism. This can be useful to generalize the reserved-memory
+node handling since OP-TEE can provide this information via the overlay
+if configured in OP-TEE.
 
-While on it drop the param from _imx8m_ddrc_add_mem() as well since it
-is no longer needed to be passed to imx8m_ddrc_sdram_size().
+While on it sort the include headers in alphabetical order.
 
-Acked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- arch/arm/mach-imx/esdctl.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ include/tee/optee.h |  5 +++++
+ security/Kconfig    |  9 +++++++++
+ security/optee.c    | 15 ++++++++++++++-
+ 3 files changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
-index 935c3d32571dfa6a2a6252f981054b2e8f7c4cbd..d89755f672b5e12e6be44dae14b58931548dd889 100644
---- a/arch/arm/mach-imx/esdctl.c
-+++ b/arch/arm/mach-imx/esdctl.c
-@@ -468,8 +468,9 @@ static void imx_ddrc_set_mstr_device_config(u32 *mstr, unsigned bits)
- 	*mstr |= FIELD_PREP(DDRC_MSTR_DEVICE_CONFIG, fls(bits / 8));
+diff --git a/include/tee/optee.h b/include/tee/optee.h
+index 10e829c04f8832c4c04771800f1963e25f425482..7126e3c6e24bbf0f37aee7827dc3b4d9619d3bc3 100644
+--- a/include/tee/optee.h
++++ b/include/tee/optee.h
+@@ -37,6 +37,7 @@ int optee_verify_header (const struct optee_header *hdr);
+ 
+ void optee_set_membase(const struct optee_header *hdr);
+ int optee_get_membase(u64 *membase);
++void optee_handoff_overlay(void *ovl, unsigned int ovl_sz);
+ 
+ #else
+ 
+@@ -49,6 +50,10 @@ static inline int optee_get_membase(u64 *membase)
+ 	return -ENOSYS;
  }
  
--static resource_size_t imx8m_ddrc_sdram_size(void __iomem *ddrc, unsigned buswidth)
-+static resource_size_t imx8m_ddrc_sdram_size(unsigned buswidth)
- {
-+	void __iomem *ddrc = IOMEM(MX8M_DDRC_CTL_BASE_ADDR);
- 	const u32 addrmap[DDRC_ADDRMAP_LENGTH] = {
- 		readl(ddrc + DDRC_ADDRMAP(0)),
- 		readl(ddrc + DDRC_ADDRMAP(1)),
-@@ -519,10 +520,10 @@ static resource_size_t imx8m_ddrc_sdram_size(void __iomem *ddrc, unsigned buswid
- 				   reduced_adress_space, mstr);
++void optee_handoff_overlay(void *ovl, unsigned int ovl_sz)
++{
++}
++
+ #endif /* CONFIG_HAVE_OPTEE */
+ 
+ #ifdef __PBL__
+diff --git a/security/Kconfig b/security/Kconfig
+index 40d468ae07d2b1d4357542df88a0a92eeb3d365f..fec299cf21e459d6e9d4e13946dcfc247db4a822 100644
+--- a/security/Kconfig
++++ b/security/Kconfig
+@@ -117,6 +117,15 @@ config HAVE_OPTEE
+ 	  bidirectional communication with OP-TEE is enabled via
+ 	  CONFIG_OPTEE.
+ 
++config OPTEE_APPLY_OVERLAY
++	bool "Apply OP-TEE DTBO to barebox and kernel DT"
++	depends on HAVE_OPTEE
++	help
++	  Apply the OP-TEE provided device-tree overlay to internal barebox DT
++	  and the kernel DT if this option is enabled. This requires barebox
++	  machine support and the board lowlevel code to pass the barebox
++	  internal DT to OP-TEE while booting.
++
+ config OPTEE_SIZE
+ 	hex
+ 	default 0x02000000
+diff --git a/security/optee.c b/security/optee.c
+index 422bc1c90924ba8ab266b1aa8d06e52c819d2010..d2cda9d77b85947ff222390177666e75e54f9adb 100644
+--- a/security/optee.c
++++ b/security/optee.c
+@@ -2,10 +2,12 @@
+ 
+ #define pr_fmt(fmt) "optee: " fmt
+ 
+-#include <tee/optee.h>
++#include <compressed-dtb.h>
+ #include <linux/printk.h>
+ #include <linux/errno.h>
+ #include <linux/limits.h>
++#include <pbl/handoff-data.h>
++#include <tee/optee.h>
+ 
+ static u64 optee_membase = U64_MAX;
+ 
+@@ -60,3 +62,14 @@ void optee_set_membase(const struct optee_header *hdr)
+ 	optee_membase = (u64)hdr->init_load_addr_hi << 32;
+ 	optee_membase |= hdr->init_load_addr_lo;
  }
- 
--static int _imx8m_ddrc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data,
-+static int _imx8m_ddrc_add_mem(const struct imx_esdctl_data *data,
- 			       unsigned int buswidth)
- {
--	resource_size_t size = imx8m_ddrc_sdram_size(mmdcbase, buswidth);
-+	resource_size_t size = imx8m_ddrc_sdram_size(buswidth);
- 	resource_size_t size0, size1;
- 	int ret;
- 
-@@ -556,12 +557,12 @@ static int _imx8m_ddrc_add_mem(void *mmdcbase, const struct imx_esdctl_data *dat
- 
- static int imx8m_ddrc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data)
- {
--	return _imx8m_ddrc_add_mem(mmdcbase, data, 32);
-+	return _imx8m_ddrc_add_mem(data, 32);
- }
- 
- static int imx8mn_ddrc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data)
- {
--	return _imx8m_ddrc_add_mem(mmdcbase, data, 16);
-+	return _imx8m_ddrc_add_mem(data, 16);
- }
- 
- #define IMX9_DDRC_CS_CONFIG(n)	(0x80 + (n) * 4)
-@@ -1002,7 +1003,7 @@ resource_size_t imx8m_barebox_earlymem_size(unsigned buswidth)
- {
- 	resource_size_t size;
- 
--	size = imx8m_ddrc_sdram_size(IOMEM(MX8M_DDRC_CTL_BASE_ADDR), buswidth);
-+	size = imx8m_ddrc_sdram_size(buswidth);
- 	/*
- 	 * We artificially limit detected memory size to force malloc
- 	 * pool placement to be within 4GiB address space, so as to
++
++void optee_handoff_overlay(void *ovl, unsigned int ovl_sz)
++{
++	if (!IS_ENABLED(CONFIG_OPTEE_APPLY_OVERLAY))
++		return;
++
++	if (!blob_is_fdt(ovl))
++		return;
++
++	handoff_data_add(HANDOFF_DATA_TEE_DT_OVL, ovl, ovl_sz);
++}
 
 -- 
 2.47.3
