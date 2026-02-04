@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vnj4r-008rpP-2Z
+	id 1vnj4s-008rpg-0Y
 	for lore@lore.pengutronix.de;
 	Wed, 04 Feb 2026 21:02:17 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vnj4p-0005ys-52
+	id 1vnj4n-0005xO-Jx
 	for lore@pengutronix.de; Wed, 04 Feb 2026 21:02:17 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,41 +18,41 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=EAGJWmlMnepDNUfgG0beJbbQLzABFvHVnADiioWRhgQ=; b=rkcpHm6odaTNdP7LoRvQsKSfsP
-	GahAiP6eX0NC9aL47dIlcdiOTFvp5ALeut9IebZY0fuqvlTrt14ftKzR6nqoo2B9K0INsWM2/caoY
-	LkO6GkrOOGjzqDKHuHhG9KufPrrfjaPV6UDppsgtSV4Fb6eiXyg/ZlWL0hGuL4ab0HS9+DQJJRiKH
-	YuAUI4JiYe0ESlV+2wj/1WPumBgwtsNYefL2U0Pl+cKmOR6gzz8RprRo42AiVmJoKRpSMMODXuKmW
-	z9w7oQWeLBDQy9N6tMBk3fAJO5JEuWPtehcK7jqCrj+oTHH7HzvSVVZhoNDxvEbGku8xwDy9ddknh
-	dQ61fiXw==;
+	bh=1wScaE3/c4NCrtwduQlNuyD/RbMzytesvuOL46BuiTI=; b=lKZeIaMOd8X5VHLMlxDER+CxAE
+	t4XEf6DAoCIbzgamVdOpEreiVntdh1LHo/OPKx5vk5LsZcWmHpDXD5duyEkGaHRwq55wVrnlP9/Hl
+	cCw7DQjahI8IW9JlAlHNYLnQePb19oulGzicdQpGs7/RllKi6bhNAluAMqf8U641jCuUAk5JumlIH
+	L9Hjjf32XgNDl0v411b2Rl7IU8yPTgX3HRZHckYmFkqzqFbM/GOJHNWka3jOj52QNF5jwxEdJZHfC
+	L7CPabvZreh9BudqghnN7Hs2Mxjgg3pbkyTA3wm82cgUBZ7r0ifeEXDH2f8FvQ7FCPO17ooPKMiVU
+	jEbrTuBg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vnj4A-0000000915Z-3yYc;
-	Wed, 04 Feb 2026 20:01:34 +0000
+	id 1vnj4B-0000000915t-0zdP;
+	Wed, 04 Feb 2026 20:01:35 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vnj42-000000090yo-3sTx
+	id 1vnj44-00000009115-2Knn
 	for barebox@lists.infradead.org;
 	Wed, 04 Feb 2026 20:01:31 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1vnj40-0005Eh-NU; Wed, 04 Feb 2026 21:01:24 +0100
+	id 1vnj40-0005Eh-OW; Wed, 04 Feb 2026 21:01:24 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Wed, 04 Feb 2026 21:01:17 +0100
+Date: Wed, 04 Feb 2026 21:01:18 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260204-v2025-09-0-topic-optee-of-handling-v2-1-da075e6818e0@pengutronix.de>
+Message-Id: <20260204-v2025-09-0-topic-optee-of-handling-v2-2-da075e6818e0@pengutronix.de>
 References: <20260204-v2025-09-0-topic-optee-of-handling-v2-0-da075e6818e0@pengutronix.de>
 In-Reply-To: <20260204-v2025-09-0-topic-optee-of-handling-v2-0-da075e6818e0@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
-Cc: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Marco Felsch <m.felsch@pengutronix.de>, 
+ Ahmad Fatoum <a.fatoum@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260204_120127_062800_0E479117 
-X-CRM114-Status: UNSURE (   9.98  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260204_120128_769140_223C64E0 
+X-CRM114-Status: GOOD (  14.60  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,101 +74,299 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 01/15] ARM: i.MX8M: add support to pass DT via lowlevel
- __imx8m*_load_and_start_image_via_tfa()
+Subject: [PATCH v2 02/15] ARM: i.MX8M: move BL32 setup into
+ imx8m_tfa_start_bl31()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The internal barebox DTB isn't passed to other BL3x stages albeit it can
-be very useful, e.g. OP-TEE (as BL32) could parse the memory
-configuration from the DTB.
+Each i.MX8M platform repeated the same pattern for loading the optional
+BL32 image because of the firmware name handling and the BL32 location
+(end of memory).
 
-To avoid unnecessary API breakage, the FDT support is only added to the
-lowlevel __imx8m*_load_and_start_image_via_tfa() TF-A load
-helpers. This is the first step to be able to pass the board DTB to
-other BL3x firmware images.
+The firmware name handling can't be generalized without change the logic
+to function-like macros but the rest can be handled within the common
+imx8m_tfa_start_bl31() function.
 
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- arch/arm/mach-imx/atf.c  | 16 ++++++++--------
- include/mach/imx/xload.h |  8 ++++----
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ arch/arm/mach-imx/atf.c | 153 ++++++++++++++++++++++--------------------------
+ 1 file changed, 70 insertions(+), 83 deletions(-)
 
 diff --git a/arch/arm/mach-imx/atf.c b/arch/arm/mach-imx/atf.c
-index 3e1eac66f41456c24e5e0fbfa78c30211db1bcba..a8fc017fb6c86b807aef465226808144514c28f7 100644
+index a8fc017fb6c86b807aef465226808144514c28f7..a7ec09ea7e9a90e3af7c01126bb6da9626d2d09d 100644
 --- a/arch/arm/mach-imx/atf.c
 +++ b/arch/arm/mach-imx/atf.c
-@@ -160,10 +160,10 @@ static void imx_adjust_optee_memory(void **bl32, void **bl32_image, size_t *bl32
+@@ -19,30 +19,75 @@
+ #include <mach/imx/xload.h>
+ #include <mach/imx/snvs.h>
  
++static void imx_adjust_optee_memory(void **bl32, void **bl32_image, size_t *bl32_size)
++{
++	struct optee_header *hdr = *bl32_image;
++	u64 membase;
++
++	if (optee_verify_header(hdr))
++		return;
++
++	imx_scratch_save_optee_hdr(hdr);
++
++	membase = (u64)hdr->init_load_addr_hi << 32;
++	membase |= hdr->init_load_addr_lo;
++
++	*bl32 = (void *)membase;
++	*bl32_size -= sizeof(*hdr);
++	*bl32_image += sizeof(*hdr);
++}
++
+ /**
+  * imx8m_tfa_start_bl31 - Load TF-A BL31 blob and transfer control to it
+  *
+  * @tfa:	Pointer to the BL31 blob
+  * @tfa_size:	Size of the BL31 blob
+  * @tfa_dest:	Place where the BL31 is copied to and executed
++ * @tee:	Pointer to the optional BL32 blob
++ * @tee_size:	Size of the optional BL32 blob
+  *
+  * This function:
+  *
+- *     1. Copies built-in BL31 blob to an address i.MX8M's BL31
++ *     1. Copies built-in BL32 blob (if any) to the well-known OP-TEE address
++ *        (end of RAM) or the address specified via the OP-TEE v2 header if
++ *        found.
++ *
++ *     2. Copies built-in BL31 blob to an address i.MX8M's BL31
+  *        expects to be placed (TF-A v2.8+ is position-independent)
+  *
+- *     2. Sets up temporary stack pointer for EL2, which is execution
++ *     3. Sets up temporary stack pointer for EL2, which is execution
+  *        level that BL31 will drop us off at after it completes its
+  *        initialization routine
+  *
+- *     3. Transfers control to BL31
++ *     4. Transfers control to BL31
+  */
+ 
+-static __noreturn void imx8m_tfa_start_bl31(const void *tfa_bin, size_t tfa_size, void *tfa_dest)
++static __noreturn void
++imx8m_tfa_start_bl31(const void *tfa_bin, size_t tfa_size, void *tfa_dest,
++		     void *tee_bin, size_t tee_size)
+ {
+ 	void __noreturn (*bl31)(void) = tfa_dest;
++	unsigned long endmem;
++	void *bl32 = NULL;
+ 	int ret;
+ 
++	endmem = MX8M_DDR_CSD1_BASE_ADDR;
++	if (cpu_is_mx8mn())
++		endmem += imx8m_barebox_earlymem_size(16);
++	else
++		endmem += imx8m_barebox_earlymem_size(32);
++
++	/* TEE (BL32) handling */
++	if (tee_bin && tee_size) {
++		imx8m_tzc380_init();
++
++		bl32 = (void *)arm_mem_optee(endmem);
++		imx_adjust_optee_memory(&bl32, &tee_bin, &tee_size);
++
++		memcpy(bl32, tee_bin, tee_size);
++	}
++
++	/* TF-A (BL31) handling */
+ 	BUG_ON(tfa_size > MX8M_ATF_BL31_SIZE_LIMIT);
+ 
+ 	if (IS_ENABLED(CONFIG_FSL_CAAM_RNG_PBL_INIT)) {
+@@ -70,7 +115,7 @@ static __noreturn void imx8m_tfa_start_bl31(const void *tfa_bin, size_t tfa_size
+ 	 */
+ 	pr_debug("and jumping with SP: %p\n", tfa_dest - 16);
+ 
+-
++	/* Stack setup and BL31 jump */
+ 	asm volatile("msr sp_el2, %0" : :
+ 		     "r" (tfa_dest - 16) :
+ 		     "cc");
+@@ -140,24 +185,6 @@ void imx8mm_load_bl33(void *bl33)
+ 	memcpy(bl33, __image_start, barebox_pbl_size);
+ }
+ 
+-static void imx_adjust_optee_memory(void **bl32, void **bl32_image, size_t *bl32_size)
+-{
+-	struct optee_header *hdr = *bl32_image;
+-	u64 membase;
+-
+-	if (optee_verify_header(hdr))
+-		return;
+-
+-	imx_scratch_save_optee_hdr(hdr);
+-
+-	membase = (u64)hdr->init_load_addr_hi << 32;
+-	membase |= hdr->init_load_addr_lo;
+-
+-	*bl32 = (void *)membase;
+-	*bl32_size -= sizeof(*hdr);
+-	*bl32_image += sizeof(*hdr);
+-}
+-
  __noreturn void imx8mm_load_and_start_image_via_tfa(void)
  {
--	__imx8mm_load_and_start_image_via_tfa((void *)MX8M_ATF_BL33_BASE_ADDR);
-+	__imx8mm_load_and_start_image_via_tfa(NULL, (void *)MX8M_ATF_BL33_BASE_ADDR);
- }
- 
--__noreturn void __imx8mm_load_and_start_image_via_tfa(void *bl33)
-+__noreturn void __imx8mm_load_and_start_image_via_tfa(void *fdt, void *bl33)
+ 	__imx8mm_load_and_start_image_via_tfa(NULL, (void *)MX8M_ATF_BL33_BASE_ADDR);
+@@ -167,7 +194,8 @@ __noreturn void __imx8mm_load_and_start_image_via_tfa(void *fdt, void *bl33)
  {
  	const void *bl31;
  	size_t bl31_size;
-@@ -235,10 +235,10 @@ void imx8mp_load_bl33(void *bl33)
+-	unsigned long endmem = MX8M_DDR_CSD1_BASE_ADDR + imx8m_barebox_earlymem_size(32);
++	void *bl32 = NULL;
++	size_t bl32_size = 0;
  
- __noreturn void imx8mp_load_and_start_image_via_tfa(void)
- {
--	__imx8mp_load_and_start_image_via_tfa((void *)MX8M_ATF_BL33_BASE_ADDR);
-+	__imx8mp_load_and_start_image_via_tfa(NULL, (void *)MX8M_ATF_BL33_BASE_ADDR);
+ 	imx_set_cpu_type(IMX_CPU_IMX8MM);
+ 	imx8mm_init_scratch_space();
+@@ -176,25 +204,14 @@ __noreturn void __imx8mm_load_and_start_image_via_tfa(void *fdt, void *bl33)
+ 	imx8mm_load_bl33(bl33);
+ 
+ 	if (IS_ENABLED(CONFIG_FIRMWARE_IMX8MM_OPTEE)) {
+-		void *bl32 = (void *)arm_mem_optee(endmem);
+-		size_t bl32_size;
+-		void *bl32_image;
+-
+-		imx8m_tzc380_init();
+-		get_builtin_firmware_ext(imx8mm_bl32_bin,
+-				bl33, &bl32_image,
+-				&bl32_size);
+-
+-		imx_adjust_optee_memory(&bl32, &bl32_image, &bl32_size);
+-
+-		memcpy(bl32, bl32_image, bl32_size);
+-
++		get_builtin_firmware_ext(imx8mm_bl32_bin, bl33, &bl32, &bl32_size);
+ 		get_builtin_firmware(imx8mm_bl31_bin_optee, &bl31, &bl31_size);
+ 	} else {
+ 		get_builtin_firmware(imx8mm_bl31_bin, &bl31, &bl31_size);
+ 	}
+ 
+-	imx8m_tfa_start_bl31(bl31, bl31_size, (void *)MX8MM_ATF_BL31_BASE_ADDR);
++	imx8m_tfa_start_bl31(bl31, bl31_size, (void *)MX8MM_ATF_BL31_BASE_ADDR,
++			     bl32, bl32_size);
  }
  
--__noreturn void __imx8mp_load_and_start_image_via_tfa(void *bl33)
-+__noreturn void __imx8mp_load_and_start_image_via_tfa(void *fdt, void *bl33)
+ void imx8mp_load_bl33(void *bl33)
+@@ -242,7 +259,8 @@ __noreturn void __imx8mp_load_and_start_image_via_tfa(void *fdt, void *bl33)
  {
  	const void *bl31;
  	size_t bl31_size;
-@@ -310,10 +310,10 @@ void imx8mn_load_bl33(void *bl33)
+-	unsigned long endmem = MX8M_DDR_CSD1_BASE_ADDR + imx8m_barebox_earlymem_size(32);
++	void *bl32 = NULL;
++	size_t bl32_size = 0;
  
- __noreturn void imx8mn_load_and_start_image_via_tfa(void)
- {
--	__imx8mn_load_and_start_image_via_tfa((void *)MX8M_ATF_BL33_BASE_ADDR);
-+	__imx8mn_load_and_start_image_via_tfa(NULL, (void *)MX8M_ATF_BL33_BASE_ADDR);
+ 	imx_set_cpu_type(IMX_CPU_IMX8MP);
+ 	imx8mp_init_scratch_space();
+@@ -251,25 +269,14 @@ __noreturn void __imx8mp_load_and_start_image_via_tfa(void *fdt, void *bl33)
+ 	imx8mp_load_bl33(bl33);
+ 
+ 	if (IS_ENABLED(CONFIG_FIRMWARE_IMX8MP_OPTEE)) {
+-		void *bl32 = (void *)arm_mem_optee(endmem);
+-		size_t bl32_size;
+-		void *bl32_image;
+-
+-		imx8m_tzc380_init();
+-		get_builtin_firmware_ext(imx8mp_bl32_bin,
+-				bl33, &bl32_image,
+-				&bl32_size);
+-
+-		imx_adjust_optee_memory(&bl32, &bl32_image, &bl32_size);
+-
+-		memcpy(bl32, bl32_image, bl32_size);
+-
++		get_builtin_firmware_ext(imx8mp_bl32_bin, bl33, &bl32, &bl32_size);
+ 		get_builtin_firmware(imx8mp_bl31_bin_optee, &bl31, &bl31_size);
+ 	} else {
+ 		get_builtin_firmware(imx8mp_bl31_bin, &bl31, &bl31_size);
+ 	}
+ 
+-	imx8m_tfa_start_bl31(bl31, bl31_size, (void *)MX8MP_ATF_BL31_BASE_ADDR);
++	imx8m_tfa_start_bl31(bl31, bl31_size, (void *)MX8MP_ATF_BL31_BASE_ADDR,
++			     bl32, bl32_size);
  }
  
--__noreturn void __imx8mn_load_and_start_image_via_tfa(void *bl33)
-+__noreturn void __imx8mn_load_and_start_image_via_tfa(void *fdt, void *bl33)
+ void imx8mn_load_bl33(void *bl33)
+@@ -317,7 +324,8 @@ __noreturn void __imx8mn_load_and_start_image_via_tfa(void *fdt, void *bl33)
  {
  	const void *bl31;
  	size_t bl31_size;
-@@ -379,10 +379,10 @@ void imx8mq_load_bl33(void *bl33)
+-	unsigned long endmem = MX8M_DDR_CSD1_BASE_ADDR + imx8m_barebox_earlymem_size(16);
++	void *bl32 = NULL;
++	size_t bl32_size = 0;
  
- __noreturn void imx8mq_load_and_start_image_via_tfa(void)
- {
--	__imx8mq_load_and_start_image_via_tfa((void *)MX8M_ATF_BL33_BASE_ADDR);
-+	__imx8mq_load_and_start_image_via_tfa(NULL, (void *)MX8M_ATF_BL33_BASE_ADDR);
+ 	imx_set_cpu_type(IMX_CPU_IMX8MN);
+ 	imx8mn_init_scratch_space();
+@@ -326,25 +334,14 @@ __noreturn void __imx8mn_load_and_start_image_via_tfa(void *fdt, void *bl33)
+ 	imx8mn_load_bl33(bl33);
+ 
+ 	if (IS_ENABLED(CONFIG_FIRMWARE_IMX8MN_OPTEE)) {
+-		void *bl32 = (void *)arm_mem_optee(endmem);
+-		size_t bl32_size;
+-		void *bl32_image;
+-
+-		imx8m_tzc380_init();
+-		get_builtin_firmware_ext(imx8mn_bl32_bin,
+-				bl33, &bl32_image,
+-				&bl32_size);
+-
+-		imx_adjust_optee_memory(&bl32, &bl32_image, &bl32_size);
+-
+-		memcpy(bl32, bl32_image, bl32_size);
+-
++		get_builtin_firmware_ext(imx8mn_bl32_bin, bl33, &bl32, &bl32_size);
+ 		get_builtin_firmware(imx8mn_bl31_bin_optee, &bl31, &bl31_size);
+ 	} else {
+ 		get_builtin_firmware(imx8mn_bl31_bin, &bl31, &bl31_size);
+ 	}
+ 
+-	imx8m_tfa_start_bl31(bl31, bl31_size, (void *)MX8MN_ATF_BL31_BASE_ADDR);
++	imx8m_tfa_start_bl31(bl31, bl31_size, (void *)MX8MN_ATF_BL31_BASE_ADDR,
++			     bl32, bl32_size);
  }
  
--__noreturn void __imx8mq_load_and_start_image_via_tfa(void *bl33)
-+__noreturn void __imx8mq_load_and_start_image_via_tfa(void *fdt, void *bl33)
+ void imx8mq_load_bl33(void *bl33)
+@@ -386,7 +383,8 @@ __noreturn void __imx8mq_load_and_start_image_via_tfa(void *fdt, void *bl33)
  {
  	const void *bl31;
  	size_t bl31_size;
-diff --git a/include/mach/imx/xload.h b/include/mach/imx/xload.h
-index 396c728547614091fc710de50dc1583c6b6e2a68..9a9827156257847411ac34f02c6fe6633f6fb11a 100644
---- a/include/mach/imx/xload.h
-+++ b/include/mach/imx/xload.h
-@@ -33,10 +33,10 @@ void __noreturn imx8mm_load_and_start_image_via_tfa(void);
- void __noreturn imx8mn_load_and_start_image_via_tfa(void);
- void __noreturn imx8mp_load_and_start_image_via_tfa(void);
- void __noreturn imx8mq_load_and_start_image_via_tfa(void);
--void __noreturn __imx8mm_load_and_start_image_via_tfa(void *bl33);
--void __noreturn __imx8mn_load_and_start_image_via_tfa(void *bl33);
--void __noreturn __imx8mp_load_and_start_image_via_tfa(void *bl33);
--void __noreturn __imx8mq_load_and_start_image_via_tfa(void *bl33);
-+void __noreturn __imx8mm_load_and_start_image_via_tfa(void *fdt, void *bl33);
-+void __noreturn __imx8mn_load_and_start_image_via_tfa(void *fdt, void *bl33);
-+void __noreturn __imx8mp_load_and_start_image_via_tfa(void *fdt, void *bl33);
-+void __noreturn __imx8mq_load_and_start_image_via_tfa(void *fdt, void *bl33);
+-	unsigned long endmem = MX8M_DDR_CSD1_BASE_ADDR + imx8m_barebox_earlymem_size(32);
++	void *bl32 = NULL;
++	size_t bl32_size = 0;
  
- void __noreturn imx93_load_and_start_image_via_tfa(void);
- void __noreturn __imx93_load_and_start_image_via_tfa(void *bl33);
+ 	imx_set_cpu_type(IMX_CPU_IMX8MQ);
+ 	imx8mq_init_scratch_space();
+@@ -395,25 +393,14 @@ __noreturn void __imx8mq_load_and_start_image_via_tfa(void *fdt, void *bl33)
+ 	imx8mq_load_bl33(bl33);
+ 
+ 	if (IS_ENABLED(CONFIG_FIRMWARE_IMX8MQ_OPTEE)) {
+-		void *bl32 = (void *)arm_mem_optee(endmem);
+-		size_t bl32_size;
+-		void *bl32_image;
+-
+-		imx8m_tzc380_init();
+-		get_builtin_firmware_ext(imx8mq_bl32_bin,
+-				bl33, &bl32_image,
+-				&bl32_size);
+-
+-		imx_adjust_optee_memory(&bl32, &bl32_image, &bl32_size);
+-
+-		memcpy(bl32, bl32_image, bl32_size);
+-
++		get_builtin_firmware_ext(imx8mq_bl32_bin, bl33, &bl32, &bl32_size);
+ 		get_builtin_firmware(imx8mq_bl31_bin_optee, &bl31, &bl31_size);
+ 	} else {
+ 		get_builtin_firmware(imx8mq_bl31_bin, &bl31, &bl31_size);
+ 	}
+ 
+-	imx8m_tfa_start_bl31(bl31, bl31_size, (void *)MX8MQ_ATF_BL31_BASE_ADDR);
++	imx8m_tfa_start_bl31(bl31, bl31_size, (void *)MX8MQ_ATF_BL31_BASE_ADDR,
++			     bl32, bl32_size);
+ }
+ 
+ void __noreturn imx93_load_and_start_image_via_tfa(void)
 
 -- 
 2.47.3
