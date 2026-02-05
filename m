@@ -3,55 +3,59 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vo1YJ-009AVE-0w
+	id 1vo1YJ-009AVF-10
 	for lore@lore.pengutronix.de;
 	Thu, 05 Feb 2026 16:45:54 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vo1YI-0006dG-3m
+	id 1vo1YI-0006dJ-5z
 	for lore@pengutronix.de; Thu, 05 Feb 2026 16:45:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=la3sMgyUyILrNS+ZNMgHjCPAq1WRFB7OW+6R2+IpR+A=; b=SaIusKEtF3XxaqrAtrA7lUZaAl
-	kqfxknpnHRB8mv67g8U/B1m7PQUOcjJJI2taHNTiVJWpFYe+NDwZ8XVaTx8Sl4PBVqWKmbivQhWHa
-	XPMCTbtWijnRaH7eixNuvK3BFW3RcBZnGzgiQuQl8FmsvSG8DeojNkv44oKICoVSzXM+cMy+ACnbz
-	75dnrLlhG/vUFrp0tptmogVyfKJaDMWBJ7//BUd4L0SuMbPV+3prP8HaiCuzdkhWTMMHqM/JNekjG
-	dxUN98yatDEwec41lFLgfnviQLIo5B8BPYG7sbWaRPPau6mzLxxSNDJGs1LFqKw+q2MuapzvebdqA
-	QcwU3QCQ==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=pWrcqjll85iQ0dW6z2G/zuqUiAuq8UitZuwXOktBBFU=; b=EbnVF4Sg6fQHPp
+	IeA6WH3XMZQvdyYgqg8hBePB3LFTmTk9FUbXUC19BVB2G6XWrvjQwujJm87BN67vBxmLqEeS92ojN
+	WjfNbafeQ0IevqMYC8Cn+/mW99gjQa62i8+s7u++IWH1+2SzqdVrveQtbJZ+M/TGSLL3xdUEU9dzc
+	4kUYmmD5nONsv9yT9MfIQwi3lXuH5Uw2P5CBIfVkO95bg97O5aGgtne2VKt8PHRAEi0XQxqIFokHU
+	GPn0d4+E7BjOUqcDqcPMed9fOpvQRQ4OirQ4HClp+WFO7rWItC/5c/D8EJ8G4F9S1BQhYxxU0lMBD
+	6G2Wfld/UW1B7L3qAnnA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vo1Xk-0000000A9o1-34y2;
-	Thu, 05 Feb 2026 15:45:20 +0000
+	id 1vo1Xn-0000000A9q8-1K8g;
+	Thu, 05 Feb 2026 15:45:23 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vo1Xf-0000000A9lx-1KL7
+	id 1vo1Xf-0000000A9lt-1Pwj
 	for barebox@lists.infradead.org;
-	Thu, 05 Feb 2026 15:45:16 +0000
+	Thu, 05 Feb 2026 15:45:21 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1vo1Xc-0006IY-AB; Thu, 05 Feb 2026 16:45:12 +0100
+	id 1vo1Xc-0006IY-5o; Thu, 05 Feb 2026 16:45:12 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Thu, 05 Feb 2026 16:45:06 +0100
+Date: Thu, 05 Feb 2026 16:45:02 +0100
+Message-Id: <20260205-vmaster-customers-leicageo-system1600-v1-0-a80b234ce1a1@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260205-vmaster-customers-leicageo-system1600-v1-4-a80b234ce1a1@pengutronix.de>
-References: <20260205-vmaster-customers-leicageo-system1600-v1-0-a80b234ce1a1@pengutronix.de>
-In-Reply-To: <20260205-vmaster-customers-leicageo-system1600-v1-0-a80b234ce1a1@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAP66hGkC/x2NwQrCMBAFf6Xs2YVN1Bz8FfEQ0pe6YBrJ1lIp/
+ XeDx2FgZidDUxjdhp0aVjWtcwd3Gig94zyBdexMXnwQL1deS7QFjdPHllrQjF/QFCdUtm83xQU
+ RzsGfvQDjxWXqrXdD1u3/uT+O4wfYkuKFdwAAAA==
+X-Change-ID: 20260205-vmaster-customers-leicageo-system1600-f62320eed41f
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
-Cc: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Marco Felsch <m.felsch@pengutronix.de>, 
+ Johannes Schneider <johannes.schneider@leica-geosystems.com>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260205_074515_356056_8AD33974 
-X-CRM114-Status: GOOD (  17.85  )
+X-CRM114-CacheID: sfid-20260205_074515_380317_95CD3646 
+X-CRM114-Status: UNSURE (   9.29  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,148 +77,81 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 4/5] watchdog: Add Hexagon EFI watchdog driver
+Subject: [PATCH 0/5] Hexagon Geosystems GS05 Board Support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The EFI system co-processor implements a watchdog device which must be
-pinged to inform the MCU that the system is up and running.
+Hi,
 
-Normaly the ping is done by Linux but sometimes it can become necessary
-to do it within barebox too, e.g. to allow barebox debugging and
-development.
+this series adds the support for the Hexagon Geosystems GS05 product
+[1]. The GS05 is part of a larger product family from SW pov, therefore
+most logic is implemented below 'common/boards/hgs'.
+
+The board support was added before the new security-profiles made it
+into barebox mainline, therefore security-profiles aren't used yet but
+maybe in the future.
+
+Further products will be send mainline as well, once this basic support
+got merged.
+
+Patch1-2 were also sent here [2] in parallel.
+
+Regards,
+  Marco
+
+[1] https://leica-geosystems.com/de-de/products/gnss-systems/smart-antennas/leica-gs05
+[2] https://lore.kernel.org/barebox/20260204151645.1426068-1-m.felsch@pengutronix.de/
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- drivers/watchdog/Kconfig       |  9 +++++
- drivers/watchdog/Makefile      |  1 +
- drivers/watchdog/hgs_efi_wdt.c | 88 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 98 insertions(+)
+Marco Felsch (5):
+      ARM: i.MX8MM: add MX8MM_PAD_CTL defines
+      lib: hexdump: make use of pr_print
+      mfd: Add Hexagon EFI driver
+      watchdog: Add Hexagon EFI watchdog driver
+      ARM: i.MX8MM: add Hexagon Geosystems GS05
 
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index bf18782bdb58b20240d7762ce32f98c78c4cd12d..c962e8f22e5a7cb21ee93b3f82189cc8536781b9 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -195,4 +195,13 @@ config K3_RTI_WDT
- 	  Say Y here if you want to include support for the K3 watchdog
- 	  timer (RTI module) available in the K3 generation of processors.
- 
-+config HGS_EFI_WATCHDOG
-+	bool "Hexagon Geosystems EFI watchdog"
-+	depends on MFD_HGS_EFI || COMPILE_TEST
-+	help
-+	  Say Y here if you want to include support for the Hexagon Geosystems
-+	  EFI watchdog timer.
-+
-+	  If unsure, say N.
-+
- endif
-diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
-index 85d8dbfa3f83d868ad84935ab98c5f7f64922f8e..187ab247ddcf61f9db8137425b3234b60a7062ac 100644
---- a/drivers/watchdog/Makefile
-+++ b/drivers/watchdog/Makefile
-@@ -25,3 +25,4 @@ obj-$(CONFIG_STARFIVE_WDT) += starfive_wdt.o
- obj-$(CONFIG_WDAT_WDT) += wdat_wdt.o
- obj-$(CONFIG_CADENCE_WATCHDOG) += cadence_wdt.o
- obj-$(CONFIG_K3_RTI_WDT) += rti_wdt.o
-+obj-$(CONFIG_HGS_EFI_WATCHDOG) += hgs_efi_wdt.o
-diff --git a/drivers/watchdog/hgs_efi_wdt.c b/drivers/watchdog/hgs_efi_wdt.c
-new file mode 100644
-index 0000000000000000000000000000000000000000..985d6515c7e6643047ba98cf4c11d2570a030d54
---- /dev/null
-+++ b/drivers/watchdog/hgs_efi_wdt.c
-@@ -0,0 +1,88 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+// SPDX-FileCopyrightText: 2025 Pengutronix
-+
-+#include <common.h>
-+#include <init.h>
-+#include <of_device.h>
-+#include <watchdog.h>
-+
-+#include <mfd/hgs-efi.h>
-+
-+struct hgs_efi_wdt_data {
-+	unsigned int msg_id;
-+};
-+
-+struct hgs_efi_wdt {
-+	struct watchdog wdd;
-+	struct hgs_efi *efi;
-+	const struct hgs_efi_wdt_data *data;
-+	bool is_running;
-+};
-+
-+static struct hgs_efi_wdt *to_hgs_efi_wdt(struct watchdog *wdd)
-+{
-+	return container_of(wdd, struct hgs_efi_wdt, wdd);
-+}
-+
-+static int hgs_efi_wdt_set_timeout(struct watchdog *wdd, unsigned int timeout)
-+{
-+	struct hgs_efi_wdt *efi_wd = to_hgs_efi_wdt(wdd);
-+	struct device *dev = &wdd->dev;
-+	struct hgs_sep_cmd cmd = {
-+		.type = HGS_SEP_MSG_TYPE_EVENT,
-+		.msg_id = efi_wd->data->msg_id,
-+	};
-+	int ret;
-+
-+	/* The watchdog can't be turned of */
-+	if (efi_wd->is_running && !timeout)
-+		return -ENOSYS;
-+
-+	/* The EFI watchdog doesn't have a timeout, once pinged */
-+	if (efi_wd->is_running)
-+		return 0;
-+
-+	ret = hgs_efi_exec(efi_wd->efi, &cmd);
-+	if (ret)
-+		dev_warn(dev, "Failed to send OsRunning/SystemReady\n");
-+
-+	return ret;
-+}
-+
-+static int hgs_efi_wdt_drv_probe(struct device *dev)
-+{
-+	struct hgs_efi_wdt *efi_wd;
-+	struct watchdog *wdd;
-+	int ret;
-+
-+	efi_wd = xzalloc(sizeof(*efi_wd));
-+	efi_wd->efi = dev_get_priv(dev->parent);
-+	efi_wd->data = of_device_get_match_data(dev);
-+
-+	wdd = &efi_wd->wdd;
-+	wdd->hwdev = dev;
-+	wdd->set_timeout = hgs_efi_wdt_set_timeout;
-+
-+	ret = watchdog_register(wdd);
-+	if (ret)
-+		dev_err(dev, "Failed to register watchdog device\n");
-+
-+	return ret;
-+}
-+
-+const struct hgs_efi_wdt_data hgs_efi_wdt_gs05 = {
-+	.msg_id = 0,
-+};
-+
-+static struct of_device_id hgs_efi_wdt_of_match[] = {
-+	{ .compatible = "hgs,efi-gs05-wdt", .data = &hgs_efi_wdt_gs05 },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, hgs_efi_wdt_of_match);
-+
-+static struct driver hgs_efi_wdt_driver = {
-+	.name		= "hgs-efi-wdt",
-+	.probe		= hgs_efi_wdt_drv_probe,
-+	.of_compatible	= hgs_efi_wdt_of_match,
-+};
-+device_platform_driver(hgs_efi_wdt_driver);
+ arch/arm/boards/Makefile                          |    1 +
+ arch/arm/boards/hgs-gs05/Makefile                 |    6 +
+ arch/arm/boards/hgs-gs05/board.c                  |  237 +++++
+ arch/arm/boards/hgs-gs05/flash-header-gs05.imxcfg |   12 +
+ arch/arm/boards/hgs-gs05/lowlevel.c               |  128 +++
+ arch/arm/boards/hgs-gs05/lpddr4-timing.c          | 1118 +++++++++++++++++++++
+ arch/arm/dts/Makefile                             |    1 +
+ arch/arm/dts/imx8m-hgs-common.dtsi                |   80 ++
+ arch/arm/dts/imx8mm-hgs-gs05.dts                  |  320 ++++++
+ arch/arm/mach-imx/Kconfig                         |    8 +
+ commands/ethlog.c                                 |    4 +-
+ common/boards/Kconfig                             |   12 +
+ common/boards/Makefile                            |    1 +
+ common/boards/hgs/Makefile                        |    7 +
+ common/boards/hgs/common.c                        |  627 ++++++++++++
+ common/boards/hgs/lib.c                           |   73 ++
+ common/boards/hgs/pbl.c                           |  100 ++
+ drivers/mfd/Kconfig                               |    8 +
+ drivers/mfd/Makefile                              |    1 +
+ drivers/mfd/hgs-efi.c                             |  473 +++++++++
+ drivers/mtd/ubi/attach.c                          |    2 +-
+ drivers/watchdog/Kconfig                          |    9 +
+ drivers/watchdog/Makefile                         |    1 +
+ drivers/watchdog/hgs_efi_wdt.c                    |   88 ++
+ fs/ubifs/debug.c                                  |    4 +-
+ images/Makefile.imx                               |    2 +
+ include/boards/hgs/common.h                       |   84 ++
+ include/linux/printk.h                            |    4 +-
+ include/mach/imx/iomux-mx8mm.h                    |   10 +
+ include/mfd/hgs-efi.h                             |   46 +
+ include/printf.h                                  |    2 +-
+ include/soc/ti/cppi5.h                            |    2 +-
+ lib/hexdump.c                                     |   13 +-
+ 33 files changed, 3467 insertions(+), 17 deletions(-)
+---
+base-commit: 8781fc641fc147df639c9e767a89aa3277d2c9be
+change-id: 20260205-vmaster-customers-leicageo-system1600-f62320eed41f
 
+Best regards,
 -- 
-2.47.3
+Marco Felsch <m.felsch@pengutronix.de>
 
 
 
