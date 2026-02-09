@@ -1,67 +1,67 @@
-Delivery-date: Mon, 09 Feb 2026 21:18:00 +0100
+Delivery-date: Mon, 09 Feb 2026 21:18:40 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpXhp-00AkEW-04
+	id 1vpXiS-00AkFM-1c
 	for lore@lore.pengutronix.de;
-	Mon, 09 Feb 2026 21:18:00 +0100
+	Mon, 09 Feb 2026 21:18:40 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpXhn-0007us-QB
-	for lore@pengutronix.de; Mon, 09 Feb 2026 21:18:00 +0100
+	id 1vpXiQ-00082p-Ig
+	for lore@pengutronix.de; Mon, 09 Feb 2026 21:18:39 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:To:From:Date:Reply-To
 	:Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=QIzdKf3qSgO3BxYrm+DKSdLDrLXdH1A5UpujCoP4KaA=; b=LecL7S5ahdc/Ko4fu95eB5FOHB
-	V4C4PIF9S8xnGmuZ3m79zajJerHmy8E0FkHuE8lXt7xHVqrEvCLAooxmbn7D4YHoGLJM9NtGH8MP4
-	eCIv7omFZK7HIB7vrcbrVuJVK0DiZ3stCnecUYMCKmGGzQtZ/E8AyiCcm4GA9w0CoypaSeAEc2tpq
-	On8ULVLXsckiJBI8NfWSIt0jyDdZErsRVhtO+NUjVBEgRU4Tn4m3l2t9M4NFOtLRyha52yOX6LIri
-	7iy5JuM4U39r0xFZSpvZcjH/Wy33U6yGUEwOotjXuJyMjM2fW0A4Gx9fnPfmWlcNCZhVJqzw5sqQU
-	Z/IOGmrw==;
+	bh=KcwIla0nt6rn7WhNuB1ceEBQhqXAvbbIzOVdejY/5rc=; b=fEKys+o6mlST63YNGhiHK9NFtM
+	1eYwtDl/PTVqOb4hFwsczCDn1eA5irJNAHO8d8IOYsMXa+0FDCe4HSg+GMJmO70qwhPb2YDVU/z1G
+	69gDQiIjvgbcUnM0ImeV82uI+NK5QdGF2TlAvOUxuNIBnmAprn8yph+a8LFAm8nELGAcLeOArOckg
+	yvxcQlilaHGDqccnqBeIzD80c096lcJiISEmqsJvGjM1dAjLdnfx2NuwL2GLftUushRiPPItaQ2Pw
+	QwJuLbxk8NItyeKh6hU+7sQZ9bZ1MdfQ1uxpVFO0yRbisIUsl8UGVeWYPM+cV1po6DXUjt6YafIeG
+	Ih8scwzw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpXhD-0000000FxZm-24Y5;
-	Mon, 09 Feb 2026 20:17:23 +0000
+	id 1vpXi2-0000000FxtP-0c3k;
+	Mon, 09 Feb 2026 20:18:14 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpXh9-0000000FxYt-3ti7
+	id 1vpXhx-0000000FxsD-3moh
 	for barebox@lists.infradead.org;
-	Mon, 09 Feb 2026 20:17:21 +0000
+	Mon, 09 Feb 2026 20:18:13 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1vpXh7-0007oY-JB; Mon, 09 Feb 2026 21:17:17 +0100
+	id 1vpXhw-0007vv-7b; Mon, 09 Feb 2026 21:18:08 +0100
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1vpXh8-0050uO-0D;
-	Mon, 09 Feb 2026 21:17:17 +0100
+	id 1vpXhw-0050uU-2G;
+	Mon, 09 Feb 2026 21:18:08 +0100
 Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1vpXh7-0089tO-0u;
-	Mon, 09 Feb 2026 21:17:17 +0100
-Date: Mon, 9 Feb 2026 21:17:17 +0100
+	id 1vpXhv-0089tk-33;
+	Mon, 09 Feb 2026 21:18:07 +0100
+Date: Mon, 9 Feb 2026 21:18:07 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <20260209201717.kh6f5mtq7tfr772e@pengutronix.de>
+Message-ID: <20260209201807.vjwkzpm3mdzhnbso@pengutronix.de>
 References: <20260204-v2025-09-0-topic-optee-of-handling-v2-0-da075e6818e0@pengutronix.de>
- <20260204-v2025-09-0-topic-optee-of-handling-v2-12-da075e6818e0@pengutronix.de>
- <cbfbe353-8fa7-4f2c-b682-7af16162f2a4@pengutronix.de>
+ <20260204-v2025-09-0-topic-optee-of-handling-v2-11-da075e6818e0@pengutronix.de>
+ <4ca020c8-d430-4c6a-96ad-bfb93970297a@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cbfbe353-8fa7-4f2c-b682-7af16162f2a4@pengutronix.de>
+In-Reply-To: <4ca020c8-d430-4c6a-96ad-bfb93970297a@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260209_121720_100375_46323DDE 
-X-CRM114-Status: GOOD (  24.60  )
+X-CRM114-CacheID: sfid-20260209_121812_370864_9689E741 
+X-CRM114-Status: GOOD (  21.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,127 +84,64 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=ham
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 12/15] security: optee: add helpers to register OF
- overlays
+Subject: Re: [PATCH v2 11/15] security: optee: add optee_handoff_overlay
+ helper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 On 26-02-06, Ahmad Fatoum wrote:
-> On 2/4/26 9:01 PM, Marco Felsch wrote:
-> > Add two helpers to make the OP-TEE overlay handling more convenient.
-> > 
-> > The first helper registers an optional OF overlay provided by
-> > barebox-pbl.
-> > The second helper can be used to query the status of the OF overlay, e.g
-> > registered or not-registered.
-> > 
-> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> Hi,
 > 
-> With below memory leak fixed:
+> On 2/4/26 9:01 PM, Marco Felsch wrote:
+> > Add a helper to pass the OP-TEE provided overlay to barebox via the
+> > handoff mechanism. This can be useful to generalize the reserved-memory
+> > node handling since OP-TEE can provide this information via the overlay
+> > if configured in OP-TEE.
+> > 
+> > While on it sort the include headers in alphabetical order.
+> 
+> With below omission fixed:
 > 
 > Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > 
-> > ---
-> >  drivers/tee/optee/of_fixup.c | 41 +++++++++++++++++++++++++++++++++++++++++
-> >  include/tee/optee.h          | 11 +++++++++++
-> >  2 files changed, 52 insertions(+)
 > > 
-> > diff --git a/drivers/tee/optee/of_fixup.c b/drivers/tee/optee/of_fixup.c
-> > index 152322901a7e6af9c83da4c6a2d43f6e2c9af329..dbcc168201828d350f4545a07ce5f2676f18d09e 100644
-> > --- a/drivers/tee/optee/of_fixup.c
-> > +++ b/drivers/tee/optee/of_fixup.c
-> > @@ -1,7 +1,10 @@
-> >  /* SPDX-License-Identifier: GPL-2.0-only */
-> >  
-> > +#define pr_fmt(fmt) "OP-TEE OF: " fmt
-> > +
-> >  #include <of.h>
-> >  #include <linux/ioport.h>
-> > +#include <linux/printk.h>
-> >  #include <asm/barebox-arm.h>
-> >  #include <tee/optee.h>
-> >  
-> > @@ -64,3 +67,41 @@ int of_optee_fixup(struct device_node *root, void *_data)
-> >  
-> >  	return of_fixup_reserved_memory(root, &res_shm);
-> >  }
-> > +
-> > +static bool optee_ovl_registered;
-> > +
-> > +void optee_register_overlay(void)
-> > +{
-> > +	struct device_node *overlay;
-> > +	size_t size = 0;
-> > +	void *fdto;
-> > +	int err;
-> > +
-> > +	if (optee_ovl_registered) {
-> > +		pr_warn("overlay already registered, skip\n");
-> > +		return;
-> > +	}
-> > +
-> > +	fdto = handoff_data_get_entry(HANDOFF_DATA_TEE_DT_OVL, &size);
-> > +	if (!fdto || size == 0)
-> > +		return;
-> > +
-> > +	overlay = of_unflatten_dtb(fdto, size);
-> > +	if (IS_ERR(overlay)) {
-> > +		pr_warn("failed to unflatten overlay: %pe\n", overlay);
-> > +		return;
-> > +	}
-> > +
-> > +	err = of_register_overlay(overlay);
-> > +	if (err) {
-> > +		pr_warn("failed to register overlay: %pe\n", ERR_PTR(err));
-> > +		return;
-> > +	}
-> 
-> I believe you'll want to add a of_delete_node(overlay); here
-
-Added of_delete_node() within the above error path, thanks!
-
-Regards,
-  Marco
-
-> 
-> > +
-> > +	optee_ovl_registered = true;
-> > +}
-> > +
-> > +bool optee_overlay_registered(void)
-> > +{
-> > +	return optee_ovl_registered;
-> > +}
+> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> > ---
+> >  include/tee/optee.h |  5 +++++
+> >  security/Kconfig    |  9 +++++++++
+> >  security/optee.c    | 15 ++++++++++++++-
+> >  3 files changed, 28 insertions(+), 1 deletion(-)
+> > 
 > > diff --git a/include/tee/optee.h b/include/tee/optee.h
-> > index 7126e3c6e24bbf0f37aee7827dc3b4d9619d3bc3..0c9a6e5e64723ca743d53b8cd1ffdefae5bd3c6f 100644
+> > index 10e829c04f8832c4c04771800f1963e25f425482..7126e3c6e24bbf0f37aee7827dc3b4d9619d3bc3 100644
 > > --- a/include/tee/optee.h
 > > +++ b/include/tee/optee.h
-> > @@ -38,6 +38,8 @@ int optee_verify_header (const struct optee_header *hdr);
+> > @@ -37,6 +37,7 @@ int optee_verify_header (const struct optee_header *hdr);
+> >  
 > >  void optee_set_membase(const struct optee_header *hdr);
 > >  int optee_get_membase(u64 *membase);
-> >  void optee_handoff_overlay(void *ovl, unsigned int ovl_sz);
-> > +void optee_register_overlay(void);
-> > +bool optee_overlay_registered(void);
+> > +void optee_handoff_overlay(void *ovl, unsigned int ovl_sz);
 > >  
 > >  #else
 > >  
-> > @@ -54,6 +56,15 @@ void optee_handoff_overlay(void *ovl, unsigned int ovl_sz)
-> >  {
+> > @@ -49,6 +50,10 @@ static inline int optee_get_membase(u64 *membase)
+> >  	return -ENOSYS;
 > >  }
 > >  
-> > +static inline void optee_register_overlay(void)
+> > +void optee_handoff_overlay(void *ovl, unsigned int ovl_sz)
 > > +{
 > > +}
-> > +
-> > +static inline bool optee_overlay_registered(void)
-> > +{
-> > +	return false;
-> > +}
-> > +
-> >  #endif /* CONFIG_HAVE_OPTEE */
-> >  
-> >  #ifdef __PBL__
-> > 
+> 
+> static inline missing
+
+Sure!
+
+Thanks,
+  Marco
+
+> 
+> Cheers,
+> Ahmad
 > 
 > -- 
 > Pengutronix e.K.                  |                             |
