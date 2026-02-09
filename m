@@ -1,67 +1,68 @@
-Delivery-date: Mon, 09 Feb 2026 15:21:31 +0100
+Delivery-date: Mon, 09 Feb 2026 15:23:36 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpS8p-00Aa78-2e
+	id 1vpSAq-00Aa92-36
 	for lore@lore.pengutronix.de;
-	Mon, 09 Feb 2026 15:21:31 +0100
+	Mon, 09 Feb 2026 15:23:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpS8o-0001l4-SS
-	for lore@pengutronix.de; Mon, 09 Feb 2026 15:21:31 +0100
+	id 1vpSAq-00022i-0o
+	for lore@pengutronix.de; Mon, 09 Feb 2026 15:23:36 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ESkagEfI2726Iv+riCkaXwCS/C7nY030CYGlS8tHpA4=; b=nk/9zADEZyqilkYo/3jz7w1b/D
-	ADaShA15FAVen6rlrsiNjQ5ikWFAqSSuM3ucSGWmk7RayAgJtRuqdfTMgAH4S8ggnNj7Mt3+KuJWl
-	YUDLVDUPST7q8sDVXQIsV7H+3QtrVD+Tt4JfvexSi7/ZWv5KjsWHOZ40Ukf1bTglXLDMI4qPrenj+
-	vNrRg6Kpr2EsAMgYkY1/aBuY+3KTCiBofbdx9nNC4um3B8sdbtNms/J3Z4dOgVHHASa0ZT/cmvocK
-	cVOiVlsdLFlD7a9BMQChLqEVyIL00iOdexWJtIJqjnWFtrnxG/y1K6qK9WPDiuUH4edq79sw9QJzX
-	Ito4Zilg==;
+	bh=SUAFKc7WmjgkuXWmsh12kSxuihTqL7Td+of+DCLz+nU=; b=1DY0EQaJfmYfr31mqLpoVh7v5L
+	bJh1tRuTRyqoaeseG50dueRRLituIeqXwq9bVegfH6fs/5yRl4ltInuen2mbhAWuaI8mj0fteDRrE
+	H2O6QwfMK1fNVAmEbnc/8SmV8vSTgWTkznvU3NYoUwcW6A/uWW8FlVZ7nuvl9eavIT3+8SUQWUkF5
+	ez4qfYDE8OKqA23Xi/TaZlvs5w2rSJqsRVgD6Hh5/BT+7l8UsfT7aRPK5Mz1OTe2m9mhiroeFXrgh
+	nWotasOfFWt3xqGVR9BsGUxzH0RgnNDt1USba2C0EE9LDzOu73uE/oWwGuoHPRul5jcfllBDjuRzu
+	JVyjsI1g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpS8M-0000000FVHH-3rCZ;
-	Mon, 09 Feb 2026 14:21:02 +0000
+	id 1vpSAT-0000000FVOe-1qHY;
+	Mon, 09 Feb 2026 14:23:13 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpS8K-0000000FVGv-2VIV
+	id 1vpSAQ-0000000FVOC-0uIW
 	for barebox@lists.infradead.org;
-	Mon, 09 Feb 2026 14:21:02 +0000
+	Mon, 09 Feb 2026 14:23:11 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vpS8J-0001eN-0F; Mon, 09 Feb 2026 15:20:59 +0100
+	id 1vpSAO-0001ye-Fu; Mon, 09 Feb 2026 15:23:08 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vpS8J-004u70-1a;
-	Mon, 09 Feb 2026 15:20:58 +0100
+	id 1vpSAO-004u7X-2a;
+	Mon, 09 Feb 2026 15:23:08 +0100
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vpS8I-00000002oUo-3Bi8;
-	Mon, 09 Feb 2026 15:20:58 +0100
+	id 1vpSAO-00000002oyp-0JfX;
+	Mon, 09 Feb 2026 15:23:08 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Marco Felsch <m.felsch@pengutronix.de>
-In-Reply-To: <20260204151645.1426068-1-m.felsch@pengutronix.de>
-References: <20260204151645.1426068-1-m.felsch@pengutronix.de>
-Message-Id: <177064685875.670747.3477281048340981800.b4-ty@pengutronix.de>
-Date: Mon, 09 Feb 2026 15:20:58 +0100
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: 9l@9lo.re
+In-Reply-To: <20260205153540.2900244-1-a.fatoum@pengutronix.de>
+References: <20260205153540.2900244-1-a.fatoum@pengutronix.de>
+Message-Id: <177064698807.672611.8077508240836463896.b4-ty@pengutronix.de>
+Date: Mon, 09 Feb 2026 15:23:08 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260209_062100_735406_D09B49D4 
-X-CRM114-Status: UNSURE (   5.57  )
+X-CRM114-CacheID: sfid-20260209_062310_260511_13C0ADFC 
+X-CRM114-Status: UNSURE (   8.08  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -82,24 +83,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 1/2] ARM: i.MX8MM: add MX8MM_PAD_CTL defines
+Subject: Re: [PATCH] common: tlv: fix link error when CONFIG_NET is
+ disabled
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 04 Feb 2026 16:10:52 +0100, Marco Felsch wrote:
-> Add defines like already done for i.MX8MP and i.MX8MQ.
+On Thu, 05 Feb 2026 16:35:39 +0100, Ahmad Fatoum wrote:
+> ethaddr_list and eth_of_get_fixup_node are used unconditionally in
+> of_tlv_fixup, but there is no dependency on CONFIG_NET for CONFIG_TLV.
+> 
+> Turn the ethernet-related fixup code into dead code if CONFIG_NET is
+> disabled and emit a warning to fix this.
 > 
 > 
+> [...]
 
 Applied, thanks!
 
-[1/2] ARM: i.MX8MM: add MX8MM_PAD_CTL defines
-      https://git.pengutronix.de/cgit/barebox/commit/?id=b9f27457e70e (link may not be stable)
-[2/2] lib: hexdump: make use of pr_print
-      https://git.pengutronix.de/cgit/barebox/commit/?id=b337210d859a (link may not be stable)
+[1/1] common: tlv: fix link error when CONFIG_NET is disabled
+      https://git.pengutronix.de/cgit/barebox/commit/?id=53c72e610a31 (link may not be stable)
 
 Best regards,
 -- 
