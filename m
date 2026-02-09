@@ -1,68 +1,68 @@
-Delivery-date: Mon, 09 Feb 2026 14:50:48 +0100
+Delivery-date: Mon, 09 Feb 2026 14:56:29 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpRf6-00AZXK-37
+	id 1vpRkc-00AZbl-0T
 	for lore@lore.pengutronix.de;
-	Mon, 09 Feb 2026 14:50:48 +0100
+	Mon, 09 Feb 2026 14:56:29 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpRf6-0007Qc-0T
-	for lore@pengutronix.de; Mon, 09 Feb 2026 14:50:48 +0100
+	id 1vpRkb-0007ss-6M
+	for lore@pengutronix.de; Mon, 09 Feb 2026 14:56:29 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=mRJbuvvZccaRoWNu4b1czRoduNl/Xt0EeaVCZApWPQM=; b=uwgIonSHLb3g7WLm2kHWpjADPI
-	BO2ih7NuPk5B03o32DkwD1KMKSMm+Z/pvMDj49Gf/0A5nyvgO7JW1GTAISihgsGmJkAAXHorOvrSD
-	gkTPenG3FbwASdySAF+8yQlzzvG6kh6FW9jz5PutWPkIV+QSCi7ERIBQDKzjXAZJQveSWkMmciJyu
-	Q4gB4k20qn1sDTC4F/3MZWBx23NTvQSgHC6MHjVwORS3BWx7ARLk9Xu3J49jqDnQUrgCh7q8TvMTV
-	q4kR/7qtgwuQdlXeHGkDIvUuhAM++9QUz6rF6HDByTKfj6Qu26Ktsvjt8KRinPRah1WTcM+2K2Ng8
-	ye8rEPUA==;
+	bh=o0SK1yOUmmiET/HKkUf2XcSDCCK6b0XH/ygT7AA+Amw=; b=c9h+ZdRygT75CA5XJdSibsfLn7
+	bwtVWHb1MJ+VdtYsoNQNpCMeEJinXP33tIczK0L2liODOQHJasNfNxbf0VEYJbrDxyZjETXy8Qc0m
+	QW2EXEJA6hImHDH46a5m/nLOP0xiUzg/u4FBqGBGANNB5erF4WQkEuukzl3ApT+tvFBrOw7Lrekq0
+	IFiLMnmujRDKoDvwdRdexLdvwJlWRqhAa6aONZ5kV9iZ1Yq43hcHs255mhy9Wk62QqGI6or9JvbG5
+	dmOVz1ny/EZVKPUjn4/wqyWWq9mBkLxj7RdRgUaFpo1KVx2UtXAkzf6CkQNUcNEhyfRav6qjqQg9T
+	SOs3Daag==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpRel-0000000FSfi-2Mtd;
-	Mon, 09 Feb 2026 13:50:27 +0000
+	id 1vpRk3-0000000FSuO-2iKV;
+	Mon, 09 Feb 2026 13:55:55 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpRei-0000000FSf7-3TCO
+	id 1vpRk1-0000000FStb-0UWZ
 	for barebox@lists.infradead.org;
-	Mon, 09 Feb 2026 13:50:26 +0000
+	Mon, 09 Feb 2026 13:55:54 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vpReg-0007LB-VT; Mon, 09 Feb 2026 14:50:22 +0100
+	id 1vpRjz-0007ly-Hc; Mon, 09 Feb 2026 14:55:51 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vpReh-004toF-1S;
-	Mon, 09 Feb 2026 14:50:22 +0100
+	id 1vpRk0-004toh-05;
+	Mon, 09 Feb 2026 14:55:51 +0100
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vpReg-00000002mtz-33Rc;
-	Mon, 09 Feb 2026 14:50:22 +0100
+	id 1vpRjz-00000002nQE-1Gcp;
+	Mon, 09 Feb 2026 14:55:51 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260205143043.2831511-1-a.fatoum@pengutronix.de>
-References: <20260205143043.2831511-1-a.fatoum@pengutronix.de>
-Message-Id: <177064502272.664618.16301086778311276242.b4-ty@pengutronix.de>
-Date: Mon, 09 Feb 2026 14:50:22 +0100
+To: BAREBOX <barebox@lists.infradead.org>, 
+ Jonas Rebmann <jre@pengutronix.de>
+In-Reply-To: <20260205-tlv-eth-list-fixup-v1-1-74ca31223cdb@pengutronix.de>
+References: <20260205-tlv-eth-list-fixup-v1-1-74ca31223cdb@pengutronix.de>
+Message-Id: <177064535129.666625.5953426247054193691.b4-ty@pengutronix.de>
+Date: Mon, 09 Feb 2026 14:55:51 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260209_055024_862124_D8E28EE3 
-X-CRM114-Status: UNSURE (   8.93  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260209_055553_159277_017AA42D 
+X-CRM114-Status: GOOD (  10.98  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,37 +84,30 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] scripts: include: break dependency of list.h on
- kernel.h
+Subject: Re: [PATCH] common: tlv: Correct eth address list fixup
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Thu, 05 Feb 2026 15:30:42 +0100, Ahmad Fatoum wrote:
-> We already got rid of this dependency for the normal barebox build, so
-> break it up for the scripts/ build as well to avoid this nconf warning
-> on some distros:
+On Thu, 05 Feb 2026 14:55:46 +0100, Jonas Rebmann wrote:
+> The tlv_format_mac() function was written as if it would fixup a list of
+> MAC addresses, however that implementation was broken as it always
+> exited after adding the first MAC due to interpretation of any nonzero
+> exit value from of_property_sprintf() as an error, although it returns
+> the length of the resulting string upon success.
 > 
->   In file included from scripts/kconfig/nconf.c:15:
->   scripts/kconfig/nconf.h:25:9: warning: ‘max’ redefined
->      25 | #define max(a, b) ({\
->         |         ^~~
->   In file included from ./barebox/scripts/include/linux/list.h:5,
->                    from ./barebox/scripts/include/list.h:5,
->                    from scripts/kconfig/expr.h:15,
->                    from scripts/kconfig/lkc.h:13,
->                    from scripts/kconfig/nconf.c:14:
->   ./barebox/scripts/include/linux/kernel.h:39:9: note: this is the location of the previous definition
->      39 | #define max(x, y) ({                            \
->         |         ^~~
->   scripts/kconfig/nconf.h:30:9: warning: ‘min’ redefined
+> This was worked around by tlv_handle_eth_address_seq() invoking
+> tlv_format_mac() in a loop however tlv_handle_eth_address(), which is
+> specified to support an array of MAC addresses invoked tlv_format_mac()
+> on the list resulting in only the first MAC of that list ending up in
+> the devicetree fixup.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] scripts: include: break dependency of list.h on kernel.h
-      https://git.pengutronix.de/cgit/barebox/commit/?id=c917e41c99c6 (link may not be stable)
+[1/1] common: tlv: Correct eth address list fixup
+      https://git.pengutronix.de/cgit/barebox/commit/?id=925dba9ba412 (link may not be stable)
 
 Best regards,
 -- 
