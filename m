@@ -1,67 +1,67 @@
-Delivery-date: Mon, 09 Feb 2026 19:17:07 +0100
+Delivery-date: Mon, 09 Feb 2026 19:17:08 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpVoq-00AdtB-0S
+	id 1vpVor-00Adtl-0s
 	for lore@lore.pengutronix.de;
-	Mon, 09 Feb 2026 19:17:07 +0100
+	Mon, 09 Feb 2026 19:17:08 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpVop-00075t-3a
-	for lore@pengutronix.de; Mon, 09 Feb 2026 19:17:07 +0100
+	id 1vpVoq-00076K-3J
+	for lore@pengutronix.de; Mon, 09 Feb 2026 19:17:08 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=1ZKdg9ivPrIY8fqNxmAnOOlLMpzyggCStsxG2G0wEAc=; b=mQmbKUnJ7/6dK+q+ld3No23C2O
-	12nJRVf9H8kVEGzDJjnPlvVJ9GxLQit8nb4odBoH+IdebFpBhSKL4Wg9W//lAqXUKSWrX46yROS8a
-	wpb6aOYEm8p8Hsq5tWoy9WWh7tkoxLBiJiDfUEAPeUZKzbD3u+LW/EvP9L77OpddCltQSs8JnpiTz
-	KqZpZ0+II2LdH1ZGYin1cNmOOoCv2UbsK6h+fLBwujaO4x+hKvIf4JDFyzCawwL0mM8Ks0/8yhR7a
-	2a9RVD6J1ibDroa+Z+vsAcqkhAWEk2psv+FxRq17tb7JPB2PU1uFMEM2VWGvTi9CdGijAgJ0k8bJg
-	Y4zfYQyQ==;
+	bh=Y9MFq43toczmdqTmi4DZr60sl+1xogmy6FFTYHKVslc=; b=t+VwxvLdARff+C2TrK0OLtBPoi
+	AHJELzHhZ8lDjHzGm9lTegQftyWgBmw5GAUGxtjPbch4DVfEJTezkaQxmn/0VezfohB1t4+RDzI1v
+	PGRRC8Jsds/tBq+nvgzbgX7ZdC9W5bJjE8Zb6n3TA3UgeWA2nc1g1qVKT/uc8htaa/7urAQRwxdly
+	yec+vkZxv5JUJd/ezSnfYTDDfby2PrLZxGqOLmnyXEpFpdMQkcq82/IlRkZsSo0fYkNLCGc/2iwHi
+	xKAZWfOWHoC059hIrbm0JyDiSJ7/CWkDjH5U8y4NCMNyIq9NjaFaQCb9vKxIpWsAchHhgcT38Bal5
+	B/1RYSnw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpVoS-0000000Fqu9-1KDC;
-	Mon, 09 Feb 2026 18:16:44 +0000
+	id 1vpVoU-0000000Fquq-0ke8;
+	Mon, 09 Feb 2026 18:16:46 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpVoQ-0000000Fqsr-0c4w
+	id 1vpVoQ-0000000Fqss-0bwK
 	for barebox@lists.infradead.org;
-	Mon, 09 Feb 2026 18:16:43 +0000
+	Mon, 09 Feb 2026 18:16:44 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vpVoO-0006tt-GC; Mon, 09 Feb 2026 19:16:40 +0100
+	id 1vpVoO-0006u5-Lf; Mon, 09 Feb 2026 19:16:40 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vpVoO-004voi-39;
+	id 1vpVoP-004vop-0T;
 	Mon, 09 Feb 2026 19:16:40 +0100
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vpVjZ-00000008UJ4-3JO7;
+	id 1vpVjZ-00000008UJ4-2uQH;
 	Mon, 09 Feb 2026 19:11:41 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  9 Feb 2026 19:10:52 +0100
-Message-ID: <20260209181138.2023065-14-a.fatoum@pengutronix.de>
+Date: Mon,  9 Feb 2026 19:10:50 +0100
+Message-ID: <20260209181138.2023065-12-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260209181138.2023065-1-a.fatoum@pengutronix.de>
 References: <20260209181138.2023065-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260209_101642_207099_3834FE80 
-X-CRM114-Status: GOOD (  11.49  )
+X-CRM114-CacheID: sfid-20260209_101642_209997_9B0B5075 
+X-CRM114-Status: GOOD (  14.78  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,68 +83,96 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=ham
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 13/13] efi: initrd: make efi_initrd_register initrd pointer param const
+Subject: [PATCH v2 11/13] bootm: factor out file detection into helper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The initrd buffer isn't actually used in a writable manner, so reflect
-that in the types used to hold its base address.
+Having this function callable on its own will come in handy once we add
+boot.image override support as that would need to recompute the file
+type.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- efi/initrd.c         | 4 ++--
- efi/loader/bootm.c   | 2 +-
- include/efi/initrd.h | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ common/bootm.c  | 39 ++++++++++++++++++++++++++++++---------
+ include/bootm.h |  2 ++
+ 2 files changed, 32 insertions(+), 9 deletions(-)
 
-diff --git a/efi/initrd.c b/efi/initrd.c
-index 642422b38d2a..01361d0a3071 100644
---- a/efi/initrd.c
-+++ b/efi/initrd.c
-@@ -35,7 +35,7 @@ static const struct {
- 
- static struct linux_initrd {
- 	struct efi_load_file_protocol base;
--	void *start;
-+	const void *start;
- 	size_t size;
- 	efi_handle_t lf2_handle;
- } initrd;
-@@ -70,7 +70,7 @@ static efi_status_t EFIAPI efi_initrd_load_file2(
- 	return EFI_SUCCESS;
+diff --git a/common/bootm.c b/common/bootm.c
+index 3c3523644b57..d43079bb81da 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -542,6 +542,33 @@ static int bootm_image_name_and_part(const char *name, char **filename, char **p
+ 	return 0;
  }
  
--int efi_initrd_register(void *initrd_base, size_t initrd_sz)
-+int efi_initrd_register(const void *initrd_base, size_t initrd_sz)
- {
- 	struct efi_boot_services *bs;
- 	efi_status_t efiret;
-diff --git a/efi/loader/bootm.c b/efi/loader/bootm.c
-index 97621d8a05e5..6b59fa0fad18 100644
---- a/efi/loader/bootm.c
-+++ b/efi/loader/bootm.c
-@@ -187,7 +187,7 @@ static efi_status_t efi_install_initrd(struct image_data *data,
- 	if (IS_ERR(initrd_res))
- 		return PTR_ERR(initrd_res);
- 	if (initrd_res)
--		efi_initrd_register((void *)initrd_res->start,
-+		efi_initrd_register((const void *)initrd_res->start,
- 				    resource_size(initrd_res));
++/**
++ * file_read_and_detect_boot_image_type - read file header and detect image type
++ * @os_file: path to the boot image file
++ * @os_header: returns a PAGE_SIZE buffer with the file header (caller frees)
++ *
++ * Return: detected filetype (enum filetype) on success, negative error code
++ *         on failure. On error, *os_header is set to NULL.
++ */
++int file_read_and_detect_boot_image_type(const char *os_file, void **os_header)
++{
++	size_t size;
++	int ret;
++
++	ret = read_file_2(os_file, &size, os_header, PAGE_SIZE);
++	if (ret < 0 && ret != -EFBIG) {
++		pr_err("could not open %s: %pe\n", os_file, ERR_PTR(ret));
++		return ret;
++	}
++	if (size < PAGE_SIZE) {
++		free(*os_header);
++		*os_header = NULL;
++		return -ENODATA;
++	}
++
++	return file_detect_boot_image_type(*os_header, PAGE_SIZE);
++}
++
+ /*
+  * bootm_boot - Boot an application image described by bootm_data
+  */
+@@ -550,7 +577,6 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 	struct image_data *data;
+ 	struct image_handler *handler;
+ 	int ret;
+-	size_t size;
+ 	const char *image_type_str;
  
- 	return EFI_SUCCESS;
-diff --git a/include/efi/initrd.h b/include/efi/initrd.h
-index 08af2d299ad6..b36875c7fe7c 100644
---- a/include/efi/initrd.h
-+++ b/include/efi/initrd.h
-@@ -5,7 +5,7 @@
+ 	if (!bootm_data->os_file) {
+@@ -574,15 +600,10 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 	data->os_entry = bootm_data->os_entry;
+ 	data->efi_boot = bootm_data->efi_boot;
  
- #include <linux/types.h>
+-	ret = read_file_2(data->os_file, &size, &data->os_header, PAGE_SIZE);
+-	if (ret < 0 && ret != -EFBIG) {
+-		pr_err("could not open %s: %pe\n", data->os_file, ERR_PTR(ret));
++	ret = file_read_and_detect_boot_image_type(data->os_file, &data->os_header);
++	if (ret < 0)
+ 		goto err_out;
+-	}
+-	if (size < PAGE_SIZE)
+-		goto err_out;
+-
+-	data->image_type = file_detect_boot_image_type(data->os_header, PAGE_SIZE);
++	data->image_type = ret;
  
--int efi_initrd_register(void *initrd, size_t initrd_size);
-+int efi_initrd_register(const void *initrd, size_t initrd_size);
- void efi_initrd_unregister(void);
+ 	if (!data->force && data->image_type == filetype_unknown) {
+ 		pr_err("Unknown OS filetype (try -f)\n");
+diff --git a/include/bootm.h b/include/bootm.h
+index ef979807505d..21feb1ca98ae 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -186,4 +186,6 @@ bool bootm_efi_check_image(struct image_handler *handler,
+ 			   struct image_data *data,
+ 			   enum filetype detected_filetype);
  
- #endif
++int file_read_and_detect_boot_image_type(const char *os_file, void **os_header);
++
+ #endif /* __BOOTM_H */
 -- 
 2.47.3
 
