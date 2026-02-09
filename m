@@ -1,16 +1,16 @@
-Delivery-date: Mon, 09 Feb 2026 19:12:24 +0100
+Delivery-date: Mon, 09 Feb 2026 19:12:25 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpVkH-00AdZa-0c
+	id 1vpVkH-00AdZl-1K
 	for lore@lore.pengutronix.de;
 	Mon, 09 Feb 2026 19:12:24 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpVkF-0006K2-6j
+	id 1vpVkE-0006J9-AW
 	for lore@pengutronix.de; Mon, 09 Feb 2026 19:12:24 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,50 +18,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=K0zzaA9s7HFzX0XWA2tgsjRQUtv4YACoa9hb94ewvsk=; b=ZpVzwX9H0JIA2PTAxGlhoomfTz
-	6kpV4oq5j9zU2p627uGma9c/BwPv3UDW7IEF90cXWT012+LyBCg8vlMJuDOmeKdITt9uakd6wcmVs
-	Kl+pFiX0zqpyXbU33H2+FTAg1lXs3Wxn370Yp93LEGBomxFnHm1pVPSrUksz0jDUSLV+fJqRFxTqL
-	MHOz2gSl/RFz4RLiyUCxHpR/sh/586GdQE4f5Vo3nvrVC/8v2DKjmbQAdk5gE6fqvfkFhAqXFh7oh
-	kUMlHja1XGoVbFubI6Ar9W+cT1ll4fTXe+yp5AzY6wKrMeUxWK+RQW6CkgmYZlW6gxZYN0vJ4yBDK
-	9eBj6Cyg==;
+	bh=px3LEVveO3+C5ZvMJE08/PkTJN0EkzVd+3qZYHgyUVk=; b=VutH3v8lfpZl6usBm1e86Pei2g
+	djMYHvq5i9FG3SKFk18DDUq/EIP+4iqJYrtv/KaVFSZTDsdztkj6PgAQX0sHTTNzLUlvVNIzQX8y9
+	TaNtgQ2eAndYhPEMFYX50BP2kguZ7jqS0RUDx28XSoclAmg94IXqhljpeZRDghes8VA77jDa/OJHk
+	GQeIVVOq5tm3pZlqcMJ1G6Ulu7xNlFOU6Q5SxFDqXMzZSYYTaAlHULsongShQ2CC5ttrT/6TX5HlT
+	/qQvuUceGoTrEcA+PBoMND2MUO7l/Kqx8BeTp4Q9wua10bk4UwEZIGrt76RpM61xVE0kaGtTPAr8I
+	qrQWmrLQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpVji-0000000FqEy-3bTv;
-	Mon, 09 Feb 2026 18:11:50 +0000
+	id 1vpVjj-0000000FqH8-0ig5;
+	Mon, 09 Feb 2026 18:11:51 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpVjb-0000000Fq8q-1MKF
+	id 1vpVjb-0000000Fq8n-16G6
 	for barebox@lists.infradead.org;
 	Mon, 09 Feb 2026 18:11:47 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vpVjZ-0005qc-Re; Mon, 09 Feb 2026 19:11:41 +0100
+	id 1vpVjZ-0005qG-LC; Mon, 09 Feb 2026 19:11:41 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vpVja-004vnu-0i;
+	id 1vpVja-004vnm-0O;
 	Mon, 09 Feb 2026 19:11:41 +0100
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vpVjZ-00000008UJ4-1sOS;
+	id 1vpVjZ-00000008UJ4-1TWo;
 	Mon, 09 Feb 2026 19:11:41 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  9 Feb 2026 19:10:45 +0100
-Message-ID: <20260209181138.2023065-7-a.fatoum@pengutronix.de>
+Date: Mon,  9 Feb 2026 19:10:43 +0100
+Message-ID: <20260209181138.2023065-5-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260209181138.2023065-1-a.fatoum@pengutronix.de>
 References: <20260209181138.2023065-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260209_101143_529382_85887A61 
-X-CRM114-Status: GOOD (  22.25  )
+X-CRM114-CacheID: sfid-20260209_101143_608690_8454B201 
+X-CRM114-Status: GOOD (  22.09  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,247 +83,756 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 06/13] bootm: fit: move length calculation into fit_open
+Subject: [PATCH v2 04/13] bootm: give bootm_load_ functions an end address
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-A FIT image is a device tree and its second big-endian 32-bit word
-encodes the size and fit_open() takes an extra argument, so it need not
-read a whole partition, but only as many bytes as the header describes.
+So far we expected that a load operation will not overflow, but there
+was actually no way for the callee to check this.
 
-We are going to add a new caller for fit_open(). Instead of repeating
-the max_size determination at every call site, let's just move the size
-calculation into the function.
+As the architecture-specific bootm handlers are tasked with allocating
+memory for boot artifacts have them pass along not only the start of the
+load region, but also its end, so the callee can check that it didn't
+overflow.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/bootm-fit.c   |  9 +-------
- common/image-fit.c   | 46 +++++++++++++++++++++++++++++++---------
- drivers/of/overlay.c |  6 +++---
- include/image-fit.h  |  2 +-
- include/libfile.h    |  2 ++
- lib/libfile.c        | 50 ++++++++++++++++++++++++++++++++++++++++++++
- 6 files changed, 93 insertions(+), 22 deletions(-)
+ arch/arm/lib32/bootm.c              | 24 +++++---
+ arch/arm/lib64/armlinux.c           | 14 ++---
+ arch/arm/mach-at91/bootm-barebox.c  |  7 ++-
+ arch/arm/mach-imx/imx-v3-image.c    |  7 ++-
+ arch/arm/mach-layerscape/pblimage.c |  7 ++-
+ arch/arm/mach-rockchip/bootm.c      | 13 ++--
+ arch/arm/mach-zynq/bootm-zynqimg.c  |  7 ++-
+ arch/kvx/lib/bootm.c                | 17 ++++--
+ arch/powerpc/lib/ppclinux.c         | 13 +++-
+ common/booti.c                      | 30 +++++----
+ common/bootm.c                      | 95 ++++++++++++++++++-----------
+ efi/loader/bootm.c                  | 37 ++++++-----
+ include/bootm.h                     | 13 ++--
+ 13 files changed, 171 insertions(+), 113 deletions(-)
 
-diff --git a/common/bootm-fit.c b/common/bootm-fit.c
-index 5bfd8ac61d3f..70d6ba8edff2 100644
---- a/common/bootm-fit.c
-+++ b/common/bootm-fit.c
-@@ -129,17 +129,10 @@ static enum filetype bootm_fit_update_os_header(struct image_data *data)
- int bootm_open_fit(struct image_data *data)
+diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
+index e659d3c1a554..22364beadcd5 100644
+--- a/arch/arm/lib32/bootm.c
++++ b/arch/arm/lib32/bootm.c
+@@ -236,7 +236,8 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem,
  {
- 	struct fit_handle *fit;
--	struct fdt_header *header;
- 	static const char *kernel_img = "kernel";
--	size_t flen, hlen;
+ 	unsigned long kernel;
+ 	unsigned long initrd_start = 0, initrd_size = 0, initrd_end = 0;
+-	const struct resource *initrd_res;
++	const struct resource *initrd_res, *sdram;
++	struct resource gap;
+ 	void *tee;
+ 	enum arm_security_state state = bootm_arm_security_state();
+ 	void *fdt_load_address = NULL;
+@@ -255,7 +256,11 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem,
+ 		}
+ 	}
+ 
+-	initrd_res = bootm_load_initrd(data, initrd_start);
++	sdram = memory_bank_lookup_region(initrd_start, &gap);
++	if (sdram != &gap)
++		return sdram ? -EBUSY : -EINVAL;
++
++	initrd_res = bootm_load_initrd(data, initrd_start, gap.end);
+ 	if (IS_ERR(initrd_res)) {
+ 		return PTR_ERR(initrd_res);
+ 	} else if (initrd_res) {
+@@ -277,13 +282,15 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem,
+ 	}
+ 
+ 	if (fdt) {
++		const struct resource *fdt_res;
++
+ 		fdt_load_address = (void *)free_mem;
+-		ret = bootm_load_devicetree(data, fdt, free_mem);
++		fdt_res = bootm_load_devicetree(data, fdt, free_mem, gap.end);
+ 
+ 		free(fdt);
+ 
+-		if (ret)
+-			return ret;
++		if (IS_ERR(fdt_res))
++			return PTR_ERR(fdt_res);
+ 	}
+ 
+ 	if (IS_ENABLED(CONFIG_BOOTM_OPTEE)) {
+@@ -339,6 +346,7 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem,
+ 
+ static int do_bootm_linux(struct image_data *data)
+ {
++	const struct resource *os_res;
+ 	unsigned long load_address, mem_free;
  	int ret;
  
--	header = (struct fdt_header *)data->os_header;
--	flen = bootm_get_os_size(data);
--	hlen = fdt32_to_cpu(header->totalsize);
+@@ -349,9 +357,9 @@ static int do_bootm_linux(struct image_data *data)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = bootm_load_os(data, load_address);
+-	if (ret)
+-		return ret;
++	os_res = bootm_load_os(data, load_address, mem_free - 1);
++	if (IS_ERR(os_res))
++		return PTR_ERR(os_res);
+ 
+ 	return __do_bootm_linux(data, mem_free, 0, NULL);
+ }
+diff --git a/arch/arm/lib64/armlinux.c b/arch/arm/lib64/armlinux.c
+index e40b61a26b07..4dbe0b03b420 100644
+--- a/arch/arm/lib64/armlinux.c
++++ b/arch/arm/lib64/armlinux.c
+@@ -43,19 +43,20 @@ static int do_bootm_barebox(struct image_data *data)
+ {
+ 	void (*fn)(unsigned long x0, unsigned long x1, unsigned long x2,
+ 		       unsigned long x3);
++	const struct resource *os_res;
+ 	resource_size_t start, end;
+ 	unsigned long barebox;
+ 	int ret;
+ 
+ 	ret = memory_bank_first_find_space(&start, &end);
+ 	if (ret)
+-		goto out;
++		return ret;
+ 
+ 	barebox = PAGE_ALIGN(start);
+ 
+-	ret = bootm_load_os(data, barebox);
+-	if (ret)
+-		goto out;
++	os_res = bootm_load_os(data, barebox, end);
++	if (IS_ERR(os_res))
++		return PTR_ERR(os_res);
+ 
+ 	printf("Loaded barebox image to 0x%08lx\n", barebox);
+ 
+@@ -65,10 +66,7 @@ static int do_bootm_barebox(struct image_data *data)
+ 
+ 	fn(0, 0, 0, 0);
+ 
+-	ret = -EINVAL;
 -
--	fit = fit_open(data->os_file, data->verbose, data->verify,
--		       min(flen, hlen));
-+	fit = fit_open(data->os_file, data->verbose, data->verify);
- 	if (IS_ERR(fit)) {
- 		pr_err("Loading FIT image %s failed with: %pe\n", data->os_file, fit);
- 		return PTR_ERR(fit);
-diff --git a/common/image-fit.c b/common/image-fit.c
-index 75592766941c..50816452810c 100644
---- a/common/image-fit.c
-+++ b/common/image-fit.c
-@@ -992,7 +992,6 @@ struct fit_handle *fit_open_buf(const void *buf, size_t size, bool verbose,
-  * @filename:	The filename of the FIT image
-  * @verbose:	If true, be more verbose
-  * @verify:	The verify mode
-- * @max_size:	maximum length to read from file
-  *
-  * This opens a FIT image found in @filename. The returned handle is used as
-  * context for the other FIT functions.
-@@ -1000,11 +999,12 @@ struct fit_handle *fit_open_buf(const void *buf, size_t size, bool verbose,
-  * Return: A handle to a FIT image or a ERR_PTR
-  */
- struct fit_handle *fit_open(const char *_filename, bool verbose,
--			    enum bootm_verify verify, loff_t max_size)
-+			    enum bootm_verify verify)
- {
- 	struct fit_handle *handle;
-+	ssize_t nbytes;
- 	char *filename;
--	int ret;
-+	int fd, ret;
- 
- 	filename = canonicalize_path(AT_FDCWD, _filename);
- 	if (!filename) {
-@@ -1024,15 +1024,30 @@ struct fit_handle *fit_open(const char *_filename, bool verbose,
- 	handle->verbose = verbose;
- 	handle->verify = verify;
- 
--	ret = read_file_2(filename, &handle->size, &handle->fit_alloc,
--			  max_size);
--	if (ret && ret != -EFBIG) {
--		pr_err("unable to read %s: %pe\n", filename, ERR_PTR(ret));
--		free(handle);
--		free(filename);
--		return ERR_PTR(ret);
-+	fd = open_fdt(filename, &handle->size);
-+	if (fd < 0) {
-+		ret = fd;
-+		goto free_handle;
- 	}
- 
-+	handle->fit_alloc = malloc(handle->size);
-+	if (!handle->fit_alloc) {
-+		ret = -ENOMEM;
-+		goto close_fd;
-+	}
-+
-+	nbytes = read_full(fd, handle->fit_alloc, handle->size);
-+	if (nbytes < 0) {
-+		ret = nbytes;
-+		goto free_fit_alloc;
-+	}
-+	if (handle->size != nbytes) {
-+		ret = -ENODATA;
-+		goto free_fit_alloc;
-+	}
-+
-+	close(fd);
-+
- 	handle->fit = handle->fit_alloc;
- 	handle->filename = filename;
- 
-@@ -1046,6 +1061,17 @@ struct fit_handle *fit_open(const char *_filename, bool verbose,
- 	}
- 
- 	return handle;
-+
-+free_fit_alloc:
-+	free(handle->fit_alloc);
-+close_fd:
-+	close(fd);
-+free_handle:
-+	pr_err("unable to read %s: %pe\n", filename, ERR_PTR(ret));
-+	free(filename);
-+	free(handle);
-+	return ERR_PTR(ret);
-+
+-out:
+-	return ret;
++	return -EINVAL;
  }
  
- static bool __fit_close(struct fit_handle *handle)
-diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
-index b11edebd2080..34543403e9ba 100644
---- a/drivers/of/overlay.c
-+++ b/drivers/of/overlay.c
-@@ -532,7 +532,7 @@ static bool of_overlay_valid_config(struct fit_handle *fit,
- }
+ static struct image_handler aarch64_barebox_handler = {
+diff --git a/arch/arm/mach-at91/bootm-barebox.c b/arch/arm/mach-at91/bootm-barebox.c
+index 5540b8fad35e..f4894f247d11 100644
+--- a/arch/arm/mach-at91/bootm-barebox.c
++++ b/arch/arm/mach-at91/bootm-barebox.c
+@@ -13,6 +13,7 @@ EXPORT_SYMBOL(at91_bootsource);
  
- static int of_overlay_global_fixup_fit(struct device_node *root,
--				       const char *fit_path, loff_t fit_size)
-+				       const char *fit_path)
+ static int do_bootm_at91_barebox_image(struct image_data *data)
  {
- 	enum bootm_verify verify = bootm_get_verify_mode();
- 	struct device_node *conf_node;
-@@ -544,7 +544,7 @@ static int of_overlay_global_fixup_fit(struct device_node *root,
++	const struct resource *os_res;
+ 	resource_size_t start, end;
+ 	int ret;
+ 
+@@ -20,9 +21,9 @@ static int do_bootm_at91_barebox_image(struct image_data *data)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = bootm_load_os(data, start);
+-	if (ret)
+-		return ret;
++	os_res = bootm_load_os(data, start, end);
++	if (IS_ERR(os_res))
++		return PTR_ERR(os_res);
+ 
+ 	if (data->verbose)
+ 		printf("Loaded barebox image to 0x%08zx\n", start);
+diff --git a/arch/arm/mach-imx/imx-v3-image.c b/arch/arm/mach-imx/imx-v3-image.c
+index e5df5fdb81d9..5cce846f867f 100644
+--- a/arch/arm/mach-imx/imx-v3-image.c
++++ b/arch/arm/mach-imx/imx-v3-image.c
+@@ -8,6 +8,7 @@
+ 
+ static int do_bootm_imx_image_v3(struct image_data *data)
+ {
++	const struct resource *os_res;
+ 	void (*bb)(void);
+ 	resource_size_t start, end;
+ 	struct flash_header_v3 *hdr;
+@@ -18,9 +19,9 @@ static int do_bootm_imx_image_v3(struct image_data *data)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = bootm_load_os(data, start);
+-	if (ret)
+-		return ret;
++	os_res = bootm_load_os(data, start, end);
++	if (IS_ERR(os_res))
++		return PTR_ERR(os_res);
+ 
+ 	hdr = (void *)start;
+ 	offset = hdr->img[0].offset;
+diff --git a/arch/arm/mach-layerscape/pblimage.c b/arch/arm/mach-layerscape/pblimage.c
+index 5a525f0933d5..31783f18c74d 100644
+--- a/arch/arm/mach-layerscape/pblimage.c
++++ b/arch/arm/mach-layerscape/pblimage.c
+@@ -15,6 +15,7 @@ static int do_bootm_layerscape_pblimage(struct image_data *data)
+ {
+ 	void (*barebox)(unsigned long x0, unsigned long x1, unsigned long x2,
+ 		       unsigned long x3);
++	const struct resource *os_res;
+ 	resource_size_t start, end;
+ 	int ret;
+ 
+@@ -22,9 +23,9 @@ static int do_bootm_layerscape_pblimage(struct image_data *data)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = bootm_load_os(data, start);
+-	if (ret)
+-		return ret;
++	os_res = bootm_load_os(data, start, end);
++	if (IS_ERR(os_res))
++		return PTR_ERR(os_res);
+ 
+ 	barebox = (void*)start + BAREBOX_STAGE2_OFFSET;
+ 
+diff --git a/arch/arm/mach-rockchip/bootm.c b/arch/arm/mach-rockchip/bootm.c
+index ff3d9a2db3a0..2e068b05cefd 100644
+--- a/arch/arm/mach-rockchip/bootm.c
++++ b/arch/arm/mach-rockchip/bootm.c
+@@ -40,6 +40,7 @@ static int do_bootm_rkns_barebox_image(struct image_data *data)
+ {
+ 	void (*barebox)(unsigned long x0, unsigned long x1, unsigned long x2,
+ 			unsigned long x3);
++	const struct resource *os_res;
+ 	resource_size_t start, end;
+ 	struct newidb *idb;
+ 	int ret, i, n_files;
+@@ -50,14 +51,14 @@ static int do_bootm_rkns_barebox_image(struct image_data *data)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = bootm_load_os(data, start);
+-	if (ret)
+-		return ret;
++	os_res = bootm_load_os(data, start, end);
++	if (IS_ERR(os_res))
++		return PTR_ERR(os_res);
+ 
+-	idb = (void *)data->os_res->start;
+-	buf = (void *)data->os_res->start;
++	idb = (void *)os_res->start;
++	buf = (void *)os_res->start;
+ 
+-	image_size = resource_size(data->os_res);
++	image_size = resource_size(os_res);
+ 
+ 	if (image_size < SECTOR_SIZE)
  		return -EINVAL;
- 	}
+diff --git a/arch/arm/mach-zynq/bootm-zynqimg.c b/arch/arm/mach-zynq/bootm-zynqimg.c
+index 77ed6880e4b6..ebd2d621520b 100644
+--- a/arch/arm/mach-zynq/bootm-zynqimg.c
++++ b/arch/arm/mach-zynq/bootm-zynqimg.c
+@@ -8,6 +8,7 @@
+ static int do_bootm_zynqimage(struct image_data *data)
+ {
+ 	resource_size_t start, end;
++	const struct resource *os_res;
+ 	void (*barebox)(void);
+ 	u32 *header;
+ 	int ret;
+@@ -16,9 +17,9 @@ static int do_bootm_zynqimage(struct image_data *data)
+ 	if (ret)
+ 		return ret;
  
--	fit = fit_open(fit_path, 0, verify, fit_size);
-+	fit = fit_open(fit_path, 0, verify);
- 	if (IS_ERR(fit)) {
- 		pr_err("Loading FIT image %s failed with: %pe\n", fit_path, fit);
- 		return PTR_ERR(fit);
-@@ -595,7 +595,7 @@ static int of_overlay_global_fixup(struct device_node *root, void *data)
- 	}
+-	ret = bootm_load_os(data, start);
+-	if (ret)
+-		return ret;
++	os_res = bootm_load_os(data, start, end);
++	if (IS_ERR(os_res))
++		return PTR_ERR(os_res);
  
- 	/* Assume a FIT image if of_overlay_path points to a file */
--	ret = of_overlay_global_fixup_fit(root, dir, s.st_size);
-+	ret = of_overlay_global_fixup_fit(root, dir);
+ 	header = (u32*)start;
+ 	barebox = (void*)start + header[12];
+diff --git a/arch/kvx/lib/bootm.c b/arch/kvx/lib/bootm.c
+index 6eba4054e500..c464b5006fa2 100644
+--- a/arch/kvx/lib/bootm.c
++++ b/arch/kvx/lib/bootm.c
+@@ -13,6 +13,7 @@
+ #include <bootm.h>
+ #include <binfmt.h>
+ #include <common.h>
++#include <memory.h>
+ #include <libfile.h>
+ #include <linux/kernel.h>
  
- out:
- 	free(dir);
-diff --git a/include/image-fit.h b/include/image-fit.h
-index 50f0482b65ad..ede43beab12e 100644
---- a/include/image-fit.h
-+++ b/include/image-fit.h
-@@ -28,7 +28,7 @@ struct fit_handle {
- };
+@@ -54,7 +55,8 @@ static int do_boot_entry(struct image_data *data, boot_func_entry entry,
  
- struct fit_handle *fit_open(const char *filename, bool verbose,
--			    enum bootm_verify verify, loff_t max_size);
-+			    enum bootm_verify verify);
- struct fit_handle *fit_open_buf(const void *buf, size_t len, bool verbose,
- 				enum bootm_verify verify);
- void *fit_open_configuration(struct fit_handle *handle, const char *name,
-diff --git a/include/libfile.h b/include/libfile.h
-index 370f8b9725ab..f44046fb0f7b 100644
---- a/include/libfile.h
-+++ b/include/libfile.h
-@@ -59,4 +59,6 @@ struct resource *file_to_sdram(const char *filename, unsigned long adr,
+ static int do_boot_elf(struct image_data *data, struct elf_image *elf)
+ {
+-	const struct resource *initrd_res;
++	const struct resource *sdram, *initrd_res, *fdt_res;
++	struct resource gap;
+ 	int ret;
+ 	void *fdt;
+ 	boot_func_entry entry;
+@@ -71,7 +73,11 @@ static int do_boot_elf(struct image_data *data, struct elf_image *elf)
+ 	else
+ 		initrd_address = load_addr;
  
- int fixup_path_case(int dirfd, const char **path);
- 
-+int open_fdt(const char *filename, size_t *size);
+-	initrd_res = bootm_load_initrd(data, initrd_address);
++	sdram = memory_bank_lookup_region(initrd_address, &gap);
++	if (sdram != &gap)
++		return sdram ? -EBUSY : -EINVAL;
 +
- #endif /* __LIBFILE_H */
-diff --git a/lib/libfile.c b/lib/libfile.c
-index 6924db587e8c..86b1bc3fa790 100644
---- a/lib/libfile.c
-+++ b/lib/libfile.c
-@@ -918,3 +918,53 @@ int fixup_path_case(int fd, const char **path)
- 	free(resolved_path);
- 	return -errno;
++	initrd_res = bootm_load_initrd(data, initrd_address, gap.end);
+ 	if (IS_ERR(initrd_res)) {
+ 		printf("Failed to load initrd\n");
+ 		return PTR_ERR(initrd_res);
+@@ -93,9 +99,10 @@ static int do_boot_elf(struct image_data *data, struct elf_image *elf)
+ 
+ 	printf("Loading device tree at %lx\n", load_addr);
+ 	/* load device tree after the initrd if any */
+-	ret = bootm_load_devicetree(data, fdt, load_addr);
+-	if (ret) {
+-		printf("Failed to load device tree: %d\n", ret);
++	fdt_res = bootm_load_devicetree(data, fdt, load_addr, gap.end);
++	if (IS_ERR(fdt_res)) {
++		printf("Failed to load device tree: %pe\n", fdt_res);
++		ret = PTR_ERR(fdt_res);
+ 		goto err_free_fdt;
+ 	}
+ 
+diff --git a/arch/powerpc/lib/ppclinux.c b/arch/powerpc/lib/ppclinux.c
+index 564086482e5f..eda2539e6125 100644
+--- a/arch/powerpc/lib/ppclinux.c
++++ b/arch/powerpc/lib/ppclinux.c
+@@ -7,6 +7,7 @@
+ #include <image.h>
+ #include <init.h>
+ #include <malloc.h>
++#include <memory.h>
+ #include <environment.h>
+ #include <asm/bitops.h>
+ #include <asm/processor.h>
+@@ -53,12 +54,18 @@ static int do_bootm_linux(struct image_data *data)
+ {
+ 	void	(*kernel)(void *, void *, unsigned long,
+ 			unsigned long, unsigned long);
++	const struct resource *os_res, *sdram;
++	struct resource gap;
+ 	int ret;
+ 	struct fdt_header *fdt;
+ 
+-	ret = bootm_load_os(data, data->os_address);
+-	if (ret)
+-		return ret;
++	sdram = memory_bank_lookup_region(data->os_address, &gap);
++	if (sdram != &gap)
++		return sdram ? -EBUSY : -EINVAL;
++
++	os_res = bootm_load_os(data, data->os_address, gap.end);
++	if (IS_ERR(os_res))
++		return PTR_ERR(os_res);
+ 
+ 	fdt = of_get_fixed_tree_for_boot(data->of_root_node);
+ 	if (!fdt) {
+diff --git a/common/booti.c b/common/booti.c
+index 6a87b84c0308..67f31b793517 100644
+--- a/common/booti.c
++++ b/common/booti.c
+@@ -10,13 +10,14 @@
+ #include <linux/sizes.h>
+ 
+ static unsigned long get_kernel_address(unsigned long os_address,
+-					unsigned long text_offset)
++					unsigned long text_offset,
++					resource_size_t *end)
+ {
+-	resource_size_t start, end;
++	resource_size_t start;
+ 	int ret;
+ 
+ 	if (!UIMAGE_IS_ADDRESS_VALID(os_address)) {
+-		ret = memory_bank_first_find_space(&start, &end);
++		ret = memory_bank_first_find_space(&start, end);
+ 		if (ret)
+ 			return UIMAGE_INVALID_ADDRESS;
+ 
+@@ -33,9 +34,10 @@ void *booti_load_image(struct image_data *data, phys_addr_t *oftree)
+ {
+ 	const void *kernel_header =
+ 			data->os_fit ? data->fit_kernel : data->os_header;
++	const struct resource *os_res;
+ 	unsigned long text_offset, image_size, kernel;
+ 	unsigned long image_end;
+-	int ret;
++	resource_size_t end;
+ 	void *fdt;
+ 
+ 	print_hex_dump_bytes("header ", DUMP_PREFIX_OFFSET, kernel_header, 80);
+@@ -49,24 +51,26 @@ void *booti_load_image(struct image_data *data, phys_addr_t *oftree)
+ 	text_offset = le64_to_cpup(kernel_header + 8);
+ 	image_size = le64_to_cpup(kernel_header + 16);
+ 
+-	kernel = get_kernel_address(data->os_address, text_offset);
++	kernel = get_kernel_address(data->os_address, text_offset, &end);
+ 
+ 	pr_debug("Kernel to be loaded to %lx+%lx\n", kernel, image_size);
+ 
+ 	if (kernel == UIMAGE_INVALID_ADDRESS)
+ 		return ERR_PTR(-ENOENT);
++	if (kernel + image_size - 1 > end)
++		return ERR_PTR(-ENOSPC);
+ 
+-	ret = bootm_load_os(data, kernel);
+-	if (ret)
+-		return ERR_PTR(ret);
++	os_res = bootm_load_os(data, kernel, end);
++	if (IS_ERR(os_res))
++		return ERR_CAST(os_res);
+ 
+ 	image_end = PAGE_ALIGN(kernel + image_size);
+ 
+ 	if (oftree) {
+ 		unsigned long devicetree;
+-		const struct resource *initrd_res;
++		const struct resource *initrd_res, *dt_res;
+ 
+-		initrd_res = bootm_load_initrd(data, image_end);
++		initrd_res = bootm_load_initrd(data, image_end, end);
+ 		if (IS_ERR(initrd_res)) {
+ 			return ERR_CAST(initrd_res);
+ 		} else if (initrd_res) {
+@@ -85,11 +89,11 @@ void *booti_load_image(struct image_data *data, phys_addr_t *oftree)
+ 			goto out;
+ 		}
+ 
+-		ret = bootm_load_devicetree(data, fdt, devicetree);
++		dt_res = bootm_load_devicetree(data, fdt, devicetree, end);
+ 		free(fdt);
+ 
+-		if (ret)
+-			return ERR_PTR(ret);
++		if (IS_ERR(dt_res))
++			return ERR_CAST(dt_res);
+ 
+ 		*oftree = devicetree;
+ 	}
+diff --git a/common/bootm.c b/common/bootm.c
+index b63c3ea4f547..505b670a4a5e 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -228,57 +228,69 @@ static bool bootm_get_override(char **oldpath, const char *newpath)
+ 	return true;
  }
-+
+ 
+-/*
 +/**
-+ * open_fdt - open a flattened device tree file and determine its size
-+ * @filename: path to the FDT file
-+ * @size: returns the total size from the FDT header
-+ *
-+ * Opens the file, reads the FDT header to determine totalsize, validates
-+ * it against the file size, then reopens the file for sequential reading.
-+ *
-+ * Return: file descriptor on success, negative error code on failure
-+ */
-+int open_fdt(const char *filename, size_t *size)
-+{
-+	__be32 fdt_hdr[2];
-+	u32 fdt_size;
-+	struct stat st;
-+	int fd, ret;
+  * bootm_load_os() - load OS to RAM
+- *
+  * @data:		image data context
+  * @load_address:	The address where the OS should be loaded to
++ * @end_address:	The end address of the load buffer (inclusive)
+  *
+  * This loads the OS to a RAM location. load_address must be a valid
+- * address. If the image_data doesn't have a OS specified it's considered
++ * address. If the image_data doesn't have an OS specified it's considered
+  * an error.
+  *
+- * Return: 0 on success, negative error code otherwise
++ * Return: the OS resource on success, or an error pointer on failure
+  */
+-int bootm_load_os(struct image_data *data, unsigned long load_address)
++const struct resource *bootm_load_os(struct image_data *data,
++		ulong load_address, ulong end_address)
+ {
++	int err;
 +
-+	fd = open(filename, O_RDONLY);
-+	if (fd < 0)
-+		return fd;
-+
-+	ret = fstat(fd, &st);
-+	if (ret)
-+		goto err;
-+
-+	ret = pread_full(fd, &fdt_hdr, sizeof(fdt_hdr), 0);
-+	if (ret >= 0 && ret < sizeof(fdt_hdr))
-+		ret = -EILSEQ;
-+	if (ret < 0)
-+		goto err;
-+
-+	fdt_size = be32_to_cpu(fdt_hdr[1]);
-+	if (st.st_size < fdt_size) {
-+		ret = -ENODATA;
-+		goto err;
+ 	if (data->os_res)
+-		return 0;
++		return data->os_res;
+ 
+ 	if (load_address == UIMAGE_INVALID_ADDRESS)
+-		return -EINVAL;
++		return ERR_PTR(-EINVAL);
++	if (end_address <= load_address)
++		return ERR_PTR(-EINVAL);
+ 
+-	if (data->os_fit)
+-		return bootm_load_fit_os(data, load_address);
++	if (data->os_fit) {
++		err = bootm_load_fit_os(data, load_address);
++	} else if (image_is_uimage(data)) {
++		err = bootm_load_uimage_os(data, load_address);
++	} else if (data->os_file) {
++		data->os_res = file_to_sdram(data->os_file, load_address, MEMTYPE_LOADER_CODE);
++		err = data->os_res ? 0 : -EBUSY;
++	} else {
++		err = -EINVAL;
 +	}
+ 
+-	if (image_is_uimage(data))
+-		return bootm_load_uimage_os(data, load_address);
++	if (err)
++		return ERR_PTR(err);
+ 
+-	if (!data->os_file)
+-		return -EINVAL;
++	/* FIXME: We need some more rework to be able to detect this overflow
++	 * before it happens, but for now, let's at least detect it.
++	 */
++	if (WARN_ON(data->os_res->end > end_address))
++		return ERR_PTR(-ENOSPC);
+ 
+-	data->os_res = file_to_sdram(data->os_file, load_address, MEMTYPE_LOADER_CODE);
+-	if (!data->os_res)
+-		return -ENOMEM;
+-
+-	return 0;
++	return data->os_res;
+ }
+ 
+-/*
++/**
+  * bootm_load_initrd() - load initrd to RAM
+- *
+  * @data:		image data context
+  * @load_address:	The address where the initrd should be loaded to
++ * @end_address:	The end address of the load buffer (inclusive)
+  *
+  * This loads the initrd to a RAM location. load_address must be a valid
+- * address. If the image_data doesn't have a initrd specified this function
+- * still returns successful as an initrd is optional. Check data->initrd_res
+- * to see if an initrd has been loaded.
++ * address. If the image_data doesn't have an initrd specified this function
++ * still returns successful as an initrd is optional.
+  *
+- * Return: 0 on success, negative error code otherwise
++ * Return: the initrd resource if one was loaded, NULL if no initrd was
++ *         specified, or an error pointer on failure
+  */
+ const struct resource *
+-bootm_load_initrd(struct image_data *data, unsigned long load_address)
++bootm_load_initrd(struct image_data *data, ulong load_address, ulong end_address)
+ {
+ 	struct resource *res = NULL;
+ 	const char *initrd, *initrd_part = NULL;
+@@ -293,6 +305,8 @@ bootm_load_initrd(struct image_data *data, unsigned long load_address)
+ 	 */
+ 	if (WARN_ON(data->initrd_res))
+ 		return data->initrd_res;
++	if (end_address <= load_address)
++		return ERR_PTR(-EINVAL);
+ 
+ 	bootm_get_override(&data->initrd_file, bootm_overrides.initrd_file);
+ 
+@@ -313,7 +327,7 @@ bootm_load_initrd(struct image_data *data, unsigned long load_address)
+ 
+ 	} else if (initrd) {
+ 		res = file_to_sdram(initrd, load_address, MEMTYPE_LOADER_DATA)
+-			?: ERR_PTR(-ENOMEM);
++			?: ERR_PTR(-EBUSY);
+ 
+ 	} else if (data->os_fit) {
+ 		res = bootm_load_fit_initrd(data, load_address);
+@@ -323,6 +337,12 @@ bootm_load_initrd(struct image_data *data, unsigned long load_address)
+ 	if (IS_ERR_OR_NULL(res))
+ 		return res;
+ 
++	/* FIXME: We need some more rework to be able to detect this overflow
++	 * before it happens, but for now, let's at least detect it.
++	 */
++	if (WARN_ON(res->end > end_address))
++		return ERR_PTR(-ENOSPC);
 +
-+	close(fd);
+ 	pr_info("Loaded initrd from %s %s%s%s to %pa-%pa\n",
+ 		file_type_to_string(type), initrd ?: "",
+ 		initrd_part ? "@" : "", initrd_part ?: "",
+@@ -424,33 +444,38 @@ void *bootm_get_devicetree(struct image_data *data)
+ 	return oftree;
+ }
+ 
+-/*
+- * bootm_load_devicetree() - load devicetree
+- *
++/**
++ * bootm_load_devicetree() - load devicetree into specified memory range
+  * @data:		image data context
+  * @fdt:		The flat device tree to load
+  * @load_address:	The address where the devicetree should be loaded to
++ * @end_address:	The end address of the load buffer (inclusive)
+  *
+  * This loads the devicetree to a RAM location. load_address must be a valid
+  * address which is requested with request_sdram_region. The associated region
+  * is released automatically in the bootm error path.
+  *
+- * Return: 0 on success, negative error code otherwise
++ * Return: the devicetree resource on success, or an error pointer on failure
+  */
+-int bootm_load_devicetree(struct image_data *data, void *fdt,
+-			    unsigned long load_address)
++const struct resource *
++bootm_load_devicetree(struct image_data *data, void *fdt,
++		      ulong load_address, ulong end_address)
+ {
+ 	int fdt_size;
+ 
+ 	if (!IS_ENABLED(CONFIG_OFTREE))
+-		return -ENOSYS;
++		return ERR_PTR(-ENOSYS);
++	if (end_address <= load_address)
++		return ERR_PTR(-EINVAL);
+ 
+ 	fdt_size = be32_to_cpu(((struct fdt_header *)fdt)->totalsize);
++	if (load_address + fdt_size - 1 > end_address)
++		return ERR_PTR(-ENOSPC);
+ 
+ 	data->oftree_res = request_sdram_region("oftree", load_address,
+ 			fdt_size, MEMTYPE_LOADER_DATA, MEMATTRS_RW);
+ 	if (!data->oftree_res)
+-		return -ENOMEM;
++		return ERR_PTR(-EBUSY);
+ 
+ 	memcpy((void *)data->oftree_res->start, fdt, fdt_size);
+ 
+@@ -460,7 +485,7 @@ int bootm_load_devicetree(struct image_data *data, void *fdt,
+ 		fdt_print_reserve_map(fdt);
+ 	}
+ 
+-	return 0;
++	return data->oftree_res;
+ }
+ 
+ int bootm_get_os_size(struct image_data *data)
+diff --git a/efi/loader/bootm.c b/efi/loader/bootm.c
+index da664847def8..498f4dce6b07 100644
+--- a/efi/loader/bootm.c
++++ b/efi/loader/bootm.c
+@@ -160,18 +160,15 @@ static efi_status_t efi_install_fdt(void *fdt)
+ 
+ /**
+  * efi_install_initrd() - install initrd
+- *
+- * Install the initrd located at @initrd using the EFI_LOAD_FILE2
+- * protocol.
+- *
+- * @initrd:	address of initrd or NULL if none is provided
+- * @initrd_sz:	size of initrd
++ * @data:	image data
++ * @freemem:	address of free memory usable for placing initrd
+  * Return:	status code
+  */
+ static efi_status_t efi_install_initrd(struct image_data *data,
+-				       struct resource *source)
++				       resource_size_t freemem)
+ {
+-	const struct resource *initrd_res;
++	const struct resource *initrd_res, *sdram;
++	struct resource gap;
+ 	unsigned long initrd_start;
+ 
+ 	if (!IS_ENABLED(CONFIG_BOOTM_INITRD))
+@@ -180,9 +177,13 @@ static efi_status_t efi_install_initrd(struct image_data *data,
+ 	if (UIMAGE_IS_ADDRESS_VALID(data->initrd_address))
+ 		initrd_start = data->initrd_address;
+ 	else
+-		initrd_start = EFI_PAGE_ALIGN(source->end + 1);
++		initrd_start = EFI_PAGE_ALIGN(freemem);
+ 
+-	initrd_res = bootm_load_initrd(data, initrd_start);
++	sdram = memory_bank_lookup_region(initrd_start, &gap);
++	if (sdram != &gap)
++		return sdram ? EFI_OUT_OF_RESOURCES : EFI_INVALID_PARAMETER;
 +
-+	/* HACK: TFTP doesn't support backwards seeking, so reopen afresh */
-+	fd = open(filename, O_RDONLY);
-+	if (fd >= 0)
-+		*size = fdt_size;
++	initrd_res = bootm_load_initrd(data, initrd_start, gap.end);
+ 	if (IS_ERR(initrd_res))
+ 		return PTR_ERR(initrd_res);
+ 	if (initrd_res)
+@@ -194,12 +195,12 @@ static efi_status_t efi_install_initrd(struct image_data *data,
+ 
+ static int efi_loader_bootm(struct image_data *data)
+ {
++	const struct resource *os_res;
+ 	resource_size_t start, end;
+ 	void *load_option = NULL;
+ 	u32 load_option_size = 0;
+ 	efi_handle_t handle;
+ 	struct efi_device_path *file_path = NULL;
+-	struct resource *source;
+ 	struct efi_event *evt;
+ 	size_t exit_data_size = 0;
+ 	u16 *exit_data = NULL;
+@@ -209,11 +210,10 @@ static int efi_loader_bootm(struct image_data *data)
+ 	int flags = 0;
+ 
+ 	memory_bank_first_find_space(&start, &end);
+-	data->os_address = start;
+ 
+-	source = file_to_sdram(data->os_file, data->os_address, MEMTYPE_LOADER_CODE);
+-	if (!source)
+-		return -EINVAL;
++	os_res = bootm_load_os(data, start, end);
++	if (IS_ERR(os_res))
++		return PTR_ERR(os_res);
+ 
+ 	if (filetype_is_linux_efi_image(data->os_type)) {
+ 		const char *options;
+@@ -248,7 +248,7 @@ static int efi_loader_bootm(struct image_data *data)
+ 			return ret;
+ 	}
+ 
+-	efiret = efi_install_initrd(data, source);
++	efiret = efi_install_initrd(data, os_res->end + 1);
+ 	if(efiret != EFI_SUCCESS)
+ 		goto out;
+ 
+@@ -258,8 +258,8 @@ static int efi_loader_bootm(struct image_data *data)
+ 		flags |= EFI_DRYRUN;
+ 
+ 	efiret = efiloader_load_image(false, efi_root, file_path,
+-				(void *)source->start,
+-				resource_size(source), &handle);
++				(void *)os_res->start,
++				resource_size(os_res), &handle);
+ 	if (efiret != EFI_SUCCESS) {
+ 		pr_err("Loading image failed\n");
+ 		goto out;
+@@ -318,7 +318,6 @@ static int efi_loader_bootm(struct image_data *data)
+ 	efi_install_configuration_table(&efi_fdt_guid, NULL);
+ 	efi_free_pool(file_path);
+ 	free(load_option);
+-	release_sdram_region(source);
+ 
+ 	return ret ?: -efi_errno(efiret);
+ }
+diff --git a/include/bootm.h b/include/bootm.h
+index e56a999f0b11..1c3bb8899b38 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -150,14 +150,19 @@ static inline int bootm_verbose(struct image_data *data)
+ void bootm_data_init_defaults(struct bootm_data *data);
+ void bootm_data_restore_defaults(const struct bootm_data *data);
+ 
+-int bootm_load_os(struct image_data *data, unsigned long load_address);
++const struct resource *
++bootm_load_os(struct image_data *data,
++	      ulong load_address, ulong end_address);
+ 
+ const struct resource *
+-bootm_load_initrd(struct image_data *data, unsigned long load_address);
++bootm_load_initrd(struct image_data *data,
++		  ulong load_address, ulong end_address);
+ 
+ void *bootm_get_devicetree(struct image_data *data);
+-int bootm_load_devicetree(struct image_data *data, void *fdt,
+-			  unsigned long load_address);
 +
-+	return fd;
-+err:
-+	close(fd);
-+	return ret;
-+}
++const struct resource *
++bootm_load_devicetree(struct image_data *data, void *fdt,
++		      ulong load_address, ulong end_address);
+ int bootm_get_os_size(struct image_data *data);
+ 
+ enum bootm_verify bootm_get_verify_mode(void);
 -- 
 2.47.3
 
