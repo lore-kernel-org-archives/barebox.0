@@ -1,65 +1,66 @@
-Delivery-date: Mon, 09 Feb 2026 16:29:22 +0100
+Delivery-date: Mon, 09 Feb 2026 16:31:36 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpTCU-00Ab7Q-2K
+	id 1vpTEe-00Ab9J-3C
 	for lore@lore.pengutronix.de;
-	Mon, 09 Feb 2026 16:29:22 +0100
+	Mon, 09 Feb 2026 16:31:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpTCT-00007v-Oc
-	for lore@pengutronix.de; Mon, 09 Feb 2026 16:29:22 +0100
+	id 1vpTEe-0000Tv-1F
+	for lore@pengutronix.de; Mon, 09 Feb 2026 16:31:36 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=be8drmbbhs6vL6LxGqtfK5lWGuAbehNqV1SHqP8D/08=; b=WMiisT3qAgCbz8piKzr/xdbFRd
-	ztqj3dodXmr0AiexPBYZUqCi4AtDp0bMIYE36H+MXOeNa9jSbiDzHaw/zOYbc1tZym/T1ZT2hrHOG
-	frv/6TcX+VdRVe+B2xLAYjpuKOs4HAMQbOb+bpdMVwsXOpmpY8Q5FhmuZbVLPH9WdJinvk8ZT6rak
-	o5S5Uc4nItHTYO+G9QN/zYkn972jb3ML4M337JbCcHd6Y80rqr0wwQZmiO+x0R2npBUoIk0Xs/Xfz
-	yYVL8R1ABHF3I7Y73XH1En1UhFVc2KqxvnLFtSCN1vX3xDe4/bNryY2hmrCFpjYlfdXBzhwdBPHdv
-	hgq4SA4g==;
+	bh=oklX67lahQKsxvI4O6yJYwTyvckm6JKWsZMSKOTQCTU=; b=0dkZfEgM83H61bRgEBw/ikJtcB
+	Drr9cu/mo749m4zbnxuubie/1SJpUdkr1Cibu+xOmbGsmYrKqH7ZU/DnZxEYOP+pQqs4f4u97pYQg
+	xv8UWZTYa8fDjWJwLCqr/MOYXRnH2TQxtCeTJa4FRYrGmRuxepXOEvLaJHFmXsLC9ywFedLCppzMD
+	4Dxh4zF+dNV/2AhxamdkfqNXbFY8lVhLE3AyVuGwVNcDmGeJVQx/7sGWxkdULIo4EB5nKeBSPfqkT
+	j1Ck2avUnr45rV8pTNmC4ke0acQyNGHKwSQaMFk/XCIZo4f5N5++YwVs39p0TyyNnzMXmK5yG37Vn
+	9squHudQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpTC0-0000000FboA-17hU;
-	Mon, 09 Feb 2026 15:28:52 +0000
+	id 1vpTDz-0000000Fbzu-2A9x;
+	Mon, 09 Feb 2026 15:30:55 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpTBw-0000000Fbno-2swH
+	id 1vpTDw-0000000FbzD-1Q7h
 	for barebox@lists.infradead.org;
-	Mon, 09 Feb 2026 15:28:50 +0000
+	Mon, 09 Feb 2026 15:30:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vpTBu-0008SZ-Kl; Mon, 09 Feb 2026 16:28:46 +0100
+	id 1vpTDu-0000OF-Ik; Mon, 09 Feb 2026 16:30:50 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vpTBv-004uYb-0P;
-	Mon, 09 Feb 2026 16:28:46 +0100
+	id 1vpTDv-004uZi-07;
+	Mon, 09 Feb 2026 16:30:50 +0100
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vpTBu-00000007jC0-1WKl;
-	Mon, 09 Feb 2026 16:28:46 +0100
+	id 1vpTDu-00000007jLT-19IH;
+	Mon, 09 Feb 2026 16:30:50 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  9 Feb 2026 16:28:42 +0100
-Message-ID: <20260209152843.1841982-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	"Claude Sonnet v4.5" <noreply@anthropic.com>
+Date: Mon,  9 Feb 2026 16:30:46 +0100
+Message-ID: <20260209153047.1842593-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260209_072848_726115_78A59A2B 
-X-CRM114-Status: UNSURE (   8.66  )
+X-CRM114-CacheID: sfid-20260209_073052_374866_CAE3018D 
+X-CRM114-Status: UNSURE (   9.79  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -80,38 +81,36 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] ci: container: install isoinfo package into container
+Subject: [PATCH] efi: payload: bootm: fix memory corruption on initrd load error
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-OS installation images are often distributed as ISOs, but barebox has no
-ISO file system support. This is currently not needed as Grub has isofs
-support and barebox just looks at the GPT parts of the hybrid image,
-which references only grub.
+initrd is a pointer to a pointer and its only used place the pointed at
+pointer on stack. Freeing it will this trigger memory corruption.
 
-However, this isn't enough when we need to reference the kernel boot
-artifacts from ISO images in upcoming changes to the test suite, so prepare
-for that by including genisoimage into the test suite
+Fix this by actually freeing the heap buffer.
 
+Reported-by: Claude Sonnet v4.5 <noreply@anthropic.com>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- test/Containerfile | 1 +
- 1 file changed, 1 insertion(+)
+ efi/payload/bootm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/test/Containerfile b/test/Containerfile
-index 196000ce1c8e..8b0c37a6b20a 100644
---- a/test/Containerfile
-+++ b/test/Containerfile
-@@ -21,6 +21,7 @@ RUN apt-get update && apt-get upgrade && apt-get install -y --no-install-recomme
- 	libc6-i386 \
- 	libgit2-dev \
- 	libguestfs-tools \
-+	genisoimage \
- 	lz4 \
- 	librsvg2-bin \
- 	libseccomp-dev \
+diff --git a/efi/payload/bootm.c b/efi/payload/bootm.c
+index ea5b1265aeaa..f4e6e6324bcd 100644
+--- a/efi/payload/bootm.c
++++ b/efi/payload/bootm.c
+@@ -161,7 +161,7 @@ static int efi_load_ramdisk(struct image_data *data, void **initrd)
+ 	return 0;
+ 
+ free_mem:
+-	free(initrd);
++	free(initrd_mem);
+ 
+ 	return ret;
+ }
 -- 
 2.47.3
 
