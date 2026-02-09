@@ -1,67 +1,67 @@
-Delivery-date: Mon, 09 Feb 2026 19:17:12 +0100
+Delivery-date: Mon, 09 Feb 2026 21:18:00 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpVou-00AduD-1d
+	id 1vpXhp-00AkEW-04
 	for lore@lore.pengutronix.de;
-	Mon, 09 Feb 2026 19:17:12 +0100
+	Mon, 09 Feb 2026 21:18:00 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpVot-00077x-Gx
-	for lore@pengutronix.de; Mon, 09 Feb 2026 19:17:12 +0100
+	id 1vpXhn-0007us-QB
+	for lore@pengutronix.de; Mon, 09 Feb 2026 21:18:00 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=z6sE9g2tW/7/uzitMu5x8T9AqXlvxH+saOA+EHu6Scg=; b=xqMZiEAud/2yUWO2UuK9bPM0s5
-	hVNgo+QLgDaBDr+EaAsYbfsNHrJ7PQWKSps6lttnbiiKCk4D3RpBLiRDn0AIyUnOyIx8vykD9YjVD
-	gHxuxBdGi8LfnBYBTWUoViPaE7dLDw04FkJcdZm5m+IsIQuTn3+vN6Cz0+8xPB6s4FfRiFNmH92AR
-	XIaYvA+34Tflr+YyShJTUOdfc066Ik+97QIbyolLxa+P0JmWaLlY3Pzp0kKcMyn2CIQJnWF1sW67Z
-	xSXvHo/Kf2IVgy9o4QAqKpashwDrK6oXi+K+sg3Ta+22WTLh5xAhU71CUbgo+zmt4aJCPaODsoc6w
-	3PTaaePQ==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:To:From:Date:Reply-To
+	:Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=QIzdKf3qSgO3BxYrm+DKSdLDrLXdH1A5UpujCoP4KaA=; b=LecL7S5ahdc/Ko4fu95eB5FOHB
+	V4C4PIF9S8xnGmuZ3m79zajJerHmy8E0FkHuE8lXt7xHVqrEvCLAooxmbn7D4YHoGLJM9NtGH8MP4
+	eCIv7omFZK7HIB7vrcbrVuJVK0DiZ3stCnecUYMCKmGGzQtZ/E8AyiCcm4GA9w0CoypaSeAEc2tpq
+	On8ULVLXsckiJBI8NfWSIt0jyDdZErsRVhtO+NUjVBEgRU4Tn4m3l2t9M4NFOtLRyha52yOX6LIri
+	7iy5JuM4U39r0xFZSpvZcjH/Wy33U6yGUEwOotjXuJyMjM2fW0A4Gx9fnPfmWlcNCZhVJqzw5sqQU
+	Z/IOGmrw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpVoS-0000000FquQ-2Uaq;
-	Mon, 09 Feb 2026 18:16:44 +0000
+	id 1vpXhD-0000000FxZm-24Y5;
+	Mon, 09 Feb 2026 20:17:23 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpVoQ-0000000Fqsp-0bwA
+	id 1vpXh9-0000000FxYt-3ti7
 	for barebox@lists.infradead.org;
-	Mon, 09 Feb 2026 18:16:43 +0000
+	Mon, 09 Feb 2026 20:17:21 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vpVoO-0006ts-DJ; Mon, 09 Feb 2026 19:16:40 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vpXh7-0007oY-JB; Mon, 09 Feb 2026 21:17:17 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vpVoO-004vof-2s;
-	Mon, 09 Feb 2026 19:16:40 +0100
-Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vpVjZ-00000008UJ4-2j13;
-	Mon, 09 Feb 2026 19:11:41 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  9 Feb 2026 19:10:49 +0100
-Message-ID: <20260209181138.2023065-11-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260209181138.2023065-1-a.fatoum@pengutronix.de>
-References: <20260209181138.2023065-1-a.fatoum@pengutronix.de>
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vpXh8-0050uO-0D;
+	Mon, 09 Feb 2026 21:17:17 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vpXh7-0089tO-0u;
+	Mon, 09 Feb 2026 21:17:17 +0100
+Date: Mon, 9 Feb 2026 21:17:17 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <20260209201717.kh6f5mtq7tfr772e@pengutronix.de>
+References: <20260204-v2025-09-0-topic-optee-of-handling-v2-0-da075e6818e0@pengutronix.de>
+ <20260204-v2025-09-0-topic-optee-of-handling-v2-12-da075e6818e0@pengutronix.de>
+ <cbfbe353-8fa7-4f2c-b682-7af16162f2a4@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cbfbe353-8fa7-4f2c-b682-7af16162f2a4@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260209_101642_207634_F7515619 
-X-CRM114-Status: GOOD (  10.19  )
+X-CRM114-CacheID: sfid-20260209_121720_100375_46323DDE 
+X-CRM114-Status: GOOD (  24.60  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,65 +73,154 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: BAREBOX <barebox@lists.infradead.org>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=ham
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 10/13] uimage: record original file name in uimage_handle
+Subject: Re: [PATCH v2 12/15] security: optee: add helpers to register OF
+ overlays
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The struct uimage_handle only stores the file name if header->ih_name
-if empty. To make it possible to always get a descriptive name for when
-bootm-uimage is switched over to loadables, let's store the filename
-in the uimage_handle.
+On 26-02-06, Ahmad Fatoum wrote:
+> On 2/4/26 9:01 PM, Marco Felsch wrote:
+> > Add two helpers to make the OP-TEE overlay handling more convenient.
+> > 
+> > The first helper registers an optional OF overlay provided by
+> > barebox-pbl.
+> > The second helper can be used to query the status of the OF overlay, e.g
+> > registered or not-registered.
+> > 
+> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> 
+> With below memory leak fixed:
+> 
+> Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> 
+> > ---
+> >  drivers/tee/optee/of_fixup.c | 41 +++++++++++++++++++++++++++++++++++++++++
+> >  include/tee/optee.h          | 11 +++++++++++
+> >  2 files changed, 52 insertions(+)
+> > 
+> > diff --git a/drivers/tee/optee/of_fixup.c b/drivers/tee/optee/of_fixup.c
+> > index 152322901a7e6af9c83da4c6a2d43f6e2c9af329..dbcc168201828d350f4545a07ce5f2676f18d09e 100644
+> > --- a/drivers/tee/optee/of_fixup.c
+> > +++ b/drivers/tee/optee/of_fixup.c
+> > @@ -1,7 +1,10 @@
+> >  /* SPDX-License-Identifier: GPL-2.0-only */
+> >  
+> > +#define pr_fmt(fmt) "OP-TEE OF: " fmt
+> > +
+> >  #include <of.h>
+> >  #include <linux/ioport.h>
+> > +#include <linux/printk.h>
+> >  #include <asm/barebox-arm.h>
+> >  #include <tee/optee.h>
+> >  
+> > @@ -64,3 +67,41 @@ int of_optee_fixup(struct device_node *root, void *_data)
+> >  
+> >  	return of_fixup_reserved_memory(root, &res_shm);
+> >  }
+> > +
+> > +static bool optee_ovl_registered;
+> > +
+> > +void optee_register_overlay(void)
+> > +{
+> > +	struct device_node *overlay;
+> > +	size_t size = 0;
+> > +	void *fdto;
+> > +	int err;
+> > +
+> > +	if (optee_ovl_registered) {
+> > +		pr_warn("overlay already registered, skip\n");
+> > +		return;
+> > +	}
+> > +
+> > +	fdto = handoff_data_get_entry(HANDOFF_DATA_TEE_DT_OVL, &size);
+> > +	if (!fdto || size == 0)
+> > +		return;
+> > +
+> > +	overlay = of_unflatten_dtb(fdto, size);
+> > +	if (IS_ERR(overlay)) {
+> > +		pr_warn("failed to unflatten overlay: %pe\n", overlay);
+> > +		return;
+> > +	}
+> > +
+> > +	err = of_register_overlay(overlay);
+> > +	if (err) {
+> > +		pr_warn("failed to register overlay: %pe\n", ERR_PTR(err));
+> > +		return;
+> > +	}
+> 
+> I believe you'll want to add a of_delete_node(overlay); here
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- common/uimage.c | 2 ++
- include/image.h | 1 +
- 2 files changed, 3 insertions(+)
+Added of_delete_node() within the above error path, thanks!
 
-diff --git a/common/uimage.c b/common/uimage.c
-index 5f7087475709..d34205572510 100644
---- a/common/uimage.c
-+++ b/common/uimage.c
-@@ -183,6 +183,7 @@ struct uimage_handle *uimage_open(const char *filename)
- 	 * fd is now at the first data word
- 	 */
- 	handle->fd = fd;
-+	handle->filename = xstrdup(filename);
- 
- 	return handle;
- err_out:
-@@ -212,6 +213,7 @@ void uimage_close(struct uimage_handle *handle)
- 	}
- 
- 	free(handle->name);
-+	free(handle->filename);
- 	free(handle);
- }
- EXPORT_SYMBOL(uimage_close);
-diff --git a/include/image.h b/include/image.h
-index d9a1b8f3ee02..769523d6fcaf 100644
---- a/include/image.h
-+++ b/include/image.h
-@@ -312,6 +312,7 @@ void *uimage_load_to_buf(struct uimage_handle *handle, int image_no,
- struct uimage_handle {
- 	struct image_header header;
- 	char *name;
-+	char *filename;
- 	char *copy;
- 	struct uimage_handle_data ihd[MAX_MULTI_IMAGE_COUNT];
- 	int nb_data_entries;
+Regards,
+  Marco
+
+> 
+> > +
+> > +	optee_ovl_registered = true;
+> > +}
+> > +
+> > +bool optee_overlay_registered(void)
+> > +{
+> > +	return optee_ovl_registered;
+> > +}
+> > diff --git a/include/tee/optee.h b/include/tee/optee.h
+> > index 7126e3c6e24bbf0f37aee7827dc3b4d9619d3bc3..0c9a6e5e64723ca743d53b8cd1ffdefae5bd3c6f 100644
+> > --- a/include/tee/optee.h
+> > +++ b/include/tee/optee.h
+> > @@ -38,6 +38,8 @@ int optee_verify_header (const struct optee_header *hdr);
+> >  void optee_set_membase(const struct optee_header *hdr);
+> >  int optee_get_membase(u64 *membase);
+> >  void optee_handoff_overlay(void *ovl, unsigned int ovl_sz);
+> > +void optee_register_overlay(void);
+> > +bool optee_overlay_registered(void);
+> >  
+> >  #else
+> >  
+> > @@ -54,6 +56,15 @@ void optee_handoff_overlay(void *ovl, unsigned int ovl_sz)
+> >  {
+> >  }
+> >  
+> > +static inline void optee_register_overlay(void)
+> > +{
+> > +}
+> > +
+> > +static inline bool optee_overlay_registered(void)
+> > +{
+> > +	return false;
+> > +}
+> > +
+> >  #endif /* CONFIG_HAVE_OPTEE */
+> >  
+> >  #ifdef __PBL__
+> > 
+> 
+> -- 
+> Pengutronix e.K.                  |                             |
+> Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+> 
+> 
+
 -- 
-2.47.3
+#gernperDu 
+#CallMeByMyFirstName
 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
 
 
