@@ -1,55 +1,55 @@
-Delivery-date: Mon, 09 Feb 2026 10:09:50 +0100
+Delivery-date: Mon, 09 Feb 2026 10:09:52 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpNHC-00AV9A-2l
+	id 1vpNHE-00AV9h-25
 	for lore@lore.pengutronix.de;
-	Mon, 09 Feb 2026 10:09:50 +0100
+	Mon, 09 Feb 2026 10:09:52 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpNHB-0005Jz-PC
-	for lore@pengutronix.de; Mon, 09 Feb 2026 10:09:50 +0100
+	id 1vpNHD-0005Kr-9R
+	for lore@pengutronix.de; Mon, 09 Feb 2026 10:09:52 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=k6v50JWNCZXGEVdaSZ22OIQAblcexmSNgCdfC4FJZ4U=; b=YAX8sAwCYqfQFa7KD7VUaXtKQO
-	ovZdeViZc+sBpO/B+KV/wrxDfV58iQgnX9P0a6na37St0oLvm+u0jTyFKcbZrGFsBZwitGbIvZry8
-	GHUwARRSsyaekzx4rweFF00Sbm3iXBWZtBQGYrn7a5WGP2xgIKqE8RwCegCKuDAFRNJgq+aTNU5o1
-	6eouCd2ausSer7fNIUqRij+SEIq70O5nuBsyksqkYoWGkKhw44nVmulMCAMFiesRTGkoJExBL9/WI
-	fFwHunAmMZH53IX5nIrd37Bb+EP+75Dc7JPR1ap+o0W2Y8HKKr61B4AAAEoURowFvdxQa/e6OrJd0
-	VGeg1wXg==;
+	bh=bzn+1gr7s+MJUxHletqo9/G3ps3TVOtRNI18GaoDEn8=; b=3J7LgCAY/+RWWs5e8KR1fIej2u
+	pC6QyK9O3UooaU+a/lCQUnMwPvHXOoV7iZLPCz+a4C8O+4RywMhwKWvJgw8H7eQbalnEsGvnxhAQk
+	g40LTGuB1649HuhZ6NCFV2IG2DxQqZMVvXlqCkLFidUp3AvZAdiK18mbmt3UhtQmlvBxa+VAAMWTz
+	nq1bFg6/MruuMNNXMKsFC9Dx8LIWuj4gfruxr4RXCMXWNSLRHAPv4fNffaTP55TN+alq/9SLLtZ5r
+	Jg0Tjc9cbv1V8CtGWxytrClDvvy35B2J7NSh7zSaorbJZAHO8/YBs2i5yobp0lZDwxnqEaJlK7wo2
+	Ocd+Qcwg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpNGj-0000000F5nD-0TH6;
+	id 1vpNGj-0000000F5nP-1chy;
 	Mon, 09 Feb 2026 09:09:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpNGf-0000000F5kY-2avT
+	id 1vpNGg-0000000F5ke-06bM
 	for barebox@lists.infradead.org;
-	Mon, 09 Feb 2026 09:09:19 +0000
+	Mon, 09 Feb 2026 09:09:20 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=localhost.localdomain)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1vpNGc-0004wQ-Jm; Mon, 09 Feb 2026 10:09:14 +0100
+	id 1vpNGd-0004wQ-2T; Mon, 09 Feb 2026 10:09:15 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon,  9 Feb 2026 10:08:51 +0100
-Message-ID: <20260209090911.3561875-2-a.fatoum@barebox.org>
+Date: Mon,  9 Feb 2026 10:08:52 +0100
+Message-ID: <20260209090911.3561875-3-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260209090911.3561875-1-a.fatoum@barebox.org>
 References: <20260209090911.3561875-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260209_010917_673410_C087DF49 
-X-CRM114-Status: GOOD (  11.91  )
+X-CRM114-CacheID: sfid-20260209_010918_073430_3DAB890C 
+X-CRM114-Status: GOOD (  21.55  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,61 +71,190 @@ X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 1/5] boot: aggregate bootentry provider entries one by one
+Subject: [PATCH 2/5] blspec: sort entries according to specification
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-To allow individual bootentry providers to more easily sort their
-entries, pass each provider an empty list that's spliced onto the tail
-of the aggregated list at the end.
+Boot entries generated from bootloader spec are currently sorted by the
+order the files are read from the file system.
 
-This way we maintain that boot entries of different providers are sorted
-by provider priority and boot entries of a single provider can be sorted
-by each provider without having to worry about foreign boot entries.
+This is inadequate if we have multiple entries with different kernels
+and we want to sort the newer kernels higher.
+
+The UAPI.1 Boot Loader Specification defines an algorithm[1] to order the
+entries that takes care of this, so implement it into barebox.
+
+[1]: https://uapi-group.org/specifications/specs/boot_loader_specification/#sorting
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- common/boot.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ common/Kconfig            |  1 +
+ common/blspec.c           | 62 ++++++++++++++++++++++++++++++++++++++-
+ common/boot.c             |  7 +++++
+ include/asm-generic/bug.h |  7 +++++
+ include/boot.h            |  2 ++
+ 5 files changed, 78 insertions(+), 1 deletion(-)
 
-diff --git a/common/boot.c b/common/boot.c
-index 78d990f1617e..8ccc269ac5bd 100644
---- a/common/boot.c
-+++ b/common/boot.c
-@@ -26,6 +26,14 @@ int bootentries_add_entry(struct bootentries *entries, struct bootentry *entry)
- 	return 0;
+diff --git a/common/Kconfig b/common/Kconfig
+index 50c26695b2b5..cd002865f736 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -715,6 +715,7 @@ config BLSPEC
+ 	select BOOT
+ 	select BOOTM
+ 	select OFTREE
++	select VERSION_CMP
+ 	bool
+ 	prompt "Support bootloader spec"
+ 	help
+diff --git a/common/blspec.c b/common/blspec.c
+index 624e4c115272..f13e44f1de71 100644
+--- a/common/blspec.c
++++ b/common/blspec.c
+@@ -28,6 +28,7 @@ struct blspec_entry {
+ 	struct cdev *cdev;
+ 	const char *rootpath;
+ 	const char *configpath;
++	char *sortkey;
+ };
+ 
+ /*
+@@ -181,6 +182,7 @@ static void blspec_entry_free(struct bootentry *be)
+ 	of_delete_node(entry->node);
+ 	free_const(entry->configpath);
+ 	free_const(entry->rootpath);
++	free(entry->sortkey);
+ 	free(entry);
  }
  
-+#define BOOTENTRIES(name) \
-+	struct bootentries name = { .entries = LIST_HEAD_INIT(name.entries) }
+@@ -268,6 +270,12 @@ static struct blspec_entry *blspec_entry_open(struct bootentries *bootentries,
+ 			}
+ 		}
+ 
++		/* This will be read often during comparison, so we cache it */
++		if (!strcmp(name, "sort-key")) {
++			entry->sortkey = xstrdup(val);
++			continue;
++		}
 +
-+static inline void bootentries_merge(struct bootentries *dst, struct bootentries *src)
+ 		blspec_entry_var_set(entry, name, val);
+ 	}
+ 
+@@ -414,6 +422,58 @@ static const char *get_blspec_prefix_path(const char *configname)
+ 	return get_mounted_path(configname);
+ }
+ 
++static int blspec_compare(struct list_head *list_a, struct list_head *list_b)
 +{
-+	list_splice_tail_init(&src->entries, &dst->entries);
++	struct bootentry *be_a = container_of(list_a, struct bootentry, list);
++	struct bootentry *be_b = container_of(list_b, struct bootentry, list);
++	struct blspec_entry *a, *b;
++	const char *a_version, *b_version;
++	int r;
++
++	/* The boot entry providers are called one by one and passed an empty
++	 * list that's aggregated later, so we should only be encountering
++	 * bootloader spec entries here.
++	 */
++	DEBUG_ASSERT(is_blspec_entry(be_a) && is_blspec_entry(be_b));
++
++	a = container_of(be_a, struct blspec_entry, entry);
++	b = container_of(be_b, struct blspec_entry, entry);
++
++	a_version = a->configpath;
++	b_version = b->configpath;
++
++	if (a->sortkey && b->sortkey) {
++		const char *a_machine_id, *b_machine_id;
++
++		/* A-Z, increasing alphanumerical order */
++		r = strcmp(a->sortkey, b->sortkey);
++		if (r != 0)
++			return r;
++
++		a_machine_id = blspec_entry_var_get(a, "machine-id");
++		b_machine_id = blspec_entry_var_get(b, "machine-id");
++
++		/* A-Z, increasing alphanumerical order) */
++		r = strcmp_ptr(a_machine_id, b_machine_id);
++		if (r != 0)
++			return r;
++
++		/* Will be compared in decreasing version order */
++		a_version = blspec_entry_var_get(a, "version");
++		b_version = blspec_entry_var_get(b, "version");
++	} else if (a->sortkey != b->sortkey) {
++		/* If sort-key is set on one entry, it sorts earlier. */
++		return a->sortkey ? -1 : 1;
++	}
++
++	/* At the end, if necessary, when sort-key is not set or
++	 * those fields are not set or are all equal, the boot loader
++	 * should sort using the file name of the entry (decreasing
++	 * version sort), with the suffix removed.
++	 */
++	return -strverscmp(a_version, b_version);
++}
++
+ static int __blspec_scan_file(struct bootentries *bootentries, const char *root,
+ 			      const char *configname)
+ {
+@@ -459,7 +519,7 @@ static int __blspec_scan_file(struct bootentries *bootentries, const char *root,
+ 	entry->entry.me.type = MENU_ENTRY_NORMAL;
+ 	entry->entry.release = blspec_entry_free;
+ 
+-	bootentries_add_entry(bootentries, &entry->entry);
++	bootentries_add_entry_sorted(bootentries, &entry->entry, blspec_compare);
+ 	return 1;
+ }
+ 
+diff --git a/common/boot.c b/common/boot.c
+index 8ccc269ac5bd..2e5294ffa2f0 100644
+--- a/common/boot.c
++++ b/common/boot.c
+@@ -34,6 +34,13 @@ static inline void bootentries_merge(struct bootentries *dst, struct bootentries
+ 	list_splice_tail_init(&src->entries, &dst->entries);
+ }
+ 
++void bootentries_add_entry_sorted(struct bootentries *entries, struct bootentry *entry,
++				  int (*compare)(struct list_head *, struct list_head *))
++
++{
++	list_add_sort(&entry->list, &entries->entries, compare);
 +}
 +
  struct bootentries *bootentries_alloc(void)
  {
  	struct bootentries *bootentries;
-@@ -452,9 +460,17 @@ int bootentry_create_from_name(struct bootentries *bootentries,
- 		name = nfspath;
+diff --git a/include/asm-generic/bug.h b/include/asm-generic/bug.h
+index 514801dab10e..1953c6e642c1 100644
+--- a/include/asm-generic/bug.h
++++ b/include/asm-generic/bug.h
+@@ -78,4 +78,11 @@
+ 		BUG_ON(!(expr));			\
+ } while (0)
  
- 	list_for_each_entry(p, &bootentry_providers, list) {
--		ret = p->generate(bootentries, name);
-+		BOOTENTRIES(provider_bootentries);
 +
-+		ret = p->generate(&provider_bootentries, name);
- 		if (ret > 0)
- 			found += ret;
++#ifdef DEBUG
++#define DEBUG_ASSERT(expr)	BUG_ON(!(expr))
++#else
++#define DEBUG_ASSERT(expr)	((void)(expr))
++#endif
 +
-+		/* We want to allow for providers to sort their bootentries as
-+		 * they see fit, so they are passed an empty list above with
-+		 * only their own entries and then we aggregate here
-+		 */
-+		bootentries_merge(bootentries, &provider_bootentries);
- 	}
+ #endif
+diff --git a/include/boot.h b/include/boot.h
+index e6309b65a0c3..fdc108b7a21d 100644
+--- a/include/boot.h
++++ b/include/boot.h
+@@ -24,6 +24,8 @@ struct bootentry {
+ };
  
- 	free(nfspath);
+ int bootentries_add_entry(struct bootentries *entries, struct bootentry *entry);
++void bootentries_add_entry_sorted(struct bootentries *entries, struct bootentry *entry,
++				  int (*compare)(struct list_head *, struct list_head *));
+ 
+ struct bootentry_provider {
+ 	const char *name;
 -- 
 2.47.3
 
