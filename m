@@ -1,67 +1,67 @@
-Delivery-date: Mon, 09 Feb 2026 19:12:20 +0100
+Delivery-date: Mon, 09 Feb 2026 19:12:21 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpVkD-00AdY6-0j
+	id 1vpVkD-00AdYc-30
 	for lore@lore.pengutronix.de;
-	Mon, 09 Feb 2026 19:12:20 +0100
+	Mon, 09 Feb 2026 19:12:21 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpVkB-0006H1-17
-	for lore@pengutronix.de; Mon, 09 Feb 2026 19:12:20 +0100
+	id 1vpVkC-0006Hf-PJ
+	for lore@pengutronix.de; Mon, 09 Feb 2026 19:12:21 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Mhp+TeHEswD+WOp+/KALJcKhS5tJxtTk0NmrItltn8w=; b=bz4qnN2aaPoAjbe05MCrlNPspG
-	5U0Q6s9kCS17LL6YwuQUpltqfo3crY+WQoH2pdSrWAgCb9GWltvy1FsHbOD+b9CFQ+LezyQbY/p65
-	HVUFeXVQ0QfRdIwl+FOK6W5YPqISdl1zHOnAcHazYrfailvKV3CM4npp79SByPJ0JwAxV/XKiSzgW
-	CcDScyDzPIS/yzf7mKdj5I/9ST4WrAjPqgRi5w2Ac4CT9PNzASAsxDirBVhusN3e1UykE0z+sgIY/
-	hBE8k33raPwDftamCxAZicvnAoG7W2clnrrwoz3GD29JxRgX7wtrUTCHH4Nao5TuScQRvwYXwprxI
-	CowJwf/A==;
+	bh=zlTPzZTjyFJ7iS1JfBr15891k/Ommz9USN7HBp9ny6s=; b=MdS5+KET51Ss9vDLQ8P/IBH+3c
+	DkYuZQLmXcGbuTNgtcyR6pbc5RZs3vBIojrbHV6azJoujsldKBG2ejKnGMPd7n14F4IXf8LgvqcMe
+	o7bgWC4TaY4qNKOtTQg1EiptcM2t8UapCgO3jWMghmpjIt1aNTsYUtuJCZXa/mWSXC8ypCYlTQMPB
+	VGpSba5ASiPO/tBAYKNMud/PJ8U2dpGo5kv8wmY8rZQGYItxT4NjUm4Sykc4v+764MIA2prjK5xTe
+	gwBW7+Pjl4hhOP9rMluF2hywpOT8q14SRfZBL+Ae5iVISHcORWGC2ioy46lJ/XK988QdXnuO6qrBN
+	ouBB/w6g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpVjg-0000000FqD5-0G88;
+	id 1vpVjg-0000000FqDK-1VaE;
 	Mon, 09 Feb 2026 18:11:48 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpVjb-0000000Fq8k-16j0
+	id 1vpVjb-0000000Fq8s-1S3Y
 	for barebox@lists.infradead.org;
 	Mon, 09 Feb 2026 18:11:45 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vpVjZ-0005qE-JS; Mon, 09 Feb 2026 19:11:41 +0100
+	id 1vpVjZ-0005qp-T9; Mon, 09 Feb 2026 19:11:41 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vpVja-004vnk-0D;
+	id 1vpVja-004vny-0q;
 	Mon, 09 Feb 2026 19:11:41 +0100
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vpVjZ-00000008UJ4-1Hih;
+	id 1vpVjZ-00000008UJ4-25rj;
 	Mon, 09 Feb 2026 19:11:41 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  9 Feb 2026 19:10:42 +0100
-Message-ID: <20260209181138.2023065-4-a.fatoum@pengutronix.de>
+Date: Mon,  9 Feb 2026 19:10:46 +0100
+Message-ID: <20260209181138.2023065-8-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260209181138.2023065-1-a.fatoum@pengutronix.de>
 References: <20260209181138.2023065-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260209_101143_309823_FE4E2CD6 
-X-CRM114-Status: GOOD (  16.96  )
+X-CRM114-CacheID: sfid-20260209_101143_398395_5256C6D5 
+X-CRM114-Status: GOOD (  13.58  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,154 +83,78 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 03/13] resource: implement gap-aware lookup_region
+Subject: [PATCH v2 07/13] libfile: factor out zero-page resistant read_file as __read_full_anywhere
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The incoming bootm rework hinges on being able to determine how much
-total space there is for boot artifacts. For that purpose, add
-memory_bank_lookup_region(), which will return the gap or the resource a
-specified address resides in.
+This function will be useful for the incoming loadable support, so factor
+it out of file_to_sdram().
 
-While at it, give the local variable two leading __, so it's less likely
-to mask local variables.
+While at it, make it a bit safer as well: Only the first page needs to
+be copied with zero_page_memcpy if at all, so copy at most one page if
+the zero page is overlapped and then copy the rest as usual.
+
+file_to_sdram() is intentionally left as-is as it's going to be removed
+in a later commit.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/memory.c        | 25 +++++++++++++++++++++++++
- common/resource.c      | 33 +++++++++++++++++++++++++++++++++
- include/linux/ioport.h | 11 +++++++----
- include/memory.h       |  2 ++
- 4 files changed, 67 insertions(+), 4 deletions(-)
+ include/libfile.h |  1 +
+ lib/libfile.c     | 29 +++++++++++++++++++++++++++++
+ 2 files changed, 30 insertions(+)
 
-diff --git a/common/memory.c b/common/memory.c
-index 1c18c5b38710..b61df68e02dc 100644
---- a/common/memory.c
-+++ b/common/memory.c
-@@ -410,6 +410,31 @@ int memory_bank_first_find_space(resource_size_t *retstart,
- 	return -ENOENT;
+diff --git a/include/libfile.h b/include/libfile.h
+index f44046fb0f7b..f61c45563c01 100644
+--- a/include/libfile.h
++++ b/include/libfile.h
+@@ -11,6 +11,7 @@ int pread_full(int fd, void *buf, size_t size, loff_t offset);
+ int pwrite_full(int fd, const void *buf, size_t size, loff_t offset);
+ int write_full(int fd, const void *buf, size_t size);
+ int read_full(int fd, void *buf, size_t size);
++int __read_full_anywhere(int fd, void *buf, size_t size);
+ int copy_fd(int in, int out, size_t size);
+ 
+ ssize_t read_file_into_buf(const char *filename, void *buf, size_t size);
+diff --git a/lib/libfile.c b/lib/libfile.c
+index 86b1bc3fa790..0ebb973e3680 100644
+--- a/lib/libfile.c
++++ b/lib/libfile.c
+@@ -798,6 +798,35 @@ int cache_file(const char *path, char **newpath)
+ 	return 0;
  }
  
-+/**
-+ * memory_bank_lookup_region - find the memory region containing a given address
-+ * @addr: physical address to look up
-+ * @gap: if non-NULL and addr is in a gap, the gap info is copied here
++/*
++ * __read_full_anywhere - read from filedescriptor, even into zero_page
 + *
-+ * Searches all memory banks for the region containing @addr. If @addr falls
-+ * within a gap between allocated regions and @gap is provided, the gap
-+ * boundaries are returned via @gap.
-+ *
-+ * Return: pointer to the resource containing @addr, @gap if in a gap,
-+ *         or NULL if not found in any memory bank
++ * Like read_full, but this function will temporarily remap the zero
++ * page if data is to be placed there. You should not need to use this
++ * outside of boot code!
 + */
-+struct resource *memory_bank_lookup_region(resource_size_t addr, struct resource *gap)
++int __read_full_anywhere(int fd, void *buf, size_t size)
 +{
-+	struct memory_bank *bank;
++	ssize_t now = 0;
 +
-+	for_each_memory_bank(bank) {
-+		if (addr < bank->res->start || bank->res->end < addr)
-+			continue;
-+		return lookup_region(bank->res, addr, gap);
++	if (unlikely(zero_page_contains((ulong)buf))) {
++		void *tmp = malloc(PAGE_SIZE);
++		if (!tmp)
++			return -ENOMEM;
++
++		now = read_full(fd, tmp, min_t(size_t, size, PAGE_SIZE));
++		if (now > 0)
++			zero_page_memcpy(buf, tmp, now);
++
++		free(tmp);
++
++		if (now <= 0)
++			return now;
 +	}
 +
-+	return NULL;
++	return now + read_full(fd, buf + now, size - now);
 +}
 +
- #ifdef CONFIG_OFTREE
+ #define BUFSIZ	(PAGE_SIZE * 32)
  
- static int of_memory_fixup(struct device_node *root, void *unused)
-diff --git a/common/resource.c b/common/resource.c
-index 33eb122f4668..e391d268e0bb 100644
---- a/common/resource.c
-+++ b/common/resource.c
-@@ -417,6 +417,39 @@ resource_iter_prev(struct resource *current,
- 	return resource_iter_gap(parent, prev, gap, current);
- }
- 
-+/**
-+ * lookup_region - find the region containing a given address
-+ * @parent: parent resource to search within
-+ * @addr: address to look up
-+ * @gap: if non-NULL and addr is in a gap, the gap info is copied here
-+ *
-+ * Searches the children of @parent (and gaps between them) for the region
-+ * containing @addr.
-+ *
-+ * Return: pointer to the resource containing @addr, or @gap if @addr is in
-+ *         a gap and @gap is non-NULL, or NULL if @addr is not found or is
-+ *         in a gap and @gap is NULL
-+ */
-+struct resource *lookup_region(struct resource *parent,
-+			       resource_size_t addr, struct resource *gap)
-+{
-+	for_each_resource_region(parent, region) {
-+		if (addr < region->start || region->end < addr)
-+			continue;
-+
-+		if (!region_is_gap(region))
-+			return region;
-+		if (!gap)
-+			return NULL;
-+
-+		*gap = *region;
-+		INIT_LIST_HEAD(&gap->sibling);
-+		return gap;
-+	}
-+
-+	return NULL;
-+}
-+
- struct resource_entry *resource_list_create_entry(struct resource *res,
- 						  size_t extra_size)
- {
-diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-index 20c72e1b6cbb..5baae0dae10a 100644
---- a/include/linux/ioport.h
-+++ b/include/linux/ioport.h
-@@ -279,14 +279,17 @@ struct resource *resource_iter_last(struct resource *current, struct resource *g
- struct resource *resource_iter_prev(struct resource *current, struct resource *gap);
- struct resource *resource_iter_next(struct resource *current, struct resource *gap);
- 
-+struct resource *lookup_region(struct resource *parent,
-+			       resource_size_t addr, struct resource *gap);
-+
- /**
-  * for_each_resource_region - Iterate over child resources and gaps between them
-  * @parent: parent resource
-  * @region: pointer to child resource or gap
-  */
- #define for_each_resource_region(parent, region) \
--	for (struct resource gap, *region = resource_iter_first((parent), &gap); \
--	     region; region = resource_iter_next(region, &gap))
-+	for (struct resource __gap, *region = resource_iter_first((parent), &__gap); \
-+	     region; region = resource_iter_next(region, &__gap))
- 
- /**
-  * for_each_resource_region_reverse - Reverse iterate over child resources and gaps between them
-@@ -294,8 +297,8 @@ struct resource *resource_iter_next(struct resource *current, struct resource *g
-  * @region: pointer to child resource or gap
-  */
- #define for_each_resource_region_reverse(parent, region) \
--	for (struct resource gap, *region = resource_iter_last((parent), &gap); \
--	     region; region = resource_iter_prev(region, &gap))
-+	for (struct resource __gap, *region = resource_iter_last((parent), &__gap); \
-+	     region; region = resource_iter_prev(region, &__gap))
- 
- #endif /* __ASSEMBLY__ */
- #endif	/* _LINUX_IOPORT_H */
-diff --git a/include/memory.h b/include/memory.h
-index 6b7ada641c9d..92483c39b0f4 100644
---- a/include/memory.h
-+++ b/include/memory.h
-@@ -97,6 +97,8 @@ void memory_bank_find_space(struct memory_bank *bank, resource_size_t *retstart,
- int memory_bank_first_find_space(resource_size_t *retstart,
- 				 resource_size_t *retend);
- 
-+struct resource *memory_bank_lookup_region(resource_size_t addr, struct resource *gap);
-+
- static inline u64 memory_sdram_size(unsigned int cols,
- 				    unsigned int rows,
- 				    unsigned int banks,
+ struct resource *file_to_sdram(const char *filename, unsigned long adr,
 -- 
 2.47.3
 
