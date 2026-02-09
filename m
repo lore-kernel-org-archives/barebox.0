@@ -1,67 +1,67 @@
-Delivery-date: Mon, 09 Feb 2026 19:12:22 +0100
+Delivery-date: Mon, 09 Feb 2026 19:12:24 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpVkF-00AdZ9-03
+	id 1vpVkH-00AdZa-0c
 	for lore@lore.pengutronix.de;
-	Mon, 09 Feb 2026 19:12:22 +0100
+	Mon, 09 Feb 2026 19:12:24 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpVkD-0006Hu-CS
-	for lore@pengutronix.de; Mon, 09 Feb 2026 19:12:22 +0100
+	id 1vpVkF-0006K2-6j
+	for lore@pengutronix.de; Mon, 09 Feb 2026 19:12:24 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=p1VFSiqxZb0Wm19IKLiI+aOa79CISP6OIbgE1C76n/o=; b=dhF+6iTsIJo7pDp4aDZBBQAa4F
-	i3hmc4YyTh/4XFSRYc0jTulVvIuwyW2Ru/XM8SNAGVn7nQpZGUmPJbWjiZJbZ+BS26DS/ctfJm1e8
-	ABk8X0pwgj1IVIf251l5XnS5dOoqjz5BlIEsiqrqoRgcUxb0HacVOtrqOfh8AQPCk2medNLr+lob9
-	zsG0RuA3nBCsj+KFSIeCOtMy/QreWIvi2dD2gIpw/RwtVMI4/8TvmJOvtS8v0cmD9axO7aTSvb4cT
-	DsQuN2Z8zqJfbQ68nkZ8wZo5yoHprbLv5rRhnk1rDkuOAisNgAMtpgZnADipz9PGHXuWqXzIk0IJJ
-	OiN/q+Uw==;
+	bh=K0zzaA9s7HFzX0XWA2tgsjRQUtv4YACoa9hb94ewvsk=; b=ZpVzwX9H0JIA2PTAxGlhoomfTz
+	6kpV4oq5j9zU2p627uGma9c/BwPv3UDW7IEF90cXWT012+LyBCg8vlMJuDOmeKdITt9uakd6wcmVs
+	Kl+pFiX0zqpyXbU33H2+FTAg1lXs3Wxn370Yp93LEGBomxFnHm1pVPSrUksz0jDUSLV+fJqRFxTqL
+	MHOz2gSl/RFz4RLiyUCxHpR/sh/586GdQE4f5Vo3nvrVC/8v2DKjmbQAdk5gE6fqvfkFhAqXFh7oh
+	kUMlHja1XGoVbFubI6Ar9W+cT1ll4fTXe+yp5AzY6wKrMeUxWK+RQW6CkgmYZlW6gxZYN0vJ4yBDK
+	9eBj6Cyg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpVjk-0000000FqIg-0GR7;
-	Mon, 09 Feb 2026 18:11:52 +0000
+	id 1vpVji-0000000FqEy-3bTv;
+	Mon, 09 Feb 2026 18:11:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpVjb-0000000Fq8t-1v6v
+	id 1vpVjb-0000000Fq8q-1MKF
 	for barebox@lists.infradead.org;
 	Mon, 09 Feb 2026 18:11:47 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vpVjZ-0005rB-Va; Mon, 09 Feb 2026 19:11:41 +0100
+	id 1vpVjZ-0005qc-Re; Mon, 09 Feb 2026 19:11:41 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vpVja-004vo6-1B;
+	id 1vpVja-004vnu-0i;
 	Mon, 09 Feb 2026 19:11:41 +0100
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vpVjZ-00000008UJ4-2Uta;
+	id 1vpVjZ-00000008UJ4-1sOS;
 	Mon, 09 Feb 2026 19:11:41 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  9 Feb 2026 19:10:48 +0100
-Message-ID: <20260209181138.2023065-10-a.fatoum@pengutronix.de>
+Date: Mon,  9 Feb 2026 19:10:45 +0100
+Message-ID: <20260209181138.2023065-7-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260209181138.2023065-1-a.fatoum@pengutronix.de>
 References: <20260209181138.2023065-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260209_101143_660157_628F7AB3 
-X-CRM114-Status: GOOD (  18.43  )
+X-CRM114-CacheID: sfid-20260209_101143_529382_85887A61 
+X-CRM114-Status: GOOD (  22.25  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,223 +83,247 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 09/13] bootm: rename image_data::os/initrd with _uimage suffix
+Subject: [PATCH v2 06/13] bootm: fit: move length calculation into fit_open
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We will use the generic unadorned for the incoming loadable support, so
-add a _uimage suffix to the uimage-only members to make the association
-clearer.
+A FIT image is a device tree and its second big-endian 32-bit word
+encodes the size and fit_open() takes an extra argument, so it need not
+read a whole partition, but only as many bytes as the header describes.
+
+We are going to add a new caller for fit_open(). Instead of repeating
+the max_size determination at every call site, let's just move the size
+calculation into the function.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/powerpc/lib/ppclinux.c |  2 +-
- common/bootm-uimage.c       | 38 ++++++++++++++++++-------------------
- common/bootm.c              | 12 ++++++------
- include/bootm.h             |  4 ++--
- 4 files changed, 28 insertions(+), 28 deletions(-)
+ common/bootm-fit.c   |  9 +-------
+ common/image-fit.c   | 46 +++++++++++++++++++++++++++++++---------
+ drivers/of/overlay.c |  6 +++---
+ include/image-fit.h  |  2 +-
+ include/libfile.h    |  2 ++
+ lib/libfile.c        | 50 ++++++++++++++++++++++++++++++++++++++++++++
+ 6 files changed, 93 insertions(+), 22 deletions(-)
 
-diff --git a/arch/powerpc/lib/ppclinux.c b/arch/powerpc/lib/ppclinux.c
-index eda2539e6125..4e9693cbad60 100644
---- a/arch/powerpc/lib/ppclinux.c
-+++ b/arch/powerpc/lib/ppclinux.c
-@@ -30,7 +30,7 @@ static struct fdt_header *bootm_relocate_fdt(struct image_data *data,
- 		 */
- 		if (os < (void *)fdt->totalsize) {
- 			os = (void *)PAGE_ALIGN((phys_addr_t)os +
--					data->os->header.ih_size);
-+					data->os_uimage->header.ih_size);
- 			os += fdt->totalsize;
- 			if (os < LINUX_TLB1_MAX_ADDR)
- 				os = LINUX_TLB1_MAX_ADDR;
-diff --git a/common/bootm-uimage.c b/common/bootm-uimage.c
-index 609b678e1d4a..b32ed5b0e95f 100644
---- a/common/bootm-uimage.c
-+++ b/common/bootm-uimage.c
-@@ -29,7 +29,7 @@ int bootm_load_uimage_os(struct image_data *data, unsigned long load_address)
- 
- 	num = uimage_part_num(data->os_part);
- 
--	data->os_res = uimage_load_to_sdram(data->os,
-+	data->os_res = uimage_load_to_sdram(data->os_uimage,
- 		num, load_address);
- 	if (!data->os_res)
- 		return -ENOMEM;
-@@ -42,21 +42,21 @@ static int bootm_open_initrd_uimage(struct image_data *data)
+diff --git a/common/bootm-fit.c b/common/bootm-fit.c
+index 5bfd8ac61d3f..70d6ba8edff2 100644
+--- a/common/bootm-fit.c
++++ b/common/bootm-fit.c
+@@ -129,17 +129,10 @@ static enum filetype bootm_fit_update_os_header(struct image_data *data)
+ int bootm_open_fit(struct image_data *data)
+ {
+ 	struct fit_handle *fit;
+-	struct fdt_header *header;
+ 	static const char *kernel_img = "kernel";
+-	size_t flen, hlen;
  	int ret;
  
- 	if (strcmp(data->os_file, data->initrd_file)) {
--		data->initrd = uimage_open(data->initrd_file);
--		if (!data->initrd)
-+		data->initrd_uimage = uimage_open(data->initrd_file);
-+		if (!data->initrd_uimage)
- 			return -EINVAL;
+-	header = (struct fdt_header *)data->os_header;
+-	flen = bootm_get_os_size(data);
+-	hlen = fdt32_to_cpu(header->totalsize);
+-
+-	fit = fit_open(data->os_file, data->verbose, data->verify,
+-		       min(flen, hlen));
++	fit = fit_open(data->os_file, data->verbose, data->verify);
+ 	if (IS_ERR(fit)) {
+ 		pr_err("Loading FIT image %s failed with: %pe\n", data->os_file, fit);
+ 		return PTR_ERR(fit);
+diff --git a/common/image-fit.c b/common/image-fit.c
+index 75592766941c..50816452810c 100644
+--- a/common/image-fit.c
++++ b/common/image-fit.c
+@@ -992,7 +992,6 @@ struct fit_handle *fit_open_buf(const void *buf, size_t size, bool verbose,
+  * @filename:	The filename of the FIT image
+  * @verbose:	If true, be more verbose
+  * @verify:	The verify mode
+- * @max_size:	maximum length to read from file
+  *
+  * This opens a FIT image found in @filename. The returned handle is used as
+  * context for the other FIT functions.
+@@ -1000,11 +999,12 @@ struct fit_handle *fit_open_buf(const void *buf, size_t size, bool verbose,
+  * Return: A handle to a FIT image or a ERR_PTR
+  */
+ struct fit_handle *fit_open(const char *_filename, bool verbose,
+-			    enum bootm_verify verify, loff_t max_size)
++			    enum bootm_verify verify)
+ {
+ 	struct fit_handle *handle;
++	ssize_t nbytes;
+ 	char *filename;
+-	int ret;
++	int fd, ret;
  
- 		if (bootm_get_verify_mode() > BOOTM_VERIFY_NONE) {
--			ret = uimage_verify(data->initrd);
-+			ret = uimage_verify(data->initrd_uimage);
- 			if (ret) {
- 				pr_err("Checking data crc failed with %pe\n",
- 					ERR_PTR(ret));
- 				return ret;
- 			}
- 		}
--		uimage_print_contents(data->initrd);
-+		uimage_print_contents(data->initrd_uimage);
- 	} else {
--		data->initrd = data->os;
-+		data->initrd_uimage = data->os_uimage;
+ 	filename = canonicalize_path(AT_FDCWD, _filename);
+ 	if (!filename) {
+@@ -1024,15 +1024,30 @@ struct fit_handle *fit_open(const char *_filename, bool verbose,
+ 	handle->verbose = verbose;
+ 	handle->verify = verify;
+ 
+-	ret = read_file_2(filename, &handle->size, &handle->fit_alloc,
+-			  max_size);
+-	if (ret && ret != -EFBIG) {
+-		pr_err("unable to read %s: %pe\n", filename, ERR_PTR(ret));
+-		free(handle);
+-		free(filename);
+-		return ERR_PTR(ret);
++	fd = open_fdt(filename, &handle->size);
++	if (fd < 0) {
++		ret = fd;
++		goto free_handle;
  	}
  
- 	return 0;
-@@ -90,7 +90,7 @@ bootm_load_uimage_initrd(struct image_data *data, unsigned long load_address)
++	handle->fit_alloc = malloc(handle->size);
++	if (!handle->fit_alloc) {
++		ret = -ENOMEM;
++		goto close_fd;
++	}
++
++	nbytes = read_full(fd, handle->fit_alloc, handle->size);
++	if (nbytes < 0) {
++		ret = nbytes;
++		goto free_fit_alloc;
++	}
++	if (handle->size != nbytes) {
++		ret = -ENODATA;
++		goto free_fit_alloc;
++	}
++
++	close(fd);
++
+ 	handle->fit = handle->fit_alloc;
+ 	handle->filename = filename;
  
- 	num = uimage_part_num(data->initrd_part);
+@@ -1046,6 +1061,17 @@ struct fit_handle *fit_open(const char *_filename, bool verbose,
+ 	}
  
--	res = uimage_load_to_sdram(data->initrd,
-+	res = uimage_load_to_sdram(data->initrd_uimage,
- 		num, load_address);
- 	if (!res)
- 		return ERR_PTR(-ENOMEM);
-@@ -110,9 +110,9 @@ int bootm_open_oftree_uimage(struct image_data *data, size_t *size,
- 	pr_info("Loading devicetree from '%s'@%d\n", oftree, num);
+ 	return handle;
++
++free_fit_alloc:
++	free(handle->fit_alloc);
++close_fd:
++	close(fd);
++free_handle:
++	pr_err("unable to read %s: %pe\n", filename, ERR_PTR(ret));
++	free(filename);
++	free(handle);
++	return ERR_PTR(ret);
++
+ }
  
- 	if (!strcmp(data->os_file, oftree)) {
--		of_handle = data->os;
-+		of_handle = data->os_uimage;
- 	} else if (!strcmp(data->initrd_file, oftree)) {
--		of_handle = data->initrd;
-+		of_handle = data->initrd_uimage;
- 	} else {
- 		of_handle = uimage_open(oftree);
- 		if (!of_handle)
-@@ -141,12 +141,12 @@ int bootm_open_uimage(struct image_data *data)
+ static bool __fit_close(struct fit_handle *handle)
+diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
+index b11edebd2080..34543403e9ba 100644
+--- a/drivers/of/overlay.c
++++ b/drivers/of/overlay.c
+@@ -532,7 +532,7 @@ static bool of_overlay_valid_config(struct fit_handle *fit,
+ }
+ 
+ static int of_overlay_global_fixup_fit(struct device_node *root,
+-				       const char *fit_path, loff_t fit_size)
++				       const char *fit_path)
  {
- 	int ret;
- 
--	data->os = uimage_open(data->os_file);
--	if (!data->os)
-+	data->os_uimage = uimage_open(data->os_file);
-+	if (!data->os_uimage)
+ 	enum bootm_verify verify = bootm_get_verify_mode();
+ 	struct device_node *conf_node;
+@@ -544,7 +544,7 @@ static int of_overlay_global_fixup_fit(struct device_node *root,
  		return -EINVAL;
- 
- 	if (bootm_get_verify_mode() > BOOTM_VERIFY_NONE) {
--		ret = uimage_verify(data->os);
-+		ret = uimage_verify(data->os_uimage);
- 		if (ret) {
- 			pr_err("Checking data crc failed with %pe\n",
- 					ERR_PTR(ret));
-@@ -154,23 +154,23 @@ int bootm_open_uimage(struct image_data *data)
- 		}
  	}
  
--	uimage_print_contents(data->os);
-+	uimage_print_contents(data->os_uimage);
- 
--	if (IH_ARCH == IH_ARCH_INVALID || data->os->header.ih_arch != IH_ARCH) {
-+	if (IH_ARCH == IH_ARCH_INVALID || data->os_uimage->header.ih_arch != IH_ARCH) {
- 		pr_err("Unsupported Architecture 0x%x\n",
--		       data->os->header.ih_arch);
-+		       data->os_uimage->header.ih_arch);
- 		return -EINVAL;
+-	fit = fit_open(fit_path, 0, verify, fit_size);
++	fit = fit_open(fit_path, 0, verify);
+ 	if (IS_ERR(fit)) {
+ 		pr_err("Loading FIT image %s failed with: %pe\n", fit_path, fit);
+ 		return PTR_ERR(fit);
+@@ -595,7 +595,7 @@ static int of_overlay_global_fixup(struct device_node *root, void *data)
  	}
  
- 	if (data->os_address == UIMAGE_SOME_ADDRESS)
--		data->os_address = data->os->header.ih_load;
-+		data->os_address = data->os_uimage->header.ih_load;
+ 	/* Assume a FIT image if of_overlay_path points to a file */
+-	ret = of_overlay_global_fixup_fit(root, dir, s.st_size);
++	ret = of_overlay_global_fixup_fit(root, dir);
  
- 	return 0;
+ out:
+ 	free(dir);
+diff --git a/include/image-fit.h b/include/image-fit.h
+index 50f0482b65ad..ede43beab12e 100644
+--- a/include/image-fit.h
++++ b/include/image-fit.h
+@@ -28,7 +28,7 @@ struct fit_handle {
+ };
+ 
+ struct fit_handle *fit_open(const char *filename, bool verbose,
+-			    enum bootm_verify verify, loff_t max_size);
++			    enum bootm_verify verify);
+ struct fit_handle *fit_open_buf(const void *buf, size_t len, bool verbose,
+ 				enum bootm_verify verify);
+ void *fit_open_configuration(struct fit_handle *handle, const char *name,
+diff --git a/include/libfile.h b/include/libfile.h
+index 370f8b9725ab..f44046fb0f7b 100644
+--- a/include/libfile.h
++++ b/include/libfile.h
+@@ -59,4 +59,6 @@ struct resource *file_to_sdram(const char *filename, unsigned long adr,
+ 
+ int fixup_path_case(int dirfd, const char **path);
+ 
++int open_fdt(const char *filename, size_t *size);
++
+ #endif /* __LIBFILE_H */
+diff --git a/lib/libfile.c b/lib/libfile.c
+index 6924db587e8c..86b1bc3fa790 100644
+--- a/lib/libfile.c
++++ b/lib/libfile.c
+@@ -918,3 +918,53 @@ int fixup_path_case(int fd, const char **path)
+ 	free(resolved_path);
+ 	return -errno;
  }
- 
- void bootm_close_uimage(struct image_data *data)
- {
--	if (data->initrd && data->initrd != data->os)
--		uimage_close(data->initrd);
--	uimage_close(data->os);
-+	if (data->initrd_uimage && data->initrd_uimage != data->os_uimage)
-+		uimage_close(data->initrd_uimage);
-+	uimage_close(data->os_uimage);
- }
-diff --git a/common/bootm.c b/common/bootm.c
-index efb2f401ed9b..3c3523644b57 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -33,7 +33,7 @@ static bool uimage_check(struct image_handler *handler,
- 			 enum filetype detected_filetype)
- {
- 	return detected_filetype == filetype_uimage &&
--		handler->ih_os == data->os->header.ih_os;
-+		handler->ih_os == data->os_uimage->header.ih_os;
- }
- 
- static bool filetype_check(struct image_handler *handler,
-@@ -208,7 +208,7 @@ static int uimage_part_num(const char *partname)
- 
- static inline bool image_is_uimage(struct image_data *data)
- {
--	return IS_ENABLED(CONFIG_BOOTM_UIMAGE) && data->os;
-+	return IS_ENABLED(CONFIG_BOOTM_UIMAGE) && data->os_uimage;
- }
- 
- static bool bootm_get_override(char **oldpath, const char *newpath)
-@@ -322,7 +322,7 @@ bootm_load_initrd(struct image_data *data, ulong load_address, ulong end_address
- 
- 	if (type == filetype_uimage) {
- 		res = bootm_load_uimage_initrd(data, load_address);
--		if (data->initrd->header.ih_type == IH_TYPE_MULTI)
-+		if (data->initrd_uimage->header.ih_type == IH_TYPE_MULTI)
- 			initrd_part = data->initrd_part;
- 
- 	} else if (initrd) {
-@@ -495,7 +495,7 @@ int bootm_get_os_size(struct image_data *data)
- 	int ret;
- 
- 	if (image_is_uimage(data))
--		return uimage_get_size(data->os, uimage_part_num(data->os_part));
-+		return uimage_get_size(data->os_uimage, uimage_part_num(data->os_part));
- 	if (data->os_fit)
- 		return data->fit_kernel_size;
- 	if (!data->os_file)
-@@ -741,7 +741,7 @@ int bootm_boot(struct bootm_data *bootm_data)
- 	pr_info("\nLoading %s '%s'", file_type_to_string(data->kernel_type),
- 		data->os_file);
- 	if (data->kernel_type == filetype_uimage &&
--			data->os->header.ih_type == IH_TYPE_MULTI)
-+			data->os_uimage->header.ih_type == IH_TYPE_MULTI)
- 		pr_info(", multifile image %d", uimage_part_num(data->os_part));
- 	pr_info("\n");
- 
-@@ -755,7 +755,7 @@ int bootm_boot(struct bootm_data *bootm_data)
- 		pr_err("no image handler found for image type %s\n",
- 		       file_type_to_string(data->kernel_type));
- 		if (data->kernel_type == filetype_uimage)
--			pr_err("and OS type: %d\n", data->os->header.ih_os);
-+			pr_err("and OS type: %d\n", data->os_uimage->header.ih_os);
- 		ret = -ENODEV;
- 		goto err_out;
- 	}
-diff --git a/include/bootm.h b/include/bootm.h
-index bdabba23f2b9..ef979807505d 100644
---- a/include/bootm.h
-+++ b/include/bootm.h
-@@ -59,7 +59,7 @@ struct image_data {
- 	struct resource *os_res;
- 
- 	/* if os is an uImage this will be provided */
--	struct uimage_handle *os;
-+	struct uimage_handle *os_uimage;
- 
- 	/* if os is a FIT image this will be provided */
- 	struct fit_handle *os_fit;
-@@ -84,7 +84,7 @@ struct image_data {
- 	struct resource *initrd_res;
- 
- 	/* if initrd is an uImage this will be provided */
--	struct uimage_handle *initrd;
-+	struct uimage_handle *initrd_uimage;
- 	char *initrd_part;
- 
- 	/* otherwise only the filename will be provided */
++
++/**
++ * open_fdt - open a flattened device tree file and determine its size
++ * @filename: path to the FDT file
++ * @size: returns the total size from the FDT header
++ *
++ * Opens the file, reads the FDT header to determine totalsize, validates
++ * it against the file size, then reopens the file for sequential reading.
++ *
++ * Return: file descriptor on success, negative error code on failure
++ */
++int open_fdt(const char *filename, size_t *size)
++{
++	__be32 fdt_hdr[2];
++	u32 fdt_size;
++	struct stat st;
++	int fd, ret;
++
++	fd = open(filename, O_RDONLY);
++	if (fd < 0)
++		return fd;
++
++	ret = fstat(fd, &st);
++	if (ret)
++		goto err;
++
++	ret = pread_full(fd, &fdt_hdr, sizeof(fdt_hdr), 0);
++	if (ret >= 0 && ret < sizeof(fdt_hdr))
++		ret = -EILSEQ;
++	if (ret < 0)
++		goto err;
++
++	fdt_size = be32_to_cpu(fdt_hdr[1]);
++	if (st.st_size < fdt_size) {
++		ret = -ENODATA;
++		goto err;
++	}
++
++	close(fd);
++
++	/* HACK: TFTP doesn't support backwards seeking, so reopen afresh */
++	fd = open(filename, O_RDONLY);
++	if (fd >= 0)
++		*size = fdt_size;
++
++	return fd;
++err:
++	close(fd);
++	return ret;
++}
 -- 
 2.47.3
 
