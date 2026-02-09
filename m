@@ -1,68 +1,69 @@
-Delivery-date: Mon, 09 Feb 2026 12:13:46 +0100
+Delivery-date: Mon, 09 Feb 2026 12:39:36 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpPD9-00AXDu-0B
+	id 1vpPc8-00AXUg-2J
 	for lore@lore.pengutronix.de;
-	Mon, 09 Feb 2026 12:13:46 +0100
+	Mon, 09 Feb 2026 12:39:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpPD7-0001tp-9e
-	for lore@pengutronix.de; Mon, 09 Feb 2026 12:13:46 +0100
+	id 1vpPc7-00041D-7i
+	for lore@pengutronix.de; Mon, 09 Feb 2026 12:39:36 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=so1fhKQhMdyPYMm/stcJcCwNeYLgjNvzxfqkypZVIWM=; b=GmTh9c1PFS759B/nMuyGhG6F+z
-	EL2o/AA9aAlRmaE0Z8PSc9d23Mk1uenat/HuiltWB5lI6BeJGMTK6NuKUDNZjJ/c2f7rHyU3DMAjA
-	7gTk4J30n/cDq33pd+qiWpcKYJsSUQZi3YNLkoteSLp4c7CqbtIryjSNlrLhMxyg8cXgpon+qUKq6
-	4P0zCMOla0Z7AKNTTBerl/c5X6D59VHm/tRWYkJQ21wF8c7C9DIvAQOAbNoGpONnkjLV7YHy6lRDo
-	n7ZJZ9tUa1Q87U4o2AAS+kkngF6aKK2d/BCcdHaBGsLisLr5HcWPgZJS6qfYjBQ/9jKiZ1jaSXth7
-	A5oJdqyw==;
+	bh=GUY6qs6XN4mtcCtKdbxrTSTYVs5oTEdko89Qe30RjlA=; b=mYnFi9mifY5YF9yN27d7/CQzcd
+	axwk6/6wtSGyf68VTv+NbMjInwFIJIKqCM47YfS6oih0yWA/xk5R4GBdsMZGoLyef9u5SVytfLqY3
+	fzkvPamXvWFFOxpRB+XVhSzxsnhRSWJkDV6WNOspWulN9ES46NxAnJedH9iI9QvaHcm2rr4hEIMx3
+	DssxzWr31Z829JnkHkzuUSDynwMBU3eSmCQQ4CLe//AoD0F61ewYH9BfZ4yDR2SgLcn7KnJdv7KlD
+	64WprhGfAllIyu8Nd8nffF4kCBO3LN4Fa55oPlOojR2/xAfD4iSGMMbKkmVdW2aLgdyXmagRd75Se
+	HpjnyYHw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpPCa-0000000FHML-1op7;
-	Mon, 09 Feb 2026 11:13:12 +0000
+	id 1vpPbd-0000000FJYR-39wK;
+	Mon, 09 Feb 2026 11:39:05 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpPCX-0000000FHLb-0Yuz
+	id 1vpPbb-0000000FJY3-0II9
 	for barebox@lists.infradead.org;
-	Mon, 09 Feb 2026 11:13:10 +0000
+	Mon, 09 Feb 2026 11:39:04 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1vpPCU-0001lr-3U; Mon, 09 Feb 2026 12:13:06 +0100
+	id 1vpPbZ-0003rW-GE; Mon, 09 Feb 2026 12:39:01 +0100
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1vpPCU-004siN-1t;
-	Mon, 09 Feb 2026 12:13:05 +0100
+	id 1vpPbZ-004sp9-2r;
+	Mon, 09 Feb 2026 12:39:01 +0100
 Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1vpPCT-007zBy-2f;
-	Mon, 09 Feb 2026 12:13:05 +0100
-Date: Mon, 9 Feb 2026 12:13:05 +0100
+	id 1vpPbZ-007zNl-0M;
+	Mon, 09 Feb 2026 12:39:01 +0100
+Date: Mon, 9 Feb 2026 12:39:01 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>
-Message-ID: <20260209111305.iy3cja5l2ixudzh5@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>,
+	Johannes Schneider <johannes.schneider@leica-geosystems.com>
+Message-ID: <20260209113901.jfa2dnwt2m5r3pnv@pengutronix.de>
 References: <20260205-vmaster-customers-leicageo-system1600-v1-0-a80b234ce1a1@pengutronix.de>
- <20260205-vmaster-customers-leicageo-system1600-v1-3-a80b234ce1a1@pengutronix.de>
- <aYmiyyuM-0o17VfI@pengutronix.de>
+ <20260205-vmaster-customers-leicageo-system1600-v1-5-a80b234ce1a1@pengutronix.de>
+ <aYm6JQeGP7MpoDPg@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aYmiyyuM-0o17VfI@pengutronix.de>
+In-Reply-To: <aYm6JQeGP7MpoDPg@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260209_031309_483755_90F8A909 
-X-CRM114-Status: GOOD (  43.19  )
+X-CRM114-CacheID: sfid-20260209_033903_271361_2933AC57 
+X-CRM114-Status: GOOD (  39.23  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,592 +85,341 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/5] mfd: Add Hexagon EFI driver
+Subject: Re: [PATCH 5/5] ARM: i.MX8MM: add Hexagon Geosystems GS05
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 On 26-02-09, Sascha Hauer wrote:
-> On Thu, Feb 05, 2026 at 04:45:05PM +0100, Marco Felsch wrote:
-> > This adds the EFI core driver to communicate with the system
-> > co-processor.
-> 
-> This EFI doesn't have anything to do with the Extensible Firmware
-> Interface, right? Could you add some note what it means to commit
-> message, Kconfig and to the description in hgs-efi.c to avoid confusion?
-
-Sure!
-
-> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > ---
-> >  drivers/mfd/Kconfig   |   8 +
-> >  drivers/mfd/Makefile  |   1 +
-> >  drivers/mfd/hgs-efi.c | 473 ++++++++++++++++++++++++++++++++++++++++++++++++++
-> >  include/mfd/hgs-efi.h |  46 +++++
-> >  4 files changed, 528 insertions(+)
-> > 
-> > diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-> > index 471f85cd63dad30b39017f694b594b768e463a15..f09e3903bcb50556b1556a84500ae73d91a5a63d 100644
-> > --- a/drivers/mfd/Kconfig
-> > +++ b/drivers/mfd/Kconfig
-> > @@ -158,4 +158,12 @@ config MFD_ATMEL_SMC
-> >  	bool
-> >  	select MFD_SYSCON
-> >  
-> > +config MFD_HGS_EFI
-> > +	tristate "Hexagon Geosystems EFI core driver"
-> > +	depends on SERIAL_DEV_BUS
-> > +	select CRC16
-> > +	help
-> > +	  Select this to get support for the EFI Co-Processor
-> > +	  device found on several devices in the System1600 platform.
-> > +
-> >  endmenu
-> > diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-> > index 88480f70640d464e0e12241ec422a63ca860330d..9d27b0bc336a908f1245eb7f1d257a23e271ebd7 100644
-> > --- a/drivers/mfd/Makefile
-> > +++ b/drivers/mfd/Makefile
-> > @@ -27,3 +27,4 @@ obj-$(CONFIG_MFD_ATMEL_SMC)	+= atmel-smc.o
-> >  obj-$(CONFIG_MFD_ROHM_BD718XX)	+= rohm-bd718x7.o
-> >  obj-$(CONFIG_MFD_PCA9450)	+= pca9450.o
-> >  obj-$(CONFIG_MFD_TPS65219)	+= tps65219.o
-> > +obj-$(CONFIG_MFD_HGS_EFI)	+= hgs-efi.o
-> > diff --git a/drivers/mfd/hgs-efi.c b/drivers/mfd/hgs-efi.c
-> > new file mode 100644
-> > index 0000000000000000000000000000000000000000..e548a6b209a6f64cecd8d56edcaa565b0b6d2657
-> > --- /dev/null
-> > +++ b/drivers/mfd/hgs-efi.c
-> > @@ -0,0 +1,473 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +// SPDX-FileCopyrightText: 2025 Pengutronix
-> > +
-> > +/*
-> > + * Multifunction core driver for Hexagon Geosystems EFI MCU that is connected
-> > + * via dedicated UART port. The communication protocol between both parties is
-> > + * called Sensor Protocol (SEP).
-> > + *
-> > + * Based on drivers/mfd/rave-sp.c
-> > + */
-> > +
-> > +#include <asm/unaligned.h>
+> On Thu, Feb 05, 2026 at 04:45:07PM +0100, Marco Felsch wrote:
 > > +#include <common.h>
+> > +#include <deep-probe.h>
+> > +#include <envfs.h>
+> > +#include <environment.h>
 > > +#include <init.h>
-> > +#include <of_device.h>
+> > +#include <i2c/i2c.h>
+> > +#include <linux/phy.h>
+> > +#include <mach/imx/bbu.h>
+> > +#include <mach/imx/generic.h>
 > > +#include <mfd/hgs-efi.h>
-> > +#include <linux/crc16.h>
-> > +#include <linux/ctype.h>
-> > +#include <linux/string.h>
-> > +#include <mfd/hgs-efi.h>
+> > +#include <of.h>
+> > +#include <state.h>
 > > +
-> > +#define HGS_EFI_SEP_ASCII_SYNCBYTE		'S'
-> > +#define HGS_EFI_SEP_ASCII_MSG_TYPE_CMD		'C'
-> > +#define HGS_EFI_SEP_ASCII_MSG_TYPE_EVENT	'E'
-> > +#define HGS_EFI_SEP_ASCII_MSG_TYPE_REPLY	'R'
-> > +#define HGS_EFI_SEP_ASCII_DELIM			','
-> > +#define HGS_EFI_SEP_ASCII_HDR_END		':'
+> > +#define PHY_ID_AR8031	0x004dd074
+> > +#define AR_PHY_ID_MASK	0xffffffff
 > > +
-> > +/* Non addressed ascii header format */
-> > +struct hgs_efi_sep_ascii_hdr {
-> > +	u8 syncbyte;
-> > +	u8 msg_type;
-> > +	u8 msg_id[5]; /* u16 dec number */
-> > +	u8 delim;
-> > +	u8 crc16[4];  /* u16 hex number */
-> > +	u8 hdr_end;
-> > +} __packed;
+> > +#define HGS_GS05_BASE_NAME	"Hexagon Geosystems GS05"
 > > +
-> > +#define HGS_EFI_SEP_RX_BUFFER_SIZE	64
-> > +#define HGS_EFI_SEP_FRAME_PREAMBLE_SZ	2
-> > +#define HGS_EFI_SEP_FRAME_POSTAMBLE_SZ	2
+> > +#define HGS_GS05_MACHINE(_revid, _compatible, _model_suffix) \
+> > +	HGS_MACHINE(_revid, _compatible, HGS_GS05_BASE_NAME " " _model_suffix)
 > > +
-> > +enum hgs_efi_sep_deframer_state {
-> > +	HGS_EFI_SEP_EXPECT_SOF,
-> > +	HGS_EFI_SEP_EXPECT_DATA,
+> > +struct hgs_machine hgs_gs05_variants[] = {
+> 
+> static
+
+Sure.
+
+> > +	HGS_GS05_MACHINE(HGS_BOARD_REV_C, "hgs,gs05-rev-c", "Rev-C"),
+> > +	HGS_GS05_MACHINE(HGS_BOARD_REV_D, "hgs,gs05-rev-d", "Rev-D"),
+> > +	{ /* Sentinel */ }
 > > +};
 > > +
-> > +/**
-> > + * struct hgs_efi_deframer - Device protocol deframer
-> > + *
-> > + * @state:  Current state of the deframer
-> > + * @data:   Buffer used to collect deframed data
-> > + * @length: Number of bytes de-framed so far
-> > + */
-> > +struct hgs_efi_deframer {
-> > +	enum hgs_efi_sep_deframer_state state;
-> > +	unsigned char data[HGS_EFI_SEP_RX_BUFFER_SIZE];
-> > +	size_t length;
-> > +};
-> > +
-> > +/**
-> > + * struct hgs_efi_reply - Reply as per SEP
-> > + *
-> > + * @length:	Expected reply length
-> > + * @data:	Buffer to store reply payload in
-> > + * @msg_id:	Expected SEP msg-id
-> > + * @received:   Successful reply reception
-> > + */
-> > +struct hgs_efi_reply {
-> > +	size_t length;
-> > +	void  *data;
-> > +	u16    msg_id;
-> > +	bool   received;
-> > +};
-> > +
-> > +struct hgs_efi_sep_coder {
-> > +	int (*encode)(struct hgs_efi *efi, struct hgs_sep_cmd *cmd, u8 *buf);
-> > +	int (*process_frame)(struct hgs_efi *efi, void *buf, size_t size);
-> > +	unsigned int sep_header_hdrsize;
-> > +	char sep_sof_char;
-> > +};
-> > +
-> > +struct hgs_efi {
-> > +	struct device dev;
-> > +	struct serdev_device *serdev;
-> > +	const struct hgs_efi_sep_coder *coder;
-> > +	struct hgs_efi_deframer deframer;
-> > +	struct hgs_efi_reply *reply;
-> > +};
-> > +
-> > +static void hgs_efi_write(struct hgs_efi *efi, const u8 *data, size_t data_size)
-> > +{
-> > +	print_hex_dump_bytes("hgs-efi tx: ", DUMP_PREFIX_NONE, data, data_size);
-> > +
-> > +	/* timeout is ignored, instead polling_window is used */
-> > +	serdev_device_write(efi->serdev, data, data_size, SECOND);
+> > +#define HGS_GS05_LEGACY_MACHINE(_revchar, _revid, _compatible, _model_suffix) \
+> > +{									\
+> > +	.revision = _revchar,						\
+> > +	.machine = HGS_GS05_MACHINE(_revid, _compatible, _model_suffix) \
 > > +}
 > > +
-> > +int hgs_efi_exec(struct hgs_efi *efi, struct hgs_sep_cmd *cmd)
+> > +struct hgs_gs05_legacy_machine {
+> 
+> static
+
+Sure.
+
+> > +	u8 revision;
+> > +	struct hgs_machine machine;
+> > +} hgs_gs05_legacy_variants[] = {
+> > +	HGS_GS05_LEGACY_MACHINE('C', HGS_BOARD_REV_C, "hgs,gs05-rev-c", "Rev-C"),
+> > +	HGS_GS05_LEGACY_MACHINE('D', HGS_BOARD_REV_D, "hgs,gs05-rev-d", "Rev-D"),
+> > +	{ /* Sentinel */ }
+> > +};
+> > +
+> > +static int ar8031_phy_fixup(struct phy_device *phydev)
 > > +{
-> > +	struct device *dev = efi->serdev->dev;
-> > +	struct hgs_efi_reply reply = {
-> > +		.msg_id   = cmd->msg_id,
-> > +		.data     = cmd->reply_data,
-> > +		.length   = cmd->reply_data_size,
-> > +		.received = false,
-> > +	};
-> > +	unsigned int max_msg_len;
-> > +	u8 *msg, *p;
-> > +	int ret;
-> > +
-> > +	switch (cmd->type) {
-> > +	case HGS_SEP_MSG_TYPE_COMMAND:
-> > +	case HGS_SEP_MSG_TYPE_EVENT:
-> > +		break;
-> > +	case HGS_SEP_MSG_TYPE_REPLY:
-> > +		dev_warn(dev, "MCU initiated communication is not supported yet!\n");
-> > +		return -EINVAL;
-> > +	default:
-> > +		dev_warn(dev, "Unknown EFI msg-type %#x\n", cmd->type);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	max_msg_len = HGS_EFI_SEP_FRAME_PREAMBLE_SZ +
-> > +		      HGS_EFI_SEP_FRAME_POSTAMBLE_SZ +
-> > +		      efi->coder->sep_header_hdrsize + cmd->payload_size;
-> > +	msg = p = xzalloc(max_msg_len);
-> > +	if (!msg) {
-> > +		dev_err(dev, "No memory\n");
-> > +		return -ENOMEM;
-> > +	}
-> > +
-> > +	/* MCU serial flush preamble */
-> > +	*p++ = '\r';
-> > +	*p++ = '\n';
-> > +
-> > +	ret = efi->coder->encode(efi, cmd, p);
-> > +	if (ret < 0) {
-> > +		free(msg);
-> > +		return ret;
-> > +	}
-> > +
-> > +	p += ret;
-> > +
-> > +	/* SEP postamble */
-> > +	*p++ = '\r';
-> > +	*p++ = '\n';
-> > +
-> > +	efi->reply = &reply;
-> > +	hgs_efi_write(efi, msg, p - msg);
-> > +
-> > +	free(msg);
-> > +
-> > +	if (cmd->type == HGS_SEP_MSG_TYPE_EVENT) {
-> > +		efi->reply = NULL;
-> > +		return 0;
-> > +	}
-> > +
-> > +	/*
-> > +	 * is_timeout will implicitly poll serdev via poller
-> > +	 * infrastructure
-> > +	 */
-> > +	ret = wait_on_timeout(SECOND, reply.received);
-> > +	if (ret)
-> > +		dev_err(dev, "Command timeout\n");
-> > +
-> > +	efi->reply = NULL;
-> > +
-> > +	return ret;
-> > +}
-> > +
-> > +#define HGS_SEP_DOUBLE_QUOTE_SUB_VAL	0x1a
-> > +
-> > +char *hgs_efi_extract_str_response(u8 *buf)
-> > +{
-> > +	unsigned char *start;
-> > +	unsigned char *end;
-> > +	unsigned char *p;
-> > +	size_t i;
-> > +
-> > +	if (!buf || buf[0] != '"') {
-> > +		pr_warn("hgs-efi: No start \" char found in string response\n");
-> 
-> Add above the includes:
-> 
-> #define pr_fmt(fmt) "hgs-efi: " fmt
-> 
-> And drp the prefix here.
-
-Will do.
-
-> > +		return ERR_PTR(-EINVAL);
-> > +	}
-> > +
-> > +	start = &buf[1];
-> > +	end = strrchr(start, '"');
-> > +	if (!end) {
-> > +		pr_warn("hgs-efi: No end \" char found in string response\n");
-> > +		return ERR_PTR(-EINVAL);
-> > +	}
-> > +	*end = '\0';
-> > +
-> > +	/*
-> > +	 * Last step, check for substition val in string reply
-> > +	 * and re-substitute it.
-> > +	 */
-> > +	p = start;
-> > +	for (i = 0; i < strlen(start); i++)
-> > +		if (*p == HGS_SEP_DOUBLE_QUOTE_SUB_VAL)
-> > +			*p = '"';
-> > +
-> > +	return start;
-> > +}
-> > +
-> > +static int hgs_sep_ascii_encode(struct hgs_efi *efi, struct hgs_sep_cmd *cmd,
-> > +				u8 *buf)
-> > +{
-> > +	struct device *dev = efi->serdev->dev;
-> > +	size_t hdr_len;
-> > +	char msg_type;
-> > +	char *hdr;
-> > +
-> > +	switch (cmd->type) {
-> > +	case HGS_SEP_MSG_TYPE_COMMAND:
-> > +		msg_type = 'C';
-> > +		break;
-> > +	case HGS_SEP_MSG_TYPE_EVENT:
-> > +		msg_type = 'E';
-> > +		break;
-> > +	default:
-> > +		/* Should never happen */
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	/*
-> > +	 * The ASCII coder doesn't care about the CRC, also the CRC handling
-> > +	 * has a few flaws. Therefore skip it for now.
-> > +	 */
-> > +	hdr = xasprintf("S%c%u:", msg_type, cmd->msg_id);
-> 
-> xasprintf also doesn't fail.
-
-Thanks
-
-> > +	if (!hdr) {
-> > +		dev_err(dev, "No memory\n");
-> > +		return -ENOMEM;
-> > +	}
-> > +
-> > +	/* Now copy the header and the payload to the buffer */
-> > +	hdr_len = strlen(hdr);
-> > +	memcpy(buf, hdr, hdr_len);
-> 
-> You could simplify the above by doing:
-> 
-> 	hdr_len = sprintf(buf, "S%c%u:", msg_type, cmd->msg_id);
-
-Thats a good point, thanks!
-
-> 
-> > +	memcpy(buf + hdr_len, cmd->payload, cmd->payload_size);
-> > +
-> > +	free(hdr);
-> > +
-> > +	return hdr_len + cmd->payload_size;
-> > +}
-> > +
-> > +static int
-> > +hgs_sep_process_ascii_frame(struct hgs_efi *efi, void *_buf, size_t size)
-> > +{
-> > +	struct device *dev = efi->serdev->dev;
-> > +	unsigned char *payload;
-> > +	unsigned int copy_bytes;
-> > +	unsigned int msgid;
-> > +	size_t payload_len;
-> > +	u8 *buf = _buf;
-> > +	size_t hdrlen;
-> > +	char *p;
-> > +	int ret;
-> > +
-> > +	/*
-> > +	 * Non addressing ASCII format:
-> > +	 * S[MsgType][MsgID](,[CRC]):[Payload]
-> > +	 */
-> > +	if (buf[1] != HGS_EFI_SEP_ASCII_MSG_TYPE_REPLY) {
-> 
-> check buf[0] != 0 before looking at buf[1]?
-
-I could do this, but this function is only called if buf[0] has the
-correct value (see: HGS_EFI_SEP_EXPECT_SOF).
-
-> > +		dev_warn(dev, "Invalid msg-type %c(%#x)\n", *buf, *buf);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	/* Split header from payload first for the following str-ops on buf */
-> > +	payload = strstr(buf, ":");
-> > +	if (!payload) {
-> > +		dev_warn(dev, "Failed to find header delim\n");
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	hdrlen = payload - buf;
-> > +	if (hdrlen > sizeof(struct hgs_efi_sep_ascii_hdr)) {
-> > +		dev_warn(dev, "Invalid header len detected\n");
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	*payload = 0;
-> > +	payload++;
-> > +
-> > +	/*
-> > +	 * Albeit the CRC is optional and the calc as a few flaws the coder may
-> 
-> s/as/has/
-
-thanks.
-
-> 
-> > +	 * has added it. Skip the CRC check but do the msg-id check.
-> > +	 */
-> > +	p = strstr(buf, ",");
-> > +	if (p)
-> > +		*p = 0;
-> > +
-> > +	ret = kstrtouint(&buf[2], 10, &msgid);
-> > +	if (ret) {
-> > +		dev_warn(dev, "Failed to parse msgid, ret:%d\n", ret);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	if (msgid != efi->reply->msg_id) {
-> > +		dev_warn(dev, "Wrong msg-id received, ignore frame (%u != %u)\n",
-> > +			 msgid, efi->reply->msg_id);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	payload_len = size - hdrlen;
-> > +	copy_bytes = payload_len;
-> > +	if (payload_len > efi->reply->length) {
-> > +		dev_warn(dev, "Reply buffer to small, dropping remaining %zu bytes\n",
-> > +			 payload_len - efi->reply->length);
-> > +		copy_bytes = efi->reply->length;
-> > +	}
-> > +
-> > +	memcpy(efi->reply->data, payload, copy_bytes);
+> > +	/* enable rgmii rxc skew and phy mode select to RGMII copper */
+> > +	phy_write(phydev, 0x1d, 0x1f);
+> > +	phy_write(phydev, 0x1e, 0x8);
+> > +	phy_write(phydev, 0x1d, 0x00);
+> > +	phy_write(phydev, 0x1e, 0x82ee);
+> > +	phy_write(phydev, 0x1d, 0x05);
+> > +	phy_write(phydev, 0x1e, 0x100);
 > > +
 > > +	return 0;
 > > +}
 > > +
-> > +static const struct hgs_efi_sep_coder hgs_efi_ascii_coder = {
-> > +	.encode = hgs_sep_ascii_encode,
-> > +	.process_frame = hgs_sep_process_ascii_frame,
-> > +	.sep_header_hdrsize = sizeof(struct hgs_efi_sep_ascii_hdr),
-> > +	.sep_sof_char = HGS_EFI_SEP_ASCII_SYNCBYTE,
-> > +};
-> > +
-> > +static bool hgs_efi_eof_received(struct hgs_efi_deframer *deframer)
+> > +static struct hgs_machine *
+> > +hgs_gs05_get_board_from_legacy(const unsigned char *serial)
 > > +{
-> > +	const char eof_seq[] = { '\r', '\n' };
+> > +	struct hgs_gs05_legacy_machine *machine = hgs_gs05_legacy_variants;
 > > +
-> > +	if (deframer->length <= 2)
-> > +		return false;
-> > +
-> > +	if (memcmp(&deframer->data[deframer->length - 2], eof_seq, 2))
-> > +		return false;
-> > +
-> > +	return true;
+> > +	for (; machine->revision; machine++)
+> > +		if (serial[6] == machine->revision)
+> > +			return &machine->machine;
+> 
+> Drop sentinel and use ARRAY_SIZE?
+
+Is this rather a personal preference or barebox coding style?
+
+I would like to keep the sentinel-approach since we use the same
+approach for other boards too which allowed us simpler code
+constructions.
+
+> > +	return ERR_PTR(-EINVAL);
 > > +}
 > > +
-> > +static void hgs_efi_receive_frame(struct hgs_efi *efi,
-> > +				  struct hgs_efi_deframer *deframer)
+> > +static struct hgs_machine *
+> > +hgs_gs05_select_board(const unsigned char *serial, bool legacy_format)
 > > +{
-> > +	int ret;
+> > +	struct hgs_machine *machine = hgs_gs05_variants;
+> > +	const struct hgs_board_revision *rev;
 > > +
-> > +	if (deframer->length < efi->coder->sep_header_hdrsize) {
-> > +		dev_warn(efi->serdev->dev, "Bad frame: Too short\n");
-> > +		return;
-> > +	}
+> > +	/* TODO: Remove legacy handling if no longer required */
+> > +	if (legacy_format)
+> > +		return hgs_gs05_get_board_from_legacy(serial);
 > > +
-> > +	print_hex_dump_bytes("hgs-efi rx-frame: ", DUMP_PREFIX_NONE,
-> > +			     deframer->data, deframer->length);
+> > +	rev = hgs_get_rev_from_part_trace((struct hgs_part_trace_code *)serial);
+> > +	if (!rev)
+> > +		return ERR_PTR(-EINVAL);
 > > +
-> > +	ret = efi->coder->process_frame(efi, deframer->data,
-> > +			      deframer->length - HGS_EFI_SEP_FRAME_PREAMBLE_SZ);
-> > +	if (!ret)
-> > +		efi->reply->received = true;
-> > +}
-> > +
-> > +static int hgs_efi_receive_buf(struct serdev_device *serdev,
-> > +			       const unsigned char *buf, size_t size)
+> > +	for (; machine->dts_compatible; machine++)
+> > +		if (rev->id == machine->revision)
+> > +			return machine;
+> 
+> same here.
+> 
+> [...]
+> 
+> > +static int hgs_setup_emmc(struct hgs_machine *machine)
 > > +{
-> > +	struct device *dev = serdev->dev;
-> > +	struct hgs_efi *efi = dev->priv;
-> > +	struct hgs_efi_deframer *deframer = &efi->deframer;
-> > +	const unsigned char *src = buf;
-> > +	const unsigned char *end = buf + size;
+> > +	static const char * const mmc_commands[] = { "enh_area", "write_reliability" };
+> > +	int partitioning_completed;
+> > +	char *cmd, *tmp;
+> > +	unsigned int i;
 > > +
-> > +	print_hex_dump_bytes("hgs-efi rx-bytes: ", DUMP_PREFIX_NONE, buf, size);
+> > +	tmp = xasprintf("%s.partitioning_completed", machine->mmc_alias);
+> > +	getenv_bool(tmp, &partitioning_completed);
+> > +	free(tmp);
+> > +	if (partitioning_completed)
+> > +		return 0;
 > > +
-> > +	while (src < end) {
-> > +		const unsigned char byte = *src++;
-> > +
-> > +		switch (deframer->state) {
-> > +		case HGS_EFI_SEP_EXPECT_SOF:
-> > +			if (byte == efi->coder->sep_sof_char)
-> > +				deframer->state = HGS_EFI_SEP_EXPECT_DATA;
-> > +			deframer->data[deframer->length++] = byte;
-> > +			break;
-> > +		case HGS_EFI_SEP_EXPECT_DATA:
-> > +			if (deframer->length >= sizeof(deframer->data)) {
-> > +				dev_warn(dev, "Bad frame: Too long\n");
-> > +				goto frame_reset;
-> > +			}
-> > +
-> > +			deframer->data[deframer->length++] = byte;
-> > +			if (hgs_efi_eof_received(deframer)) {
-> > +				hgs_efi_receive_frame(efi, deframer);
-> > +				goto frame_reset;
-> > +			}
+> > +	for (i = 0; i < ARRAY_SIZE(mmc_commands); i++) {
+> > +		cmd = xasprintf("mmc %s /dev/%s", mmc_commands[i], machine->mmc_alias);
+> > +		if (run_command(cmd)) {
+> 
+> run_command("mmc %s /dev/%s", mmc_commands[i], machine->mmc_alias);
+> 
+> Would be nice ;)
+
+Yeah, would come in handy here, let me check this.
+
+> > +			dev_err(machine->dev,
+> > +				"Failed to run command: %s, skip eMMC partition-complete\n", cmd);
+> > +			free(cmd);
+> > +			return -EINVAL;
 > > +		}
+> > +		free(cmd);
 > > +	}
 > > +
-> > +	/*
-> > +	 * All bytes processed but no EOF detected yet which because the serdev
-> 
-> s/which//
-> 
-> > +	 * poller may called us to early. Keep the deframer state to continue
-> > +	 * the work where we finished.
-> > +	 */
-> > +	return size;
+> > +	/* Make the final complete not part of the loop */
+> > +	cmd = xasprintf("mmc partition_complete /dev/%s", machine->mmc_alias);
+> > +	run_command(cmd);
+> > +	free(cmd);
 > > +
-> > +frame_reset:
-> > +	memset(deframer->data, 0, deframer->length);
-> > +	deframer->length = 0;
-> > +	deframer->state = HGS_EFI_SEP_EXPECT_SOF;
-> > +
-> > +	return src - buf;
+> > +	dev_info(machine->dev, "Initial eMMC setup completed successfully\n");
+> > +	return 0;
 > > +}
 > > +
-> > +static int hgs_efi_register_dev(struct hgs_efi *efi)
-> > +{
-> > +	struct device *dev = &efi->dev;
-> > +
-> > +	dev->parent = efi->serdev->dev;
-> > +	dev_set_name(dev, "%s", "efi");
 > 
-> dev_set_name(dev, "efi");
-
-Sure.
-
-> > +	dev->id = DEVICE_ID_SINGLE;
-> > +
-> > +	return register_device(dev);
+> [...]
+> 
+> > +	err = imx_hab_lockdown_device(flags);
+> > +	if (err) {
+> > +		dev_err(dev, "Failed to lockdown the device\n");
+> > +		return err;
+> > +	}
+> > +	dev_info(dev, "Lockdown of the device succeeded\n");
+> > +	return 0;
 > > +}
+> > +postenvironment_initcall(hgs_run_first_boot_setup);
+> 
+> Needs to be protected from running on other boards.
+
+Guarded via the hgs_first_boot variable which is only set by
+hgs_run_first_boot() which in turn gets only called via
+hgs_common_boot().
+
+> 
 > > +
-> > +static int hgs_efi_probe(struct device *dev)
+> > +/*
+> > + * Notify the PP4 at the latest point to ensure that barebox was started
+> > + * properly. If this function is not reached the PP4 timeout of 10sec is
+> > + * triggered which puts us into serial-downloader mode.
+> > + */
+> > +static int hgs_notify_pp4(void)
 > > +{
-> > +	struct serdev_device *serdev = to_serdev_device(dev->parent);
-> > +	struct hgs_efi *efi;
-> > +	u32 baud;
 > > +	int ret;
 > > +
-> > +	if (of_property_read_u32(dev->of_node, "current-speed", &baud)) {
-> > +		dev_err(dev,
-> > +			"'current-speed' is not specified in device node\n");
-> > +		return -EINVAL;
-> > +	}
+> > +	if (!priv)
+> > +		return 0;
 > > +
-> > +	efi = xzalloc(sizeof(*efi));
-> > +	if (!efi)
-> > +		return -ENOMEM;
-> > +
-> > +	efi->coder = of_device_get_match_data(dev);
-> > +	if (!efi->coder) {
-> > +		free(efi);
-> > +		return -ENODEV;
-> > +	}
-> > +
-> > +	efi->serdev = serdev;
-> > +
-> > +	dev->priv = efi;
-> > +	serdev->dev = dev;
-> > +	serdev->receive_buf = hgs_efi_receive_buf;
-> > +	serdev->polling_interval = 200 * MSECOND;
-> > +	serdev->polling_window = 10 * MSECOND;
-> > +
-> > +	ret = serdev_device_open(serdev);
-> 
-> This registers a poller, so when one of the calls below fails this might
-> have some bad consequences. Oh, we do not have a serdev_device_close(),
-> I won't look further ;)
-
-Hm.. something we should fix. Let me check if I can add a
-serdev_device_close() routine real quick else I would add a comment.
-
-Regards,
-  Marco
-
-
-
-> 
-> Sascha
-> 
+> > +	ret = gpio_request_one(priv->pp4_gpio, GPIOF_OUT_INIT_HIGH, "pp4-cpu-rdy");
 > > +	if (ret)
 > > +		return ret;
 > > +
-> > +	serdev_device_set_baudrate(serdev, baud);
+> > +	return 0;
+> > +}
+> > +postenvironment_initcall(hgs_notify_pp4);
+> 
+> ditto.
+
+It's guarded by the 'if (!priv)' but this function may get removed in
+v2 anyway.
+
 > > +
-> > +	ret = hgs_efi_register_dev(efi);
-> > +	if (ret) {
-> > +		dev_err(dev, "Failed to register EFI device\n");
-> > +		return ret;
-> > +	};
+> > +/*
+> > + * Custom USB gadget handling since we need to get notified upon the flash of
+> > + * the data partition. The setup is done very late like the
+> > + * usbgadget_autostart_init() since we need to ensure that the NV is loaded
+> > + * properly for development case.
+> > + */
+> > +static int hgs_usbgadget_autostart(void)
+> > +{
+> > +	struct usbgadget_funcs funcs = {};
+> > +	struct f_multi_opts *opts;
+> > +	int ret;
 > > +
-> > +	return of_platform_populate(dev->of_node, NULL, dev);
+> > +	if (!hgs_enable_usbgadget)
+> > +		return 0;
+> > +
+> > +	/*
+> > +	 * Some HW is missing a HW serial connecotr. Fastboot is used for file
+> > +	 * download.
+> > +	 */
+> > +	funcs.flags |= USBGADGET_EXPORT_BBU | USBGADGET_FASTBOOT | USBGADGET_ACM;
+> > +
+> > +	opts = usbgadget_prepare(&funcs);
+> > +	if (IS_ERR(opts))
+> > +		return PTR_ERR(opts);
+> > +
+> > +	/* Custom hook to get notified once the user want to flash something */
+> > +	opts->fastboot_opts.cmd_flash = hgs_fastboot_cmd_flash;
+> > +
+> > +	ret = usbgadget_register(opts);
+> > +	if (ret)
+> > +		usb_multi_opts_release(opts);
+> > +
+> > +	return ret;
+> > +}
+> > +postenvironment_initcall(hgs_usbgadget_autostart);
+> 
+> ditto.
+
+Guarded via hgs_enable_usbgadget.
+
+> 
+> > +++ b/common/boards/hgs/lib.c
+> > @@ -0,0 +1,73 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +// SPDX-FileCopyrightText: 2025 Pengutronix
+> > +// SPDX-FileCopyrightText: Leica Geosystems AG
+> > +
+> > +#define pr_fmt(fmt) "hgs-lib: " fmt
+> > +
+> > +#include <common.h>
+> > +#include <linux/stddef.h>
+> > +#include <linux/hex.h>
+> > +
+> > +#include <boards/hgs/common.h>
+> > +
+> > +#define HGS_BOARD_REV(_id, _str) {	\
+> > +	.id = _id,			\
+> > +	.str = _str,			\
 > > +}
 > > +
-> > +static const struct of_device_id __maybe_unused hgs_efi_dt_ids[] = {
-> > +	{ .compatible = "hgs,efi-gs05", .data = &hgs_efi_ascii_coder },
-> > +	{ /* sentinel */ }
-> > +};
-> > +MODULE_DEVICE_TABLE(of, lgs_efi_dt_ids);
+> > +#define HGS_BOARD_REV_SIMPLE(_id)	\
+> > +	HGS_BOARD_REV(HGS_BOARD_REV##_id, #_id)
 > > +
-> > +static struct driver hgs_efi_drv = {
-> > +	.name = "hgs-efi",
-> > +	.probe = hgs_efi_probe,
-> > +	.of_compatible = DRV_OF_COMPAT(hgs_efi_dt_ids),
+> > +static const struct hgs_board_revision hgs_revision_table[] = {
+> > +	HGS_BOARD_REV_SIMPLE(_A),
+> > +	HGS_BOARD_REV_SIMPLE(_B),
+> > +	HGS_BOARD_REV_SIMPLE(_C),
+> > +	HGS_BOARD_REV_SIMPLE(_D),
+> > +	HGS_BOARD_REV_SIMPLE(_E),
 > > +};
-> > +console_platform_driver(hgs_efi_drv);
+> > +
+> > +const struct hgs_board_revision *
+> > +hgs_get_rev_from_part_trace(const struct hgs_part_trace_code *code)
+> > +{
+> > +	const struct hgs_board_revision *rev = hgs_revision_table;
+> > +
+> > +	for (; rev->str; rev++)
+> 
+> This iterates past the array. Use ARRAY_SIZE.
+
+You're right! It was never noticed since we never reached the end :/
+
+I can change it to ARRAY_SIZE() but I would like to keep the sentinel
+approach and add the missing sentinel if this is fine for you.
+
+> > +		if (!memcmp(code->material_revision, rev->str,
+> > +		    sizeof(code->material_revision)))
+> > +			return rev;
+> > +
+> > +	return NULL;
+> > +}
+> > +
+> > +const u32
+> > +hgs_get_artno_from_part_trace(const struct hgs_part_trace_code *code)
+> > +{
+> > +	__be32 res = 0;
+> > +	u8 tmp[8];
+> > +	int err;
+> > +
+> > +	/*
+> > +	 * Art-no. has 7-digits, add a leading '0' to align it to 8 and make
+> > +	 * use of hex2bin
+> > +	 */
+> > +	memset(tmp, '0', sizeof(tmp));
+> 
+> tmp[0] = '0'
+
+Sure, could also have done the intialization during the definition of
+tmp.
+
+Thanks for the review,
+Marco
+
+> > +	memcpy(tmp + 1, code->art_number, sizeof(code->art_number));
+> > +	err = hex2bin((u8 *)&res, tmp, sizeof(res));
+> > +
+> > +	return err ? 0 : be32_to_cpu(res);
+> > +}
+> > +
+> > +struct hgs_machine *hgs_get_last_variant_entry(struct hgs_machine *variants)
+> > +{
+> > +	struct hgs_machine *last_entry = NULL;
+> > +
+> > +	if (!variants->dts_compatible) {
+> > +		pr_warn("%s: Invalid input\n", __func__);
+> > +		return ERR_PTR(-EINVAL);
+> > +	}
+> > +
+> > +	for (; variants->dts_compatible; variants++)
+> > +		last_entry = variants;
+> > +
+> > +	return last_entry;
+> > +}
+> 
+> Sascha
 > 
 > -- 
 > Pengutronix e.K.                           |                             |
