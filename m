@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpNHE-00AV9h-25
+	id 1vpNHF-00AVA3-05
 	for lore@lore.pengutronix.de;
 	Mon, 09 Feb 2026 10:09:52 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpNHD-0005Kr-9R
+	id 1vpNHD-0005Kx-P6
 	for lore@pengutronix.de; Mon, 09 Feb 2026 10:09:52 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,38 +18,38 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=bzn+1gr7s+MJUxHletqo9/G3ps3TVOtRNI18GaoDEn8=; b=3J7LgCAY/+RWWs5e8KR1fIej2u
-	pC6QyK9O3UooaU+a/lCQUnMwPvHXOoV7iZLPCz+a4C8O+4RywMhwKWvJgw8H7eQbalnEsGvnxhAQk
-	g40LTGuB1649HuhZ6NCFV2IG2DxQqZMVvXlqCkLFidUp3AvZAdiK18mbmt3UhtQmlvBxa+VAAMWTz
-	nq1bFg6/MruuMNNXMKsFC9Dx8LIWuj4gfruxr4RXCMXWNSLRHAPv4fNffaTP55TN+alq/9SLLtZ5r
-	Jg0Tjc9cbv1V8CtGWxytrClDvvy35B2J7NSh7zSaorbJZAHO8/YBs2i5yobp0lZDwxnqEaJlK7wo2
-	Ocd+Qcwg==;
+	bh=SXQuwn/7UPpAIDhVHSBiSCOgbuk27z3kBdmZHL1s6zc=; b=4Rt2TnyWLvJuRvepW2ftF7CdFb
+	a/grCSrEa4ZEzzCnak/DyILUDqIPr1heJC8VLrpucCLo8+w3VOqCBj6oF9qmmfFw6eda4z1BnwmhL
+	ges+4zvLC6mYlcUAlyF9pQLTqCP0uxEXWyQrj+uYqILHzDIK9185eFpx3Lb1RB5VI+EeUeJzpcLnI
+	ZCZoI+ICwUPAQNgxNr99muhn8Xrx8PxAZEfME0K8xo7hM8kNO4wg7noyBAWr5CbPCOJWYoQJZG3u+
+	KTf8TZglCfYVloOE20z+tCa0soXsABZDlx4JAU3qY0FUTWhcgRtf8yGnrsuxi+CFw1TQJqTfpCj21
+	8xkXZvnQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpNGj-0000000F5nP-1chy;
-	Mon, 09 Feb 2026 09:09:21 +0000
+	id 1vpNGk-0000000F5nu-46Ul;
+	Mon, 09 Feb 2026 09:09:22 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpNGg-0000000F5ke-06bM
+	id 1vpNGg-0000000F5l9-06o0
 	for barebox@lists.infradead.org;
 	Mon, 09 Feb 2026 09:09:20 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=localhost.localdomain)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1vpNGd-0004wQ-2T; Mon, 09 Feb 2026 10:09:15 +0100
+	id 1vpNGe-0004wQ-Dr; Mon, 09 Feb 2026 10:09:16 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon,  9 Feb 2026 10:08:52 +0100
-Message-ID: <20260209090911.3561875-3-a.fatoum@barebox.org>
+Date: Mon,  9 Feb 2026 10:08:55 +0100
+Message-ID: <20260209090911.3561875-6-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260209090911.3561875-1-a.fatoum@barebox.org>
 References: <20260209090911.3561875-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260209_010918_073430_3DAB890C 
-X-CRM114-Status: GOOD (  21.55  )
+X-CRM114-CacheID: sfid-20260209_010918_081867_6CF5FB4D 
+X-CRM114-Status: GOOD (  16.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,190 +71,206 @@ X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 2/5] blspec: sort entries according to specification
+Subject: [PATCH 5/5] test: self: add bootloader spec files test
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Boot entries generated from bootloader spec are currently sorted by the
-order the files are read from the file system.
-
-This is inadequate if we have multiple entries with different kernels
-and we want to sort the newer kernels higher.
-
-The UAPI.1 Boot Loader Specification defines an algorithm[1] to order the
-entries that takes care of this, so implement it into barebox.
-
-[1]: https://uapi-group.org/specifications/specs/boot_loader_specification/#sorting
+With spec-conformant sorting added for bootloader specification entries,
+add a simple self test that verifies that the sort order is as one would
+expect.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- common/Kconfig            |  1 +
- common/blspec.c           | 62 ++++++++++++++++++++++++++++++++++++++-
- common/boot.c             |  7 +++++
- include/asm-generic/bug.h |  7 +++++
- include/boot.h            |  2 ++
- 5 files changed, 78 insertions(+), 1 deletion(-)
+ include/bselftest.h                           | 20 ++++++++
+ test/self/Kconfig                             |  5 ++
+ test/self/Makefile                            |  2 +
+ test/self/blspec.c                            | 46 +++++++++++++++++++
+ .../data/test/boot/boot.sh                    |  3 ++
+ .../data/test/loader/entries/boarda.conf      |  6 +++
+ .../data/test/loader/entries/boardb.conf      |  6 +++
+ .../data/test/loader/entries/boardc.conf      |  6 +++
+ .../data/test/loader/entries/boardd.conf      |  5 ++
+ 9 files changed, 99 insertions(+)
+ create mode 100644 test/self/blspec.c
+ create mode 100755 test/self/defaultenv-blspec-test/data/test/boot/boot.sh
+ create mode 100644 test/self/defaultenv-blspec-test/data/test/loader/entries/boarda.conf
+ create mode 100644 test/self/defaultenv-blspec-test/data/test/loader/entries/boardb.conf
+ create mode 100644 test/self/defaultenv-blspec-test/data/test/loader/entries/boardc.conf
+ create mode 100644 test/self/defaultenv-blspec-test/data/test/loader/entries/boardd.conf
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 50c26695b2b5..cd002865f736 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -715,6 +715,7 @@ config BLSPEC
- 	select BOOT
- 	select BOOTM
- 	select OFTREE
-+	select VERSION_CMP
- 	bool
- 	prompt "Support bootloader spec"
- 	help
-diff --git a/common/blspec.c b/common/blspec.c
-index 624e4c115272..f13e44f1de71 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -28,6 +28,7 @@ struct blspec_entry {
- 	struct cdev *cdev;
- 	const char *rootpath;
- 	const char *configpath;
-+	char *sortkey;
- };
+diff --git a/include/bselftest.h b/include/bselftest.h
+index c3f323864358..fc698d7c5c0c 100644
+--- a/include/bselftest.h
++++ b/include/bselftest.h
+@@ -78,4 +78,24 @@ static inline void selftests_run(void)
+ int selftest_run(struct selftest *test);
+ bool selftest_is_running(struct selftest *test);
  
- /*
-@@ -181,6 +182,7 @@ static void blspec_entry_free(struct bootentry *be)
- 	of_delete_node(entry->node);
- 	free_const(entry->configpath);
- 	free_const(entry->rootpath);
-+	free(entry->sortkey);
- 	free(entry);
- }
- 
-@@ -268,6 +270,12 @@ static struct blspec_entry *blspec_entry_open(struct bootentries *bootentries,
- 			}
- 		}
- 
-+		/* This will be read often during comparison, so we cache it */
-+		if (!strcmp(name, "sort-key")) {
-+			entry->sortkey = xstrdup(val);
-+			continue;
-+		}
++#define __assert_cond(cond) ({ total_tests++; cond || (failed_tests++, false); })
 +
- 		blspec_entry_var_set(entry, name, val);
- 	}
- 
-@@ -414,6 +422,58 @@ static const char *get_blspec_prefix_path(const char *configname)
- 	return get_mounted_path(configname);
- }
- 
-+static int blspec_compare(struct list_head *list_a, struct list_head *list_b)
-+{
-+	struct bootentry *be_a = container_of(list_a, struct bootentry, list);
-+	struct bootentry *be_b = container_of(list_b, struct bootentry, list);
-+	struct blspec_entry *a, *b;
-+	const char *a_version, *b_version;
-+	int r;
++#define assert_cond(cond) ({ \
++	bool __cond = __assert_cond(cond); \
++	if (!__cond) \
++		pr_warn("%s:%d: condition %s unexpectedly false\n", \
++			__func__, __LINE__, #cond); \
++	__cond; \
++})
 +
-+	/* The boot entry providers are called one by one and passed an empty
-+	 * list that's aggregated later, so we should only be encountering
-+	 * bootloader spec entries here.
-+	 */
-+	DEBUG_ASSERT(is_blspec_entry(be_a) && is_blspec_entry(be_b));
++#define assert_inteq(a, b) assert_cond(a == b)
 +
-+	a = container_of(be_a, struct blspec_entry, entry);
-+	b = container_of(be_b, struct blspec_entry, entry);
-+
-+	a_version = a->configpath;
-+	b_version = b->configpath;
-+
-+	if (a->sortkey && b->sortkey) {
-+		const char *a_machine_id, *b_machine_id;
-+
-+		/* A-Z, increasing alphanumerical order */
-+		r = strcmp(a->sortkey, b->sortkey);
-+		if (r != 0)
-+			return r;
-+
-+		a_machine_id = blspec_entry_var_get(a, "machine-id");
-+		b_machine_id = blspec_entry_var_get(b, "machine-id");
-+
-+		/* A-Z, increasing alphanumerical order) */
-+		r = strcmp_ptr(a_machine_id, b_machine_id);
-+		if (r != 0)
-+			return r;
-+
-+		/* Will be compared in decreasing version order */
-+		a_version = blspec_entry_var_get(a, "version");
-+		b_version = blspec_entry_var_get(b, "version");
-+	} else if (a->sortkey != b->sortkey) {
-+		/* If sort-key is set on one entry, it sorts earlier. */
-+		return a->sortkey ? -1 : 1;
-+	}
-+
-+	/* At the end, if necessary, when sort-key is not set or
-+	 * those fields are not set or are all equal, the boot loader
-+	 * should sort using the file name of the entry (decreasing
-+	 * version sort), with the suffix removed.
-+	 */
-+	return -strverscmp(a_version, b_version);
-+}
-+
- static int __blspec_scan_file(struct bootentries *bootentries, const char *root,
- 			      const char *configname)
- {
-@@ -459,7 +519,7 @@ static int __blspec_scan_file(struct bootentries *bootentries, const char *root,
- 	entry->entry.me.type = MENU_ENTRY_NORMAL;
- 	entry->entry.release = blspec_entry_free;
- 
--	bootentries_add_entry(bootentries, &entry->entry);
-+	bootentries_add_entry_sorted(bootentries, &entry->entry, blspec_compare);
- 	return 1;
- }
- 
-diff --git a/common/boot.c b/common/boot.c
-index 8ccc269ac5bd..2e5294ffa2f0 100644
---- a/common/boot.c
-+++ b/common/boot.c
-@@ -34,6 +34,13 @@ static inline void bootentries_merge(struct bootentries *dst, struct bootentries
- 	list_splice_tail_init(&src->entries, &dst->entries);
- }
- 
-+void bootentries_add_entry_sorted(struct bootentries *entries, struct bootentry *entry,
-+				  int (*compare)(struct list_head *, struct list_head *))
-+
-+{
-+	list_add_sort(&entry->list, &entries->entries, compare);
-+}
-+
- struct bootentries *bootentries_alloc(void)
- {
- 	struct bootentries *bootentries;
-diff --git a/include/asm-generic/bug.h b/include/asm-generic/bug.h
-index 514801dab10e..1953c6e642c1 100644
---- a/include/asm-generic/bug.h
-+++ b/include/asm-generic/bug.h
-@@ -78,4 +78,11 @@
- 		BUG_ON(!(expr));			\
- } while (0)
- 
-+
-+#ifdef DEBUG
-+#define DEBUG_ASSERT(expr)	BUG_ON(!(expr))
-+#else
-+#define DEBUG_ASSERT(expr)	((void)(expr))
-+#endif
++#define assert_streq(a, b) ({ \
++	bool __cond = __assert_cond(strcmp(a, b) == 0); \
++	if (!__cond) \
++		pr_warn("%s:%d: %s and %s unexpectedly unequal\n", \
++			__func__, __LINE__, a, b); \
++	__cond; \
++})
 +
  #endif
-diff --git a/include/boot.h b/include/boot.h
-index e6309b65a0c3..fdc108b7a21d 100644
---- a/include/boot.h
-+++ b/include/boot.h
-@@ -24,6 +24,8 @@ struct bootentry {
- };
+diff --git a/test/self/Kconfig b/test/self/Kconfig
+index 2ccdfe621821..85a3ef790116 100644
+--- a/test/self/Kconfig
++++ b/test/self/Kconfig
+@@ -51,6 +51,7 @@ config SELFTEST_ENABLE_ALL
+ 	select SELFTEST_TLV
+ 	select SELFTEST_DM
+ 	select SELFTEST_TALLOC
++	select SELFTEST_BLSPEC if BLSPEC && DEFAULT_ENVIRONMENT
+ 	help
+ 	  Selects all self-tests compatible with current configuration
  
- int bootentries_add_entry(struct bootentries *entries, struct bootentry *entry);
-+void bootentries_add_entry_sorted(struct bootentries *entries, struct bootentry *entry,
-+				  int (*compare)(struct list_head *, struct list_head *));
+@@ -127,6 +128,10 @@ config SELFTEST_SETJMP
+ 	bool "setjmp/longjmp library selftest"
+ 	depends on ARCH_HAS_SJLJ
  
- struct bootentry_provider {
- 	const char *name;
++config SELFTEST_BLSPEC
++	bool "bootloader spec selftest"
++	depends on BLSPEC && DEFAULT_ENVIRONMENT
++
+ config SELFTEST_REGULATOR
+ 	bool "Regulator selftest"
+ 	depends on REGULATOR_FIXED
+diff --git a/test/self/Makefile b/test/self/Makefile
+index 9f839fc0d07a..2bfdbb9949df 100644
+--- a/test/self/Makefile
++++ b/test/self/Makefile
+@@ -25,6 +25,8 @@ obj-$(CONFIG_SELFTEST_TEST_COMMAND) += test_command.o
+ obj-$(CONFIG_SELFTEST_IDR) += idr.o
+ obj-$(CONFIG_SELFTEST_TLV) += tlv.o tlv.dtb.o
+ obj-$(CONFIG_SELFTEST_DM) += dm.o
++obj-$(CONFIG_SELFTEST_BLSPEC) += blspec.o
++bbenv-$(CONFIG_SELFTEST_BLSPEC) += defaultenv-blspec-test
+ 
+ ifdef REGENERATE_KEYTOC
+ 
+diff --git a/test/self/blspec.c b/test/self/blspec.c
+new file mode 100644
+index 000000000000..0e9eca4d06e9
+--- /dev/null
++++ b/test/self/blspec.c
+@@ -0,0 +1,46 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
++#include <common.h>
++#include <bselftest.h>
++#include <boot.h>
++#include <envfs.h>
++#include <init.h>
++
++BSELFTEST_GLOBALS();
++
++static void test_blspec(void)
++{
++	struct bootentries *entries;
++	struct bootentry *entry;
++	int ret, i = 0;
++	const char *expected[] = {
++		"/env/data/test/loader/entries/boardb.conf",
++		"/env/data/test/loader/entries/boardc.conf",
++		"/env/data/test/loader/entries/boarda.conf",
++		"/env/data/test/loader/entries/boardd.conf",
++	};
++
++	entries = bootentries_alloc();
++
++	ret = bootentry_create_from_name(entries, "/env/data/test");
++	if (!assert_inteq(ret, 4))
++		return;
++
++	if (!assert_cond(!list_empty(&entries->entries)))
++		return;
++
++	bootentries_for_each_entry(entries, entry) {
++		assert_streq(expected[i], entry->path);
++		i++;
++	}
++}
++bselftest(parser, test_blspec);
++
++static int test_blspec_env_init(void)
++{
++	defaultenv_append_directory(defaultenv_blspec_test);
++	return 0;
++}
++late_initcall(test_blspec_env_init);
+diff --git a/test/self/defaultenv-blspec-test/data/test/boot/boot.sh b/test/self/defaultenv-blspec-test/data/test/boot/boot.sh
+new file mode 100755
+index 000000000000..19ba0024098b
+--- /dev/null
++++ b/test/self/defaultenv-blspec-test/data/test/boot/boot.sh
+@@ -0,0 +1,3 @@
++#!/bin/sh
++
++echo boot test
+diff --git a/test/self/defaultenv-blspec-test/data/test/loader/entries/boarda.conf b/test/self/defaultenv-blspec-test/data/test/loader/entries/boarda.conf
+new file mode 100644
+index 000000000000..a0b8356476be
+--- /dev/null
++++ b/test/self/defaultenv-blspec-test/data/test/loader/entries/boarda.conf
+@@ -0,0 +1,6 @@
++title		barebox - Test Image - v6.1-rc2 A
++version		Dummy v6.1-rc2
++options		rootwait
++linux		/boot/boot.sh
++sort-key        blspec-test
++linux-appendroot	true
+diff --git a/test/self/defaultenv-blspec-test/data/test/loader/entries/boardb.conf b/test/self/defaultenv-blspec-test/data/test/loader/entries/boardb.conf
+new file mode 100644
+index 000000000000..93d5ab5f0fac
+--- /dev/null
++++ b/test/self/defaultenv-blspec-test/data/test/loader/entries/boardb.conf
+@@ -0,0 +1,6 @@
++title		barebox - Test Image - v6.19 B
++version		Dummy v6.19
++options		rootwait
++linux		/boot/boot.sh
++sort-key        blspec-test
++linux-appendroot	true
+diff --git a/test/self/defaultenv-blspec-test/data/test/loader/entries/boardc.conf b/test/self/defaultenv-blspec-test/data/test/loader/entries/boardc.conf
+new file mode 100644
+index 000000000000..8df597d4f251
+--- /dev/null
++++ b/test/self/defaultenv-blspec-test/data/test/loader/entries/boardc.conf
+@@ -0,0 +1,6 @@
++title		barebox - Test Image - v6.9 C
++version		Dummy v6.9
++options		rootwait
++linux		/boot/boot.sh
++sort-key        blspec-test
++linux-appendroot	true
+diff --git a/test/self/defaultenv-blspec-test/data/test/loader/entries/boardd.conf b/test/self/defaultenv-blspec-test/data/test/loader/entries/boardd.conf
+new file mode 100644
+index 000000000000..b2581147c3d7
+--- /dev/null
++++ b/test/self/defaultenv-blspec-test/data/test/loader/entries/boardd.conf
+@@ -0,0 +1,5 @@
++title		barebox - Test Image - v9999 (no sort-key) D
++version		v9999
++options		rootwait
++linux		/boot/boot.sh
++linux-appendroot	true
 -- 
 2.47.3
 
