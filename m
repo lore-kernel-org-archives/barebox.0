@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpNHC-00AV8z-20
+	id 1vpNHC-00AV9A-2l
 	for lore@lore.pengutronix.de;
 	Mon, 09 Feb 2026 10:09:50 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpNHB-0005Jm-An
+	id 1vpNHB-0005Jz-PC
 	for lore@pengutronix.de; Mon, 09 Feb 2026 10:09:50 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,38 +18,38 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=QKojLPF4NEyZ7ACn5uCP+yYIahxJ2Ewk3NAnad8ioA4=; b=pi0sc9uOd99g1ZnmPYuG1jwB3w
-	D427z6Sq8JLzYtDmGPJZI5pd3/tq3VDzaCHl+VngS1nmXR/q9n6kOfKyMlLXlSTy4lQMK9QKJ6AJ7
-	jjeCtzZN8UELRF0jGZSU2vNYwDyVWOZ0x0FsN0yjx5snycxuOUgCje5942FMfL2Z1Pa4l2u8+67I0
-	sevjOHx/Z2854hE7NE9LXnVE5bzCNbkh9qD7WMXpv4azJnSU+Vux6pZfLlQ5KDb+r0xUNKxq3uSZq
-	VeTAVSjYRBj3FVKD66Aj9sPqjxQhg9WobZhNvMZ7C0nGyv+xc2kUVthxAqFLh/behL8xi5j5W9Nyd
-	ejqzZCDw==;
+	bh=k6v50JWNCZXGEVdaSZ22OIQAblcexmSNgCdfC4FJZ4U=; b=YAX8sAwCYqfQFa7KD7VUaXtKQO
+	ovZdeViZc+sBpO/B+KV/wrxDfV58iQgnX9P0a6na37St0oLvm+u0jTyFKcbZrGFsBZwitGbIvZry8
+	GHUwARRSsyaekzx4rweFF00Sbm3iXBWZtBQGYrn7a5WGP2xgIKqE8RwCegCKuDAFRNJgq+aTNU5o1
+	6eouCd2ausSer7fNIUqRij+SEIq70O5nuBsyksqkYoWGkKhw44nVmulMCAMFiesRTGkoJExBL9/WI
+	fFwHunAmMZH53IX5nIrd37Bb+EP+75Dc7JPR1ap+o0W2Y8HKKr61B4AAAEoURowFvdxQa/e6OrJd0
+	VGeg1wXg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpNGl-0000000F5oA-1EcV;
-	Mon, 09 Feb 2026 09:09:23 +0000
+	id 1vpNGj-0000000F5nD-0TH6;
+	Mon, 09 Feb 2026 09:09:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpNGg-0000000F5kh-1msL
+	id 1vpNGf-0000000F5kY-2avT
 	for barebox@lists.infradead.org;
-	Mon, 09 Feb 2026 09:09:20 +0000
+	Mon, 09 Feb 2026 09:09:19 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=localhost.localdomain)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1vpNGd-0004wQ-HO; Mon, 09 Feb 2026 10:09:15 +0100
+	id 1vpNGc-0004wQ-Jm; Mon, 09 Feb 2026 10:09:14 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon,  9 Feb 2026 10:08:53 +0100
-Message-ID: <20260209090911.3561875-4-a.fatoum@barebox.org>
+Date: Mon,  9 Feb 2026 10:08:51 +0100
+Message-ID: <20260209090911.3561875-2-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260209090911.3561875-1-a.fatoum@barebox.org>
 References: <20260209090911.3561875-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260209_010918_466243_8350091F 
-X-CRM114-Status: GOOD (  15.44  )
+X-CRM114-CacheID: sfid-20260209_010917_673410_C087DF49 
+X-CRM114-Status: GOOD (  11.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,159 +71,61 @@ X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 3/5] boot: give struct bootentry a path member
+Subject: [PATCH 1/5] boot: aggregate bootentry provider entries one by one
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Both bootloader spec entries and boot spec maintain a path to the file
-the struct bootentry was generated from. Add this member to the struct
-bootentry directly to allow referencing it from the boot command in a
-follow-up commit.
+To allow individual bootentry providers to more easily sort their
+entries, pass each provider an empty list that's spliced onto the tail
+of the aggregated list at the end.
 
-No functional change intended.
+This way we maintain that boot entries of different providers are sorted
+by provider priority and boot entries of a single provider can be sorted
+by each provider without having to worry about foreign boot entries.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- common/blspec.c | 12 ++++--------
- common/boot.c   | 17 +++++++----------
- include/boot.h  |  1 +
- 3 files changed, 12 insertions(+), 18 deletions(-)
+ common/boot.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/common/blspec.c b/common/blspec.c
-index f13e44f1de71..c07e3a2d672d 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -27,7 +27,7 @@ struct blspec_entry {
- 	struct device_node *node;
- 	struct cdev *cdev;
- 	const char *rootpath;
--	const char *configpath;
-+	/* configpath is entry.path */
- 	char *sortkey;
- };
- 
-@@ -180,7 +180,6 @@ static void blspec_entry_free(struct bootentry *be)
- 	struct blspec_entry *entry = container_of(be, struct blspec_entry, entry);
- 
- 	of_delete_node(entry->node);
--	free_const(entry->configpath);
- 	free_const(entry->rootpath);
- 	free(entry->sortkey);
- 	free(entry);
-@@ -305,7 +304,7 @@ static int blspec_have_entry(struct bootentries *bootentries, const char *path)
- 		if (!is_blspec_entry(be))
- 			continue;
- 		e = container_of(be, struct blspec_entry, entry);
--		if (e->configpath && !strcmp(e->configpath, path))
-+		if (e->entry.path && !strcmp(e->entry.path, path))
- 			return 1;
- 	}
- 
-@@ -426,8 +425,8 @@ static int blspec_compare(struct list_head *list_a, struct list_head *list_b)
- {
- 	struct bootentry *be_a = container_of(list_a, struct bootentry, list);
- 	struct bootentry *be_b = container_of(list_b, struct bootentry, list);
-+	const char *a_version = be_a->path, *b_version = be_b->path;
- 	struct blspec_entry *a, *b;
--	const char *a_version, *b_version;
- 	int r;
- 
- 	/* The boot entry providers are called one by one and passed an empty
-@@ -439,9 +438,6 @@ static int blspec_compare(struct list_head *list_a, struct list_head *list_b)
- 	a = container_of(be_a, struct blspec_entry, entry);
- 	b = container_of(be_b, struct blspec_entry, entry);
- 
--	a_version = a->configpath;
--	b_version = b->configpath;
--
- 	if (a->sortkey && b->sortkey) {
- 		const char *a_machine_id, *b_machine_id;
- 
-@@ -489,7 +485,7 @@ static int __blspec_scan_file(struct bootentries *bootentries, const char *root,
- 
- 	root = root ?: get_blspec_prefix_path(configname);
- 	entry->rootpath = xstrdup_const(root);
--	entry->configpath = xstrdup_const(configname);
-+	entry->entry.path = xstrdup_const(configname);
- 	entry->cdev = get_cdev_by_mountpath(root);
- 
- 	if (!entry_is_of_compatible(entry)) {
 diff --git a/common/boot.c b/common/boot.c
-index 2e5294ffa2f0..a325f350a80c 100644
+index 78d990f1617e..8ccc269ac5bd 100644
 --- a/common/boot.c
 +++ b/common/boot.c
-@@ -64,6 +64,7 @@ void bootentries_free(struct bootentries *bootentries)
- 		list_del(&be->list);
- 		free_const(be->title);
- 		free(be->description);
-+		free_const(be->path);
- 		free_const(be->me.display);
- 		be->release(be);
- 	}
-@@ -81,7 +82,6 @@ void bootentries_free(struct bootentries *bootentries)
- 
- struct bootentry_script {
- 	struct bootentry entry;
--	const char *scriptpath;
- };
- 
- /*
-@@ -96,7 +96,7 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
- 	struct bootm_data backup = {}, data = {};
- 
- 	if (dryrun == 1) {
--		printf("Would run %s\n", bs->scriptpath);
-+		printf("Would run %s\n", bs->entry.path);
- 		return 0;
- 	}
- 
-@@ -107,9 +107,9 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
- 
- 	bootm_nattempts = bootm_command_attempts();
- 
--	ret = run_command(bs->scriptpath);
-+	ret = run_command(bs->entry.path);
- 	if (ret) {
--		pr_err("Running script '%s' failed: %pe\n", bs->scriptpath, ERR_PTR(ret));
-+		pr_err("Running script '%s' failed: %s\n", bs->entry.path, strerror(-ret));
- 		goto out;
- 	}
- 
-@@ -222,10 +222,7 @@ static void bootsource_action(struct menu *m, struct menu_entry *me)
- 
- static void bootscript_entry_release(struct bootentry *entry)
- {
--	struct bootentry_script *bs = container_of(entry, struct bootentry_script, entry);
--
--	free_const(bs->scriptpath);
--	free(bs);
-+	free(entry);
+@@ -26,6 +26,14 @@ int bootentries_add_entry(struct bootentries *entries, struct bootentry *entry)
+ 	return 0;
  }
  
- /*
-@@ -248,8 +245,8 @@ static int bootscript_create_entry(struct bootentries *bootentries, const char *
- 	bs->entry.me.type = MENU_ENTRY_NORMAL;
- 	bs->entry.release = bootscript_entry_release;
- 	bs->entry.boot = bootscript_boot;
--	bs->scriptpath = xstrdup_const(name);
--	bs->entry.title = xstrdup_const(kbasename(bs->scriptpath));
-+	bs->entry.path = xstrdup_const(name);
-+	bs->entry.title = xstrdup_const(kbasename(bs->entry.path));
- 	bs->entry.description = basprintf("script: %s", name);
- 	bootentries_add_entry(bootentries, &bs->entry);
++#define BOOTENTRIES(name) \
++	struct bootentries name = { .entries = LIST_HEAD_INIT(name.entries) }
++
++static inline void bootentries_merge(struct bootentries *dst, struct bootentries *src)
++{
++	list_splice_tail_init(&src->entries, &dst->entries);
++}
++
+ struct bootentries *bootentries_alloc(void)
+ {
+ 	struct bootentries *bootentries;
+@@ -452,9 +460,17 @@ int bootentry_create_from_name(struct bootentries *bootentries,
+ 		name = nfspath;
  
-diff --git a/include/boot.h b/include/boot.h
-index fdc108b7a21d..836a180a0c7b 100644
---- a/include/boot.h
-+++ b/include/boot.h
-@@ -18,6 +18,7 @@ struct bootentry {
- 	struct menu_entry me;
- 	const char *title;
- 	char *description;
-+	const char *path;
- 	int (*boot)(struct bootentry *entry, int verbose, int dryrun);
- 	void (*release)(struct bootentry *entry);
- 	struct bootm_overrides overrides;
+ 	list_for_each_entry(p, &bootentry_providers, list) {
+-		ret = p->generate(bootentries, name);
++		BOOTENTRIES(provider_bootentries);
++
++		ret = p->generate(&provider_bootentries, name);
+ 		if (ret > 0)
+ 			found += ret;
++
++		/* We want to allow for providers to sort their bootentries as
++		 * they see fit, so they are passed an empty list above with
++		 * only their own entries and then we aggregate here
++		 */
++		bootentries_merge(bootentries, &provider_bootentries);
+ 	}
+ 
+ 	free(nfspath);
 -- 
 2.47.3
 
