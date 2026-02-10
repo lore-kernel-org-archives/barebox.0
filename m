@@ -1,67 +1,68 @@
-Delivery-date: Tue, 10 Feb 2026 09:58:25 +0100
+Delivery-date: Tue, 10 Feb 2026 10:03:18 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpjZh-00077x-1N
+	id 1vpjeQ-0007Mz-0c
 	for lore@lore.pengutronix.de;
-	Tue, 10 Feb 2026 09:58:25 +0100
+	Tue, 10 Feb 2026 10:03:18 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vpjZg-0007Be-SP
-	for lore@pengutronix.de; Tue, 10 Feb 2026 09:58:25 +0100
+	id 1vpjeM-0008QS-Cj
+	for lore@pengutronix.de; Tue, 10 Feb 2026 10:03:18 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=bI7Kzb2ewxJzs2tOlRBelHG+kgG7AcKVTkEgrIFGZhg=; b=XSW4Xhrq7HEaQZ9ZpFqZqufpSA
-	TttjlCRfPUqFix34D20PHTW7qBL25v8Jbl8cciswI0RbsvH2U3EkIhF/PhJO3mgSSUKTc8Zxp2me4
-	zGL0V60VuFsXUn3Vzpx3Q4MWvGbSRXpldQI+YM+jRx3FjDkDww1Tkb0UB7TbkDQ2kqt36OESxsL2n
-	VeT05jVhP/vdoccOq68Nts3UUW6pOWP2Y3Cmw9uPQgUX2ZswvEkoqFagDbHfmejn+L++SYVRtbTFq
-	N1ayPMR/jbeTmoO6Qz3n69w1g4Xaux/3EVH91HJNn2zE55nZSBHBk4VvURhqJ6PNg4UPfmYOMlH/9
-	dm83p9YQ==;
+	bh=RRwxafMPaZE8xEtCYr5Cu47MxhtiOLCk0Yn97x/mGQo=; b=vOxjqDw166vJR+J7w8HvBBVnRl
+	H5H1s7Kmcr2wIAWg70PdAvGPxkE6zqHqBZAanfwbEUcyRTg+7vFfUfzf66nX6aBcG4BYHejZlWJHI
+	MB1DaOrkUG8YkE/0szuwZ+T3swCfjOKzi2KaMuHl2splyrQOnO/t5BEfuYcE2maK6QI/gMldMFzIH
+	/gGrb/lK2nC+h79l7OTX+sWiEbQcjRWKGpWXfYSyxOPvOPyBe2ehwezykoGjQ64YtU2jn1jbwUuVR
+	Vh7PHA8Q3sOU3EC5PvcCzOg7jleswqHafnavGZ7sfneelEaRYCph+wfdeTfmNZ3kJIEsY0kO5J8S2
+	dytmHqxA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpjZD-0000000GiZB-1lyv;
-	Tue, 10 Feb 2026 08:57:55 +0000
+	id 1vpjdY-0000000Gith-2TtW;
+	Tue, 10 Feb 2026 09:02:24 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vpjZB-0000000GiYa-1voJ
+	id 1vpjdR-0000000Gisp-23OE
 	for barebox@lists.infradead.org;
-	Tue, 10 Feb 2026 08:57:54 +0000
+	Tue, 10 Feb 2026 09:02:23 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vpjZ9-00077N-Pf; Tue, 10 Feb 2026 09:57:51 +0100
+	id 1vpjdP-00084G-W2; Tue, 10 Feb 2026 10:02:16 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vpjZ9-0003H4-04;
-	Tue, 10 Feb 2026 09:57:51 +0100
+	id 1vpjdP-0003Hh-0C;
+	Tue, 10 Feb 2026 10:02:15 +0100
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vpjZ9-00000003bhI-2Ixs;
-	Tue, 10 Feb 2026 09:57:51 +0100
+	id 1vpjdP-00000003buW-2Y87;
+	Tue, 10 Feb 2026 10:02:15 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260209152843.1841982-1-a.fatoum@pengutronix.de>
-References: <20260209152843.1841982-1-a.fatoum@pengutronix.de>
-Message-Id: <177071387154.859879.3653281909327426941.b4-ty@pengutronix.de>
-Date: Tue, 10 Feb 2026 09:57:51 +0100
+Cc: "Claude Sonnet v4.5" <noreply@anthropic.com>
+In-Reply-To: <20260209153047.1842593-1-a.fatoum@pengutronix.de>
+References: <20260209153047.1842593-1-a.fatoum@pengutronix.de>
+Message-Id: <177071413560.860699.4605583609289229345.b4-ty@pengutronix.de>
+Date: Tue, 10 Feb 2026 10:02:15 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260210_005753_504277_A2CCE018 
-X-CRM114-Status: UNSURE (   8.73  )
+X-CRM114-CacheID: sfid-20260210_010217_530468_AD9750EC 
+X-CRM114-Status: UNSURE (   7.01  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -82,29 +83,26 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ci: container: install isoinfo package into container
+Subject: Re: [PATCH] efi: payload: bootm: fix memory corruption on initrd
+ load error
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 09 Feb 2026 16:28:42 +0100, Ahmad Fatoum wrote:
-> OS installation images are often distributed as ISOs, but barebox has no
-> ISO file system support. This is currently not needed as Grub has isofs
-> support and barebox just looks at the GPT parts of the hybrid image,
-> which references only grub.
+On Mon, 09 Feb 2026 16:30:46 +0100, Ahmad Fatoum wrote:
+> initrd is a pointer to a pointer and its only used place the pointed at
+> pointer on stack. Freeing it will this trigger memory corruption.
 > 
-> However, this isn't enough when we need to reference the kernel boot
-> artifacts from ISO images in upcoming changes to the test suite, so prepare
-> for that by including genisoimage into the test suite
+> Fix this by actually freeing the heap buffer.
 > 
-> [...]
+> 
 
 Applied, thanks!
 
-[1/1] ci: container: install isoinfo package into container
-      https://git.pengutronix.de/cgit/barebox/commit/?id=ea944d149640 (link may not be stable)
+[1/1] efi: payload: bootm: fix memory corruption on initrd load error
+      https://git.pengutronix.de/cgit/barebox/commit/?id=57468d3c67f9 (link may not be stable)
 
 Best regards,
 -- 
