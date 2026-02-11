@@ -1,58 +1,61 @@
-Delivery-date: Wed, 11 Feb 2026 23:42:09 +0100
+Delivery-date: Wed, 11 Feb 2026 23:42:11 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vqIuO-000gDb-2V
+	id 1vqIuQ-000gES-2Y
 	for lore@lore.pengutronix.de;
-	Wed, 11 Feb 2026 23:42:09 +0100
+	Wed, 11 Feb 2026 23:42:11 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vqIuN-0005CJ-Uc
-	for lore@pengutronix.de; Wed, 11 Feb 2026 23:42:09 +0100
+	id 1vqIuO-0005Cl-8z
+	for lore@pengutronix.de; Wed, 11 Feb 2026 23:42:11 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=eSTu+/3eRLK7PpiY3DLr/5Y9q/h5BBTPg9RlKw1camA=; b=wfWp3YyIra2QoUji0PJ3fp8bPp
-	xiP4keyvWQZQ8fx9/RirEKCo+L6EWozkl7utJJIhNtUyyOZMlT0KzIkV1+R+kmNBd+iL9+v1UbkMn
-	u1qOiGB7u9Z7gJO0xbN6t8R4hkV9JOwzP8sFf4DY2pmzoIX7h9SR1Y+9lyYA4UPLydIgpAfuY/e7M
-	vUp3RVHkqk6qtA4JL3ixlEsQklK8iGEPTImOCxLAyqJ70IiI6gWYQQGsfQPoQGQ1LjvgU7KFSJp8a
-	sM5Mhn4rXhnuZTGVuPnAMfT6QwuIlIRdqxD1r/UCiUBqax9yncjZhaU97vsAansWTpMBigElpyoJI
-	DDqKM9PQ==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=Y2QxlxzCQUK36rTF8XQYOtvtC4L2As7wYocfDAxrIeQ=; b=tggSEugIlwuwOf
+	nMJIL1IYKLffaxYCklO7FuBT1viG7GYDgaC3f9BHMB/D7TAtYybqCbsqyKl6YszDhLrOCA1Wmihh8
+	P1dpO/M4+23WYTFWVYt8UxIV1hFxLr8GcuWVXK5vdXiXT/buHHqvD3Jre5l9mrlJ/GctI/GLvHQjv
+	r7h2pgj+9qfd2oH1uoPIyJtfGt36VuOICLMTIkXfo3j6itxNaSZOAp9YzKBzkYQ7q6b1bbqP46mSv
+	qd+Pk4l+8SpIffAmLaNbropsxHfifNYhF82A7pF9yJGJ3dslSlWUXhy57mYReQG8LB6RvFcBqepro
+	3l/FbLlN4MFg5ePWLiVA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vqIti-000000018qy-3y3t;
-	Wed, 11 Feb 2026 22:41:26 +0000
+	id 1vqItn-000000018w3-2Klc;
+	Wed, 11 Feb 2026 22:41:31 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vqIte-000000018ng-2RtB
+	id 1vqIte-000000018nb-2sAH
 	for barebox@lists.infradead.org;
-	Wed, 11 Feb 2026 22:41:24 +0000
+	Wed, 11 Feb 2026 22:41:28 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1vqItb-0004Xa-5H; Wed, 11 Feb 2026 23:41:19 +0100
+	id 1vqItb-0004Xa-02; Wed, 11 Feb 2026 23:41:19 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Wed, 11 Feb 2026 23:41:16 +0100
+Date: Wed, 11 Feb 2026 23:41:11 +0100
+Message-Id: <20260211-v2025-09-0-topic-optee-of-handling-v3-0-dd83358ae624@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260211-v2025-09-0-topic-optee-of-handling-v3-5-dd83358ae624@pengutronix.de>
-References: <20260211-v2025-09-0-topic-optee-of-handling-v3-0-dd83358ae624@pengutronix.de>
-In-Reply-To: <20260211-v2025-09-0-topic-optee-of-handling-v3-0-dd83358ae624@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAIcFjWkC/42NQQ6DIBBFr9Kw7jQDitWueo/GhZFRJ2mAACU2x
+ rsXPUF3//2ZvL+JSIEpisdlE4EyR3a2QHW9iHEZ7EzAprBQqLSUEiEfCbADhOQ8j+B8IgI3QXk
+ 3b7YzUDdpqSs51k0tisgHmng9R1594YVjcuF7bmZ1tIe+QYX1P/qsytEMeNfUtLIlfHqy8ycFZ
+ 3m9GRL9vu8/y7dqz9kAAAA=
+X-Change-ID: 20251110-v2025-09-0-topic-optee-of-handling-e9f51531c464
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Marco Felsch <m.felsch@pengutronix.de>, 
  Ahmad Fatoum <a.fatoum@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260211_144122_637281_86987DBC 
-X-CRM114-Status: GOOD (  12.50  )
+X-CRM114-CacheID: sfid-20260211_144122_806617_F8D36E73 
+X-CRM114-Status: GOOD (  14.92  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,136 +77,142 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=ham
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v3 05/14] pbl: fdt: add pbl_load_fdt helper
+Subject: [PATCH v3 00/14] Improve OP-TEE handling
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The helper provides a common FDT load mechanism to load the (optional
-compressed) DTB to the provided destination address in a user agnostic
-manner.
+Hi,
 
-Early FDTs may be useful for other firmware binaries like TEEs (e.g.
-OP-TEE) which are loaded and started during the barebox boot phase.
+by this patchset I want to improve the current barebox OP-TEE handling.
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Currently there are many paths which do all have their own pitfalls.
+
+ - ARM (i.MX6, i.MX6UL(L)):
+   - bootm OP-TEE loading (deprecated)
+   - early boot loading:
+     Barebox and OP-TEE make use of a 'magic' FDT memory location, which
+     was used by OP-TEE to pass information like 'reserved-memory' nodes
+     and the used firmware interface and the psci node.
+
+     Barebox doesn't pass the builtin FDT which could be used by OP-TEE
+     to determine the memory setup or the CAAM jobring setup.
+
+ - ARM64 (i.MX8M, i.MX93, Rockchip):
+   - early boot loading via BL2
+     Barebox doesn't make use of the 'magic' FDT memroy location and
+     instead uses Kconfig options which need to be in sync with the
+     OP-TEE config switches during compile time to configure the
+     'reserved-memory' nodes and firmware interface.
+
+     Barebox doesn't pass the builtin FDT which could be used by OP-TEE
+     to determine the memory setup or the CAAM jobring setup.
+
+ - RISC-V
+   - no OP-TEE support yet
+
+This patchset implements a common OP-TEE boot flow, while keeping the
+backward compatibility. The common flow looks like this:
+
+ - BL2 (barebox-pbl):
+   - opt. extracts the builtin DTB into a buffer
+   - passes the DTB to OP-TEE via arch dependend boot arguments.
+ - OP-TEE
+   - uses the DTB to gather information like memory setup
+   - can dyn. configure the TZC accordingly
+   - provides information back to barebox via DTB overlay fragments
+     (added to the provided DTB). This can be 'reserved-memory' nodes,
+     OP-TEE call-interface (smc), or secure HW configurations (like CAAM
+     secure-jobrings)
+ - BL33 (barebox-pbl)
+   - Uses the DTB passed to and received from OP-TEE which contains DTB
+     overlay fragments now and registers this as TEE_DT_OVL handoff
+     data for barebox-proper.
+ - BL33 (barebox-proper)
+   - the common barebox proper boot path checks for the existence of
+     TEE_DT_OVL handoff-data and registers an OF overlay as early as
+     possible if found.
+
+BL2, OP-TEE and BL33 (pbl) are architecture dependend steps for which
+common helpers are added by this patchset.
+
+BL33 (proper) is common to all and addressed by this patchset as well.
+
+The patchset targets the i.MX8M platforms, other platforms need to be
+converted later on.
+
+Regards,
+  Marco
+
 ---
- include/pbl.h |  2 ++
- pbl/fdt.c     | 79 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 81 insertions(+)
+Changes in v3:
+- Link to v2: https://lore.barebox.org/20260204-v2025-09-0-topic-optee-of-handling-v2-0-da075e6818e0@pengutronix.de
+- Collect Ahmads a-b and r-b tags
+- Drop already merged patches
+- optee_handoff_overlay: add missing inline (Ahmad)
+- of_optee_fixup: add missing of_delete_node() (Ahmad)
+- ("of: base: register optional OP-TEE overlay"): adapt commit message (Ahmad)
+- Rework scatch space handling (Ahmad)
 
-diff --git a/include/pbl.h b/include/pbl.h
-index 9db4652e833bf5e82fd42a1cae19e94c4f2f868f..bf0c9e2ba29428361cb16a572295e66f20acdd82 100644
---- a/include/pbl.h
-+++ b/include/pbl.h
-@@ -31,6 +31,8 @@ fdt_device_get_match_data(const void *fdt, const char *nodepath,
- 
- int pbl_barebox_verify(const void *compressed_start, unsigned int len,
- 		       const void *hash, unsigned int hash_len);
-+int pbl_load_fdt(const void *fdt, void *dest, int destsize);
-+
- #endif
- 
- void __noreturn barebox_pbl_entry(ulong, ulong, void *);
-diff --git a/pbl/fdt.c b/pbl/fdt.c
-index ac377446caeafb1beaeb211aa8bdec8767ae21fe..3c90959f8e73ea7310248f9b31359d6e8a86ae57 100644
---- a/pbl/fdt.c
-+++ b/pbl/fdt.c
-@@ -1,8 +1,10 @@
- // SPDX-License-Identifier: GPL-2.0
-+#include <compressed-dtb.h>
- #include <linux/libfdt.h>
- #include <pbl.h>
- #include <linux/printk.h>
- #include <stdio.h>
-+#include <uncompress.h>
- 
- static const __be32 *fdt_parse_reg(const __be32 *reg, uint32_t n,
- 				   uint64_t *val)
-@@ -185,3 +187,80 @@ const void *fdt_device_get_match_data(const void *fdt, const char *nodepath,
- 
- 	return NULL;
- }
-+
-+static int pbl_open_dtbz_into(const void *fdt, void *buf, int bufsize)
-+{
-+	const struct barebox_boarddata_compressed_dtb *compressed_dtb;
-+	int error;
-+
-+	if (!fdt_blob_can_be_decompressed(fdt)) {
-+		pr_warn("DTB can't be decompressed\n");
-+		return -EINVAL;
-+	}
-+
-+	compressed_dtb = fdt;
-+
-+	if (IS_ENABLED(CONFIG_IMAGE_COMPRESSION_NONE)) {
-+		error = fdt_open_into(compressed_dtb->data, buf, bufsize);
-+		if (error) {
-+			pr_warn("Failed to open uncompressed DTB with %s\n",
-+				fdt_strerror(error));
-+			return -EINVAL;
-+		}
-+		return 0;
-+	}
-+
-+	if (bufsize < compressed_dtb->datalen_uncompressed) {
-+		pr_warn("FDT buffer to small, min. %u bytes required\n",
-+			compressed_dtb->datalen_uncompressed);
-+		return -EINVAL;
-+	}
-+
-+	/*
-+	 * No error handling required, since this will hang() if uncompress
-+	 * fails.
-+	 */
-+	pbl_dtbz_uncompress(buf, (void *)compressed_dtb->data,
-+			    compressed_dtb->datalen);
-+
-+	if (!blob_is_fdt(buf)) {
-+		pr_warn("Failed to determine FDT type for uncompressed DTB\n");
-+		return -EINVAL;
-+	}
-+
-+	/* Required to setup size data structures to allow runtime adaptions */
-+	error = fdt_open_into(buf, buf, bufsize);
-+	if (error) {
-+		pr_warn("Failed to open decompressed DTB with %s\n",
-+			fdt_strerror(error));
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
-+int pbl_load_fdt(const void *fdt, void *dest, int destsize)
-+{
-+	if (destsize == 0 || !dest || !fdt) {
-+		pr_warn("Skip early FDT load, invalid input\n");
-+		return -EINVAL;
-+	}
-+
-+	if (blob_is_fdt(fdt)) {
-+		int error;
-+
-+		error = fdt_open_into(fdt, dest, destsize);
-+		if (error) {
-+			pr_warn("Failed to uncompressed DTB with %s\n",
-+				fdt_strerror(error));
-+			return -EINVAL;
-+		}
-+		return 0;
-+	} else if (blob_is_compressed_fdt(fdt)) {
-+		return pbl_open_dtbz_into(fdt, dest, destsize);
-+	}
-+
-+	pr_warn("FDT detection failed\n");
-+
-+	return -EINVAL;
-+}
+Changes in v2:
+- Link to v1: https://lore.barebox.org/barebox/20251110-v2025-09-0-topic-optee-of-handling-v1-0-8f0625ac5471@pengutronix.de/
+- Drop extracting the FDT overlay __fragment__ in PBL and register the
+  whole DTB received from OP-TEE as overlay. The common code will
+  extract the __fragment__ nodes. (Ahmad)
+- Drop patches which are already in master
+- Drop FDTO scratch area (Ahmad)
+- Drop breaking common board lowlevel API (Ahmad)
+- Drop /secure-chosen/stdout-path adaptions, no longer required
 
+To: Sascha Hauer <s.hauer@pengutronix.de>
+To: open list:BAREBOX <barebox@lists.infradead.org>
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+
+---
+Marco Felsch (14):
+      ARM: i.MX8M: add support to pass DT via lowlevel __imx8m*_load_and_start_image_via_tfa()
+      ARM: i.MX8M: move BL32 setup into imx8m_tfa_start_bl31()
+      ARM: i.MX8M: imx8m_tfa_start_bl31() add support for bl33 and fdt
+      pbl: decomp: add pbl_dtbz_uncompress helper
+      pbl: fdt: add pbl_load_fdt helper
+      ARM: i.MX: scratch: add FDT support
+      ARM: i.MX8M: esdctl: drop ddrc base from imx8m_ddrc_sdram_size
+      ARM: i.MX8M: esdctl: export imx8m_ddrc_sdram_size()
+      ARM: i.MX8M: add support to pass BL3x bl_params
+      handoff-data: Add TEE_DT_OVL entry
+      security: optee: add optee_handoff_overlay helper
+      security: optee: add helpers to register OF overlays
+      ARM: i.MX8M: Pass optional OP-TEE overlay to barebox
+      of: base: register optional OP-TEE overlay
+
+ arch/arm/mach-imx/Kconfig           |  16 +++
+ arch/arm/mach-imx/atf.c             | 252 +++++++++++++++++++++++-------------
+ arch/arm/mach-imx/esdctl.c          |  53 +++++++-
+ arch/arm/mach-imx/imx9.c            |   2 +-
+ arch/arm/mach-imx/scratch.c         |  44 ++++++-
+ arch/arm/mach-rockchip/rockchip.c   |   3 +-
+ drivers/of/base.c                   |   3 +
+ drivers/soc/imx/soc-imx8m.c         |   3 +-
+ drivers/tee/optee/of_fixup.c        |  42 ++++++
+ include/asm-generic/memory_layout.h |   6 +
+ include/mach/imx/esdctl.h           |   1 +
+ include/mach/imx/scratch.h          |   2 +
+ include/mach/imx/xload.h            |   8 +-
+ include/pbl.h                       |   3 +
+ include/pbl/handoff-data.h          |   1 +
+ include/tee/optee.h                 |  16 +++
+ pbl/decomp.c                        |   6 +
+ pbl/fdt.c                           |  79 +++++++++++
+ pbl/handoff-data.c                  |   2 +
+ security/Kconfig                    |  24 ++++
+ security/optee.c                    |  15 ++-
+ 21 files changed, 472 insertions(+), 109 deletions(-)
+---
+base-commit: 7e66106e304d95f8a2070d5701073666ac56db17
+change-id: 20251110-v2025-09-0-topic-optee-of-handling-e9f51531c464
+
+Best regards,
 -- 
-2.47.3
+Marco Felsch <m.felsch@pengutronix.de>
 
 
 
