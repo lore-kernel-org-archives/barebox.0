@@ -1,16 +1,16 @@
-Delivery-date: Thu, 12 Feb 2026 23:02:59 +0100
+Delivery-date: Thu, 12 Feb 2026 23:03:00 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vqem3-0012Bu-0D
+	id 1vqem3-0012Bw-0Q
 	for lore@lore.pengutronix.de;
-	Thu, 12 Feb 2026 23:02:59 +0100
+	Thu, 12 Feb 2026 23:03:00 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vqem2-0008PG-M6
+	id 1vqem2-0008Op-T4
 	for lore@pengutronix.de; Thu, 12 Feb 2026 23:02:59 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,31 +18,31 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qoCuIhIFd7nN/JY19HKaCKZ1NkJlhU+nhuRw1ROR5o0=; b=MOj6aF/riyz3kdk2DRGiNcBO72
-	Np3+hrvDj6wNe8shwm30wHNDJdXWxPC1USvggTbo+RMRUa5iI10rqApr857F40xKBc6FyyS1ICCdr
-	15/yQ+iW2jP5rMNyOW+Q42DAmYXQ2Fr8xsG1RzG4FTmvpygaMlGRnXkleNUxsyTJed7Lz/16nVkri
-	BPtSWD5VDxVPjytoFk5Q9nR49EmqOx/CPyNszpaXo12FIBbqMJqnWEGwDA4flkRtpfAche/m7Htfd
-	rK31dP1iJCRY9ZOxX87RrTrlZGGQjr2zQTLhbdcwZkn9XvzPfJyOm5nme0f8EIZAA/e4oZlRg8kLo
-	Lt9NAjAw==;
+	bh=oL2l+PR/GYoVPsmstrC1dykVGFGrgke33FL4YxV/zhY=; b=nGu/2yYcBKREasgis9ERuB50kL
+	pKuXLpKw8njhMDmj9ds2GdqtJvllSj0rDCVrTLG301aczLOuRBKlaFkY9wM7x8lzmEvstpLZOALPR
+	b37pIilSidAsPlFv0IFb5RJZ3EObouhJP5Rd2aQpax8CJ0e6BxLEwXN5W0Ee/Jlltfeu7bKDxFDut
+	3ls0BXml0aubFmOICCgkhTJ3xc/R2M6doR2NeNI0G/kFOGZQbyVSkPcSlYtAjv8zMiYVKMOEu7Bk/
+	g/nHpXFMDb5wVCa55+UzbeAQV/uxtMzkkdvm07NrG431swiS8UUWfsfYzI4tDzXM9xBqsM22r1e7o
+	cvQscCUA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vqelN-00000002fwN-3Ud4;
-	Thu, 12 Feb 2026 22:02:17 +0000
+	id 1vqelM-00000002fvq-0F5V;
+	Thu, 12 Feb 2026 22:02:16 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vqelJ-00000002fty-1WFi
+	id 1vqelJ-00000002ftu-191K
 	for barebox@lists.infradead.org;
-	Thu, 12 Feb 2026 22:02:16 +0000
+	Thu, 12 Feb 2026 22:02:15 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1vqelH-000855-3Z; Thu, 12 Feb 2026 23:02:11 +0100
+	id 1vqelH-000855-4Y; Thu, 12 Feb 2026 23:02:11 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Thu, 12 Feb 2026 23:02:07 +0100
+Date: Thu, 12 Feb 2026 23:02:08 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260212-vmaster-customers-leicageo-system1600-v2-5-f590b7d5b0e9@pengutronix.de>
+Message-Id: <20260212-vmaster-customers-leicageo-system1600-v2-6-f590b7d5b0e9@pengutronix.de>
 References: <20260212-vmaster-customers-leicageo-system1600-v2-0-f590b7d5b0e9@pengutronix.de>
 In-Reply-To: <20260212-vmaster-customers-leicageo-system1600-v2-0-f590b7d5b0e9@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -50,8 +50,8 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
 Cc: Marco Felsch <m.felsch@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260212_140213_409431_CBB10BE2 
-X-CRM114-Status: GOOD (  14.00  )
+X-CRM114-CacheID: sfid-20260212_140213_335716_5E41B195 
+X-CRM114-Status: GOOD (  11.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,132 +73,78 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 5/7] commands: make run_command variadic
+Subject: [PATCH v2 6/7] treewide: make use of new run_command variadic
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This prepares run_command() to receive a format string and variadic
-arguments which can become quite handy for board code. It also ensures
-a proper cleanup for the command string and generalizes the error
-message printing.
+Since run_command accepts variadic inputs we no longer need to alloc the
+cmd buffer and instead let run_command do the job for us.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- common/hush.c     | 23 ++++++++++++++++++++++-
- common/parser.c   | 24 +++++++++++++++++++++++-
- include/command.h |  4 ++--
- 3 files changed, 47 insertions(+), 4 deletions(-)
+ common/startup.c |  5 +----
+ net/ifup.c       | 10 +++-------
+ 2 files changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/common/hush.c b/common/hush.c
-index 2e0cc4229d3575dcf045f68ef8db3e943c41eedb..b46a42cc90c863376bb819755afc83271120200f 100644
---- a/common/hush.c
-+++ b/common/hush.c
-@@ -1922,7 +1922,7 @@ static char * make_string(char ** inp)
- 	return str;
- }
+diff --git a/common/startup.c b/common/startup.c
+index 055d94fe6ab6d477c2d088108d7944974cebe587..dd643182043f13def7e06a1ea80a7f35d346c550 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -321,7 +321,6 @@ static int run_init(void)
+ 	if (!ret) {
+ 		for (i = 0; i < g.gl_pathc; i++) {
+ 			const char *path = g.gl_pathv[i];
+-			char *scr;
  
--int run_command(const char *cmd)
-+static int __run_command(const char *cmd)
- {
- 	struct p_context ctx = {};
- 	int ret;
-@@ -1938,6 +1938,27 @@ int run_command(const char *cmd)
+ 			ret = stat(path, &s);
+ 			if (ret)
+@@ -331,9 +330,7 @@ static int run_init(void)
+ 				continue;
+ 
+ 			pr_debug("Executing '%s'...\n", path);
+-			scr = basprintf("source %s", path);
+-			run_command(scr);
+-			free(scr);
++			run_command("source %s", path);
+ 		}
+ 
+ 		globfree(&g);
+diff --git a/net/ifup.c b/net/ifup.c
+index 0a0c94f6f2a6ba7571514504f3050076a23a893a..bd821535e8b364091ea689588a35b45d50285cf3 100644
+--- a/net/ifup.c
++++ b/net/ifup.c
+@@ -66,7 +66,7 @@ static int source_env_network(struct eth_device *edev)
+ 	};
+ 	IPaddr_t ipaddr, netmask, gateway, serverip;
+ 	unsigned char ethaddr[6];
+-	char *file, *cmd;
++	char *file;
+ 	const char *ethaddrstr, *modestr, *linuxdevname;
+ 	int ret, mode, ethaddr_valid = 0, i;
+ 	struct stat s;
+@@ -87,12 +87,9 @@ static int source_env_network(struct eth_device *edev)
+ 	for (i = 0; i < ARRAY_SIZE(vars); i++)
+ 		unsetenv(vars[i]);
+ 
+-	cmd = basprintf("source /env/network/%s", edev->devname);
+-	ret = run_command(cmd);
+-	if (ret) {
+-		pr_err("Running '%s' failed with %d\n", cmd, ret);
++	ret = run_command("source /env/network/%s", edev->devname);
++	if (ret)
+ 		goto out;
+-	}
+ 
+ 	ipaddr = getenv_ip("ipaddr");
+ 	netmask = getenv_ip("netmask");
+@@ -150,7 +147,6 @@ static int source_env_network(struct eth_device *edev)
+ 
+ out:
+ 	env_pop_context();
+-	free(cmd);
+ 	free(file);
+ 
  	return ret;
- }
- 
-+int run_command(const char *fmt, ...)
-+{
-+	va_list vargs;
-+	char *cmd;
-+	int error;
-+
-+	va_start(vargs, fmt);
-+	cmd = xvasprintf(fmt, vargs);
-+	va_end(vargs);
-+
-+	error = __run_command(cmd);
-+	if (error) {
-+		error_msg("Failed to run CMD: '%s' with %d\n", cmd, error);
-+		free(cmd);
-+		return error;
-+	}
-+
-+	free(cmd);
-+	return 0;
-+}
-+
- static int execute_script(const char *path, int argc, char *argv[])
- {
- 	int ret;
-diff --git a/common/parser.c b/common/parser.c
-index 16fff052cf63b7a0e237bc2de1188b27af1b9809..c8b247716af9da6e1ccb2b3a915c87784a6d6eda 100644
---- a/common/parser.c
-+++ b/common/parser.c
-@@ -6,6 +6,7 @@
- #include <environment.h>
- #include <shell.h>
- #include <security/config.h>
-+#include <stdio.h>
- 
- /*
-  * not yet supported
-@@ -180,7 +181,7 @@ static void process_macros (const char *input, char *output)
-  * creates or modifies environment variables (like "bootp" does).
-  */
- 
--int run_command(const char *cmd)
-+static int __run_command(const char *cmd)
- {
- 	char cmdbuf[CONFIG_CBSIZE];	/* working copy of cmd		*/
- 	char *token;			/* start of token in cmdbuf	*/
-@@ -266,6 +267,27 @@ int run_command(const char *cmd)
- 	return rc;
- }
- 
-+int run_command(const char *fmt, ...)
-+{
-+	va_list vargs;
-+	char *cmd;
-+	int error;
-+
-+	va_start(vargs, fmt);
-+	cmd = xvasprintf(fmt, vargs);
-+	va_end(vargs);
-+
-+	error = __run_command(cmd);
-+	if (error) {
-+		pr_err("Failed to run CMD: '%s' with %d\n", cmd, error);
-+		free(cmd);
-+		return error;
-+	}
-+
-+	free(cmd);
-+	return 0;
-+}
-+
- static char console_buffer[CONFIG_CBSIZE];		/* console I/O buffer	*/
- 
- int run_shell(void)
-diff --git a/include/command.h b/include/command.h
-index fb140cb8e250ab620e3b3284ad2b79520d194dce..5c88a9d611667d81eca105bc7b5ff7c61e0e31e0 100644
---- a/include/command.h
-+++ b/include/command.h
-@@ -55,13 +55,13 @@ struct command *find_cmd(const char *cmd);
- int cmd_export_val(const char *variable, const char *val);
- int execute_command(int argc, char **argv);
- void barebox_cmd_usage(struct command *cmdtp);
--int run_command(const char *cmd);
-+__printf(1, 2) int run_command(const char *fmt, ...);
- #else
- static inline struct command *find_cmd(const char *cmd) { return NULL; }
- static inline int execute_command(int argc, char **argv) { return -ENOSYS; }
- static inline void barebox_cmd_usage(struct command *cmdtp) {}
- static inline int cmd_export_val(const char *variable, const char *val) { return -ENOSYS; }
--static inline int run_command(const char *cmd) { return -ENOSYS; }
-+static inline __printf(1, 2) int run_command(const char *fmt, ...) { return -ENOSYS; }
- #endif
- 
- #define COMMAND_SUCCESS		0
 
 -- 
 2.47.3
