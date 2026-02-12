@@ -1,62 +1,57 @@
-Delivery-date: Thu, 12 Feb 2026 23:03:00 +0100
+Delivery-date: Thu, 12 Feb 2026 23:03:01 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vqem4-0012CT-0B
+	id 1vqem4-0012Cf-1X
 	for lore@lore.pengutronix.de;
-	Thu, 12 Feb 2026 23:03:00 +0100
+	Thu, 12 Feb 2026 23:03:01 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vqem3-0008Pp-Tm
-	for lore@pengutronix.de; Thu, 12 Feb 2026 23:03:00 +0100
+	id 1vqem4-0008QF-AG
+	for lore@pengutronix.de; Thu, 12 Feb 2026 23:03:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=1FUZm/m62CwiSys1zxJUfCc26wzZaRaaZ2Os7XU4mvs=; b=Pu5k5hLdPMylWO
-	SCdj/i2znWc3lW5NH8dZs7uspiJ/WV7qRoZguqd9ZR6MtbMqqp4IyoTvIZ4ZuwYWNKatpVP/BRiTU
-	t+2jxZAkfullAYWMvwArnrRgua01+NBnv4C06aoIv8YwPRSJGRKDj670MV8M6NPjaG5pqhfi2HnEF
-	7rLCbeSnmVKEF1O6l9ywaRIoXEYUx86soJ9uhGi8HClsyV0ba5ZtdfoYB0lP0cDl0QG5SMm0JkUra
-	bragOpSn5O/vXANUy9wa23F1aeWEsT2AB+UsZIJ8E13p4/zOdyiXGlFWnTexQiToobhFDMVNiTU69
-	5OtPAC4IdjqdciR0rj0w==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=KpK8IOxHv6ti3bbyhK38CVtv8zKuhT3NJwWPcBm6E48=; b=dLZNOtB2kljJ+IQTzsLR/+GS0j
+	JaeHSZK/ff10eN+5gQJErQh0sWGCdLVAqSdmsEcIgLl9Ebi/oZq5Hu2m4pd5MyaEFIvLYaV1ZS9HM
+	/EFgCmGb3v6dKnYPutc4qlSzRTNpRc4liDzuf5tesy81Wfd+1N2Ma3YCm6tP55ZB6jRRXSMuL6UFl
+	DPfFDD7KW8bfpKSxp9rIPqew8xCPx6iAHogIs0kKzVIVItiJ5X4pSvcc3Zq1+bD+N6Q/d/VQyEaS9
+	65NahHsgBoFCrZsU4CjkyWRlNgUaK4phrbCGG6m8qjKVN3BeNnTDRT39jtLAVAWeBHN4Kb0PdBf+Z
+	vYCuFEAg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vqelS-00000002g09-1vul;
-	Thu, 12 Feb 2026 22:02:22 +0000
+	id 1vqelM-00000002fw4-1faO;
+	Thu, 12 Feb 2026 22:02:16 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vqelQ-00000002fxF-28ZH
+	id 1vqelJ-00000002fts-1LEq
 	for barebox@lists.infradead.org;
-	Thu, 12 Feb 2026 22:02:21 +0000
+	Thu, 12 Feb 2026 22:02:15 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1vqelG-000855-Ut; Thu, 12 Feb 2026 23:02:10 +0100
+	id 1vqelH-000855-0S; Thu, 12 Feb 2026 23:02:11 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Thu, 12 Feb 2026 23:02:02 +0100
-Message-Id: <20260212-vmaster-customers-leicageo-system1600-v2-0-f590b7d5b0e9@pengutronix.de>
+Date: Thu, 12 Feb 2026 23:02:04 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIANpNjmkC/5WNQQqDMBBFryJZd8pktFK66j2KizSOOlATSTQo4
- t2beoMu3//8/3YVOQhH9Sh2FThJFO8y0KVQdjCuZ5A2syKkGglvkEYTZw5glzj7kUOED4s1PXu
- IW25GXSNCV1NJyNxWulP5awrcyXp6Xk3mQfI6bKc26V/6ryFpQDB3fFNZWdZGPyd2/TIH72S9t
- qya4zi+mlcPHN8AAAA=
-X-Change-ID: 20260205-vmaster-customers-leicageo-system1600-f62320eed41f
+Message-Id: <20260212-vmaster-customers-leicageo-system1600-v2-2-f590b7d5b0e9@pengutronix.de>
+References: <20260212-vmaster-customers-leicageo-system1600-v2-0-f590b7d5b0e9@pengutronix.de>
+In-Reply-To: <20260212-vmaster-customers-leicageo-system1600-v2-0-f590b7d5b0e9@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
-Cc: Marco Felsch <m.felsch@pengutronix.de>, 
- Ahmad Fatoum <a.fatoum@pengutronix.de>, 
- Johannes Schneider <johannes.schneider@leica-geosystems.com>
+Cc: Marco Felsch <m.felsch@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260212_140220_565309_835A9697 
-X-CRM114-Status: GOOD (  12.04  )
+X-CRM114-CacheID: sfid-20260212_140213_358461_6A19E3B9 
+X-CRM114-Status: GOOD (  10.40  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,113 +73,89 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 0/7] Hexagon Geosystems GS05 Board Support
+Subject: [PATCH v2 2/7] serdev: add serdev_device_close
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
-
-this series adds the support for the Hexagon Geosystems GS05 product
-[1]. The GS05 is part of a larger product family from SW pov, therefore
-most logic is implemented below 'common/boards/hgs'.
-
-The board support was added before the new security-profiles made it
-into barebox mainline, therefore security-profiles aren't used yet but
-maybe in the future.
-
-Further products will be send mainline as well, once this basic support
-got merged.
-
-Regards,
-  Marco
-
-[1] https://leica-geosystems.com/de-de/products/gnss-systems/smart-antennas/leica-gs05
-[2] https://lore.kernel.org/barebox/20260204151645.1426068-1-m.felsch@pengutronix.de/
+Add a cleanup helper which does the reverse operations of
+serdev_device_open().
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
-Changes in v2:
-- Link to v1: https://lore.barebox.org/20260205-vmaster-customers-leicageo-system1600-v1-0-a80b234ce1a1@pengutronix.de
-- Add serdev cleanup patches (Sascha)
-- Add Ahmad's a-b
-- s/device_d/device/ (Ahmad)
-- s/driver_d/driver/ (Ahmad)
-- EFI: Provide more information about the EFI acronym (Sascha)
-- EFI: Make use of pr_fmt (Sascha)
-- EFI: Add EFI CPU_RDY gpio handling (Ahmad)
-- EFI: Drop useless error checks afer xfuncs (Ahmad)
-- EFI: Simplify message encoding, make use sprintf (Sascha)
-- EFI: Add buf[0] check to decode routine (Sascha)
-- EFI: Make use of strchr instead of strstr (Ahmad)
-- EFI: Fix typos (Sascha)
-- EFI: Add proper probe() error cleanup (Sascha)
-- EFI-WDG: make use of ping() hook (Ahmad)
-- EFI-WDG: Provide initial wdd->running state (Ahmad)
-- Add run_command() variadic support (Sascha)
-- GS05: Fix DCO (add Johannes Schneider s-o-b) (Ahmad)
-- GS05: Replace sentinel iter with ARRAY_SIZE() (Sascha)
-- GS05: Add missing static statements (Sascha)
-- GS05: Drop pp4_gpio handling, now handled by EFI driver (Ahmad)
-- GS05-DTS: Drop odd gpio1 mux, now part of mcu node (Ahmad)
-- GS05-DTS: Add no-sdio, no-sd to eMMC node (Ahmad)
-- GS05-Kconfig: Drop "select HABV4" (Ahmad)
-- HGS-LIB: Replace sentinel iter with ARRAY_SIZE() (Sascha)
-- HGS-LIB: Make use of new run_command() variadic (Sascha)
-- HGS-LIB: Bundle postenvironment_initcall() into one (Sascha)
-- HGS-LIB: Rework hgs_notify_pp4() to pull CPU_RDY gpio
-- HGS-LIB: Fix array out of bound access for hgs_revision_table (Sascha)
-- HGS-LIB: Drop hgs_get_last_variant_entry in favor of ARRAY_SIZE() (Sascha)
+ common/serdev.c  | 13 +++++++++++++
+ include/serdev.h |  4 ++++
+ 2 files changed, 17 insertions(+)
 
----
-Marco Felsch (7):
-      serdev: add proper error cleanup to serdev_device_open()
-      serdev: add serdev_device_close
-      mfd: Add Hexagon EFI driver
-      watchdog: Add Hexagon EFI watchdog driver
-      commands: make run_command variadic
-      treewide: make use of new run_command variadic
-      ARM: i.MX8MM: add Hexagon Geosystems GS05
+diff --git a/common/serdev.c b/common/serdev.c
+index 8f45c0a135237da42579bbb685c9c25a67428c8b..1c8cfbd59447afa86aa78c5b05b60e9057ebc15b 100644
+--- a/common/serdev.c
++++ b/common/serdev.c
+@@ -92,6 +92,8 @@ int serdev_device_open(struct serdev_device *serdev)
+ 		goto err_console_close;
+ 	}
+ 
++	serdev->polling_interval_param = p;
++
+ 	return 0;
+ 
+ err_console_close:
+@@ -106,6 +108,17 @@ int serdev_device_open(struct serdev_device *serdev)
+ 	return ret;
+ }
+ 
++void serdev_device_close(struct serdev_device *serdev)
++{
++	struct console_device *cdev = to_console_device(serdev);
++
++	param_remove(serdev->polling_interval_param);
++	console_close(cdev);
++	poller_async_unregister(&serdev->poller);
++	kfifo_free(serdev->fifo);
++	free(serdev->buf);
++}
++
+ unsigned int serdev_device_set_baudrate(struct serdev_device *serdev,
+ 					unsigned int speed)
+ {
+diff --git a/include/serdev.h b/include/serdev.h
+index b402325f39a2458bf364d84ec1d9a5da6b829525..98704d8958d016426951a038a9a80fb05626febb 100644
+--- a/include/serdev.h
++++ b/include/serdev.h
+@@ -3,6 +3,7 @@
+ #define _SERDEV_H_
+ 
+ #include <driver.h>
++#include <param.h>
+ #include <poller.h>
+ #include <kfifo.h>
+ 
+@@ -14,6 +15,7 @@
+  * @buf:		Buffer used to pass Rx data to consumers
+  * @poller		Async poller used to poll this serdev
+  * @polling_interval:	Async poller periodicity
++ * @polling_interval_param:	Async poller periodicity barebox param_d
+  * @polling_window:	Duration of a single busy loop poll
+  * @locked:		Lock to prevent recursive polling
+  * @receive_buf:	Function called with data received from device;
+@@ -25,6 +27,7 @@ struct serdev_device {
+ 	unsigned char *buf;
+ 	struct poller_async poller;
+ 	uint64_t polling_interval;
++	struct param_d *polling_interval_param;
+ 	uint64_t polling_window;
+ 	bool locked;
+ 
+@@ -33,6 +36,7 @@ struct serdev_device {
+ };
+ 
+ int serdev_device_open(struct serdev_device *);
++void serdev_device_close(struct serdev_device *);
+ unsigned int serdev_device_set_baudrate(struct serdev_device *, unsigned int);
+ int serdev_device_write(struct serdev_device *, const unsigned char *,
+ 			size_t, unsigned long);
 
- arch/arm/boards/Makefile                          |    1 +
- arch/arm/boards/hgs-gs05/Makefile                 |    6 +
- arch/arm/boards/hgs-gs05/board.c                  |  240 +++++
- arch/arm/boards/hgs-gs05/flash-header-gs05.imxcfg |   12 +
- arch/arm/boards/hgs-gs05/lowlevel.c               |  128 +++
- arch/arm/boards/hgs-gs05/lpddr4-timing.c          | 1118 +++++++++++++++++++++
- arch/arm/dts/Makefile                             |    1 +
- arch/arm/dts/imx8m-hgs-common.dtsi                |   80 ++
- arch/arm/dts/imx8mm-hgs-gs05.dts                  |  320 ++++++
- arch/arm/mach-imx/Kconfig                         |    8 +
- common/boards/Kconfig                             |   10 +
- common/boards/Makefile                            |    1 +
- common/boards/hgs/Makefile                        |    7 +
- common/boards/hgs/common.c                        |  654 ++++++++++++
- common/boards/hgs/lib.c                           |   61 ++
- common/boards/hgs/pbl.c                           |  100 ++
- common/hush.c                                     |   23 +-
- common/parser.c                                   |   24 +-
- common/serdev.c                                   |   41 +-
- common/startup.c                                  |    5 +-
- drivers/mfd/Kconfig                               |    9 +
- drivers/mfd/Makefile                              |    1 +
- drivers/mfd/hgs-efi.c                             |  514 ++++++++++
- drivers/watchdog/Kconfig                          |    9 +
- drivers/watchdog/Makefile                         |    1 +
- drivers/watchdog/hgs_efi_wdt.c                    |  102 ++
- images/Makefile.imx                               |    2 +
- include/boards/hgs/common.h                       |   82 ++
- include/command.h                                 |    4 +-
- include/mfd/hgs-efi.h                             |   46 +
- include/serdev.h                                  |    4 +
- net/ifup.c                                        |   10 +-
- 32 files changed, 3604 insertions(+), 20 deletions(-)
----
-base-commit: 2ba60c77c1cb1351080d1a409a1115315dc092ba
-change-id: 20260205-vmaster-customers-leicageo-system1600-f62320eed41f
-
-Best regards,
 -- 
-Marco Felsch <m.felsch@pengutronix.de>
+2.47.3
 
 
 
