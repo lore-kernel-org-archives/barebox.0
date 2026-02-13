@@ -1,56 +1,56 @@
-Delivery-date: Fri, 13 Feb 2026 09:20:25 +0100
+Delivery-date: Fri, 13 Feb 2026 09:20:28 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vqoPZ-001Bbl-03
+	id 1vqoPb-001Bc6-1o
 	for lore@lore.pengutronix.de;
-	Fri, 13 Feb 2026 09:20:25 +0100
+	Fri, 13 Feb 2026 09:20:28 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vqoPY-0006Zg-Kn
-	for lore@pengutronix.de; Fri, 13 Feb 2026 09:20:25 +0100
+	id 1vqoPa-0006aK-OC
+	for lore@pengutronix.de; Fri, 13 Feb 2026 09:20:28 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=S1ie5jIZEI8Xt9NiUD/ayST3Y0K5awiMw1eHzALTRoo=; b=na1Q0NKTXaY6kxJ3noraoA45OA
-	nlpqTMh9mTTx6eKFbCZgkmlauFBWHaM3W/8ew8GQiO63KjtzahEcNyZGDchg4V5vD6S5Y4cRAHjou
-	lwQDlj4GCsheS3nLtWoH/uZ/QJAU39uVmttA8S23DnwgqNsTw49eTELFHHDr6pQzOCHGAp9Wg61KO
-	4GlmaH8BicxP5/tkPI+yHhquj379BrIlj5KTJs/4h/TE+RytN92tT1n048IE5po5WfOgh6fdsG+/+
-	bsTEv5d6mnwOUNNOZCdbIjRr2RyKOr4wvI/+BM/0N1i/LDwO6FI+WZMYI3rvWOY6auVul33VoLJeE
-	wbON4avw==;
+	bh=e9UwkTdu7iOItWjXT3ABK4w955eFEIKnQ6GqJKrdyuk=; b=vyqdCFfounGG3tj3ojxCKdcvM8
+	7BvbucEAKxJnGUTXYuPChnRqkxjL46bA6/Vq3EkqcNcxp25jBD4k9/D8Pc9s9c2YnlhA3mIIclnUP
+	jCTDi0o+do2a1MdqM1wn9bv7mp1RUUht97A7iVUvk1kEwBPw9/eIfvkzJ8roVChVbkpeHdPZXM8to
+	vUaVZQefYZWvw/c2sLwbVLxrmXYjbx9jlIxn6SwstHxysveCDsbG12SWP2mOA4OUlJvcSsib8tS6p
+	t43MgUPCEXmuloTcxQSw9irAeTL3O6zb1AQBKQHU7cw3hfu/dfr7XYJ4nT2MJQNBbj/MwYDzOpJLv
+	WnsnKqXA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vqoP3-00000003Ai9-00jp;
-	Fri, 13 Feb 2026 08:19:53 +0000
+	id 1vqoP4-00000003Aj6-3QlM;
+	Fri, 13 Feb 2026 08:19:54 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vqoOz-00000003AfH-40Ho
+	id 1vqoOz-00000003AfL-417W
 	for barebox@lists.infradead.org;
-	Fri, 13 Feb 2026 08:19:51 +0000
+	Fri, 13 Feb 2026 08:19:52 +0000
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <f.pflug@pengutronix.de>)
-	id 1vqoOx-0006MH-1L; Fri, 13 Feb 2026 09:19:47 +0100
+	id 1vqoOx-0006MH-2P; Fri, 13 Feb 2026 09:19:47 +0100
 From: Fabian Pflug <f.pflug@pengutronix.de>
-Date: Fri, 13 Feb 2026 09:19:38 +0100
+Date: Fri, 13 Feb 2026 09:19:39 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260213-v2026-01-0-topic-tqma8mpxs-v1-2-44f2cc07cfef@pengutronix.de>
+Message-Id: <20260213-v2026-01-0-topic-tqma8mpxs-v1-3-44f2cc07cfef@pengutronix.de>
 References: <20260213-v2026-01-0-topic-tqma8mpxs-v1-0-44f2cc07cfef@pengutronix.de>
 In-Reply-To: <20260213-v2026-01-0-topic-tqma8mpxs-v1-0-44f2cc07cfef@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 Cc: Fabian Pflug <f.pflug@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260213_001950_308999_4A476A81 
-X-CRM114-Status: GOOD (  24.37  )
+X-CRM114-CacheID: sfid-20260213_001950_317228_B170911A 
+X-CRM114-Status: GOOD (  17.20  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,504 +72,945 @@ X-Spam-Status: No, score=-3.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 2/3] ARM: boards: tqma8mpxl: extend with support for xs
+Subject: [PATCH 3/3] ARM: boards: tqma8mpxx: add no_ecc ram timings
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The TQMA8MPxS is another board from TQMA with the same processor, but a
-different formfactor. Nevertheless they share a lot of code and can be
-used from the same barebox resulting in the rename of tqma8mpxl to
-tqma8mpxx.
+Copied the RAM timings from [1] and [2] into a single file and removed
+the duplicates to have a list of RAM-Timings for all known no-ecc
+variants of the two boards tqma8mpxs and tqma8mpxl.
+
+Print a warning if ECC is configured, since there seems to be only
+inline ECC and no real ECC ram, it could possibly be used as non-ecc
+memory, but the user should be warned about it.
+
+Remove compile error for INLINE_ECC, as it it only present in tq-uboot
+and not in barebox.
+
+[1] https://github.com/tq-systems/u-boot-tqmaxx/tree/TQM-lf_v2024.04/board/tq/tqma8mpxl
+[2] https://github.com/tq-systems/u-boot-tqmaxx/tree/TQM-lf_v2024.04/board/tq/tqma8mpxs
 
 Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 ---
- Documentation/migration-guides/migration-master.md |  10 ++
- arch/arm/boards/Makefile                           |   2 +-
- arch/arm/boards/tqma8mpxl/lowlevel.c               | 113 --------------
- arch/arm/boards/{tqma8mpxl => tqma8mpxx}/Makefile  |   0
- arch/arm/boards/{tqma8mpxl => tqma8mpxx}/board.c   |  17 +-
- .../flash-header-tqma8mpxx.imxcfg}                 |   0
- arch/arm/boards/tqma8mpxx/lowlevel.c               | 172 +++++++++++++++++++++
- .../{tqma8mpxl => tqma8mpxx}/lpddr4-timing.c       |   0
- arch/arm/configs/imx_v8_defconfig                  |   2 +-
- arch/arm/configs/multi_v8_defconfig                |   2 +-
- arch/arm/dts/Makefile                              |   2 +-
- arch/arm/dts/imx8mp-tqma8mpqs-mba8mpxs.dts         |  15 ++
- arch/arm/mach-imx/Kconfig                          |   5 +-
- images/Makefile.imx                                |   2 +-
- 14 files changed, 214 insertions(+), 128 deletions(-)
+ arch/arm/boards/tqma8mpxx/lowlevel.c      |  36 +-
+ arch/arm/boards/tqma8mpxx/lpddr4-timing.c | 763 +++++++++++++++++++++++++++++-
+ 2 files changed, 780 insertions(+), 19 deletions(-)
 
-diff --git a/Documentation/migration-guides/migration-master.md b/Documentation/migration-guides/migration-master.md
-new file mode 100644
-index 0000000000..0cf45d0713
---- /dev/null
-+++ b/Documentation/migration-guides/migration-master.md
-@@ -0,0 +1,10 @@
-+:orphan:
-+
-+Boards
-+------
-+
-+TQMA8MPxL
-+^^^^^^^^^
-+
-+The config option has been renamed from MACH_TQ_MBA8MPXL to MACH_TQ_MBA8MPXX to
-+accommodate the support for TQMA8MPxS boards with the same binary.
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index afc50051a2..ab4e74f592 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -75,7 +75,7 @@ obj-$(CONFIG_MACH_NXP_IMX8MN_EVK)		+= nxp-imx8mn-evk/
- obj-$(CONFIG_MACH_NXP_IMX8MP_EVK)		+= nxp-imx8mp-evk/
- obj-$(CONFIG_MACH_NXP_IMX93_FRDM)		+= nxp-imx93-frdm/
- obj-$(CONFIG_MACH_CONGATEC_QMX8P_SOM)		+= congatec-qmx8p/
--obj-$(CONFIG_MACH_TQ_MBA8MPXL)			+= tqma8mpxl/
-+obj-$(CONFIG_MACH_TQ_MBA8MPXX)			+= tqma8mpxx/
- obj-$(CONFIG_MACH_PCA100)			+= phytec-phycard-imx27/
- obj-$(CONFIG_MACH_PCM038)			+= phytec-phycore-imx27/
- obj-$(CONFIG_MACH_PHYTEC_SOM_AM335X)		+= phytec-som-am335x/
-diff --git a/arch/arm/boards/tqma8mpxl/lowlevel.c b/arch/arm/boards/tqma8mpxl/lowlevel.c
-deleted file mode 100644
-index e0a0f17d3a..0000000000
---- a/arch/arm/boards/tqma8mpxl/lowlevel.c
-+++ /dev/null
-@@ -1,113 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--
--#include <io.h>
--#include <common.h>
--#include <firmware.h>
--#include <asm/mmu.h>
--#include <asm/cache.h>
--#include <asm/sections.h>
--#include <asm/barebox-arm.h>
--#include <asm/barebox-arm-head.h>
--#include <linux/sizes.h>
--#include <mach/imx/atf.h>
--#include <mach/imx/xload.h>
--#include <mach/imx/esdctl.h>
--#include <mach/imx/generic.h>
--#include <mach/imx/imx8mp-regs.h>
--#include <mach/imx/iomux-mx8mp.h>
--#include <mach/imx/imx8m-ccm-regs.h>
--#include <mach/imx/debug_ll.h>
--#include <mfd/pca9450.h>
--#include <pbl/i2c.h>
--#include <pbl/pmic.h>
--#include <soc/imx8m/ddr.h>
--
--#define UART_PAD_CTRL   MUX_PAD_CTRL(MX8MP_PAD_CTL_DSE6 | \
--				     MX8MP_PAD_CTL_FSEL)
--
--#define I2C_PAD_CTRL	MUX_PAD_CTRL(MX8MP_PAD_CTL_DSE6 | \
--				     MX8MP_PAD_CTL_HYS | \
--				     MX8MP_PAD_CTL_PUE | \
--				     MX8MP_PAD_CTL_PE)
--
--static void setup_uart(void)
--{
--	void __iomem *uart = IOMEM(MX8M_UART4_BASE_ADDR);
--
--	imx8m_early_setup_uart_clock();
--
--	imx8mp_setup_pad(MX8MP_PAD_UART4_TXD__UART4_DCE_TX | UART_PAD_CTRL);
--	imx8mp_setup_pad(MX8MP_PAD_UART4_RXD__UART4_DCE_RX | UART_PAD_CTRL);
--	imx8m_uart_setup(uart);
--
--	pbl_set_putc(imx_uart_putc, uart);
--
--	putc_ll('>');
--}
--
--static struct pmic_config pca9450_cfg[] = {
--	/* BUCKxOUT_DVS0/1 control BUCK123 output */
--	{ PCA9450_BUCK123_DVS, 0x29 },
--	/*
--	 * increase VDD_SOC to typical value 0.95V before first
--	 * DRAM access, set DVS1 to 0.85v for suspend.
--	 * Enable DVS control through PMIC_STBY_REQ and
--	 * set B1_ENMODE=1 (ON by PMIC_ON_REQ=H)
--	 */
--	{ PCA9450_BUCK1OUT_DVS0, 0x1C },
--	{ PCA9450_BUCK1OUT_DVS1, 0x14 },
--	{ PCA9450_BUCK1CTRL, 0x59 },
--	/*
--	 * Kernel uses OD/OD freq for SOC
--	 * To avoid timing risk from SOC to ARM,increase VDD_ARM to OD
--	 * voltage 0.95v
--	 */
--	{ PCA9450_BUCK2OUT_DVS0, 0x1C },
--	/* set WDOG_B_CFG to cold reset */
--	{ PCA9450_RESET_CTRL, 0xA1 },
--};
--
--static void power_init_board(void)
--{
--	struct pbl_i2c *i2c;
--
--	imx8mp_setup_pad(MX8MP_PAD_I2C1_SCL__I2C1_SCL | I2C_PAD_CTRL);
--	imx8mp_setup_pad(MX8MP_PAD_I2C1_SDA__I2C1_SDA | I2C_PAD_CTRL);
--
--	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_I2C1);
--
--	i2c = imx8m_i2c_early_init(IOMEM(MX8MP_I2C1_BASE_ADDR));
--
--	pmic_configure(i2c, 0x25, pca9450_cfg, ARRAY_SIZE(pca9450_cfg));
--}
--
--static __noreturn noinline void tqma8mpxl_start(void)
--{
--	extern char __dtb_z_imx8mp_tqma8mpql_mba8mpxl_start[];
--
--	setup_uart();
--
--	if (current_el() == 3) {
--		extern struct dram_timing_info dram_timing_2gb_no_ecc;
--
--		imx8mp_early_clock_init();
--
--		power_init_board();
--
--		imx8mp_ddr_init(&dram_timing_2gb_no_ecc, DRAM_TYPE_LPDDR4);
--
--		imx8mp_load_and_start_image_via_tfa();
--	}
--
--	imx8mp_barebox_entry(__dtb_z_imx8mp_tqma8mpql_mba8mpxl_start);
--}
--
--ENTRY_FUNCTION(start_tqma8mpxl, x0, x1, x2)
--{
--	imx8mp_cpu_lowlevel_init();
--
--	relocate_to_current_adr();
--	setup_c();
--
--	tqma8mpxl_start();
--}
-diff --git a/arch/arm/boards/tqma8mpxl/Makefile b/arch/arm/boards/tqma8mpxx/Makefile
-similarity index 100%
-rename from arch/arm/boards/tqma8mpxl/Makefile
-rename to arch/arm/boards/tqma8mpxx/Makefile
-diff --git a/arch/arm/boards/tqma8mpxl/board.c b/arch/arm/boards/tqma8mpxx/board.c
-similarity index 74%
-rename from arch/arm/boards/tqma8mpxl/board.c
-rename to arch/arm/boards/tqma8mpxx/board.c
-index 459e180a57..34a7bd5f4f 100644
---- a/arch/arm/boards/tqma8mpxl/board.c
-+++ b/arch/arm/boards/tqma8mpxx/board.c
-@@ -16,7 +16,7 @@
- #include <envfs.h>
- #include <string.h>
+diff --git a/arch/arm/boards/tqma8mpxx/lowlevel.c b/arch/arm/boards/tqma8mpxx/lowlevel.c
+index 7d8bae9c4d..aa0dec056f 100644
+--- a/arch/arm/boards/tqma8mpxx/lowlevel.c
++++ b/arch/arm/boards/tqma8mpxx/lowlevel.c
+@@ -31,6 +31,10 @@
+ 				     MX8MP_PAD_CTL_PUE | \
+ 				     MX8MP_PAD_CTL_PE)
  
--static int tqma8mpxl_probe(struct device *dev)
-+static int tqma8mpxx_probe(struct device *dev)
++
++extern struct dram_timing_info *dram_timings_xs_no_ecc[];
++extern struct dram_timing_info *dram_timings_xl_no_ecc[];
++
+ static void setup_uart(void *uart, iomux_v3_cfg_t tx_pad, iomux_v3_cfg_t rx_pad)
  {
- 	const char *emmc, *sd;
- 	int emmc_bbu_flag = 0;
-@@ -43,15 +43,16 @@ static int tqma8mpxl_probe(struct device *dev)
- 	return 0;
+ 	imx8m_early_setup_uart_clock();
+@@ -102,6 +106,7 @@ static noinline void tqma8mpxx_start(void)
+ {
+ 	extern char __dtb_z_imx8mp_tqma8mpql_mba8mpxl_start[];
+ 	extern char __dtb_z_imx8mp_tqma8mpqs_mba8mpxs_start[];
++	struct dram_timing_info **dram_timings;
+ 
+ 	struct tq_eeprom *eeprom;
+ 	struct pbl_i2c *i2c;
+@@ -121,6 +126,7 @@ static noinline void tqma8mpxx_start(void)
+ 		/* found xS board */
+ 		i2c = tqma_i2c2_init();
+ 		boarddata = __dtb_z_imx8mp_tqma8mpqs_mba8mpxs_start;
++		dram_timings = dram_timings_xs_no_ecc;
+ 		setup_uart(IOMEM(MX8M_UART3_BASE_ADDR),
+ 			   MX8MP_PAD_SD1_DATA6__UART3_DCE_TX,
+ 			   MX8MP_PAD_SD1_DATA7__UART3_DCE_RX);
+@@ -131,6 +137,7 @@ static noinline void tqma8mpxx_start(void)
+ 
+ 		/* found xL board */
+ 		boarddata = __dtb_z_imx8mp_tqma8mpql_mba8mpxl_start;
++		dram_timings = dram_timings_xl_no_ecc;
+ 		setup_uart(IOMEM(MX8M_UART4_BASE_ADDR),
+ 			   MX8MP_PAD_UART4_TXD__UART4_DCE_TX,
+ 			   MX8MP_PAD_UART4_RXD__UART4_DCE_RX);
+@@ -138,18 +145,32 @@ static noinline void tqma8mpxx_start(void)
+ 	}
+ 
+ 	if (current_el() == 3) {
+-		extern struct dram_timing_info dram_timing_2gb_no_ecc;
+-		int ramsize;
++		unsigned long ramsize;
++		int index = -1;
+ 
+-		ramsize = tq_vard_ramsize(&eeprom->vard) / (SZ_1G);
+-		if (ramsize != 2)
+-			panic("RAMsize other then 2GB is not supported at the moment.\n");
++		ramsize = tq_vard_ramsize(&eeprom->vard);
++		switch (ramsize) {
++		case SZ_1G:
++			index = 0;
++			break;
++		case SZ_2G:
++			index = 1;
++			break;
++		case SZ_4G:
++			index = 2;
++			break;
++		case SZ_8G:
++			index = 3;
++			break;
++		default:
++			panic("RAMsize %lu is not supported.\n", ramsize);
++		}
+ 
+ 		imx8mp_early_clock_init();
+ 
+ 		pmic_configure(i2c, 0x25, pca9450_cfg, ARRAY_SIZE(pca9450_cfg));
+ 
+-		imx8mp_ddr_init(&dram_timing_2gb_no_ecc, DRAM_TYPE_LPDDR4);
++		imx8mp_ddr_init(dram_timings[index], DRAM_TYPE_LPDDR4);
+ 
+ 		imx8mp_load_and_start_image_via_tfa();
+ 	}
+@@ -158,6 +179,9 @@ static noinline void tqma8mpxx_start(void)
+ 	printf("Serial: %s\n", eeprom->id);
+ 	printf("ID:     %s\n", eeprom->serial);
+ 
++	if (tq_vard_has_ramecc(&eeprom->vard))
++		pr_err("ECC Configured, but treated as non ECC RAM\n");
++
+ 	imx8mp_barebox_entry(boarddata);
  }
  
--static const struct of_device_id tqma8mpxl_of_match[] = {
-+static const struct of_device_id tqma8mpxx_of_match[] = {
- 	{ .compatible = "tq,imx8mp-tqma8mpql" },
-+	{ .compatible = "tq,imx8mp-tqma8mpqs" },
- 	{ /* sentinel */ },
- };
--BAREBOX_DEEP_PROBE_ENABLE(tqma8mpxl_of_match);
-+BAREBOX_DEEP_PROBE_ENABLE(tqma8mpxx_of_match);
+diff --git a/arch/arm/boards/tqma8mpxx/lpddr4-timing.c b/arch/arm/boards/tqma8mpxx/lpddr4-timing.c
+index 85e21bf69d..b97736fbe8 100644
+--- a/arch/arm/boards/tqma8mpxx/lpddr4-timing.c
++++ b/arch/arm/boards/tqma8mpxx/lpddr4-timing.c
+@@ -4,19 +4,127 @@
+  *
+  * Generated code from MX8M_DDR_tool
+  *
+- * Align with uboot version:
+- * imx_v2019.04_5.4.x and above version
+- * For imx_v2018.03_4.14.78_1.0.0_ga ~ imx_v2018.04_4.19.35_1.1.0_ga:
+- * please replace #include <asm/arch/ddr.h> with #include <asm/arch/imx8m_ddr.h>
+- *
+- * TQMa8MPxL.2GByte.RAM-Timing.0004.xlsx / 2.0 GHz
+  */
  
--static struct driver tqma8mpxl_board_driver = {
--	.name = "board-tqma8mpxl",
--	.probe = tqma8mpxl_probe,
--	.of_compatible = DRV_OF_COMPAT(tqma8mpxl_of_match),
-+static struct driver tqma8mpxx_board_driver = {
-+	.name = "board-tqma8mpxx",
-+	.probe = tqma8mpxx_probe,
-+	.of_compatible = DRV_OF_COMPAT(tqma8mpxx_of_match),
- };
--device_platform_driver(tqma8mpxl_board_driver);
-+device_platform_driver(tqma8mpxx_board_driver);
-diff --git a/arch/arm/boards/tqma8mpxl/flash-header-tqma8mpxl.imxcfg b/arch/arm/boards/tqma8mpxx/flash-header-tqma8mpxx.imxcfg
-similarity index 100%
-rename from arch/arm/boards/tqma8mpxl/flash-header-tqma8mpxl.imxcfg
-rename to arch/arm/boards/tqma8mpxx/flash-header-tqma8mpxx.imxcfg
-diff --git a/arch/arm/boards/tqma8mpxx/lowlevel.c b/arch/arm/boards/tqma8mpxx/lowlevel.c
-new file mode 100644
-index 0000000000..7d8bae9c4d
---- /dev/null
-+++ b/arch/arm/boards/tqma8mpxx/lowlevel.c
-@@ -0,0 +1,172 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <io.h>
-+#include <common.h>
-+#include <firmware.h>
-+#include <asm/mmu.h>
-+#include <asm/cache.h>
-+#include <asm/sections.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/barebox-arm-head.h>
-+#include <linux/sizes.h>
-+#include <mach/imx/atf.h>
-+#include <mach/imx/xload.h>
-+#include <mach/imx/esdctl.h>
-+#include <mach/imx/generic.h>
-+#include <mach/imx/imx8mp-regs.h>
-+#include <mach/imx/iomux-mx8mp.h>
-+#include <mach/imx/imx8m-ccm-regs.h>
-+#include <mach/imx/debug_ll.h>
-+#include <mfd/pca9450.h>
-+#include <pbl/i2c.h>
-+#include <pbl/pmic.h>
-+#include <soc/imx8m/ddr.h>
-+#include <boards/tq/tq_eeprom.h>
-+
-+#define UART_PAD_CTRL   MUX_PAD_CTRL(MX8MP_PAD_CTL_DSE6 | \
-+				     MX8MP_PAD_CTL_FSEL)
-+
-+#define I2C_PAD_CTRL	MUX_PAD_CTRL(MX8MP_PAD_CTL_DSE6 | \
-+				     MX8MP_PAD_CTL_HYS | \
-+				     MX8MP_PAD_CTL_PUE | \
-+				     MX8MP_PAD_CTL_PE)
-+
-+static void setup_uart(void *uart, iomux_v3_cfg_t tx_pad, iomux_v3_cfg_t rx_pad)
-+{
-+	imx8m_early_setup_uart_clock();
-+
-+	imx8mp_setup_pad(tx_pad | UART_PAD_CTRL);
-+	imx8mp_setup_pad(rx_pad | UART_PAD_CTRL);
-+	imx8m_uart_setup(uart);
-+
-+	pbl_set_putc(imx_uart_putc, uart);
-+
-+	putc_ll('>');
-+}
-+
-+static struct pbl_i2c *tqma_i2c1_init(void)
-+{
-+	imx8mp_setup_pad(MX8MP_PAD_I2C1_SCL__I2C1_SCL | I2C_PAD_CTRL);
-+	imx8mp_setup_pad(MX8MP_PAD_I2C1_SDA__I2C1_SDA | I2C_PAD_CTRL);
-+
-+	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_I2C1);
-+
-+	return imx8m_i2c_early_init(IOMEM(MX8MP_I2C1_BASE_ADDR));
-+}
-+
-+static struct pbl_i2c *tqma_i2c2_init(void)
-+{
-+	imx8mp_setup_pad(MX8MP_PAD_I2C2_SCL__I2C2_SCL | I2C_PAD_CTRL);
-+	imx8mp_setup_pad(MX8MP_PAD_I2C2_SDA__I2C2_SDA | I2C_PAD_CTRL);
-+
-+	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_I2C2);
-+
-+	return imx8m_i2c_early_init(IOMEM(MX8MP_I2C2_BASE_ADDR));
-+}
-+
-+static struct pmic_config pca9450_cfg[] = {
-+	/* BUCKxOUT_DVS0/1 control BUCK123 output */
-+	{ PCA9450_BUCK123_DVS, 0x29 },
-+	/*
-+	 * increase VDD_SOC to typical value 0.95V before first
-+	 * DRAM access, set DVS1 to 0.85v for suspend.
-+	 * Enable DVS control through PMIC_STBY_REQ and
-+	 * set B1_ENMODE=1 (ON by PMIC_ON_REQ=H)
-+	 */
-+	{ PCA9450_BUCK1OUT_DVS0, 0x1C },
-+	{ PCA9450_BUCK1OUT_DVS1, 0x14 },
-+	{ PCA9450_BUCK1CTRL, 0x59 },
-+	/*
-+	 * Kernel uses OD/OD freq for SOC
-+	 * To avoid timing risk from SOC to ARM,increase VDD_ARM to OD
-+	 * voltage 0.95v
-+	 */
-+	{ PCA9450_BUCK2OUT_DVS0, 0x1C },
-+	/* set WDOG_B_CFG to cold reset */
-+	{ PCA9450_RESET_CTRL, 0xA1 },
+ #include <common.h>
+ #include <soc/imx8m/ddr.h>
+ #include <soc/imx8m/lpddr4_define.h>
+ 
+-static struct dram_cfg_param ddr_ddrc_cfg[] = {
++static struct dram_cfg_param ddr_ddrc_cfg_xx_1gb[] = {
++	/** Initialize DDRC registers **/
++	{ 0x3d400304, 0x1 },
++	{ 0x3d400030, 0x1 },
++	{ 0x3d400000, 0xa1080020 },
++	{ 0x3d400020, 0x1303 },
++	{ 0x3d400024, 0x1e84800 },
++	{ 0x3d400064, 0x7a00b4 },
++	{ 0x3d400070, 0x7027f90 },
++	{ 0x3d400074, 0x790 },
++	{ 0x3d4000d0, 0xc00307a3 },
++	{ 0x3d4000d4, 0xc50000 },
++	{ 0x3d4000dc, 0xf4003f },
++	{ 0x3d4000e0, 0x2b0000 },
++	{ 0x3d4000e8, 0x550048 },
++	{ 0x3d4000ec, 0x150048 },
++	{ 0x3d400100, 0x201e222a },
++	{ 0x3d400104, 0x8083f },
++	{ 0x3d40010c, 0xe0e000 },
++	{ 0x3d400110, 0x12040a12 },
++	{ 0x3d400114, 0x2050f0f },
++	{ 0x3d400118, 0x1010009 },
++	{ 0x3d40011c, 0x502 },
++	{ 0x3d400130, 0x20800 },
++	{ 0x3d400134, 0xe100002 },
++	{ 0x3d400138, 0xbc },
++	{ 0x3d400144, 0xc80064 },
++	{ 0x3d400180, 0x3e8001e },
++	{ 0x3d400184, 0x3207a12 },
++	{ 0x3d400188, 0x0 },
++	{ 0x3d400190, 0x49f820e },
++	{ 0x3d400194, 0x80303 },
++	{ 0x3d4001b4, 0x1f0e },
++	{ 0x3d4001a0, 0xe0400018 },
++	{ 0x3d4001a4, 0xdf00e4 },
++	{ 0x3d4001a8, 0x80000000 },
++	{ 0x3d4001b0, 0x11 },
++	{ 0x3d4001c0, 0x1 },
++	{ 0x3d4001c4, 0x1 },
++	{ 0x3d4000f4, 0x799 },
++	{ 0x3d400108, 0x9121b1c },
++	{ 0x3d400200, 0x1f },
++	{ 0x3d400208, 0x0 },
++	{ 0x3d40020c, 0x0 },
++	{ 0x3d400210, 0x1f1f },
++	{ 0x3d400204, 0x80808 },
++	{ 0x3d400214, 0x7070707 },
++	{ 0x3d400218, 0xf070707 },
++	{ 0x3d40021c, 0xf0f },
++	{ 0x3d400250, 0x1705 },
++	{ 0x3d400254, 0x2c },
++	{ 0x3d40025c, 0x4000030 },
++	{ 0x3d400264, 0x900093e7 },
++	{ 0x3d40026c, 0x2005574 },
++	{ 0x3d400400, 0x111 },
++	{ 0x3d400404, 0x72ff },
++	{ 0x3d400408, 0x72ff },
++	{ 0x3d400494, 0x2100e07 },
++	{ 0x3d400498, 0x620096 },
++	{ 0x3d40049c, 0x1100e07 },
++	{ 0x3d4004a0, 0xc8012c },
++	{ 0x3d402020, 0x1001 },
++	{ 0x3d402024, 0x30d400 },
++	{ 0x3d402050, 0x20d000 },
++	{ 0x3d402064, 0xc0012 },
++	{ 0x3d4020dc, 0x840000 },
++	{ 0x3d4020e0, 0x2b0000 },
++	{ 0x3d4020e8, 0x550048 },
++	{ 0x3d4020ec, 0x150048 },
++	{ 0x3d402100, 0xa030305 },
++	{ 0x3d402104, 0x30407 },
++	{ 0x3d402108, 0x203060b },
++	{ 0x3d40210c, 0x505000 },
++	{ 0x3d402110, 0x2040202 },
++	{ 0x3d402114, 0x2030202 },
++	{ 0x3d402118, 0x1010004 },
++	{ 0x3d40211c, 0x302 },
++	{ 0x3d402130, 0x20300 },
++	{ 0x3d402134, 0xa100002 },
++	{ 0x3d402138, 0x13 },
++	{ 0x3d402144, 0x14000a },
++	{ 0x3d402180, 0x640004 },
++	{ 0x3d402190, 0x3818200 },
++	{ 0x3d402194, 0x80303 },
++	{ 0x3d4021b4, 0x100 },
++	{ 0x3d4020f4, 0x599 },
++	{ 0x3d403020, 0x1001 },
++	{ 0x3d403024, 0xc3500 },
++	{ 0x3d403050, 0x20d000 },
++	{ 0x3d403064, 0x30005 },
++	{ 0x3d4030dc, 0x840000 },
++	{ 0x3d4030e0, 0x2b0000 },
++	{ 0x3d4030e8, 0x550048 },
++	{ 0x3d4030ec, 0x150048 },
++	{ 0x3d403100, 0xa010102 },
++	{ 0x3d403104, 0x30404 },
++	{ 0x3d403108, 0x203060b },
++	{ 0x3d40310c, 0x505000 },
++	{ 0x3d403110, 0x2040202 },
++	{ 0x3d403114, 0x2030202 },
++	{ 0x3d403118, 0x1010004 },
++	{ 0x3d40311c, 0x302 },
++	{ 0x3d403130, 0x20300 },
++	{ 0x3d403134, 0xa100002 },
++	{ 0x3d403138, 0x5 },
++	{ 0x3d403144, 0x50003 },
++	{ 0x3d403180, 0x190004 },
++	{ 0x3d403190, 0x3818200 },
++	{ 0x3d403194, 0x80303 },
++	{ 0x3d4031b4, 0x100 },
++	{ 0x3d4030f4, 0x599 },
++	{ 0x3d400028, 0x0 },
 +};
 +
-+static bool tqma_is_eeprom_valid(struct tq_eeprom *eeprom)
-+{
-+	int ramsize;
-+
-+	if (!*eeprom->serial || !*eeprom->id)
-+		return false;
-+	ramsize = tq_vard_ramsize(&eeprom->vard) / (SZ_1G);
-+	if (ramsize != 1 && ramsize != 2 && ramsize != 4 && ramsize != 8)
-+		return false;
-+	return true;
-+}
-+
-+static noinline void tqma8mpxx_start(void)
-+{
-+	extern char __dtb_z_imx8mp_tqma8mpql_mba8mpxl_start[];
-+	extern char __dtb_z_imx8mp_tqma8mpqs_mba8mpxs_start[];
-+
-+	struct tq_eeprom *eeprom;
-+	struct pbl_i2c *i2c;
-+	void *boarddata;
-+
-+	i2c = tqma_i2c1_init();
-+
-+	/**
-+	 * The difference for the lowlevel code between xS and xL is:
-+	 * PMIC: xS on i2c2, xL on i2C1
-+	 * VARD: address 0x50 on xS, address 0x53 on xL.
-+	 *       offset 0x1000 on xS, offset 0x0 on xL
-+	 */
-+
-+	eeprom = pbl_tq_read_eeprom(i2c, 0x50, 0x1000 | I2C_ADDR_16_BIT);
-+	if (tqma_is_eeprom_valid(eeprom)) {
-+		/* found xS board */
-+		i2c = tqma_i2c2_init();
-+		boarddata = __dtb_z_imx8mp_tqma8mpqs_mba8mpxs_start;
-+		setup_uart(IOMEM(MX8M_UART3_BASE_ADDR),
-+			   MX8MP_PAD_SD1_DATA6__UART3_DCE_TX,
-+			   MX8MP_PAD_SD1_DATA7__UART3_DCE_RX);
-+	} else {
-+		eeprom = pbl_tq_read_eeprom(i2c, 0x53, 0);
-+		if (!tqma_is_eeprom_valid(eeprom))
-+			panic("Could not read VARD!\n");
-+
-+		/* found xL board */
-+		boarddata = __dtb_z_imx8mp_tqma8mpql_mba8mpxl_start;
-+		setup_uart(IOMEM(MX8M_UART4_BASE_ADDR),
-+			   MX8MP_PAD_UART4_TXD__UART4_DCE_TX,
-+			   MX8MP_PAD_UART4_RXD__UART4_DCE_RX);
-+
-+	}
-+
-+	if (current_el() == 3) {
-+		extern struct dram_timing_info dram_timing_2gb_no_ecc;
-+		int ramsize;
-+
-+		ramsize = tq_vard_ramsize(&eeprom->vard) / (SZ_1G);
-+		if (ramsize != 2)
-+			panic("RAMsize other then 2GB is not supported at the moment.\n");
-+
-+		imx8mp_early_clock_init();
-+
-+		pmic_configure(i2c, 0x25, pca9450_cfg, ARRAY_SIZE(pca9450_cfg));
-+
-+		imx8mp_ddr_init(&dram_timing_2gb_no_ecc, DRAM_TYPE_LPDDR4);
-+
-+		imx8mp_load_and_start_image_via_tfa();
-+	}
-+
-+	tq_vard_show(&eeprom->vard);
-+	printf("Serial: %s\n", eeprom->id);
-+	printf("ID:     %s\n", eeprom->serial);
-+
-+	imx8mp_barebox_entry(boarddata);
-+}
-+
-+ENTRY_FUNCTION(start_tqma8mpxx, x0, x1, x2)
-+{
-+	imx8mp_cpu_lowlevel_init();
-+
-+	relocate_to_current_adr();
-+	setup_c();
-+
-+	tqma8mpxx_start();
-+}
-diff --git a/arch/arm/boards/tqma8mpxl/lpddr4-timing.c b/arch/arm/boards/tqma8mpxx/lpddr4-timing.c
-similarity index 100%
-rename from arch/arm/boards/tqma8mpxl/lpddr4-timing.c
-rename to arch/arm/boards/tqma8mpxx/lpddr4-timing.c
-diff --git a/arch/arm/configs/imx_v8_defconfig b/arch/arm/configs/imx_v8_defconfig
-index af071e4d83..e080a7db9b 100644
---- a/arch/arm/configs/imx_v8_defconfig
-+++ b/arch/arm/configs/imx_v8_defconfig
-@@ -12,7 +12,7 @@ CONFIG_MACH_PHYTEC_SOM_IMX8MQ=y
- CONFIG_MACH_POLYHEX_DEBIX=y
- CONFIG_MACH_PROTONIC_IMX8M=y
- CONFIG_MACH_SKOV_IMX8MP=y
--CONFIG_MACH_TQ_MBA8MPXL=y
-+CONFIG_MACH_TQ_MBA8MPXX=y
- CONFIG_MACH_VARISCITE_DT8MCUSTOMBOARD_IMX8MP=y
- CONFIG_MACH_ZII_IMX8MQ_DEV=y
- CONFIG_MACH_PHYTEC_PHYCORE_IMX93=y
-diff --git a/arch/arm/configs/multi_v8_defconfig b/arch/arm/configs/multi_v8_defconfig
-index 6fe8ab3463..1553c47fab 100644
---- a/arch/arm/configs/multi_v8_defconfig
-+++ b/arch/arm/configs/multi_v8_defconfig
-@@ -21,7 +21,7 @@ CONFIG_MACH_PHYTEC_SOM_IMX8MQ=y
- CONFIG_MACH_POLYHEX_DEBIX=y
- CONFIG_MACH_PROTONIC_IMX8M=y
- CONFIG_MACH_SKOV_IMX8MP=y
--CONFIG_MACH_TQ_MBA8MPXL=y
-+CONFIG_MACH_TQ_MBA8MPXX=y
- CONFIG_MACH_VARISCITE_DT8MCUSTOMBOARD_IMX8MP=y
- CONFIG_MACH_ZII_IMX8MQ_DEV=y
- CONFIG_MACH_PHYTEC_PHYCORE_IMX93=y
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index dd7482aa05..8dbe020e5d 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -184,7 +184,7 @@ lwl-$(CONFIG_MACH_NXP_IMX8MP_EVK) += imx8mp-evk.dtb.o
- lwl-$(CONFIG_MACH_NXP_IMX8MQ_EVK) += imx8mq-evk.dtb.o
- lwl-$(CONFIG_MACH_NXP_IMX93_FRDM) += imx93-frdm.dtb.o
- lwl-$(CONFIG_MACH_INNOCOMM_WB15) += imx8mm-innocomm-wb15-evk.dtb.o
--lwl-$(CONFIG_MACH_TQ_MBA8MPXL) += imx8mp-tqma8mpql-mba8mpxl.dtb.o
-+lwl-$(CONFIG_MACH_TQ_MBA8MPXX) += imx8mp-tqma8mpql-mba8mpxl.dtb.o imx8mp-tqma8mpqs-mba8mpxs.dtb.o
- lwl-$(CONFIG_MACH_TORADEX_COLIBRI_T20) += tegra20-colibri-iris.dtb.o
- lwl-$(CONFIG_MACH_TORADEX_COLIBRI_IMX6) += imx6dl-colibri-iris.dtb.o
- lwl-$(CONFIG_MACH_TOSHIBA_AC100) += tegra20-paz00.dtb.o
-diff --git a/arch/arm/dts/imx8mp-tqma8mpqs-mba8mpxs.dts b/arch/arm/dts/imx8mp-tqma8mpqs-mba8mpxs.dts
-new file mode 100644
-index 0000000000..a3018af7a5
---- /dev/null
-+++ b/arch/arm/dts/imx8mp-tqma8mpqs-mba8mpxs.dts
-@@ -0,0 +1,15 @@
-+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
-+/*
-+ * Copyright (C) 2026 Pengutronix, Fabian Pflug <kernel@pengutronix.de>
-+ */
-+
-+/dts-v1/;
-+
-+#include <arm64/freescale/imx8mp-tqma8mpqs-mb-smarc-2.dts>
-+#include "imx8mp.dtsi"
-+
-+&{pmic/regulators} {
-+	barebox,allow-dummy-supply;
++static struct dram_cfg_param ddr_ddrc_cfg_xl_2gb[] = {
+ 	/** Initialize DDRC registers **/
+ 	{ 0x3d400304, 0x1 },
+ 	{ 0x3d400030, 0x1 },
+@@ -129,6 +237,348 @@ static struct dram_cfg_param ddr_ddrc_cfg[] = {
+ 	{ 0x3d400028, 0x0 },
+ };
+ 
++static struct dram_cfg_param ddr_ddrc_cfg_xs_2gb[] = {
++	/** Initialize DDRC registers **/
++	{ 0x3d400304, 0x1 },
++	{ 0x3d400030, 0x1 },
++	{ 0x3d400000, 0xa1080020 },
++	{ 0x3d400020, 0x1303 },
++	{ 0x3d400024, 0x1e84800 },
++	{ 0x3d400064, 0x7a0118 },
++	{ 0x3d400070, 0x7027f90 },
++	{ 0x3d400074, 0x790 },
++	{ 0x3d4000d0, 0xc00307a3 },
++	{ 0x3d4000d4, 0xc50000 },
++	{ 0x3d4000dc, 0xf4003f },
++	{ 0x3d4000e0, 0x2b0000 },
++	{ 0x3d4000e8, 0x550048 },
++	{ 0x3d4000ec, 0x150048 },
++	{ 0x3d400100, 0x201e222a },
++	{ 0x3d400104, 0x8083f },
++	{ 0x3d40010c, 0xe0e000 },
++	{ 0x3d400110, 0x12040a12 },
++	{ 0x3d400114, 0x2050f0f },
++	{ 0x3d400118, 0x1010009 },
++	{ 0x3d40011c, 0x502 },
++	{ 0x3d400130, 0x20800 },
++	{ 0x3d400134, 0xe100002 },
++	{ 0x3d400138, 0x120 },
++	{ 0x3d400144, 0xc80064 },
++	{ 0x3d400180, 0x3e8001e },
++	{ 0x3d400184, 0x3207a12 },
++	{ 0x3d400188, 0x0 },
++	{ 0x3d400190, 0x49f820e },
++	{ 0x3d400194, 0x80303 },
++	{ 0x3d4001b4, 0x1f0e },
++	{ 0x3d4001a0, 0xe0400018 },
++	{ 0x3d4001a4, 0xdf00e4 },
++	{ 0x3d4001a8, 0x80000000 },
++	{ 0x3d4001b0, 0x11 },
++	{ 0x3d4001c0, 0x1 },
++	{ 0x3d4001c4, 0x1 },
++	{ 0x3d4000f4, 0x799 },
++	{ 0x3d400108, 0x9121b1c },
++	{ 0x3d400200, 0x1f },
++	{ 0x3d400208, 0x0 },
++	{ 0x3d40020c, 0x0 },
++	{ 0x3d400210, 0x1f1f },
++	{ 0x3d400204, 0x80808 },
++	{ 0x3d400214, 0x7070707 },
++	{ 0x3d400218, 0x7070707 },
++	{ 0x3d40021c, 0xf0f },
++	{ 0x3d400250, 0x1705 },
++	{ 0x3d400254, 0x2c },
++	{ 0x3d40025c, 0x4000030 },
++	{ 0x3d400264, 0x900093e7 },
++	{ 0x3d40026c, 0x2005574 },
++	{ 0x3d400400, 0x111 },
++	{ 0x3d400404, 0x72ff },
++	{ 0x3d400408, 0x72ff },
++	{ 0x3d400494, 0x2100e07 },
++	{ 0x3d400498, 0x620096 },
++	{ 0x3d40049c, 0x1100e07 },
++	{ 0x3d4004a0, 0xc8012c },
++	{ 0x3d402020, 0x1001 },
++	{ 0x3d402024, 0x30d400 },
++	{ 0x3d402050, 0x20d000 },
++	{ 0x3d402064, 0xc001c },
++	{ 0x3d4020dc, 0x840000 },
++	{ 0x3d4020e0, 0x2b0000 },
++	{ 0x3d4020e8, 0x550048 },
++	{ 0x3d4020ec, 0x150048 },
++	{ 0x3d402100, 0xa030305 },
++	{ 0x3d402104, 0x30407 },
++	{ 0x3d402108, 0x203060b },
++	{ 0x3d40210c, 0x505000 },
++	{ 0x3d402110, 0x2040202 },
++	{ 0x3d402114, 0x2030202 },
++	{ 0x3d402118, 0x1010004 },
++	{ 0x3d40211c, 0x302 },
++	{ 0x3d402130, 0x20300 },
++	{ 0x3d402134, 0xa100002 },
++	{ 0x3d402138, 0x1d },
++	{ 0x3d402144, 0x14000a },
++	{ 0x3d402180, 0x640004 },
++	{ 0x3d402190, 0x3818200 },
++	{ 0x3d402194, 0x80303 },
++	{ 0x3d4021b4, 0x100 },
++	{ 0x3d4020f4, 0x599 },
++	{ 0x3d403020, 0x1001 },
++	{ 0x3d403024, 0xc3500 },
++	{ 0x3d403050, 0x20d000 },
++	{ 0x3d403064, 0x30007 },
++	{ 0x3d4030dc, 0x840000 },
++	{ 0x3d4030e0, 0x2b0000 },
++	{ 0x3d4030e8, 0x550048 },
++	{ 0x3d4030ec, 0x150048 },
++	{ 0x3d403100, 0xa010102 },
++	{ 0x3d403104, 0x30404 },
++	{ 0x3d403108, 0x203060b },
++	{ 0x3d40310c, 0x505000 },
++	{ 0x3d403110, 0x2040202 },
++	{ 0x3d403114, 0x2030202 },
++	{ 0x3d403118, 0x1010004 },
++	{ 0x3d40311c, 0x302 },
++	{ 0x3d403130, 0x20300 },
++	{ 0x3d403134, 0xa100002 },
++	{ 0x3d403138, 0x8 },
++	{ 0x3d403144, 0x50003 },
++	{ 0x3d403180, 0x190004 },
++	{ 0x3d403190, 0x3818200 },
++	{ 0x3d403194, 0x80303 },
++	{ 0x3d4031b4, 0x100 },
++	{ 0x3d4030f4, 0x599 },
++	{ 0x3d400028, 0x0 },
 +};
 +
-+/delete-node/ &{/memory@40000000};
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index eb947e67fb..1e88c533f3 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -742,12 +742,13 @@ config MACH_SKOV_IMX8MP
- 	select IMX8M_DRAM
- 	select I2C_IMX_EARLY
++static struct dram_cfg_param ddr_ddrc_cfg_xx_4gb[] = {
++	/** Initialize DDRC registers **/
++	{ 0x3d400304, 0x1 },
++	{ 0x3d400030, 0x1 },
++	{ 0x3d400000, 0xa3080020 },
++	{ 0x3d400020, 0x1303 },
++	{ 0x3d400024, 0x1e84800 },
++	{ 0x3d400064, 0x7a0118 },
++	{ 0x3d400070, 0x7027f90 },
++	{ 0x3d400074, 0x790 },
++	{ 0x3d4000d0, 0xc00307a3 },
++	{ 0x3d4000d4, 0xc50000 },
++	{ 0x3d4000dc, 0xf4003f },
++	{ 0x3d4000e0, 0x2b0000 },
++	{ 0x3d4000e8, 0x550048 },
++	{ 0x3d4000ec, 0x150048 },
++	{ 0x3d400100, 0x201e222a },
++	{ 0x3d400104, 0x8083f },
++	{ 0x3d40010c, 0xe0e000 },
++	{ 0x3d400110, 0x12040a12 },
++	{ 0x3d400114, 0x2050f0f },
++	{ 0x3d400118, 0x1010009 },
++	{ 0x3d40011c, 0x502 },
++	{ 0x3d400130, 0x20800 },
++	{ 0x3d400134, 0xe100002 },
++	{ 0x3d400138, 0x120 },
++	{ 0x3d400144, 0xc80064 },
++	{ 0x3d400180, 0x3e8001e },
++	{ 0x3d400184, 0x3207a12 },
++	{ 0x3d400188, 0x0 },
++	{ 0x3d400190, 0x49f820e },
++	{ 0x3d400194, 0x80303 },
++	{ 0x3d4001b4, 0x1f0e },
++	{ 0x3d4001a0, 0xe0400018 },
++	{ 0x3d4001a4, 0xdf00e4 },
++	{ 0x3d4001a8, 0x80000000 },
++	{ 0x3d4001b0, 0x11 },
++	{ 0x3d4001c0, 0x1 },
++	{ 0x3d4001c4, 0x1 },
++	{ 0x3d4000f4, 0x799 },
++	{ 0x3d400108, 0x9121b1c },
++	{ 0x3d400200, 0x17 },
++	{ 0x3d400208, 0x0 },
++	{ 0x3d40020c, 0x0 },
++	{ 0x3d400210, 0x1f1f },
++	{ 0x3d400204, 0x80808 },
++	{ 0x3d400214, 0x7070707 },
++	{ 0x3d400218, 0x7070707 },
++	{ 0x3d40021c, 0xf0f },
++	{ 0x3d400250, 0x1705 },
++	{ 0x3d400254, 0x2c },
++	{ 0x3d40025c, 0x4000030 },
++	{ 0x3d400264, 0x900093e7 },
++	{ 0x3d40026c, 0x2005574 },
++	{ 0x3d400400, 0x111 },
++	{ 0x3d400404, 0x72ff },
++	{ 0x3d400408, 0x72ff },
++	{ 0x3d400494, 0x2100e07 },
++	{ 0x3d400498, 0x620096 },
++	{ 0x3d40049c, 0x1100e07 },
++	{ 0x3d4004a0, 0xc8012c },
++	{ 0x3d402020, 0x1001 },
++	{ 0x3d402024, 0x30d400 },
++	{ 0x3d402050, 0x20d000 },
++	{ 0x3d402064, 0xc001c },
++	{ 0x3d4020dc, 0x840000 },
++	{ 0x3d4020e0, 0x2b0000 },
++	{ 0x3d4020e8, 0x550048 },
++	{ 0x3d4020ec, 0x150048 },
++	{ 0x3d402100, 0xa030305 },
++	{ 0x3d402104, 0x30407 },
++	{ 0x3d402108, 0x203060b },
++	{ 0x3d40210c, 0x505000 },
++	{ 0x3d402110, 0x2040202 },
++	{ 0x3d402114, 0x2030202 },
++	{ 0x3d402118, 0x1010004 },
++	{ 0x3d40211c, 0x302 },
++	{ 0x3d402130, 0x20300 },
++	{ 0x3d402134, 0xa100002 },
++	{ 0x3d402138, 0x1d },
++	{ 0x3d402144, 0x14000a },
++	{ 0x3d402180, 0x640004 },
++	{ 0x3d402190, 0x3818200 },
++	{ 0x3d402194, 0x80303 },
++	{ 0x3d4021b4, 0x100 },
++	{ 0x3d4020f4, 0x599 },
++	{ 0x3d403020, 0x1001 },
++	{ 0x3d403024, 0xc3500 },
++	{ 0x3d403050, 0x20d000 },
++	{ 0x3d403064, 0x30007 },
++	{ 0x3d4030dc, 0x840000 },
++	{ 0x3d4030e0, 0x2b0000 },
++	{ 0x3d4030e8, 0x550048 },
++	{ 0x3d4030ec, 0x150048 },
++	{ 0x3d403100, 0xa010102 },
++	{ 0x3d403104, 0x30404 },
++	{ 0x3d403108, 0x203060b },
++	{ 0x3d40310c, 0x505000 },
++	{ 0x3d403110, 0x2040202 },
++	{ 0x3d403114, 0x2030202 },
++	{ 0x3d403118, 0x1010004 },
++	{ 0x3d40311c, 0x302 },
++	{ 0x3d403130, 0x20300 },
++	{ 0x3d403134, 0xa100002 },
++	{ 0x3d403138, 0x8 },
++	{ 0x3d403144, 0x50003 },
++	{ 0x3d403180, 0x190004 },
++	{ 0x3d403190, 0x3818200 },
++	{ 0x3d403194, 0x80303 },
++	{ 0x3d4031b4, 0x100 },
++	{ 0x3d4030f4, 0x599 },
++	{ 0x3d400028, 0x0 },
++};
++
++static struct dram_cfg_param ddr_ddrc_cfg_xx_8gb[] = {
++	/** Initialize DDRC registers **/
++	{ 0x3d400304, 0x1 },
++	{ 0x3d400030, 0x1 },
++	{ 0x3d400000, 0xa3080020 },
++	{ 0x3d400020, 0x1303 },
++	{ 0x3d400024, 0x1e84800 },
++	{ 0x3d400064, 0x7a017c },
++	{ 0x3d400070, 0x7027f90 },
++	{ 0x3d400074, 0x790 },
++	{ 0x3d4000d0, 0xc00307a3 },
++	{ 0x3d4000d4, 0xc50000 },
++	{ 0x3d4000dc, 0xf4003f },
++	{ 0x3d4000e0, 0x2b0000 },
++	{ 0x3d4000e8, 0x550048 },
++	{ 0x3d4000ec, 0x150048 },
++	{ 0x3d400100, 0x201e222a },
++	{ 0x3d400104, 0x8083f },
++	{ 0x3d40010c, 0xe0e000 },
++	{ 0x3d400110, 0x12040a12 },
++	{ 0x3d400114, 0x2050f0f },
++	{ 0x3d400118, 0x1010009 },
++	{ 0x3d40011c, 0x502 },
++	{ 0x3d400130, 0x20800 },
++	{ 0x3d400134, 0xe100002 },
++	{ 0x3d400138, 0x184 },
++	{ 0x3d400144, 0xc80064 },
++	{ 0x3d400180, 0x3e8001e },
++	{ 0x3d400184, 0x3207a12 },
++	{ 0x3d400188, 0x0 },
++	{ 0x3d400190, 0x49f820e },
++	{ 0x3d400194, 0x80303 },
++	{ 0x3d4001b4, 0x1f0e },
++	{ 0x3d4001a0, 0xe0400018 },
++	{ 0x3d4001a4, 0xdf00e4 },
++	{ 0x3d4001a8, 0x80000000 },
++	{ 0x3d4001b0, 0x11 },
++	{ 0x3d4001c0, 0x1 },
++	{ 0x3d4001c4, 0x1 },
++	{ 0x3d4000f4, 0x799 },
++	{ 0x3d400108, 0x9121b1c },
++	{ 0x3d400200, 0x18 },
++	{ 0x3d400208, 0x0 },
++	{ 0x3d40020c, 0x0 },
++	{ 0x3d400210, 0x1f1f },
++	{ 0x3d400204, 0x80808 },
++	{ 0x3d400214, 0x7070707 },
++	{ 0x3d400218, 0x7070707 },
++	{ 0x3d40021c, 0xf07 },
++	{ 0x3d400250, 0x1705 },
++	{ 0x3d400254, 0x2c },
++	{ 0x3d40025c, 0x4000030 },
++	{ 0x3d400264, 0x900093e7 },
++	{ 0x3d40026c, 0x2005574 },
++	{ 0x3d400400, 0x111 },
++	{ 0x3d400404, 0x72ff },
++	{ 0x3d400408, 0x72ff },
++	{ 0x3d400494, 0x2100e07 },
++	{ 0x3d400498, 0x620096 },
++	{ 0x3d40049c, 0x1100e07 },
++	{ 0x3d4004a0, 0xc8012c },
++	{ 0x3d402020, 0x1001 },
++	{ 0x3d402024, 0x30d400 },
++	{ 0x3d402050, 0x20d000 },
++	{ 0x3d402064, 0xc0026 },
++	{ 0x3d4020dc, 0x840000 },
++	{ 0x3d4020e0, 0x2b0000 },
++	{ 0x3d4020e8, 0x550048 },
++	{ 0x3d4020ec, 0x150048 },
++	{ 0x3d402100, 0xa030305 },
++	{ 0x3d402104, 0x30407 },
++	{ 0x3d402108, 0x203060b },
++	{ 0x3d40210c, 0x505000 },
++	{ 0x3d402110, 0x2040202 },
++	{ 0x3d402114, 0x2030202 },
++	{ 0x3d402118, 0x1010004 },
++	{ 0x3d40211c, 0x302 },
++	{ 0x3d402130, 0x20300 },
++	{ 0x3d402134, 0xa100002 },
++	{ 0x3d402138, 0x27 },
++	{ 0x3d402144, 0x14000a },
++	{ 0x3d402180, 0x640004 },
++	{ 0x3d402190, 0x3818200 },
++	{ 0x3d402194, 0x80303 },
++	{ 0x3d4021b4, 0x100 },
++	{ 0x3d4020f4, 0x599 },
++	{ 0x3d403020, 0x1001 },
++	{ 0x3d403024, 0xc3500 },
++	{ 0x3d403050, 0x20d000 },
++	{ 0x3d403064, 0x3000a },
++	{ 0x3d4030dc, 0x840000 },
++	{ 0x3d4030e0, 0x2b0000 },
++	{ 0x3d4030e8, 0x550048 },
++	{ 0x3d4030ec, 0x150048 },
++	{ 0x3d403100, 0xa010102 },
++	{ 0x3d403104, 0x30404 },
++	{ 0x3d403108, 0x203060b },
++	{ 0x3d40310c, 0x505000 },
++	{ 0x3d403110, 0x2040202 },
++	{ 0x3d403114, 0x2030202 },
++	{ 0x3d403118, 0x1010004 },
++	{ 0x3d40311c, 0x302 },
++	{ 0x3d403130, 0x20300 },
++	{ 0x3d403134, 0xa100002 },
++	{ 0x3d403138, 0xa },
++	{ 0x3d403144, 0x50003 },
++	{ 0x3d403180, 0x190004 },
++	{ 0x3d403190, 0x3818200 },
++	{ 0x3d403194, 0x80303 },
++	{ 0x3d4031b4, 0x100 },
++	{ 0x3d4030f4, 0x599 },
++	{ 0x3d400028, 0x0 },
++};
++
+ /* PHY Initialize Configuration */
+ static struct dram_cfg_param ddr_ddrphy_cfg[] = {
+ 	{ 0x100a0, 0x0 },
+@@ -377,6 +827,44 @@ static struct dram_cfg_param ddr_fsp0_cfg[] = {
+ 	{ 0xd0000, 0x1 },
+ };
  
--config MACH_TQ_MBA8MPXL
--	bool "TQ i.MX8MP Dual/Quad on MBa8MPxL Board"
-+config MACH_TQ_MBA8MPXX
-+	bool "TQ i.MX8MP Dual/Quad on MBa8MPxL or MBa8MPxS Board"
- 	select ARCH_IMX8MP
- 	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
- 	select FIRMWARE_IMX8MP_ATF
- 	select ARM_SMCCC
-+	select BOARD_TQ
- 	select MCI_IMX_ESDHC_PBL
- 	select IMX8M_DRAM
- 	select I2C_IMX_EARLY
-diff --git a/images/Makefile.imx b/images/Makefile.imx
-index f66c0af6a4..0699f43fd7 100644
---- a/images/Makefile.imx
-+++ b/images/Makefile.imx
-@@ -505,7 +505,7 @@ $(call build_imx8m_habv4img, CONFIG_MACH_KARO_QSXP_ML81, start_karo_qsxp_ml81, k
++static struct dram_cfg_param ddr_fsp0_4gb_8gb_cfg[] = {
++	{ 0xd0000, 0x0 },
++	{ 0x54003, 0xfa0 },
++	{ 0x54004, 0x2 },
++	{ 0x54005, 0x303c },
++	{ 0x54006, 0x14 },
++	{ 0x54008, 0x131f },
++	{ 0x54009, 0xc8 },
++	{ 0x5400b, 0x2 },
++	{ 0x5400f, 0x100 },
++	{ 0x54012, 0x310 },
++	{ 0x54019, 0x3ff4 },
++	{ 0x5401a, 0x2b },
++	{ 0x5401b, 0x4855 },
++	{ 0x5401c, 0x4800 },
++	{ 0x5401e, 0x15 },
++	{ 0x5401f, 0x3ff4 },
++	{ 0x54020, 0x2b },
++	{ 0x54021, 0x4855 },
++	{ 0x54022, 0x4800 },
++	{ 0x54024, 0x15 },
++	{ 0x5402b, 0x1000 },
++	{ 0x5402c, 0x3 },
++	{ 0x54032, 0xf400 },
++	{ 0x54033, 0x2b3f },
++	{ 0x54034, 0x5500 },
++	{ 0x54035, 0x48 },
++	{ 0x54036, 0x48 },
++	{ 0x54037, 0x1500 },
++	{ 0x54038, 0xf400 },
++	{ 0x54039, 0x2b3f },
++	{ 0x5403a, 0x5500 },
++	{ 0x5403b, 0x48 },
++	{ 0x5403c, 0x48 },
++	{ 0x5403d, 0x1500 },
++	{ 0xd0000, 0x1 },
++};
++
+ /* P1 message block paremeter for training firmware */
+ static struct dram_cfg_param ddr_fsp1_cfg[] = {
+ 	{ 0xd0000, 0x0 },
+@@ -417,6 +905,45 @@ static struct dram_cfg_param ddr_fsp1_cfg[] = {
+ 	{ 0xd0000, 0x1 },
+ };
  
- $(call build_imx8m_habv4img, CONFIG_MACH_SKOV_IMX8MP, start_skov_imx8mp, skov-imx8mp/flash-header-skov-imx8mp, skov-imx8mp)
++static struct dram_cfg_param ddr_fsp1_4gb_8gb_cfg[] = {
++	{ 0xd0000, 0x0 },
++	{ 0x54002, 0x101 },
++	{ 0x54003, 0x190 },
++	{ 0x54004, 0x2 },
++	{ 0x54005, 0x303c },
++	{ 0x54006, 0x14 },
++	{ 0x54008, 0x121f },
++	{ 0x54009, 0xc8 },
++	{ 0x5400b, 0x2 },
++	{ 0x5400f, 0x100 },
++	{ 0x54012, 0x310 },
++	{ 0x54019, 0x84 },
++	{ 0x5401a, 0x2b },
++	{ 0x5401b, 0x4855 },
++	{ 0x5401c, 0x4800 },
++	{ 0x5401e, 0x15 },
++	{ 0x5401f, 0x84 },
++	{ 0x54020, 0x2b },
++	{ 0x54021, 0x4855 },
++	{ 0x54022, 0x4800 },
++	{ 0x54024, 0x15 },
++	{ 0x5402b, 0x1000 },
++	{ 0x5402c, 0x3 },
++	{ 0x54032, 0x8400 },
++	{ 0x54033, 0x2b00 },
++	{ 0x54034, 0x5500 },
++	{ 0x54035, 0x48 },
++	{ 0x54036, 0x48 },
++	{ 0x54037, 0x1500 },
++	{ 0x54038, 0x8400 },
++	{ 0x54039, 0x2b00 },
++	{ 0x5403a, 0x5500 },
++	{ 0x5403b, 0x48 },
++	{ 0x5403c, 0x48 },
++	{ 0x5403d, 0x1500 },
++	{ 0xd0000, 0x1 },
++};
++
+ /* P2 message block paremeter for training firmware */
+ static struct dram_cfg_param ddr_fsp2_cfg[] = {
+ 	{ 0xd0000, 0x0 },
+@@ -457,6 +984,45 @@ static struct dram_cfg_param ddr_fsp2_cfg[] = {
+ 	{ 0xd0000, 0x1 },
+ };
  
--$(call build_imx8m_habv4img, CONFIG_MACH_TQ_MBA8MPXL, start_tqma8mpxl, tqma8mpxl/flash-header-tqma8mpxl, tqma8mpxl)
-+$(call build_imx8m_habv4img, CONFIG_MACH_TQ_MBA8MPXX, start_tqma8mpxx, tqma8mpxx/flash-header-tqma8mpxx, tqma8mpxx)
++static struct dram_cfg_param ddr_fsp2_4gb_8gb_cfg[] = {
++	{ 0xd0000, 0x0 },
++	{ 0x54002, 0x102 },
++	{ 0x54003, 0x64 },
++	{ 0x54004, 0x2 },
++	{ 0x54005, 0x303c },
++	{ 0x54006, 0x14 },
++	{ 0x54008, 0x121f },
++	{ 0x54009, 0xc8 },
++	{ 0x5400b, 0x2 },
++	{ 0x5400f, 0x100 },
++	{ 0x54012, 0x310 },
++	{ 0x54019, 0x84 },
++	{ 0x5401a, 0x2b },
++	{ 0x5401b, 0x4855 },
++	{ 0x5401c, 0x4800 },
++	{ 0x5401e, 0x15 },
++	{ 0x5401f, 0x84 },
++	{ 0x54020, 0x2b },
++	{ 0x54021, 0x4855 },
++	{ 0x54022, 0x4800 },
++	{ 0x54024, 0x15 },
++	{ 0x5402b, 0x1000 },
++	{ 0x5402c, 0x3 },
++	{ 0x54032, 0x8400 },
++	{ 0x54033, 0x2b00 },
++	{ 0x54034, 0x5500 },
++	{ 0x54035, 0x48 },
++	{ 0x54036, 0x48 },
++	{ 0x54037, 0x1500 },
++	{ 0x54038, 0x8400 },
++	{ 0x54039, 0x2b00 },
++	{ 0x5403a, 0x5500 },
++	{ 0x5403b, 0x48 },
++	{ 0x5403c, 0x48 },
++	{ 0x5403d, 0x1500 },
++	{ 0xd0000, 0x1 },
++};
++
+ /* P0 2D message block paremeter for training firmware */
+ static struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
+ 	{ 0xd0000, 0x0 },
+@@ -497,6 +1063,45 @@ static struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
+ 	{ 0xd0000, 0x1 },
+ };
  
- $(call build_imx8m_habv4img, CONFIG_MACH_POLYHEX_DEBIX, start_polyhex_debix, polyhex-debix/flash-header-polyhex-debix, polyhex-debix)
++static struct dram_cfg_param ddr_fsp0_2d_4gb_8gb_cfg[] = {
++	{ 0xd0000, 0x0 },
++	{ 0x54003, 0xfa0 },
++	{ 0x54004, 0x2 },
++	{ 0x54005, 0x303c },
++	{ 0x54006, 0x14 },
++	{ 0x54008, 0x61 },
++	{ 0x54009, 0xc8 },
++	{ 0x5400b, 0x2 },
++	{ 0x5400f, 0x100 },
++	{ 0x54010, 0x1f7f },
++	{ 0x54012, 0x310 },
++	{ 0x54019, 0x3ff4 },
++	{ 0x5401a, 0x2b },
++	{ 0x5401b, 0x4855 },
++	{ 0x5401c, 0x4800 },
++	{ 0x5401e, 0x15 },
++	{ 0x5401f, 0x3ff4 },
++	{ 0x54020, 0x2b },
++	{ 0x54021, 0x4855 },
++	{ 0x54022, 0x4800 },
++	{ 0x54024, 0x15 },
++	{ 0x5402b, 0x1000 },
++	{ 0x5402c, 0x3 },
++	{ 0x54032, 0xf400 },
++	{ 0x54033, 0x2b3f },
++	{ 0x54034, 0x5500 },
++	{ 0x54035, 0x48 },
++	{ 0x54036, 0x48 },
++	{ 0x54037, 0x1500 },
++	{ 0x54038, 0xf400 },
++	{ 0x54039, 0x2b3f },
++	{ 0x5403a, 0x5500 },
++	{ 0x5403b, 0x48 },
++	{ 0x5403c, 0x48 },
++	{ 0x5403d, 0x1500 },
++	{ 0xd0000, 0x1 },
++};
++
+ /* DRAM PHY init engine image */
+ static struct dram_cfg_param ddr_phy_pie[] = {
+ 	{ 0xd0000, 0x0 },
+@@ -1113,10 +1718,72 @@ static struct dram_fsp_msg ddr_dram_fsp_msg[] = {
+ 	},
+ };
  
++static struct dram_fsp_msg ddr_dram_fsp_xs_4gb_msg[] = {
++	{
++		/* P0 4000mts 1D */
++		.drate = 4000,
++		.fw_type = FW_1D_IMAGE,
++		.fsp_cfg = ddr_fsp0_4gb_8gb_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_4gb_8gb_cfg),
++	},
++	{
++		/* P1 400mts 1D */
++		.drate = 400,
++		.fw_type = FW_1D_IMAGE,
++		.fsp_cfg = ddr_fsp1_4gb_8gb_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp1_4gb_8gb_cfg),
++	},
++	{
++		/* P2 100mts 1D */
++		.drate = 100,
++		.fw_type = FW_1D_IMAGE,
++		.fsp_cfg = ddr_fsp2_4gb_8gb_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp2_4gb_8gb_cfg),
++	},
++	{
++		/* P0 4000mts 2D */
++		.drate = 4000,
++		.fw_type = FW_2D_IMAGE,
++		.fsp_cfg = ddr_fsp0_2d_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_2d_cfg),
++	},
++};
++
++static struct dram_fsp_msg ddr_dram_fsp_4gb_8gb_msg[] = {
++	{
++		/* P0 4000mts 1D */
++		.drate = 4000,
++		.fw_type = FW_1D_IMAGE,
++		.fsp_cfg = ddr_fsp0_4gb_8gb_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_4gb_8gb_cfg),
++	},
++	{
++		/* P1 400mts 1D */
++		.drate = 400,
++		.fw_type = FW_1D_IMAGE,
++		.fsp_cfg = ddr_fsp1_4gb_8gb_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp1_4gb_8gb_cfg),
++	},
++	{
++		/* P2 100mts 1D */
++		.drate = 100,
++		.fw_type = FW_1D_IMAGE,
++		.fsp_cfg = ddr_fsp2_4gb_8gb_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp2_4gb_8gb_cfg),
++	},
++	{
++		/* P0 4000mts 2D */
++		.drate = 4000,
++		.fw_type = FW_2D_IMAGE,
++		.fsp_cfg = ddr_fsp0_2d_4gb_8gb_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_2d_4gb_8gb_cfg),
++	},
++};
++
+ /* ddr timing config params */
+-struct dram_timing_info dram_timing_2gb_no_ecc = {
+-	.ddrc_cfg = ddr_ddrc_cfg,
+-	.ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg),
++struct dram_timing_info dram_timing_xx_1gb_no_ecc = {
++	.ddrc_cfg = ddr_ddrc_cfg_xx_1gb,
++	.ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg_xx_1gb),
+ 	.ddrphy_cfg = ddr_ddrphy_cfg,
+ 	.ddrphy_cfg_num = ARRAY_SIZE(ddr_ddrphy_cfg),
+ 	.fsp_msg = ddr_dram_fsp_msg,
+@@ -1126,6 +1793,76 @@ struct dram_timing_info dram_timing_2gb_no_ecc = {
+ 	.fsp_table = { 4000, 400, 100, },
+ };
+ 
+-#ifdef CONFIG_IMX8M_DRAM_INLINE_ECC
+-#error
+-#endif
++struct dram_timing_info dram_timing_xl_2gb_no_ecc = {
++	.ddrc_cfg = ddr_ddrc_cfg_xl_2gb,
++	.ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg_xl_2gb),
++	.ddrphy_cfg = ddr_ddrphy_cfg,
++	.ddrphy_cfg_num = ARRAY_SIZE(ddr_ddrphy_cfg),
++	.fsp_msg = ddr_dram_fsp_msg,
++	.fsp_msg_num = ARRAY_SIZE(ddr_dram_fsp_msg),
++	.ddrphy_pie = ddr_phy_pie,
++	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
++	.fsp_table = { 4000, 400, 100, },
++};
++
++struct dram_timing_info dram_timing_xs_2gb_no_ecc = {
++	.ddrc_cfg = ddr_ddrc_cfg_xs_2gb,
++	.ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg_xs_2gb),
++	.ddrphy_cfg = ddr_ddrphy_cfg,
++	.ddrphy_cfg_num = ARRAY_SIZE(ddr_ddrphy_cfg),
++	.fsp_msg = ddr_dram_fsp_msg,
++	.fsp_msg_num = ARRAY_SIZE(ddr_dram_fsp_msg),
++	.ddrphy_pie = ddr_phy_pie,
++	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
++	.fsp_table = { 4000, 400, 100, },
++};
++
++struct dram_timing_info dram_timing_xl_4gb_no_ecc = {
++	.ddrc_cfg = ddr_ddrc_cfg_xx_4gb,
++	.ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg_xx_4gb),
++	.ddrphy_cfg = ddr_ddrphy_cfg,
++	.ddrphy_cfg_num = ARRAY_SIZE(ddr_ddrphy_cfg),
++	.fsp_msg = ddr_dram_fsp_4gb_8gb_msg,
++	.fsp_msg_num = ARRAY_SIZE(ddr_dram_fsp_4gb_8gb_msg),
++	.ddrphy_pie = ddr_phy_pie,
++	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
++	.fsp_table = { 4000, 400, 100, },
++};
++
++struct dram_timing_info dram_timing_xs_4gb_no_ecc = {
++	.ddrc_cfg = ddr_ddrc_cfg_xx_4gb,
++	.ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg_xx_4gb),
++	.ddrphy_cfg = ddr_ddrphy_cfg,
++	.ddrphy_cfg_num = ARRAY_SIZE(ddr_ddrphy_cfg),
++	.fsp_msg = ddr_dram_fsp_xs_4gb_msg,
++	.fsp_msg_num = ARRAY_SIZE(ddr_dram_fsp_xs_4gb_msg),
++	.ddrphy_pie = ddr_phy_pie,
++	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
++	.fsp_table = { 4000, 400, 100, },
++};
++
++struct dram_timing_info dram_timing_xx_8gb_no_ecc = {
++	.ddrc_cfg = ddr_ddrc_cfg_xx_8gb,
++	.ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg_xx_8gb),
++	.ddrphy_cfg = ddr_ddrphy_cfg,
++	.ddrphy_cfg_num = ARRAY_SIZE(ddr_ddrphy_cfg),
++	.fsp_msg = ddr_dram_fsp_4gb_8gb_msg,
++	.fsp_msg_num = ARRAY_SIZE(ddr_dram_fsp_4gb_8gb_msg),
++	.ddrphy_pie = ddr_phy_pie,
++	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
++	.fsp_table = { 4000, 400, 100, },
++};
++
++struct dram_timing_info *dram_timings_xl_no_ecc[] = {
++	&dram_timing_xx_1gb_no_ecc,
++	&dram_timing_xl_2gb_no_ecc,
++	&dram_timing_xl_4gb_no_ecc,
++	&dram_timing_xx_8gb_no_ecc,
++};
++
++struct dram_timing_info *dram_timings_xs_no_ecc[] = {
++	&dram_timing_xx_1gb_no_ecc,
++	&dram_timing_xs_2gb_no_ecc,
++	&dram_timing_xs_4gb_no_ecc,
++	&dram_timing_xx_8gb_no_ecc,
++};
 
 -- 
 2.47.3
