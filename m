@@ -1,65 +1,65 @@
-Delivery-date: Fri, 13 Feb 2026 20:13:41 +0100
+Delivery-date: Fri, 13 Feb 2026 20:13:42 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vqybk-001LcC-1o
+	id 1vqybl-001LcX-0d
 	for lore@lore.pengutronix.de;
-	Fri, 13 Feb 2026 20:13:41 +0100
+	Fri, 13 Feb 2026 20:13:42 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vqybk-0007UN-9Q
-	for lore@pengutronix.de; Fri, 13 Feb 2026 20:13:41 +0100
+	id 1vqybk-0007US-OI
+	for lore@pengutronix.de; Fri, 13 Feb 2026 20:13:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
 	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=thtyl20h19tkEDOz6dMdjAdig3DLOfZxkV75kpBUkHI=; b=ohg6Xuda1P2sR/
-	/9P6OdCG/DsMdpnNTI+VEe+J/nNegVZml/iWNlv4cyctacGHcC2/ST6TAZKWw5xhe5GNmoQo64yFi
-	LtPvn3oa9fCOTzEvmOM8dsEaxKCL0guMyQi5070cYycrA0I7sOw0n7HtwAQ3pR4KWKC0ZTT4wTF5/
-	pnuUQySsJ4kqENhLeGiqAz78b0yHZN5A2Rqhdk2W9UO2hAQSGbyZPXLliBeHrZaCAKR7TKOMy0N32
-	FOVCNzcb6lEYKYCQgqu46/cLKRAo4rS/RqC4Yc3OI0Z4bXsfgpKhraQzJ67WyLEdXgHGOaydMXqW1
-	cRXcHwhJsPKCQGxVozZA==;
+	List-Owner; bh=XYPhX45FkObr3NpbZFKsQ4fWQ4fkP5KtayyN7FprhTY=; b=hh47E5s2T4DEDU
+	itOAl3naq+6DzQKVTZDBoaAdkot6PjQhuGevP6wfLSN23aOrTjdBVzYAHSh6fdvYOtXk34UVzNPMl
+	aL9k2XpV13IpLvZeZ2z6cmO/wKs8gwhYT4oGkW0Kgn5rNUrFpd8JGgj7CkJMrBezVkeZ68pLRjaJy
+	cBRoYahiYgu1NrlBjWzQBW3kU0MBLkLfzVNB0mhpXpARuOrk7bzlUlSsqUUDjjf/8ldVvhIVqsXxb
+	UVXN5npJGksR+G56dv7JPKq8CikjLQwk4KPctWK478j90/lLfmF5qfM1GAaLoqNUh/4gIftxLOuoJ
+	DlnOUMWtWZA1z/IYknmA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vqybB-00000003pih-16IW;
+	id 1vqybB-00000003pis-2WtV;
 	Fri, 13 Feb 2026 19:13:05 +0000
 Received: from www153.your-server.de ([213.133.104.153])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vqyb6-00000003pgE-3ZSn
+	id 1vqyb6-00000003pgD-3HwP
 	for barebox@lists.infradead.org;
-	Fri, 13 Feb 2026 19:13:03 +0000
+	Fri, 13 Feb 2026 19:13:04 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=amelchem.com; s=default2004; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=thtyl20h19tkEDOz6dMdjAdig3DLOfZxkV75kpBUkHI=; b=dlFad55/jZGO3Zt+++y0/YKZZI
-	8Kaj51XJDlOP4Li1VapROMF6yUh63TRAw1vyAoyoqTdSCxI4brfRgc+9ZvB0X/gNg/kOwA0LQyjio
-	qaxODReCJW5adkfog3eYUveQH5MV4mRXPI2IoDfsCwTQy0bA8I8UXAS65RKdgU4zzPoOpV3QxZVl0
-	5mmhtKaXij8nAFqQ+Mpv6PM2IKbYhdENP//jPfMfjEMebl0avUvf26INxYXdiKToYRBX7S8OxPi/z
-	nKNbbKxvSC4vkrEnd/zOkvZVrr3o8qyIrQ9X+X/aTvrpt2iFQfYgShvMdok8r9qFIOykIml6QqTLl
-	C2pmeLig==;
+	bh=XYPhX45FkObr3NpbZFKsQ4fWQ4fkP5KtayyN7FprhTY=; b=FPzXEp0EbAI98LmkLGQ7ewh5l6
+	/KS/a1xkyEGwRXpiIzCUqFoWDm0nNivlLJhrmPMUiWKjgFxRy0UMvB8l7rd+rJqZ3eLz+H7JQ8YhE
+	52NDpZ/4Yz02F3Nc4EVf4meXlh7/4h/sMh78Muc9aFMC/kSFVeNlhwYuNL+bd8wYejVEINfJ6CmiP
+	mKySl4RXSZcom2sglEOXF+iW5eQfXrHsOu7rvAZjl/TDQK74sNToQO21kVeQOyp+quOXvAiSmWe7q
+	LVqER2kWA5vMwgMCGun2JDq0ph5Xtzi43w7VUamNubivdjrZnUMB6vo1BL2/73nk5VAXhS+49ZPPI
+	eh5sGC5w==;
 Received: from sslproxy08.your-server.de ([78.47.166.52])
 	by www153.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96.2)
 	(envelope-from <rossi@amelchem.com>)
-	id 1vqyaw-000HNY-2m;
-	Fri, 13 Feb 2026 20:12:51 +0100
+	id 1vqyay-000HNm-0K;
+	Fri, 13 Feb 2026 20:12:52 +0100
 Received: from localhost ([127.0.0.1])
 	by sslproxy08.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <rossi@amelchem.com>)
-	id 1vqyaw-000J4V-1F;
-	Fri, 13 Feb 2026 20:12:50 +0100
+	id 1vqyax-000J4V-1w;
+	Fri, 13 Feb 2026 20:12:52 +0100
 From: Giandomenico Rossi <rossi@amelchem.com>
 To: barebox@lists.infradead.org
-Date: Fri, 13 Feb 2026 20:12:44 +0100
-Message-Id: <20260213191247.1671231-2-rossi@amelchem.com>
+Date: Fri, 13 Feb 2026 20:12:47 +0100
+Message-Id: <20260213191247.1671231-5-rossi@amelchem.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260213191247.1671231-1-rossi@amelchem.com>
 References: <20260213191247.1671231-1-rossi@amelchem.com>
@@ -67,8 +67,8 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: Clear (ClamAV 1.4.3/27911/Fri Feb 13 08:25:28 2026)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260213_111301_084279_AB66CF1C 
-X-CRM114-Status: GOOD (  26.84  )
+X-CRM114-CacheID: sfid-20260213_111301_129571_895A4C7B 
+X-CRM114-Status: GOOD (  22.83  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,372 +91,563 @@ X-Spam-Status: No, score=-2.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v1 1/4] video: mipi-dbi: support for MIPI DBI Type C Option 1
+Subject: [PATCH v1 4/4] video: add Ilitek ILI9488 driver for WF35 panel
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This commit adds support for MIPI DBI Type C Option 1 displays which
-require 9-bit SPI transfers, where the most significant bit encodes
-the Data/Command flag.
+This adds support for the WF35-320480UD TFT panel using the Ilitek
+ILI9488 controller over SPI with MIPI DBI Type C Option 1 interface.
+The panel requires 9-bit transfers and outputs 320x480 RGB666 (18-bit)
+pixel format.
 
-Since many SPI controllers do not natively support 9 bits-per-word,
-two transfer methods are implemented:
+The driver implements:
+- RGB565 to RGB666 framebuffer conversion
+- Custom SPI transfer function using mipi_dbi_spi1_transfer()
+- Framebuffer registration with standard fb_ops
+- Backlight control via device tree node
+- Rotation support via "rotation" property in the device tree
 
-- mipi_dbi_spi1_transfer(): Uses native 9-bit SPI transfers when supported.
-- mipi_dbi_spi1e_transfer(): Emulates 9-bit transfers over 8-bit SPI
-  by packing 8 DBI words into 9 SPI bytes.
-
-The appropriate method is chosen automatically based on the SPI
-controller's capabilities.
-
-Additionally, the transfer buffer for the emulation method is
-allocated using device-managed memory (devm_kmalloc) to ensure proper
-lifecycle management.
-
-This implementation enables barebox to handle panels like the ILI9488 that
-use this MIPI DBI protocol variant.
+Device Tree binding:
+- Documentation/devicetree/bindings/video/panel-ilitek-ili9488.yaml
 
 Signed-off-by: Giandomenico Rossi <rossi@amelchem.com>
 Signed-off-by: Nicola Fontana <ntd@entidi.it>
 ---
- drivers/video/mipi_dbi.c | 263 +++++++++++++++++++++++++++++++++++++--
- include/video/mipi_dbi.h |  12 ++
- 2 files changed, 266 insertions(+), 9 deletions(-)
+ drivers/video/Kconfig                |  10 +
+ drivers/video/Makefile               |   1 +
+ drivers/video/panel-ilitek-ili9488.c | 490 +++++++++++++++++++++++++++
+ 3 files changed, 501 insertions(+)
+ create mode 100644 drivers/video/panel-ilitek-ili9488.c
 
-diff --git a/drivers/video/mipi_dbi.c b/drivers/video/mipi_dbi.c
-index 1e2883020b..c93af9fb0c 100644
---- a/drivers/video/mipi_dbi.c
-+++ b/drivers/video/mipi_dbi.c
-@@ -9,6 +9,7 @@
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index 3f65f745eb..d9f49724c8 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -191,6 +191,16 @@ config DRIVER_VIDEO_SIMPLE_PANEL
+ 	  nodes so that it's not necessary to keep a list of all known displays
+ 	  with their corresponding timings in barebox.
  
- #include <common.h>
- #include <dma.h>
-+#include <linux/device.h> /* devm_kmalloc() */
- #include <linux/kernel.h>
- #include <linux/sizes.h>
- #include <linux/gpio/consumer.h>
-@@ -44,8 +45,6 @@ EXPORT_SYMBOL(mipi_dbi_list);
-  * update and uses register 0x2C to write to frame memory, it is most likely
-  * MIPI compliant.
-  *
-- * Only MIPI Type 1 displays are supported since a full frame memory is needed.
-- *
-  * There are 3 MIPI DBI implementation types:
-  *
-  * A. Motorola 6800 type parallel bus
-@@ -58,8 +57,19 @@ EXPORT_SYMBOL(mipi_dbi_list);
-  *    2. Same as above except it's sent as 16 bits
-  *    3. 8-bit with the Data/Command signal as a separate D/CX pin
-  *
-- * Currently barebox mipi_dbi only supports Type C option 3 with
-- * mipi_dbi_spi_init().
-+ * MIPI DBI Type C Option 1 supports 9-bit transfers where the MSB is used
-+ * as the Data/Command bit. Since most SPI controllers only support 8-bit
-+ * words, two implementations are provided:
++config DRIVER_VIDEO_PANEL_ILITEK_ILI9488
++	bool "Ilitek ILI9488 480x320 LCD panels"
++	select DRIVER_VIDEO_MIPI_DBI
++	depends on OFDEVICE
++	help
++	  Say Y here if you want to enable support for Ilitek IL9488
++	  This drivers is for panels such as the WF35-320480UD, operating in
++	  RGB666 (18-bit) pixel format via SPI.
++	  Supports MIPI DBI type C1 interface.
++
+ config DRIVER_VIDEO_PANEL_ILITEK_ILI9341
+ 	tristate "Ilitek ILI9341 240x320 QVGA panels"
+ 	depends on OFTREE && SPI
+diff --git a/drivers/video/Makefile b/drivers/video/Makefile
+index 594c29f150..7b10eda0d8 100644
+--- a/drivers/video/Makefile
++++ b/drivers/video/Makefile
+@@ -13,6 +13,7 @@ obj-$(CONFIG_DRIVER_VIDEO_SIMPLE_PANEL) += simple-panel.o
+ obj-$(CONFIG_DRIVER_VIDEO_MIPI_DBI) += mipi_dbi.o
+ obj-$(CONFIG_DRIVER_VIDEO_MIPI_DSI) += mipi_dsi.o
+ obj-$(CONFIG_DRIVER_VIDEO_PANEL_ILITEK_ILI9341) += panel-ilitek-ili9341.o
++obj-$(CONFIG_DRIVER_VIDEO_PANEL_ILITEK_ILI9488) += panel-ilitek-ili9488.o
+ obj-$(CONFIG_DRIVER_VIDEO_PANEL_MIPI_DBI) += panel-mipi-dbi.o
+ obj-$(CONFIG_DRIVER_VIDEO_PANEL_SITRONIX_ST7789V) += panel-sitronix-st7789v.o
+ obj-$(CONFIG_DRIVER_VIDEO_PANEL_SITRONIX_ST7703) += panel-sitronix-st7703.o
+diff --git a/drivers/video/panel-ilitek-ili9488.c b/drivers/video/panel-ilitek-ili9488.c
+new file mode 100644
+index 0000000000..0f4080fb93
+--- /dev/null
++++ b/drivers/video/panel-ilitek-ili9488.c
+@@ -0,0 +1,490 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Ilitek ILI9488 TFT LCD driver for WF35-320480UD panel.
 + *
-+ * - mipi_dbi_spi1_transfer(): uses native 9-bit SPI transfers when supported
-+ * - mipi_dbi_spi1e_transfer(): emulates 9-bit transfers using 8-bit SPI by
-+ *   packing 8 DBI words into 9 SPI bytes
++ * Supports MIPI DBI Type C Option 1 SPI interface with 9-bit transfers.
 + *
-+ * Read commands are not supported in this implementation, as MIPI DBI
-+ * Type C Option 1 panels typically do not wire the SPI MISO line.
-+ *
-+ * The appropriate implementation is selected automatically based on the
-+ * SPI controller capabilities.
-  */
- 
- #define MIPI_DBI_DEBUG_COMMAND(cmd, data, len) \
-@@ -622,6 +632,235 @@ static int mipi_dbi_typec3_command_read(struct mipi_dbi *dbi, u8 *cmd,
- 	return ret;
- }
- 
-+/**
-+ * mipi_dbi_spi1e_transfer - Emulated MIPI DBI Type C Option 1 SPI transfer
-+ * @dbi: MIPI DBI structure
-+ * @dc: Data/Command flag (0 = command, 1 = data)
-+ * @buf: Buffer containing command or pixel data
-+ * @len: Number of bytes in @buf
-+ * @bpw: Source bits-per-word (8 or 16)
-+ *
-+ * Perform a MIPI DBI Type C Option 1 transfer using an 8-bit SPI controller
-+ * by emulating 9-bit words. The Data/Command bit is packed together with
-+ * the data stream by grouping 8 DBI words (9 bits each) into 9 SPI bytes.
-+ *
-+ * If the transfer length is not a multiple of 8 bytes, the remaining bytes
-+ * are padded with MIPI_DCS_NOP (zero) to complete the 9-byte block.
-+ *
-+ * This fallback implementation is used when the SPI controller does not
-+ * support native 9 bits-per-word transfers.
-+ *
-+ * Return: 0 on success, or a negative error code on failure.
++ * Copyright (C) 2026 Giandomenico Rossi <rossi@amelchem.com>
++ * Copyright (C) 2026 Nicola Fontana <ntd@entidi.it>
++ * Copyright (C) 2026 Amel s.r.l
 + */
-+static int mipi_dbi_spi1e_transfer(struct mipi_dbi *dbi, int dc,
-+				   const void *buf, size_t len,
-+				   unsigned int bpw)
++
++#include <common.h>
++#include <linux/bitops.h>
++#include <linux/gpio/consumer.h>
++#include <of.h>
++#include <regulator.h>
++#include <spi/spi.h>
++#include <video/backlight.h>
++#include <video/vpl.h>
++#include <video/mipi_dbi.h>
++
++#include <video/mipi_display.h>
++
++/**
++ * DOC: overview
++ *
++ * This driver supports the MIPI DBI Type C Option 1 SPI interface with
++ * 9-bit transfers required by this panel.
++ *
++ * Features:
++ * - 320x480 resolution with 18-bit RGB666 pixel format
++ * - Custom SPI transfer using mipi_dbi_spi1_transfer() for 9-bit SPI support
++ * - Framebuffer support with RGB565 to RGB666 conversion
++ * - Backlight control via device tree backlight node
++ *
++ * This driver is designed specifically for the WF35-320480UD panel
++ * by Amel s.r.l, which uses the Ilitek ILI9488 controller chip.
++ *
++ * Device Tree binding documentation:
++ * Documentation/devicetree/bindings/video/panel-ilitek-ili9488.yaml
++ */
++
++/* Level 1 commands (from the display datasheet) */
++#define ILI9488_CMD_NOP                             0x00
++#define ILI9488_CMD_SOFTWARE_RESET                  0x01
++#define ILI9488_CMD_READ_DISP_ID                    0x04
++#define ILI9488_CMD_READ_ERROR_DSI                  0x05
++#define ILI9488_CMD_READ_DISP_STATUS                0x09
++#define ILI9488_CMD_READ_DISP_POWER_MODE            0x0A
++#define ILI9488_CMD_READ_DISP_MADCTRL               0x0B
++#define ILI9488_CMD_READ_DISP_PIXEL_FORMAT          0x0C
++#define ILI9488_CMD_READ_DISP_IMAGE_MODE            0x0D
++#define ILI9488_CMD_READ_DISP_SIGNAL_MODE           0x0E
++#define ILI9488_CMD_READ_DISP_SELF_DIAGNOSTIC       0x0F
++#define ILI9488_CMD_ENTER_SLEEP_MODE                0x10
++#define ILI9488_CMD_SLEEP_OUT                       0x11
++#define ILI9488_CMD_PARTIAL_MODE_ON                 0x12
++#define ILI9488_CMD_NORMAL_DISP_MODE_ON             0x13
++#define ILI9488_CMD_DISP_INVERSION_OFF              0x20
++#define ILI9488_CMD_DISP_INVERSION_ON               0x21
++#define ILI9488_CMD_PIXEL_OFF                       0x22
++#define ILI9488_CMD_PIXEL_ON                        0x23
++#define ILI9488_CMD_DISPLAY_OFF                     0x28
++#define ILI9488_CMD_DISPLAY_ON                      0x29
++#define ILI9488_CMD_COLUMN_ADDRESS_SET              0x2A
++#define ILI9488_CMD_PAGE_ADDRESS_SET                0x2B
++#define ILI9488_CMD_MEMORY_WRITE                    0x2C
++#define ILI9488_CMD_MEMORY_READ                     0x2E
++#define ILI9488_CMD_PARTIAL_AREA                    0x30
++#define ILI9488_CMD_VERT_SCROLL_DEFINITION          0x33
++#define ILI9488_CMD_TEARING_EFFECT_LINE_OFF         0x34
++#define ILI9488_CMD_TEARING_EFFECT_LINE_ON          0x35
++#define ILI9488_CMD_MEMORY_ACCESS_CONTROL           0x36
++#define ILI9488_CMD_VERT_SCROLL_START_ADDRESS       0x37
++#define ILI9488_CMD_IDLE_MODE_OFF                   0x38
++#define ILI9488_CMD_IDLE_MODE_ON                    0x39
++#define ILI9488_CMD_COLMOD_PIXEL_FORMAT_SET         0x3A
++#define ILI9488_CMD_WRITE_MEMORY_CONTINUE           0x3C
++#define ILI9488_CMD_READ_MEMORY_CONTINUE            0x3E
++#define ILI9488_CMD_SET_TEAR_SCANLINE               0x44
++#define ILI9488_CMD_GET_SCANLINE                    0x45
++#define ILI9488_CMD_WRITE_DISPLAY_BRIGHTNESS        0x51
++#define ILI9488_CMD_READ_DISPLAY_BRIGHTNESS         0x52
++#define ILI9488_CMD_WRITE_CTRL_DISPLAY              0x53
++#define ILI9488_CMD_READ_CTRL_DISPLAY               0x54
++#define ILI9488_CMD_WRITE_CONTENT_ADAPT_BRIGHTNESS  0x55
++#define ILI9488_CMD_READ_CONTENT_ADAPT_BRIGHTNESS   0x56
++#define ILI9488_CMD_WRITE_MIN_CAB_LEVEL             0x5E
++#define ILI9488_CMD_READ_MIN_CAB_LEVEL              0x5F
++#define ILI9488_CMD_READ_ABC_SELF_DIAG_RES          0x68
++#define ILI9488_CMD_READ_ID1                        0xDA
++#define ILI9488_CMD_READ_ID2                        0xDB
++#define ILI9488_CMD_READ_ID3                        0xDC
++
++/* Level 2 commands (from the display datasheet) */
++#define ILI9488_CMD_INTERFACE_MODE_CONTROL          0xB0
++#define ILI9488_CMD_FRAME_RATE_CONTROL_NORMAL       0xB1
++#define ILI9488_CMD_FRAME_RATE_CONTROL_IDLE_8COLOR  0xB2
++#define ILI9488_CMD_FRAME_RATE_CONTROL_PARTIAL      0xB3
++#define ILI9488_CMD_DISPLAY_INVERSION_CONTROL       0xB4
++#define ILI9488_CMD_BLANKING_PORCH_CONTROL          0xB5
++#define ILI9488_CMD_DISPLAY_FUNCTION_CONTROL        0xB6
++#define ILI9488_CMD_ENTRY_MODE_SET                  0xB7
++#define ILI9488_CMD_BACKLIGHT_CONTROL_1             0xB9
++#define ILI9488_CMD_BACKLIGHT_CONTROL_2             0xBA
++#define ILI9488_CMD_HS_LANES_CONTROL                0xBE
++#define ILI9488_CMD_POWER_CONTROL_1                 0xC0
++#define ILI9488_CMD_POWER_CONTROL_2                 0xC1
++#define ILI9488_CMD_POWER_CONTROL_NORMAL_3          0xC2
++#define ILI9488_CMD_POWER_CONTROL_IDEL_4            0xC3
++#define ILI9488_CMD_POWER_CONTROL_PARTIAL_5         0xC4
++#define ILI9488_CMD_VCOM_CONTROL_1                  0xC5
++#define ILI9488_CMD_CABC_CONTROL_1                  0xC6
++#define ILI9488_CMD_CABC_CONTROL_2                  0xC8
++#define ILI9488_CMD_CABC_CONTROL_3                  0xC9
++#define ILI9488_CMD_CABC_CONTROL_4                  0xCA
++#define ILI9488_CMD_CABC_CONTROL_5                  0xCB
++#define ILI9488_CMD_CABC_CONTROL_6                  0xCC
++#define ILI9488_CMD_CABC_CONTROL_7                  0xCD
++#define ILI9488_CMD_CABC_CONTROL_8                  0xCE
++#define ILI9488_CMD_CABC_CONTROL_9                  0xCF
++#define ILI9488_CMD_NVMEM_WRITE                     0xD0
++#define ILI9488_CMD_NVMEM_PROTECTION_KEY            0xD1
++#define ILI9488_CMD_NVMEM_STATUS_READ               0xD2
++#define ILI9488_CMD_READ_ID4                        0xD3
++#define ILI9488_CMD_ADJUST_CONTROL_1                0xD7
++#define ILI9488_CMD_READ_ID_VERSION                 0xD8
++#define ILI9488_CMD_POSITIVE_GAMMA_CORRECTION       0xE0
++#define ILI9488_CMD_NEGATIVE_GAMMA_CORRECTION       0xE1
++#define ILI9488_CMD_DIGITAL_GAMMA_CONTROL_1         0xE2
++#define ILI9488_CMD_DIGITAL_GAMMA_CONTROL_2         0xE3
++#define ILI9488_CMD_SET_IMAGE_FUNCTION              0xE9
++#define ILI9488_CMD_ADJUST_CONTROL_2                0xF2
++#define ILI9488_CMD_ADJUST_CONTROL_3                0xF7
++#define ILI9488_CMD_ADJUST_CONTROL_4                0xF8
++#define ILI9488_CMD_ADJUST_CONTROL_5                0xF9
++#define ILI9488_CMD_SPI_READ_SETTINGS               0xFB
++#define ILI9488_CMD_ADJUST_CONTROL_6                0xFC
++#define ILI9488_CMD_ADJUST_CONTROL_7                0xFF
++
++/* ILI9488 memory access control flags */
++#define ILI9488_MY   BIT(7)   /* Row Address Order */
++#define ILI9488_MX   BIT(6)   /* Column Address Order */
++#define ILI9488_MV   BIT(5)   /* Row / Column Exchange */
++#define ILI9488_ML   BIT(4)   /* Vertical Refresh Order */
++#define ILI9488_BGR  BIT(3)   /* BGR Order, if set */
++#define ILI9488_MH   BIT(2)   /* Horizontal Refresh Order */
++
++static void rgb565_to_rgb666_line(void *dst, void *src, unsigned int pixels)
 +{
-+	bool swap_bytes = (bpw == 16 && mipi_dbi_machine_little_endian());
-+	size_t chunk, max_chunk = dbi->tx_buf9_len;
-+	struct spi_device *spi = dbi->spi;
-+	struct spi_transfer tr = {
-+		.tx_buf = dbi->tx_buf9,
-+		.bits_per_word = 8,
-+	};
-+	struct spi_message m;
-+	const u8 *src = buf;
-+	int i, ret;
-+	u8 *dst;
++	unsigned int x;
++	u8 *dst8 = dst;
++	u16 *src16 = src;
 +
-+	tr.speed_hz = mipi_dbi_spi_cmd_max_speed(spi, len);
-+	spi_message_init_with_transfers(&m, &tr, 1);
++	for (x = 0; x < pixels; x++) {
++		*dst8++ = (*src16 & 0xF800) >> 8;
++		*dst8++ = (*src16 & 0x07E0) >> 3;
++		*dst8++ = (*src16 & 0x001F) << 3;
++		src16++;
++	}
++}
 +
-+	if (!dc) {
-+		if (WARN_ON_ONCE(len != 1))
-+			return -EINVAL;
++/**
++ * copy_buffer - Copy a framebuffer, transforming it to RGB666
++ * @dst: The destination buffer
++ * @info: The source framebuffer
++ * @clip: Clipping rectangle of the area to be copied
++ */
++static void copy_buffer(u8 *dst, struct fb_info *info, struct fb_rect *clip)
++{
++	u16 *src = (u16 *)info->screen_base;
++	unsigned int height = clip->y2 - clip->y1;
++	unsigned int width = clip->x2 - clip->x1;
++	int y;
 +
-+		/* Command: pad no-op's (zeroes) at beginning of block */
-+		dst = dbi->tx_buf9;
-+		memset(dst, 0, 9);
-+		dst[8] = *src;
-+		tr.len = 9;
++	src += clip->y1 * info->xres + clip->x1;
++	for (y = 0; y < height; y++) {
++		rgb565_to_rgb666_line(dst, src, width);
++		dst += info->xres * 3;   /* u8 single byte */
++		src += info->xres;   /* u16 just doubled */
++	}
++}
 +
-+		return spi_sync(spi, &m);
++static void ili9488_set_window_address(struct mipi_dbi_dev *dbidev,
++				       unsigned int xs, unsigned int xe,
++				       unsigned int ys, unsigned int ye)
++{
++	struct mipi_dbi *dbi = &dbidev->dbi;
++
++	xs += dbidev->mode.left_margin;
++	xe += dbidev->mode.left_margin;
++	ys += dbidev->mode.upper_margin;
++	ye += dbidev->mode.upper_margin;
++
++	mipi_dbi_command(dbi, ILI9488_CMD_COLUMN_ADDRESS_SET, (xs >> 8) & 0xff,
++			xs & 0xff, (xe >> 8) & 0xff, xe & 0xff);
++	mipi_dbi_command(dbi, ILI9488_CMD_PAGE_ADDRESS_SET, (ys >> 8) & 0xff,
++			ys & 0xff, (ye >> 8) & 0xff, ye & 0xff);
++}
++
++static void ili9488_fb_dirty(struct mipi_dbi_dev *dbidev,
++			     struct fb_info *info, struct fb_rect *rect)
++{
++	unsigned int height = rect->y2 - rect->y1;
++	unsigned int width = rect->x2 - rect->x1;
++	struct mipi_dbi *dbi = &dbidev->dbi;
++	int ret;
++	void *tr;
++
++	tr = dbidev->tx_buf;
++	copy_buffer(tr, info, rect);
++
++	ili9488_set_window_address(dbidev, rect->x1, rect->x2 - 1, rect->y1, rect->y2 - 1);
++	ret = mipi_dbi_command_buf(dbi, ILI9488_CMD_MEMORY_WRITE, tr, width * height * 3);
++	if (ret)
++		pr_err_once("Failed to update display %d\n", ret);
++
++	dbidev->damage.x1 = 0;
++	dbidev->damage.y1 = 0;
++	dbidev->damage.x2 = 0;
++	dbidev->damage.y2 = 0;
++}
++
++static void ili9488_fb_flush(struct fb_info *info)
++{
++	struct mipi_dbi_dev *dbidev = container_of(info, struct mipi_dbi_dev, info);
++
++	if (!dbidev->damage.x2 || !dbidev->damage.y2) {
++		dbidev->damage.x1 = 0;
++		dbidev->damage.y1 = 0;
++		dbidev->damage.x2 = info->xres;
++		dbidev->damage.y2 = info->yres;
 +	}
 +
-+	/* max with room for adding one bit per byte */
-+	max_chunk = max_chunk / 9 * 8;
-+	/* but no bigger than len */
-+	max_chunk = min(max_chunk, len);
-+	/* 8 byte blocks */
-+	max_chunk = max_t(size_t, 8, max_chunk & ~0x7);
++	ili9488_fb_dirty(dbidev, info, &dbidev->damage);
++}
 +
-+	while (len) {
-+		size_t added = 0;
++static void ili9488_fb_enable(struct fb_info *info)
++{
++	struct mipi_dbi_dev *dbidev = container_of(info, struct mipi_dbi_dev, info);
++	struct mipi_dbi *dbi = &dbidev->dbi;
++	u8 addr_mode;
++	int ret;
 +
-+		chunk = min(len, max_chunk);
-+		len -= chunk;
-+		dst = dbi->tx_buf9;
-+
-+		if (chunk < 8) {
-+			u8 val, carry = 0;
-+
-+			/* Data: pad no-op's (zeroes) at end of block */
-+			memset(dst, 0, 9);
-+
-+			if (swap_bytes) {
-+				for (i = 1; i < (chunk + 1); i++) {
-+					val = src[1];
-+					*dst++ = carry | BIT(8 - i) | (val >> i);
-+					carry = val << (8 - i);
-+					i++;
-+					val = src[0];
-+					*dst++ = carry | BIT(8 - i) | (val >> i);
-+					carry = val << (8 - i);
-+					src += 2;
-+				}
-+				*dst++ = carry;
-+			} else {
-+				for (i = 1; i < (chunk + 1); i++) {
-+					val = *src++;
-+					*dst++ = carry | BIT(8 - i) | (val >> i);
-+					carry = val << (8 - i);
-+				}
-+				*dst++ = carry;
-+			}
-+
-+			chunk = 8;
-+			added = 1;
-+		} else {
-+			for (i = 0; i < chunk; i += 8) {
-+				if (swap_bytes) {
-+					*dst++ =                 BIT(7) | (src[1] >> 1);
-+					*dst++ = (src[1] << 7) | BIT(6) | (src[0] >> 2);
-+					*dst++ = (src[0] << 6) | BIT(5) | (src[3] >> 3);
-+					*dst++ = (src[3] << 5) | BIT(4) | (src[2] >> 4);
-+					*dst++ = (src[2] << 4) | BIT(3) | (src[5] >> 5);
-+					*dst++ = (src[5] << 3) | BIT(2) | (src[4] >> 6);
-+					*dst++ = (src[4] << 2) | BIT(1) | (src[7] >> 7);
-+					*dst++ = (src[7] << 1) | BIT(0);
-+					*dst++ = src[6];
-+				} else {
-+					*dst++ =                 BIT(7) | (src[0] >> 1);
-+					*dst++ = (src[0] << 7) | BIT(6) | (src[1] >> 2);
-+					*dst++ = (src[1] << 6) | BIT(5) | (src[2] >> 3);
-+					*dst++ = (src[2] << 5) | BIT(4) | (src[3] >> 4);
-+					*dst++ = (src[3] << 4) | BIT(3) | (src[4] >> 5);
-+					*dst++ = (src[4] << 3) | BIT(2) | (src[5] >> 6);
-+					*dst++ = (src[5] << 2) | BIT(1) | (src[6] >> 7);
-+					*dst++ = (src[6] << 1) | BIT(0);
-+					*dst++ = src[7];
-+				}
-+
-+				src += 8;
-+				added++;
-+			}
-+		}
-+
-+		tr.len = chunk + added;
-+
-+		ret = spi_sync(spi, &m);
-+		if (ret)
-+			return ret;
++	if (!info->mode) {
++		dev_err(dbidev->dev, "No valid mode found\n");
++		return;
 +	}
++
++	if (dbidev->backlight_node && !dbidev->backlight) {
++		dbidev->backlight = of_backlight_find(dbidev->backlight_node);
++		if (!dbidev->backlight)
++			dev_warn(dbidev->dev, "backlight not available\n");
++		else
++			backlight_set_brightness_default(dbidev->backlight);
++	}
++
++	ret = mipi_dbi_poweron_conditional_reset(dbidev);
++	if (ret < 0) {
++		dev_err(dbidev->dev, "power_on_conditional error\n");
++		return;
++	}
++
++	/* already powerd */
++	if (ret == 1)
++		dev_dbg(dbidev->dev, "display was not reset, already powered on\n");
++
++	mipi_dbi_command(dbi, ILI9488_CMD_DISP_INVERSION_ON);
++	mipi_dbi_command(dbi, ILI9488_CMD_POWER_CONTROL_NORMAL_3, 0x33);
++	mipi_dbi_command(dbi, ILI9488_CMD_FRAME_RATE_CONTROL_NORMAL, 0xB0);
++	mipi_dbi_command(dbi, ILI9488_CMD_MEMORY_ACCESS_CONTROL, 0x28);
++
++	mipi_dbi_command(dbi, MIPI_DCS_SET_PIXEL_FORMAT, MIPI_DCS_PIXEL_FMT_18BIT);
++	mipi_dbi_command(dbi, MIPI_DCS_EXIT_SLEEP_MODE);
++	mdelay(120);
++	mipi_dbi_command(dbi, MIPI_DCS_SET_DISPLAY_ON);
++	mdelay(100);
++
++	switch (dbidev->rotation) {
++	case 270:
++		addr_mode = ILI9488_MX | ILI9488_MY | ILI9488_MV | ILI9488_ML;
++		break;
++	case 180:
++		addr_mode = ILI9488_MY | ILI9488_ML;
++		break;
++	case 90:
++		addr_mode = ILI9488_MV;
++		break;
++	case 0:
++	default:
++		addr_mode = ILI9488_MX;
++		break;
++	}
++
++	addr_mode |= ILI9488_BGR;
++	mipi_dbi_command(dbi, ILI9488_CMD_MEMORY_ACCESS_CONTROL, addr_mode);
++
++	ili9488_fb_flush(info);
++}
++
++static struct fb_ops ili9488_fb_ops = {
++	.fb_enable = ili9488_fb_enable,
++	.fb_disable = mipi_dbi_fb_disable,
++	.fb_damage = mipi_dbi_fb_damage,
++	.fb_flush =  ili9488_fb_flush,
++};
++
++static int ili9488_dbi_dev_init(struct mipi_dbi_dev *dbidev,
++				struct fb_ops *ops,
++				struct fb_videomode *mode)
++{
++	struct fb_info *info = &dbidev->info;
++
++	info->mode = mode;
++	info->fbops = ops;
++	info->dev.parent = dbidev->dev;
++
++	info->xres = mode->xres;
++	info->yres = mode->yres;
++
++	info->bits_per_pixel = 16;
++	info->line_length = info->xres * 2;
++	info->screen_size = info->xres * info->yres * 2;
++	info->screen_base = dma_zalloc(info->screen_size);
++	if (!info->screen_base)
++		return -ENOMEM;
++
++	dbidev->tx_buf = dma_alloc(info->xres * info->yres * 3);
++	if (!dbidev->tx_buf)
++		return -ENOMEM;
++
++	info->red.length = 5;
++	info->red.offset = 11;
++
++	info->green.length = 6;
++	info->green.offset = 5;
++
++	info->blue.length = 5;
++	info->blue.offset = 0;
++
++	dev_dbg(dbidev->dev,
++			"bit per pixel: %d\n"
++			"line_length: %d\n"
++			"screen_base: %p\n"
++			"screen_size: %ld\n"
++			"tx_buf %d\n",
++			info->bits_per_pixel,
++			info->line_length,
++			info->screen_base,
++			info->screen_size,
++			info->xres * info->yres * 3);
 +
 +	return 0;
 +}
 +
-+/**
-+ * mipi_dbi_spi1_transfer - MIPI DBI Type C Option 1 SPI transfer
-+ * @dbi: MIPI DBI structure
-+ * @dc: Data/Command flag (0 = command, 1 = data)
-+ * @buf: Buffer containing command or pixel data
-+ * @len: Number of bytes in @buf
-+ * @bpw: Source bits-per-word (8 or 16)
-+ *
-+ * Perform a MIPI DBI Type C Option 1 transfer using native 9-bit SPI words
-+ * when supported by the SPI controller. The most significant bit of each
-+ * SPI word is used as the Data/Command bit.
-+ *
-+ * If the SPI controller does not support 9 bits-per-word, this function
-+ * automatically falls back to mipi_dbi_spi1e_transfer(), which emulates
-+ * 9-bit transfers using an 8-bit SPI interface.
-+ *
-+ * Return: 0 on success, or a negative error code on failure.
-+ */
-+int mipi_dbi_spi1_transfer(struct mipi_dbi *dbi, int dc, const void *buf,
-+			   size_t len, unsigned int bpw)
++/* SPI */
++static int ili9488_typec1_command(struct mipi_dbi *dbi,
++				  u8 *cmd, u8 *parameters,
++				  size_t num)
 +{
-+	struct spi_device *spi = dbi->spi;
-+	struct spi_transfer tr = {
-+		.bits_per_word = 9,
-+	};
-+	const u16 *src16 = buf;
-+	const u8 *src8 = buf;
-+	struct spi_message m;
-+	size_t max_chunk;
-+	u16 *dst16;
 +	int ret;
-+
-+	if (!spi_is_bpw_supported(spi, 9))
-+		return mipi_dbi_spi1e_transfer(dbi, dc, buf, len, bpw);
-+
-+	tr.speed_hz = mipi_dbi_spi_cmd_max_speed(spi, len);
-+	max_chunk = dbi->tx_buf9_len;
-+	dst16 = dbi->tx_buf9;
-+
-+	max_chunk = min(max_chunk / 2, len);
-+
-+	spi_message_init_with_transfers(&m, &tr, 1);
-+	tr.tx_buf = dst16;
-+
-+	while (len) {
-+		size_t chunk = min(len, max_chunk);
-+		unsigned int i;
-+
-+		if (bpw == 16 && mipi_dbi_machine_little_endian()) {
-+			for (i = 0; i < (chunk * 2); i += 2) {
-+				dst16[i] = *src16 >> 8;
-+				dst16[i + 1] = *src16++ & 0xFF;
-+				if (dc) {
-+					dst16[i] |= 0x0100;
-+					dst16[i + 1] |= 0x0100;
-+				}
-+			}
-+		} else {
-+			for (i = 0; i < chunk; i++) {
-+				dst16[i] = *src8++;
-+				if (dc)
-+					dst16[i] |= 0x0100;
-+			}
-+		}
-+
-+		tr.len = chunk * 2;
-+		len -= chunk;
-+
-+		ret = spi_sync(spi, &m);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL(mipi_dbi_spi1_transfer);
-+
-+static int mipi_dbi_typec1_command(struct mipi_dbi *dbi, u8 *cmd,
-+				   u8 *parameters, size_t num)
-+{
-+	unsigned int bpw = (*cmd == MIPI_DCS_WRITE_MEMORY_START) ? 16 : 8;
-+	int ret;
-+
-+	if (mipi_dbi_command_is_read(dbi, *cmd))
-+		return -ENOTSUPP;
-+
-+	MIPI_DBI_DEBUG_COMMAND(*cmd, parameters, num);
 +
 +	ret = mipi_dbi_spi1_transfer(dbi, 0, cmd, 1, 8);
 +	if (ret || !num)
 +		return ret;
 +
-+	return mipi_dbi_spi1_transfer(dbi, 1, parameters, num, bpw);
++	/*
++	 * ILI9488 uses RGB666 (3 bytes per pixel) so pixel data is
++	 * transferred as a byte stream, not as 16-bit words.
++	 */
++	return mipi_dbi_spi1_transfer(dbi, 1, parameters, num, 8);
 +}
 +
- static int mipi_dbi_typec3_command(struct mipi_dbi *dbi, u8 *cmd,
- 				   u8 *par, size_t num)
- {
-@@ -680,13 +919,19 @@ int mipi_dbi_spi_init(struct spi_device *spi, struct mipi_dbi *dbi,
- 	dbi->spi = spi;
- 	dbi->read_commands = mipi_dbi_dcs_read_commands;
- 
--	if (!dc) {
--		dev_dbg(dev, "MIPI DBI Type-C 1 unsupported\n");
--		return -ENOSYS;
-+	if (dc) {
-+		dev_dbg(dev, "MIPI DBI Type-C 3\n");
-+		dbi->command = mipi_dbi_typec3_command;
-+		dbi->dc = dc;
++static int ili9488_dbi_get_mode(struct mipi_dbi_dev *dbidev,
++				struct fb_videomode *mode)
++{
++	struct device *dev = dbidev->dev;
++	int ret;
++
++	ret = of_get_display_timing(dev->of_node, "panel-timing", mode);
++	if (ret) {
++		dev_err(dev, "%pOF: failed to get panel-timing (error=%d)\n",
++			dev->of_node, ret);
++		return ret;
++	}
++
++	/*
++	 * Make sure width and height are set and that only back porch and
++	 * pixelclock are set in the other timing values. Also check that
++	 * width and height don't exceed the 16-bit value specified by MIPI DCS.
++	 */
++	if (!mode->xres || !mode->yres || mode->display_flags ||
++		mode->right_margin || mode->hsync_len ||
++		(mode->left_margin + mode->xres) > 0xffff ||
++		mode->lower_margin || mode->vsync_len ||
++		(mode->upper_margin + mode->yres) > 0xffff) {
++		dev_err(dev, "%pOF: panel-timing out of bounds\n", dev->of_node);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++static int ili9488_probe(struct device *dev)
++{
++	struct mipi_dbi_dev *dbidev;
++	struct spi_device *spi = to_spi_device(dev);
++	struct mipi_dbi *dbi;
++	struct fb_info *info;
++	int ret;
++	struct fb_videomode *ili9488_mode;
++
++	dbidev = kzalloc(sizeof(*dbidev), GFP_KERNEL);
++	if (!dbidev)
++		return -ENOMEM;
++
++	dbidev->dev = dev;
++	dbi = &dbidev->dbi;
++
++	ret = ili9488_dbi_get_mode(dbidev, &dbidev->mode);
++	if (ret)
++		return ret;
++
++	ili9488_mode = &dbidev->mode;
++	dbidev->regulator = regulator_get(dev, "power");
++	if (IS_ERR(dbidev->regulator))
++		return dev_err_probe(dev, PTR_ERR(dbidev->regulator),
++							 "Failed to get regulator 'power'\n");
++
++	dbidev->backlight_node = of_parse_phandle(dev->of_node, "backlight", 0);
++
++	dbi->reset = gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
++	if (IS_ERR(dbi->reset))
++		return dev_errp_probe(dev, dbi->reset, "Failed to get GPIO 'reset'\n");
++
++	ret = of_property_read_u32(dev->of_node, "rotation", &dbidev->rotation);
++	if (ret) {
++		dev_warn(dev, "Missing LCD rotation property. Set to 270 degs\n");
++		dbidev->rotation = 270;
 +	} else {
-+		dev_dbg(dev, "MIPI DBI Type-C 1\n");
-+		dbi->command = mipi_dbi_typec1_command;
-+		dbi->tx_buf9_len = SZ_16K;
-+		dbi->tx_buf9 = devm_kmalloc(dev, dbi->tx_buf9_len, GFP_KERNEL);
-+		if (!dbi->tx_buf9)
-+			return -ENOMEM;
- 	}
- 
--	dbi->command = mipi_dbi_typec3_command;
--	dbi->dc = dc;
- 	if (mipi_dbi_machine_little_endian() && !spi_is_bpw_supported(spi, 16))
- 		dbi->swap_bytes = true;
- 
-diff --git a/include/video/mipi_dbi.h b/include/video/mipi_dbi.h
-index c1c2a620ed..42ca8a6332 100644
---- a/include/video/mipi_dbi.h
-+++ b/include/video/mipi_dbi.h
-@@ -54,6 +54,16 @@ struct mipi_dbi {
- 	 */
- 	struct gpio_desc *dc;
- 
-+	/**
-+	 * @tx_buf9: Buffer used for option 1 9-bit conversion
-+	 */
-+	void *tx_buf9;
++		dev_dbg(dev, "LCD rotation: %d",  dbidev->rotation);
++	}
 +
-+	/**
-+	 * @tx_buf9_len: Size of tx_buf9
-+	 */
-+	size_t tx_buf9_len;
++	/* spi */
++	ret = mipi_dbi_spi_init(spi, dbi, NULL);
++	if (ret)
++		return ret;
 +
- 	struct list_head list;
- };
- 
-@@ -143,6 +153,8 @@ int mipi_dbi_command_read(struct mipi_dbi *dbi, u8 cmd, u8 *val);
- int mipi_dbi_command_buf(struct mipi_dbi *dbi, u8 cmd, u8 *data, size_t len);
- int mipi_dbi_command_stackbuf(struct mipi_dbi *dbi, u8 cmd, const u8 *data,
- 			      size_t len);
-+int mipi_dbi_spi1_transfer(struct mipi_dbi *dbi, int dc, const void *buf,
-+			   size_t len, unsigned int bpw);
- 
- /**
-  * mipi_dbi_command - MIPI DCS command with optional parameter(s)
++	dbi->read_commands = NULL;
++
++	/*
++	 * SPI transfer function need an override. Display wf35 accepts only
++	 * RGB111 or RGB666 and the last is 24 bit transfer per pixel so
++	 * mipi dbi typec1 requires 24 bits per word.
++	 */
++	dbi->command = ili9488_typec1_command;
++
++	info = &dbidev->info;
++	ret = ili9488_dbi_dev_init(dbidev, &ili9488_fb_ops, ili9488_mode);
++	if (ret)
++		return ret;
++
++	ret = register_framebuffer(info);
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "Failed to register framebuffer\n");
++
++	dev_dbg(dev, "Driver ilitek 9488 loaded\n");
++	return 0;
++}
++
++static const struct of_device_id ili9488_of_match[] = {
++	{
++		.compatible = "winstar,wf35-320480ud",
++	}, {
++		.compatible = "ilitek,ili9488",
++	},
++	{ }
++};
++MODULE_DEVICE_TABLE(of, ili9488_of_match);
++
++static struct driver ili9488_driver = {
++	.name = "ili9488",
++	.of_compatible = ili9488_of_match,
++	.probe = ili9488_probe,
++};
++device_spi_driver(ili9488_driver);
++
++MODULE_AUTHOR("Giandomenico Rossi <rossi@amelchem.com>");
++MODULE_DESCRIPTION("ILI9488 LCD panel driver");
++MODULE_LICENSE("GPL v2");
 -- 
 2.34.1
 
