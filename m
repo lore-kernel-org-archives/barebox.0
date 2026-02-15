@@ -1,74 +1,65 @@
-Delivery-date: Fri, 13 Feb 2026 20:13:42 +0100
+Delivery-date: Sun, 15 Feb 2026 17:55:54 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vqybl-001LcX-0d
+	id 1vrfPV-0021f1-1r
 	for lore@lore.pengutronix.de;
-	Fri, 13 Feb 2026 20:13:42 +0100
+	Sun, 15 Feb 2026 17:55:54 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vqybk-0007US-OI
-	for lore@pengutronix.de; Fri, 13 Feb 2026 20:13:42 +0100
+	id 1vrfPV-0005zk-4y
+	for lore@pengutronix.de; Sun, 15 Feb 2026 17:55:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
-	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=XYPhX45FkObr3NpbZFKsQ4fWQ4fkP5KtayyN7FprhTY=; b=hh47E5s2T4DEDU
-	itOAl3naq+6DzQKVTZDBoaAdkot6PjQhuGevP6wfLSN23aOrTjdBVzYAHSh6fdvYOtXk34UVzNPMl
-	aL9k2XpV13IpLvZeZ2z6cmO/wKs8gwhYT4oGkW0Kgn5rNUrFpd8JGgj7CkJMrBezVkeZ68pLRjaJy
-	cBRoYahiYgu1NrlBjWzQBW3kU0MBLkLfzVNB0mhpXpARuOrk7bzlUlSsqUUDjjf/8ldVvhIVqsXxb
-	UVXN5npJGksR+G56dv7JPKq8CikjLQwk4KPctWK478j90/lLfmF5qfM1GAaLoqNUh/4gIftxLOuoJ
-	DlnOUMWtWZA1z/IYknmA==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=LQOSsVrHeMfGJvhacN5xh7mCj3tmWmh7nlfmyapNe+M=; b=0VwmRW+60o4mJVkmcWvibW+XCA
+	P00yVY6RAkYVj0extUBGm+qnyivqlURUL75IinBDxlE19wg9VjX5TnCMvk1ICVe7Ri+Yloez5RmwB
+	F9zfGYR1n3cWLX9+l4+0NWEAnncyCloVdfP8co5MpnJog882Kh3HXQF7hEp8F7H5wmIPbJvIjZGEu
+	HwfjMfAxAqhqHHyC7vKaX+sKDXycGwFgAW/35DE27ZMmdTtCIdz8QMUIxbqqN8GN3yxaFnrDAXytT
+	3PJY+KnSVlNT5bok5ttmXCrPW/rH/xF8CNsK+CcB6oYvlLuntEsUSaDW/ZG6h3aFVcL9+YiRz+8OS
+	pEYEvzrQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vqybB-00000003pis-2WtV;
-	Fri, 13 Feb 2026 19:13:05 +0000
-Received: from www153.your-server.de ([213.133.104.153])
+	id 1vrfOj-00000005X5O-0wvr;
+	Sun, 15 Feb 2026 16:55:05 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vqyb6-00000003pgD-3HwP
+	id 1vrfOf-00000005X4k-0TAU
 	for barebox@lists.infradead.org;
-	Fri, 13 Feb 2026 19:13:04 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=amelchem.com; s=default2004; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=XYPhX45FkObr3NpbZFKsQ4fWQ4fkP5KtayyN7FprhTY=; b=FPzXEp0EbAI98LmkLGQ7ewh5l6
-	/KS/a1xkyEGwRXpiIzCUqFoWDm0nNivlLJhrmPMUiWKjgFxRy0UMvB8l7rd+rJqZ3eLz+H7JQ8YhE
-	52NDpZ/4Yz02F3Nc4EVf4meXlh7/4h/sMh78Muc9aFMC/kSFVeNlhwYuNL+bd8wYejVEINfJ6CmiP
-	mKySl4RXSZcom2sglEOXF+iW5eQfXrHsOu7rvAZjl/TDQK74sNToQO21kVeQOyp+quOXvAiSmWe7q
-	LVqER2kWA5vMwgMCGun2JDq0ph5Xtzi43w7VUamNubivdjrZnUMB6vo1BL2/73nk5VAXhS+49ZPPI
-	eh5sGC5w==;
-Received: from sslproxy08.your-server.de ([78.47.166.52])
-	by www153.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <rossi@amelchem.com>)
-	id 1vqyay-000HNm-0K;
-	Fri, 13 Feb 2026 20:12:52 +0100
-Received: from localhost ([127.0.0.1])
-	by sslproxy08.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	Sun, 15 Feb 2026 16:55:03 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vrfOb-0005s1-48; Sun, 15 Feb 2026 17:54:57 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <rossi@amelchem.com>)
-	id 1vqyax-000J4V-1w;
-	Fri, 13 Feb 2026 20:12:52 +0100
-From: Giandomenico Rossi <rossi@amelchem.com>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vrfOZ-000vZ9-1r;
+	Sun, 15 Feb 2026 17:54:56 +0100
+Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vrfOa-0000000B3Tq-3RUP;
+	Sun, 15 Feb 2026 17:54:56 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Fri, 13 Feb 2026 20:12:47 +0100
-Message-Id: <20260213191247.1671231-5-rossi@amelchem.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260213191247.1671231-1-rossi@amelchem.com>
-References: <20260213191247.1671231-1-rossi@amelchem.com>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Sun, 15 Feb 2026 17:53:59 +0100
+Message-ID: <20260215165451.2634532-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27911/Fri Feb 13 08:25:28 2026)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260213_111301_129571_895A4C7B 
-X-CRM114-Status: GOOD (  22.83  )
+X-CRM114-CacheID: sfid-20260215_085501_462465_9B3973A5 
+X-CRM114-Status: GOOD (  24.46  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,576 +71,520 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Nicola Fontana <ntd@entidi.it>, Giandomenico Rossi <rossi@amelchem.com>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v1 4/4] video: add Ilitek ILI9488 driver for WF35 panel
+Subject: [PATCH v2] ARM: add RELR relocation packing support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This adds support for the WF35-320480UD TFT panel using the Ilitek
-ILI9488 controller over SPI with MIPI DBI Type C Option 1 interface.
-The panel requires 9-bit transfers and outputs 320x480 RGB666 (18-bit)
-pixel format.
+RELR is a compact format for storing relative relocations that
+significantly reduces binary size. Add both the Kbuild/Kconfig
+infrastructure and runtime relocation applying code for ARM32
+and ARM64.
 
-The driver implements:
-- RGB565 to RGB666 framebuffer conversion
-- Custom SPI transfer function using mipi_dbi_spi1_transfer()
-- Framebuffer registration with standard fb_ops
-- Backlight control via device tree node
-- Rotation support via "rotation" property in the device tree
+RELR entries use a compressed encoding: address entries (even LSB)
+encode one relocation and bitmap entries (odd LSB) encode up to
+63 (64-bit) or 31 (32-bit) subsequent relocations each.
 
-Device Tree binding:
-- Documentation/devicetree/bindings/video/panel-ilitek-ili9488.yaml
+Both the PBL self-relocation path (relocate_to_current_adr) and the
+ELF loading path (elf_apply_relocations) handle RELR alongside
+traditional RELA/REL relocations. Either relocation type may be
+present independently, as the linker may convert all entries to
+RELR format.
 
-Signed-off-by: Giandomenico Rossi <rossi@amelchem.com>
-Signed-off-by: Nicola Fontana <ntd@entidi.it>
+How much is saved in image size depends on how big the blobs are
+that are included in the barebox image.
+Some numbers with aarch64-v8a-linux-gnu-gcc v15.2.1[1]:
+
+					  (Image sizes in KiB)
+ image                       Compression  RELA  RELR  Savings
+ barebox-dt-2nd.img          LZ4          1243  1047  196 (15.8%)
+ barebox-nxp-imx8mn-evk.img  LZ4           923   853   70 ( 7.6%)
+ barebox-nxp-imx8mn-evk.img  XZ            677   655   20 ( 3.0%)
+
+barebox-dt-2nd.img is from multi_v8_defconfig and
+barebox-nxp-imx8mn-evk.img is configured a stripped down EVK-only config.
+
+The .relr.dyn section is placed directly after .rel_dyn_end in the
+PBL linker script to prepare for a future ELF rewriter that converts
+RELA to RELR in-place for platforms lacking full toolchain support.
+
+For barebox proper, the rewriter can operate via PT_DYNAMIC, updating
+DT_RELA, DT_RELASZ and adding DT_RELR, DT_RELRSZ entries to point at
+the RELR data written into the space freed by shrinking the RELA table.
+
+[1]: OSELAS.Toolchain-2025.11.1 15-20260124
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/video/Kconfig                |  10 +
- drivers/video/Makefile               |   1 +
- drivers/video/panel-ilitek-ili9488.c | 490 +++++++++++++++++++++++++++
- 3 files changed, 501 insertions(+)
- create mode 100644 drivers/video/panel-ilitek-ili9488.c
+v1 -> v2:
+  - fix s/relsz/relrsz/ in ARM32 EFL relocation code
+---
+ Makefile                           |  6 +++
+ arch/Kconfig                       | 16 ++++++-
+ arch/arm/Kconfig                   |  1 +
+ arch/arm/cpu/common.c              |  9 +++-
+ arch/arm/cpu/sections.c            |  2 +
+ arch/arm/include/asm/barebox.lds.h |  3 ++
+ arch/arm/include/asm/sections.h    |  2 +
+ arch/arm/lib32/reloc.c             | 23 +++++++---
+ arch/arm/lib64/reloc.c             | 23 +++++++---
+ include/asm-generic/reloc.h        |  2 +
+ include/lib/elf.h                  |  2 +
+ include/linux/elf.h                |  9 ++++
+ lib/Kconfig                        |  7 +++
+ lib/Makefile                       |  1 +
+ lib/elf.c                          | 37 ++++++++++++++++
+ lib/reloc.c                        | 68 ++++++++++++++++++++++++++++++
+ scripts/tools-support-relr.sh      | 21 +++++++++
+ 17 files changed, 216 insertions(+), 16 deletions(-)
+ create mode 100644 lib/reloc.c
+ create mode 100755 scripts/tools-support-relr.sh
 
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index 3f65f745eb..d9f49724c8 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -191,6 +191,16 @@ config DRIVER_VIDEO_SIMPLE_PANEL
- 	  nodes so that it's not necessary to keep a list of all known displays
- 	  with their corresponding timings in barebox.
+diff --git a/Makefile b/Makefile
+index 4296c97ef02d..fa034605375d 100644
+--- a/Makefile
++++ b/Makefile
+@@ -675,6 +675,12 @@ ifdef need-config
+ include include/config/auto.conf
+ endif
  
-+config DRIVER_VIDEO_PANEL_ILITEK_ILI9488
-+	bool "Ilitek ILI9488 480x320 LCD panels"
-+	select DRIVER_VIDEO_MIPI_DBI
-+	depends on OFDEVICE
++ifeq ($(CONFIG_RELR),y)
++# ld.lld before 15 did not support -z pack-relative-relocs.
++LDFLAGS_barebox += $(call ld-option,--pack-dyn-relocs=relr,-z pack-relative-relocs)
++LDFLAGS_pbl += $(call ld-option,--pack-dyn-relocs=relr,-z pack-relative-relocs)
++endif
++
+ # We need some generic definitions.
+ include $(srctree)/scripts/Makefile.lib
+ 
+diff --git a/arch/Kconfig b/arch/Kconfig
+index ba9dd0e6f4df..e385b3bdb97c 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -47,7 +47,19 @@ config BOARD_GENERIC_FIT
+ 	  Note that this option requires python3 and its libfdt module to be
+ 	  installed on the build host.
+ 
+-endmenu
++# Select if the architecture has support for applying RELR relocations.
++config ARCH_HAS_RELR
++	bool
++
++config RELR
++	bool "Use RELR relocation packing"
++	depends on ARCH_HAS_RELR && TOOLS_SUPPORT_RELR
++	default y
 +	help
-+	  Say Y here if you want to enable support for Ilitek IL9488
-+	  This drivers is for panels such as the WF35-320480UD, operating in
-+	  RGB666 (18-bit) pixel format via SPI.
-+	  Supports MIPI DBI type C1 interface.
++	  Store the dynamic relocations in the RELR relocation packing
++	  format. Requires a compatible linker (LLD supports this feature), as
++	  well as compatible NM and OBJCOPY utilities (llvm-nm and llvm-objcopy
++	  are compatible).
+ 
+ config ARCH_HAS_CTRLC
+ 	bool
+@@ -142,3 +154,5 @@ config ARCH_HAS_FORTIFY_SOURCE
+ 	help
+ 	  An architecture should select this when it can successfully
+ 	  build and run with CONFIG_FORTIFY_SOURCE.
 +
- config DRIVER_VIDEO_PANEL_ILITEK_ILI9341
- 	tristate "Ilitek ILI9341 240x320 QVGA panels"
- 	depends on OFTREE && SPI
-diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-index 594c29f150..7b10eda0d8 100644
---- a/drivers/video/Makefile
-+++ b/drivers/video/Makefile
-@@ -13,6 +13,7 @@ obj-$(CONFIG_DRIVER_VIDEO_SIMPLE_PANEL) += simple-panel.o
- obj-$(CONFIG_DRIVER_VIDEO_MIPI_DBI) += mipi_dbi.o
- obj-$(CONFIG_DRIVER_VIDEO_MIPI_DSI) += mipi_dsi.o
- obj-$(CONFIG_DRIVER_VIDEO_PANEL_ILITEK_ILI9341) += panel-ilitek-ili9341.o
-+obj-$(CONFIG_DRIVER_VIDEO_PANEL_ILITEK_ILI9488) += panel-ilitek-ili9488.o
- obj-$(CONFIG_DRIVER_VIDEO_PANEL_MIPI_DBI) += panel-mipi-dbi.o
- obj-$(CONFIG_DRIVER_VIDEO_PANEL_SITRONIX_ST7789V) += panel-sitronix-st7789v.o
- obj-$(CONFIG_DRIVER_VIDEO_PANEL_SITRONIX_ST7703) += panel-sitronix-st7703.o
-diff --git a/drivers/video/panel-ilitek-ili9488.c b/drivers/video/panel-ilitek-ili9488.c
-new file mode 100644
-index 0000000000..0f4080fb93
---- /dev/null
-+++ b/drivers/video/panel-ilitek-ili9488.c
-@@ -0,0 +1,490 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Ilitek ILI9488 TFT LCD driver for WF35-320480UD panel.
-+ *
-+ * Supports MIPI DBI Type C Option 1 SPI interface with 9-bit transfers.
-+ *
-+ * Copyright (C) 2026 Giandomenico Rossi <rossi@amelchem.com>
-+ * Copyright (C) 2026 Nicola Fontana <ntd@entidi.it>
-+ * Copyright (C) 2026 Amel s.r.l
-+ */
++endmenu
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index c7514acb775f..17f01c884efa 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -36,6 +36,7 @@ config ARM32
+ 
+ config ARM64
+ 	def_bool CPU_64
++	select ARCH_HAS_RELR
+ 
+ config ARCH_TEXT_BASE
+ 	hex
+diff --git a/arch/arm/cpu/common.c b/arch/arm/cpu/common.c
+index e86c89f80835..ccadb05ed931 100644
+--- a/arch/arm/cpu/common.c
++++ b/arch/arm/cpu/common.c
+@@ -55,12 +55,19 @@ void pbl_barebox_break(void)
+ 
+ void __prereloc relocate_to_current_adr(void)
+ {
+-	relocate_image(get_runtime_offset(),
++	unsigned long offset = get_runtime_offset();
 +
-+#include <common.h>
-+#include <linux/bitops.h>
-+#include <linux/gpio/consumer.h>
-+#include <of.h>
-+#include <regulator.h>
-+#include <spi/spi.h>
-+#include <video/backlight.h>
-+#include <video/vpl.h>
-+#include <video/mipi_dbi.h>
++	relocate_image(offset,
+ 		       runtime_address(__rel_dyn_start),
+ 		       runtime_address(__rel_dyn_end),
+ 		       runtime_address(__dynsym_start),
+ 		       runtime_address(__dynsym_end));
+ 
++	if (IS_ENABLED(CONFIG_RELR))
++		relocate_relr(offset,
++			      runtime_address(__relr_dyn_start),
++			      runtime_address(__relr_dyn_end));
 +
-+#include <video/mipi_display.h>
-+
-+/**
-+ * DOC: overview
-+ *
-+ * This driver supports the MIPI DBI Type C Option 1 SPI interface with
-+ * 9-bit transfers required by this panel.
-+ *
-+ * Features:
-+ * - 320x480 resolution with 18-bit RGB666 pixel format
-+ * - Custom SPI transfer using mipi_dbi_spi1_transfer() for 9-bit SPI support
-+ * - Framebuffer support with RGB565 to RGB666 conversion
-+ * - Backlight control via device tree backlight node
-+ *
-+ * This driver is designed specifically for the WF35-320480UD panel
-+ * by Amel s.r.l, which uses the Ilitek ILI9488 controller chip.
-+ *
-+ * Device Tree binding documentation:
-+ * Documentation/devicetree/bindings/video/panel-ilitek-ili9488.yaml
-+ */
-+
-+/* Level 1 commands (from the display datasheet) */
-+#define ILI9488_CMD_NOP                             0x00
-+#define ILI9488_CMD_SOFTWARE_RESET                  0x01
-+#define ILI9488_CMD_READ_DISP_ID                    0x04
-+#define ILI9488_CMD_READ_ERROR_DSI                  0x05
-+#define ILI9488_CMD_READ_DISP_STATUS                0x09
-+#define ILI9488_CMD_READ_DISP_POWER_MODE            0x0A
-+#define ILI9488_CMD_READ_DISP_MADCTRL               0x0B
-+#define ILI9488_CMD_READ_DISP_PIXEL_FORMAT          0x0C
-+#define ILI9488_CMD_READ_DISP_IMAGE_MODE            0x0D
-+#define ILI9488_CMD_READ_DISP_SIGNAL_MODE           0x0E
-+#define ILI9488_CMD_READ_DISP_SELF_DIAGNOSTIC       0x0F
-+#define ILI9488_CMD_ENTER_SLEEP_MODE                0x10
-+#define ILI9488_CMD_SLEEP_OUT                       0x11
-+#define ILI9488_CMD_PARTIAL_MODE_ON                 0x12
-+#define ILI9488_CMD_NORMAL_DISP_MODE_ON             0x13
-+#define ILI9488_CMD_DISP_INVERSION_OFF              0x20
-+#define ILI9488_CMD_DISP_INVERSION_ON               0x21
-+#define ILI9488_CMD_PIXEL_OFF                       0x22
-+#define ILI9488_CMD_PIXEL_ON                        0x23
-+#define ILI9488_CMD_DISPLAY_OFF                     0x28
-+#define ILI9488_CMD_DISPLAY_ON                      0x29
-+#define ILI9488_CMD_COLUMN_ADDRESS_SET              0x2A
-+#define ILI9488_CMD_PAGE_ADDRESS_SET                0x2B
-+#define ILI9488_CMD_MEMORY_WRITE                    0x2C
-+#define ILI9488_CMD_MEMORY_READ                     0x2E
-+#define ILI9488_CMD_PARTIAL_AREA                    0x30
-+#define ILI9488_CMD_VERT_SCROLL_DEFINITION          0x33
-+#define ILI9488_CMD_TEARING_EFFECT_LINE_OFF         0x34
-+#define ILI9488_CMD_TEARING_EFFECT_LINE_ON          0x35
-+#define ILI9488_CMD_MEMORY_ACCESS_CONTROL           0x36
-+#define ILI9488_CMD_VERT_SCROLL_START_ADDRESS       0x37
-+#define ILI9488_CMD_IDLE_MODE_OFF                   0x38
-+#define ILI9488_CMD_IDLE_MODE_ON                    0x39
-+#define ILI9488_CMD_COLMOD_PIXEL_FORMAT_SET         0x3A
-+#define ILI9488_CMD_WRITE_MEMORY_CONTINUE           0x3C
-+#define ILI9488_CMD_READ_MEMORY_CONTINUE            0x3E
-+#define ILI9488_CMD_SET_TEAR_SCANLINE               0x44
-+#define ILI9488_CMD_GET_SCANLINE                    0x45
-+#define ILI9488_CMD_WRITE_DISPLAY_BRIGHTNESS        0x51
-+#define ILI9488_CMD_READ_DISPLAY_BRIGHTNESS         0x52
-+#define ILI9488_CMD_WRITE_CTRL_DISPLAY              0x53
-+#define ILI9488_CMD_READ_CTRL_DISPLAY               0x54
-+#define ILI9488_CMD_WRITE_CONTENT_ADAPT_BRIGHTNESS  0x55
-+#define ILI9488_CMD_READ_CONTENT_ADAPT_BRIGHTNESS   0x56
-+#define ILI9488_CMD_WRITE_MIN_CAB_LEVEL             0x5E
-+#define ILI9488_CMD_READ_MIN_CAB_LEVEL              0x5F
-+#define ILI9488_CMD_READ_ABC_SELF_DIAG_RES          0x68
-+#define ILI9488_CMD_READ_ID1                        0xDA
-+#define ILI9488_CMD_READ_ID2                        0xDB
-+#define ILI9488_CMD_READ_ID3                        0xDC
-+
-+/* Level 2 commands (from the display datasheet) */
-+#define ILI9488_CMD_INTERFACE_MODE_CONTROL          0xB0
-+#define ILI9488_CMD_FRAME_RATE_CONTROL_NORMAL       0xB1
-+#define ILI9488_CMD_FRAME_RATE_CONTROL_IDLE_8COLOR  0xB2
-+#define ILI9488_CMD_FRAME_RATE_CONTROL_PARTIAL      0xB3
-+#define ILI9488_CMD_DISPLAY_INVERSION_CONTROL       0xB4
-+#define ILI9488_CMD_BLANKING_PORCH_CONTROL          0xB5
-+#define ILI9488_CMD_DISPLAY_FUNCTION_CONTROL        0xB6
-+#define ILI9488_CMD_ENTRY_MODE_SET                  0xB7
-+#define ILI9488_CMD_BACKLIGHT_CONTROL_1             0xB9
-+#define ILI9488_CMD_BACKLIGHT_CONTROL_2             0xBA
-+#define ILI9488_CMD_HS_LANES_CONTROL                0xBE
-+#define ILI9488_CMD_POWER_CONTROL_1                 0xC0
-+#define ILI9488_CMD_POWER_CONTROL_2                 0xC1
-+#define ILI9488_CMD_POWER_CONTROL_NORMAL_3          0xC2
-+#define ILI9488_CMD_POWER_CONTROL_IDEL_4            0xC3
-+#define ILI9488_CMD_POWER_CONTROL_PARTIAL_5         0xC4
-+#define ILI9488_CMD_VCOM_CONTROL_1                  0xC5
-+#define ILI9488_CMD_CABC_CONTROL_1                  0xC6
-+#define ILI9488_CMD_CABC_CONTROL_2                  0xC8
-+#define ILI9488_CMD_CABC_CONTROL_3                  0xC9
-+#define ILI9488_CMD_CABC_CONTROL_4                  0xCA
-+#define ILI9488_CMD_CABC_CONTROL_5                  0xCB
-+#define ILI9488_CMD_CABC_CONTROL_6                  0xCC
-+#define ILI9488_CMD_CABC_CONTROL_7                  0xCD
-+#define ILI9488_CMD_CABC_CONTROL_8                  0xCE
-+#define ILI9488_CMD_CABC_CONTROL_9                  0xCF
-+#define ILI9488_CMD_NVMEM_WRITE                     0xD0
-+#define ILI9488_CMD_NVMEM_PROTECTION_KEY            0xD1
-+#define ILI9488_CMD_NVMEM_STATUS_READ               0xD2
-+#define ILI9488_CMD_READ_ID4                        0xD3
-+#define ILI9488_CMD_ADJUST_CONTROL_1                0xD7
-+#define ILI9488_CMD_READ_ID_VERSION                 0xD8
-+#define ILI9488_CMD_POSITIVE_GAMMA_CORRECTION       0xE0
-+#define ILI9488_CMD_NEGATIVE_GAMMA_CORRECTION       0xE1
-+#define ILI9488_CMD_DIGITAL_GAMMA_CONTROL_1         0xE2
-+#define ILI9488_CMD_DIGITAL_GAMMA_CONTROL_2         0xE3
-+#define ILI9488_CMD_SET_IMAGE_FUNCTION              0xE9
-+#define ILI9488_CMD_ADJUST_CONTROL_2                0xF2
-+#define ILI9488_CMD_ADJUST_CONTROL_3                0xF7
-+#define ILI9488_CMD_ADJUST_CONTROL_4                0xF8
-+#define ILI9488_CMD_ADJUST_CONTROL_5                0xF9
-+#define ILI9488_CMD_SPI_READ_SETTINGS               0xFB
-+#define ILI9488_CMD_ADJUST_CONTROL_6                0xFC
-+#define ILI9488_CMD_ADJUST_CONTROL_7                0xFF
-+
-+/* ILI9488 memory access control flags */
-+#define ILI9488_MY   BIT(7)   /* Row Address Order */
-+#define ILI9488_MX   BIT(6)   /* Column Address Order */
-+#define ILI9488_MV   BIT(5)   /* Row / Column Exchange */
-+#define ILI9488_ML   BIT(4)   /* Vertical Refresh Order */
-+#define ILI9488_BGR  BIT(3)   /* BGR Order, if set */
-+#define ILI9488_MH   BIT(2)   /* Horizontal Refresh Order */
-+
-+static void rgb565_to_rgb666_line(void *dst, void *src, unsigned int pixels)
-+{
-+	unsigned int x;
-+	u8 *dst8 = dst;
-+	u16 *src16 = src;
-+
-+	for (x = 0; x < pixels; x++) {
-+		*dst8++ = (*src16 & 0xF800) >> 8;
-+		*dst8++ = (*src16 & 0x07E0) >> 3;
-+		*dst8++ = (*src16 & 0x001F) << 3;
-+		src16++;
-+	}
-+}
-+
-+/**
-+ * copy_buffer - Copy a framebuffer, transforming it to RGB666
-+ * @dst: The destination buffer
-+ * @info: The source framebuffer
-+ * @clip: Clipping rectangle of the area to be copied
-+ */
-+static void copy_buffer(u8 *dst, struct fb_info *info, struct fb_rect *clip)
-+{
-+	u16 *src = (u16 *)info->screen_base;
-+	unsigned int height = clip->y2 - clip->y1;
-+	unsigned int width = clip->x2 - clip->x1;
-+	int y;
-+
-+	src += clip->y1 * info->xres + clip->x1;
-+	for (y = 0; y < height; y++) {
-+		rgb565_to_rgb666_line(dst, src, width);
-+		dst += info->xres * 3;   /* u8 single byte */
-+		src += info->xres;   /* u16 just doubled */
-+	}
-+}
-+
-+static void ili9488_set_window_address(struct mipi_dbi_dev *dbidev,
-+				       unsigned int xs, unsigned int xe,
-+				       unsigned int ys, unsigned int ye)
-+{
-+	struct mipi_dbi *dbi = &dbidev->dbi;
-+
-+	xs += dbidev->mode.left_margin;
-+	xe += dbidev->mode.left_margin;
-+	ys += dbidev->mode.upper_margin;
-+	ye += dbidev->mode.upper_margin;
-+
-+	mipi_dbi_command(dbi, ILI9488_CMD_COLUMN_ADDRESS_SET, (xs >> 8) & 0xff,
-+			xs & 0xff, (xe >> 8) & 0xff, xe & 0xff);
-+	mipi_dbi_command(dbi, ILI9488_CMD_PAGE_ADDRESS_SET, (ys >> 8) & 0xff,
-+			ys & 0xff, (ye >> 8) & 0xff, ye & 0xff);
-+}
-+
-+static void ili9488_fb_dirty(struct mipi_dbi_dev *dbidev,
-+			     struct fb_info *info, struct fb_rect *rect)
-+{
-+	unsigned int height = rect->y2 - rect->y1;
-+	unsigned int width = rect->x2 - rect->x1;
-+	struct mipi_dbi *dbi = &dbidev->dbi;
-+	int ret;
-+	void *tr;
-+
-+	tr = dbidev->tx_buf;
-+	copy_buffer(tr, info, rect);
-+
-+	ili9488_set_window_address(dbidev, rect->x1, rect->x2 - 1, rect->y1, rect->y2 - 1);
-+	ret = mipi_dbi_command_buf(dbi, ILI9488_CMD_MEMORY_WRITE, tr, width * height * 3);
-+	if (ret)
-+		pr_err_once("Failed to update display %d\n", ret);
-+
-+	dbidev->damage.x1 = 0;
-+	dbidev->damage.y1 = 0;
-+	dbidev->damage.x2 = 0;
-+	dbidev->damage.y2 = 0;
-+}
-+
-+static void ili9488_fb_flush(struct fb_info *info)
-+{
-+	struct mipi_dbi_dev *dbidev = container_of(info, struct mipi_dbi_dev, info);
-+
-+	if (!dbidev->damage.x2 || !dbidev->damage.y2) {
-+		dbidev->damage.x1 = 0;
-+		dbidev->damage.y1 = 0;
-+		dbidev->damage.x2 = info->xres;
-+		dbidev->damage.y2 = info->yres;
+ 	sync_caches_for_execution();
+ }
+ 
+diff --git a/arch/arm/cpu/sections.c b/arch/arm/cpu/sections.c
+index f310578ba272..3025dc3f66a2 100644
+--- a/arch/arm/cpu/sections.c
++++ b/arch/arm/cpu/sections.c
+@@ -7,6 +7,8 @@ char __rel_dyn_start[0] __attribute__((section(".__rel_dyn_start")));
+ char __rel_dyn_end[0] __attribute__((section(".__rel_dyn_end")));
+ char __dynsym_start[0] __attribute__((section(".__dynsym_start")));
+ char __dynsym_end[0] __attribute__((section(".__dynsym_end")));
++char __relr_dyn_start[0] __attribute__((section(".__relr_dyn_start")));
++char __relr_dyn_end[0] __attribute__((section(".__relr_dyn_end")));
+ char _text[0] __attribute__((section("._text")));
+ char __bss_start[0] __attribute__((section(".__bss_start")));
+ char __bss_stop[0] __attribute__((section(".__bss_stop")));
+diff --git a/arch/arm/include/asm/barebox.lds.h b/arch/arm/include/asm/barebox.lds.h
+index 72aabe155b5c..be9901bad150 100644
+--- a/arch/arm/include/asm/barebox.lds.h
++++ b/arch/arm/include/asm/barebox.lds.h
+@@ -18,6 +18,9 @@
+ 	.rel_dyn_start : { *(.__rel_dyn_start) }			\
+ 	.BAREBOX_RELOCATION_TYPE.dyn : { *(.BAREBOX_RELOCATION_TYPE*) }	\
+ 	.rel_dyn_end : { *(.__rel_dyn_end) }				\
++	.__relr_dyn_start : { *(.__relr_dyn_start) }			\
++	.relr.dyn : ALIGN(8) { *(.relr.dyn) }				\
++	.__relr_dyn_end : { *(.__relr_dyn_end) }			\
+ 	.__dynsym_start :  { *(.__dynsym_start) }			\
+ 	.dynsym : { *(.dynsym) }					\
+ 	.__dynsym_end : { *(.__dynsym_end) }
+diff --git a/arch/arm/include/asm/sections.h b/arch/arm/include/asm/sections.h
+index 15b1a6482a5b..fcf9f20b9aa0 100644
+--- a/arch/arm/include/asm/sections.h
++++ b/arch/arm/include/asm/sections.h
+@@ -11,6 +11,8 @@ extern char __rel_dyn_start[];
+ extern char __rel_dyn_end[];
+ extern char __dynsym_start[];
+ extern char __dynsym_end[];
++extern char __relr_dyn_start[];
++extern char __relr_dyn_end[];
+ extern char __exceptions_start[];
+ extern char __exceptions_stop[];
+ 
+diff --git a/arch/arm/lib32/reloc.c b/arch/arm/lib32/reloc.c
+index edd3d7eb4866..23da9e127f29 100644
+--- a/arch/arm/lib32/reloc.c
++++ b/arch/arm/lib32/reloc.c
+@@ -60,16 +60,25 @@ void __prereloc relocate_image(unsigned long offset,
+  */
+ int elf_apply_relocations(struct elf_image *elf, const void *dyn_seg)
+ {
+-	void *rel_ptr = NULL, *symtab = NULL;
+-	u64 relsz;
++	void *rel_ptr = NULL, *relr_ptr = NULL, *symtab = NULL;
++	u64 relsz, relrsz;
+ 	phys_addr_t base = (phys_addr_t)elf->reloc_offset;
+-	int ret;
++	bool have_rel, have_relr = false;
+ 
+-	ret = elf_parse_dynamic_section_rel(elf, dyn_seg, &rel_ptr, &relsz, &symtab);
+-	if (ret)
+-		return ret;
++	have_rel = !elf_parse_dynamic_section_rel(elf, dyn_seg,
++						  &rel_ptr, &relsz, &symtab);
++	if (have_rel)
++		relocate_image(base, rel_ptr, rel_ptr + relsz, symtab, NULL);
+ 
+-	relocate_image(base, rel_ptr, rel_ptr + relsz, symtab, NULL);
++	if (IS_ENABLED(CONFIG_RELR)) {
++		have_relr = !elf_parse_dynamic_section_relr(elf, dyn_seg,
++							    &relr_ptr, &relrsz);
++		if (have_relr)
++			relocate_relr(base, relr_ptr, relr_ptr + relrsz);
 +	}
 +
-+	ili9488_fb_dirty(dbidev, info, &dbidev->damage);
-+}
-+
-+static void ili9488_fb_enable(struct fb_info *info)
-+{
-+	struct mipi_dbi_dev *dbidev = container_of(info, struct mipi_dbi_dev, info);
-+	struct mipi_dbi *dbi = &dbidev->dbi;
-+	u8 addr_mode;
-+	int ret;
-+
-+	if (!info->mode) {
-+		dev_err(dbidev->dev, "No valid mode found\n");
-+		return;
-+	}
-+
-+	if (dbidev->backlight_node && !dbidev->backlight) {
-+		dbidev->backlight = of_backlight_find(dbidev->backlight_node);
-+		if (!dbidev->backlight)
-+			dev_warn(dbidev->dev, "backlight not available\n");
-+		else
-+			backlight_set_brightness_default(dbidev->backlight);
-+	}
-+
-+	ret = mipi_dbi_poweron_conditional_reset(dbidev);
-+	if (ret < 0) {
-+		dev_err(dbidev->dev, "power_on_conditional error\n");
-+		return;
-+	}
-+
-+	/* already powerd */
-+	if (ret == 1)
-+		dev_dbg(dbidev->dev, "display was not reset, already powered on\n");
-+
-+	mipi_dbi_command(dbi, ILI9488_CMD_DISP_INVERSION_ON);
-+	mipi_dbi_command(dbi, ILI9488_CMD_POWER_CONTROL_NORMAL_3, 0x33);
-+	mipi_dbi_command(dbi, ILI9488_CMD_FRAME_RATE_CONTROL_NORMAL, 0xB0);
-+	mipi_dbi_command(dbi, ILI9488_CMD_MEMORY_ACCESS_CONTROL, 0x28);
-+
-+	mipi_dbi_command(dbi, MIPI_DCS_SET_PIXEL_FORMAT, MIPI_DCS_PIXEL_FMT_18BIT);
-+	mipi_dbi_command(dbi, MIPI_DCS_EXIT_SLEEP_MODE);
-+	mdelay(120);
-+	mipi_dbi_command(dbi, MIPI_DCS_SET_DISPLAY_ON);
-+	mdelay(100);
-+
-+	switch (dbidev->rotation) {
-+	case 270:
-+		addr_mode = ILI9488_MX | ILI9488_MY | ILI9488_MV | ILI9488_ML;
-+		break;
-+	case 180:
-+		addr_mode = ILI9488_MY | ILI9488_ML;
-+		break;
-+	case 90:
-+		addr_mode = ILI9488_MV;
-+		break;
-+	case 0:
-+	default:
-+		addr_mode = ILI9488_MX;
-+		break;
-+	}
-+
-+	addr_mode |= ILI9488_BGR;
-+	mipi_dbi_command(dbi, ILI9488_CMD_MEMORY_ACCESS_CONTROL, addr_mode);
-+
-+	ili9488_fb_flush(info);
-+}
-+
-+static struct fb_ops ili9488_fb_ops = {
-+	.fb_enable = ili9488_fb_enable,
-+	.fb_disable = mipi_dbi_fb_disable,
-+	.fb_damage = mipi_dbi_fb_damage,
-+	.fb_flush =  ili9488_fb_flush,
-+};
-+
-+static int ili9488_dbi_dev_init(struct mipi_dbi_dev *dbidev,
-+				struct fb_ops *ops,
-+				struct fb_videomode *mode)
-+{
-+	struct fb_info *info = &dbidev->info;
-+
-+	info->mode = mode;
-+	info->fbops = ops;
-+	info->dev.parent = dbidev->dev;
-+
-+	info->xres = mode->xres;
-+	info->yres = mode->yres;
-+
-+	info->bits_per_pixel = 16;
-+	info->line_length = info->xres * 2;
-+	info->screen_size = info->xres * info->yres * 2;
-+	info->screen_base = dma_zalloc(info->screen_size);
-+	if (!info->screen_base)
-+		return -ENOMEM;
-+
-+	dbidev->tx_buf = dma_alloc(info->xres * info->yres * 3);
-+	if (!dbidev->tx_buf)
-+		return -ENOMEM;
-+
-+	info->red.length = 5;
-+	info->red.offset = 11;
-+
-+	info->green.length = 6;
-+	info->green.offset = 5;
-+
-+	info->blue.length = 5;
-+	info->blue.offset = 0;
-+
-+	dev_dbg(dbidev->dev,
-+			"bit per pixel: %d\n"
-+			"line_length: %d\n"
-+			"screen_base: %p\n"
-+			"screen_size: %ld\n"
-+			"tx_buf %d\n",
-+			info->bits_per_pixel,
-+			info->line_length,
-+			info->screen_base,
-+			info->screen_size,
-+			info->xres * info->yres * 3);
-+
-+	return 0;
-+}
-+
-+/* SPI */
-+static int ili9488_typec1_command(struct mipi_dbi *dbi,
-+				  u8 *cmd, u8 *parameters,
-+				  size_t num)
-+{
-+	int ret;
-+
-+	ret = mipi_dbi_spi1_transfer(dbi, 0, cmd, 1, 8);
-+	if (ret || !num)
-+		return ret;
-+
-+	/*
-+	 * ILI9488 uses RGB666 (3 bytes per pixel) so pixel data is
-+	 * transferred as a byte stream, not as 16-bit words.
-+	 */
-+	return mipi_dbi_spi1_transfer(dbi, 1, parameters, num, 8);
-+}
-+
-+static int ili9488_dbi_get_mode(struct mipi_dbi_dev *dbidev,
-+				struct fb_videomode *mode)
-+{
-+	struct device *dev = dbidev->dev;
-+	int ret;
-+
-+	ret = of_get_display_timing(dev->of_node, "panel-timing", mode);
-+	if (ret) {
-+		dev_err(dev, "%pOF: failed to get panel-timing (error=%d)\n",
-+			dev->of_node, ret);
-+		return ret;
-+	}
-+
-+	/*
-+	 * Make sure width and height are set and that only back porch and
-+	 * pixelclock are set in the other timing values. Also check that
-+	 * width and height don't exceed the 16-bit value specified by MIPI DCS.
-+	 */
-+	if (!mode->xres || !mode->yres || mode->display_flags ||
-+		mode->right_margin || mode->hsync_len ||
-+		(mode->left_margin + mode->xres) > 0xffff ||
-+		mode->lower_margin || mode->vsync_len ||
-+		(mode->upper_margin + mode->yres) > 0xffff) {
-+		dev_err(dev, "%pOF: panel-timing out of bounds\n", dev->of_node);
++	if (!have_rel && !have_relr)
 +		return -EINVAL;
+ 
+ 	return 0;
+ }
+diff --git a/arch/arm/lib64/reloc.c b/arch/arm/lib64/reloc.c
+index b49815787470..0acc64d8f229 100644
+--- a/arch/arm/lib64/reloc.c
++++ b/arch/arm/lib64/reloc.c
+@@ -49,16 +49,25 @@ void __prereloc relocate_image(unsigned long offset,
+  */
+ int elf_apply_relocations(struct elf_image *elf, const void *dyn_seg)
+ {
+-	void *rela_ptr = NULL, *symtab = NULL;
+-	u64 relasz;
++	void *rela_ptr = NULL, *relr_ptr = NULL, *symtab = NULL;
++	u64 relasz, relrsz;
+ 	phys_addr_t base = (phys_addr_t)elf->reloc_offset;
+-	int ret;
++	bool have_rela, have_relr = false;
+ 
+-	ret = elf_parse_dynamic_section_rela(elf, dyn_seg, &rela_ptr, &relasz, &symtab);
+-	if (ret)
+-		return ret;
++	have_rela = !elf_parse_dynamic_section_rela(elf, dyn_seg,
++						    &rela_ptr, &relasz, &symtab);
++	if (have_rela)
++		relocate_image(base, rela_ptr, rela_ptr + relasz, symtab, NULL);
+ 
+-	relocate_image(base, rela_ptr, rela_ptr + relasz, symtab, NULL);
++	if (IS_ENABLED(CONFIG_RELR)) {
++		have_relr = !elf_parse_dynamic_section_relr(elf, dyn_seg,
++							    &relr_ptr, &relrsz);
++		if (have_relr)
++			relocate_relr(base, relr_ptr, relr_ptr + relrsz);
 +	}
 +
-+	return 0;
-+}
++	if (!have_rela && !have_relr)
++		return -EINVAL;
+ 
+ 	return 0;
+ }
+diff --git a/include/asm-generic/reloc.h b/include/asm-generic/reloc.h
+index 06fccbd6f367..feb42154604a 100644
+--- a/include/asm-generic/reloc.h
++++ b/include/asm-generic/reloc.h
+@@ -76,4 +76,6 @@ extern void *__compiletime_error(
+ 	"runtime_address() may only be called on linker defined symbols."
+ ) __unsafe_runtime_address(void);
+ 
++void __prereloc relocate_relr(unsigned long offset, void *relr_start, void *relr_end);
 +
-+static int ili9488_probe(struct device *dev)
+ #endif
+diff --git a/include/lib/elf.h b/include/lib/elf.h
+index c62d8f791273..c09d097566bb 100644
+--- a/include/lib/elf.h
++++ b/include/lib/elf.h
+@@ -57,6 +57,8 @@ int elf_parse_dynamic_section_rel(struct elf_image *elf, const void *dyn_seg,
+ 				  void **rel_out, u64 *relsz_out, void **symtab);
+ int elf_parse_dynamic_section_rela(struct elf_image *elf, const void *dyn_seg,
+ 				   void **rel_out, u64 *relsz_out, void **symtab);
++int elf_parse_dynamic_section_relr(struct elf_image *elf, const void *dyn_seg,
++				   void **relr_out, u64 *relrsz_out);
+ 
+ /*
+  * Apply dynamic relocations to an ELF binary already loaded in memory.
+diff --git a/include/linux/elf.h b/include/linux/elf.h
+index f670ed82a077..bbedda8eed99 100644
+--- a/include/linux/elf.h
++++ b/include/linux/elf.h
+@@ -87,6 +87,9 @@ typedef __s64	Elf64_Sxword;
+ #define DT_TEXTREL	22
+ #define DT_JMPREL	23
+ #define DT_ENCODING	32
++#define DT_RELRSZ	35
++#define DT_RELR		36
++#define DT_RELRENT	37
+ #define OLD_DT_LOOS	0x60000000
+ #define DT_LOOS		0x6000000d
+ #define DT_HIOS		0x6ffff000
+@@ -382,6 +385,9 @@ extern Elf32_Dyn _DYNAMIC [];
+ #define elf_note	elf32_note
+ #define elf_addr_t	Elf32_Off
+ 
++typedef __u32		elf_relr_t;
++#define ELF_RELR_BITMAP_BITS	31	/* 32 bits - 1 for LSB flag */
++
+ #else
+ 
+ extern Elf64_Dyn _DYNAMIC [];
+@@ -390,6 +396,9 @@ extern Elf64_Dyn _DYNAMIC [];
+ #define elf_note	elf64_note
+ #define elf_addr_t	Elf64_Off
+ 
++typedef __u64		elf_relr_t;
++#define ELF_RELR_BITMAP_BITS	63	/* 64 bits - 1 for LSB flag */
++
+ #endif
+ 
+ #define ELF_GET_FIELD(__s, __field, __type) \
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 9b8e0c2fa77d..1322ad9f4722 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -243,4 +243,11 @@ config GENERIC_ALLOCATOR
+ config IDR
+ 	bool
+ 
++config TOOLS_SUPPORT_RELR
++	def_bool $(success,env "CC=$(CC)" "LD=$(LD)" "NM=$(NM)" "OBJCOPY=$(OBJCOPY)" $(srctree)/scripts/tools-support-relr.sh)
++
++config LIBRELOC
++	bool
++	default RELOCATABLE || ELF
++
+ endmenu
+diff --git a/lib/Makefile b/lib/Makefile
+index 9f27d3413990..57ccd9616348 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -16,6 +16,7 @@ obj-y			+= vsprintf.o
+ obj-y			+= talloc.o
+ obj-$(CONFIG_KASAN)	+= kasan/
+ obj-pbl-$(CONFIG_STACKPROTECTOR)	+= stackprot.o
++obj-pbl-$(CONFIG_LIBRELOC)		+= reloc.o
+ pbl-$(CONFIG_PBL_CONSOLE) += vsprintf.o
+ obj-y			+= misc.o
+ obj-$(CONFIG_PARAMETER)	+= parameter.o
+diff --git a/lib/elf.c b/lib/elf.c
+index fb2dd9cedb10..eb8a23a687e1 100644
+--- a/lib/elf.c
++++ b/lib/elf.c
+@@ -191,6 +191,43 @@ int elf_parse_dynamic_section_rela(struct elf_image *elf, const void *dyn_seg,
+ 					 true);
+ }
+ 
++int elf_parse_dynamic_section_relr(struct elf_image *elf, const void *dyn_seg,
++				   void **relr_out, u64 *relrsz_out)
 +{
-+	struct mipi_dbi_dev *dbidev;
-+	struct spi_device *spi = to_spi_device(dev);
-+	struct mipi_dbi *dbi;
-+	struct fb_info *info;
-+	int ret;
-+	struct fb_videomode *ili9488_mode;
++	const void *dyn = dyn_seg;
++	void *relr = NULL;
++	u64 relrsz = 0;
++	phys_addr_t base = (phys_addr_t)elf->reloc_offset;
 +
-+	dbidev = kzalloc(sizeof(*dbidev), GFP_KERNEL);
-+	if (!dbidev)
-+		return -ENOMEM;
++	if (!IS_ENABLED(CONFIG_RELR))
++		return -EINVAL;
 +
-+	dbidev->dev = dev;
-+	dbi = &dbidev->dbi;
++	while (elf_dyn_d_tag(elf, dyn) != DT_NULL) {
++		unsigned long tag = elf_dyn_d_tag(elf, dyn);
 +
-+	ret = ili9488_dbi_get_mode(dbidev, &dbidev->mode);
-+	if (ret)
-+		return ret;
++		switch (tag) {
++		case DT_RELR:
++			relr = (void *)(unsigned long)(base + elf_dyn_d_ptr(elf, dyn));
++			break;
++		case DT_RELRSZ:
++			relrsz = elf_dyn_d_val(elf, dyn);
++			break;
++		default:
++			break;
++		}
 +
-+	ili9488_mode = &dbidev->mode;
-+	dbidev->regulator = regulator_get(dev, "power");
-+	if (IS_ERR(dbidev->regulator))
-+		return dev_err_probe(dev, PTR_ERR(dbidev->regulator),
-+							 "Failed to get regulator 'power'\n");
-+
-+	dbidev->backlight_node = of_parse_phandle(dev->of_node, "backlight", 0);
-+
-+	dbi->reset = gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR(dbi->reset))
-+		return dev_errp_probe(dev, dbi->reset, "Failed to get GPIO 'reset'\n");
-+
-+	ret = of_property_read_u32(dev->of_node, "rotation", &dbidev->rotation);
-+	if (ret) {
-+		dev_warn(dev, "Missing LCD rotation property. Set to 270 degs\n");
-+		dbidev->rotation = 270;
-+	} else {
-+		dev_dbg(dev, "LCD rotation: %d",  dbidev->rotation);
++		dyn += elf_size_of_dyn(elf);
 +	}
 +
-+	/* spi */
-+	ret = mipi_dbi_spi_init(spi, dbi, NULL);
-+	if (ret)
-+		return ret;
++	if (!relr || !relrsz)
++		return -EINVAL;
 +
-+	dbi->read_commands = NULL;
++	*relr_out = relr;
++	*relrsz_out = relrsz;
 +
-+	/*
-+	 * SPI transfer function need an override. Display wf35 accepts only
-+	 * RGB111 or RGB666 and the last is 24 bit transfer per pixel so
-+	 * mipi dbi typec1 requires 24 bits per word.
-+	 */
-+	dbi->command = ili9488_typec1_command;
-+
-+	info = &dbidev->info;
-+	ret = ili9488_dbi_dev_init(dbidev, &ili9488_fb_ops, ili9488_mode);
-+	if (ret)
-+		return ret;
-+
-+	ret = register_framebuffer(info);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Failed to register framebuffer\n");
-+
-+	dev_dbg(dev, "Driver ilitek 9488 loaded\n");
 +	return 0;
 +}
 +
-+static const struct of_device_id ili9488_of_match[] = {
-+	{
-+		.compatible = "winstar,wf35-320480ud",
-+	}, {
-+		.compatible = "ilitek,ili9488",
-+	},
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, ili9488_of_match);
+ /*
+  * Weak default implementation for architectures that don't support
+  * ELF relocations yet. Can be overridden by arch-specific implementation.
+diff --git a/lib/reloc.c b/lib/reloc.c
+new file mode 100644
+index 000000000000..c1a0bb444959
+--- /dev/null
++++ b/lib/reloc.c
+@@ -0,0 +1,68 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// SPDX-Comment: Origin-URL: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/arch/arm64/kernel/pi/relocate.c?id=97a6f43bb049e64b9913c50c7530e13d78e205d4
++// SPDX-FileCopyrightText: 2023 Google LLC
++// Authors: Ard Biesheuvel <ardb@google.com>
++//          Peter Collingbourne <pcc@google.com>
 +
-+static struct driver ili9488_driver = {
-+	.name = "ili9488",
-+	.of_compatible = ili9488_of_match,
-+	.probe = ili9488_probe,
-+};
-+device_spi_driver(ili9488_driver);
++#include <asm-generic/reloc.h>
++#include <linux/elf.h>
 +
-+MODULE_AUTHOR("Giandomenico Rossi <rossi@amelchem.com>");
-+MODULE_DESCRIPTION("ILI9488 LCD panel driver");
-+MODULE_LICENSE("GPL v2");
++/**
++ * relocate_relr - Apply RELR relocations.
++ * @offset: offset to relocate barebox by
++ * @relr_start: first RELR relocation entry
++ * @relr_end: (exclusive) end address just after the last RELR rentry
++ *
++ * RELR is a compressed format for storing relative relocations. The
++ * encoded sequence of entries looks like:
++ * [ AAAAAAAA BBBBBBB1 BBBBBBB1 ... AAAAAAAA BBBBBB1 ... ]
++ *
++ * i.e. start with an address, followed by any number of bitmaps. The
++ * address entry encodes 1 relocation. The subsequent bitmap entries
++ * encode up to 63 relocations each, at subsequent offsets following
++ * the last address entry.
++ *
++ * The bitmap entries must have 1 in the least significant bit. The
++ * assumption here is that an address cannot have 1 in lsb. Odd
++ * addresses are not supported. Any odd addresses are stored in the
++ * REL/RELA section, which is handled separately.
++ *
++ * With the exception of the least significant bit, each bit in the
++ * bitmap corresponds with a machine word that follows the base address
++ * word, and the bit value indicates whether or not a relocation needs
++ * to be applied to it. The second least significant bit represents the
++ * machine word immediately following the initial address, and each bit
++ * that follows represents the next word, in linear order. As such, a
++ * single bitmap can encode up to 63 relocations in a 64-bit object.
++ */
++void __prereloc
++relocate_relr(unsigned long offset, void *relr_start, void *relr_end)
++{
++	elf_relr_t *place = NULL;
++
++	if (!IS_ENABLED(CONFIG_RELR) || !offset)
++		return;
++
++	for (elf_relr_t *relr = relr_start;
++	     (void *)relr < relr_end; relr++) {
++		if ((*relr & 1) == 0) {
++			place = (elf_relr_t *)(*relr + offset);
++			*place++ += offset;
++
++                       /*
++                        * Rebase the entry so it tracks the effective link
++                        * address, like RELA's r_offset += offset. This
++                        * allows relocate_to_current_adr() to be called
++                        * again after the binary is copied to a new address
++                        * (e.g. relocate_to_adr_full or PBL copying itself
++                        * into DRAM on i.MX8MM verified boot).
++                        */
++                       *relr += offset;
++		} else {
++			for (elf_relr_t *p = place, r = *relr >> 1; r; p++, r >>= 1)
++				if (r & 1)
++					*p += offset;
++			place += ELF_RELR_BITMAP_BITS;
++		}
++	}
++}
+diff --git a/scripts/tools-support-relr.sh b/scripts/tools-support-relr.sh
+new file mode 100755
+index 000000000000..4c121946e517
+--- /dev/null
++++ b/scripts/tools-support-relr.sh
+@@ -0,0 +1,21 @@
++#!/bin/sh -eu
++# SPDX-License-Identifier: GPL-2.0
++
++tmp_file=$(mktemp)
++trap "rm -f $tmp_file.o $tmp_file $tmp_file.bin" EXIT
++
++cat << "END" | $CC -c -x c - -o $tmp_file.o >/dev/null 2>&1
++void *p = &p;
++END
++
++# ld.lld before 15 did not support -z pack-relative-relocs.
++if ! $LD $tmp_file.o -shared -Bsymbolic --pack-dyn-relocs=relr -o $tmp_file 2>/dev/null; then
++	$LD $tmp_file.o -shared -Bsymbolic -z pack-relative-relocs -o $tmp_file 2>&1 |
++		grep -q pack-relative-relocs && exit 1
++fi
++
++# Despite printing an error message, GNU nm still exits with exit code 0 if it
++# sees a relr section. So we need to check that nothing is printed to stderr.
++test -z "$($NM $tmp_file 2>&1 >/dev/null)"
++
++$OBJCOPY -O binary $tmp_file $tmp_file.bin
 -- 
-2.34.1
+2.47.3
 
 
 
