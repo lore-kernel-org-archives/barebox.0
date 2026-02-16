@@ -1,16 +1,16 @@
-Delivery-date: Mon, 16 Feb 2026 10:17:37 +0100
+Delivery-date: Mon, 16 Feb 2026 10:17:38 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vrujZ-002GsU-08
+	id 1vrujZ-002Gse-0b
 	for lore@lore.pengutronix.de;
-	Mon, 16 Feb 2026 10:17:37 +0100
+	Mon, 16 Feb 2026 10:17:38 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vrujT-0007Nt-Im
+	id 1vrujT-0007NC-3k
 	for lore@pengutronix.de; Mon, 16 Feb 2026 10:17:37 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,51 +18,51 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=nUUp6814HOkdHoi8/1kGL9IMHyHug7xNEXMCFjs3wig=; b=wtHUM/eO/xua6loEwCzurnm2P4
-	YiMA/ztO53nIhdIErRw4DJPrHv8fi4UehxggSNpsBdnzJpCSNVMgm29A/Ud0lmVkquHhDttLZbBrU
-	MUnJ7a/oTBWoULed57C1LKcxmLeNWYox3mXVQalIgL9NH0qSKPNgcml8P/agxM5ARRmqMiygZrMcT
-	9VskD8ZguuupWE3KuhDalMrRxol/bpm+a6F4eRiVgMP6azI+zcs9yFyez+0aLOTUcF0cbG1O6mfxt
-	wBlX7INzk+cWFHneXr2re/UmEjw2HKm73HZ9azsIyNUJndqtoH70rSjWuQ4Ej7ZyPo+kiruncR9AF
-	djiwuINg==;
+	bh=PGclOk0PHJOzzZvA2FGDSsqvNqkCy2SUo6/Nca3RoJA=; b=aOWgA+08RoNy+METSWwdZyA1xP
+	ndzLQEP2Moz9KJxEsVd3iDd/tlg5ey+N6C/uiUkjo6q3B0M4fd9QisafYSt08gEKhftkfjZ6QDw9H
+	HpZyDcMK+1YZKsQz0t9d0JgsJP+X1sQ1eJKRPrmsh2b9RGtxVJVEi+ACzQD02f+8VjjC/DpHg5H/O
+	cEw1xwxpO7TvVkvg19EmsPN0FrL/eBmFHVC2dU+FdWSxvmsUL7xzYcBmzURDzkhRl1gLnn0naGC4j
+	e7Tnmg0ZaYbnUNHvnJ/e2xgwr4LbNQfRryiDafVAqC7G+lDGWiIUN2LkfCioBoQKPCXjl5htRGL2K
+	AAgiz0GQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vruio-00000006EcR-2shi;
-	Mon, 16 Feb 2026 09:16:50 +0000
+	id 1vruil-00000006EYd-20Bm;
+	Mon, 16 Feb 2026 09:16:47 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vruig-00000006ERt-46L8
+	id 1vruig-00000006ERk-23vY
 	for barebox@lists.infradead.org;
-	Mon, 16 Feb 2026 09:16:46 +0000
+	Mon, 16 Feb 2026 09:16:44 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vruif-0006V8-7x; Mon, 16 Feb 2026 10:16:41 +0100
+	id 1vruie-0006U8-MF; Mon, 16 Feb 2026 10:16:40 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vruid-0012X5-21;
+	id 1vruid-0012Wi-0P;
 	Mon, 16 Feb 2026 10:16:40 +0100
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vruH0-0000000Eudd-0sps;
+	id 1vruH0-0000000Eudd-2XV5;
 	Mon, 16 Feb 2026 09:48:06 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
 	"Claude Opus 4.6" <noreply@anthropic.com>
-Date: Mon, 16 Feb 2026 09:44:10 +0100
-Message-ID: <20260216084758.3548990-11-a.fatoum@pengutronix.de>
+Date: Mon, 16 Feb 2026 09:44:19 +0100
+Message-ID: <20260216084758.3548990-20-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260216084758.3548990-1-a.fatoum@pengutronix.de>
 References: <20260216084758.3548990-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260216_011643_013772_19F17844 
-X-CRM114-Status: UNSURE (   9.36  )
+X-CRM114-CacheID: sfid-20260216_011642_565607_7904AB4E 
+X-CRM114-Status: UNSURE (   9.51  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,36 +85,33 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH master 10/39] efi: loader: fix memory leak in efi_var_to_file
+Subject: [PATCH master 19/39] efi: payload: fix inverted error check after state_load
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On the success path, the function returns directly at line 87,
-bypassing the 'out:' label where 'buf' is freed. Every successful
-variable persist leaks the collected variable buffer.
-
-Fix by setting efiret to EFI_SUCCESS and jumping to the out label.
+The condition 'ret != -ENOMEDIUM' is true for ret == 0 (success),
+causing a spurious warning on every successful state load. Add a
+check for ret != 0 first.
 
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- efi/loader/efi_var_file.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ efi/payload/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/efi/loader/efi_var_file.c b/efi/loader/efi_var_file.c
-index e0dec999b779..c0150baa27ac 100644
---- a/efi/loader/efi_var_file.c
-+++ b/efi/loader/efi_var_file.c
-@@ -84,7 +84,8 @@ efi_status_t efi_var_to_file(void)
- 		goto error;
- 	}
+diff --git a/efi/payload/init.c b/efi/payload/init.c
+index d8a4410f22e6..f74ac4966fb1 100644
+--- a/efi/payload/init.c
++++ b/efi/payload/init.c
+@@ -316,7 +316,7 @@ static int efi_late_init(void)
+ 			return PTR_ERR(state);
  
--	return 0;
-+	efiret = EFI_SUCCESS;
-+	goto out;
+ 		ret = state_load(state);
+-		if (ret != -ENOMEDIUM)
++		if (ret && ret != -ENOMEDIUM)
+ 			pr_warn("Failed to load persistent state, continuing with defaults, %d\n",
+ 				ret);
  
- error:
- 	if (efiret != EFI_SUCCESS)
 -- 
 2.47.3
 
