@@ -1,65 +1,53 @@
-Delivery-date: Wed, 18 Feb 2026 13:21:10 +0100
+Delivery-date: Wed, 18 Feb 2026 13:43:41 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vsgYH-0032qL-2D
+	id 1vsgu4-00338q-0r
 	for lore@lore.pengutronix.de;
-	Wed, 18 Feb 2026 13:21:10 +0100
+	Wed, 18 Feb 2026 13:43:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vsgYI-00034Q-1d
-	for lore@pengutronix.de; Wed, 18 Feb 2026 13:21:10 +0100
+	id 1vsgu4-0004lM-KF
+	for lore@pengutronix.de; Wed, 18 Feb 2026 13:43:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=1Z60JmRyUUjsmfnTE3AEoRQHD6vZaBaliLBecxiQXYY=; b=PGYJPwnu07MUUoBBqUvxaLKSRr
-	oXIN85oLxpwHFRJYgy4Ee82sQax111S/YGpfrTHYZi771SkOMzVB33Q/qMX0C1rTR9iI3SbF+wOfW
-	J6rf6hPk5P3Dd4V9gpeZZf2wqmolK8hzeli25GcR34w2GtXbk0Gz4W176tIkdr8/EqQkxUglx44v2
-	c2z3KerbXooVM/+6PBb2sMwVJRO+q27D5k2nlGApRMqRwbqi/oStbh6NLbnzKUkkGs9BCpY3qBsqt
-	um3PETfHxK/1Wk7FO9ouUMDNKrCL3U1axZBA/M6WAHZGXD4hD4cYWMcxZ3/qkirrUwIg6NIFaUznx
-	qBav4/4w==;
+	bh=txOEjyEfzH4/aAUuLtayMixTS35lmDPnjenFoKjBAps=; b=L5WOQnrRKzgZyq4XkxWXHzX6FZ
+	85DAONSswdxQWruzwajDxtAIf/wlmwFsm465k1k3v92CxFG9jLC9dT+eLx6Z3my2v/Pi5Irq4koZD
+	okWdLddfftWmjbUcffLpOGFzpJ3auD/slV/5XUMvinoPyTcNy8z3r9WD1d5sctYO/e1OYqtN0k5Lz
+	xPaKuueVRWbA2r00IFonGTTknyIF8LSmagFAnDniCA0nVakCriXaZvYUF/DEjZ+TfKEtd74CFJYzO
+	FXeoX33F3ZRzflkmejjoRDYpxArPUKy7HW008k8MwbCAwuY54xBekFLmRJum+eP+jF8oF0q9fXdIa
+	sX2P1Slw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vsgXv-00000009mZO-2PqS;
-	Wed, 18 Feb 2026 12:20:47 +0000
+	id 1vsgte-00000009nnP-1SyH;
+	Wed, 18 Feb 2026 12:43:14 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vsgXt-00000009mYG-2A1H
+	id 1vsgtc-00000009nmi-07yx
 	for barebox@lists.infradead.org;
-	Wed, 18 Feb 2026 12:20:46 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vsgXq-00030u-Cn; Wed, 18 Feb 2026 13:20:42 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vsgXo-001P8j-2k;
-	Wed, 18 Feb 2026 13:20:42 +0100
-Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vsgXq-00000003Ypr-0PIv;
-	Wed, 18 Feb 2026 13:20:42 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	Wed, 18 Feb 2026 12:43:13 +0000
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <m.felsch@pengutronix.de>)
+	id 1vsgtZ-0004hW-2z
+	for barebox@lists.infradead.org; Wed, 18 Feb 2026 13:43:09 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 18 Feb 2026 13:20:40 +0100
-Message-ID: <20260218122041.848881-1-a.fatoum@pengutronix.de>
+Date: Wed, 18 Feb 2026 13:42:48 +0100
+Message-ID: <20260218124307.2358552-1-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260218_042045_552093_FA9D5B05 
-X-CRM114-Status: UNSURE (   8.49  )
+X-CRM114-CacheID: sfid-20260218_044312_068759_F58AFE83 
+X-CRM114-Status: UNSURE (   9.53  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -78,40 +66,48 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] of: overlay: propagate error unflattening DTBO
+Subject: [PATCH] eeprom: at24: verify that chip is accessible during probe
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-of_unflatten_dtb() may return an error pointer when parsing of the
-device tree blob failed. Error pointers were not checked in
-of_overlay_apply_dtbo() leading to a panic when they were later
-dereferenced in of_copy_node().
+Perform a basic sanity check to verify that the EEPROM is actually
+accessible by reading 1-byte. Linux does the same sanity check for all
+non-ACPI platforms.
 
-Add an early exit to fix this.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- drivers/of/overlay.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/eeprom/at24.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
-index 34543403e9ba..4345489b3b40 100644
---- a/drivers/of/overlay.c
-+++ b/drivers/of/overlay.c
-@@ -351,6 +351,9 @@ int of_overlay_apply_dtbo(struct device_node *root, const void *dtbo)
- 	int ret;
+diff --git a/drivers/eeprom/at24.c b/drivers/eeprom/at24.c
+index 06a2a4b22697..a08d42fe3e14 100644
+--- a/drivers/eeprom/at24.c
++++ b/drivers/eeprom/at24.c
+@@ -373,6 +373,7 @@ static int at24_probe(struct device *dev)
+ 	unsigned i, num_addresses;
+ 	const char *devname;
+ 	const char *alias;
++	u8 test_byte;
  
- 	overlay = of_unflatten_dtb(dtbo, INT_MAX);
-+	if (IS_ERR(overlay))
-+		return PTR_ERR(overlay);
+ 	if (dev->platform_data) {
+ 		chip = *(struct at24_platform_data *)dev->platform_data;
+@@ -487,6 +488,12 @@ static int at24_probe(struct device *dev)
+ 	at24->nvmem_config.size = chip.byte_len;
+ 	at24->nvmem_config.id = devid;
+ 
++	/* Perform a one-byte test read to verify that the chip is functional */
++	if (at24_read(at24, &test_byte, 0, 1) != 1) {
++		err = -ENODEV;
++		goto err_devfs_create;
++	}
 +
- 	ret = of_overlay_apply_tree(root, overlay);
- 	of_delete_node(overlay);
- 
+ 	at24->nvmem = nvmem_register(&at24->nvmem_config);
+ 	err = PTR_ERR_OR_ZERO(at24->nvmem);
+ 	if (err)
 -- 
 2.47.3
 
