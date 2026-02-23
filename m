@@ -1,69 +1,67 @@
-Delivery-date: Mon, 23 Feb 2026 10:52:32 +0100
+Delivery-date: Mon, 23 Feb 2026 10:56:52 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuScB-004mr6-2R
+	id 1vuSgN-004mu5-3C
 	for lore@lore.pengutronix.de;
-	Mon, 23 Feb 2026 10:52:32 +0100
+	Mon, 23 Feb 2026 10:56:52 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuScC-00057N-2j
-	for lore@pengutronix.de; Mon, 23 Feb 2026 10:52:32 +0100
+	id 1vuSgO-0005fN-94
+	for lore@pengutronix.de; Mon, 23 Feb 2026 10:56:52 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fl84AEAitba9aCHmCU3dlKGaOquIVmRoMoquOp9bHXA=; b=BSegJfCZFv2eRW4/IW+6bO6EuJ
-	7Tj5us/4cJN8rfm20yVPvzRSjetfNuLklEvf4ufhNIlfaR/+saT3gBcmLMDUchBx1UlZ4IwAtNrs2
-	9A7tbbz2I9fWzgYEhbESyCueNliLiFxkXZ+mvLyPTLPaXFqRl5FdnEa5r7x5pOjT1TYtpQQe/TZVp
-	Yl81ND2w4wXXL3rNQsIjnJpQP+RS0ficra8K6DWaJfrt/zSU5kBawy+YT7ZNOROXueQwoygewpzOO
-	M8xbrPDu+/Djt/oNRyHTGhUeZAqlNdPdDQzkZBc7VW+J7HEzMuvFXcX7r0KSHYaloILpiPgj22r4J
-	jw5riX1g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=0jxcCn/u0dGi7cqzpLhosWQwvnSyNo98e3KIE24eA48=; b=RCmK3MTzOCHV8KZloUD2IrXc2x
+	dZzUGyUC0gk+8zVTexY5mCa3MuoDAUGAnyOl7gRmQ81DTq5B8ug5mWoWUB/C9bHhLGBn4kPGU825B
+	AKJyg02bHJJJPJXLcz1l2hZjemZMsXZeuJPXGcfOZvEB3PDt3vzq+99bwWBD+CRs9t9JvItHFaXfU
+	a04A0B2nQbLNBDpyUgPiNXJrUuoGD0QnHtjiaipEDd/hLnrBeNPngpj3t9FfFUo8D3tn2GffX3Xr6
+	R+sm4KF3cQ78th+Mq6tJTfraA5wY/C2HV3RnJ8NZrLsotCD/79lHhw/NJ6u8fU3ng/VTrAhW+LmBP
+	dSfjKlgw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuSbp-0000000HaEk-3zaN;
-	Mon, 23 Feb 2026 09:52:09 +0000
+	id 1vuSg1-0000000Hajq-0xs6;
+	Mon, 23 Feb 2026 09:56:29 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuSbn-0000000HaER-1VOx
+	id 1vuSfz-0000000HajJ-1j7U
 	for barebox@lists.infradead.org;
-	Mon, 23 Feb 2026 09:52:08 +0000
+	Mon, 23 Feb 2026 09:56:28 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vuSbl-00053i-Ng; Mon, 23 Feb 2026 10:52:05 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vuSfw-0005ab-CV; Mon, 23 Feb 2026 10:56:24 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vuSbk-002Cqb-0a;
-	Mon, 23 Feb 2026 10:52:05 +0100
-Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vuSbl-00000000ppB-1wc1;
-	Mon, 23 Feb 2026 10:52:05 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: "Claude Opus 4.6" <noreply@anthropic.com>
-In-Reply-To: <20260216084142.3546363-1-a.fatoum@pengutronix.de>
-References: <20260216084142.3546363-1-a.fatoum@pengutronix.de>
-Message-Id: <177184032545.199108.1823658291287669614.b4-ty@pengutronix.de>
-Date: Mon, 23 Feb 2026 10:52:05 +0100
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vuSfu-002CrK-2j;
+	Mon, 23 Feb 2026 10:56:24 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1vuSfw-000000015Yk-0QNp;
+	Mon, 23 Feb 2026 10:56:24 +0100
+Date: Mon, 23 Feb 2026 10:56:24 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <6lzj4bsgsi3f4afsysd42x3volfu5qni6dgm5qkt7adrwwcpoo@xcaj6fyr7v6z>
+References: <20260218124307.2358552-1-m.felsch@pengutronix.de>
+ <aZwaydz8gMTJNv5W@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aZwaydz8gMTJNv5W@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260223_015207_501198_8EA01473 
-X-CRM114-Status: UNSURE (   5.96  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260223_015627_497703_DE925166 
+X-CRM114-Status: GOOD (  25.74  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,37 +79,86 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master 1/4] FIT: fix potential uninitialized read
- during fuzzing
+Subject: Re: [PATCH] eeprom: at24: verify that chip is accessible during probe
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Mon, 16 Feb 2026 09:41:36 +0100, Ahmad Fatoum wrote:
-> fit_find_last_unit should return -ENOENT when conf_node is NULL
-> instead of returning 0 without writing *out_unit, as that left
-> the caller's unit variable uninitialized.
+On 26-02-23, Sascha Hauer wrote:
+> On Wed, Feb 18, 2026 at 01:42:48PM +0100, Marco Felsch wrote:
+> > Perform a basic sanity check to verify that the EEPROM is actually
+> > accessible by reading 1-byte. Linux does the same sanity check for all
+> > non-ACPI platforms.
+> > 
+> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> > ---
+> >  drivers/eeprom/at24.c | 7 +++++++
+> >  1 file changed, 7 insertions(+)
+> > 
+> > diff --git a/drivers/eeprom/at24.c b/drivers/eeprom/at24.c
+> > index 06a2a4b22697..a08d42fe3e14 100644
+> > --- a/drivers/eeprom/at24.c
+> > +++ b/drivers/eeprom/at24.c
+> > @@ -373,6 +373,7 @@ static int at24_probe(struct device *dev)
+> >  	unsigned i, num_addresses;
+> >  	const char *devname;
+> >  	const char *alias;
+> > +	u8 test_byte;
+> >  
+> >  	if (dev->platform_data) {
+> >  		chip = *(struct at24_platform_data *)dev->platform_data;
+> > @@ -487,6 +488,12 @@ static int at24_probe(struct device *dev)
+> >  	at24->nvmem_config.size = chip.byte_len;
+> >  	at24->nvmem_config.id = devid;
+> >  
+> > +	/* Perform a one-byte test read to verify that the chip is functional */
+> > +	if (at24_read(at24, &test_byte, 0, 1) != 1) {
+> > +		err = -ENODEV;
 > 
+> a return of -ENODEV from driver probe doesn't print an error. Is that
+> what we want here?
+
+That's a good point, quickly checked the Linux implementation which
+doesn't print an error too. However, you're right and we should print a
+dev_err() or so here. Is this something you may add while applying or
+shall I send a new v2?
+
+Regards,
+  Marco
+
+
+> 
+> Sascha
+> 
+> > +		goto err_devfs_create;
+> > +	}
+> > +
+> >  	at24->nvmem = nvmem_register(&at24->nvmem_config);
+> >  	err = PTR_ERR_OR_ZERO(at24->nvmem);
+> >  	if (err)
+> > -- 
+> > 2.47.3
+> > 
+> > 
+> > 
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 > 
 
-Applied, thanks!
-
-[1/4] FIT: fix potential uninitialized read during fuzzing
-      https://git.pengutronix.de/cgit/barebox/commit/?id=7a358579b6ee (link may not be stable)
-[2/4] FIT: fix potential underflow of stack array
-      https://git.pengutronix.de/cgit/barebox/commit/?id=38ee3bd662a8 (link may not be stable)
-[3/4] of: fdt: fix double free in fdt_ensure_space
-      https://git.pengutronix.de/cgit/barebox/commit/?id=3d6d2414d85e (link may not be stable)
-[4/4] of: overlay: initialize ret to fix garbage return value
-      https://git.pengutronix.de/cgit/barebox/commit/?id=2fb737e978c1 (link may not be stable)
-
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+#gernperDu 
+#CallMeByMyFirstName
 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
 
 
