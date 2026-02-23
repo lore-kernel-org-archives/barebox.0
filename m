@@ -1,74 +1,72 @@
-Delivery-date: Mon, 23 Feb 2026 09:57:31 +0100
+Delivery-date: Mon, 23 Feb 2026 10:11:19 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuRkw-004luO-0m
+	id 1vuRyJ-004mEJ-0H
 	for lore@lore.pengutronix.de;
-	Mon, 23 Feb 2026 09:57:31 +0100
+	Mon, 23 Feb 2026 10:11:19 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuRkw-0005me-Gc
-	for lore@pengutronix.de; Mon, 23 Feb 2026 09:57:31 +0100
+	id 1vuRyJ-0000Di-BW
+	for lore@pengutronix.de; Mon, 23 Feb 2026 10:11:19 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=inT6xUiQuhIJ75/IY26INoxupYJxXJXotKULiSZHy2Y=; b=nSMK69S21RJ0gLzX/H/5M9qhJk
-	8SSnHRyEHZXSM4SEkMGgaxp7FoKgTpF+hazIJw2fQaZxo6Cjnv4bhTilz38y+hyCa/HTh7NOcxvtk
-	oGJYcTF9Z0R2RgUloPAKPXzONP2NOxZRngu9ZWqSsfYOWTMtf4gHAeMAmCmDsxmEvV1Ww0ICMgcjg
-	I/Eeva3P9Omcr6n5ipoWkzUFIjqC1ssLnWa3QkoZ+6qmPG48eMgrl2h6Thm8ErKX7y9vxEXteSNut
-	YZ2e7REx+PO+T6EwfDyChX8vqNOVSPqVAmg7B5CB8e6K3Hld+s68VUDfE6IntcJxtdaqHHOv8Ra6P
-	bH1lijcQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=clOh6imC78PN5husQ1PYjUTs4rWGGiTgNsTU5oPpM+Y=; b=iSKWIFEZi8HWi7RXjGTAMlgpO8
+	FZfiNCEbr8kGs6r6xhfBB8iCuHF893gsYE8vlgdSxP8wGOCJl9ouBmeTJE+nJe+Sy//ph6F9z6zfJ
+	zsxrcLqHqVIG0xqWimyTra6oIgb18GpSPKvU1dvJLx3OgZjdnSQR5hD7Ez0ylUEzAYnAMEUPhNoWC
+	JvAlPEAreSiEbJCsSER/4RnVTPOwQQ0pUJ7jdJxj1RCjVzdHSKVbMKP0q5GSEWR2LkVSniFvYhMbr
+	35P/b5Iwj+TpYFOqY8F+Xuw7eZ3z8PW3Ex/kKZz/+lSGDxv+2MzjTNguWHsYuE+PWHyB1k4rHmX1M
+	XpJgZVvg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuRkb-0000000HRrU-2CqT;
-	Mon, 23 Feb 2026 08:57:09 +0000
+	id 1vuRxr-0000000HVQR-1TO8;
+	Mon, 23 Feb 2026 09:10:51 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuRkZ-0000000HRpt-1tZx
+	id 1vuRxo-0000000HVQ5-2hYf
 	for barebox@lists.infradead.org;
-	Mon, 23 Feb 2026 08:57:08 +0000
+	Mon, 23 Feb 2026 09:10:49 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vuRkH-0005a4-W8; Mon, 23 Feb 2026 09:56:50 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1vuRxl-000088-JL; Mon, 23 Feb 2026 10:10:45 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vuRkG-002COW-1O;
-	Mon, 23 Feb 2026 09:56:49 +0100
-Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vuRkH-00000000mdp-2ziX;
-	Mon, 23 Feb 2026 09:56:49 +0100
+	(envelope-from <sha@pengutronix.de>)
+	id 1vuRxk-002Cgy-0C;
+	Mon, 23 Feb 2026 10:10:45 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vuRxl-000000014on-1LZM;
+	Mon, 23 Feb 2026 10:10:45 +0100
+Date: Mon, 23 Feb 2026 10:10:45 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 23 Feb 2026 09:56:50 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Message-ID: <aZwZleKy56aDEBRl@pengutronix.de>
+References: <20260223-arm-mmu-v1-0-707d45f6f6e1@pengutronix.de>
+ <20260223-arm-mmu-v1-4-707d45f6f6e1@pengutronix.de>
+ <d12e0757-a610-47fe-b99d-bbb8e2aaa4de@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260223-rockchip-optee-v1-2-723493320d42@pengutronix.de>
-References: <20260223-rockchip-optee-v1-0-723493320d42@pengutronix.de>
-In-Reply-To: <20260223-rockchip-optee-v1-0-723493320d42@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771837009; l=2099;
- i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=yA1muhweNHv/LVblfzUg7kkH63m4BUKsdNNFzqkn/yg=;
- b=eKn0EJ7ul6EhQYdF7hl7+15ih7ctxFklxwy2g05VAvAPSp/nBGKmaS+Es1P5PRtncC9WHZekS
- KnuQBnTWvCRB94DTyngXQfVz8b3kCC1At22bg0tqcyr7hAbAXGfsqma
-X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
- pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d12e0757-a610-47fe-b99d-bbb8e2aaa4de@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260223_005707_504084_44EDC645 
-X-CRM114-Status: GOOD (  15.53  )
+X-CRM114-CacheID: sfid-20260223_011048_740731_540C38D6 
+X-CRM114-Status: GOOD (  29.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,75 +84,83 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] ARM: rockchip: atf: Fix memend
+Subject: Re: [PATCH 4/4] ARM: pbl: MMU: Make it callable multiple times
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-In rk3588_barebox_entry() we do a:
+On Mon, Feb 23, 2026 at 09:41:23AM +0100, Ahmad Fatoum wrote:
+> Hello Sascha,
+> 
+> On 2/23/26 9:34 AM, Sascha Hauer wrote:
+> > mmu_early_enable() is called in barebox_pbl_start() after a call to
+> > setup_c(). setup_c() clears the BSS which means alloc_pte() starts at
+> > index zero again when mmu_early_enable() has been called earlier
+> > already.
+> > 
+> > Some boards might want to do exactly that: Call mmu_early_enable()
+> > earlier to do for example otherwise expensive hashing of xloaded
+> > binaries.
+> > 
+> > Make mmu_early_enable() safe to be called multiple times by moving the
+> > PTE index out of the BSS.
+> 
+> How about making setup_c() safe for calling multiple times by having it
+> check and modify a variable in the .data section?
 
-	endmem = rk3588_ram0_size();
+Good idea.
 
-This is wrong, as the function name says it returns the (usable in this
-case) RAM size. It doesn't count from 0x0 as we assume, but from
-RK3588_DRAM_BOTTOM, which means that endmem is calculated by
-RK3588_DRAM_BOTTOM too low.
+> 
+> Would that break anything?
 
-Fix this and while at it use rk3588_ram_sizes(), as this returns usable
-DRAM start and size, so exactly the data we need.
+I don't know. We might have code that relies on exactly the current
+behaviour, but I am not aware of any.
 
-Without this fix we run into trouble on boards with 4GB or more of DRAM.
-On these boards the 32bit DRAM space is limited by the beginning of the
-internal register space. Without this fix the end of the memory range
-we pass to barebox overlaps the internal register space. This likely
-only didn't blow up because we ultimately do not use the end of DRAM
-as OPTEE_SIZE is substracted from it. OP-TEE is in the lower DRAM on
-Rockchip though, so the space we reserve for OP-TEE in the upper DRAM
-was just unused.
+Sascha
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-rockchip/atf.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
-
-diff --git a/arch/arm/mach-rockchip/atf.c b/arch/arm/mach-rockchip/atf.c
-index c4ed84aae6..a57c8d94e2 100644
---- a/arch/arm/mach-rockchip/atf.c
-+++ b/arch/arm/mach-rockchip/atf.c
-@@ -194,12 +194,14 @@ static int rk3588_fixup_mem(void *fdt)
- 
- void __noreturn rk3588_barebox_entry(void *fdt)
- {
--	unsigned long membase, endmem;
-+	phys_addr_t membase, memend;
-+	resource_size_t memsize;
- 
--	membase = RK3588_DRAM_BOTTOM;
--	endmem = rk3588_ram0_size();
-+	rk3588_ram_sizes(&membase, &memsize, 1);
- 
--	rk_scratch = (void *)arm_mem_scratch(endmem);
-+	memend = membase + memsize;
-+
-+	rk_scratch = (void *)arm_mem_scratch(memend);
- 
- 	if (current_el() == 3) {
- 		void *fdt_scratch = NULL;
-@@ -223,7 +225,7 @@ void __noreturn rk3588_barebox_entry(void *fdt)
- 	}
- 
- 	optee_set_membase(rk_scratch_get_optee_hdr());
--	barebox_arm_entry(membase, endmem - membase, fdt);
-+	barebox_arm_entry(membase, memsize, fdt);
- }
- 
- void rk3576_atf_load_bl31(void *fdt)
+> 
+> Cheers,
+> Ahmad
+> 
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  arch/arm/cpu/mmu_64.c | 5 ++++-
+> >  1 file changed, 4 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+> > index 7f38473079..2f451b3c91 100644
+> > --- a/arch/arm/cpu/mmu_64.c
+> > +++ b/arch/arm/cpu/mmu_64.c
+> > @@ -86,7 +86,10 @@ static void set_pte_range(unsigned level, uint64_t *virt, phys_addr_t phys,
+> >  #ifdef __PBL__
+> >  static uint64_t *alloc_pte(void)
+> >  {
+> > -	static unsigned int idx;
+> > +	static int idx = -1;
+> > +
+> > +	if (idx == -1)
+> > +		idx = 0;
+> >  
+> >  	idx++;
+> >  
+> > 
+> 
+> -- 
+> Pengutronix e.K.                  |                             |
+> Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+> 
+> 
 
 -- 
-2.47.3
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
