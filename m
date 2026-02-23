@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuUDw-004oe4-28
+	id 1vuUDw-004oe6-2B
 	for lore@lore.pengutronix.de;
 	Mon, 23 Feb 2026 12:35:37 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuUDw-0000Wr-T8
+	id 1vuUDw-0000Ws-Vj
 	for lore@pengutronix.de; Mon, 23 Feb 2026 12:35:37 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,39 +18,38 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0UE+Dp+rYtlxqFH0DCZeeS/uOu0fJncyRoHmM7IeP08=; b=OQGiUshConC6AioA1w1j8EEPLb
-	yrp+3v7v5lYLh2xx34GWgWpxW4q0XNRhSsUVXavIjbOHUE21gTqgXtdy4tcgC0W8BxFzLMm3R3ydh
-	RlJ6R9X2K91TIZT4jJ47eNUhN73D+J6pcxSvX/X4EMV2g5avd7AWZx1I+g4ZC1ZrLdvazkpEeEz4e
-	r9HKWMkZfAgNdYMZG5SZXb87lBADlcmYXwhe6RdI2QVxyUd0zztAbVNb/FCWttz4cvsyiXfzfX7Ab
-	04nh5zlM3Sv0dAtiKv7wfmYjk1uR7IOuEY4pYHpIiO1bnzh9acJKzkhtMR6fx+IQxH6FjGhpgt2Lm
-	vrt8PT/A==;
+	bh=Hv9gy7Jf/UZRlxwgc/PibM8WoK0cgh98wLkd+SoNi7Q=; b=aI9ZHwAw3qDr78N6f9r5zMvlbS
+	AuUWepVPzjlxiZXwHa3Q7YTN1fCYzOj7XCvPmdTbcdhf+3k5Rim+QUkjOB6CIs+D0abncivO8V81K
+	JXeag9P1N1Du23a5Y1usXvGdT8AsMJc8fihVrZk5q+NTIdTtVkJKH87mUC6YfJxS7aDd5iJVC8TVI
+	ba6IImP58wpLxTLQ98RPs/bg1ldnL4Rq4MGm5ihQB1alylnMSfmzlqGOCOaYkiB3hs6UYcop81/Je
+	LGOWoTiNirmJENLyDl57K0ki66qscJuTOVOvNA4vtsWxKzs/5bSFsFvOmHsQ9ulY3sgii0m11iR3t
+	oaRx1Gcg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuUDa-00000000CAj-4ACK;
+	id 1vuUDa-00000000CAQ-1I2e;
 	Mon, 23 Feb 2026 11:35:14 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuUDX-00000000C8N-3JXe
+	id 1vuUDW-00000000C8G-45nC
 	for barebox@lists.infradead.org;
-	Mon, 23 Feb 2026 11:35:13 +0000
+	Mon, 23 Feb 2026 11:35:12 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1vuUDW-0000JU-6i; Mon, 23 Feb 2026 12:35:10 +0100
+	id 1vuUDV-0000JU-81; Mon, 23 Feb 2026 12:35:09 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
-Cc: "Claude Opus 4.6" <noreply@anthropic.com>,
-	Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon, 23 Feb 2026 12:31:34 +0100
-Message-ID: <20260223113446.638135-4-a.fatoum@barebox.org>
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Mon, 23 Feb 2026 12:31:32 +0100
+Message-ID: <20260223113446.638135-2-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260223113446.638135-1-a.fatoum@barebox.org>
 References: <20260223113446.638135-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260223_033511_826862_E132A94A 
-X-CRM114-Status: UNSURE (   7.86  )
+X-CRM114-CacheID: sfid-20260223_033511_009968_67343283 
+X-CRM114-Status: UNSURE (   7.36  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -73,46 +72,35 @@ X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 3/4] MAKEALL: error out on options placed after the defconfig argument
+Subject: [PATCH 1/4] MAKEALL: early exit if config specified, but no arch
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-getopts stops parsing at the first non-option argument, so options
-like -k after the defconfig name silently end up as positional
-arguments. For bare defconfigs these get misinterpreted as pytest
-options and are silently ignored, leading to a build without the
-intended configuration.
+The behavior of MAKEALL to just build all configs and ignore the
+specified config is confusing, so add a check guarding against this.
 
-Detect this by checking for trailing arguments when any positional
-argument is a bare defconfig (not a labgrid .yaml config, where
-extra arguments are intentionally forwarded to pytest).
-
-Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- MAKEALL | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ MAKEALL | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/MAKEALL b/MAKEALL
-index c36aed625820..dd0b7f8003cc 100755
+index 1e6d0c97b868..001b46a14726 100755
 --- a/MAKEALL
 +++ b/MAKEALL
-@@ -440,6 +440,15 @@ else
- 
- 		configs+=($i)
- 	done
-+	if [ ${#pytest_opts[@]} -gt 0 ]; then
-+		for i in "${configs[@]}"; do
-+			if ! [[ $i =~ .yaml$ ]]; then
-+				echo "error: unexpected arguments after defconfig: ${pytest_opts[*]}" >&2
-+				echo "hint: place all options before the defconfig argument" >&2
+@@ -461,6 +461,12 @@ else
+ 				echo "Skipping test due to failed build"
+ 			fi
+ 		else
++			if [ ! "${ARCH}" ]; then
++				echo "ARCH must be specified via the -a option or environment"
++				usage
 +				exit 1
 +			fi
-+		done
-+	fi
- 	for i in "${configs[@]}"; do
- 		config=$i
- 		if [[ $i =~ ^.*/([^/]+)/([^@]*@|)([^.]+).yaml$ ]]; then
++
+ 			do_build_defconfig ${ARCH} $config
+ 		fi
+ 	done
 -- 
 2.47.3
 
