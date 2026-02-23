@@ -1,72 +1,59 @@
-Delivery-date: Mon, 23 Feb 2026 12:52:34 +0100
+Delivery-date: Mon, 23 Feb 2026 12:53:19 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuUUL-004owT-0S
+	id 1vuUV4-004oxN-17
 	for lore@lore.pengutronix.de;
-	Mon, 23 Feb 2026 12:52:34 +0100
+	Mon, 23 Feb 2026 12:53:19 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuUUL-000218-6t
-	for lore@pengutronix.de; Mon, 23 Feb 2026 12:52:33 +0100
+	id 1vuUV4-00027p-HV
+	for lore@pengutronix.de; Mon, 23 Feb 2026 12:53:19 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=pHPSiGyzW6fcfBqblIeLU26dcDkBXlujgE76DERhqqI=; b=XRNZGIDJyAF+EZ9BuiyzCoq/4/
-	wouVkAcewTXGVqmluuBWjg0IX7JlrYsObLFIb1t5y/VicRSS41g2hU0R+aoeuACz9vQ5xTuY6sjcI
-	lbPJP+7v9MSQMZqjGfgIb08ELwQjHXAHU2RdVU78QMD6m37Lxc8LjncSgI0Bbe4dy9MsS47r3E68S
-	AjObXm4RJcu9CozKygRdTCCJEbveZXKkEPuRdDFZZL4TDq4X9K/OKdDafPHZvfLfrM+q0BHplEg79
-	uKqNNCAUoIq9W4lGiFtjDicpKYkJDQngeXXnn3gz/dTXE+1Y7KGrOShAf/4ef6ezSnTelHjyUs6xG
-	0xIVaaOQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=8ESQ8rc7O3dkOek4LwyBmNa9AE3i2j1UMZRFoKwsmKA=; b=M0YCi7qGFoLOo0Ct1PWshPipvW
+	YNL5BpgpAB/bTGO6Lhv7cpNxU5GOW0GV+rX5PH12BjE9v3ydKU0y6QgUILQBgk7X9E8S1q8ae2oEg
+	PnAYn1lChdTrjHniY2HiXm0uKvW3+lMLLZpXQDWxkoxA4cIZrHIdiiST9ig3c5dxLJ8nCvG4j1IzK
+	EwOjjNbB9Cta+vQ7VEov3MFr6HDsxacup2JXhphUKUMzTTJhO+1/NYf5f3Sy6o1/PW39qPC8oiNef
+	cZ/ESpyuXIqioM8J8/iMm4J9fScD/nGA10ike3Cwynw98SJLDPPxweMgzI/+rRUs23jYg962Qi6S/
+	VwQXHnPA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuUU0-00000000Dk7-0WdY;
-	Mon, 23 Feb 2026 11:52:12 +0000
+	id 1vuUUi-00000000Dwv-2YgW;
+	Mon, 23 Feb 2026 11:52:56 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuUTx-00000000DjF-0Eq7
+	id 1vuUUg-00000000Dw2-1pcJ
 	for barebox@lists.infradead.org;
-	Mon, 23 Feb 2026 11:52:10 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vuUTv-0001vC-Af; Mon, 23 Feb 2026 12:52:07 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vuUTt-002DtG-11;
-	Mon, 23 Feb 2026 12:52:06 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vuUTu-000000017tX-2NOs;
-	Mon, 23 Feb 2026 12:52:06 +0100
-Date: Mon, 23 Feb 2026 12:52:06 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Renaud Barbier <renaud.barbier@ametek.com>, barebox@lists.infradead.org
-Message-ID: <aZw_ZpfzuReDI-wj@pengutronix.de>
-References: <20260203141945.1417902-1-renaud.barbier@ametek.com>
- <aZw8r4SBswMxocvb@pengutronix.de>
- <74d9ecd8-7c2d-4090-8ff0-7dd16d8b2be1@pengutronix.de>
+	Mon, 23 Feb 2026 11:52:55 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@barebox.org>)
+	id 1vuUUe-00025W-VE; Mon, 23 Feb 2026 12:52:53 +0100
+Message-ID: <e9d4562c-b3cc-40e9-899f-f929e25d135f@barebox.org>
+Date: Mon, 23 Feb 2026 12:52:52 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <74d9ecd8-7c2d-4090-8ff0-7dd16d8b2be1@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org, "Claude Opus 4.6" <noreply@anthropic.com>
+References: <20260223113446.638135-1-a.fatoum@barebox.org>
+ <20260223113446.638135-4-a.fatoum@barebox.org>
+ <aZw_ESRF71GCfD6Y@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@barebox.org>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <aZw_ESRF71GCfD6Y@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260223_035209_147659_D3C9FA51 
-X-CRM114-Status: GOOD (  26.83  )
+X-CRM114-CacheID: sfid-20260223_035254_479112_E4F5D7E9 
+X-CRM114-Status: GOOD (  14.70  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,55 +71,75 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/1] Initial ARMv7-A LPAE support
+Subject: Re: [PATCH 3/4] MAKEALL: error out on options placed after the
+ defconfig argument
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Feb 23, 2026 at 12:44:23PM +0100, Ahmad Fatoum wrote:
-> Hello Sascha,
-> 
-> On 2/23/26 12:40 PM, Sascha Hauer wrote:
-> > Hi Renaud,
-> > 
-> > On Tue, Feb 03, 2026 at 02:19:44PM +0000, Renaud Barbier wrote:
-> >> The LPAE support allows to map physical address above the 32-bit space in
-> >> the ARMv7-A processor to a 32-bit virtual address.
-> >>
-> >> This patch set was tested on a LS1021A-IOT. Later, a patch to the PCIe
-> >> designware driver will be provided to prove the remapping of 40-bit PA to
-> >> 32-bit VA.
-> >>
-> >> This patch does not include an update of the mmuinfo command.
-> >>
-> >> Renaud Barbier (1):
-> >>   arm: mmu: initial LPAE support
-> >>
-> >>  arch/arm/Kconfig                            |   9 +
-> >>  arch/arm/configs/layerscape_v7_defconfig    |   1 +
-> >>  arch/arm/cpu/Makefile                       |   4 +
-> >>  arch/arm/cpu/mmu_lpae.c                     | 650 ++++++++++++++++++++
-> >>  arch/arm/cpu/mmu_lpae.h                     | 101 +++
-> > 
-> > The patch duplicates most of the existing MMU support. Can we do better?
-> 
-> I had asked for it in this form, so I can get a look at how much
-> duplication there is and how to go from there.
-> 
-> I haven't come around yet to review it though, but I will try to find
-> the time soon.
+Hi,
 
-Ah, ok. Makes sense.
+On 2/23/26 12:50 PM, Sascha Hauer wrote:
+> On Mon, Feb 23, 2026 at 12:31:34PM +0100, Ahmad Fatoum wrote:
+>> getopts stops parsing at the first non-option argument, so options
+>> like -k after the defconfig name silently end up as positional
+>> arguments. For bare defconfigs these get misinterpreted as pytest
+>> options and are silently ignored, leading to a build without the
+>> intended configuration.
+>>
+>> Detect this by checking for trailing arguments when any positional
+>> argument is a bare defconfig (not a labgrid .yaml config, where
+>> extra arguments are intentionally forwarded to pytest).
+> 
+> Can't we use getopt for MAKEALL instead of getopts? getopt just does the
+> right thing.
 
-Sascha
+When using MAKEALL with a labgrid yaml instead of a defconfig, it
+derives the defconfig name and interprets the options after the yaml as
+pytest options, so use of getopt would break that.
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Cheers,
+Ahmad
+
+> 
+> Sascha
+> 
+>>
+>> Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+>> ---
+>>  MAKEALL | 9 +++++++++
+>>  1 file changed, 9 insertions(+)
+>>
+>> diff --git a/MAKEALL b/MAKEALL
+>> index c36aed625820..dd0b7f8003cc 100755
+>> --- a/MAKEALL
+>> +++ b/MAKEALL
+>> @@ -440,6 +440,15 @@ else
+>>  
+>>  		configs+=($i)
+>>  	done
+>> +	if [ ${#pytest_opts[@]} -gt 0 ]; then
+>> +		for i in "${configs[@]}"; do
+>> +			if ! [[ $i =~ .yaml$ ]]; then
+>> +				echo "error: unexpected arguments after defconfig: ${pytest_opts[*]}" >&2
+>> +				echo "hint: place all options before the defconfig argument" >&2
+>> +				exit 1
+>> +			fi
+>> +		done
+>> +	fi
+>>  	for i in "${configs[@]}"; do
+>>  		config=$i
+>>  		if [[ $i =~ ^.*/([^/]+)/([^@]*@|)([^.]+).yaml$ ]]; then
+>> -- 
+>> 2.47.3
+>>
+>>
+>>
+> 
+
 
 
