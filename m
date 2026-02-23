@@ -1,71 +1,69 @@
-Delivery-date: Mon, 23 Feb 2026 12:06:48 +0100
+Delivery-date: Mon, 23 Feb 2026 12:07:52 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuTm3-004nzs-2w
+	id 1vuTn6-004o10-04
 	for lore@lore.pengutronix.de;
-	Mon, 23 Feb 2026 12:06:48 +0100
+	Mon, 23 Feb 2026 12:07:52 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuTm4-0005P4-0F
-	for lore@pengutronix.de; Mon, 23 Feb 2026 12:06:48 +0100
+	id 1vuTn6-0005Ws-Cg
+	for lore@pengutronix.de; Mon, 23 Feb 2026 12:07:52 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7HdNWTCD/B0bFHb7ZlSWMQdTZvgJNyMd505OZ9wU1Ak=; b=bYXm0wjEMT0+Ctkb1hbNSFmqy2
-	o1gl/Qnc06EbeMj1dTqoBof5eSL3UUhLUEyhGoJDLjbSWxJCdeYQeRE2wfU4WceFqKmia7HcCjevf
-	IhzubrMfjPvO3nTq919FJiTkFiWCR0MOUiQ60wH612g5oVbgL5R8qnd57YHBGhuwIy/bHeQOIR1tn
-	bDOGtdYKQzJC1b6ong32FNHhChBY1V4gbYhSs1LdW0W2kvdkmZrOhlqA9eENwdtRjrUvYZHxT45LF
-	1wyvgay348sjo6AgOyj/6FbQbWQOrq5ZB4m19f1vg/t+Oe0nhLu3ZrOGtC8Xri7Bn2wshq/howwdk
-	Fdnn4baw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=mx9ITgkjlcxG+evXcvm4OsYNv/QkzHSprImcSFEw3Kk=; b=aG2njYEwP+F1MZJn7cz3oQdqq5
+	NunAPjcbmJqYENUkMPDZfZkMNzDz+voJ7N10SaYbmO8KspEJFZayTT0exlseMDSwI2iMxLx89P9AF
+	6NMzxDslltwHmaEOH/lQzp+i+S3Snud+lQqpiHZknz/zuRquNnIGcSL7j9+T5l5I8AgaE7J953uKw
+	iMMx3+Tz2frFEVWrYp7Q1JXF6N7N5ShgWA5V0Dsp0NIjZcdpbourCADPfOhK5y/sKYDiPAnKSeKX/
+	Og+1aOOFNL+60Ywl6jJw+j0wioVm5QdzJB2uP7B6XxH+HFVoECGul9xgJCd6tZRoxkceAQq4oIkP2
+	YMDv2gtg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuTld-000000007jh-39ed;
-	Mon, 23 Feb 2026 11:06:21 +0000
+	id 1vuTmk-000000007rn-2H8w;
+	Mon, 23 Feb 2026 11:07:30 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuTlb-000000007jK-1Tec
+	id 1vuTmi-000000007rH-1OxY
 	for barebox@lists.infradead.org;
-	Mon, 23 Feb 2026 11:06:20 +0000
+	Mon, 23 Feb 2026 11:07:29 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vuTlZ-0005K2-J2; Mon, 23 Feb 2026 12:06:17 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vuTmg-0005SO-Kk; Mon, 23 Feb 2026 12:07:26 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vuTlY-002DVe-0A;
-	Mon, 23 Feb 2026 12:06:17 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vuTlZ-000000017US-1HiL;
-	Mon, 23 Feb 2026 12:06:17 +0100
-Date: Mon, 23 Feb 2026 12:06:17 +0100
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vuTme-002DVq-28;
+	Mon, 23 Feb 2026 12:07:26 +0100
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vuTmf-00000000vEC-3z0L;
+	Mon, 23 Feb 2026 12:07:25 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@barebox.org>
-Cc: barebox@lists.infradead.org
-Message-ID: <aZw0qQVz1mX1l8nV@pengutronix.de>
-References: <20260209090911.3561875-1-a.fatoum@barebox.org>
- <20260209090911.3561875-3-a.fatoum@barebox.org>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: 9l@9lo.re
+In-Reply-To: <20260211100252.399635-1-a.fatoum@pengutronix.de>
+References: <20260211100252.399635-1-a.fatoum@pengutronix.de>
+Message-Id: <177184484594.219871.16883251127028404943.b4-ty@pengutronix.de>
+Date: Mon, 23 Feb 2026 12:07:25 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260209090911.3561875-3-a.fatoum@barebox.org>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260223_030619_569688_9A231FDC 
-X-CRM114-Status: GOOD (  39.67  )
+X-CRM114-CacheID: sfid-20260223_030728_383325_ED251797 
+X-CRM114-Status: UNSURE (   9.07  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,210 +81,34 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/5] blspec: sort entries according to specification
+Subject: Re: [PATCH] boot: guard net in global.boot.default behind
+ CONFIG_NET
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Feb 09, 2026 at 10:08:52AM +0100, Ahmad Fatoum wrote:
-> Boot entries generated from bootloader spec are currently sorted by the
-> order the files are read from the file system.
-> 
-> This is inadequate if we have multiple entries with different kernels
-> and we want to sort the newer kernels higher.
-> 
-> The UAPI.1 Boot Loader Specification defines an algorithm[1] to order the
-> entries that takes care of this, so implement it into barebox.
-> 
-> [1]: https://uapi-group.org/specifications/specs/boot_loader_specification/#sorting
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
-> ---
->  common/Kconfig            |  1 +
->  common/blspec.c           | 62 ++++++++++++++++++++++++++++++++++++++-
->  common/boot.c             |  7 +++++
->  include/asm-generic/bug.h |  7 +++++
->  include/boot.h            |  2 ++
->  5 files changed, 78 insertions(+), 1 deletion(-)
-> 
-> diff --git a/common/Kconfig b/common/Kconfig
-> index 50c26695b2b5..cd002865f736 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -715,6 +715,7 @@ config BLSPEC
->  	select BOOT
->  	select BOOTM
->  	select OFTREE
-> +	select VERSION_CMP
->  	bool
->  	prompt "Support bootloader spec"
->  	help
-> diff --git a/common/blspec.c b/common/blspec.c
-> index 624e4c115272..f13e44f1de71 100644
-> --- a/common/blspec.c
-> +++ b/common/blspec.c
-> @@ -28,6 +28,7 @@ struct blspec_entry {
->  	struct cdev *cdev;
->  	const char *rootpath;
->  	const char *configpath;
-> +	char *sortkey;
->  };
->  
->  /*
-> @@ -181,6 +182,7 @@ static void blspec_entry_free(struct bootentry *be)
->  	of_delete_node(entry->node);
->  	free_const(entry->configpath);
->  	free_const(entry->rootpath);
-> +	free(entry->sortkey);
->  	free(entry);
->  }
->  
-> @@ -268,6 +270,12 @@ static struct blspec_entry *blspec_entry_open(struct bootentries *bootentries,
->  			}
->  		}
->  
-> +		/* This will be read often during comparison, so we cache it */
-> +		if (!strcmp(name, "sort-key")) {
-> +			entry->sortkey = xstrdup(val);
-> +			continue;
-> +		}
-> +
->  		blspec_entry_var_set(entry, name, val);
->  	}
->  
-> @@ -414,6 +422,58 @@ static const char *get_blspec_prefix_path(const char *configname)
->  	return get_mounted_path(configname);
->  }
->  
-> +static int blspec_compare(struct list_head *list_a, struct list_head *list_b)
-> +{
-> +	struct bootentry *be_a = container_of(list_a, struct bootentry, list);
-> +	struct bootentry *be_b = container_of(list_b, struct bootentry, list);
-> +	struct blspec_entry *a, *b;
-> +	const char *a_version, *b_version;
-> +	int r;
-> +
-> +	/* The boot entry providers are called one by one and passed an empty
-> +	 * list that's aggregated later, so we should only be encountering
-> +	 * bootloader spec entries here.
-> +	 */
-> +	DEBUG_ASSERT(is_blspec_entry(be_a) && is_blspec_entry(be_b));
-> +
-> +	a = container_of(be_a, struct blspec_entry, entry);
-> +	b = container_of(be_b, struct blspec_entry, entry);
-> +
-> +	a_version = a->configpath;
-> +	b_version = b->configpath;
-> +
-> +	if (a->sortkey && b->sortkey) {
-> +		const char *a_machine_id, *b_machine_id;
-> +
-> +		/* A-Z, increasing alphanumerical order */
-> +		r = strcmp(a->sortkey, b->sortkey);
-> +		if (r != 0)
-> +			return r;
-> +
-> +		a_machine_id = blspec_entry_var_get(a, "machine-id");
-> +		b_machine_id = blspec_entry_var_get(b, "machine-id");
-> +
-> +		/* A-Z, increasing alphanumerical order) */
-> +		r = strcmp_ptr(a_machine_id, b_machine_id);
-> +		if (r != 0)
-> +			return r;
-> +
-> +		/* Will be compared in decreasing version order */
-> +		a_version = blspec_entry_var_get(a, "version");
-> +		b_version = blspec_entry_var_get(b, "version");
-> +	} else if (a->sortkey != b->sortkey) {
-> +		/* If sort-key is set on one entry, it sorts earlier. */
-> +		return a->sortkey ? -1 : 1;
-> +	}
-> +
-> +	/* At the end, if necessary, when sort-key is not set or
-> +	 * those fields are not set or are all equal, the boot loader
-> +	 * should sort using the file name of the entry (decreasing
-> +	 * version sort), with the suffix removed.
-> +	 */
-> +	return -strverscmp(a_version, b_version);
-> +}
-> +
->  static int __blspec_scan_file(struct bootentries *bootentries, const char *root,
->  			      const char *configname)
->  {
-> @@ -459,7 +519,7 @@ static int __blspec_scan_file(struct bootentries *bootentries, const char *root,
->  	entry->entry.me.type = MENU_ENTRY_NORMAL;
->  	entry->entry.release = blspec_entry_free;
->  
-> -	bootentries_add_entry(bootentries, &entry->entry);
-> +	bootentries_add_entry_sorted(bootentries, &entry->entry, blspec_compare);
->  	return 1;
->  }
->  
-> diff --git a/common/boot.c b/common/boot.c
-> index 8ccc269ac5bd..2e5294ffa2f0 100644
-> --- a/common/boot.c
-> +++ b/common/boot.c
-> @@ -34,6 +34,13 @@ static inline void bootentries_merge(struct bootentries *dst, struct bootentries
->  	list_splice_tail_init(&src->entries, &dst->entries);
->  }
->  
-> +void bootentries_add_entry_sorted(struct bootentries *entries, struct bootentry *entry,
-> +				  int (*compare)(struct list_head *, struct list_head *))
-> +
-> +{
-> +	list_add_sort(&entry->list, &entries->entries, compare);
-> +}
-> +
->  struct bootentries *bootentries_alloc(void)
->  {
->  	struct bootentries *bootentries;
-> diff --git a/include/asm-generic/bug.h b/include/asm-generic/bug.h
-> index 514801dab10e..1953c6e642c1 100644
-> --- a/include/asm-generic/bug.h
-> +++ b/include/asm-generic/bug.h
-> @@ -78,4 +78,11 @@
->  		BUG_ON(!(expr));			\
->  } while (0)
->  
-> +
-> +#ifdef DEBUG
-> +#define DEBUG_ASSERT(expr)	BUG_ON(!(expr))
-> +#else
-> +#define DEBUG_ASSERT(expr)	((void)(expr))
-> +#endif
 
-Is this change intentional here?
-
-Sascha
-
-> +
->  #endif
-> diff --git a/include/boot.h b/include/boot.h
-> index e6309b65a0c3..fdc108b7a21d 100644
-> --- a/include/boot.h
-> +++ b/include/boot.h
-> @@ -24,6 +24,8 @@ struct bootentry {
->  };
->  
->  int bootentries_add_entry(struct bootentries *entries, struct bootentry *entry);
-> +void bootentries_add_entry_sorted(struct bootentries *entries, struct bootentry *entry,
-> +				  int (*compare)(struct list_head *, struct list_head *));
->  
->  struct bootentry_provider {
->  	const char *name;
-> -- 
-> 2.47.3
+On Wed, 11 Feb 2026 11:02:51 +0100, Ahmad Fatoum wrote:
+> If CONFIG_NET is disabled, there is little reason to have net in
+> global.boot.default, so omit it in that case.
 > 
+> CONFIG_NET on its own is not sufficient for net to work by default (ifup
+> and TFTP are needed in the default case), but we don't want to reflect
+> all the script dependencies in Kconfig.
 > 
-> 
+> [...]
 
+Applied, thanks!
+
+[1/1] boot: guard net in global.boot.default behind CONFIG_NET
+      https://git.pengutronix.de/cgit/barebox/commit/?id=c0a07127f29e (link may not be stable)
+
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
