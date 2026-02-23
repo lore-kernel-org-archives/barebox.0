@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuRPG-004lZD-1n
+	id 1vuRPG-004lZO-2l
 	for lore@lore.pengutronix.de;
 	Mon, 23 Feb 2026 09:35:07 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuRPG-00045A-KY
+	id 1vuRPG-00045B-Qu
 	for lore@pengutronix.de; Mon, 23 Feb 2026 09:35:07 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,57 +18,57 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=dTVPSXtazGF+S9rHetWG5iZAv6kv6CF+Hu/d8zonG1Q=; b=qadBiuZotiCls1fa0WIn35dktm
-	3Eb+QQdMGGGEkbRf4mrAmljlpTlTM4QZG8c/RWqN+k2b8U0ZNgEwKNygKgp8E8rMZzRht/0FSLcXy
-	u4hrIv8DctiEyltYDDrrcUm1dlLT1kgw9Nr49m5g9XZuW25zgNgfHCVMlhnXsdAVx/zCPucj2Fl8P
-	HZv2hcJ75oAH1hBbBqEHqnJHSP3E8EuVYruXM5Zx3S91omlKQT+qbtJYkuJ/ew8QK65mA1S6WSDo9
-	luT6mAaZuKoP9eHD1cpUqeHlKQkJ8DbCltmbulhXlmHLIJfVG1H26BufoeMtivLVovjur5ZMyzA6n
-	BRXzx0CQ==;
+	bh=YipdWGdI009ndFw/iuJQzc/5q/wiySrE0zT+3TiLNWQ=; b=KO45sPCRroN8K9qKoXsiO6FGNS
+	67AEog7sxo+zr0GtqdcDdyEJGfU34gPSYwJRnUOQRvVkoUoIwhRPwDeIFEZpyj554AzA+4sGqa5at
+	6T/o+TWVyoEmnb8+RKNPHGUNjMipdepAnDvhMUyzD+vI2cbp/z+kjjQOTdXLk/9LtMR7DZTiwX4Yg
+	erJ+CFrG9fMDdJhXQrg1hh7Wr/YLC1V/gNVlmw0v0ePhd3gwNh6pj0uavlBhVxQWuL5QoOxXkoyKR
+	vDAXSZKgMs9eAQnoqHl4aAhkFXkL0hLHUFgy0RqRvk9bnmG3x27/XIwBGrj8M87stoPza+IiyTCcl
+	jCyoPfOA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuROa-0000000HQXZ-0nUh;
-	Mon, 23 Feb 2026 08:34:24 +0000
+	id 1vuROY-0000000HQWT-1UxW;
+	Mon, 23 Feb 2026 08:34:22 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuROX-0000000HQVy-2Mno
+	id 1vuROS-0000000HQUf-0har
 	for barebox@lists.infradead.org;
-	Mon, 23 Feb 2026 08:34:22 +0000
+	Mon, 23 Feb 2026 08:34:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vuROO-0003pV-5X; Mon, 23 Feb 2026 09:34:12 +0100
+	id 1vuROO-0003pU-4d; Mon, 23 Feb 2026 09:34:12 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vuROM-002CHe-1u;
+	id 1vuROM-002CHd-1s;
 	Mon, 23 Feb 2026 09:34:11 +0100
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vuRON-00000000llL-3WVL;
+	id 1vuRON-00000000llL-3UsX;
 	Mon, 23 Feb 2026 09:34:11 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 23 Feb 2026 09:34:08 +0100
+Date: Mon, 23 Feb 2026 09:34:07 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260223-arm-mmu-v1-3-707d45f6f6e1@pengutronix.de>
+Message-Id: <20260223-arm-mmu-v1-2-707d45f6f6e1@pengutronix.de>
 References: <20260223-arm-mmu-v1-0-707d45f6f6e1@pengutronix.de>
 In-Reply-To: <20260223-arm-mmu-v1-0-707d45f6f6e1@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771835651; l=3213;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1771835651; l=5434;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=htXhAzr15r8TxgUlXu5TPQT8ZrwzkkcpylMBPZ5HyBI=;
- b=tW193rjRPxPDbq2yVZxwrAaT5tPEew+mRCSvzyx1Ywrkpmkk4z7plaOOp0LAN7Rr+3dEzY786
- la9IrkGdqr8DI59ntQ4sl1xkXW7KVv8KebBnddeB5m/r6prbiAmzgKh
+ bh=iYXGR2QQw0sHjUzSvAIqbxdYjznRJFCeMwEbXNenaM8=;
+ b=m+dYWdjFhxNjq9APGycxF/1Xl2Y2AHBtgI1qCV9qfV1CTH+jjQRLLUW7v3D8I8UwTINPcJzBc
+ u2/BrJaVuFJDYGNJWpz4VUZy1gwzEgl3q64J2JkvO8/dOtb5jLYQoMF
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260223_003421_682313_18F47AAB 
-X-CRM114-Status: GOOD (  13.07  )
+X-CRM114-CacheID: sfid-20260223_003416_220222_1FE31452 
+X-CRM114-Status: GOOD (  20.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,92 +90,141 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=ham
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 3/4] ARM: pbl: MMU: drop unnecessary barebox mapping
+Subject: [PATCH 2/4] ARM: MMU: drop forced pagewise mapping
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-mmu_early_enable() sets up a mapping for the barebox proper regions.
-This is no longer necessary as they are configured from the ELF binary
-afterwards anyway, so drop it and remove the unnecessary arguments.
+We used to force pagewise mapping the the PBL because we couldn't break
+a section into pages later when barebox is running from that area. We
+now do the MMU setup for the barebox regions entirely in the PBL, so we
+won't have to touch that again which makes the forced pagewise mapping
+unnecessary. Remove it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/mmu_32.c      | 4 ++--
- arch/arm/cpu/mmu_64.c      | 7 +------
- arch/arm/cpu/uncompress.c  | 2 +-
- arch/arm/include/asm/mmu.h | 2 +-
- 4 files changed, 5 insertions(+), 10 deletions(-)
+ arch/arm/cpu/mmu-common.c    |  2 --
+ arch/arm/cpu/mmu-common.h    |  2 --
+ arch/arm/cpu/mmu_32.c        | 15 ++-------------
+ arch/arm/cpu/mmu_64.c        | 11 ++---------
+ arch/riscv/include/asm/mmu.h |  3 ---
+ 5 files changed, 4 insertions(+), 29 deletions(-)
 
+diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
+index 0300bb9bc6..b84485a276 100644
+--- a/arch/arm/cpu/mmu-common.c
++++ b/arch/arm/cpu/mmu-common.c
+@@ -18,8 +18,6 @@
+ 
+ const char *map_type_tostr(maptype_t map_type)
+ {
+-	map_type &= ~ARCH_MAP_FLAG_PAGEWISE;
+-
+ 	switch (map_type) {
+ 	case MAP_CACHED_RWX:		return "RWX";
+ 	case MAP_CACHED_RO:		return "RO";
+diff --git a/arch/arm/cpu/mmu-common.h b/arch/arm/cpu/mmu-common.h
+index 3a3590ebb5..59abc1d9c8 100644
+--- a/arch/arm/cpu/mmu-common.h
++++ b/arch/arm/cpu/mmu-common.h
+@@ -11,8 +11,6 @@
+ #include <linux/sizes.h>
+ #include <linux/bits.h>
+ 
+-#define ARCH_MAP_FLAG_PAGEWISE	BIT(31)
+-
+ struct device;
+ 
+ void dma_inv_range(void *ptr, size_t size);
 diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
-index a5ac9a3ff9..cdd4d07826 100644
+index 074fd1b0ed..a5ac9a3ff9 100644
 --- a/arch/arm/cpu/mmu_32.c
 +++ b/arch/arm/cpu/mmu_32.c
-@@ -606,10 +606,10 @@ void mmu_disable(void)
- 	__mmu_cache_off();
- }
- 
--void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned long barebox_start)
-+void mmu_early_enable(unsigned long membase, unsigned long memsize)
+@@ -344,7 +344,6 @@ static uint32_t get_pmd_flags(maptype_t map_type)
+ static void __arch_remap_range(void *_virt_addr, phys_addr_t phys_addr, size_t size,
+ 			       maptype_t map_type)
  {
- 	uint32_t *ttb = (uint32_t *)arm_mem_ttb(membase + memsize);
--	unsigned long barebox_size, optee_start;
-+	unsigned long optee_start;
+-	bool force_pages = map_type & ARCH_MAP_FLAG_PAGEWISE;
+ 	bool mmu_on;
+ 	u32 virt_addr = (u32)_virt_addr;
+ 	u32 pte_flags, pmd_flags;
+@@ -372,7 +371,7 @@ static void __arch_remap_range(void *_virt_addr, phys_addr_t phys_addr, size_t s
  
- 	pr_debug("enabling MMU, ttb @ 0x%p\n", ttb);
- 
+ 		if (size >= PGDIR_SIZE && pgdir_size_aligned &&
+ 		    IS_ALIGNED(phys_addr, PGDIR_SIZE) &&
+-		    !pgd_type_table(*pgd) && !force_pages) {
++		    !pgd_type_table(*pgd)) {
+ 			/*
+ 			 * TODO: Add code to discard a page table and
+ 			 * replace it with a section
+@@ -636,17 +635,7 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned lon
+ 	 * at this early stage
+ 	 */
+ 	early_remap_range(membase, barebox_start - membase, MAP_CACHED_RWX);
+-	/*
+-	 * Map the remainder of the memory explicitly with two level page tables. This is
+-	 * the place where barebox proper ends at. In barebox proper we'll remap the code
+-	 * segments readonly/executable and the ro segments readonly/execute never. For this
+-	 * we need the memory being mapped pagewise. We can't do the split up from section
+-	 * wise mapping to pagewise mapping later because that would require us to do
+-	 * a break-before-make sequence which we can't do when barebox proper is running
+-	 * at the location being remapped.
+-	 */
+-	early_remap_range(barebox_start, barebox_size,
+-			  MAP_CACHED_RWX | ARCH_MAP_FLAG_PAGEWISE);
++	early_remap_range(barebox_start, barebox_size, MAP_CACHED_RWX);
+ 	early_remap_range(optee_start, OPTEE_SIZE, MAP_UNCACHED);
+ 	early_remap_range(PAGE_ALIGN_DOWN((uintptr_t)_stext), PAGE_ALIGN(_etext - _stext),
+ 			  MAP_CACHED_RWX);
 diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index 69d4b89dd8..7f38473079 100644
+index 2ed39abeb5..69d4b89dd8 100644
 --- a/arch/arm/cpu/mmu_64.c
 +++ b/arch/arm/cpu/mmu_64.c
-@@ -378,11 +378,10 @@ static void early_init_range(size_t total_level0_tables)
- 	}
- }
- 
--void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned long barebox_start)
-+void mmu_early_enable(unsigned long membase, unsigned long memsize)
+@@ -195,7 +195,6 @@ static void split_block(uint64_t *pte, int level, bool bbm)
+ static int __arch_remap_range(uint64_t virt, uint64_t phys, uint64_t size,
+ 			      maptype_t map_type, bool bbm)
  {
- 	int el;
- 	u64 optee_membase;
--	unsigned long barebox_size;
- 	unsigned long ttb = arm_mem_ttb(membase + memsize);
+-	bool force_pages = map_type & ARCH_MAP_FLAG_PAGEWISE;
+ 	unsigned long attr = get_pte_attrs(map_type);
+ 	uint64_t *ttb = get_ttb();
+ 	uint64_t block_size;
+@@ -237,7 +236,7 @@ static int __arch_remap_range(uint64_t virt, uint64_t phys, uint64_t size,
+ 				        IS_ALIGNED(addr, block_size) &&
+ 				        IS_ALIGNED(phys, block_size);
  
- 	if (get_cr() & CR_M)
-@@ -408,10 +407,6 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned lon
- 	/* Default location for OP-TEE: end of DRAM, leave OPTEE_SIZE space for it */
- 	optee_membase = membase + memsize - OPTEE_SIZE;
+-			if ((force_pages && level == 3) || (!force_pages && block_aligned)) {
++			if (block_aligned) {
+ 				type = (level == 3) ?
+ 					PTE_TYPE_PAGE : PTE_TYPE_BLOCK;
  
--	barebox_size = optee_membase - barebox_start;
--
--	early_remap_range(barebox_start, barebox_size, MAP_CACHED_RWX);
--
+@@ -411,13 +410,7 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned lon
+ 
+ 	barebox_size = optee_membase - barebox_start;
+ 
+-	/*
+-	 * map barebox area using pagewise mapping. We want to modify the XN/RO
+-	 * attributes later, but can't switch from sections to pages later when
+-	 * executing code from it
+-	 */
+-	early_remap_range(barebox_start, barebox_size,
+-		     MAP_CACHED_RWX | ARCH_MAP_FLAG_PAGEWISE);
++	early_remap_range(barebox_start, barebox_size, MAP_CACHED_RWX);
+ 
  	/* OP-TEE might be at location specified in OP-TEE header */
  	optee_get_membase(&optee_membase);
+diff --git a/arch/riscv/include/asm/mmu.h b/arch/riscv/include/asm/mmu.h
+index 98af92cc17..cdc599bd51 100644
+--- a/arch/riscv/include/asm/mmu.h
++++ b/arch/riscv/include/asm/mmu.h
+@@ -15,9 +15,6 @@
+ #define ARCH_HAS_REMAP
+ #define MAP_ARCH_DEFAULT MAP_CACHED
  
-diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
-index dffdd2c812..38f7dbc113 100644
---- a/arch/arm/cpu/uncompress.c
-+++ b/arch/arm/cpu/uncompress.c
-@@ -85,7 +85,7 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
- 	print_pbl_mem_layout(membase, endmem, barebox_base);
- #endif
- 	if (IS_ENABLED(CONFIG_MMU))
--		mmu_early_enable(membase, memsize, barebox_base);
-+		mmu_early_enable(membase, memsize);
- 	else if (IS_ENABLED(CONFIG_ARMV7R_MPU))
- 		set_cr(get_cr() | CR_C);
- 
-diff --git a/arch/arm/include/asm/mmu.h b/arch/arm/include/asm/mmu.h
-index bcaa984a40..ce050babab 100644
---- a/arch/arm/include/asm/mmu.h
-+++ b/arch/arm/include/asm/mmu.h
-@@ -69,6 +69,6 @@ void __dma_clean_range(unsigned long, unsigned long);
- void __dma_flush_range(unsigned long, unsigned long);
- void __dma_inv_range(unsigned long, unsigned long);
- 
--void mmu_early_enable(unsigned long membase, unsigned long memsize, unsigned long barebox_base);
-+void mmu_early_enable(unsigned long membase, unsigned long memsize);
- 
- #endif /* __ASM_MMU_H */
+-/* Architecture-specific memory type flags */
+-#define ARCH_MAP_FLAG_PAGEWISE		(1 << 16)	/* Force page-wise mapping */
+-
+ /*
+  * Remap a virtual address range with specified memory type (barebox proper).
+  * Used by the generic remap infrastructure after barebox is fully relocated.
 
 -- 
 2.47.3
