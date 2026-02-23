@@ -1,68 +1,68 @@
-Delivery-date: Mon, 23 Feb 2026 13:06:26 +0100
+Delivery-date: Mon, 23 Feb 2026 13:06:45 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuUhm-004pH7-09
+	id 1vuUi4-004pHp-3A
 	for lore@lore.pengutronix.de;
-	Mon, 23 Feb 2026 13:06:26 +0100
+	Mon, 23 Feb 2026 13:06:45 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuUhm-00031C-DU
-	for lore@pengutronix.de; Mon, 23 Feb 2026 13:06:26 +0100
+	id 1vuUi5-00036o-BG
+	for lore@pengutronix.de; Mon, 23 Feb 2026 13:06:45 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=SqSZII3q2ZQbX/QvgnMBNBgWyJbCMI5vqEP2cV1ibns=; b=dzdBweMLqJuwl2RzM1KzkUbY+G
-	ZfVk8HrzL/04sqUpSFH+cF4/66P0Ga2/tGtN0LqgzvO7HQlxFMsUqdvfkhl51IYe1N0Z1jp6YP2Pf
-	12c/5P+UIJTq3TOHblKYD34pxPuYIMXYo0DVscwsenM3jYsEN0WbJVBqI/G9+ZUnZ91lC2uQSiLAy
-	v8CwLh10TVKhtW5AlVJhh5JBbw65lPKWyY7NRybhJPTEdPz9QjMUOdLO+hppJh8PnhwcwNbbaIFG9
-	3j3uMHcxUggmHCmniqXFWd7BK3Nka7Xej+MbmpNS4slQV+IQVeUff5ZtsfDS7hVmRJofrK1uuJEJn
-	PwNgv/Ow==;
+	bh=/HR4BMu+AuztfPzPxd2nG1RPHftfACHDQ4xfzwMBOng=; b=SV46OWdLLTMSjWOvg82zyE/VGf
+	NrrubvgxWW4qsCJVDUDC0Iomf0BSjUDccUtEYidSNjmFuDTaKrCo7Q2nnw4RtP87j1yy7AAlRUJT8
+	yiDJsP73+geVBfAYIIfAaZHaxUz84xnR+idHbf3haGFhUKfGZ+m1b4PkPnlHjjJHU1f6b9EmJ+9Dh
+	Q4y+e4wa6+n5vpvNj+KQvXSINeMdmPHiATYk+Jzbs0+2+zJhbRTSdcwixvpxCaKViYYgW6TYTi9h+
+	0Bv6m6YP05COI6+N6J1ERuzjgoMIyNFpOJ6vSEIyXOCknLOqISoMUshU/+6DqwRCKNKi2VctVuuxZ
+	9soaE90w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuUhO-00000000Fep-1di1;
-	Mon, 23 Feb 2026 12:06:02 +0000
+	id 1vuUhk-00000000FjN-1Adc;
+	Mon, 23 Feb 2026 12:06:24 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuUhL-00000000FeO-1qjq
+	id 1vuUhh-00000000Fiq-0wZa
 	for barebox@lists.infradead.org;
-	Mon, 23 Feb 2026 12:06:00 +0000
+	Mon, 23 Feb 2026 12:06:22 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vuUhJ-0002x7-Vf; Mon, 23 Feb 2026 13:05:57 +0100
+	id 1vuUhf-00030M-Ox; Mon, 23 Feb 2026 13:06:19 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vuUhI-002E0J-1R;
-	Mon, 23 Feb 2026 13:05:57 +0100
+	id 1vuUhe-002E0N-0k;
+	Mon, 23 Feb 2026 13:06:19 +0100
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vuUhJ-00000002TQI-31jm;
-	Mon, 23 Feb 2026 13:05:57 +0100
+	id 1vuUhf-00000002VdT-2Afd;
+	Mon, 23 Feb 2026 13:06:19 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>, 
+To: BAREBOX <barebox@lists.infradead.org>, 
  Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20260223083529.183876-1-s.hauer@pengutronix.de>
-References: <20260223083529.183876-1-s.hauer@pengutronix.de>
-Message-Id: <177184835771.589369.14573532591125491164.b4-ty@pengutronix.de>
-Date: Mon, 23 Feb 2026 13:05:57 +0100
+In-Reply-To: <20260223-rockchip-optee-v1-0-723493320d42@pengutronix.de>
+References: <20260223-rockchip-optee-v1-0-723493320d42@pengutronix.de>
+Message-Id: <177184837951.597741.12356064733412798830.b4-ty@pengutronix.de>
+Date: Mon, 23 Feb 2026 13:06:19 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260223_040559_484925_3B74A1E6 
-X-CRM114-Status: UNSURE (   7.84  )
+X-CRM114-CacheID: sfid-20260223_040621_268167_749C0AE3 
+X-CRM114-Status: UNSURE (   6.74  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,25 +85,24 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] mci: dw_mmc: Add pbl support
+Subject: Re: [PATCH 0/2] ARM: Rockchip: RK3588: fix memory layout
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 23 Feb 2026 09:35:29 +0100, Sascha Hauer wrote:
-> PBL support for the dw_mmc driver is already present for the SoCFPGA
-> Arria10. Move it over from architecture code to drivers/mci/ to make
-> it re-usable for other SoCs. While at it switch over to pbl_bio support
-> as it's the new hot stuff for block device access in PBL and will allow
-> for example future FAT support.
+On Mon, 23 Feb 2026 09:56:48 +0100, Sascha Hauer wrote:
+> On Rockchip boards with 4GB and more of DRAM the memory we pass to
+> barebox overlaps the internal register space which only didn't blow
+> up because the affected area was not used by barebox. Fix this.
 > 
 > 
-> [...]
 
 Applied, thanks!
 
-[1/1] mci: dw_mmc: Add pbl support
-      https://git.pengutronix.de/cgit/barebox/commit/?id=1c3a63b8b022 (link may not be stable)
+[1/2] ARM: rockchip: dmc: use define instead of hardcoded value
+      https://git.pengutronix.de/cgit/barebox/commit/?id=698768100e5d (link may not be stable)
+[2/2] ARM: rockchip: atf: Fix memend
+      https://git.pengutronix.de/cgit/barebox/commit/?id=502ef444770e (link may not be stable)
 
 Best regards,
 -- 
