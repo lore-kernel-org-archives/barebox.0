@@ -1,71 +1,71 @@
-Delivery-date: Mon, 23 Feb 2026 12:01:41 +0100
+Delivery-date: Mon, 23 Feb 2026 12:03:37 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuTh6-004nvX-2k
+	id 1vuTiy-004nxB-2x
 	for lore@lore.pengutronix.de;
-	Mon, 23 Feb 2026 12:01:41 +0100
+	Mon, 23 Feb 2026 12:03:37 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuTh7-0004VZ-5h
-	for lore@pengutronix.de; Mon, 23 Feb 2026 12:01:41 +0100
+	id 1vuTiz-00050b-7E
+	for lore@pengutronix.de; Mon, 23 Feb 2026 12:03:37 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=N+8C7yg5n+1WMGltIsnhV4gzKZXD+o0uM7zIEOzz7XA=; b=pro8S9xglb/dIrm9V5Lau+RPs5
-	WWJ3PPL4/cgaROwsbPnbrYh9Em81urqGWqFug2ya21sWXCdy1RirOOwxFCBHqX22t3g6/PeVHXkpj
-	7pqttyVuju5ZD/d5QHcD/enhcZEtjeNNMZxnPRLr2zO5oYzdQ4TKdgVnO3HErUnJWq2VHGZeYNiZw
-	CwZO2fPiRMJ4UrIhH3xYpFr/AaPJ2ZfjoFs5TDBom8zOK1t1PYRJMt87eL8s1mdLkOk+Bj97rFMrK
-	o1ioq9KSdkfOiVfsWVrD0aT6hOvOBXK+JoZR6fBajWqZ5TJSXhaed5U987MTbP3XOT2CoyqJNcrCb
-	wCbL/RQQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=k6nW2Zzbs1tBnCYgUIuMdf5gatO9p26v93KbTgeErUQ=; b=IQC5KrJrDCz0HWwqSqRebhVlt1
+	POQ3HQI/2WCNEPUIus/y5wpz/+mQBb2JKopGTpu7lcfGQgtKF5E3rpDi5qCm4h7NBcQIuDNK7oE6R
+	bPthgI1K7ikbRWJZgEVE3V4T5M2DvgFzQQrFWKiJMZP4Sfuj9n0KAK3zZgTnoqtldakgOTQSMyir8
+	1XbzJoxxNbc01qDN1gjnUTmfQOBz9onnhM5rhvzcnhIIy/x68RNkmEOdN00Y6EwFVSfV0P41I/Bgy
+	1aoxItZowUBIMe/3RsKjf3L8uqr/6Ww2YGfrGt/gvYSSCGmsQALHMFXwMWauyNZv3QBW9Kn4WMG8y
+	ADM+YvMg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuTgc-000000007Oa-1mjS;
-	Mon, 23 Feb 2026 11:01:10 +0000
+	id 1vuTic-000000007Wn-2cPB;
+	Mon, 23 Feb 2026 11:03:14 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuTga-000000007O9-0Fbn
+	id 1vuTia-000000007WS-1TE2
 	for barebox@lists.infradead.org;
-	Mon, 23 Feb 2026 11:01:09 +0000
+	Mon, 23 Feb 2026 11:03:13 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vuTgY-0004H3-CQ; Mon, 23 Feb 2026 12:01:06 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1vuTiY-0004un-Tt; Mon, 23 Feb 2026 12:03:10 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vuTgW-002DPz-2J;
-	Mon, 23 Feb 2026 12:01:06 +0100
-Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vuTgY-00000000uMf-008W;
-	Mon, 23 Feb 2026 12:01:06 +0100
+	(envelope-from <sha@pengutronix.de>)
+	id 1vuTiX-002DQG-1G;
+	Mon, 23 Feb 2026 12:03:10 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vuTiY-000000017RB-2gYN;
+	Mon, 23 Feb 2026 12:03:10 +0100
+Date: Mon, 23 Feb 2026 12:03:10 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>, 
- Marco Felsch <m.felsch@pengutronix.de>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, 
- Johannes Schneider <johannes.schneider@leica-geosystems.com>
-In-Reply-To: <20260212-vmaster-customers-leicageo-system1600-v2-0-f590b7d5b0e9@pengutronix.de>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Message-ID: <aZwz7rBADSdrEaIs@pengutronix.de>
 References: <20260212-vmaster-customers-leicageo-system1600-v2-0-f590b7d5b0e9@pengutronix.de>
-Message-Id: <177184446599.216614.12628232268523631538.b4-ty@pengutronix.de>
-Date: Mon, 23 Feb 2026 12:01:05 +0100
+ <20260212-vmaster-customers-leicageo-system1600-v2-5-f590b7d5b0e9@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260212-vmaster-customers-leicageo-system1600-v2-5-f590b7d5b0e9@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260223_030108_107162_26AEB3C5 
-X-CRM114-Status: UNSURE (   8.21  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260223_030312_398085_4CB0BF6A 
+X-CRM114-Status: GOOD (  23.57  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,46 +83,71 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 0/7] Hexagon Geosystems GS05 Board Support
+Subject: Re: [PATCH v2 5/7] commands: make run_command variadic
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Thu, 12 Feb 2026 23:02:02 +0100, Marco Felsch wrote:
-> this series adds the support for the Hexagon Geosystems GS05 product
-> [1]. The GS05 is part of a larger product family from SW pov, therefore
-> most logic is implemented below 'common/boards/hgs'.
+On Thu, Feb 12, 2026 at 11:02:07PM +0100, Marco Felsch wrote:
+> This prepares run_command() to receive a format string and variadic
+> arguments which can become quite handy for board code. It also ensures
+> a proper cleanup for the command string and generalizes the error
+> message printing.
 > 
-> The board support was added before the new security-profiles made it
-> into barebox mainline, therefore security-profiles aren't used yet but
-> maybe in the future.
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> ---
+>  common/hush.c     | 23 ++++++++++++++++++++++-
+>  common/parser.c   | 24 +++++++++++++++++++++++-
+>  include/command.h |  4 ++--
+>  3 files changed, 47 insertions(+), 4 deletions(-)
 > 
-> [...]
+> diff --git a/common/hush.c b/common/hush.c
+> index 2e0cc4229d3575dcf045f68ef8db3e943c41eedb..b46a42cc90c863376bb819755afc83271120200f 100644
+> --- a/common/hush.c
+> +++ b/common/hush.c
+> @@ -1922,7 +1922,7 @@ static char * make_string(char ** inp)
+>  	return str;
+>  }
+>  
+> -int run_command(const char *cmd)
+> +static int __run_command(const char *cmd)
+>  {
+>  	struct p_context ctx = {};
+>  	int ret;
+> @@ -1938,6 +1938,27 @@ int run_command(const char *cmd)
+>  	return ret;
+>  }
+>  
+> +int run_command(const char *fmt, ...)
+> +{
+> +	va_list vargs;
+> +	char *cmd;
+> +	int error;
+> +
+> +	va_start(vargs, fmt);
+> +	cmd = xvasprintf(fmt, vargs);
+> +	va_end(vargs);
+> +
+> +	error = __run_command(cmd);
+> +	if (error) {
+> +		error_msg("Failed to run CMD: '%s' with %d\n", cmd, error);
+> +		free(cmd);
+> +		return error;
+> +	}
 
-Applied, thanks!
+Dropped this error printing while applying. There was no error printing
+before this patch and also some commands might intentionally silently
+fail, so error printing should be done in the caller.
 
-[1/7] serdev: add proper error cleanup to serdev_device_open()
-      https://git.pengutronix.de/cgit/barebox/commit/?id=8769fa393db6 (link may not be stable)
-[2/7] serdev: add serdev_device_close
-      https://git.pengutronix.de/cgit/barebox/commit/?id=082f11382801 (link may not be stable)
-[3/7] mfd: Add Hexagon EFI driver
-      https://git.pengutronix.de/cgit/barebox/commit/?id=5d48981355aa (link may not be stable)
-[4/7] watchdog: Add Hexagon EFI watchdog driver
-      https://git.pengutronix.de/cgit/barebox/commit/?id=0f0c9a91575f (link may not be stable)
-[5/7] commands: make run_command variadic
-      https://git.pengutronix.de/cgit/barebox/commit/?id=8cd0b64c742e (link may not be stable)
-[6/7] treewide: make use of new run_command variadic
-      https://git.pengutronix.de/cgit/barebox/commit/?id=a469e683b90a (link may not be stable)
-[7/7] ARM: i.MX8MM: add Hexagon Geosystems GS05
-      https://git.pengutronix.de/cgit/barebox/commit/?id=cbea59905fc3 (link may not be stable)
+Sascha
 
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
