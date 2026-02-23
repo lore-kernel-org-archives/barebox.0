@@ -1,70 +1,70 @@
-Delivery-date: Mon, 23 Feb 2026 10:12:40 +0100
+Delivery-date: Mon, 23 Feb 2026 10:16:23 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuRzb-004mKD-1t
+	id 1vuS3C-004mN1-0p
 	for lore@lore.pengutronix.de;
-	Mon, 23 Feb 2026 10:12:40 +0100
+	Mon, 23 Feb 2026 10:16:23 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuRzb-0000Wd-Ui
-	for lore@pengutronix.de; Mon, 23 Feb 2026 10:12:40 +0100
+	id 1vuS3C-00012m-Hu
+	for lore@pengutronix.de; Mon, 23 Feb 2026 10:16:23 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=IJF1V5W79Z9I6Jmd6WwaNjF0nMfTJ6evN24lyFNkxNo=; b=Ito5Yp4gMY9wAVMcYGxonZR0x7
-	9ALCXXB+q0Nk3n3lAFq5Magijc+wRJpAu+RhwR0fsXCPhWy7ELQHKngnkUj8p09MWPLAjJ+wA4HvX
-	h8J8h/DvVGIZrrQJidoirAnCgHyq0r0xNWWemA1VSwKyDa/FMxGpO8NVFInmbA7mSZKRT0WpeWU5y
-	zh7AWvtVAjWrucuo+msaiCe07jiiiVnRsBsqrf2rcgnQ7spJnBze877aC6FQJ/EGtyWRvPlgSwUNA
-	yojLA1lpbe5BV969gEZy54bBPAhnHLcPWjiZvqPEzTTvp0PGQ3Q6UBqHMWFgQclLgRwVK2FVa/CPT
-	x90oFvLQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=sA1zzQQT+YGlUD1908rWGjYlMtl5AOBAkacTjGAerfg=; b=Rm+hF5ENFDWURDaUT831hNHZIA
+	wDchZ/pE1WPwSCFntHwU0fLVAUkK9pWMFrD5T4ixUdtZT2VAILNDkS6XZMaTOYbQ/k1NuH6npguYl
+	rn70RZDtZl9p7sj9xHBGYHcI0C7s2CmHMkkwYK8UC9hCdqzyahqKuIPf9hpLuu0U9gqQiZBgQuB1D
+	BtT2eOm6fjQqlk0peaJeeiN1UQjgJBUL6VuVXmbKKvUn5iUWkYd81ow6c1zNgRw6iyDpfHwro/cDF
+	khJvrAddeVNtnej/JRYid6Q6PQxvCZcjqQiOlb8U0vR5iEEq7LEnN26QMx24niWILSAToHqI+ngpO
+	cckrkouA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuRzF-0000000HVbg-0dwA;
-	Mon, 23 Feb 2026 09:12:17 +0000
+	id 1vuS2n-0000000HVxU-0dvt;
+	Mon, 23 Feb 2026 09:15:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuRzD-0000000HVb8-01B8
+	id 1vuS2k-0000000HVwF-3doD
 	for barebox@lists.infradead.org;
-	Mon, 23 Feb 2026 09:12:16 +0000
+	Mon, 23 Feb 2026 09:15:56 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vuRzB-0000N2-Kl; Mon, 23 Feb 2026 10:12:13 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1vuS2j-0000xU-B6; Mon, 23 Feb 2026 10:15:53 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vuRzA-002ChB-0D;
-	Mon, 23 Feb 2026 10:12:13 +0100
-Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vuRzB-00000000nUb-1UCq;
-	Mon, 23 Feb 2026 10:12:13 +0100
+	(envelope-from <sha@pengutronix.de>)
+	id 1vuS2h-002ChS-2Z;
+	Mon, 23 Feb 2026 10:15:53 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vuS2j-000000014te-0EIW;
+	Mon, 23 Feb 2026 10:15:53 +0100
+Date: Mon, 23 Feb 2026 10:15:53 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>, 
- Maud Spierings via B4 Relay <devnull+maud_spierings.hotmail.com@kernel.org>
-Cc: Maud Spierings <maud_spierings@hotmail.com>
-In-Reply-To: <20260221-riscv_dtbs-v1-1-be58fc118bc2@hotmail.com>
-References: <20260221-riscv_dtbs-v1-1-be58fc118bc2@hotmail.com>
-Message-Id: <177183793335.190238.3251127691253995043.b4-ty@pengutronix.de>
-Date: Mon, 23 Feb 2026 10:12:13 +0100
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <aZwaydz8gMTJNv5W@pengutronix.de>
+References: <20260218124307.2358552-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260218124307.2358552-1-m.felsch@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260223_011215_047686_FE2C878F 
-X-CRM114-Status: UNSURE (   5.09  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260223_011554_906544_17AB37BA 
+X-CRM114-Status: GOOD (  23.26  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,29 +82,65 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] RISC-V: dts: fix generation of dtbs-list
+Subject: Re: [PATCH] eeprom: at24: verify that chip is accessible during probe
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+On Wed, Feb 18, 2026 at 01:42:48PM +0100, Marco Felsch wrote:
+> Perform a basic sanity check to verify that the EEPROM is actually
+> accessible by reading 1-byte. Linux does the same sanity check for all
+> non-ACPI platforms.
+> 
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> ---
+>  drivers/eeprom/at24.c | 7 +++++++
+>  1 file changed, 7 insertions(+)
+> 
+> diff --git a/drivers/eeprom/at24.c b/drivers/eeprom/at24.c
+> index 06a2a4b22697..a08d42fe3e14 100644
+> --- a/drivers/eeprom/at24.c
+> +++ b/drivers/eeprom/at24.c
+> @@ -373,6 +373,7 @@ static int at24_probe(struct device *dev)
+>  	unsigned i, num_addresses;
+>  	const char *devname;
+>  	const char *alias;
+> +	u8 test_byte;
+>  
+>  	if (dev->platform_data) {
+>  		chip = *(struct at24_platform_data *)dev->platform_data;
+> @@ -487,6 +488,12 @@ static int at24_probe(struct device *dev)
+>  	at24->nvmem_config.size = chip.byte_len;
+>  	at24->nvmem_config.id = devid;
+>  
+> +	/* Perform a one-byte test read to verify that the chip is functional */
+> +	if (at24_read(at24, &test_byte, 0, 1) != 1) {
+> +		err = -ENODEV;
 
-On Sat, 21 Feb 2026 16:04:17 +0100, Maud Spierings via B4 Relay wrote:
-> For some reason pbl-$(CONFIG) results in dtbs-list being empty. This breaks
-> the generic fit image generation. Switch to lwl-$(CONFIG) like arm.
+a return of -ENODEV from driver probe doesn't print an error. Is that
+what we want here?
+
+Sascha
+
+> +		goto err_devfs_create;
+> +	}
+> +
+>  	at24->nvmem = nvmem_register(&at24->nvmem_config);
+>  	err = PTR_ERR_OR_ZERO(at24->nvmem);
+>  	if (err)
+> -- 
+> 2.47.3
 > 
 > 
+> 
 
-Applied, thanks!
-
-[1/1] RISC-V: dts: fix generation of dtbs-list
-      https://git.pengutronix.de/cgit/barebox/commit/?id=f406d6ef100d (link may not be stable)
-
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
