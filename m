@@ -1,71 +1,69 @@
-Delivery-date: Mon, 23 Feb 2026 11:13:09 +0100
+Delivery-date: Mon, 23 Feb 2026 11:14:19 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuSw8-004nJX-2I
+	id 1vuSxG-004nKg-1w
 	for lore@lore.pengutronix.de;
-	Mon, 23 Feb 2026 11:13:09 +0100
+	Mon, 23 Feb 2026 11:14:19 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuSw8-00073P-VW
-	for lore@pengutronix.de; Mon, 23 Feb 2026 11:13:09 +0100
+	id 1vuSxG-0007CV-UZ
+	for lore@pengutronix.de; Mon, 23 Feb 2026 11:14:19 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=VHEajjPxFDyy36Fk0eujH7QAO+SdYn0pAET5nXlQIJA=; b=Om3cjcLJ5h1fj6XRxrpOFRXu0i
-	meeRnrWnLBoZvjoNcTG8t5t81Y/Q8hRQxfb/Wi2rqXIA+Ep9OuffL4a+sHdppXsvU7NoIjZRw9Mfb
-	0rPEGHMCR3d8gaynpXOTPx3Sv9zg4RUIGmWNoTZLGulIt3cGQN2Eclm5+trWZAo7u3bjkylvlPDxv
-	GMgf/xEhvLoW0Nht3m5mP/2QrI3kU8OKfRy0ZpJNOQW+nb3U+kofABko5Hakv28jUfHJO+/ZY8BXn
-	nwezaK1XQ92X4B0fNnuKG8sx8iFjNVx2D2/ATbQUd1hUPjdLVNUYZ3RuLsnUtjVBfK6by1OxVr820
-	Qd8pEF6Q==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=MNm7qLNZSCtGdeo1nCneyyTGkwLvRCryLUpfvy6V5Fc=; b=0s5Gn4gXiorwj54M252ZGsh41j
+	lgWxssvmm45TnJr/AST6XoaiX7e5TpQGTWeQDywHDeoKSJeLIiGq/CZmebRBGSfGgExgMwCcuTQUd
+	C93DyoaC3u9KhuzajKuuiXUN0XhMkfXmcOMwyDVAEbjVDrcGchwaYfBdci0C1CgjnKsYyIgm0A6DC
+	EqWRYWYI6MB6UeOjbp2XK60c0Qdn71JAZVJsaIbXpQx8nA9s9r9uHVk1SoaaeR7D4vDKiEN/Os7bh
+	iKOXT3R9hT0edv6plhx9jEm0Jmevt3wWr6i8sb7V7HAoi74wvQ5w70WNjDuF77seFw8pYAnLV9Y8Y
+	i0I4ZA6Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuSvc-000000001LS-1YDJ;
-	Mon, 23 Feb 2026 10:12:36 +0000
+	id 1vuSwu-000000001RV-41S3;
+	Mon, 23 Feb 2026 10:13:56 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuSvZ-000000001Ky-1zBH
+	id 1vuSws-000000001R1-3Kpp
 	for barebox@lists.infradead.org;
-	Mon, 23 Feb 2026 10:12:34 +0000
+	Mon, 23 Feb 2026 10:13:55 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vuSvX-0006zA-Mv; Mon, 23 Feb 2026 11:12:31 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vuSwr-000785-56; Mon, 23 Feb 2026 11:13:53 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vuSvW-002D9g-0W;
-	Mon, 23 Feb 2026 11:12:31 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vuSvX-000000015qT-1jH7;
-	Mon, 23 Feb 2026 11:12:31 +0100
-Date: Mon, 23 Feb 2026 11:12:31 +0100
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vuSwp-002D9q-20;
+	Mon, 23 Feb 2026 11:13:52 +0100
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1vuSwq-00000000r5R-3nFR;
+	Mon, 23 Feb 2026 11:13:52 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, "Claude Opus 4.6" <noreply@anthropic.com>
-Message-ID: <aZwoD5oRA7A7Gs7K@pengutronix.de>
-References: <20260216084253.3547270-1-a.fatoum@pengutronix.de>
- <20260216084253.3547270-5-a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: "Claude Opus 4.6" <noreply@anthropic.com>
+In-Reply-To: <20260216083907.3543595-1-a.fatoum@pengutronix.de>
+References: <20260216083907.3543595-1-a.fatoum@pengutronix.de>
+Message-Id: <177184163290.204054.15622347291929793207.b4-ty@pengutronix.de>
+Date: Mon, 23 Feb 2026 11:13:52 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260216084253.3547270-5-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260223_021233_539968_CB38B45B 
-X-CRM114-Status: GOOD (  23.49  )
+X-CRM114-CacheID: sfid-20260223_021354_841553_7315EA91 
+X-CRM114-Status: UNSURE (   6.81  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,69 +81,36 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 05/12] bootm: android: fix PTR_ERR called after clearing
- error pointer
+Subject: Re: [PATCH 1/2] kconfig: add merge_into_defconfig_named to set
+ CONFIG_NAME
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Feb 16, 2026 at 09:42:21AM +0100, Ahmad Fatoum wrote:
-> Both the kernel and initrd error paths set the pointer to NULL before
-> calling PTR_ERR(), which always yields 0 (apparent success) instead of
-> the actual error code from aimage_copy_component().
-> 
-> Swap the order so PTR_ERR() captures the error code before the pointer
-> is cleared.
 
-Squashed this and the next one into the original commit adding this
-file.
+On Mon, 16 Feb 2026 09:39:01 +0100, Ahmad Fatoum wrote:
+> Generated defconfigs that merge fragments into a base config inherit
+> CONFIG_NAME from the base, which is wrong for testing: pytest uses
+> CONFIG_NAME to locate the matching Labgrid environment YAML.
+> 
+> Add merge_into_defconfig_named, which appends the correct CONFIG_NAME
+> to .config before running olddefconfig, and switch all callers over.
+> 
+> [...]
 
-Sascha
+Applied, thanks!
 
-> 
-> Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  common/bootm-android-image.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/common/bootm-android-image.c b/common/bootm-android-image.c
-> index cb86123659ba..828400fef772 100644
-> --- a/common/bootm-android-image.c
-> +++ b/common/bootm-android-image.c
-> @@ -101,8 +101,8 @@ static int do_bootm_aimage(struct image_data *img_data)
->  	if (hdr->kernel.size) {
->  		kernel = aimage_copy_component(fd, ofs, hdr->kernel.size);
->  		if (IS_ERR(kernel)) {
-> -			kernel = NULL;
->  			ret = PTR_ERR(kernel);
-> +			kernel = NULL;
->  			goto err_close;
->  		}
->  	}
-> @@ -112,8 +112,8 @@ static int do_bootm_aimage(struct image_data *img_data)
->  	if (hdr->ramdisk.size) {
->  		initrd = aimage_copy_component(fd, ofs, hdr->ramdisk.size);
->  		if (IS_ERR(initrd)) {
-> -			initrd = NULL;
->  			ret = PTR_ERR(initrd);
-> +			initrd = NULL;
->  			goto err_close;
->  		}
->  	}
-> -- 
-> 2.47.3
-> 
-> 
-> 
+[1/2] kconfig: add merge_into_defconfig_named to set CONFIG_NAME
+      https://git.pengutronix.de/cgit/barebox/commit/?id=e09eacc81a60 (link may not be stable)
+[2/2] test: report used Labgrid environment and build dir
+      https://git.pengutronix.de/cgit/barebox/commit/?id=761024805134 (link may not be stable)
 
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
