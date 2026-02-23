@@ -1,71 +1,64 @@
-Delivery-date: Mon, 23 Feb 2026 16:32:50 +0100
+Delivery-date: Mon, 23 Feb 2026 16:39:52 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuXvV-004sGi-1J
+	id 1vuY2J-004sL1-0b
 	for lore@lore.pengutronix.de;
-	Mon, 23 Feb 2026 16:32:50 +0100
+	Mon, 23 Feb 2026 16:39:52 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuXvV-0000Q1-PB
-	for lore@pengutronix.de; Mon, 23 Feb 2026 16:32:50 +0100
+	id 1vuY2J-0001i9-HQ
+	for lore@pengutronix.de; Mon, 23 Feb 2026 16:39:52 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=aVu5UaB0Xn+8VInCdKsFew3irZmCLlg9j3JFD4WfL70=; b=MW6nJwgfyPaBvtJGBvzaAHkwIx
-	VFiTfFVw/4v9q6wAuji15Rfl8SW6IWtc47IS+2i2SR+fCfyW3Sk9nEaDXdb5xsM7wDS6X/2qDjKwx
-	6xKVav1M5SK6bOA+kOybatCjraLq+Tl6/xqeZlvHSnNfP8gopnRiFzwdyNjmIj93KQtW6um7/wPPV
-	TkI+hmsXrywqbsfk9YWAoGUPM3XzgsdBdZizqBHVFi46dCicrTL6GAPBjZeNchZau5DiqBAKnmEW8
-	lJw0vCDoiFmlRxDheUi0pOStC9/GP97MTHYYGYSXNeQzUi4ta1j0RyOycS0UxMvrJzRCY924q5c+z
-	uQgIiffw==;
+	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=lz9Q0bCqcY7MRFk+zvCSDDSYMHfwculdvJB97xN50sY=; b=ahvciT0GTN/2R3j/E32kxBP2QH
+	3Nf4Ml8Bh9GSJljsneWo0d5jGKmy0ntk9vMF05eZHg8Fg4tz/ppW4SXVd+U7hR7vUOvxsWy7N5xLF
+	n3/lNn35RfqljxdzvH76rs2R5PkXxB8lN0wldFzTHw8f02rNC4JAhvHnVbJbU0I5P6vY29j/sSj1e
+	lIvjfKuo5nO6n60T0lOsd61V68aTg98U1krTmGq7UKdYlOBgTFMCP1kebneSNM7HDIhFY/nrChizI
+	a5BJDhc5/ToC07brjCIpPr02pF4FI9s/AxfG3kndRNJbAMUrWqF/tiUskYtJqIB8GKP+ajfR975IE
+	L/gmVnDQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuXv2-00000000a16-2cbE;
-	Mon, 23 Feb 2026 15:32:20 +0000
+	id 1vuY1g-00000000aXZ-1qGm;
+	Mon, 23 Feb 2026 15:39:12 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuXuz-00000000a01-3nUZ
+	id 1vuY1e-00000000aX1-27uy
 	for barebox@lists.infradead.org;
-	Mon, 23 Feb 2026 15:32:19 +0000
+	Mon, 23 Feb 2026 15:39:11 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vuXuy-0000Gi-7T; Mon, 23 Feb 2026 16:32:16 +0100
+	id 1vuY1d-0001XA-0b; Mon, 23 Feb 2026 16:39:09 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vuXuw-002Fkn-1h;
-	Mon, 23 Feb 2026 16:32:15 +0100
+	id 1vuY1b-002Fpv-1Z;
+	Mon, 23 Feb 2026 16:39:08 +0100
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vuXux-000000078sR-3Q3y;
-	Mon, 23 Feb 2026 16:32:15 +0100
+	id 1vuY1c-00000007pxL-36OP;
+	Mon, 23 Feb 2026 16:39:08 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Sascha Hauer <sascha@saschahauer.de>, 
- "Claude Sonnet 4.5" <noreply@anthropic.com>
-In-Reply-To: <20260223-arm-mmu-v1-0-707d45f6f6e1@pengutronix.de>
-References: <20260223-arm-mmu-v1-0-707d45f6f6e1@pengutronix.de>
-Message-Id: <177186073580.1702270.7544396857018404808.b4-ty@pengutronix.de>
-Date: Mon, 23 Feb 2026 16:32:15 +0100
+To: Barebox List <barebox@lists.infradead.org>
+Date: Mon, 23 Feb 2026 16:39:08 +0100
+Message-ID: <20260223153908.1867811-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260223_073217_951935_BA9A2110 
-X-CRM114-Status: UNSURE (   6.94  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260223_073910_551633_1725A25F 
+X-CRM114-Status: GOOD (  11.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,32 +80,58 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: (subset) [PATCH 0/4] ARM: MMU: Some cleanup after recent
- changes
+Subject: [PATCH] Debug: add Kconfig option to abort autoboot
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+For debugging purposes it's sometimes useful when barebox doesn't boot
+through, but stops at the prompt. This allows for automated debugging
+without having to catch the autoboot timeout first. This normally works
+thanks to labgrid, but at the cost that messages are eaten up by the
+barebox strategy.
 
-On Mon, 23 Feb 2026 09:34:05 +0100, Sascha Hauer wrote:
-> We now setup the MMU for barebox proper in the PBL already. This makes
-> some quirks we currently do in the PBL unnecessary. Remove them for
-> good. Also, make mmu_early_enable() safe to be called from board code
-> if necessary.
-> 
-> 
+This adds a Kconfig option to just stop at the prompt.
 
-Applied, thanks!
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/Kconfig.debug | 6 ++++++
+ common/startup.c     | 4 +++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-[1/4] mmu: add MAP_CACHED_RWX mapping type
-      https://git.pengutronix.de/cgit/barebox/commit/?id=06102b02b21a (link may not be stable)
-[2/4] ARM: MMU: drop forced pagewise mapping
-      https://git.pengutronix.de/cgit/barebox/commit/?id=72348878f2ab (link may not be stable)
-[3/4] ARM: pbl: MMU: drop unnecessary barebox mapping
-      https://git.pengutronix.de/cgit/barebox/commit/?id=ddb374ff808f (link may not be stable)
-
-Best regards,
+diff --git a/common/Kconfig.debug b/common/Kconfig.debug
+index b307b84202..13a686d0ad 100644
+--- a/common/Kconfig.debug
++++ b/common/Kconfig.debug
+@@ -56,6 +56,12 @@ config DEBUG_INITCALLS
+ 	help
+ 	  If enabled this will print initcall traces.
+ 
++config DEBUG_AUTOBOOT_ABORT
++	bool "Abort autoboot"
++	help
++	  If enabled barebox will not automatically boot but start a shell
++	  instead.
++
+ config DEBUG_PBL
+ 	bool "Print PBL debugging information"
+ 	depends on PBL_CONSOLE
+diff --git a/common/startup.c b/common/startup.c
+index 055d94fe6a..7551813a50 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -189,7 +189,9 @@ void set_autoboot_state(enum autoboot_state autoboot)
+  */
+ enum autoboot_state do_autoboot_countdown(void)
+ {
+-	static enum autoboot_state autoboot_state = AUTOBOOT_UNKNOWN;
++	static enum autoboot_state autoboot_state =
++		IS_ENABLED(CONFIG_DEBUG_AUTOBOOT_ABORT) ?
++			AUTOBOOT_ABORT : AUTOBOOT_UNKNOWN;
+ 	unsigned flags = CONSOLE_COUNTDOWN_EXTERN;
+ 	int ret;
+ 	struct stat s;
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.47.3
 
 
 
