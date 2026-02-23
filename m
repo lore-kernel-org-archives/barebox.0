@@ -1,67 +1,71 @@
-Delivery-date: Mon, 23 Feb 2026 10:56:52 +0100
+Delivery-date: Mon, 23 Feb 2026 11:13:09 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuSgN-004mu5-3C
+	id 1vuSw8-004nJX-2I
 	for lore@lore.pengutronix.de;
-	Mon, 23 Feb 2026 10:56:52 +0100
+	Mon, 23 Feb 2026 11:13:09 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuSgO-0005fN-94
-	for lore@pengutronix.de; Mon, 23 Feb 2026 10:56:52 +0100
+	id 1vuSw8-00073P-VW
+	for lore@pengutronix.de; Mon, 23 Feb 2026 11:13:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0jxcCn/u0dGi7cqzpLhosWQwvnSyNo98e3KIE24eA48=; b=RCmK3MTzOCHV8KZloUD2IrXc2x
-	dZzUGyUC0gk+8zVTexY5mCa3MuoDAUGAnyOl7gRmQ81DTq5B8ug5mWoWUB/C9bHhLGBn4kPGU825B
-	AKJyg02bHJJJPJXLcz1l2hZjemZMsXZeuJPXGcfOZvEB3PDt3vzq+99bwWBD+CRs9t9JvItHFaXfU
-	a04A0B2nQbLNBDpyUgPiNXJrUuoGD0QnHtjiaipEDd/hLnrBeNPngpj3t9FfFUo8D3tn2GffX3Xr6
-	R+sm4KF3cQ78th+Mq6tJTfraA5wY/C2HV3RnJ8NZrLsotCD/79lHhw/NJ6u8fU3ng/VTrAhW+LmBP
-	dSfjKlgw==;
+	bh=VHEajjPxFDyy36Fk0eujH7QAO+SdYn0pAET5nXlQIJA=; b=Om3cjcLJ5h1fj6XRxrpOFRXu0i
+	meeRnrWnLBoZvjoNcTG8t5t81Y/Q8hRQxfb/Wi2rqXIA+Ep9OuffL4a+sHdppXsvU7NoIjZRw9Mfb
+	0rPEGHMCR3d8gaynpXOTPx3Sv9zg4RUIGmWNoTZLGulIt3cGQN2Eclm5+trWZAo7u3bjkylvlPDxv
+	GMgf/xEhvLoW0Nht3m5mP/2QrI3kU8OKfRy0ZpJNOQW+nb3U+kofABko5Hakv28jUfHJO+/ZY8BXn
+	nwezaK1XQ92X4B0fNnuKG8sx8iFjNVx2D2/ATbQUd1hUPjdLVNUYZ3RuLsnUtjVBfK6by1OxVr820
+	Qd8pEF6Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuSg1-0000000Hajq-0xs6;
-	Mon, 23 Feb 2026 09:56:29 +0000
+	id 1vuSvc-000000001LS-1YDJ;
+	Mon, 23 Feb 2026 10:12:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuSfz-0000000HajJ-1j7U
+	id 1vuSvZ-000000001Ky-1zBH
 	for barebox@lists.infradead.org;
-	Mon, 23 Feb 2026 09:56:28 +0000
+	Mon, 23 Feb 2026 10:12:34 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vuSfw-0005ab-CV; Mon, 23 Feb 2026 10:56:24 +0100
+	(envelope-from <sha@pengutronix.de>)
+	id 1vuSvX-0006zA-Mv; Mon, 23 Feb 2026 11:12:31 +0100
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vuSfu-002CrK-2j;
-	Mon, 23 Feb 2026 10:56:24 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1vuSfw-000000015Yk-0QNp;
-	Mon, 23 Feb 2026 10:56:24 +0100
-Date: Mon, 23 Feb 2026 10:56:24 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <6lzj4bsgsi3f4afsysd42x3volfu5qni6dgm5qkt7adrwwcpoo@xcaj6fyr7v6z>
-References: <20260218124307.2358552-1-m.felsch@pengutronix.de>
- <aZwaydz8gMTJNv5W@pengutronix.de>
+	(envelope-from <sha@pengutronix.de>)
+	id 1vuSvW-002D9g-0W;
+	Mon, 23 Feb 2026 11:12:31 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1vuSvX-000000015qT-1jH7;
+	Mon, 23 Feb 2026 11:12:31 +0100
+Date: Mon, 23 Feb 2026 11:12:31 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, "Claude Opus 4.6" <noreply@anthropic.com>
+Message-ID: <aZwoD5oRA7A7Gs7K@pengutronix.de>
+References: <20260216084253.3547270-1-a.fatoum@pengutronix.de>
+ <20260216084253.3547270-5-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aZwaydz8gMTJNv5W@pengutronix.de>
+In-Reply-To: <20260216084253.3547270-5-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260223_015627_497703_DE925166 
-X-CRM114-Status: GOOD (  25.74  )
+X-CRM114-CacheID: sfid-20260223_021233_539968_CB38B45B 
+X-CRM114-Status: GOOD (  23.49  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,82 +87,65 @@ X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] eeprom: at24: verify that chip is accessible during probe
+Subject: Re: [PATCH 05/12] bootm: android: fix PTR_ERR called after clearing
+ error pointer
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 26-02-23, Sascha Hauer wrote:
-> On Wed, Feb 18, 2026 at 01:42:48PM +0100, Marco Felsch wrote:
-> > Perform a basic sanity check to verify that the EEPROM is actually
-> > accessible by reading 1-byte. Linux does the same sanity check for all
-> > non-ACPI platforms.
-> > 
-> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > ---
-> >  drivers/eeprom/at24.c | 7 +++++++
-> >  1 file changed, 7 insertions(+)
-> > 
-> > diff --git a/drivers/eeprom/at24.c b/drivers/eeprom/at24.c
-> > index 06a2a4b22697..a08d42fe3e14 100644
-> > --- a/drivers/eeprom/at24.c
-> > +++ b/drivers/eeprom/at24.c
-> > @@ -373,6 +373,7 @@ static int at24_probe(struct device *dev)
-> >  	unsigned i, num_addresses;
-> >  	const char *devname;
-> >  	const char *alias;
-> > +	u8 test_byte;
-> >  
-> >  	if (dev->platform_data) {
-> >  		chip = *(struct at24_platform_data *)dev->platform_data;
-> > @@ -487,6 +488,12 @@ static int at24_probe(struct device *dev)
-> >  	at24->nvmem_config.size = chip.byte_len;
-> >  	at24->nvmem_config.id = devid;
-> >  
-> > +	/* Perform a one-byte test read to verify that the chip is functional */
-> > +	if (at24_read(at24, &test_byte, 0, 1) != 1) {
-> > +		err = -ENODEV;
+On Mon, Feb 16, 2026 at 09:42:21AM +0100, Ahmad Fatoum wrote:
+> Both the kernel and initrd error paths set the pointer to NULL before
+> calling PTR_ERR(), which always yields 0 (apparent success) instead of
+> the actual error code from aimage_copy_component().
 > 
-> a return of -ENODEV from driver probe doesn't print an error. Is that
-> what we want here?
+> Swap the order so PTR_ERR() captures the error code before the pointer
+> is cleared.
 
-That's a good point, quickly checked the Linux implementation which
-doesn't print an error too. However, you're right and we should print a
-dev_err() or so here. Is this something you may add while applying or
-shall I send a new v2?
+Squashed this and the next one into the original commit adding this
+file.
 
-Regards,
-  Marco
-
+Sascha
 
 > 
-> Sascha
+> Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  common/bootm-android-image.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> > +		goto err_devfs_create;
-> > +	}
-> > +
-> >  	at24->nvmem = nvmem_register(&at24->nvmem_config);
-> >  	err = PTR_ERR_OR_ZERO(at24->nvmem);
-> >  	if (err)
-> > -- 
-> > 2.47.3
-> > 
-> > 
-> > 
-> 
+> diff --git a/common/bootm-android-image.c b/common/bootm-android-image.c
+> index cb86123659ba..828400fef772 100644
+> --- a/common/bootm-android-image.c
+> +++ b/common/bootm-android-image.c
+> @@ -101,8 +101,8 @@ static int do_bootm_aimage(struct image_data *img_data)
+>  	if (hdr->kernel.size) {
+>  		kernel = aimage_copy_component(fd, ofs, hdr->kernel.size);
+>  		if (IS_ERR(kernel)) {
+> -			kernel = NULL;
+>  			ret = PTR_ERR(kernel);
+> +			kernel = NULL;
+>  			goto err_close;
+>  		}
+>  	}
+> @@ -112,8 +112,8 @@ static int do_bootm_aimage(struct image_data *img_data)
+>  	if (hdr->ramdisk.size) {
+>  		initrd = aimage_copy_component(fd, ofs, hdr->ramdisk.size);
+>  		if (IS_ERR(initrd)) {
+> -			initrd = NULL;
+>  			ret = PTR_ERR(initrd);
+> +			initrd = NULL;
+>  			goto err_close;
+>  		}
+>  	}
 > -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 2.47.3
+> 
+> 
 > 
 
 -- 
-#gernperDu 
-#CallMeByMyFirstName
-
 Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
