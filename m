@@ -1,65 +1,57 @@
-Delivery-date: Tue, 24 Feb 2026 16:57:25 +0100
+Delivery-date: Tue, 24 Feb 2026 16:59:30 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuumq-005E2Y-2B
+	id 1vuuor-005E4H-0w
 	for lore@lore.pengutronix.de;
-	Tue, 24 Feb 2026 16:57:25 +0100
+	Tue, 24 Feb 2026 16:59:30 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuumr-0000JN-0a
-	for lore@pengutronix.de; Tue, 24 Feb 2026 16:57:25 +0100
+	id 1vuuor-0000jK-JR
+	for lore@pengutronix.de; Tue, 24 Feb 2026 16:59:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=FiyFLuHCmL74OiqmvsywAEiG4GUZTVrbLax3n6lqe/o=; b=iDD5kct8ZwtwFLMgsCJpuYH9Db
-	57vRFc60mPMO1i0hER4KvVAhXSMOHQPu7ssf4SFBUqhtPQ8BQcjU2/9KOR3C8iCNbS/qm6KhbuqZM
-	cOA8TNBux3GrtOQqT/AeQsj56jRvI+qlsBDfdaiVpcgQQEnoxTnVkQWdJiNgKM4css4K2+mItREBJ
-	5aCDQqHT7SX9PLaD7dGVvCAqgK8j6WMBjuTg2Scx7UoOAmYJbR37osgXgf35J4uHQI6yMFuXGjjp3
-	rZSPx3L2WXb2xxNx9kidAqoxqO9E+dk+2aigFxTTbeeAOu5O3hSUDK3ypP5mTuQWuwuBvbUinrosB
-	iQu5pXAQ==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=DkS3PrZM0DvV9TzQWvHYuDbl8SXvH6pVF8GQB2C+jAU=; b=q+HbDEfqeWcaL/pbqYQj/cQDrO
+	Z+o0Je0eMBYT4yeVSgKP9J3bOuTxETu+Xn4tAfj/ed527ybygH5lhFsB9qgV0kyLks23MHt1pAHxP
+	iMIXgnbgGSkgbcmvpJjpjYkqBRzhAV6zQaB97rgJbwu1D8OOuZbuDkYlEUDjok3NrwK9eXXlkb3SF
+	tsrbdkxomsDln+AFcFkAQ2exqJ8BQgodsuNrrZkHVHRlyTgnlzrlbaiFiA4pdxPvSQwY7gDcMOC9Z
+	5729X6/FCx7/F9ZQy6NjQqvL1UXMxxXFqx3Ppg85qu9kV4qrMxPG6pbeFyxOZ1Suo/cQQmVSEQAVw
+	AY1582PQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuumG-00000002MGo-47hP;
-	Tue, 24 Feb 2026 15:56:48 +0000
+	id 1vuuoU-00000002MaS-2LnT;
+	Tue, 24 Feb 2026 15:59:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuumE-00000002MGJ-2fX8
+	id 1vuuoR-00000002Ma5-336n
 	for barebox@lists.infradead.org;
-	Tue, 24 Feb 2026 15:56:48 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vuumC-00004x-Fq; Tue, 24 Feb 2026 16:56:44 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vuumA-002QHj-35;
-	Tue, 24 Feb 2026 16:56:44 +0100
-Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vuumC-00000007iUk-0nap;
-	Tue, 24 Feb 2026 16:56:44 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 24 Feb 2026 16:56:29 +0100
-Message-ID: <20260224155643.1835640-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	Tue, 24 Feb 2026 15:59:04 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <jre@pengutronix.de>)
+	id 1vuuoO-0000bY-Vq; Tue, 24 Feb 2026 16:59:01 +0100
+Message-ID: <9da6e1a2-0753-47dc-9193-dc349e866b11@pengutronix.de>
+Date: Tue, 24 Feb 2026 16:59:00 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ Barebox List <barebox@lists.infradead.org>
+References: <20260223153908.1867811-1-s.hauer@pengutronix.de>
+From: Jonas Rebmann <jre@pengutronix.de>
+Content-Language: en-US
+In-Reply-To: <20260223153908.1867811-1-s.hauer@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260224_075646_671236_D22A33D4 
-X-CRM114-Status: GOOD (  10.36  )
+X-CRM114-CacheID: sfid-20260224_075903_769458_7C4BBB5E 
+X-CRM114-Status: GOOD (  21.14  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,42 +69,76 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2] fixup! ARM: i.MX6: load optee in PBL before barebox proper
+Subject: Re: [PATCH] Debug: add Kconfig option to abort autoboot
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-firmware: hide FIRMWARE_IMX6_OPTEE for non-ARCH_IMX6
+Hi Sascha,
 
-PBL_OPTEE can be enabled on a number of platforms, so tighten the
-dependencies to hide the symbol when it's not relevant.
+On 2026-02-23 16:39, Sascha Hauer wrote:
+> For debugging purposes it's sometimes useful when barebox doesn't boot
+> through, but stops at the prompt.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-v1 -> v2:
-  - fix syntax error..
----
- firmware/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Isn't this already compile-time configurable by setting the defaultenv
+autoboot to "abort"?
 
-diff --git a/firmware/Kconfig b/firmware/Kconfig
-index 81ad6b705ba9..b9b4556dbda7 100644
---- a/firmware/Kconfig
-+++ b/firmware/Kconfig
-@@ -51,7 +51,7 @@ config FIRMWARE_AGILEX5_ATF
- 
- config FIRMWARE_IMX6_OPTEE
- 	bool "install OP-TEE on i.MX6 boards"
--	depends on PBL_OPTEE
-+	depends on ARCH_IMX6 && PBL_OPTEE
- 	help
- 	  This enables OP-TEE loading and starting on i.MX6. Place the OP-TEE binary
- 	  in CONFIG_EXTRA_FIRMWARE_DIR/imx6-optee.bin. If this is enabled, then
+Regards,
+Jonas
+
+> This allows for automated debugging
+> without having to catch the autoboot timeout first. This normally works
+> thanks to labgrid, but at the cost that messages are eaten up by the
+> barebox strategy.
+> 
+> This adds a Kconfig option to just stop at the prompt.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>   common/Kconfig.debug | 6 ++++++
+>   common/startup.c     | 4 +++-
+>   2 files changed, 9 insertions(+), 1 deletion(-)
+> 
+> diff --git a/common/Kconfig.debug b/common/Kconfig.debug
+> index b307b84202..13a686d0ad 100644
+> --- a/common/Kconfig.debug
+> +++ b/common/Kconfig.debug
+> @@ -56,6 +56,12 @@ config DEBUG_INITCALLS
+>   	help
+>   	  If enabled this will print initcall traces.
+>   
+> +config DEBUG_AUTOBOOT_ABORT
+> +	bool "Abort autoboot"
+> +	help
+> +	  If enabled barebox will not automatically boot but start a shell
+> +	  instead.
+> +
+>   config DEBUG_PBL
+>   	bool "Print PBL debugging information"
+>   	depends on PBL_CONSOLE
+> diff --git a/common/startup.c b/common/startup.c
+> index 055d94fe6a..7551813a50 100644
+> --- a/common/startup.c
+> +++ b/common/startup.c
+> @@ -189,7 +189,9 @@ void set_autoboot_state(enum autoboot_state autoboot)
+>    */
+>   enum autoboot_state do_autoboot_countdown(void)
+>   {
+> -	static enum autoboot_state autoboot_state = AUTOBOOT_UNKNOWN;
+> +	static enum autoboot_state autoboot_state =
+> +		IS_ENABLED(CONFIG_DEBUG_AUTOBOOT_ABORT) ?
+> +			AUTOBOOT_ABORT : AUTOBOOT_UNKNOWN;
+>   	unsigned flags = CONSOLE_COUNTDOWN_EXTERN;
+>   	int ret;
+>   	struct stat s;
+
 -- 
-2.47.3
-
+Pengutronix e.K.                           | Jonas Rebmann               |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
 
 
