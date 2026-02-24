@@ -1,66 +1,65 @@
-Delivery-date: Tue, 24 Feb 2026 12:45:58 +0100
+Delivery-date: Tue, 24 Feb 2026 16:57:25 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuqrV-005AJh-1v
+	id 1vuumq-005E2Y-2B
 	for lore@lore.pengutronix.de;
-	Tue, 24 Feb 2026 12:45:58 +0100
+	Tue, 24 Feb 2026 16:57:25 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vuqrV-0001uA-V0
-	for lore@pengutronix.de; Tue, 24 Feb 2026 12:45:58 +0100
+	id 1vuumr-0000JN-0a
+	for lore@pengutronix.de; Tue, 24 Feb 2026 16:57:25 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=eOqwJFLUGs56WRzypO54NhiayhJRzTZYoLzvnGpO3SQ=; b=EwBDdEVS9dSpTcxW9eLcH6XjyU
-	ibyIbjTRKNAedm+wrm0zDl8XMvEIEiwFWxbadmf2Gh4MbcefK3dfjEe5Qe9uisfA+mk3QAuQnjmAh
-	NeMXQsbmAs2WnoQCHpK6l0iLzJPjYbCH1ReoqDRt7Sf8/zjsS+qukYMwkudxZvx/gj+pBDT7HaFD0
-	1H7HP+KsnK87f6SQjk7w/+R6/TnbQXG0a5ARep0Z9GfWoafj/T5pS/eKMeibefGolub2m+a5DbX+u
-	47URlCFUbCcQURNLbfu7dKBrVwDcTdgwIWy+6zRSeXCkVK3x2BM/ZTPI+1rPyG6pF6jbi/38jauxy
-	/zKcnHBw==;
+	bh=FiyFLuHCmL74OiqmvsywAEiG4GUZTVrbLax3n6lqe/o=; b=iDD5kct8ZwtwFLMgsCJpuYH9Db
+	57vRFc60mPMO1i0hER4KvVAhXSMOHQPu7ssf4SFBUqhtPQ8BQcjU2/9KOR3C8iCNbS/qm6KhbuqZM
+	cOA8TNBux3GrtOQqT/AeQsj56jRvI+qlsBDfdaiVpcgQQEnoxTnVkQWdJiNgKM4css4K2+mItREBJ
+	5aCDQqHT7SX9PLaD7dGVvCAqgK8j6WMBjuTg2Scx7UoOAmYJbR37osgXgf35J4uHQI6yMFuXGjjp3
+	rZSPx3L2WXb2xxNx9kidAqoxqO9E+dk+2aigFxTTbeeAOu5O3hSUDK3ypP5mTuQWuwuBvbUinrosB
+	iQu5pXAQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuqr6-000000020DW-10cV;
-	Tue, 24 Feb 2026 11:45:32 +0000
+	id 1vuumG-00000002MGo-47hP;
+	Tue, 24 Feb 2026 15:56:48 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vuqr3-000000020DA-3Ovv
+	id 1vuumE-00000002MGJ-2fX8
 	for barebox@lists.infradead.org;
-	Tue, 24 Feb 2026 11:45:30 +0000
+	Tue, 24 Feb 2026 15:56:48 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vuqr2-0001hw-2c; Tue, 24 Feb 2026 12:45:28 +0100
+	id 1vuumC-00004x-Fq; Tue, 24 Feb 2026 16:56:44 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vuqr0-002OJF-1j;
-	Tue, 24 Feb 2026 12:45:27 +0100
+	id 1vuumA-002QHj-35;
+	Tue, 24 Feb 2026 16:56:44 +0100
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vuqr1-0000000ARrm-3HO3;
-	Tue, 24 Feb 2026 12:45:27 +0100
+	id 1vuumC-00000007iUk-0nap;
+	Tue, 24 Feb 2026 16:56:44 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 24 Feb 2026 12:45:24 +0100
-Message-ID: <20260224114526.2490388-1-a.fatoum@pengutronix.de>
+Date: Tue, 24 Feb 2026 16:56:29 +0100
+Message-ID: <20260224155643.1835640-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260224_034529_867876_2F74DA7E 
-X-CRM114-Status: UNSURE (   9.82  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260224_075646_671236_D22A33D4 
+X-CRM114-Status: GOOD (  10.36  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,7 +81,7 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! ARM: i.MX6: load optee in PBL before barebox proper
+Subject: [PATCH v2] fixup! ARM: i.MX6: load optee in PBL before barebox proper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
@@ -93,11 +92,14 @@ dependencies to hide the symbol when it's not relevant.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
+v1 -> v2:
+  - fix syntax error..
+---
  firmware/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/firmware/Kconfig b/firmware/Kconfig
-index 81ad6b705ba9..ed0e03ecf77c 100644
+index 81ad6b705ba9..b9b4556dbda7 100644
 --- a/firmware/Kconfig
 +++ b/firmware/Kconfig
 @@ -51,7 +51,7 @@ config FIRMWARE_AGILEX5_ATF
@@ -105,7 +107,7 @@ index 81ad6b705ba9..ed0e03ecf77c 100644
  config FIRMWARE_IMX6_OPTEE
  	bool "install OP-TEE on i.MX6 boards"
 -	depends on PBL_OPTEE
-+	depends ARCH_IMX6 && on PBL_OPTEE
++	depends on ARCH_IMX6 && PBL_OPTEE
  	help
  	  This enables OP-TEE loading and starting on i.MX6. Place the OP-TEE binary
  	  in CONFIG_EXTRA_FIRMWARE_DIR/imx6-optee.bin. If this is enabled, then
