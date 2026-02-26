@@ -1,83 +1,74 @@
-Delivery-date: Thu, 26 Feb 2026 13:15:51 +0100
+Delivery-date: Thu, 26 Feb 2026 13:24:02 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vvaHW-005sZy-1W
+	id 1vvaPR-005sfY-0b
 	for lore@lore.pengutronix.de;
-	Thu, 26 Feb 2026 13:15:51 +0100
+	Thu, 26 Feb 2026 13:24:02 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vvaHW-00083W-QR
-	for lore@pengutronix.de; Thu, 26 Feb 2026 13:15:51 +0100
+	id 1vvaPR-0001eb-Eg
+	for lore@pengutronix.de; Thu, 26 Feb 2026 13:24:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=4gGmtQP15f77NiybMpIfAzCzYDBN116ZFpzFPw/pNF0=; b=3m3FlIplJP1Re4Zad9MYe7QYma
-	iI9q6NvwCr2T9mk2tIGUQhpZuqjuonSwo9URImHT11PJzxb90ARngXNdyb5bwEZSSWfmac7hxpr1O
-	ypljmp58F02zCxYjxoVkPPW449XI+18iaQz7EPAHbV/N2fvou7dSiPnKqPTnpZDpeZHVCLVWUQ9yh
-	01m2+itZvzRSdIFruDPZBk4p+QW2qbKIwp9sbMfwhbN6lRjA6ySuWa7pBkDPNeRtHHeAQ5Got3gYJ
-	1Eix2izQHbQJCTH2HQCHLXy8v4oJJtru6Aa2sr7YRiag4WAqO2vWAu1u5N2c0IYzWK7UnumtEbY5E
-	JtxVsqMg==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
+	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=mzuEzn4SpLUEh7HHnuqTvQb4+32h9+YcDmp1hIfxBzM=; b=LDEKjx1IrQbDpJs4Pas/aSbxJh
+	LVGK1vDIDssayBbp8ox42Fnnd76WMi3Msxo/gLfA10jDAggvdJHM2aCv0mpDppSIDEkjKvRviQlNy
+	79tiLyn6uFNQN04gss9QrZh2mLpCEjxOB4Z7gPMZkHzwzz62GmleFF209eRn+ePgta6bF3Sx8wiCV
+	zkdcv71nBI6bXg/5N+vk3wHdlwIw/8z7C5CkI9XHozgKpeDS2zXKExFuwYdgyqtKERBREaFoGvzba
+	6HDbY7THzJMr/KSXDuN6YOmElQVg818KflaVGxDlsYsgb6/7l/qumkcODtLLJ0PsXyDNa0VsYT/aY
+	TUBxZ+fA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vvaGD-00000006639-2Bh7;
-	Thu, 26 Feb 2026 12:14:29 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vvaGB-00000006631-2nVi
-	for barebox@bombadil.infradead.org;
-	Thu, 26 Feb 2026 12:14:27 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:From:Sender:
-	Reply-To:Cc:Content-ID:Content-Description;
-	bh=4gGmtQP15f77NiybMpIfAzCzYDBN116ZFpzFPw/pNF0=; b=Y3PGb+4hQsDvEmjI9aHQUMVPQ6
-	/1A71Ymn/UvPJwnmd/Lkxw0gJXuR1zHX/rrZtWd9yoJIlLIeGipcK+/LQBlhntgDkjUzLLOQT5GXn
-	24wbKuHMiqhVhyTJr9gRM6K2hzcp1mSSEhMWgGP/SMf534IRl78Vw0vntSZereBA2ynR3Jj7YB4fr
-	JId3+JSak2NFN7UIneHvC5OxKB4lyoWBKNYfSFG422J8RFG51eV6NDPB5gfUsPj6F5qyaXqvaBDz9
-	tWtPc5xYiix0TgEcuCW4DtrMDGoaOIYrv1P/yIZBR5ulRc2PEk8cSYsKvnP+p/kh3tTdMw0aRTXo0
-	T1hGY6LQ==;
+	id 1vvaP1-000000066yj-036h;
+	Thu, 26 Feb 2026 12:23:35 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vvaG8-0000000AvC3-2T79
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vvaOy-000000066yK-2eYj
 	for barebox@lists.infradead.org;
-	Thu, 26 Feb 2026 12:14:26 +0000
+	Thu, 26 Feb 2026 12:23:33 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vvaG7-0007iw-UF; Thu, 26 Feb 2026 13:14:23 +0100
+	id 1vvaOw-0001Sm-UE; Thu, 26 Feb 2026 13:23:30 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vvaG6-002jBj-1I;
-	Thu, 26 Feb 2026 13:14:23 +0100
+	id 1vvaOv-002jCW-0n;
+	Thu, 26 Feb 2026 13:23:30 +0100
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vvaG7-00000009Aq9-2tN1;
-	Thu, 26 Feb 2026 13:14:23 +0100
+	id 1vvaOw-0000000A78X-2At7;
+	Thu, 26 Feb 2026 13:23:30 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260225141536.258005-1-a.fatoum@pengutronix.de>
-References: <20260225141536.258005-1-a.fatoum@pengutronix.de>
-Message-Id: <177210806368.2186588.13500727787857098039.b4-ty@pengutronix.de>
-Date: Thu, 26 Feb 2026 13:14:23 +0100
+Date: Thu, 26 Feb 2026 13:23:30 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260226-arm-setup-c-v1-2-f52fe8ee81ba@pengutronix.de>
+References: <20260226-arm-setup-c-v1-0-f52fe8ee81ba@pengutronix.de>
+In-Reply-To: <20260226-arm-setup-c-v1-0-f52fe8ee81ba@pengutronix.de>
+To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772108610; l=2085;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=/K9YU2sKUC4mlzuVVH95caxyvXIW/maV8y9aPz7y1LI=;
+ b=g+UEo0gpv++iBSVr5AP+jw5zykaQsgdG/jvhZVoHbLKKqUtDkMNnWOnlGFfMjMDbLd9mmts1e
+ xtz9lmRTq7vBduQwFmD0dfM7of9loV0UD9MjBiw6L7adLU1zPmrmGrY
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260226_121424_796057_5C9347A1 
-X-CRM114-Status: UNSURE (   8.46  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260226_042332_677474_500028CD 
+X-CRM114-Status: GOOD (  10.14  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,6 +80,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: "Claude Opus 4.6" <noreply@anthropic.com>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -99,31 +91,98 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] test: py: network: await prompt after ctrl+c
+Subject: [PATCH 2/2] ARM: setup_c: avoid clearing BSS twice
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Add a bss_cleared variable that is set after the first call to
+setup_c(). On subsequent calls, the BSS clear is skipped to avoid
+wiping already-initialized data.
 
-On Wed, 25 Feb 2026 15:15:34 +0100, Ahmad Fatoum wrote:
-> The expect buffer will contain the <INTERRUPT> string output by barebox
-> followed by a prompt, which run_check would gobble up.
-> 
-> Currently, this doesn't matter, but when we start to additionally match
-> against the plain prompt, this would lead us not to match the prompt
-> string with the marker in run_check.
-> To fix this, _await_prompt to get the <INTERRUPT><prompt> removed from
-> the expect buffer.
-> 
-> [...]
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/cpu/common.c    |  2 ++
+ arch/arm/cpu/setupc_32.S | 10 +++++++++-
+ arch/arm/cpu/setupc_64.S | 10 ++++++++--
+ 3 files changed, 19 insertions(+), 3 deletions(-)
 
-Applied, thanks!
+diff --git a/arch/arm/cpu/common.c b/arch/arm/cpu/common.c
+index e86c89f808..40742894c2 100644
+--- a/arch/arm/cpu/common.c
++++ b/arch/arm/cpu/common.c
+@@ -77,6 +77,8 @@ int __pure cpu_architecture(void)
+ }
+ #endif
+ 
++int bss_cleared;
++
+ extern int __boot_cpu_mode;
+ 
+ int boot_cpu_mode(void)
+diff --git a/arch/arm/cpu/setupc_32.S b/arch/arm/cpu/setupc_32.S
+index c2c3f97528..d923a8f621 100644
+--- a/arch/arm/cpu/setupc_32.S
++++ b/arch/arm/cpu/setupc_32.S
+@@ -7,16 +7,24 @@
+ .section .text.setupc
+ 
+ /*
+- * setup_c: clear bss
++ * setup_c: clear bss if not yet done
+  */
+ ENTRY(setup_c)
++	ldr	r0, =bss_cleared
++	ldr	r1, [r0]
++	cmp	r1, #0
++	bne	1f			/* skip if already done */
+ 	mov	r4, lr
+ 	ldr	r0, =__bss_start
+ 	mov	r1, #0
+ 	ldr	r2, =__bss_stop
+ 	sub	r2, r2, r0
+ 	bl	__memset		/* clear bss */
++	ldr	r0, =bss_cleared
++	mov	r1, #1
++	str	r1, [r0]		/* mark bss cleared */
+ 	ret	r4
++1:	ret	lr
+ ENDPROC(setup_c)
+ 
+ /*
+diff --git a/arch/arm/cpu/setupc_64.S b/arch/arm/cpu/setupc_64.S
+index fd95187a04..8262deb512 100644
+--- a/arch/arm/cpu/setupc_64.S
++++ b/arch/arm/cpu/setupc_64.S
+@@ -7,17 +7,23 @@
+ .section .text.setupc
+ 
+ /*
+- * setup_c: clear bss
++ * setup_c: clear bss if not yet done
+  */
+ ENTRY(setup_c)
++	adr_l	x0, bss_cleared
++	ldr	w1, [x0]
++	cbnz	w1, 1f			/* skip if already done */
+ 	mov	x15, x30
+ 	adr_l	x0, __bss_start
+ 	mov	x1, #0
+ 	adr_l	x2, __bss_stop
+ 	sub	x2, x2, x0
+ 	bl	__memset		/* clear bss */
++	adr_l	x0, bss_cleared
++	mov	w1, #1
++	str	w1, [x0]		/* mark bss cleared */
+ 	mov	x30, x15
+-	ret
++1:	ret
+ ENDPROC(setup_c)
+ 
+ /*
 
-[1/1] test: py: network: await prompt after ctrl+c
-      https://git.pengutronix.de/cgit/barebox/commit/?id=ca40477c067d (link may not be stable)
-
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.47.3
 
 
 
