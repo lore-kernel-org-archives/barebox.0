@@ -1,72 +1,65 @@
-Delivery-date: Mon, 02 Mar 2026 14:53:30 +0100
+Delivery-date: Mon, 02 Mar 2026 17:38:26 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vx3iD-007Itv-2L
+	id 1vx6Hq-007LRC-0E
 	for lore@lore.pengutronix.de;
-	Mon, 02 Mar 2026 14:53:30 +0100
+	Mon, 02 Mar 2026 17:38:26 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vx3iE-0008DR-2A
-	for lore@pengutronix.de; Mon, 02 Mar 2026 14:53:30 +0100
+	id 1vx6Hq-0007Jv-Ch
+	for lore@pengutronix.de; Mon, 02 Mar 2026 17:38:26 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=388vN60t1EzyRaQNeq4Do436OEnUVj/N7UJ8ZAkHd64=; b=Gfeq/Xa+VpGyDxbXd+CbyuwzDx
-	e16pOKySvVzo+2XcvC05OnUwmDke6HbB4DwRLDYgpRGpqT+h/pSXG0JTSRoPQVMWN7szBs236LGwM
-	JFmGXmHW+qcdn5kfxbVaItvgJzfuZq/1Rv6AOvVp53MlLU2IfnM28aNfr1EF/SwpKwC98JsN3JuE2
-	EuGB2u7kgue4OhZkZWPkdIFScDN0JLcxE/DPbeNrl54EohdbqIxC/naLAe/fUKDD/0dhBeLtfcTDW
-	wkN/IUoN+DHgLShFQBCzFRUhBcT/nJYO5lsOaNiC5KZWQgde3EvklyMWpIKXFdxs00oyBvmFCIABA
-	WeIwOaKg==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=MhdzEgEomtwYmpW1DXYKBXKF85YnoHpE+HZEliokrVw=; b=GiFnZJaBSMj8aHEZkqalzaf+KC
+	GDskAkpUZUE37VnqMHeqEpiF3a9cRTFBP0/LD4ikYiUPtyoTST4B5zvlrRNPeB4MHSSBFckTfMk4i
+	cjVZWCUlMReQ0c1E5l/4NeIGPb6Yrzr1ASusPj1Og4L9+McvVWdcTiQMQchxgB+68cZ8y4dcqvjI/
+	cuP+H1qnj3g4Bg0GZoLj2MVrgFsB7X9IvP7XjO48pvM90XvelIrpjTxtR8z0fbFEWmiv/lovq3jZM
+	f+kFECVl7jGcWPwLnZNDGciMce3mcvbQbsAvACqqRAKhjlG5YGLrC7hCASGzZz1waNeyUqbcRph4W
+	XRbQSiug==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vx3hr-0000000DAKK-25lq;
-	Mon, 02 Mar 2026 13:53:07 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vx3hq-0000000DAIu-0jFr
-	for barebox@bombadil.infradead.org;
-	Mon, 02 Mar 2026 13:53:06 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=388vN60t1EzyRaQNeq4Do436OEnUVj/N7UJ8ZAkHd64=; b=q7W80js7GERPc2PUURtEJj8SjD
-	H4C1Qs8Acl5urxgWIgh7ztp1alPq6GcXh/QP/NzCyK/ptAELWksWs5tRImZALwVeeSiVvUJ4D8Mpo
-	9ZLKRCo0z1aizgZ3AkT+wjJy1aiiRtm6+8kSbia0cza4S1aiNdSg+wZYzIXWjKC7+mtyvoKqX8+8P
-	jwnFi7TEZg2WULyOW2Bwgq35cMf+UC4yyiNWlmW82/mNL/y3L4etMW8/1L0Lvkbb1fT5NIYfgn9a2
-	u73UR+UfcxVukKKyWqT9n+x9HsqbuHmqts7cNcItMjySxfDoLGq3x6qjoU46Pl9YzYipTDUdWKJEC
-	IDmVxSsg==;
+	id 1vx6HJ-0000000DVXX-2z7W;
+	Mon, 02 Mar 2026 16:37:53 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vx3hn-00000000DdI-1C7k
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vx6HH-0000000DVWO-2P7w
 	for barebox@lists.infradead.org;
-	Mon, 02 Mar 2026 13:53:05 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@barebox.org>)
-	id 1vx3hk-00083H-AX; Mon, 02 Mar 2026 14:53:00 +0100
-From: Ahmad Fatoum <a.fatoum@barebox.org>
+	Mon, 02 Mar 2026 16:37:52 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vx6HF-00075j-Op; Mon, 02 Mar 2026 17:37:49 +0100
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vx6HE-003PXy-0k;
+	Mon, 02 Mar 2026 17:37:49 +0100
+Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1vx6HF-00000002QFi-1yYU;
+	Mon, 02 Mar 2026 17:37:49 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: "Claude Opus 4.6" <noreply@anthropic.com>,
-	Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon,  2 Mar 2026 14:52:34 +0100
-Message-ID: <20260302135258.197132-3-a.fatoum@barebox.org>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon,  2 Mar 2026 17:37:40 +0100
+Message-ID: <20260302163748.577552-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260302135258.197132-1-a.fatoum@barebox.org>
-References: <20260302135258.197132-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260302_135303_396233_A6225A91 
-X-CRM114-Status: UNSURE (   9.64  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260302_083751_630071_05218466 
+X-CRM114-Status: GOOD (  13.26  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,46 +77,74 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH master 3/3] of: fdt: fix heap-buffer-overflow in fdt_machine_is_compatible
+Subject: [PATCH 1/3] mci: add support for eMMC v5.1b
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-fdt_machine_is_compatible() reads the FDT property header fields
-(len, nameoff) without first checking that the full struct fdt_property
-fits within the FDT buffer. While the tag field (4 bytes) is validated
-by dt_ptr_ok(fdt, tagp), the subsequent access to fdt_prop->len and
-fdt_prop->nameoff (at offsets +4 and +8) can read past the buffer when
-the FDT is truncated between the tag and the property header fields.
+Newer eMMC versions than what barebox knows about appear to be
+interpreted as v4.0, which would affect at least erase group
+size determination and manufacturer date calculation.
 
-Add a dt_ptr_ok(fdt, fdt_prop) check before accessing the property
-fields, matching the existing pattern in __of_unflatten_dtb().
+Fix this by adding proper v5.1b support.
 
-Found by fuzz-fdt-compatible with AddressSanitizer.
-
-Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/of/fdt.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mci/mci-core.c | 11 ++++++++++-
+ include/mci.h          |  1 +
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
-index 658718d4e238..13fb4b5c099e 100644
---- a/drivers/of/fdt.c
-+++ b/drivers/of/fdt.c
-@@ -825,6 +825,9 @@ int fdt_machine_is_compatible(const struct fdt_header *fdt, size_t fdt_size, con
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index 37d864b3d02f..54006b149c0a 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -1176,6 +1176,9 @@ static void mci_correct_version_from_ext_csd(struct mci *mci)
+ 		case 8:
+ 			mci->version = MMC_VERSION_5_1;
+ 			break;
++		case 9:
++			mci->version = MMC_VERSION_5_1B;
++			break;
+ 		}
+ 	}
+ }
+@@ -1436,7 +1439,7 @@ static char *mci_version_string(struct mci *mci)
+ 	n = sprintf(version, "%u.%u", major, minor);
+ 	/* Omit zero micro versions */
+ 	if (micro)
+-		sprintf(version + n, "%u", micro);
++		sprintf(version + n, "%X", micro);
  
- 		case FDT_PROP:
- 			fdt_prop = (const void *)fdt + dt_struct;
-+			if (!dt_ptr_ok(fdt, fdt_prop))
-+				return 0;
+ 	return version;
+ }
+@@ -2541,6 +2544,12 @@ static int mci_mmc_decode_cid(struct mci *card)
+ 			card->cid.year += 16;
+ 	}
+ 
++	if (card->version >= MMC_VERSION_5_1B) {
++		/* eMMC 5.1b: y field rolls over again after 2025 */
++		if (card->cid.year < 2023)
++			card->cid.year += 16;
++	}
 +
- 			len = fdt32_to_cpu(fdt_prop->len);
+ 	return 0;
+ }
  
- 			name = dt_string(&f, dt_strings, fdt32_to_cpu(fdt_prop->nameoff));
+diff --git a/include/mci.h b/include/mci.h
+index 50214aaae7bb..b05571730ec2 100644
+--- a/include/mci.h
++++ b/include/mci.h
+@@ -46,6 +46,7 @@
+ #define MMC_VERSION_4_5		(MMC_VERSION_MMC | 0x450)
+ #define MMC_VERSION_5_0		(MMC_VERSION_MMC | 0x500)
+ #define MMC_VERSION_5_1		(MMC_VERSION_MMC | 0x510)
++#define MMC_VERSION_5_1B	(MMC_VERSION_MMC | 0x51B)
+ 
+ #define MMC_CAP_SPI			(1 << 0)
+ #define MMC_CAP_4_BIT_DATA		(1 << 1)
 -- 
 2.47.3
 
