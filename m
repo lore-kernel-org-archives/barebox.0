@@ -1,82 +1,83 @@
-Delivery-date: Wed, 04 Mar 2026 08:49:11 +0100
+Delivery-date: Wed, 04 Mar 2026 08:49:21 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vxgyk-007uMB-1N
+	id 1vxgyu-007uMW-1a
 	for lore@lore.pengutronix.de;
-	Wed, 04 Mar 2026 08:49:11 +0100
+	Wed, 04 Mar 2026 08:49:21 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vxgyk-0005yf-Mp
-	for lore@pengutronix.de; Wed, 04 Mar 2026 08:49:11 +0100
+	id 1vxgyu-00061p-RE
+	for lore@pengutronix.de; Wed, 04 Mar 2026 08:49:21 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=aUy54QhWye5mjPdiF7DZKX+iYD+BKyqo/BVYoDhIyUA=; b=W56Ii3AzYE9YymXCTUwY2lrNOB
-	WY+m1AAPzsQToU3GmdU1iJl3JcrWiibV47wJD5iH21uBY91zZkLTDKQ7TD36snP5Niw7ogywFvtlA
-	Cov1+89W8GLH/WdAIz76EJK3dojGSfTL+eNMpwekqiNaDg1YRjYbGU8bv0rDTECy9Utryis1cnphg
-	nkRuM/YGWe4Zel94TosHRrEUW8a42Ml7MRuyGwkmJcfAruhj+BgQy8uSHXGOZDw96m5l1jLfL7LTf
-	urDrRHFOcSBMV2/huGxNp0j7zpG45DpEti8wG+7Ygjvo9RO3hwLr3Ur+1z3gehFC6wWTkCzyZMLIk
-	xmcwOiHw==;
+	bh=kL86K+2I3GwmpYmwTjJZbFRjzK8CxcTqHtREkn4lBfo=; b=JjkOnkGjhrLF6bu6w1pq+7l9s/
+	skxHJJ+nHI6HJg+NcrPpUb3bXaGmf9V3QRwkV23RfSI4BzgEYhBvwfMi1TaWiY6Rg52/7OUnDRzCS
+	ld/oqvNnw+IZZwLw72CGzB5IfdYypcI7/nadBIPXLZqK1i64vjQ3sgTYw11LsT0uXRV4Up/AANXXJ
+	dnOb9XwZJS1eUZmz1K6ypmZ8Zu1LE+Qos2Qf8K6gXFiN6ZQPWP0rId5AjMI8iBFHP6OwUHfi2N9/S
+	rdb0RcNdYWwuCHljGebsoS5dwyj2TSKDqoNT5K1SyigcSVQBJ5uQJY8rFP1GZm/FjQaaSLgtGB7zw
+	NqFrbAPg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vxgyJ-0000000Ge1O-2eHL;
-	Wed, 04 Mar 2026 07:48:43 +0000
+	id 1vxgyZ-0000000Ge45-1csd;
+	Wed, 04 Mar 2026 07:48:59 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vxgyI-0000000Ge0r-2B3n
+	id 1vxgyY-0000000Ge3h-2KEb
 	for barebox@bombadil.infradead.org;
-	Wed, 04 Mar 2026 07:48:42 +0000
+	Wed, 04 Mar 2026 07:48:58 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
 	:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:From:Sender:
 	Reply-To:Cc:Content-ID:Content-Description;
-	bh=aUy54QhWye5mjPdiF7DZKX+iYD+BKyqo/BVYoDhIyUA=; b=iGnKTknZifxsCmlvdK+EwWTVDC
-	2vGEYstqrIm86eUEyDwga1crtJ3OGCaRpvg2A5OL3Z9AmBNqhxw6z7M08LN+24UHH6chA0vuDbNqz
-	7ve8/cONm8SdIngAPeShDXMCChi4UmFtmuXiBtbgn+W6WvNQVFmiXax1mZvUdClXkqDG6xn5Fj+g/
-	H5zH7hz3ZhaqYIy/ulZAgftPh2jic7O3dL5kgFpwwATjaj0POlRTXUp45nX7ptRFHczvjzu3xQ1Go
-	n+9WKdILulM2n0FWrUi6WM2GMmZuOgoFMDdFzy/Y1IjPenN/92SSRSP/ce5jCLotlEJcz/iB8sPA2
-	lnbEdUCA==;
+	bh=kL86K+2I3GwmpYmwTjJZbFRjzK8CxcTqHtREkn4lBfo=; b=EEEvp/s19UBrtKMrRCerSpqHUS
+	LEWFa+1/QI4UyUXugzKH+pPOjbOKFtSZ+vjwH5VZgSJJqVYL0eu05ANL+YhfNOvWglAKSLwGLJt8P
+	7zubiOkeTgtgmqo/aebdyTFk4O+XHsdibOgLov8CqqfgYv0Csjg+23hGxC9PdkS8FgLAYoE09wszl
+	h3mH9znpNUqN7DDrEb06QqBVXoyQupRz0S7gMBe1nGQYdOqfiz3mpfmyvm6asLcCTpHoCng7NF+31
+	vsmAt7erPl0BlnFzHyrWAQjHuUw2jcb8ej+Ki6Id1yeHEEI6HHmh9gJUc8pQ/lZjwJv1Rb5iVUtEH
+	LqA/Jn1A==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vxgyF-000000042VI-1hz2
+	id 1vxgyV-000000042WZ-2F5e
 	for barebox@lists.infradead.org;
-	Wed, 04 Mar 2026 07:48:41 +0000
+	Wed, 04 Mar 2026 07:48:57 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vxgyE-0005rw-L0; Wed, 04 Mar 2026 08:48:38 +0100
+	id 1vxgyV-0005uV-6M; Wed, 04 Mar 2026 08:48:55 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vxgyD-003g48-0M;
-	Wed, 04 Mar 2026 08:48:38 +0100
+	id 1vxgyT-003g4G-29;
+	Wed, 04 Mar 2026 08:48:55 +0100
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vxgyE-0000000GLpi-1eMF;
-	Wed, 04 Mar 2026 08:48:38 +0100
+	id 1vxgyU-0000000GLuK-40ek;
+	Wed, 04 Mar 2026 08:48:54 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260302163748.577552-1-a.fatoum@pengutronix.de>
-References: <20260302163748.577552-1-a.fatoum@pengutronix.de>
-Message-Id: <177261051838.3897015.10462570530199374051.b4-ty@pengutronix.de>
-Date: Wed, 04 Mar 2026 08:48:38 +0100
+To: Barebox List <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20260302172630.2713540-1-s.hauer@pengutronix.de>
+References: <20260302172630.2713540-1-s.hauer@pengutronix.de>
+Message-Id: <177261053495.3897308.6153512092977413139.b4-ty@pengutronix.de>
+Date: Wed, 04 Mar 2026 08:48:54 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260304_074839_643276_D5A22626 
-X-CRM114-Status: UNSURE (   8.02  )
+X-CRM114-CacheID: sfid-20260304_074855_695352_A3E6B7BA 
+X-CRM114-Status: UNSURE (   7.83  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -99,29 +100,26 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=ham
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/3] mci: add support for eMMC v5.1b
+Subject: Re: [PATCH] net: r8169: drain RX descriptor ring
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 02 Mar 2026 17:37:40 +0100, Ahmad Fatoum wrote:
-> Newer eMMC versions than what barebox knows about appear to be
-> interpreted as v4.0, which would affect at least erase group
-> size determination and manufacturer date calculation.
-> 
-> Fix this by adding proper v5.1b support.
-> 
+On Mon, 02 Mar 2026 18:26:30 +0100, Sascha Hauer wrote:
+> When not busy waiting for incoming packets we poll for new packets only
+> every 10ms. Each time only a single frame is fetched from the hardware.
+> On a network with many broadcast traffic there might be more than
+> 100 packets/s incoming, which will sooner or later fill up our RX descriptor
+> ring. Unfortunately the Realtek Hardware has no way to gracefully handle
+> a RX queue overflow. Fix this by fetching multiple packets from the
+> hardware in each receive callback.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/3] mci: add support for eMMC v5.1b
-      https://git.pengutronix.de/cgit/barebox/commit/?id=24b9e50b6fbb (link may not be stable)
-[2/3] mci: treat unknown MMC version as greater than known versions
-      https://git.pengutronix.de/cgit/barebox/commit/?id=e6c4c27a599e (link may not be stable)
-[3/3] mci: detect SD card v3
-      https://git.pengutronix.de/cgit/barebox/commit/?id=bf5ef9e15b7a (link may not be stable)
+[1/1] net: r8169: drain RX descriptor ring
+      https://git.pengutronix.de/cgit/barebox/commit/?id=ba8dab21987b (link may not be stable)
 
 Best regards,
 -- 
