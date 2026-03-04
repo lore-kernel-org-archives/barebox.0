@@ -1,66 +1,65 @@
-Delivery-date: Wed, 04 Mar 2026 12:57:05 +0100
+Delivery-date: Wed, 04 Mar 2026 13:24:00 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vxkqf-007yLc-0I
+	id 1vxlGh-007ytE-1X
 	for lore@lore.pengutronix.de;
-	Wed, 04 Mar 2026 12:57:05 +0100
+	Wed, 04 Mar 2026 13:24:00 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vxkqf-0000wy-F6
-	for lore@pengutronix.de; Wed, 04 Mar 2026 12:57:05 +0100
+	id 1vxlGh-0005Kk-CV
+	for lore@pengutronix.de; Wed, 04 Mar 2026 13:24:00 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=+w6sIitpWGR3UTPiwi34dWVWe5HPqB4ZJklav9r3uPw=; b=pFYmgIl5ELfBCTMm5jKsey5VhS
-	V9weT7c4PWaZRXSqRDwnfxrZ1ZmkOAxvjzdjgPdl82VD+EssanMKqVKN+7nnnS0tRdiQ32wlkfjsB
-	ZkG79vozARZJmrsZC+wE5StJc12+fuh3NM8+705pYnybA3S/hT6Zhu3rnpis1MoI4eWE50J12usqw
-	qjzF5BuGnMO1qYd/waJUUtgutdOva7O+XDe7sbddwI2ynFBQ+vbrSWbg02jmk9MeukDATve4i8uYN
-	Is6VxAQXD1Lpy78DJY+rPWOJLBMsJ85z5njPq5+bZeG0V9sSLa0Pc9YWdrQtFRFcewo7Kha6Qgh2X
-	2fz+fGHg==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:
+	Message-ID:Subject:To:From:Date:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=cvGhYzlCIGaDxc9iO4J7Y72SPoupfpTamOe9D9SJXII=; b=sq4GzMrDP1cJIO
+	NY4Pts1uqO1AI7bDz0ntJQd0PFAe0Xtust6YAjmiFpYMpGoEN3UNbqHMB7gncDgqOZ/OJELSGnwoE
+	fFQxNZ48wsG5P8GoFOlhr5LxmDPvAwGvh8J+6yATDZ6dQINhNjdLb+fVBlvtu8rppfi8EGBuyxxpw
+	Z0vixu0oB+UOJWoq0MMAPHXXVujoBbPotJekSik8d8BebIJx+H1Kk2pVayV21noyVJqVdo0BKsL3C
+	11y88Ljxt8uKjB/04v0gcUSbdk9jgke5XZqyackg+64Cv7N2nYzg0OyITHD5C7CyJhH9LkecypttN
+	DvmoX3ZPMYNV4dXZOARw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vxkqB-0000000H8zW-3eIf;
-	Wed, 04 Mar 2026 11:56:35 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1vxlGF-0000000HBD6-28bz;
+	Wed, 04 Mar 2026 12:23:31 +0000
+Received: from smtp15.bhosted.nl ([2a02:9e0:8000::26])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vxkq9-0000000H8z2-34Ia
+	id 1vxlGC-0000000HBCS-2DM4
 	for barebox@lists.infradead.org;
-	Wed, 04 Mar 2026 11:56:34 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vxkq7-0000qU-FU; Wed, 04 Mar 2026 12:56:31 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vxkq4-003hv1-2D;
-	Wed, 04 Mar 2026 12:56:30 +0100
-Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1vxkq5-0000000AZu8-3v2d;
-	Wed, 04 Mar 2026 12:56:29 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  4 Mar 2026 12:56:28 +0100
-Message-ID: <20260304115629.2521286-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	Wed, 04 Mar 2026 12:23:30 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=protonic.nl; s=202111;
+	h=content-transfer-encoding:content-type:mime-version:references:in-reply-to:
+	 message-id:subject:cc:to:from:date:from;
+	bh=cvGhYzlCIGaDxc9iO4J7Y72SPoupfpTamOe9D9SJXII=;
+	b=BTb0nHapFGWkHkrm7uwLdl+1GTz0BfnI6q50m80JLr4TLsyDf1jfuEu2c13KMZpAUCzmrP3xQovW6
+	 2Z9HiW8Tmf4t5x2ob5SsvESVVi/wO8UMhZQc/bBK1hszdwAgxFg7RGTrkRr3zUoyyDS7SkZPu5MyH0
+	 uIUziuS98iPDtQoNzne0a80YRORFBHznzOlKRrWMBA2Y4TKY/QIzq1e6sjXtRFxDjdkBAnpZemCGt+
+	 ulpJl54rMj0YjIjbEzQlodq3DS24ub74/5FhsWkQ/WsLRs0ECnx3s8oqYeRqgxOxQst0QARfdrKDkv
+	 wZEbZ7f1vqVBzi8Tdh+esb+7J+OjsOQ==
+X-MSG-ID: efb5009d-17c4-11f1-bcce-00505681446f
+Date: Wed, 4 Mar 2026 13:23:22 +0100
+From: David Jander <david@protonic.nl>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <20260304132322.0b0d956f@erd003.prtnl>
+In-Reply-To: <18ef490b-4b99-49f9-89d1-9ce2d346d4a4@pengutronix.de>
+References: <20260304-v2026-02-0-topic-imx8-ecc-v1-0-700698530c5c@pengutronix.de>
+	<20260304-v2026-02-0-topic-imx8-ecc-v1-3-700698530c5c@pengutronix.de>
+	<18ef490b-4b99-49f9-89d1-9ce2d346d4a4@pengutronix.de>
+Organization: Protonic Holland
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260304_035633_765341_EC53D091 
-X-CRM114-Status: UNSURE (   8.36  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260304_042328_714913_ABF0FEBC 
+X-CRM114-Status: GOOD (  34.38  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,44 +71,228 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: barebox@lists.infradead.org, Steffen Trumtrar <s.trumtrar@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-2.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! dts: update to v7.0-rc1
+Subject: Re: [PATCH 3/4] drivers: ddr: imx8m: ddr_init.c: support ECC
+ scrubbing
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-ARM: Rockchip: ts433eu: include SoC header
 
-Linux also supports the RK3566-based TS133 now, so the DTSI no longer
-includes the SoC header. Add it back to fix the build.
+Hi Ahmad,
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/dts/rk3568-qnap-ts433eu.dts | 1 +
- 1 file changed, 1 insertion(+)
+On Wed, 4 Mar 2026 12:43:55 +0100
+Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
 
-diff --git a/arch/arm/dts/rk3568-qnap-ts433eu.dts b/arch/arm/dts/rk3568-qnap-ts433eu.dts
-index 57dd655a560f..be0455abfe65 100644
---- a/arch/arm/dts/rk3568-qnap-ts433eu.dts
-+++ b/arch/arm/dts/rk3568-qnap-ts433eu.dts
-@@ -8,6 +8,7 @@
- 
- /dts-v1/;
- 
-+#include <arm64/rockchip/rk3568.dtsi>
- #include <arm64/rockchip/rk3568-qnap-tsx33.dtsi>
- #include "rk356x.dtsi"
- 
+> Hi,
+> 
+> On 3/4/26 12:23 PM, Steffen Trumtrar wrote:
+> > From: David Jander <david@protonic.nl>
+> > 
+> > This code comes from u-boot [1] and was introducesd in commit [2].
+> > 
+> > A fix from the patch [3] is also included, which doesn't seem to be
+> > added to u-boot, yet.
+> > 
+> > [1] https://github.com/u-boot/u-boot/
+> > [2] commit f3acb02386f4 ("drivers: ddr: imx8mp: Add inline ECC feature support")
+> > [3] https://patchwork.ozlabs.org/project/uboot/patch/20230123091702.7472-32-peng.fan@oss.nxp.com/
+> > 
+> > Signed-off-by: David Jander <david@protonic.nl>
+> > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> > ---
+> >  arch/arm/mach-imx/Kconfig        |  8 +++++
+> >  drivers/ddr/imx/imx8m_ddr_init.c | 73 ++++++++++++++++++++++++++++++++++++++++
+> >  include/soc/imx8m/ddr.h          | 11 ++++++
+> >  3 files changed, 92 insertions(+)
+> > 
+> > diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+> > index d244c57580..75b04cf70f 100644
+> > --- a/arch/arm/mach-imx/Kconfig
+> > +++ b/arch/arm/mach-imx/Kconfig
+> > @@ -1026,6 +1026,14 @@ config HABV3_IMG_CRT_DER
+> >  
+> >  endif
+> >  
+> > +config IMX8MP_DRAM_ECC
+> > +	bool "Enable LPDDR4 ECC feature on i.MX8MP boards"
+> > +	depends on ARCH_IMX8MP
+> > +	help
+> > +	  The i.MX8MP SoC supports ECC on the LPDDR4 memory. Select Y to enable
+> > +	  this feature. The total amount of memory available will be reduced by
+> > +	  1/8th.  
+> 
+> A generic option is too confusing when it's only affecting a single board.
+
+Why should it affect only a single board? This is a general feature of this
+SoC and it can be enabled for any other board that uses this SoC with LPDDR4
+chips.
+
+Even more so, I suspect this feature is present on some other SoCs as well
+which use the same Synopsys DesignWare IP with this feature enabled. In that
+case you'd probably want to make a more generic dram driver though. I suspect
+chips like the Rockchip RK3588 or RK3576 might support this also, but I
+haven't tried, and since those chips have binary dram init blobs this is
+probably not easy to figure out.
+
+Best regards,
+
+> Alternative suggestion:
+> 
+>   - make IMX8MP_DRAM_ECC a hidden symbol
+>   - select it from the protonic board
+>   - Turn the RAM timings of the protonic board into a header and
+>     replace #ifdef CONFIG_IMX8MP_DRAM_ECC with #ifdef USE_ECC
+>   - Add two source code files, that include the new header once with
+>     USE_ECC supported and once without
+>   - Add two entry points which only differ in what RAM timings are used
+> 
+> Also worth considering: adding the size of the region to be scrubbed or
+> the function doing the scrubbing into dram_timing_info.
+> 
+> Thoughts?
+> 
+> Cheers,
+> Ahmad
+> 
+> > +
+> >  endmenu
+> >  
+> >  endif
+> > diff --git a/drivers/ddr/imx/imx8m_ddr_init.c b/drivers/ddr/imx/imx8m_ddr_init.c
+> > index c16e04d274..6398a2b971 100644
+> > --- a/drivers/ddr/imx/imx8m_ddr_init.c
+> > +++ b/drivers/ddr/imx/imx8m_ddr_init.c
+> > @@ -45,6 +45,74 @@ static void ddr_cfg_umctl2(struct dram_controller *dram, struct dram_cfg_param *
+> >  	}
+> >  }
+> >  
+> > +#ifdef CONFIG_IMX8MP_DRAM_ECC
+> > +void ddrc_inline_ecc_scrub(unsigned int start_address,
+> > +			   unsigned int range_address)
+> > +{
+> > +	unsigned int tmp;
+> > +
+> > +	pr_debug("ECC scrub %08x-%08x\n", start_address, range_address);
+> > +	/* Step1: Enable quasi-dynamic programming */
+> > +	reg32_write(DDRC_SWCTL(0), 0x00000000);
+> > +	/* Step2: Set ECCCFG1.ecc_parity_region_lock to 1 */
+> > +	reg32setbit(DDRC_ECCCFG1(0), 0x4);
+> > +	/* Step3: Block the AXI ports from taking the transaction */
+> > +	reg32_write(DDRC_PCTRL_0(0), 0x0);
+> > +	/* Step4: Set scrub start address */
+> > +	reg32_write(DDRC_SBRSTART0(0), start_address);
+> > +	/* Step5: Set scrub range address */
+> > +	reg32_write(DDRC_SBRRANGE0(0), range_address);
+> > +	/* Step6: Set scrub_mode to write */
+> > +	reg32_write(DDRC_SBRCTL(0), 0x00000014);
+> > +	/* Step7: Set the desired pattern through SBRWDATA0 registers */
+> > +	reg32_write(DDRC_SBRWDATA0(0), 0x55aa55aa);
+> > +	/* Step8: Enable the SBR by programming SBRCTL.scrub_en=1 */
+> > +	reg32setbit(DDRC_SBRCTL(0), 0x0);
+> > +	/* Step9: Poll SBRSTAT.scrub_done=1 */
+> > +	tmp = reg32_read(DDRC_SBRSTAT(0));
+> > +	while (tmp != 0x00000002)
+> > +		tmp = reg32_read(DDRC_SBRSTAT(0)) & 0x2;
+> > +	/* Step10: Poll SBRSTAT.scrub_busy=0 */
+> > +	tmp = reg32_read(DDRC_SBRSTAT(0));
+> > +	while (tmp != 0x0)
+> > +		tmp = reg32_read(DDRC_SBRSTAT(0)) & 0x1;
+> > +	/* Step11: Disable SBR by programming SBRCTL.scrub_en=0 */
+> > +	clrbits_le32(DDRC_SBRCTL(0), 0x1);
+> > +	/* Step12: Prepare for normal scrub operation(Read) and set scrub_interval*/
+> > +	reg32_write(DDRC_SBRCTL(0), 0xff20);
+> > +	/* Step13: Enable the SBR by programming SBRCTL.scrub_en=1 */
+> > +	reg32_write(DDRC_SBRCTL(0), 0xff21);
+> > +	/* Step14: Enable AXI ports by programming */
+> > +	reg32_write(DDRC_PCTRL_0(0), 0x1);
+> > +	/* Step15: Disable quasi-dynamic programming */
+> > +	reg32_write(DDRC_SWCTL(0), 0x00000001);
+> > +}
+> > +
+> > +void ddrc_inline_ecc_scrub_end(unsigned int start_address,
+> > +			       unsigned int range_address)
+> > +{
+> > +	pr_debug("ECC  end %08x-%08x\n", start_address, range_address);
+> > +	/* Step1: Enable quasi-dynamic programming */
+> > +	reg32_write(DDRC_SWCTL(0), 0x00000000);
+> > +	/* Step2: Block the AXI ports from taking the transaction */
+> > +	reg32_write(DDRC_PCTRL_0(0), 0x0);
+> > +	/* Step3: Set scrub start address */
+> > +	reg32_write(DDRC_SBRSTART0(0), start_address);
+> > +	/* Step4: Set scrub range address */
+> > +	reg32_write(DDRC_SBRRANGE0(0), range_address);
+> > +	/* Step5: Disable SBR by programming SBRCTL.scrub_en=0 */
+> > +	clrbits_le32(DDRC_SBRCTL(0), 0x1);
+> > +	/* Step6: Prepare for normal scrub operation(Read) and set scrub_interval */
+> > +	reg32_write(DDRC_SBRCTL(0), 0x100);
+> > +	/* Step7: Enable the SBR by programming SBRCTL.scrub_en=1 */
+> > +	reg32_write(DDRC_SBRCTL(0), 0x101);
+> > +	/* Step8: Enable AXI ports by programming */
+> > +	reg32_write(DDRC_PCTRL_0(0), 0x1);
+> > +	/* Step9: Disable quasi-dynamic programming */
+> > +	reg32_write(DDRC_SWCTL(0), 0x00000001);
+> > +}
+> > +#endif
+> > +
+> >  static unsigned int g_cdd_rr_max[4];
+> >  static unsigned int g_cdd_rw_max[4];
+> >  static unsigned int g_cdd_wr_max[4];
+> > @@ -642,6 +710,11 @@ int imx8m_ddr_init(struct dram_controller *dram, struct dram_timing_info *dram_t
+> >  	reg32_write(DDRC_PCTRL_0(0), 0x00000001);
+> >  	pr_debug("ddrmix config done\n");
+> >  
+> > +#ifdef CONFIG_IMX8MP_DRAM_ECC
+> > +	if (dram->ddrc_type == DDRC_TYPE_MP)
+> > +		board_dram_ecc_scrub();
+> > +#endif
+> > +
+> >  	/* save the dram timing config into memory */
+> >  	dram_config_save(dram, dram_timing, IMX8M_SAVED_DRAM_TIMING_BASE);
+> >  
+> > diff --git a/include/soc/imx8m/ddr.h b/include/soc/imx8m/ddr.h
+> > index 5df07772b3..08ebf61da0 100644
+> > --- a/include/soc/imx8m/ddr.h
+> > +++ b/include/soc/imx8m/ddr.h
+> > @@ -186,6 +186,8 @@
+> >  #define DDRC_SBRWDATA0(X)        (DDRC_IPS_BASE_ADDR(X) + 0xf2c)
+> >  #define DDRC_SBRWDATA1(X)        (DDRC_IPS_BASE_ADDR(X) + 0xf30)
+> >  #define DDRC_PDCH(X)             (DDRC_IPS_BASE_ADDR(X) + 0xf34)
+> > +#define DDRC_SBRSTART0(X)        (DDRC_IPS_BASE_ADDR(X) + 0xf38)
+> > +#define DDRC_SBRRANGE0(X)        (DDRC_IPS_BASE_ADDR(X) + 0xf40)
+> >  
+> >  #define DDRC_FREQ1_DERATEEN(X)         (DDRC_IPS_BASE_ADDR(X) + 0x2020)
+> >  #define DDRC_FREQ1_DERATEINT(X)        (DDRC_IPS_BASE_ADDR(X) + 0x2024)
+> > @@ -380,4 +382,13 @@ static inline void imx8m_ddr_load_train_code(enum dram_type dram_type,
+> >  	ddr_load_train_code(&imx8m_dram_controller, dram_type, fw_type);
+> >  }
+> >  
+> > +#define DDRC_PHY_REG(x)	((x) * 4)
+> > +
+> > +void board_dram_ecc_scrub(void);
+> > +
+> > +void ddrc_inline_ecc_scrub(unsigned int start_address,
+> > +			   unsigned int range_address);
+> > +void ddrc_inline_ecc_scrub_end(unsigned int start_address,
+> > +			       unsigned int range_address);
+> > +
+> >  #endif
+> >   
+> 
+
+
+
 -- 
-2.47.3
+David Jander
 
 
 
