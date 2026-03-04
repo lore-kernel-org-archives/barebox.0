@@ -3,54 +3,57 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vxkLE-007xwH-0g
+	id 1vxkLE-007xwc-2E
 	for lore@lore.pengutronix.de;
 	Wed, 04 Mar 2026 12:24:37 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vxkLE-0002ZE-Fb
+	id 1vxkLF-0002ZW-08
 	for lore@pengutronix.de; Wed, 04 Mar 2026 12:24:37 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=DFjgWsYaed79BH5oPEljUfC8dMBfTF8/AiE+sqTAMFs=; b=GibMl41ASnlEk56652KBaHnZCT
-	3twv/2j2cbQxvpbBEIZlfj5CEyRjZ2q3yyjXwLZAFIEYcf77X/0m5v0ZFr130kTcNVjkmygqC8GLY
-	3oOVj+Rq1AwcOwRNsu64DCgd1amHeR4YFMDBD22i2X5baevk9/XnhE8Aoaq8d3r/PwHeldG7wVYZu
-	bxFKc91jMF3MZiv3Snl0mxB+LMcxr+5Sr5D0cNAhhCgyZBDYkhHm7NH4k4QQ0bgAGWpuDDC37U3CE
-	oT9YSlpGHF+chqkcT9O4X7TsutVG5A2u5agMVM64kO3yV6XPtcXuuQHXz7JCPpVUSGK3LwG7MDUZA
-	piW5q/ug==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=F1ACO8pQtBgEt5mpIKOr6JB+jkq8VfL2Lkj/BSFzVKY=; b=fBnK8YPenx84yj
+	14Hh1OWLB2xeMyqRsWoq9OPqhSF41ZKkHBCgZUsRrDKGzBFjvKCx4/QIGxBVcmczZxc49YDsBGlWu
+	C1IReztRr7iehTMa5/Hx2ttJ+9C9wc/xobGAXM9rZ7CUU1fZldOtKS1mV4dnUkOlLaGQd8G2RVwLa
+	2AHC44mtpMf6LTbJXvHb71y2zAqeYCtQhjo+1KDLjQyIlK/cp4TImypTcXaW8zc0YBPsEXQ7mzDGq
+	Y+fsFAFlrqfpGKYylTfgqMXhE6f+8g+e8+x9oKk9jXQpHVoeqHifxOgkZXhGw06hF/D4m3xthZHDL
+	a5Uk0v+mCqx9STF63agA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vxkKp-0000000H5HO-3P1u;
+	id 1vxkKp-0000000H5HH-2FHd;
 	Wed, 04 Mar 2026 11:24:11 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vxkKm-0000000H5Ew-31Bp
+	id 1vxkKm-0000000H5Ev-2q44
 	for barebox@lists.infradead.org;
-	Wed, 04 Mar 2026 11:24:10 +0000
+	Wed, 04 Mar 2026 11:24:09 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1vxkKk-0002He-0L; Wed, 04 Mar 2026 12:24:06 +0100
+	id 1vxkKj-0002He-S6; Wed, 04 Mar 2026 12:24:05 +0100
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Wed, 04 Mar 2026 12:23:42 +0100
+Date: Wed, 04 Mar 2026 12:23:41 +0100
+Message-Id: <20260304-v2026-02-0-topic-imx8-ecc-v1-0-700698530c5c@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260304-v2026-02-0-topic-imx8-ecc-v1-1-700698530c5c@pengutronix.de>
-References: <20260304-v2026-02-0-topic-imx8-ecc-v1-0-700698530c5c@pengutronix.de>
-In-Reply-To: <20260304-v2026-02-0-topic-imx8-ecc-v1-0-700698530c5c@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAD0WqGkC/x2MuwqAMAwAf0UyG0ir+PoVcZCaagbb0ooI4r9b3
+ e6GuxsSR+EEQ3FD5FOSeJdFlQWYbXYroyzZQZNuqKIaz4+QNBIePohB2a8O2RjsNTWWWVmqWsh
+ 9iGzl+t/j9DwvE+LGv2sAAAA=
+X-Change-ID: 20260304-v2026-02-0-topic-imx8-ecc-9206fee1f037
 To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
+ David Jander <david@protonic.nl>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260304_032408_761406_26607F5C 
-X-CRM114-Status: UNSURE (   8.78  )
+X-CRM114-CacheID: sfid-20260304_032408_727620_61D994FD 
+X-CRM114-Status: UNSURE (   8.11  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -73,87 +76,49 @@ X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 1/4] ARM: i.MX: esdctl: fix spelling of ad(d)ress
+Subject: [PATCH 0/4] ARM: i.MX8: add DDRC-ECC support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-address is spelled with two 'd's. Fix the spelling mistake.
+The i.MX8 DDRC controller supports using inline ECC with the DDR RAM.
+Inline ECC reduces the usable RAM size by 1/8: 7/8 RAM is for data and
+1/8 RAM is for the ECC bits. Also, measuring random memory writes in
+linux with
+
+    stress-ng --memthrash 4 --memthrash-method chunk1 -t 1m --metrics
+
+shows a performance decrease by ~10%.
+
+If a board wants to support ECC, the lpddr4 RAM settings in the
+according lpddr4-timing-* must be adapted to enable and configure the
+ECC registers.
+Also, a board_dram_ecc_scrub() function must be provided, so that the
+RAM is initialized on startup.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- arch/arm/mach-imx/esdctl.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+David Jander (3):
+      arm: mach-imx: esdctl.c: Add support for imx8mp inline ECC
+      drivers: ddr: imx8m: ddr_init.c: support ECC scrubbing
+      arm: boards: protonic-imx8ml: Add ECC + scrubbing
 
-diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
-index 935c3d3257..b6689b7ffc 100644
---- a/arch/arm/mach-imx/esdctl.c
-+++ b/arch/arm/mach-imx/esdctl.c
-@@ -262,7 +262,7 @@ static int imx_esdctl_v4_add_mem(void *esdctlbase, const struct imx_esdctl_data
- }
- 
- /*
-- * On i.MX6 the adress space reserved for SDRAM is 0x10000000 to 0xFFFFFFFF
-+ * On i.MX6 the address space reserved for SDRAM is 0x10000000 to 0xFFFFFFFF
-  * which makes the maximum supported RAM size 0xF0000000.
-  */
- #define IMX6_MAX_SDRAM_SIZE 0xF0000000
-@@ -380,7 +380,7 @@ static resource_size_t
- imx_ddrc_sdram_size(void __iomem *ddrc, const u32 addrmap[DDRC_ADDRMAP_LENGTH],
- 		    u8 col_max, const u8 col_b[], unsigned int col_b_num,
- 		    u8 row_max, const u8 row_b[], unsigned int row_b_num,
--		    bool reduced_adress_space, unsigned int mstr)
-+		    bool reduced_address_space, unsigned int mstr)
- {
- 	unsigned int banks, ranks, columns, rows, active_ranks, width;
- 	resource_size_t size;
-@@ -459,7 +459,7 @@ imx_ddrc_sdram_size(void __iomem *ddrc, const u32 addrmap[DDRC_ADDRMAP_LENGTH],
- 		size = memory_sdram_size(columns, rows, 1 << banks, 1) >> 1;
- 	size <<= ranks;
- 
--	return reduced_adress_space ? size * 3 / 4 : size;
-+	return reduced_address_space ? size * 3 / 4 : size;
- }
- 
- static void imx_ddrc_set_mstr_device_config(u32 *mstr, unsigned bits)
-@@ -505,7 +505,7 @@ static resource_size_t imx8m_ddrc_sdram_size(void __iomem *ddrc, unsigned buswid
- 		FIELD_GET(DDRC_ADDRMAP6_ROW_B12, addrmap[6]),
- 		FIELD_GET(DDRC_ADDRMAP5_ROW_B11, addrmap[5]),
- 	};
--	const bool reduced_adress_space =
-+	const bool reduced_address_space =
- 		FIELD_GET(DDRC_ADDRMAP6_LPDDR4_6GB_12GB_24GB, addrmap[6]);
- 	u32 mstr = readl(ddrc + DDRC_MSTR);
- 
-@@ -516,7 +516,7 @@ static resource_size_t imx8m_ddrc_sdram_size(void __iomem *ddrc, unsigned buswid
- 	return imx_ddrc_sdram_size(ddrc, addrmap,
- 				   12, ARRAY_AND_SIZE(col_b),
- 				   18, ARRAY_AND_SIZE(row_b),
--				   reduced_adress_space, mstr);
-+				   reduced_address_space, mstr);
- }
- 
- static int _imx8m_ddrc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data,
-@@ -630,7 +630,7 @@ static resource_size_t imx7d_ddrc_sdram_size(void __iomem *ddrc)
- 		FIELD_GET(DDRC_ADDRMAP6_ROW_B12, addrmap[6]),
- 		FIELD_GET(DDRC_ADDRMAP5_ROW_B11, addrmap[5]),
- 	};
--	const bool reduced_adress_space =
-+	const bool reduced_address_space =
- 		FIELD_GET(DDRC_ADDRMAP6_LPDDR3_6GB_12GB, addrmap[6]);
- 	u32 mstr = readl(ddrc + DDRC_MSTR);
- 
-@@ -640,7 +640,7 @@ static resource_size_t imx7d_ddrc_sdram_size(void __iomem *ddrc)
- 	return imx_ddrc_sdram_size(ddrc, addrmap,
- 				   11, ARRAY_AND_SIZE(col_b),
- 				   15, ARRAY_AND_SIZE(row_b),
--				   reduced_adress_space, mstr);
-+				   reduced_address_space, mstr);
- }
- 
- static int imx7d_ddrc_add_mem(void *mmdcbase, const struct imx_esdctl_data *data)
+Steffen Trumtrar (1):
+      ARM: i.MX: esdctl: fix spelling of ad(d)ress
 
+ .../boards/protonic-imx8m/lpddr4-timing-prt8ml.c   | 25 ++++++-
+ arch/arm/dts/imx8mp-prt8ml.dts                     | 10 ++-
+ arch/arm/mach-imx/Kconfig                          |  8 ++
+ arch/arm/mach-imx/esdctl.c                         | 86 ++++++++++++++++++++--
+ drivers/ddr/imx/imx8m_ddr_init.c                   | 73 ++++++++++++++++++
+ include/soc/imx8m/ddr.h                            | 11 +++
+ 6 files changed, 203 insertions(+), 10 deletions(-)
+---
+base-commit: f4122cb473bf8ca2d3d84cf7cd3c981d1da3309f
+change-id: 20260304-v2026-02-0-topic-imx8-ecc-9206fee1f037
+
+Best regards,
 -- 
-2.52.0
+Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
 
 
