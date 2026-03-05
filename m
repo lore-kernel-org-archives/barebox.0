@@ -1,71 +1,68 @@
-Delivery-date: Thu, 05 Mar 2026 13:16:27 +0100
+Delivery-date: Thu, 05 Mar 2026 13:47:24 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vy7cw-008K94-2K
+	id 1vy86t-008KUp-2x
 	for lore@lore.pengutronix.de;
-	Thu, 05 Mar 2026 13:16:27 +0100
+	Thu, 05 Mar 2026 13:47:24 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vy7cx-0000er-22
-	for lore@pengutronix.de; Thu, 05 Mar 2026 13:16:27 +0100
+	id 1vy86t-0006pr-Im
+	for lore@pengutronix.de; Thu, 05 Mar 2026 13:47:24 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3jb/gYN8EZ4CKKX0OP9kjnE+LXl9j00g3q8I5CA4Kxs=; b=A05cFrssmctod0SoWOcdgJ/k7I
-	EXzQsfegIjKct0EqxWMvZ6nZNkRmgfErVSu2XqraGOUx2iLypnVQI+3X7LnvGyd6Fd3W5pSoqH1JS
-	3AQqBCcGdZ+IL0HrDhOfzHH+byG8wu1ueS0WgSQg9WVY4igBKY6MaYSpZs7evtQe6vDWeEmM7d2oX
-	fTpwyMdAfTJJbjysVvOCkKAT8z8tkpelNIBKt+rupVXPutdiU+BnTtJWI/JT9rq02uSRhJ9MzCFlM
-	mOYg/NiDs912h48i4Oq3zRwUmPqExtrf4M50CbW9q4lssIyQdhD7df4jofSQPKvavlH+Tyov1VlT9
-	Mm5Z9yBQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=1YDUUeXJAV+3ObcC/jodYnQiT6P1mSXresRAy0MX1Ko=; b=ePPhG1qpym7tYA08mx+N/MQ+5b
+	50MJg46f/8o8AC7vdwTaYRCiJJbFt7xazVoeQQaojFurdnhmGBlQmNOCzjkjUaAR8GniENvlJq5zo
+	t/lo7mo908iBDTrbzX1ccPl8r/XZ9GoQdLhz9LVIetrlz6IEWTVjMp6ardQKJ9l5bc8tlqB/zCFGH
+	gmbDVF/8le5qTUJ7RomhfXuGV+LipA7oJP6Uz+DcorZWblnC1RPV7N8JF2Jer+ywen5seCHhNkc6F
+	Ph9QfgBjDkWwhFVFLYDu3Y5OUd7CjFVfPlMM4Rw6swgmxEoIrawBedlywYTTKOw0rNpmFFV8SRB2B
+	MlvW8zWw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vy7cY-00000001kEA-3nm3;
-	Thu, 05 Mar 2026 12:16:02 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1vy86X-00000001oMZ-3rUH;
+	Thu, 05 Mar 2026 12:47:01 +0000
+Received: from cczrelay05.in2p3.fr ([134.158.66.155] helo=cczrelay03.in2p3.fr)
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vy7cW-00000001kCQ-2C9i
+	id 1vy86V-00000001oLG-1KLM
 	for barebox@lists.infradead.org;
-	Thu, 05 Mar 2026 12:16:01 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vy7cT-0000VG-JR; Thu, 05 Mar 2026 13:15:57 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vy7cS-003slC-0C;
-	Thu, 05 Mar 2026 13:15:57 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1vy7cT-00000002JqD-1H1W;
-	Thu, 05 Mar 2026 13:15:57 +0100
-Date: Thu, 5 Mar 2026 13:15:57 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <aalz_cwsApZjjYed@pengutronix.de>
-References: <20260305065352.3417011-1-s.hauer@pengutronix.de>
- <2bcf7ef8-6d97-46c7-a8d2-3db70365e32a@pengutronix.de>
+	Thu, 05 Mar 2026 12:47:00 +0000
+Received: from [127.0.1.1] (clrelecpo09w.in2p3.fr [134.158.124.135])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cczrelay03.in2p3.fr (Postfix) with ESMTPSA id E2D7D180079A;
+	Thu,  5 Mar 2026 13:46:49 +0100 (CET)
+From: David Picard <david.picard@clermont.in2p3.fr>
+Date: Thu, 05 Mar 2026 13:46:22 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2bcf7ef8-6d97-46c7-a8d2-3db70365e32a@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260305-b4-sa2-usb-v3-1-802f52d308ab@clermont.in2p3.fr>
+References: <20260305-b4-sa2-usb-v3-0-802f52d308ab@clermont.in2p3.fr>
+In-Reply-To: <20260305-b4-sa2-usb-v3-0-802f52d308ab@clermont.in2p3.fr>
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>
+Cc: David Picard <david.picard@clermont.in2p3.fr>, 
+ Ahmad Fatoum <a.fatoum@pengutronix.de>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772714809; l=1270;
+ i=david.picard@clermont.in2p3.fr; s=20250917; h=from:subject:message-id;
+ bh=f/Cg4nmYih7qnYZtoD49ZUe3MbP6g5TrZNJD28VpAUo=;
+ b=y60h8i2EQ2XsAQVUN4U7kNs2NPUPG7/yFScoo+ZcAqdnFgBCACtJsGhbRZbwwczgtL6Fn6iwh
+ 9XnoxVc6fniAC1GDniaDUap7iHYq1OBSWNymicWUzX4aNbfr+KTIoxi
+X-Developer-Key: i=david.picard@clermont.in2p3.fr; a=ed25519;
+ pk=Ew2hyxWdBXm7qaK2tHrk3KcOlOjoh3+irqJPSHtq/PU=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260305_041600_564559_7E4F27D5 
-X-CRM114-Status: GOOD (  21.15  )
+X-CRM114-CacheID: sfid-20260305_044659_500249_73DCD03E 
+X-CRM114-Status: UNSURE (   6.77  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,46 +80,60 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=ham
-	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] aiodev: Enable saradc for RK3588
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE,UPPERCASE_50_75
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH v3 1/3] ARM: socfpga: Enclustra SA2: add defconfig options
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Thu, Mar 05, 2026 at 08:35:27AM +0100, Ahmad Fatoum wrote:
-> Hello Sascha,
-> 
-> On 3/5/26 07:53, Sascha Hauer wrote:
-> > The RK3588 also has a saradc, add the SoC to the dependency list.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  drivers/aiodev/Kconfig | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/aiodev/Kconfig b/drivers/aiodev/Kconfig
-> > index 1c7bf16546..5c925109fb 100644
-> > --- a/drivers/aiodev/Kconfig
-> > +++ b/drivers/aiodev/Kconfig
-> > @@ -60,7 +60,7 @@ config STM32_ADC
-> >  
-> >  config ROCKCHIP_SARADC
-> >  	tristate "Rockchip SARADC driver"
-> > -	depends on ARCH_RK3568 || ARCH_RK3576 || COMPILE_TEST
-> > +	depends on ARCH_RK3568 || ARCH_RK3576 || ARCH_RK3588 || COMPILE_TEST
-> 
-> Given that there are so many RK35xx variants, let's just turn this into ARCH_ROCKCHIP?
+Add configuration options needed by the Enclustra SA2 module.
 
-Did that.
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: David Picard <david.picard@clermont.in2p3.fr>
+---
+ arch/arm/configs/socfpga_defconfig | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-Sascha
+diff --git a/arch/arm/configs/socfpga_defconfig b/arch/arm/configs/socfpga_defconfig
+index e9b93bc197..37555a6297 100644
+--- a/arch/arm/configs/socfpga_defconfig
++++ b/arch/arm/configs/socfpga_defconfig
+@@ -60,6 +60,7 @@ CONFIG_CMD_MM=y
+ CONFIG_CMD_CLK=y
+ CONFIG_CMD_DETECT=y
+ CONFIG_CMD_GPIO=y
++CONFIG_CMD_I2C=y
+ CONFIG_CMD_LED=y
+ CONFIG_CMD_SPI=y
+ CONFIG_CMD_LED_TRIGGER=y
+@@ -76,6 +77,9 @@ CONFIG_OF_BAREBOX_DRIVERS=y
+ CONFIG_OF_BAREBOX_ENV_IN_FS=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+ CONFIG_DRIVER_NET_DESIGNWARE_SOCFPGA=y
++CONFIG_MICREL_PHY=y
++CONFIG_I2C=y
++CONFIG_I2C_DESIGNWARE=y
+ CONFIG_MTD=y
+ CONFIG_NAND=y
+ CONFIG_MTD_NAND_DENALI=y
+@@ -93,7 +97,12 @@ CONFIG_KEYBOARD_GPIO=y
+ CONFIG_WATCHDOG=y
+ CONFIG_WATCHDOG_DW=y
+ CONFIG_GPIO_DESIGNWARE=y
++CONFIG_NVMEM=y
++CONFIG_NVMEM_ATMEL_SHA204A=y
+ CONFIG_FIRMWARE_ALTERA_SOCFPGA=y
++CONFIG_FPGA=y
++CONFIG_FPGA_BRIDGE=y
++CONFIG_SOCFPGA_FPGA_BRIDGE=y
+ CONFIG_FS_EXT4=y
+ CONFIG_FS_TFTP=y
+ CONFIG_FS_NFS=y
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.43.0
+
 
 
