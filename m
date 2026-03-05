@@ -1,69 +1,64 @@
-Delivery-date: Thu, 05 Mar 2026 07:40:12 +0100
+Delivery-date: Thu, 05 Mar 2026 07:54:24 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vy2NX-008FB3-2U
+	id 1vy2bH-008FNl-2c
 	for lore@lore.pengutronix.de;
-	Thu, 05 Mar 2026 07:40:12 +0100
+	Thu, 05 Mar 2026 07:54:24 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vy2NY-0000jZ-2q
-	for lore@pengutronix.de; Thu, 05 Mar 2026 07:40:12 +0100
+	id 1vy2bI-0002ck-5m
+	for lore@pengutronix.de; Thu, 05 Mar 2026 07:54:24 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=w7qosgyvNlJkguyNuZauYEGVkE7eS2nu0qbPgfo/VII=; b=yCN/VEtFRJ3a/Tmdyu9mx9CoDO
-	FYzjHkdMx2nt42if6Cw5eS3E7ZPZRu4OzOkLDh47MhjuaDropC/guBGWktLbJoec/97L6haFhgxyC
-	uxUMBr2CK5wToGrCEYlZRmSwGvgY5NIlfnBvsaj6OOplHE80kTK5KdVrCyEOBEAzUGsU3+MGqvqv6
-	sMDA/NAHN8SpC3hdDGwIAXc++jeT0oqO0zJ20GfBCIF3W6O1J+tWX4xInl1NaUg9pCW+TwcWOVah6
-	QENFpRIEA4qCFV99z1IZieuRhoA+DKosjUnTz2mHSDNX6j8Uv2vvzsB59HXmSEU3iQjlxNdVL4jSa
-	aRV9eYEg==;
+	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=SVQUydWqdSlX2e7FbUQRb9DPrQsodytz8eRdoaZU7EY=; b=E/gK1HPevK4AP4sMZv+F9Gi+1N
+	dAslsh3njxqMWFskb97/kj7E0IiQNpOKW02tHxCH1X7e/MS29l6Aof+2M/pYExPm7C860nwu95djT
+	doBbLa/H0tBi7Gg5+L3ZCb+EfozdAuk5wVlaQUXahGWEXx0ycxpiZLvie6l0on82nHDHJIRlWr54C
+	W4RBqM0GCQgci2/9XiUyIBPD0DxPe9Jvdvl6L+MHTVcZtO7SQ3ETOWuZZpIUWVSUc4HfPuv9ynGyM
+	xhEbo2Ez8F9czCZ8s9Bb0achNPxtHoFfrtiZ7pxd4a6q/Thut8ojAKw9sJ63dVslTMIsJdcZIoI5M
+	GBeebA2g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vy2Mm-000000011Xr-4BNk;
-	Thu, 05 Mar 2026 06:39:24 +0000
+	id 1vy2ar-000000012zV-26rR;
+	Thu, 05 Mar 2026 06:53:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vy2Mj-000000011Wn-38gV
+	id 1vy2ap-000000012z9-1IT1
 	for barebox@lists.infradead.org;
-	Thu, 05 Mar 2026 06:39:23 +0000
+	Thu, 05 Mar 2026 06:53:56 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vy2Mh-0000WE-1i; Thu, 05 Mar 2026 07:39:19 +0100
+	id 1vy2an-0002XH-MH; Thu, 05 Mar 2026 07:53:53 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vy2Mf-003q5V-1f;
-	Thu, 05 Mar 2026 07:39:18 +0100
+	id 1vy2am-003q6c-0W;
+	Thu, 05 Mar 2026 07:53:53 +0100
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vy2Mg-0000000EKHJ-3JFz;
-	Thu, 05 Mar 2026 07:39:18 +0100
+	id 1vy2an-0000000EKvI-1gNW;
+	Thu, 05 Mar 2026 07:53:53 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20260304104904.1205995-1-s.hauer@pengutronix.de>
-References: <20260304104904.1205995-1-s.hauer@pengutronix.de>
-Message-Id: <177269275878.3414392.1336895338396148110.b4-ty@pengutronix.de>
-Date: Thu, 05 Mar 2026 07:39:18 +0100
+To: Barebox List <barebox@lists.infradead.org>
+Date: Thu,  5 Mar 2026 07:53:52 +0100
+Message-ID: <20260305065352.3417011-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260304_223921_793771_1F019740 
-X-CRM114-Status: UNSURE (   6.22  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260304_225355_367866_31445018 
+X-CRM114-Status: GOOD (  10.30  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,26 +80,32 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] pbl: console: fix undefined reference to vprintf()
+Subject: [PATCH] aiodev: Enable saradc for RK3588
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+The RK3588 also has a saradc, add the SoC to the dependency list.
 
-On Wed, 04 Mar 2026 11:49:04 +0100, Sascha Hauer wrote:
-> panic() now uses vprintf() which is not available without
-> CONFIG_PBL_CONSOLE. Move the declaration to the right ifdeffery
-> which already handles that case.
-> 
-> 
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/aiodev/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied, thanks!
-
-[1/1] pbl: console: fix undefined reference to vprintf()
-      https://git.pengutronix.de/cgit/barebox/commit/?id=510b79d1ad68 (link may not be stable)
-
-Best regards,
+diff --git a/drivers/aiodev/Kconfig b/drivers/aiodev/Kconfig
+index 1c7bf16546..5c925109fb 100644
+--- a/drivers/aiodev/Kconfig
++++ b/drivers/aiodev/Kconfig
+@@ -60,7 +60,7 @@ config STM32_ADC
+ 
+ config ROCKCHIP_SARADC
+ 	tristate "Rockchip SARADC driver"
+-	depends on ARCH_RK3568 || ARCH_RK3576 || COMPILE_TEST
++	depends on ARCH_RK3568 || ARCH_RK3576 || ARCH_RK3588 || COMPILE_TEST
+ 	depends on OFDEVICE
+ 	help
+ 	  Support for Successive Approximation Register (SAR) ADC in Rockchip
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.47.3
 
 
 
