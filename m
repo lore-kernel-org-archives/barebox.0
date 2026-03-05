@@ -1,64 +1,59 @@
-Delivery-date: Thu, 05 Mar 2026 08:45:25 +0100
+Delivery-date: Thu, 05 Mar 2026 09:22:03 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vy3Oe-008GBW-2P
+	id 1vy3y6-008Glo-2C
 	for lore@lore.pengutronix.de;
-	Thu, 05 Mar 2026 08:45:25 +0100
+	Thu, 05 Mar 2026 09:22:03 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vy3Od-0002t2-HV
-	for lore@pengutronix.de; Thu, 05 Mar 2026 08:45:25 +0100
+	id 1vy3y7-0001KL-0Y
+	for lore@pengutronix.de; Thu, 05 Mar 2026 09:22:03 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=LIz1ddugDVttmJiKk2GVPmEkTZV3Kwq7bbgI4Je0I0w=; b=2Bvt0czVKHP/0R1txnH0h/vei5
-	tRWSELQmFS1HbNZTwp+HR5YkU7SfciZ+kxZTI2ifBrUhoklbxhctJECBWMSIa19rl/qdcj+pINJ54
-	ApSpNEO/qfRjt2s8atxH8tGszZfnPps+uPIGC7gmkqDsKVF/vW3L4i0O/6j6my9AODx8/acU/opfj
-	zGy4GgT3yo1HNDjkXqMmtlaa67Hu8KhiTEcD+hgUR7VtaPCsYFtGFtlHECPq92GHB4dgceZQc4XEr
-	55diSh+lPNNWyiJ99VOit0urVV2fLiPtBliaepfJOJz/zKQd3oDPvNC1bBpAQF/LmO0wjZtaAr7qh
-	zzCw1qhA==;
+	Content-Type:In-Reply-To:References:To:Subject:From:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=plt5RsuhgVKI1JQrndLSyIOI96SOROvimE9oyb+Nr04=; b=Lvs0oLdFMgyH1VcaTdxIUUxSqZ
+	FceasoaYu4gUp8d+U9YfUmorxcyoVcIOucNjbrZl0fZ5hZRSRhxGaeuF38uO1UlcJ+VaYdg+yrmbv
+	n5sO2unWvEV3JDFM55w6G7ylyGkJSndhzLnQ5pvEVTYmoHEl3ayOPVU1v7LjsLrr3ZB/pmm8IngxI
+	4Fp2YwDKqbbmNsD4goy8lbdw9KrhGiA1+NWqmidoOLLUTRArvdm2acCKUb0rdf2twauWi3IKGF6hl
+	lArJ0HxQQXUBIkiZ2WzYkx2BedN5qE063jF+AXVYGJM7tocSYjIsbHUauAW3h9bLod8Ruoq6Hpekv
+	cbKzX9iQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vy3OB-000000016cB-2Jq7;
-	Thu, 05 Mar 2026 07:44:55 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1vy3xg-00000001B2u-0IqF;
+	Thu, 05 Mar 2026 08:21:36 +0000
+Received: from cczrelay05.in2p3.fr ([134.158.66.155] helo=cczrelay03.in2p3.fr)
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vy3O8-000000016bK-3rMG
+	id 1vy3xd-00000001B2Q-01HC
 	for barebox@lists.infradead.org;
-	Thu, 05 Mar 2026 07:44:54 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vy3O5-0002lr-V2; Thu, 05 Mar 2026 08:44:49 +0100
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vy3O4-003qVU-1N;
-	Thu, 05 Mar 2026 08:44:49 +0100
-Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1vy3O5-0000000ENP3-2gkX;
-	Thu, 05 Mar 2026 08:44:49 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Thu,  5 Mar 2026 08:44:48 +0100
-Message-ID: <20260305074448.3426540-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	Thu, 05 Mar 2026 08:21:34 +0000
+Received: from [134.158.124.135] (clrelecpo09w.in2p3.fr [134.158.124.135])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cczrelay03.in2p3.fr (Postfix) with ESMTPSA id 49DB21800898
+	for <barebox@lists.infradead.org>; Thu,  5 Mar 2026 09:16:20 +0100 (CET)
+Message-ID: <49387aff-7c5f-4de2-acaa-2a831799ef3f@clermont.in2p3.fr>
+Date: Thu, 5 Mar 2026 09:16:20 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: David Picard <david.picard@clermont.in2p3.fr>
+To: ML_Barebox <barebox@lists.infradead.org>
+References: <20260304-b4-sa2-usb-v1-2-8193d0fa9cd7@clermont.in2p3.fr>
+Content-Language: fr
+In-Reply-To: <20260304-b4-sa2-usb-v1-2-8193d0fa9cd7@clermont.in2p3.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260304_234452_954353_0DF81CBD 
-X-CRM114-Status: GOOD (  15.96  )
+X-CRM114-CacheID: sfid-20260305_002133_201179_9E42E562 
+X-CRM114-Status: UNSURE (   6.70  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,132 +71,83 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] tlv: check incoming TLV headers for size
+Subject: Fwd: [PATCH 2/3] ARM: socfpga: Enclustra SA2: enable USB1 HS
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-tlv_register_device() gets untrusted data in the incoming TLV header.
-Add a size argument and check if the TLV is within the size boundaries
-before processing it.
-While at it check that the reserved field in the TLV header is set to
-zero which is necessary should we later want to use it.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+
+-------- Message transféré --------
+Sujet : 	[PATCH 2/3] ARM: socfpga: Enclustra SA2: enable USB1 HS
+Date : 	Wed, 04 Mar 2026 14:51:24 +0100
+De : 	David Picard <david.picard@clermont.in2p3.fr>
+Pour : 	David Picard <david.picard@clermont.in2p3.fr>
+
+
+
+Enable high-speed USB 2.0 USB1 controller on Enclustra
+Mercury+ SA2 module.
 ---
- common/tlv/bus.c      | 20 +++++++++++++++++++-
- common/tlv/parser.c   |  2 +-
- common/tlv/register.c |  2 +-
- include/tlv/tlv.h     |  3 ++-
- test/self/tlv.c       |  4 ++--
- 5 files changed, 25 insertions(+), 6 deletions(-)
+arch/arm/configs/socfpga_defconfig | 6 ++++++
+arch/arm/dts/socfpga_cyclone5_mercury_sa2.dtsi | 7 +++++++
+2 files changed, 13 insertions(+)
 
-diff --git a/common/tlv/bus.c b/common/tlv/bus.c
-index 29b6ce87bf..9c06baf360 100644
---- a/common/tlv/bus.c
-+++ b/common/tlv/bus.c
-@@ -14,9 +14,23 @@ static void tlv_devinfo(struct device *dev)
- 	printf("Magic: %08x\n", tlvdev->magic);
- }
- 
-+static int tlv_header_check(struct tlv_header *header, size_t size)
-+{
-+	if (size < sizeof(*header))
-+		return -ENODATA;
+diff --git a/arch/arm/configs/socfpga_defconfig 
+b/arch/arm/configs/socfpga_defconfig
+index 37555a6297..8f9e34d459 100644
+--- a/arch/arm/configs/socfpga_defconfig
++++ b/arch/arm/configs/socfpga_defconfig
+@@ -86,6 +86,10 @@ CONFIG_MTD_NAND_DENALI=y
+CONFIG_MTD_NAND_DENALI_DT=y
+CONFIG_MTD_SPI_NOR=y
+CONFIG_SPI_CADENCE_QUADSPI=y
++CONFIG_USB_HOST=y
++CONFIG_USB_DWC2_HOST=y
++CONFIG_USB_EHCI=y
++CONFIG_USB_ULPI=y
+CONFIG_MCI=y
+CONFIG_MCI_DW=y
+CONFIG_LED=y
+@@ -103,6 +107,8 @@ CONFIG_FIRMWARE_ALTERA_SOCFPGA=y
+CONFIG_FPGA=y
+CONFIG_FPGA_BRIDGE=y
+CONFIG_SOCFPGA_FPGA_BRIDGE=y
++CONFIG_GENERIC_PHY=y
++CONFIG_USB_NOP_XCEIV=y
+CONFIG_FS_EXT4=y
+CONFIG_FS_TFTP=y
+CONFIG_FS_NFS=y
+diff --git a/arch/arm/dts/socfpga_cyclone5_mercury_sa2.dtsi 
+b/arch/arm/dts/socfpga_cyclone5_mercury_sa2.dtsi
+index 6334573a77..cd33b38d2b 100644
+--- a/arch/arm/dts/socfpga_cyclone5_mercury_sa2.dtsi
++++ b/arch/arm/dts/socfpga_cyclone5_mercury_sa2.dtsi
+@@ -8,6 +8,7 @@
+*/
+#include <arm/intel/socfpga/socfpga_cyclone5.dtsi>
++#include <dt-bindings/gpio/gpio.h>
+/ {
+barebox,deep-probe;
+@@ -205,6 +206,12 @@ Reference:
+};
+};
++&usbphy0 {
++ /* HPS_GPIO0, active low */
++ reset-gpios = <&porta 0 GPIO_ACTIVE_LOW>;
++ status = "okay";
++};
 +
-+	if (header->reserved != 0)
-+		return -EINVAL;
-+
-+	if (size < tlv_total_len(header))
-+		return -ENODATA;
-+
-+	return 0;
-+}
-+
- static struct device_node *tlv_parent_node;
- 
--struct tlv_device *tlv_register_device(struct tlv_header *header,
-+struct tlv_device *tlv_register_device(struct tlv_header *header, size_t size,
- 				       struct device *parent)
- {
- 	struct tlv_device *tlvdev;
-@@ -25,6 +39,10 @@ struct tlv_device *tlv_register_device(struct tlv_header *header,
- 	static int id = 0;
- 	int ret;
- 
-+	ret = tlv_header_check(header, size);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
- 	tlvdev = xzalloc(sizeof(*tlvdev));
- 
- 	dev = &tlvdev->dev;
-diff --git a/common/tlv/parser.c b/common/tlv/parser.c
-index 010e4cce38..4c0b6b5c6f 100644
---- a/common/tlv/parser.c
-+++ b/common/tlv/parser.c
-@@ -165,7 +165,7 @@ struct tlv_device *tlv_register_device_by_path(const char *path, struct device *
- 	if (IS_ERR(header))
- 		return ERR_CAST(header);
- 
--	tlvdev = tlv_register_device(header, parent);
-+	tlvdev = tlv_register_device(header, size, parent);
- 	if (IS_ERR(tlvdev))
- 		free(header);
- 
-diff --git a/common/tlv/register.c b/common/tlv/register.c
-index a6d95fb8e0..66dd38f5d4 100644
---- a/common/tlv/register.c
-+++ b/common/tlv/register.c
-@@ -56,7 +56,7 @@ static int tlv_probe_from_compatible(struct device *dev)
- 		goto err;
- 	}
- 
--	tlvdev = tlv_register_device(header, dev);
-+	tlvdev = tlv_register_device(header, size, dev);
- 	if (IS_ERR(tlvdev)) {
- 		ret = PTR_ERR(tlvdev);
- 		goto err;
-diff --git a/include/tlv/tlv.h b/include/tlv/tlv.h
-index 8b4ee1b399..c2812398dc 100644
---- a/include/tlv/tlv.h
-+++ b/include/tlv/tlv.h
-@@ -61,7 +61,8 @@ static inline struct device_node *tlv_of_node(struct tlv_device *tlvdev)
- 	return tlvdev->dev.device_node;
- }
- 
--struct tlv_device *tlv_register_device(struct tlv_header *header, struct device *parent);
-+struct tlv_device *tlv_register_device(struct tlv_header *header, size_t size,
-+				       struct device *parent);
- static inline struct tlv_header *tlv_device_header(struct tlv_device *tlvdev)
- {
- 	return tlvdev->dev.platform_data;
-diff --git a/test/self/tlv.c b/test/self/tlv.c
-index 8f1b810b5a..cefa8b4a7a 100644
---- a/test/self/tlv.c
-+++ b/test/self/tlv.c
-@@ -60,14 +60,14 @@ static void test_lxa_tlv(void)
- 		return;
- 	}
- 
--	cpu_tlvdev = tlv_register_device(cpu_blob, NULL);
-+	cpu_tlvdev = tlv_register_device(cpu_blob, cpu_bloblen, NULL);
- 	if (IS_ERR(cpu_tlvdev)) {
- 		free(cpu_blob);
- 		failed_tests++;
- 		skipped_tests++;
- 	}
- 
--	io_tlvdev = tlv_register_device(io_blob, NULL);
-+	io_tlvdev = tlv_register_device(io_blob, io_bloblen, NULL);
- 	if (IS_ERR(io_tlvdev)) {
- 		free(io_blob);
- 		failed_tests++;
+&usb1 {
+status = "okay";
+dr_mode = "host";
+
 -- 
-2.47.3
+2.43.0
 
 
 
