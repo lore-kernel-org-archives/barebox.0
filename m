@@ -1,71 +1,60 @@
-Delivery-date: Mon, 09 Mar 2026 13:05:25 +0100
+Delivery-date: Mon, 09 Mar 2026 13:05:26 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vzZMS-009jkf-2o
+	id 1vzZMT-009jkr-0e
 	for lore@lore.pengutronix.de;
-	Mon, 09 Mar 2026 13:05:25 +0100
+	Mon, 09 Mar 2026 13:05:26 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vzZMT-0000g3-2n
+	id 1vzZMT-0000g4-3s
 	for lore@pengutronix.de; Mon, 09 Mar 2026 13:05:25 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=FumVeMA6ALoOZbY9k1Gx7Rm9Pbkuq+u538WjD0sj7Nk=; b=XaatppKNIFAj4n6Aw/cQF2m3Q/
-	cLzNWaIRIBYMWvF8qmovB8EoS82SbBHQlLoLuBHkcvj2LkozFGiIqhlPFapfdJb5gMFNDykxioNF7
-	+NZs5f/UUvp5njJYh9ygc91xdTWa3ezVWdg1yjl58iQQkR5FFsI0LAsTU/FuiTFxcGIOkwbU/kElC
-	cOcZGJzt4dVvuBgoCwfyZuwxYiWpvfcC5a5vKb+dooikWiCCV6BTK+aNo5SCwBMf5ZuZnimrDiH2k
-	H6CbUFQ6dpuB8adv0QkUO0WdIQEt7KJLlqs0DG0v/ktSSnUC8aS3h91XQyhfxjhT3ibR8cjP8nxQI
-	x1wtL63w==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=cIzM7qg2QPmAJenDId32+hG3uQKuZYQ3UBzRh9pjCvQ=; b=BHpdpEdQlRc4D7
+	g0h2IkTp8wvscpVdb1w8PfBXGUIPez+zkRqqBff+xan3rpLG+3ZTyKobWUrmJeefheCzir7zUFwYf
+	GsYlg59NxPOIzVTqSttCedcuPMUMhEDignMXxd4XudM0+R+MHwwRUDmXvY3JufUrNwa/R8b3GjeCK
+	CE5kiPWlJRUDI1U/9AyT8yUmNLLzXrmI9AMEzUgV0yUC7Jsv80iflzR7zs1StnNg6ciXZ+Ra2PvVc
+	vWB40TDgO1nBc6GzGUkDa1StKJsoNpCUGC3Ek4NJ6hh4zsRoQzQDJoMvRzUQL7UU8DIEET0w9dKkg
+	yGxKSRQUrL1gHwEGv6aw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vzZLu-00000007Fbp-30UE;
-	Mon, 09 Mar 2026 12:04:50 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vzZLt-00000007FbK-2XYn
-	for barebox@bombadil.infradead.org;
-	Mon, 09 Mar 2026 12:04:49 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=FumVeMA6ALoOZbY9k1Gx7Rm9Pbkuq+u538WjD0sj7Nk=; b=iK9ifFXTlyAFeRGb57OrfI+76r
-	/DuOaY4/3PdaFreMyhp+wRIIo+FzJmw1vvFpscKuIDbzGZY2t2hAnay2ODTUaVYkpqFFk0hV7Olbt
-	OIKlPvddQ9g8QQpUNzQtmD8LBn4wdkIgZBUZwovQ6IlKSwQ/DX6a8aPCQFe88s8ZVDiUWCA9KfHh0
-	RH1DJmXdcfIRGcugdjwhdE1w4sQ5QxK9RfGToWGqF3lpvrTVCEI4FOAXJ+xO9o2x/rWCNz+y00Of3
-	JDXfr/CtUGPqSyQi7t/mxrve4u9tKgMEjadwxuCy06EyrKM79JaJ8UJZ+Uv+njzXtHSSgwuT3a04D
-	x+n2MjkQ==;
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vzZLq-0000000C4MA-3Mh3
-	for barebox@lists.infradead.org;
+	id 1vzZLs-00000007Fb5-1Dzs;
 	Mon, 09 Mar 2026 12:04:48 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vzZLo-00000007FaD-35k1
+	for barebox@lists.infradead.org;
+	Mon, 09 Mar 2026 12:04:46 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1vzZLn-0000K8-AZ; Mon, 09 Mar 2026 13:04:43 +0100
+	id 1vzZLm-0000K8-PI; Mon, 09 Mar 2026 13:04:42 +0100
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 09 Mar 2026 13:04:35 +0100
+Date: Mon, 09 Mar 2026 13:04:32 +0100
+Message-Id: <20260309-v2025-11-0-topic-socfpga-agilex5-sdhci-v2-0-fcc1f327acf8@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260309-v2025-11-0-topic-socfpga-agilex5-sdhci-v2-3-fcc1f327acf8@pengutronix.de>
-References: <20260309-v2025-11-0-topic-socfpga-agilex5-sdhci-v2-0-fcc1f327acf8@pengutronix.de>
-In-Reply-To: <20260309-v2025-11-0-topic-socfpga-agilex5-sdhci-v2-0-fcc1f327acf8@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAFC3rmkC/5WNTQrCMBCFr1Jm7UgnWvxZeQ/pIibTdECSkNRQK
+ b27aW/g7n2Px/sWyJyEM9ybBRIXyRJ8BXVowIzaO0axlUG1qiNFHZYtIRG2OIUoBnMwQ3QatZM
+ 3zx1mOxrBq71YvhFbc2qhnsXEg8y76NlXHiVPIX13b6Gt/VtRtgERs6aX4uFMj8jefaYUvMxHy
+ 9Cv6/oDpFk0QeEAAAA=
+X-Change-ID: 20251215-v2025-11-0-topic-socfpga-agilex5-sdhci-8d7de91edc30
 To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260309_120446_939800_1AB59D5A 
-X-CRM114-Status: GOOD (  11.32  )
+X-CRM114-CacheID: sfid-20260309_050444_783497_889BACD2 
+X-CRM114-Status: UNSURE (   9.14  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,74 +76,75 @@ X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 3/6] mci: sdhci: add set_uhs_signaling callback
+Subject: [PATCH v2 0/6] mci: cadence: add v6 support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Allow adding a set_uhs_signaling callback in a host driver.
+The Agilex5 apperently has a cadence sdhci host controller in version 6.
+Add support for this version, reworking the original driver
+significantly.
 
-If the callback is not provided, just call the generic
-sdhci_set_uhs_signaling function as before.
+Tested on Agilex5, sadly HS200-support is currently broken and doesn't
+work yet with this driver.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/mci/sdhci.c | 7 +++++--
- drivers/mci/sdhci.h | 1 +
- include/mci.h       | 1 +
- 3 files changed, 7 insertions(+), 2 deletions(-)
+- sdhci_send_cmd: fix return value
+- mci_cmd: add mci_data
+- mci_cmd: setup mci_data in mci_core
+- mci_cmd: remove mci_data from callers
+- mci_cmd: split in separate patch
+- cadence_sdhci: remove old driver before adding new one
+- Link to v1: https://lore.barebox.org/20251215-v2025-11-0-topic-socfpga-agilex5-sdhci-v1-0-11eea1b2ef41@pengutronix.de
 
-diff --git a/drivers/mci/sdhci.c b/drivers/mci/sdhci.c
-index 371d3e4a4b..f7172347e1 100644
---- a/drivers/mci/sdhci.c
-+++ b/drivers/mci/sdhci.c
-@@ -471,7 +471,7 @@ void sdhci_set_bus_width(struct sdhci *host, int width)
- 	sdhci_write8(host, SDHCI_HOST_CONTROL, ctrl);
- }
- 
--static void sdhci_set_uhs_signaling(struct sdhci *host, unsigned timing)
-+void sdhci_set_uhs_signaling(struct sdhci *host, unsigned int timing)
- {
- 	u16 ctrl_2;
- 
-@@ -997,7 +997,10 @@ void sdhci_set_clock(struct sdhci *host, unsigned int clock, unsigned int input_
- 
- 	host->mci->ios.clock = 0;
- 
--	sdhci_set_uhs_signaling(host, host->mci->ios.timing);
-+	if (host->mci->ops.set_uhs_signaling)
-+		host->mci->ops.set_uhs_signaling(host->mci, host->mci->ios.timing);
-+	else
-+		sdhci_set_uhs_signaling(host, host->mci->ios.timing);
- 
- 	sdhci_wait_idle_data(host, NULL);
- 
-diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
-index e7c56d59f4..8d21febd7a 100644
---- a/drivers/mci/sdhci.h
-+++ b/drivers/mci/sdhci.h
-@@ -344,6 +344,7 @@ static inline void sdhci_write8(struct sdhci *host, int reg, u32 val)
- }
- 
- #define SDHCI_NO_DMA DMA_ERROR_CODE
-+void sdhci_set_uhs_signaling(struct sdhci *host, unsigned int timing);
- int sdhci_execute_tuning(struct sdhci *sdhci, u32 opcode);
- int sdhci_wait_idle_data(struct sdhci *host, struct mci_cmd *cmd);
- int sdhci_wait_idle(struct sdhci *host, struct mci_cmd *cmd, struct mci_data *data);
-diff --git a/include/mci.h b/include/mci.h
-index 667829c489..7d903dec05 100644
---- a/include/mci.h
-+++ b/include/mci.h
-@@ -583,6 +583,7 @@ struct mci_ops {
- 	int (*card_write_protected)(struct mci_host *);
- 	/* The tuning command opcode value is different for SD and eMMC cards */
- 	int (*execute_tuning)(struct mci_host *, u32);
-+	void (*set_uhs_signaling)(struct mci_host *host, unsigned int timing);
- };
- 
- /** host information */
+---
+Steffen Trumtrar (6):
+      mci: add data segment to mci_cmd
+      mci: sdhci: add sdhci_send_cmd
+      mci: sdhci: add set_uhs_signaling callback
+      mci: cadence: remove driver
+      mci: cadence: add support for version 6
+      ARM: socfpga-agilex5_defconfig: enable cadencen-sdhci
 
+ arch/arm/configs/socfpga-agilex5_defconfig |  11 +-
+ drivers/mci/Kconfig                        |   2 +-
+ drivers/mci/Makefile                       |   1 +
+ drivers/mci/am654-sdhci.c                  |   4 +-
+ drivers/mci/arasan-sdhci.c                 |   4 +-
+ drivers/mci/atmel-sdhci.c                  |   5 +-
+ drivers/mci/atmel_mci.c                    |   5 +-
+ drivers/mci/atmel_mci_pbl.c                |   5 +-
+ drivers/mci/bcm2835-sdhost.c               |   4 +-
+ drivers/mci/cadence-sdhci.c                | 713 +++++++++++++----------------
+ drivers/mci/cadence-sdhci.h                | 118 +++++
+ drivers/mci/cadence-sdhci6.c               | 373 +++++++++++++++
+ drivers/mci/dove-sdhci.c                   |   4 +-
+ drivers/mci/dw_mmc.c                       |   3 +-
+ drivers/mci/dwcmshc-sdhci.c                |   5 +-
+ drivers/mci/imx-esdhc.c                    |   5 +-
+ drivers/mci/imx.c                          |   4 +-
+ drivers/mci/mci-bcm2835.c                  |   5 +-
+ drivers/mci/mci-core.c                     | 187 ++++----
+ drivers/mci/mci_spi.c                      |   3 +-
+ drivers/mci/mmci.c                         |   6 +-
+ drivers/mci/mxs.c                          |   7 +-
+ drivers/mci/omap_hsmmc.c                   |   5 +-
+ drivers/mci/pxamci.c                       |   4 +-
+ drivers/mci/rockchip-dwcmshc-sdhci.c       |   4 +-
+ drivers/mci/sdhci.c                        | 139 +++++-
+ drivers/mci/sdhci.h                        |  22 +
+ drivers/mci/stm32_sdmmc2.c                 |   4 +-
+ drivers/mci/sunxi-mmc.c                    |   4 +-
+ drivers/mci/tegra-sdmmc.c                  |   4 +-
+ include/mci.h                              |   6 +-
+ 31 files changed, 1126 insertions(+), 540 deletions(-)
+---
+base-commit: 8c9d58cef2c65434e719ccbd3799b23014cb779d
+change-id: 20251215-v2025-11-0-topic-socfpga-agilex5-sdhci-8d7de91edc30
+
+Best regards,
 -- 
-2.52.0
+Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
 
 
