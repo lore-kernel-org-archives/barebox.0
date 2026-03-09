@@ -1,71 +1,70 @@
-Delivery-date: Mon, 09 Mar 2026 13:05:36 +0100
+Delivery-date: Mon, 09 Mar 2026 14:55:36 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vzZMd-009jmu-1D
+	id 1vzb55-009lSX-1W
 	for lore@lore.pengutronix.de;
-	Mon, 09 Mar 2026 13:05:36 +0100
+	Mon, 09 Mar 2026 14:55:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vzZMa-0000lv-UH
-	for lore@pengutronix.de; Mon, 09 Mar 2026 13:05:36 +0100
+	id 1vzb55-0007lt-No
+	for lore@pengutronix.de; Mon, 09 Mar 2026 14:55:36 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5w58022W7Me2ngWe2iOKK0shDo/dPH+uihFyp7QarrM=; b=MUJ/rYbs6J+jQXE8EUkxSugWqd
-	Iz73ZzAHAOapWAxu10sIM9/ysucisc/eLD0xW4GKbNjFf38DD06iFsSU6fvzW5Hhu2iHTdyoQ9oYG
-	5VtTsQAmkqnwKKMeSc+m5n6DkTMVas5kHD7haVUt2kgI1qbgQhI5AKU8GOV073ONLvwQK8HYUBAao
-	+nK/nnMCJUxbBJ3dqEPSUeE2SltGnpO4ytSmvBQhsbXI4S2uesZkLDpGVdwGoHBZi6le4wZmC3arP
-	7tNIyUfbpgOT0+3Jd8m83kBq4PlG86w1He7qpLdga434DhyT1/DL4W4xOuLPG3VqpXk/VLjx0Jt3Q
-	ORacEieg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
+	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:Cc:To:From
+	:Subject:Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=JRZ6RFL8ZmYFQs4mv3RhwvMG1fhglJWC9slltJrnSlY=; b=q6l3awuzSAswbP1p/vCkuIFPaO
+	bJ1YzATng62FLuUBePkzoUw4t5mPcaXbYURzvu7G0P8JZeUy+1aP/tf1Rrz8ZLraMu5foirb8Z7op
+	F/kxI4nGuge0vFNmsBEMLhZNHSYiic/YLjkKpBkPr9ojfo4TxhI3oDm4Ncfg4Ex5OGbIdPc5Ti5jz
+	cF5tOxx8R49zZ7OP3qeGiNSzKDIU7a0ZxbGoWNxeiHRHk3R5VYRbm61RGVOTREK7wioEWxIn8V70w
+	cPYGR9xLQYBJuTyUFmYaEugHqcsyC8vxur9qdw4uac3YIUJ+C2zL5SOXjQpxZO/ovXqFFihYS6iLa
+	K9lGjpCw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vzZLx-00000007Fdt-1nxf;
-	Mon, 09 Mar 2026 12:04:53 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vzZLv-00000007Fby-20YK
-	for barebox@bombadil.infradead.org;
-	Mon, 09 Mar 2026 12:04:51 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=5w58022W7Me2ngWe2iOKK0shDo/dPH+uihFyp7QarrM=; b=WJoR09Ymbgw36GQtXP5Bb3PvNv
-	FwStRo/t/3q0K0ctXZy5gUCRYn7d1wwWDcecyhCI7+vCgGKXfV8ZIddJ2jhnGRa5OtNtLz/FGHjFT
-	1nw29Tybh4mtWnEOnueW7hiSq6hDbuCvWWGJtRWn9wUixvv5SPV1XVPQSmqtP18HKfUXp5rlUFywm
-	1GYCitWY1jdRjHHmpbQ2zeiGpGMPKKJ7AOy1cATn7HYbMZeYrVW4YQaWeNZQmSZgELaolU2M1E2BY
-	Eb2fm0V6K9Nd8x1soyjOHvg5rayGvZRK4aMtuvXhGEbq4Pfv3W4FZmfdYwjt3PMlNVTS4qhha5XLq
-	KJNOpq9g==;
+	id 1vzb4X-00000007R1B-07A7;
+	Mon, 09 Mar 2026 13:55:01 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vzZLq-0000000C4MF-3lrt
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vzb4U-00000007R0U-3rX4
 	for barebox@lists.infradead.org;
-	Mon, 09 Mar 2026 12:04:50 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1vzZLn-0000K8-NA; Mon, 09 Mar 2026 13:04:43 +0100
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 09 Mar 2026 13:04:37 +0100
+	Mon, 09 Mar 2026 13:55:00 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <jlu@pengutronix.de>)
+	id 1vzb4S-0007dQ-1D; Mon, 09 Mar 2026 14:54:56 +0100
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <jlu@pengutronix.de>)
+	id 1vzb4Q-004XZX-0m;
+	Mon, 09 Mar 2026 14:54:55 +0100
+Received: from [127.0.0.1] (helo=[IPv6:::1])
+	by ptz.office.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <jlu@pengutronix.de>)
+	id 1vzb4R-00000007mZm-1tlq;
+	Mon, 09 Mar 2026 14:54:55 +0100
+Message-ID: <cbec4991c8b6017b99bffec46a135b88f9a57629.camel@pengutronix.de>
+From: Jan =?ISO-8859-1?Q?L=FCbbe?= <jlu@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List
+	 <barebox@lists.infradead.org>
+Cc: Sascha Hauer <sascha@saschahauer.de>, "Claude Opus 4.6"
+	 <noreply@anthropic.com>
+Date: Mon, 09 Mar 2026 14:54:55 +0100
+In-Reply-To: <20260305065703.3417243-1-s.hauer@pengutronix.de>
+References: <20260305065703.3417243-1-s.hauer@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260309-v2025-11-0-topic-socfpga-agilex5-sdhci-v2-5-fcc1f327acf8@pengutronix.de>
-References: <20260309-v2025-11-0-topic-socfpga-agilex5-sdhci-v2-0-fcc1f327acf8@pengutronix.de>
-In-Reply-To: <20260309-v2025-11-0-topic-socfpga-agilex5-sdhci-v2-0-fcc1f327acf8@pengutronix.de>
-To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260309_120447_169976_2CA0B5BA 
-X-CRM114-Status: GOOD (  26.59  )
+X-CRM114-CacheID: sfid-20260309_065458_964600_78992AE8 
+X-CRM114-Status: GOOD (  18.02  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,1109 +82,83 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 5/6] mci: cadence: add support for version 6
+Subject: Re: [PATCH] scripts: bareboxtlv-generator: add PKCS#11 engine
+ support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-There is a v4 and a v6 of the Cadence SDHCI. The Agilex actually has the
-v6 version on the SoC.
+On Thu, 2026-03-05 at 07:57 +0100, Sascha Hauer wrote:
+> From: Sascha Hauer <sascha@saschahauer.de>
+>=20
+> When a PKCS#11 URI (pkcs11:...) is passed as the signing key, the
+> openssl pkey and pkeyutl invocations need extra engine arguments to
+> route key operations through the pkcs11 engine. Detect pkcs11: URIs
+> and add -engine pkcs11 with the appropriate key format flag (-inform
+> for pkey, -keyform for pkeyutl).
+>=20
+> Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  .../bareboxtlv-generator/bareboxtlv-generator.py    | 13 ++++++++++---
+>  1 file changed, 10 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/scripts/bareboxtlv-generator/bareboxtlv-generator.py b/scrip=
+ts/bareboxtlv-generator/bareboxtlv-generator.py
+> index 2eba0aeb23..5b51fb53d8 100755
+> --- a/scripts/bareboxtlv-generator/bareboxtlv-generator.py
+> +++ b/scripts/bareboxtlv-generator/bareboxtlv-generator.py
+> @@ -65,7 +65,14 @@ class PrivateKey:
+>              sys.exit(127)
+> =20
+>          self.inkey =3D path
+> -        self.public_key =3D serialization.load_pem_public_key(openssl(["=
+pkey", "-pubout", "-in", self.inkey]));
+> +        self.is_pkcs11 =3D path.startswith("pkcs11:")
+> +        if self.is_pkcs11:
+> +            pkey_args =3D ["-engine", "pkcs11", "-inform", "engine"]
+> +            self.pkeyutl_args =3D ["-engine", "pkcs11", "-keyform", "eng=
+ine"]
 
-Port the driver from Alteras Linux tree [1]
+This would break use of the PKCS#11 provider, which automatically handles
+pkcs11: URIs when enabled via openssl.cnf. I'd suggest adding a --engine CL=
+I
+option to explicitly enable engine support.
 
-[1]: https://github.com/altera-fpga/linux-socfpga.git socfpga-6.12.33-lts
+Jan
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- drivers/mci/Kconfig          |   7 +
- drivers/mci/Makefile         |   1 +
- drivers/mci/cadence-sdhci.c  | 537 +++++++++++++++++++++++++++++++++++++++++++
- drivers/mci/cadence-sdhci.h  | 118 ++++++++++
- drivers/mci/cadence-sdhci6.c | 373 ++++++++++++++++++++++++++++++
- 5 files changed, 1036 insertions(+)
+> +        else:
+> +            pkey_args =3D []
+> +            self.pkeyutl_args =3D []
+> +        self.public_key =3D serialization.load_pem_public_key(openssl(["=
+pkey"] + pkey_args + ["-pubout", "-in", self.inkey]));
+> =20
+>      def sign(self, message: bytes) -> bytes:
+>          """
+> @@ -75,8 +82,8 @@ class PrivateKey:
+>          from cryptography.hazmat.primitives.asymmetric import rsa, ec
+>          from cryptography.hazmat.primitives.asymmetric.utils import deco=
+de_dss_signature
+> =20
+> -        # Access private keys only via the openssl cli so that any confi=
+gured provider, such as pkcs11, can be used.
+> -        sig =3D openssl(["pkeyutl", "-sign", "-rawin", "-digest", "sha25=
+6", "-inkey", self.inkey], stdin =3D message)
+> +        # Access private keys only via the openssl cli so that any confi=
+gured engine/provider, such as pkcs11, can be used.
+> +        sig =3D openssl(["pkeyutl"] + self.pkeyutl_args + ["-sign", "-ra=
+win", "-digest", "sha256", "-inkey", self.inkey], stdin =3D message)
+> =20
+>          if isinstance(self.public_key, rsa.RSAPublicKey):
+>              return sig
 
-diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-index c99f29a6db..e7b8afb3b4 100644
---- a/drivers/mci/Kconfig
-+++ b/drivers/mci/Kconfig
-@@ -259,6 +259,13 @@ config MCI_STM32_SDMMC2
- 	  If you have a board based on such a SoC and with a SD/MMC slot,
- 	  say Y or M here.
- 
-+config MCI_CADENCE_SDHCI
-+	tristate "SDHCI support for the Cadence SD/SDIO/eMMC controller"
-+	select MCI_SDHCI
-+	help
-+	  This selects the Cadence SD/SDIO/eMMC driver.
-+	  If you have a controller with this interface, say Y or M here.
-+
- endif
- 
- config MCI_IMX_ESDHC_PBL
-diff --git a/drivers/mci/Makefile b/drivers/mci/Makefile
-index f76059e7b5..f82e31320e 100644
---- a/drivers/mci/Makefile
-+++ b/drivers/mci/Makefile
-@@ -8,6 +8,7 @@ obj-$(CONFIG_MCI_ATMEL)		+= atmel_mci.o atmel_mci_common.o
- obj-$(CONFIG_MCI_ATMEL_SDHCI)	+= atmel-sdhci.o atmel-sdhci-common.o
- obj-$(CONFIG_MCI_BCM283X)	+= mci-bcm2835.o
- obj-$(CONFIG_MCI_BCM283X_SDHOST)	+= bcm2835-sdhost.o
-+obj-$(CONFIG_MCI_CADENCE_SDHCI) += cadence-sdhci.o cadence-sdhci6.o
- obj-$(CONFIG_MCI_DOVE)		+= dove-sdhci.o
- pbl-$(CONFIG_MCI_ATMEL_PBL)	+= atmel_mci_pbl.o atmel_mci_common.o
- pbl-$(CONFIG_MCI_ATMEL_SDHCI_PBL)	+= atmel-sdhci-pbl.o atmel-sdhci-common.o
-diff --git a/drivers/mci/cadence-sdhci.c b/drivers/mci/cadence-sdhci.c
-new file mode 100644
-index 0000000000..ccd0f36cb0
---- /dev/null
-+++ b/drivers/mci/cadence-sdhci.c
-@@ -0,0 +1,537 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Copyright (C) 2016 Socionext Inc.
-+ *   Author: Masahiro Yamada <yamada.masahiro@socionext.com>
-+ */
-+
-+#include <clock.h>
-+#include <common.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <linux/clk.h>
-+#include <mci.h>
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+#include <linux/iopoll.h>
-+#include <linux/reset.h>
-+
-+#include "cadence-sdhci.h"
-+#include "sdhci.h"
-+
-+/* HRS - Host Register Set (specific to Cadence) */
-+#define   SDHCI_CDNS_HRS04_ACK			BIT(26)
-+#define   SDHCI_CDNS_HRS04_RD			BIT(25)
-+#define   SDHCI_CDNS_HRS04_WR			BIT(24)
-+#define   SDHCI_CDNS_HRS04_RDATA		GENMASK(23, 16)
-+#define   SDHCI_CDNS_HRS04_WDATA		GENMASK(15, 8)
-+#define   SDHCI_CDNS_HRS04_ADDR			GENMASK(5, 0)
-+
-+#define SDHCI_CDNS_HRS06			0x18		/* eMMC control */
-+#define   SDHCI_CDNS_HRS06_TUNE_UP		BIT(15)
-+#define   SDHCI_CDNS_HRS06_TUNE			GENMASK(13, 8)
-+#define   SDHCI_CDNS_HRS06_MODE			GENMASK(2, 0)
-+#define   SDHCI_CDNS_HRS06_MODE_SD		0x0
-+#define   SDHCI_CDNS_HRS06_MODE_MMC_SDR		0x2
-+#define   SDHCI_CDNS_HRS06_MODE_MMC_DDR		0x3
-+#define   SDHCI_CDNS_HRS06_MODE_MMC_HS200	0x4
-+#define   SDHCI_CDNS_HRS06_MODE_MMC_HS400	0x5
-+#define   SDHCI_CDNS_HRS06_MODE_MMC_HS400ES	0x6
-+
-+/* SRS - Slot Register Set (SDHCI-compatible) */
-+#define SDHCI_CDNS_SRS_BASE			0x200
-+
-+/* PHY */
-+#define SDHCI_CDNS_PHY_DLY_SD_HS		0x00
-+#define SDHCI_CDNS_PHY_DLY_SD_DEFAULT		0x01
-+#define SDHCI_CDNS_PHY_DLY_UHS_SDR12		0x02
-+#define SDHCI_CDNS_PHY_DLY_UHS_SDR25		0x03
-+#define SDHCI_CDNS_PHY_DLY_UHS_SDR50		0x04
-+#define SDHCI_CDNS_PHY_DLY_UHS_DDR50		0x05
-+#define SDHCI_CDNS_PHY_DLY_EMMC_LEGACY		0x06
-+#define SDHCI_CDNS_PHY_DLY_EMMC_SDR		0x07
-+#define SDHCI_CDNS_PHY_DLY_EMMC_DDR		0x08
-+#define SDHCI_CDNS_PHY_DLY_SDCLK		0x0b
-+#define SDHCI_CDNS_PHY_DLY_HSMMC		0x0c
-+#define SDHCI_CDNS_PHY_DLY_STROBE		0x0d
-+
-+#define MAIN_CLOCK_INDEX			0
-+#define SD_MASTER_CLOCK_INDEX			1
-+
-+struct sdhci_cdns_phy_cfg {
-+	const char *property;
-+	u8 addr;
-+};
-+
-+static const struct sdhci_cdns_phy_cfg sdhci_cdns_phy_cfgs[] = {
-+	{ "cdns,phy-input-delay-sd-highspeed", SDHCI_CDNS_PHY_DLY_SD_HS, },
-+	{ "cdns,phy-input-delay-legacy", SDHCI_CDNS_PHY_DLY_SD_DEFAULT, },
-+	{ "cdns,phy-input-delay-sd-uhs-sdr12", SDHCI_CDNS_PHY_DLY_UHS_SDR12, },
-+	{ "cdns,phy-input-delay-sd-uhs-sdr25", SDHCI_CDNS_PHY_DLY_UHS_SDR25, },
-+	{ "cdns,phy-input-delay-sd-uhs-sdr50", SDHCI_CDNS_PHY_DLY_UHS_SDR50, },
-+	{ "cdns,phy-input-delay-sd-uhs-ddr50", SDHCI_CDNS_PHY_DLY_UHS_DDR50, },
-+	{ "cdns,phy-input-delay-mmc-highspeed", SDHCI_CDNS_PHY_DLY_EMMC_SDR, },
-+	{ "cdns,phy-input-delay-mmc-ddr", SDHCI_CDNS_PHY_DLY_EMMC_DDR, },
-+	{ "cdns,phy-dll-delay-sdclk", SDHCI_CDNS_PHY_DLY_SDCLK, },
-+	{ "cdns,phy-dll-delay-sdclk-hsmmc", SDHCI_CDNS_PHY_DLY_HSMMC, },
-+	{ "cdns,phy-dll-delay-strobe", SDHCI_CDNS_PHY_DLY_STROBE, },
-+};
-+
-+static int sdhci_cdns_write_phy_reg(struct sdhci_cdns_priv *priv,
-+				    u8 addr, u8 data)
-+{
-+	void __iomem *reg = priv->hrs_addr + SDHCI_CDNS_HRS04;
-+	u32 tmp;
-+	int ret;
-+
-+	ret = readl_poll_timeout(reg, tmp, !(tmp & SDHCI_CDNS_HRS04_ACK), 10);
-+	if (ret)
-+		return ret;
-+
-+	tmp = FIELD_PREP(SDHCI_CDNS_HRS04_WDATA, data) |
-+	      FIELD_PREP(SDHCI_CDNS_HRS04_ADDR, addr);
-+	writel(tmp, reg);
-+
-+	tmp |= SDHCI_CDNS_HRS04_WR;
-+	writel(tmp, reg);
-+
-+	ret = readl_poll_timeout(reg, tmp, tmp & SDHCI_CDNS_HRS04_ACK, 10);
-+	if (ret)
-+		return ret;
-+
-+	tmp &= ~SDHCI_CDNS_HRS04_WR;
-+	writel(tmp, reg);
-+
-+	ret = readl_poll_timeout(reg, tmp, !(tmp & SDHCI_CDNS_HRS04_ACK), 10);
-+
-+	return ret;
-+}
-+
-+static unsigned int sdhci_cdns_phy_param_count(struct device_node *np)
-+{
-+	unsigned int count = 0;
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(sdhci_cdns_phy_cfgs); i++)
-+		if (of_property_read_bool(np, sdhci_cdns_phy_cfgs[i].property))
-+			count++;
-+
-+	return count;
-+}
-+
-+static void sdhci_cdns_phy_param_parse(struct device_node *np,
-+				       struct sdhci_cdns_priv *priv)
-+{
-+	struct sdhci_cdns4_phy_param *p = priv->phy_params;
-+	u32 val;
-+	int ret, i;
-+
-+	for (i = 0; i < ARRAY_SIZE(sdhci_cdns_phy_cfgs); i++) {
-+		ret = of_property_read_u32(np, sdhci_cdns_phy_cfgs[i].property,
-+					   &val);
-+		if (ret)
-+			continue;
-+
-+		p->addr = sdhci_cdns_phy_cfgs[i].addr;
-+		p->data = val;
-+		p++;
-+	}
-+}
-+
-+static int sdhci_cdns_phy_init(struct sdhci_cdns_priv *priv)
-+{
-+	int ret, i;
-+
-+	for (i = 0; i < priv->nr_phy_params; i++) {
-+		ret = sdhci_cdns_write_phy_reg(priv, priv->phy_params[i].addr,
-+					       priv->phy_params[i].data);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static void sdhci_cdns_set_emmc_mode(struct sdhci_cdns_priv *priv, u32 mode)
-+{
-+	u32 tmp;
-+
-+	/* The speed mode for eMMC is selected by HRS06 register */
-+	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS06);
-+	tmp &= ~SDHCI_CDNS_HRS06_MODE;
-+	tmp |= FIELD_PREP(SDHCI_CDNS_HRS06_MODE, mode);
-+	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS06);
-+}
-+
-+static int sdhci_cdns_init(struct mci_host *host, struct device *dev)
-+{
-+	struct sdhci_cdns_priv *priv = sdhci_cdns_priv(host);
-+	int ret;
-+
-+	ret = sdhci_reset(&priv->sdhci, SDHCI_RESET_ALL);
-+	if (ret)
-+		return ret;
-+
-+	sdhci_write8(&priv->sdhci, SDHCI_POWER_CONTROL,
-+		     SDHCI_BUS_VOLTAGE_330 | SDHCI_BUS_POWER_EN);
-+	udelay(400);
-+
-+	sdhci_write32(&priv->sdhci, SDHCI_INT_ENABLE, SDHCI_INT_CMD_COMPLETE |
-+			SDHCI_INT_XFER_COMPLETE | SDHCI_INT_CARD_INT |
-+			SDHCI_INT_TIMEOUT | SDHCI_INT_CRC | SDHCI_INT_END_BIT |
-+			SDHCI_INT_INDEX | SDHCI_INT_DATA_TIMEOUT |
-+			SDHCI_INT_DATA_CRC | SDHCI_INT_DATA_END_BIT | SDHCI_INT_DMA);
-+	sdhci_write32(&priv->sdhci, SDHCI_SIGNAL_ENABLE, 0);
-+
-+	sdhci_enable_v4_mode(&priv->sdhci);
-+
-+	return 0;
-+}
-+
-+static void sdhci_cdns_set_ios(struct mci_host *host, struct mci_ios *ios)
-+{
-+	struct sdhci_cdns_priv *priv = sdhci_cdns_priv(host);
-+	u16 val;
-+
-+	debug("%s: clock = %u, f_max = %u, bus-width = %d, timing = %02x\n", __func__,
-+	      ios->clock, host->f_max, ios->bus_width, ios->timing);
-+
-+	if (ios->clock)
-+		sdhci_set_clock(&priv->sdhci, ios->clock, priv->sdhci.max_clk);
-+
-+	sdhci_set_bus_width(&priv->sdhci, ios->bus_width);
-+
-+	val = sdhci_read8(&priv->sdhci, SDHCI_HOST_CONTROL);
-+
-+	if (ios->clock > 26000000)
-+		val |= SDHCI_CTRL_HISPD;
-+	else
-+		val &= ~SDHCI_CTRL_HISPD;
-+
-+	sdhci_write8(&priv->sdhci, SDHCI_HOST_CONTROL, val);
-+}
-+
-+static int sdhci_cdns_send_cmd(struct mci_host *host, struct mci_cmd *cmd)
-+{
-+	struct sdhci_cdns_priv *priv = sdhci_cdns_priv(host);
-+	int timeout = 10; /* Approx. 10 ms */
-+
-+	while (sdhci_send_command(&priv->sdhci, cmd) != 0) {
-+		if (!timeout--) {
-+			sdhci_dumpregs(&priv->sdhci);
-+			return -EIO;
-+		}
-+
-+		mdelay(1);
-+	}
-+	return 0;
-+}
-+
-+static int sdhci_cdns_set_tune_val(struct mci_host *host, unsigned int val)
-+{
-+	struct sdhci_cdns_priv *priv = sdhci_cdns_priv(host);
-+	void __iomem *reg = priv->hrs_addr + SDHCI_CDNS_HRS06;
-+	u32 tmp;
-+	int i, ret;
-+
-+	if (priv->sdhci.version >= SDHCI_SPEC_420)
-+		return sdhci_cdns6_set_tune_val(host, val);
-+
-+	if (WARN_ON(!FIELD_FIT(SDHCI_CDNS_HRS06_TUNE, val)))
-+		return -EINVAL;
-+
-+	tmp = readl(reg);
-+	tmp &= ~SDHCI_CDNS_HRS06_TUNE;
-+	tmp |= FIELD_PREP(SDHCI_CDNS_HRS06_TUNE, val);
-+
-+	/*
-+	 * Workaround for IP errata:
-+	 * The IP6116 SD/eMMC PHY design has a timing issue on receive data
-+	 * path. Send tune request twice.
-+	 */
-+	for (i = 0; i < 2; i++) {
-+		tmp |= SDHCI_CDNS_HRS06_TUNE_UP;
-+		writel(tmp, reg);
-+
-+		ret = readl_poll_timeout(reg, tmp,
-+					 !(tmp & SDHCI_CDNS_HRS06_TUNE_UP), 0);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * In SD mode, software must not use the hardware tuning and instead perform
-+ * an almost identical procedure to eMMC.
-+ */
-+static int sdhci_cdns_execute_tuning(struct mci_host *host, u32 opcode)
-+{
-+	int cur_streak = 0;
-+	int max_streak = 0;
-+	int end_of_streak = 0;
-+	int i;
-+	int ret;
-+
-+	/*
-+	 * Do not execute tuning for UHS_SDR50 or UHS_DDR50.
-+	 * The delay is set by probe, based on the DT properties.
-+	 */
-+	if (host->ios.timing != MMC_TIMING_MMC_HS200 &&
-+	    host->ios.timing != MMC_TIMING_UHS_SDR104) {
-+		dev_dbg(host->hw_dev, "Tuning skipped (timing: %d)\n",
-+			host->ios.timing);
-+		return 0;
-+	}
-+
-+	for (i = 0; i < SDHCI_CDNS_MAX_TUNING_LOOP; i++) {
-+		if (sdhci_cdns_set_tune_val(host, i) ||
-+		    mmc_send_tuning(host->mci, opcode)) { /* bad */
-+			cur_streak = 0;
-+		} else { /* good */
-+			cur_streak++;
-+			if (cur_streak > max_streak) {
-+				max_streak = cur_streak;
-+				end_of_streak = i;
-+			}
-+		}
-+	}
-+
-+	if (!max_streak) {
-+		dev_err(host->hw_dev, "no tuning point found\n");
-+		return -EIO;
-+	}
-+
-+	ret = sdhci_cdns_set_tune_val(host, end_of_streak - max_streak / 2);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+}
-+
-+static void sdhci_cdns_set_uhs_signaling(struct mci_host *host,
-+					 unsigned int timing)
-+{
-+	struct sdhci_cdns_priv *priv = sdhci_cdns_priv(host);
-+	u32 mode;
-+
-+	switch (timing) {
-+	case MMC_TIMING_MMC_HS:
-+		mode = SDHCI_CDNS_HRS06_MODE_MMC_SDR;
-+		break;
-+	case MMC_TIMING_MMC_DDR52:
-+		mode = SDHCI_CDNS_HRS06_MODE_MMC_DDR;
-+		break;
-+	case MMC_TIMING_MMC_HS200:
-+		mode = SDHCI_CDNS_HRS06_MODE_MMC_HS200;
-+		break;
-+	case MMC_TIMING_MMC_HS400:
-+		if (priv->enhanced_strobe)
-+			mode = SDHCI_CDNS_HRS06_MODE_MMC_HS400ES;
-+		else
-+			mode = SDHCI_CDNS_HRS06_MODE_MMC_HS400;
-+		break;
-+	default:
-+		mode = SDHCI_CDNS_HRS06_MODE_SD;
-+		break;
-+	}
-+
-+	sdhci_cdns_set_emmc_mode(priv, mode);
-+
-+	/* For SD, fall back to the default handler */
-+	if (mode == SDHCI_CDNS_HRS06_MODE_SD)
-+		sdhci_set_uhs_signaling(&priv->sdhci, timing);
-+
-+	/* For host controller V6, set SDHCI and PHY registers for UHS signaling */
-+	if (priv->sdhci.version >= SDHCI_SPEC_420)
-+		sdhci_cdns6_phy_adj(host, timing);
-+}
-+
-+static const struct mci_ops sdhci_cdns_ops = {
-+	.set_ios = sdhci_cdns_set_ios,
-+	.init = sdhci_cdns_init,
-+	.send_cmd = sdhci_cdns_send_cmd,
-+	.set_uhs_signaling = sdhci_cdns_set_uhs_signaling,
-+};
-+
-+static const struct sdhci_cdns_drv_data sdhci_cdns6_agilex5_drv_data = {
-+	.ops = &sdhci_cdns_ops,
-+};
-+
-+static const struct sdhci_cdns_drv_data sdhci_cdns4_drv_data = {
-+	.ops = &sdhci_cdns_ops,
-+};
-+
-+static int sdhci_cdns4_phy_probe(struct device *dev,
-+				 struct sdhci_cdns_priv *priv)
-+{
-+	sdhci_cdns_phy_param_parse(dev->of_node, priv);
-+
-+	return sdhci_cdns_phy_init(priv);
-+}
-+
-+static struct clk **sdhci_cdns_enable_clocks(struct device *dev, bool is_sd4hc)
-+{
-+	struct clk **clks = NULL;
-+
-+	if (is_sd4hc) {
-+		/* For SDHCI V4 controllers, enable only the default clock */
-+		clks = xzalloc(sizeof(struct clk *));
-+		clks[MAIN_CLOCK_INDEX] = clk_get_enabled(dev, NULL);
-+		if (IS_ERR(clks[MAIN_CLOCK_INDEX])) {
-+			dev_err(dev, "Failed to get/enable clock\n");
-+			return ERR_CAST(clks[MAIN_CLOCK_INDEX]);
-+		}
-+	} else {
-+		clks = xzalloc(sizeof(struct clk *) * 2);
-+
-+		/* Enable main clock ("biu") */
-+		clks[MAIN_CLOCK_INDEX] = clk_get_enabled(dev, "biu");
-+		if (IS_ERR(clks[MAIN_CLOCK_INDEX])) {
-+			dev_err(dev, "%s: request of Main clock failed (%ld)\n",
-+				__func__, PTR_ERR(clks[MAIN_CLOCK_INDEX]));
-+			return ERR_CAST(clks[MAIN_CLOCK_INDEX]);
-+		}
-+
-+		/* Enable SD master clock ("ciu") */
-+		clks[SD_MASTER_CLOCK_INDEX] = clk_get_enabled(dev, "ciu");
-+		if (IS_ERR(clks[SD_MASTER_CLOCK_INDEX])) {
-+			dev_err(dev,
-+				"%s: request of SD master clock failed (%ld)\n",
-+				__func__, PTR_ERR(clks[SD_MASTER_CLOCK_INDEX]));
-+			return ERR_CAST(clks[SD_MASTER_CLOCK_INDEX]);
-+		}
-+	}
-+	return clks;
-+}
-+
-+static int sdhci_cdns_probe(struct device *dev)
-+{
-+	struct sdhci_cdns_priv *priv;
-+	struct mci_host *mci;
-+	struct clk **clks;
-+	struct resource *iores;
-+	unsigned int nr_phy_params;
-+	int ret;
-+	bool is_sd4hc = of_device_is_compatible(dev->device_node, "cdns,sd4hc");
-+
-+	priv = xzalloc(sizeof(*priv));
-+	mci = &priv->mci;
-+
-+	priv->rst = reset_control_get(dev, "sdhc-reset");
-+	if (IS_ERR(priv->rst)) {
-+		dev_err(dev, "Invalid reset line 'sdhc-reset'.\n");
-+		return PTR_ERR(priv->rst);
-+	}
-+
-+	priv->softphy_rst = reset_control_get(dev, "softphy-reset");
-+	if (IS_ERR(priv->softphy_rst)) {
-+		dev_err(dev, "Invalid reset line 'softphy-reset'.\n");
-+		return PTR_ERR(priv->softphy_rst);
-+	}
-+
-+	priv->sdmmc_ocp_rst = reset_control_get(dev, "sdmmc-ocp");
-+	if (IS_ERR(priv->sdmmc_ocp_rst)) {
-+		dev_err(dev, "Invalid reset line 'sdmmc-ocp-reset'.\n");
-+		return PTR_ERR(priv->sdmmc_ocp_rst);
-+	}
-+	reset_control_assert(priv->rst);
-+	reset_control_deassert(priv->rst);
-+
-+	reset_control_assert(priv->softphy_rst);
-+	reset_control_deassert(priv->softphy_rst);
-+
-+	reset_control_assert(priv->sdmmc_ocp_rst);
-+	reset_control_deassert(priv->sdmmc_ocp_rst);
-+
-+	clks = sdhci_cdns_enable_clocks(dev, is_sd4hc);
-+	if (IS_ERR(clks)) {
-+		dev_err(dev, "Failed to enable controller clocks: %ld\n", PTR_ERR(clks));
-+		return PTR_ERR(clks);
-+	}
-+
-+	iores = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(iores))
-+		return PTR_ERR(iores);
-+
-+	mci->ops = sdhci_cdns_ops;
-+	mci->hw_dev = dev;
-+
-+	nr_phy_params = sdhci_cdns_phy_param_count(dev->of_node);
-+
-+	priv->biu_clk = clks[MAIN_CLOCK_INDEX];
-+
-+	priv->nr_phy_params = nr_phy_params;
-+	priv->hrs_addr = IOMEM(iores->start);
-+	priv->enhanced_strobe = false;
-+	priv->sdhci.base = IOMEM(iores->start + SDHCI_CDNS_SRS_BASE);
-+	priv->sdhci.mci = mci;
-+	priv->sdhci.max_clk = clk_get_rate(priv->biu_clk);
-+	priv->sdhci.quirks2 = SDHCI_QUIRK2_BROKEN_HS200;
-+
-+	dev->priv = priv;
-+
-+	priv->mci.f_max = clk_get_rate(priv->biu_clk);
-+	mci_of_parse(mci);
-+	priv->mci.f_min = priv->mci.f_max / SDHCI_MAX_DIV_SPEC_300;
-+
-+	priv->mci.voltages = MMC_VDD_32_33 | MMC_VDD_33_34;
-+	priv->mci.host_caps = MMC_CAP_4_BIT_DATA | MMC_CAP_8_BIT_DATA;
-+	priv->mci.host_caps |= MMC_CAP_MMC_HIGHSPEED_52MHZ;
-+	if (is_sd4hc) {
-+		ret = sdhci_cdns4_phy_probe(dev, priv);
-+	} else {
-+		priv->ciu_clk = clks[SD_MASTER_CLOCK_INDEX];
-+		ret = sdhci_cdns6_phy_probe(mci);
-+	}
-+	if (ret)
-+		goto disable_clk;
-+
-+	if (IS_ENABLED(CONFIG_MCI_TUNING))
-+		mci->ops.execute_tuning = sdhci_cdns_execute_tuning;
-+
-+	ret = sdhci_setup_host(&priv->sdhci);
-+	if (ret)
-+		goto disable_clk;
-+
-+	if (priv->sdhci.caps & SDHCI_CAN_64BIT_V4) {
-+		dma_set_mask(dev, DMA_BIT_MASK(40));
-+		dev_dbg(priv->mci.hw_dev, "set DMA mask to 40-bit\n");
-+	} else {
-+		dma_set_mask(dev, DMA_BIT_MASK(32));
-+		dev_dbg(priv->mci.hw_dev, "set DMA mask to 32-bit\n");
-+	}
-+
-+	dev_dbg(priv->mci.hw_dev, "host controller version: %u\n",
-+		priv->sdhci.version);
-+
-+	ret = mci_register(priv->sdhci.mci);
-+	if (ret)
-+		return ret;
-+
-+	return 0;
-+
-+disable_clk:
-+	clk_disable_unprepare(priv->biu_clk);
-+
-+	return ret;
-+}
-+
-+static __maybe_unused struct of_device_id sdhci_cdns_match[] = {
-+	{
-+		.compatible = "cdns,sd4hc",
-+		.data = &sdhci_cdns4_drv_data,
-+	},
-+	{
-+		.compatible = "altr,agilex5-sd6hc",
-+		.data = &sdhci_cdns6_agilex5_drv_data,
-+	},
-+	{ /* sentinel */ }
-+};
-+
-+static struct driver sdhci_cdns_driver = {
-+	.name = "sdhci-cdns",
-+	.of_compatible = DRV_OF_COMPAT(sdhci_cdns_match),
-+	.probe = sdhci_cdns_probe,
-+};
-+device_platform_driver(sdhci_cdns_driver);
-diff --git a/drivers/mci/cadence-sdhci.h b/drivers/mci/cadence-sdhci.h
-new file mode 100644
-index 0000000000..0352dc0be2
---- /dev/null
-+++ b/drivers/mci/cadence-sdhci.h
-@@ -0,0 +1,118 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/*
-+ * Copyright (C) 2016 Socionext Inc.
-+ *   Author: Masahiro Yamada <yamada.masahiro@socionext.com>
-+ */
-+
-+#ifndef SDHCI_CADENCE_H_
-+#define SDHCI_CADENCE_H_
-+
-+#include <common.h>
-+#include <clock.h>
-+#include <linux/clk.h>
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+#include <linux/iopoll.h>
-+#include <linux/reset.h>
-+
-+#include "sdhci.h"
-+
-+/* HRS - Host Register Set (specific to Cadence) */
-+#define SDHCI_CDNS_HRS04	0x10		/* PHY access port */
-+#define SDHCI_CDNS_HRS05        0x14		/* PHY data access port */
-+
-+/*
-+ * The tuned val register is 6 bit-wide, but not the whole of the range is
-+ * available. The range 0-42 seems to be available (then 43 wraps around to 0)
-+ * but I am not quite sure if it is official.  Use only 0 to 39 for safety.
-+ */
-+#define SDHCI_CDNS_MAX_TUNING_LOOP	40
-+
-+struct sdhci_cdns_drv_data {
-+	const struct mci_ops *ops;
-+	unsigned int quirks;
-+	unsigned int quirks2;
-+};
-+
-+/**
-+ * struct sdhci_cdns4_phy_param - PHY parameter/address pair
-+ * @addr: PHY register address.
-+ * @data: Value to write to the PHY register.
-+ *
-+ * Used for passing a list of PHY configuration parameters to the
-+ * Cadence SDHCI V4 controller.
-+ */
-+struct sdhci_cdns4_phy_param {
-+	u8 addr;
-+	u8 data;
-+};
-+
-+/**
-+ * struct sdhci_cdns_priv - Cadence SDHCI private controller data
-+ * @hrs_addr: Base address of Cadence Host Register Set (HRS) registers.
-+ * @ctl_addr: Base address for write control registers.
-+ *            Used only for "amd,pensando-elba-sd4hc" compatible controllers
-+ *            to enable byte-lane writes.
-+ * @wrlock: Spinlock for protecting register writes (Elba only).
-+ * @enhanced_strobe: Flag indicating if Enhanced Strobe (HS400ES) is enabled.
-+ * @priv_writel: Optional SoC-specific write function for register access.
-+ *               Used for Elba to ensure correct byte-lane enable.
-+ * @rst_hw: Hardware reset control for the controller.
-+ * @ciu_clk: Card Interface Unit (CIU) clock handle.
-+ *           Used only for V6 (SDHCI spec >= 4.20) controllers.
-+ * @nr_phy_params: Number of PHY parameter entries parsed from DT (V4 only).
-+ * @phy_params: Array of PHY parameter/address pairs for PHY initialization (V4 only).
-+ */
-+struct sdhci_cdns_priv {
-+	struct mci_host mci;
-+	struct sdhci sdhci;
-+	struct reset_control *rst;
-+	struct reset_control *softphy_rst;
-+	struct reset_control *sdmmc_ocp_rst;
-+	void __iomem *hrs_addr;
-+	void __iomem *ctl_addr; /* write control */
-+	bool enhanced_strobe;
-+	struct clk *biu_clk; /* Card Interface Unit clock */
-+	struct clk *ciu_clk; /* Card Interface Unit clock */
-+	unsigned int nr_phy_params;
-+	struct sdhci_cdns4_phy_param phy_params[];
-+};
-+
-+/*
-+ * sdhci_cdns_priv - Helper to retrieve Cadence private data from sdhci_host
-+ * @host: Pointer to struct sdhci_host.
-+ *
-+ * Returns: Pointer to struct sdhci_cdns_priv.
-+ */
-+static inline void *sdhci_cdns_priv(struct mci_host *host)
-+{
-+	return host->hw_dev->priv;
-+}
-+
-+/**
-+ * sdhci_cdns6_phy_probe - Initialize the Cadence PHY using device tree.
-+ * @host: Pointer to struct sdhci_host.
-+ *
-+ * Returns 0 on success or a negative error code.
-+ */
-+int sdhci_cdns6_phy_probe(struct mci_host *host);
-+
-+/**
-+ * sdhci_cdns6_phy_adj - Program PHY registers for a specific timing mode.
-+ * @host: Pointer to struct sdhci_host.
-+ * @timing: MMC timing mode (MMC_TIMING_*).
-+ *
-+ * Returns 0 on success or a negative error code.
-+ */
-+int sdhci_cdns6_phy_adj(struct mci_host *host, unsigned char timing);
-+
-+/**
-+ * sdhci_cdns6_set_tune_val - Set the PHY tuning value.
-+ * @host: Pointer to struct sdhci_host.
-+ * @val: Tuning value to program.
-+ *
-+ * Returns 0 on success or a negative error code.
-+ */
-+int sdhci_cdns6_set_tune_val(struct mci_host *host, unsigned int val);
-+
-+#endif // SDHCI_CADENCE_H_
-diff --git a/drivers/mci/cadence-sdhci6.c b/drivers/mci/cadence-sdhci6.c
-new file mode 100644
-index 0000000000..031c589f78
---- /dev/null
-+++ b/drivers/mci/cadence-sdhci6.c
-@@ -0,0 +1,373 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * PHY support for Cadence version 6 SDHCI
-+ *
-+ * Copyright (C) 2025 Altera Corporation
-+ *   Author: Tanmay Kathpalia <tanmay.kathpalia@altera.com>
-+ */
-+
-+#include "cadence-sdhci.h"
-+
-+/* IO Delay Information */
-+#define SDHCI_CDNS_HRS07			0X1C
-+
-+/* PHY Control and Status */
-+#define SDHCI_CDNS_HRS09			0x24
-+#define   SDHCI_CDNS_HRS09_RDDATA_EN		BIT(16)
-+#define   SDHCI_CDNS_HRS09_RDCMD_EN		BIT(15)
-+#define   SDHCI_CDNS_HRS09_EXTENDED_WR_MODE	BIT(3)
-+#define   SDHCI_CDNS_HRS09_EXTENDED_RD_MODE	BIT(2)
-+#define   SDHCI_CDNS_HRS09_PHY_INIT_COMPLETE	BIT(1)
-+#define   SDHCI_CDNS_HRS09_PHY_SW_RESET		BIT(0)
-+
-+/* SDCLK start point adjustment */
-+#define SDHCI_CDNS_HRS10			0x28
-+
-+/* eMMC Control */
-+#define SDHCI_CDNS_HRS11			0x2C
-+#define   SDHCI_CDNS_HRS11_EMMC_RST		BIT(0)	/* eMMC reset */
-+
-+/* CMD/DAT output delay */
-+#define SDHCI_CDNS_HRS16			0x40
-+
-+/* PHY Special Function Registers */
-+/* DQ timing */
-+#define PHY_DQ_TIMING_REG_ADDR			0x2000
-+
-+/* DQS timing */
-+#define PHY_DQS_TIMING_REG_ADDR			0x2004
-+
-+/* Gate and loopback control */
-+#define PHY_GATE_LPBK_CTRL_REG_ADDR		0x2008
-+
-+/* Master DLL logic */
-+#define PHY_DLL_MASTER_CTRL_REG_ADDR		0x200C
-+
-+/* Slave DLL logic */
-+#define PHY_DLL_SLAVE_CTRL_REG_ADDR			0x2010
-+#define   PHY_DLL_SLAVE_CTRL_REG_READ_DQS_CMD_DELAY	GENMASK(31, 24)
-+#define   PHY_DLL_SLAVE_CTRL_REG_READ_DQS_DELAY		GENMASK(7, 0)
-+
-+/* Global control settings */
-+#define PHY_CTRL_REG_ADDR			0x2080
-+
-+/*
-+ * Supports MMC_TIMING_LEGACY to MMC_TIMING_MMC_HS400 and additionally
-+ * MMC_TIMING_MMC_HS400ES, as defined in include/linux/mmc/host.h.
-+ */
-+#define MAX_TIMING_MODES			12
-+
-+/* Index register configuration arrays for Cadence SDHCI V6 controller and PHY setup */
-+enum sdhci_cdns6_reg_index {
-+	REG_CFG_HRS07 = 0,
-+	REG_CFG_HRS09,
-+	REG_CFG_HRS10,
-+	REG_CFG_HRS16,
-+	REG_CFG_PHY_DQS,
-+	REG_CFG_PHY_GATE_LPBK_CTRL,
-+	REG_CFG_PHY_DLL_MASTER_CTRL,
-+	REG_CFG_PHY_DLL_SLAVE_CTRL,
-+	REG_CFG_PHY_DQ,
-+	REG_CFG_MAX
-+};
-+
-+/**
-+ * struct sdhci_cdns6_ctrl_cfg - Controller/PHY register property and value pair
-+ * @property: Device tree property name for the register configuration
-+ * @value: Value to be programmed into the register
-+ *
-+ * Store register configuration values parsed from the device tree
-+ * for Cadence SDHCI V6 controller and PHY initialization.
-+ */
-+struct sdhci_cdns6_ctrl_cfg {
-+	const char *property;
-+	u32 value;
-+};
-+
-+static const struct sdhci_cdns6_ctrl_cfg reg_cfg[REG_CFG_MAX][MAX_TIMING_MODES] = {
-+	/* [0] SD Host Controller: HRS07 */
-+	{
-+		{ "cdns,ctrl-hrs07-timing-delay-default", 0x00090000 }, // MMC legacy or SD default
-+		{ "cdns,ctrl-hrs07-timing-delay-mmc-hs", 0x00090000 }, // MMC High Speed
-+		{ "cdns,ctrl-hrs07-timing-delay-sd-hs", 0x000A0001 }, // SD High Speed
-+		{ "cdns,ctrl-hrs07-timing-delay-sd-sdr12", 0x000A0001 }, // SD UHS1 SDR12
-+		{ "cdns,ctrl-hrs07-timing-delay-sd-sdr25", 0x000A0001 }, // SD UHS1 SDR25
-+		{ "cdns,ctrl-hrs07-timing-delay-sd-sdr50", 0x00090005 }, // SD UHS1 SDR50
-+		{ "cdns,ctrl-hrs07-timing-delay-sd-sdr104", 0x00090005 }, // SD UHS1 SDR104
-+		{ "cdns,ctrl-hrs07-timing-delay-sd-ddr50", 0x00090001 }, // SD UHS1 DDR50
-+		{ "cdns,ctrl-hrs07-timing-delay-mmc-ddr52", 0x00090001 }, // MMC DDR52
-+		{ "cdns,ctrl-hrs07-timing-delay-mmc-hs200", 0x00090000 }, // MMC HS200
-+		{ "cdns,ctrl-hrs07-timing-delay-mmc-hs400", 0x00090001 }, // MMC HS400
-+		{ "cdns,ctrl-hrs07-timing-delay-mmc-hs400es", 0x00090001 }, // MMC HS400ES
-+	},
-+	/* [1] SD Host Controller: HRS09 */
-+	{
-+		{ "cdns,ctrl-hrs09-timing-delay-default", 0x0001800C },
-+		{ "cdns,ctrl-hrs09-timing-delay-mmc-hs", 0x0001800C },
-+		{ "cdns,ctrl-hrs09-timing-delay-sd-hs", 0x0001800C },
-+		{ "cdns,ctrl-hrs09-timing-delay-sd-sdr12", 0x0001800C },
-+		{ "cdns,ctrl-hrs09-timing-delay-sd-sdr25", 0x0001800C },
-+		{ "cdns,ctrl-hrs09-timing-delay-sd-sdr50", 0xf1c1800c },
-+		{ "cdns,ctrl-hrs09-timing-delay-sd-sdr104", 0xf1c18000 },
-+		{ "cdns,ctrl-hrs09-timing-delay-sd-ddr50", 0x0001800C },
-+		{ "cdns,ctrl-hrs09-timing-delay-mmc-ddr52", 0x0001800C },
-+		{ "cdns,ctrl-hrs09-timing-delay-mmc-hs200", 0xf1c18000 },
-+		{ "cdns,ctrl-hrs09-timing-delay-mmc-hs400", 0xf1c18000 },
-+		{ "cdns,ctrl-hrs09-timing-delay-mmc-hs400es", 0xf1c18000 },
-+	},
-+	/* [2] SD Host Controller: HRS10 */
-+	{
-+		{ "cdns,ctrl-hrs10-timing-delay-default", 0x00020000 },
-+		{ "cdns,ctrl-hrs10-timing-delay-mmc-hs", 0x00020000 },
-+		{ "cdns,ctrl-hrs10-timing-delay-sd-hs", 0x00030000 },
-+		{ "cdns,ctrl-hrs10-timing-delay-sd-sdr12", 0x00030000 },
-+		{ "cdns,ctrl-hrs10-timing-delay-sd-sdr25", 0x00030000 },
-+		{ "cdns,ctrl-hrs10-timing-delay-sd-sdr50", 0x00020000 },
-+		{ "cdns,ctrl-hrs10-timing-delay-sd-sdr104", 0x00090000 },
-+		{ "cdns,ctrl-hrs10-timing-delay-sd-ddr50", 0x00020000 },
-+		{ "cdns,ctrl-hrs10-timing-delay-mmc-ddr52", 0x00020000 },
-+		{ "cdns,ctrl-hrs10-timing-delay-mmc-hs200", 0x00090000 },
-+		{ "cdns,ctrl-hrs10-timing-delay-mmc-hs400", 0x00080000 },
-+		{ "cdns,ctrl-hrs10-timing-delay-mmc-hs400es", 0x00080000 },
-+	},
-+	/* [3] SD Host Controller: HRS16 */
-+	{
-+		{ "cdns,ctrl-hrs16-timing-delay-default", 0x00000000 },
-+		{ "cdns,ctrl-hrs16-timing-delay-mmc-hs", 0x0000010a },
-+		{ "cdns,ctrl-hrs16-timing-delay-sd-hs", 0x00000101 },
-+		{ "cdns,ctrl-hrs16-timing-delay-sd-sdr12", 0x00000000 },
-+		{ "cdns,ctrl-hrs16-timing-delay-sd-sdr25", 0x00000101 },
-+		{ "cdns,ctrl-hrs16-timing-delay-sd-sdr50", 0x00000101 },
-+		{ "cdns,ctrl-hrs16-timing-delay-sd-sdr104", 0x00000101 },
-+		{ "cdns,ctrl-hrs16-timing-delay-sd-ddr50", 0x11000000 },
-+		{ "cdns,ctrl-hrs16-timing-delay-mmc-ddr52", 0x11000001 },
-+		{ "cdns,ctrl-hrs16-timing-delay-mmc-hs200", 0x00007777 },
-+		{ "cdns,ctrl-hrs16-timing-delay-mmc-hs400", 0x11000001 },
-+		{ "cdns,ctrl-hrs16-timing-delay-mmc-hs400es", 0x11000001 },
-+	},
-+	/* [4] ComboPHY: DQS timing */
-+	{
-+		{ "cdns,phy-dqs-timing-delay-default", 0x00780000 },
-+		{ "cdns,phy-dqs-timing-delay-mmc-hs", 0x00780000 },
-+		{ "cdns,phy-dqs-timing-delay-sd-hs", 0x00780001 },
-+		{ "cdns,phy-dqs-timing-delay-sd-sdr12", 0x00780000 },
-+		{ "cdns,phy-dqs-timing-delay-sd-sdr25", 0x00780001 },
-+		{ "cdns,phy-dqs-timing-delay-sd-sdr50", 0x00780004 },
-+		{ "cdns,phy-dqs-timing-delay-sd-sdr104", 0x00780004 },
-+		{ "cdns,phy-dqs-timing-delay-sd-ddr50", 0x00780004 },
-+		{ "cdns,phy-dqs-timing-delay-mmc-ddr52", 0x00780001 },
-+		{ "cdns,phy-dqs-timing-delay-mmc-hs200", 0x00780004 },
-+		{ "cdns,phy-dqs-timing-delay-mmc-hs400", 0x00680004 },
-+		{ "cdns,phy-dqs-timing-delay-mmc-hs400es", 0x00680004 },
-+	},
-+	/* [5] ComboPHY: PHY Gate Loopback Control */
-+	{
-+		{ "cdns,phy-gate-lpbk-ctrl-delay-default", 0x81a40040 },
-+		{ "cdns,phy-gate-lpbk-ctrl-delay-mmc-hs", 0x81a40040 },
-+		{ "cdns,phy-gate-lpbk-ctrl-delay-sd-hs", 0x81a40040 },
-+		{ "cdns,phy-gate-lpbk-ctrl-delay-sd-sdr12", 0x81a40040 },
-+		{ "cdns,phy-gate-lpbk-ctrl-delay-sd-sdr25", 0x81a40040 },
-+		{ "cdns,phy-gate-lpbk-ctrl-delay-sd-sdr50", 0x80a40040 },
-+		{ "cdns,phy-gate-lpbk-ctrl-delay-sd-sdr104", 0x81a40040 },
-+		{ "cdns,phy-gate-lpbk-ctrl-delay-sd-ddr50", 0x80a40040 },
-+		{ "cdns,phy-gate-lpbk-ctrl-delay-mmc-ddr52", 0x81a40040 },
-+		{ "cdns,phy-gate-lpbk-ctrl-delay-mmc-hs200", 0x81a40040 },
-+		{ "cdns,phy-gate-lpbk-ctrl-delay-mmc-hs400", 0x81fc0040 },
-+		{ "cdns,phy-gate-lpbk-ctrl-delay-mmc-hs400es", 0x81fc0040 },
-+	},
-+	/* [6] ComboPHY: PHY DLL Master Control */
-+	{
-+		{ "cdns,phy-dll-master-ctrl-default", 0x00800004 },
-+		{ "cdns,phy-dll-master-ctrl-mmc-hs", 0x00800004 },
-+		{ "cdns,phy-dll-master-ctrl-sd-hs", 0x00800004 },
-+		{ "cdns,phy-dll-master-ctrl-sd-sdr12", 0x00800004 },
-+		{ "cdns,phy-dll-master-ctrl-sd-sdr25", 0x00800004 },
-+		{ "cdns,phy-dll-master-ctrl-sd-sdr50", 0x00800004 },
-+		{ "cdns,phy-dll-master-ctrl-sd-sdr104", 0x00204d00 },
-+		{ "cdns,phy-dll-master-ctrl-sd-ddr50", 0x00800000 },
-+		{ "cdns,phy-dll-master-ctrl-mmc-ddr52", 0x00800000 },
-+		{ "cdns,phy-dll-master-ctrl-mmc-hs200", 0x00000004 },
-+		{ "cdns,phy-dll-master-ctrl-mmc-hs400", 0x00000004 },
-+		{ "cdns,phy-dll-master-ctrl-mmc-hs400es", 0x00000004 },
-+	},
-+	/* [7] ComboPHY: PHY DLL Slave Control */
-+	{
-+		{ "cdns,phy-dll-slave-ctrl-default", 0x00000000 },
-+		{ "cdns,phy-dll-slave-ctrl-mmc-hs", 0x00000000 },
-+		{ "cdns,phy-dll-slave-ctrl-sd-hs", 0x00000000 },
-+		{ "cdns,phy-dll-slave-ctrl-sd-sdr12", 0x00000000 },
-+		{ "cdns,phy-dll-slave-ctrl-sd-sdr25", 0x00000000 },
-+		{ "cdns,phy-dll-slave-ctrl-sd-sdr50", 0x04000004 },
-+		{ "cdns,phy-dll-slave-ctrl-sd-sdr104", 0x04000004 },
-+		{ "cdns,phy-dll-slave-ctrl-sd-ddr50", 0x00000000 },
-+		{ "cdns,phy-dll-slave-ctrl-mmc-ddr52", 0x00000000 },
-+		{ "cdns,phy-dll-slave-ctrl-mmc-hs200", 0x004d4d00 },
-+		{ "cdns,phy-dll-slave-ctrl-mmc-hs400", 0x004d4b40 },
-+		{ "cdns,phy-dll-slave-ctrl-mmc-hs400es", 0x004d4b40 },
-+	},
-+	/* [8] ComboPHY: DQ timing delay */
-+	{
-+		{ "cdns,phy-dq-timing-delay-default", 0x28000001 },
-+		{ "cdns,phy-dq-timing-delay-mmc-hs", 0x00000001 },
-+		{ "cdns,phy-dq-timing-delay-sd-hs", 0x10000001 },
-+		{ "cdns,phy-dq-timing-delay-sd-sdr12", 0x28000001 },
-+		{ "cdns,phy-dq-timing-delay-sd-sdr25", 0x10000001 },
-+		{ "cdns,phy-dq-timing-delay-sd-sdr50", 0x38000001 },
-+		{ "cdns,phy-dq-timing-delay-sd-sdr104", 0x38000001 },
-+		{ "cdns,phy-dq-timing-delay-sd-ddr50", 0x38000001 },
-+		{ "cdns,phy-dq-timing-delay-mmc-ddr52", 0x10000001 },
-+		{ "cdns,phy-dq-timing-delay-mmc-hs200", 0x10000001 },
-+		{ "cdns,phy-dq-timing-delay-mmc-hs400", 0x10000001 },
-+		{ "cdns,phy-dq-timing-delay-mmc-hs400es", 0x10000001 },
-+	}
-+};
-+
-+static unsigned int sdhci_cdns6_read_phy_reg(struct sdhci_cdns_priv *priv,
-+					     const u32 address)
-+{
-+	writel(address, priv->hrs_addr + SDHCI_CDNS_HRS04);
-+	return readl(priv->hrs_addr + SDHCI_CDNS_HRS05);
-+}
-+
-+static void sdhci_cdns6_write_phy_reg(struct sdhci_cdns_priv *priv,
-+				      const u32 address, const u32 value)
-+{
-+	writel(address, priv->hrs_addr + SDHCI_CDNS_HRS04);
-+	writel(value, priv->hrs_addr + SDHCI_CDNS_HRS05);
-+}
-+
-+static int sdhci_cdns6_reset_phy_dll(struct mci_host *host, unsigned int reset)
-+{
-+	struct sdhci_cdns_priv *priv = sdhci_cdns_priv(host);
-+	void __iomem *reg = priv->hrs_addr + SDHCI_CDNS_HRS09;
-+	u32 tmp;
-+	int ret = 0;
-+
-+	tmp = readl(reg);
-+	/* Switch On DLL Reset */
-+	tmp &= ~SDHCI_CDNS_HRS09_PHY_SW_RESET;
-+
-+	if (!reset)
-+		/* Switch Off DLL Reset */
-+		tmp |= SDHCI_CDNS_HRS09_PHY_SW_RESET;
-+
-+	writel(tmp, reg);
-+
-+	/* After reset, wait until HRS09.PHY_INIT_COMPLETE is set to 1 within 3000us*/
-+	if (!reset) {
-+		ret = readl_poll_timeout(
-+			reg, tmp, (tmp & SDHCI_CDNS_HRS09_PHY_INIT_COMPLETE),
-+			3000);
-+	}
-+
-+	return ret;
-+}
-+
-+int sdhci_cdns6_phy_adj(struct mci_host *host, unsigned char timing)
-+{
-+	struct sdhci_cdns_priv *priv = sdhci_cdns_priv(host);
-+	struct device_node *np = host->hw_dev->of_node;
-+	struct sdhci_cdns6_ctrl_cfg timing_cfg[REG_CFG_MAX];
-+	u32 dt_value;
-+	void __iomem *reg;
-+	u32 tmp;
-+	int i;
-+
-+	if (timing >= MAX_TIMING_MODES) {
-+		pr_err("Invalid timing mode: %d\n", timing);
-+		return -EINVAL;
-+	}
-+
-+	/* Override values from device tree */
-+	for (i = 0; i < REG_CFG_MAX; i++) {
-+		const char *prop = reg_cfg[i][timing].property;
-+
-+		if (!of_property_read_u32(np, prop, &dt_value)) {
-+			timing_cfg[i].value = dt_value;
-+			pr_debug("Overriding %s to 0x%08x from DT\n", prop,
-+				 dt_value);
-+		} else {
-+			timing_cfg[i].value = reg_cfg[i][timing].value;
-+		}
-+	}
-+
-+	/* Switch On the DLL Reset */
-+	sdhci_cdns6_reset_phy_dll(host, true);
-+
-+	sdhci_cdns6_write_phy_reg(priv, PHY_DQS_TIMING_REG_ADDR,
-+				  timing_cfg[REG_CFG_PHY_DQS].value);
-+	sdhci_cdns6_write_phy_reg(priv, PHY_GATE_LPBK_CTRL_REG_ADDR,
-+				  timing_cfg[REG_CFG_PHY_GATE_LPBK_CTRL].value);
-+	sdhci_cdns6_write_phy_reg(
-+		priv, PHY_DLL_MASTER_CTRL_REG_ADDR,
-+		timing_cfg[REG_CFG_PHY_DLL_MASTER_CTRL].value);
-+	sdhci_cdns6_write_phy_reg(priv, PHY_DLL_SLAVE_CTRL_REG_ADDR,
-+				  timing_cfg[REG_CFG_PHY_DLL_SLAVE_CTRL].value);
-+
-+	/* Switch Off the DLL Reset */
-+	sdhci_cdns6_reset_phy_dll(host, false);
-+
-+	/* Set PHY DQ TIMING control register */
-+	sdhci_cdns6_write_phy_reg(priv, PHY_DQ_TIMING_REG_ADDR,
-+				  timing_cfg[REG_CFG_PHY_DQ].value);
-+
-+	/* Set HRS09 register */
-+	reg = priv->hrs_addr + SDHCI_CDNS_HRS09;
-+	tmp = readl(reg);
-+	tmp &= ~(SDHCI_CDNS_HRS09_EXTENDED_WR_MODE |
-+		 SDHCI_CDNS_HRS09_EXTENDED_RD_MODE |
-+		 SDHCI_CDNS_HRS09_RDDATA_EN | SDHCI_CDNS_HRS09_RDCMD_EN);
-+	tmp |= timing_cfg[REG_CFG_HRS09].value;
-+	writel(tmp, reg);
-+
-+	/* Set HRS10 register */
-+	writel(timing_cfg[REG_CFG_HRS10].value,
-+	       priv->hrs_addr + SDHCI_CDNS_HRS10);
-+
-+	/* Set HRS16 register */
-+	writel(timing_cfg[REG_CFG_HRS16].value,
-+	       priv->hrs_addr + SDHCI_CDNS_HRS16);
-+
-+	/* Set HRS07 register */
-+	writel(timing_cfg[REG_CFG_HRS07].value,
-+	       priv->hrs_addr + SDHCI_CDNS_HRS07);
-+
-+	return 0;
-+}
-+
-+int sdhci_cdns6_set_tune_val(struct mci_host *host, unsigned int val)
-+{
-+	struct sdhci_cdns_priv *priv = sdhci_cdns_priv(host);
-+	u32 tmp, tuneval;
-+
-+	/**
-+	 * Scale the tuning tap (0..39) to the 8-bit PHY DLL delay field (0..255),
-+	 * as required by the read_dqs_cmd_delay and read_dqs_delay fields.
-+	 * This ensures each tuning step maps linearly to the hardware delay range.
-+	 */
-+#define SDHCI_CDNS6_PHY_DLL_FIELD_SIZE 256
-+
-+	tuneval = (val * SDHCI_CDNS6_PHY_DLL_FIELD_SIZE) /
-+		  SDHCI_CDNS_MAX_TUNING_LOOP;
-+
-+	tmp = sdhci_cdns6_read_phy_reg(priv, PHY_DLL_SLAVE_CTRL_REG_ADDR);
-+	tmp &= ~(PHY_DLL_SLAVE_CTRL_REG_READ_DQS_CMD_DELAY |
-+		 PHY_DLL_SLAVE_CTRL_REG_READ_DQS_DELAY);
-+	tmp |= FIELD_PREP(PHY_DLL_SLAVE_CTRL_REG_READ_DQS_CMD_DELAY, tuneval) |
-+	       FIELD_PREP(PHY_DLL_SLAVE_CTRL_REG_READ_DQS_DELAY, tuneval);
-+
-+	/* Switch On the DLL Reset */
-+	sdhci_cdns6_reset_phy_dll(host, true);
-+
-+	sdhci_cdns6_write_phy_reg(priv, PHY_DLL_SLAVE_CTRL_REG_ADDR, tmp);
-+
-+	/* Switch Off the DLL Reset */
-+	sdhci_cdns6_reset_phy_dll(host, false);
-+
-+	return 0;
-+}
-+
-+int sdhci_cdns6_phy_probe(struct mci_host *host)
-+{
-+	return sdhci_cdns6_phy_adj(host, MMC_TIMING_LEGACY);
-+}
-
--- 
-2.52.0
-
+--=20
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
