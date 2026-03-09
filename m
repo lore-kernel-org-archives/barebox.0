@@ -1,71 +1,71 @@
-Delivery-date: Mon, 09 Mar 2026 13:05:27 +0100
+Delivery-date: Mon, 09 Mar 2026 13:05:30 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vzZMU-009jlY-2O
+	id 1vzZMX-009jm6-0W
 	for lore@lore.pengutronix.de;
-	Mon, 09 Mar 2026 13:05:27 +0100
+	Mon, 09 Mar 2026 13:05:30 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1vzZMU-0000gc-DQ
-	for lore@pengutronix.de; Mon, 09 Mar 2026 13:05:27 +0100
+	id 1vzZMW-0000i5-1z
+	for lore@pengutronix.de; Mon, 09 Mar 2026 13:05:29 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=pCX3oaAMueXntjdxtFZoO/Ncgo6Y5S4jwO72pDz2/qE=; b=iul2Sf1Pd1/URyijwO0F8zFJB3
-	taEhlJBrrCEF1jaDzQRnk3KJObN88aW8hrWm+a3qbZihXX2jRugl89jKvehSbq62/mKvBsfRE5ZaJ
-	zT89pG12N3xqOLETg8Id8u08Dk1GSgc6jkXfpOk2TqOIKr2g3uHW1edCQpKCC141ptjcHvDpibtbn
-	OutMTQav0TdurpmfOhXFR5gGGkAL3vRxX4FrR6yFxBV3tfk4F//Q2V7SEpe1dxY3ufrP3Vs3SWTMh
-	xiAZtPz5zXTHCiuS8mT1JPPapIWB3z1EgXc05tq7xgjdd7qDLLe26lDCyC0pu3hmfNS96ph64DzF3
-	SyGib9TQ==;
+	bh=UMohRHigBRZdvPAd5m4AFlxEsyQrveGDDA1W0wJ5eEA=; b=28MSoyM2R3Ec4+KNRSZL61hVpg
+	7Z9xhkbVznQ1Gyg4+9FAn5S9bXGqdPWCG5NRwLaDb3T/pnfzA17J5kXGvUku4Fzr0bXBqAjVvHN9N
+	SIauG/LqfWDpEqV3hJQSJ+Rj+L/jkzu9dhR4WslIV3qKDZmaJPG2F+8lAecvAwRE/lSPwkM11VubP
+	+MuNoaXskIshH/u/Em8OT1jL0LcHdsqCsQogb/6PH+dxh2BVsntffPau2/SaZuiXgQV5AVjxN05cv
+	7+yoDhWRGQkONpmB3N+bW/JsWi3Df+55ztV7E2cjNEhZN6bChdQKIc9xWNDTaefXy7+fcHO0beHAk
+	f3DPPfsQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vzZLw-00000007FdK-3DXc;
-	Mon, 09 Mar 2026 12:04:52 +0000
+	id 1vzZLx-00000007Fde-0RTJ;
+	Mon, 09 Mar 2026 12:04:53 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vzZLv-00000007Fbw-1wdG
+	id 1vzZLv-00000007Fbx-1uiO
 	for barebox@bombadil.infradead.org;
 	Mon, 09 Mar 2026 12:04:51 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=pCX3oaAMueXntjdxtFZoO/Ncgo6Y5S4jwO72pDz2/qE=; b=N5WtVyoJQMMNT4AuugKZ4kww+j
-	SZgJrBLW+ImQCO2Bp7GcJdrC8BCL/os5U2z4wJ583n3oTJdhTp4AuW301ezekuW6Z24zZbl/oWq6E
-	ZlF0LYpSucn2W6OvzL/DePRIF28wIiyV2wt0rXNt+VlXia2UlyUsHE4FY6W5VRdcXR56RAninrlNf
-	fbiqncXM7KZnqCOG7Y+CVFehmZffXXmfLh2F+aY++h5yPStltIko1rT9v06ww+ACUpYBq+0whdsix
-	A6c+2F74ZKrAD4T0yhkgPnfo+GpEocV+bFuE3NPOHmzyAnX+v+M64p/Z1mAw/hHEbTl3zEHiqa5Ek
-	AK1+UKQg==;
+	bh=UMohRHigBRZdvPAd5m4AFlxEsyQrveGDDA1W0wJ5eEA=; b=GbVNZE8bOpeOQZeuYuHjjMMfS6
+	IuXEeEjMbiCiR9opWpv7zZkxSvQdbJYuyi0OKOXY3KdO7B57oPIK4ufGht0BnEbUZBLyG1S8GmD2F
+	zG/vL8+MHP5C5e69LGRLXCIQ4j+3dR6xZnPjKL3vVsCefnokZGITDH7CHnP1qmVVSQpFTtozec4bf
+	SHoMTkM5YPP9f6cfDGnd9CzU4/5Q0qARbfqdIilxXg+tOmQa865L9k56I5CzHxR8GjWyzeF9Vv4IC
+	mqf0uEX2UNdat5ZYeZ08gVTRr+qzIyLjzidZ6t16bSuD5RUqETOLmwx+TXiwM58Zb6/OsS1zUPg0g
+	VgINq+9A==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vzZLq-0000000C4MB-3TcG
+	id 1vzZLq-0000000C4MC-3vz0
 	for barebox@lists.infradead.org;
 	Mon, 09 Mar 2026 12:04:50 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1vzZLn-0000K8-5E; Mon, 09 Mar 2026 13:04:43 +0100
+	id 1vzZLn-0000K8-Fk; Mon, 09 Mar 2026 13:04:43 +0100
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 09 Mar 2026 13:04:34 +0100
+Date: Mon, 09 Mar 2026 13:04:36 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260309-v2025-11-0-topic-socfpga-agilex5-sdhci-v2-2-fcc1f327acf8@pengutronix.de>
+Message-Id: <20260309-v2025-11-0-topic-socfpga-agilex5-sdhci-v2-4-fcc1f327acf8@pengutronix.de>
 References: <20260309-v2025-11-0-topic-socfpga-agilex5-sdhci-v2-0-fcc1f327acf8@pengutronix.de>
 In-Reply-To: <20260309-v2025-11-0-topic-socfpga-agilex5-sdhci-v2-0-fcc1f327acf8@pengutronix.de>
 To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260309_120446_985912_7F0D12AA 
-X-CRM114-Status: GOOD (  13.62  )
+X-CRM114-CacheID: sfid-20260309_120447_129542_72C864A5 
+X-CRM114-Status: GOOD (  21.22  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,228 +87,650 @@ X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 2/6] mci: sdhci: add sdhci_send_cmd
+Subject: [PATCH v2 4/6] mci: cadence: remove driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Linux uses a generic sdhci_send_cmd function for most sdhci host
-drivers. Port the v6.18-rc1 version and mix and match with the
-arasan_sdhci_send_cmd function already in barebox.
+There are no users of the current driver in barebox.
+Remove the driver in preparation for an updated driver for the cadence
+SDHCI core in the next patch.
 
-Also add sdhci_dumpregs for debugging errors.
+As the rework is pretty exhausting, it is easier to remove the old one
+and add the new driver in an extra patch. This way the patch is easier
+to read than having an enormous diff between an old and a new driver.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/mci/sdhci.c | 128 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/mci/sdhci.h |  21 +++++++++
- 2 files changed, 149 insertions(+)
+ drivers/mci/Kconfig         |   7 -
+ drivers/mci/cadence-sdhci.c | 602 --------------------------------------------
+ 2 files changed, 609 deletions(-)
 
-diff --git a/drivers/mci/sdhci.c b/drivers/mci/sdhci.c
-index 847c0dc516..371d3e4a4b 100644
---- a/drivers/mci/sdhci.c
-+++ b/drivers/mci/sdhci.c
-@@ -11,6 +11,8 @@
+diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
+index 6736e7421c..c99f29a6db 100644
+--- a/drivers/mci/Kconfig
++++ b/drivers/mci/Kconfig
+@@ -259,13 +259,6 @@ config MCI_STM32_SDMMC2
+ 	  If you have a board based on such a SoC and with a SD/MMC slot,
+ 	  say Y or M here.
  
- #define MAX_TUNING_LOOP 40
+-config MMC_CADENCE_SDHCI
+-	tristate "SDHCI support for the Cadence SD/SDIO/eMMC controller"
+-	select MCI_SDHCI
+-	help
+-	  This selects the Cadence SD/SDIO/eMMC driver.
+-	  If you have a controller with this interface, say Y or M here.
+-
+ endif
  
-+#define DRIVER_NAME "sdhci"
-+
- enum sdhci_reset_reason {
- 	SDHCI_RESET_FOR_INIT,
- 	SDHCI_RESET_FOR_REQUEST_ERROR,
-@@ -25,6 +27,69 @@ static inline struct device *sdhci_dev(struct sdhci *host)
- 	return host->mci ? host->mci->hw_dev : NULL;
- }
- 
-+void sdhci_dumpregs(struct sdhci *sdhci)
-+{
-+	dev_err(sdhci_dev(sdhci), "============ SDHCI REGISTER DUMP ===========\n");
-+
-+	dev_err(sdhci_dev(sdhci), "Sys addr:  0x%08x | Version:  0x%08x\n",
-+		   sdhci_read32(sdhci, SDHCI_DMA_ADDRESS),
-+		   sdhci_read16(sdhci, SDHCI_HOST_VERSION));
-+	dev_err(sdhci_dev(sdhci), "Blk size:  0x%08x | Blk cnt:  0x%08x\n",
-+		   sdhci_read16(sdhci, SDHCI_BLOCK_SIZE),
-+		   sdhci_read16(sdhci, SDHCI_BLOCK_COUNT));
-+	dev_err(sdhci_dev(sdhci), "Argument:  0x%08x | Trn mode: 0x%08x\n",
-+		   sdhci_read32(sdhci, SDHCI_ARGUMENT),
-+		   sdhci_read16(sdhci, SDHCI_TRANSFER_MODE));
-+	dev_err(sdhci_dev(sdhci), "Present:   0x%08x | Host ctl: 0x%08x\n",
-+		   sdhci_read32(sdhci, SDHCI_PRESENT_STATE),
-+		   sdhci_read8(sdhci, SDHCI_HOST_CONTROL));
-+	dev_err(sdhci_dev(sdhci), "Power:     0x%08x | Blk gap:  0x%08x\n",
-+		   sdhci_read8(sdhci, SDHCI_POWER_CONTROL),
-+		   sdhci_read8(sdhci, SDHCI_BLOCK_GAP_CONTROL));
-+	dev_err(sdhci_dev(sdhci), "Wake-up:   0x%08x | Clock:    0x%08x\n",
-+		   sdhci_read8(sdhci, SDHCI_WAKE_UP_CONTROL),
-+		   sdhci_read16(sdhci, SDHCI_CLOCK_CONTROL));
-+	dev_err(sdhci_dev(sdhci), "Timeout:   0x%08x | Int stat: 0x%08x\n",
-+		   sdhci_read8(sdhci, SDHCI_TIMEOUT_CONTROL),
-+		   sdhci_read32(sdhci, SDHCI_INT_STATUS));
-+	dev_err(sdhci_dev(sdhci), "Int enab:  0x%08x | Sig enab: 0x%08x\n",
-+		   sdhci_read32(sdhci, SDHCI_INT_ENABLE),
-+		   sdhci_read32(sdhci, SDHCI_SIGNAL_ENABLE));
-+	dev_err(sdhci_dev(sdhci), "ACmd stat: 0x%08x | Slot int: 0x%08x\n",
-+		   sdhci_read16(sdhci, SDHCI_ACMD12_ERR__HOST_CONTROL2),
-+		   sdhci_read16(sdhci, SDHCI_SLOT_INT_STATUS));
-+	dev_err(sdhci_dev(sdhci), "Caps:      0x%08x | Caps_1:   0x%08x\n",
-+		   sdhci_read32(sdhci, SDHCI_CAPABILITIES),
-+		   sdhci_read32(sdhci, SDHCI_CAPABILITIES_1));
-+	dev_err(sdhci_dev(sdhci), "Cmd:       0x%08x | Max curr: 0x%08x\n",
-+		   sdhci_read16(sdhci, SDHCI_COMMAND),
-+		   sdhci_read32(sdhci, SDHCI_MAX_CURRENT));
-+	dev_err(sdhci_dev(sdhci), "Resp[0]:   0x%08x | Resp[1]:  0x%08x\n",
-+		   sdhci_read32(sdhci, SDHCI_RESPONSE_0),
-+		   sdhci_read32(sdhci, SDHCI_RESPONSE_1));
-+	dev_err(sdhci_dev(sdhci), "Resp[2]:   0x%08x | Resp[3]:  0x%08x\n",
-+		   sdhci_read32(sdhci, SDHCI_RESPONSE_2),
-+		   sdhci_read32(sdhci, SDHCI_RESPONSE_3));
-+	dev_err(sdhci_dev(sdhci), "Host ctl2: 0x%08x\n",
-+		   sdhci_read16(sdhci, SDHCI_HOST_CONTROL2));
-+
-+	if (sdhci->flags & SDHCI_USE_ADMA) {
-+		if (sdhci->flags & SDHCI_USE_64_BIT_DMA) {
-+			dev_err(sdhci_dev(sdhci), "ADMA Err:  0x%08x | ADMA Ptr: 0x%08x%08x\n",
-+				   sdhci_read32(sdhci, SDHCI_ADMA_ERROR),
-+				   sdhci_read32(sdhci, SDHCI_ADMA_ADDRESS_HI),
-+				   sdhci_read32(sdhci, SDHCI_ADMA_ADDRESS));
-+		} else {
-+			dev_err(sdhci_dev(sdhci), "ADMA Err:  0x%08x | ADMA Ptr: 0x%08x\n",
-+				   sdhci_read32(sdhci, SDHCI_ADMA_ERROR),
-+				   sdhci_read32(sdhci, SDHCI_ADMA_ADDRESS));
-+		}
-+	}
-+
-+	dev_err(sdhci_dev(sdhci), "============================================\n");
-+}
-+EXPORT_SYMBOL_GPL(sdhci_dumpregs);
-+
- static void sdhci_reset_for_reason(struct sdhci *host, enum sdhci_reset_reason reason)
- {
- 	if (host->quirks2 & SDHCI_QUIRK2_ISSUE_CMD_DAT_RESET_TOGETHER) {
-@@ -51,6 +116,69 @@ static void sdhci_reset_for_reason(struct sdhci *host, enum sdhci_reset_reason r
- 
- #define sdhci_reset_for(h, r) sdhci_reset_for_reason((h), SDHCI_RESET_FOR_##r)
- 
-+int sdhci_send_command(struct sdhci *host, struct mci_cmd *cmd)
-+{
-+	u32 mask, command, xfer;
-+	dma_addr_t dma;
-+	int ret;
-+
-+	ret = sdhci_wait_idle(host, cmd, cmd->data);
-+	if (ret)
-+		return ret;
-+
-+	sdhci_write32(host, SDHCI_INT_STATUS, ~0);
-+
-+	mask = SDHCI_INT_CMD_COMPLETE;
-+	if (cmd->resp_type & MMC_RSP_BUSY)
-+		mask |= SDHCI_INT_XFER_COMPLETE;
-+
-+	sdhci_setup_data_dma(host, cmd->data, &dma);
-+
-+	sdhci_set_cmd_xfer_mode(host, cmd, cmd->data,
-+				dma == SDHCI_NO_DMA ? false : true,
-+				&command, &xfer);
-+
-+	sdhci_write8(host, SDHCI_TIMEOUT_CONTROL, 0xf);
-+	if (xfer)
-+		sdhci_write16(host, SDHCI_TRANSFER_MODE, xfer);
-+	if (cmd->data) {
-+		sdhci_write16(host, SDHCI_BLOCK_SIZE,
-+			      SDHCI_DMA_BOUNDARY_512K |
-+			      SDHCI_TRANSFER_BLOCK_SIZE(cmd->data->blocksize));
-+		sdhci_write16(host, SDHCI_BLOCK_COUNT, cmd->data->blocks);
-+	}
-+	sdhci_write32(host, SDHCI_ARGUMENT, cmd->cmdarg);
-+	sdhci_write16(host, SDHCI_COMMAND, command);
-+
-+	/* CMD19/21 generate _only_ Buffer Read Ready interrupt */
-+	if (mmc_op_tuning(cmd->cmdidx))
-+		mask = SDHCI_INT_DATA_AVAIL;
-+
-+	ret = sdhci_wait_for_done(host, mask);
-+	if (ret) {
-+		sdhci_teardown_data(host, cmd->data, dma);
-+		sdhci_dumpregs(host);
-+		goto error;
-+	}
-+
-+	sdhci_read_response(host, cmd);
-+	sdhci_write32(host, SDHCI_INT_STATUS, SDHCI_INT_CMD_COMPLETE);
-+
-+	if (cmd->data)
-+		ret = sdhci_transfer_data_dma(host, cmd, cmd->data, dma);
-+
-+	return ret;
-+
-+error:
-+	if (ret) {
-+		sdhci_reset(host, SDHCI_RESET_CMD);
-+		sdhci_reset(host, SDHCI_RESET_DATA);
-+	}
-+
-+	sdhci_write32(host, SDHCI_INT_STATUS, ~0);
-+	return ret;
-+}
-+
- static int sdhci_send_command_retry(struct sdhci *host, struct mci_cmd *cmd)
- {
- 	int timeout = 10;
-diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
-index ec82b1b8ff..e7c56d59f4 100644
---- a/drivers/mci/sdhci.h
-+++ b/drivers/mci/sdhci.h
-@@ -85,6 +85,11 @@
- #define  SDHCI_BUS_VOLTAGE_330			SDHCI_BUS_VOLTAGE(7)
- #define  SDHCI_BUS_VOLTAGE(v)			((v) << 1)
- #define  SDHCI_BUS_POWER_EN			BIT(0)
-+#define SDHCI_BLOCK_GAP_CONTROL			0x2A
-+#define SDHCI_WAKE_UP_CONTROL			0x2B
-+#define  SDHCI_WAKE_ON_INT			0x01
-+#define  SDHCI_WAKE_ON_INSERT			0x02
-+#define  SDHCI_WAKE_ON_REMOVE			0x04
- #define SDHCI_CLOCK_CONTROL__TIMEOUT_CONTROL__SOFTWARE_RESET	0x2c
- #define SDHCI_CLOCK_CONTROL					0x2C
- #define  SDHCI_DIVIDER_SHIFT			8
-@@ -177,6 +182,17 @@
- #define  SDHCI_CAN_DO_ADMA3			0x08000000
- #define  SDHCI_SUPPORT_HS400			0x80000000 /* Non-standard */
- 
-+#define SDHCI_MAX_CURRENT		0x48
-+#define  SDHCI_MAX_CURRENT_LIMIT	GENMASK(7, 0)
-+#define  SDHCI_MAX_CURRENT_330_MASK	GENMASK(7, 0)
-+#define  SDHCI_MAX_CURRENT_300_MASK	GENMASK(15, 8)
-+#define  SDHCI_MAX_CURRENT_180_MASK	GENMASK(23, 16)
-+#define SDHCI_MAX_CURRENT_1		0x4C
-+#define  SDHCI_MAX_CURRENT_VDD2_180_MASK	GENMASK(7, 0) /* UHS2 */
-+#define   SDHCI_MAX_CURRENT_MULTIPLIER	4
-+
-+#define SDHCI_ADMA_ERROR	0x54
-+
- #define SDHCI_PRESET_FOR_SDR12	0x66
- #define SDHCI_PRESET_FOR_SDR25	0x68
- #define SDHCI_PRESET_FOR_SDR50	0x6A
-@@ -207,6 +223,8 @@
- 
- #define SDHCI_MMC_BOOT						0xC4
- 
-+#define SDHCI_SLOT_INT_STATUS	0xFC
-+
- #define SDHCI_MAX_DIV_SPEC_200	256
- #define SDHCI_MAX_DIV_SPEC_300	2046
- 
-@@ -357,6 +375,9 @@ static inline void sdhci_read_caps(struct sdhci *host)
- {
- 	__sdhci_read_caps(host, NULL, NULL, NULL);
- }
-+
-+void sdhci_dumpregs(struct sdhci *host);
-+int sdhci_send_command(struct sdhci *host, struct mci_cmd *cmd);
- void sdhci_set_bus_width(struct sdhci *host, int width);
- 
- #define sdhci_read8_poll_timeout(sdhci, reg, val, cond, timeout_us) \
+ config MCI_IMX_ESDHC_PBL
+diff --git a/drivers/mci/cadence-sdhci.c b/drivers/mci/cadence-sdhci.c
+deleted file mode 100644
+index d59ee04665..0000000000
+--- a/drivers/mci/cadence-sdhci.c
++++ /dev/null
+@@ -1,602 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Copyright (C) 2016 Socionext Inc.
+- *   Author: Masahiro Yamada <yamada.masahiro@socionext.com>
+- */
+-
+-#include <clock.h>
+-#include <common.h>
+-#include <driver.h>
+-#include <init.h>
+-#include <linux/clk.h>
+-#include <mci.h>
+-#include <linux/bitfield.h>
+-#include <linux/bits.h>
+-#include <linux/iopoll.h>
+-#include <linux/reset.h>
+-
+-#include "sdhci.h"
+-
+-/* HRS - Host Register Set (specific to Cadence) */
+-#define SDHCI_CDNS_HRS04		0x10		/* PHY access port */
+-#define SDHCI_CDNS_HRS05        0x14        /* PHY data access port */
+-#define   SDHCI_CDNS_HRS04_ACK			BIT(26)
+-#define   SDHCI_CDNS_HRS04_RD			BIT(25)
+-#define   SDHCI_CDNS_HRS04_WR			BIT(24)
+-#define   SDHCI_CDNS_HRS04_RDATA		GENMASK(23, 16)
+-#define   SDHCI_CDNS_HRS04_WDATA		GENMASK(15, 8)
+-#define   SDHCI_CDNS_HRS04_ADDR			GENMASK(5, 0)
+-
+-#define SDHCI_CDNS_HRS06		0x18		/* eMMC control */
+-#define   SDHCI_CDNS_HRS06_TUNE_UP		BIT(15)
+-#define   SDHCI_CDNS_HRS06_TUNE			GENMASK(13, 8)
+-#define   SDHCI_CDNS_HRS06_MODE			GENMASK(2, 0)
+-#define   SDHCI_CDNS_HRS06_MODE_SD		0x0
+-#define   SDHCI_CDNS_HRS06_MODE_MMC_SDR		0x2
+-#define   SDHCI_CDNS_HRS06_MODE_MMC_DDR		0x3
+-#define   SDHCI_CDNS_HRS06_MODE_MMC_HS200	0x4
+-#define   SDHCI_CDNS_HRS06_MODE_MMC_HS400	0x5
+-#define   SDHCI_CDNS_HRS06_MODE_MMC_HS400ES	0x6
+-
+-/* PHY specific register */
+-/* HRS register to set after SDMMC reset */
+-#define SDHCI_CDNS_HRS00	0x0
+-#define SDHCI_CDNS_HRS07	0x1C        /* IO_DELAY_INFO_REG */
+-#define SDHCI_CDNS_HRS07_RW_COMPENSATE  GENMASK(20, 16) /* RW_COMPENSATE */
+-#define SDHCI_CDNS_HRS07_IDELAY_VAL     GENMASK(4, 0)   /* IDELAY_VAL */
+-/* TODO: check DV dfi_init val=9 */
+-#define SDHCI_CDNS_HRS07_RW_COMPENSATE_DATA 0x9
+-/* TODO: check DV dfi_init val=8 ; DDR Mode */
+-#define SDHCI_CDNS_HRS07_RW_COMPENSATE_DATA_DDR 0x8
+-#define SDHCI_CDNS_HRS07_IDELAY_VAL_DATA    0x0
+-
+-#define SDHCI_CDNS_HRS09	0x024
+-#define SDHCI_CDNS_HRS09_PHY_SW_RESET       BIT(0)  /* PHY_SW_RESET */
+-#define SDHCI_CDNS_HRS09_PHY_INIT_COMPLETE  BIT(1)  /* PHY_INIT_COMPLETE */
+-#define SDHCI_CDNS_HRS09_RDDATA_EN  BIT(16) /* RDDATA_EN */
+-#define SDHCI_CDNS_HRS09_RDCMD_EN   BIT(15) /* RDCMD_EN */
+-#define SDHCI_CDNS_HRS09_EXTENDED_WR_MODE   BIT(3)  /* EXTENDED_WR_MODE */
+-#define SDHCI_CDNS_HRS09_EXTENDED_RD_MODE   BIT(2)  /* EXTENDED_RD_MODE */
+-
+-#define SDHCI_CDNS_HRS10        0x28        /* PHY reset port */
+-#define SDHCI_CDNS_HRS10_HCSDCLKADJ     GENMASK(19, 16) /* HCSDCLKADJ */
+-#define SDHCI_CDNS_HRS10_HCSDCLKADJ_DATA    0x0         /* HCSDCLKADJ DATA */
+-/* HCSDCLKADJ DATA; DDR Mode */
+-#define SDHCI_CDNS_HRS10_HCSDCLKADJ_DATA_DDR    0x2
+-#define SDHCI_CDNS_HRS16        0x40        /* CMD_DATA_OUTPUT */
+-
+-/* SRS - Slot Register Set (SDHCI-compatible) */
+-#define SDHCI_CDNS_SRS_BASE	0x200
+-#define SDHCI_CDNS_SRS09	0x224
+-#define SDHCI_CDNS_SRS10	0x228
+-#define SDHCI_CDNS_SRS11	0x22c
+-#define SDHCI_CDNS_SRS12	0x230
+-#define SDHCI_CDNS_SRS13	0x234
+-#define SDHCI_CDNS_SRS09_CI	BIT(16)
+-#define SDHCI_CDNS_SRS13_DATA	0xffffffff
+-#define SD_HOST_CLK 200000000
+-
+-/* PHY */
+-#define SDHCI_CDNS_PHY_DLY_SD_HS	0x00
+-#define SDHCI_CDNS_PHY_DLY_SD_DEFAULT	0x01
+-#define SDHCI_CDNS_PHY_DLY_UHS_SDR12	0x02
+-#define SDHCI_CDNS_PHY_DLY_UHS_SDR25	0x03
+-#define SDHCI_CDNS_PHY_DLY_UHS_SDR50	0x04
+-#define SDHCI_CDNS_PHY_DLY_UHS_DDR50	0x05
+-#define SDHCI_CDNS_PHY_DLY_EMMC_LEGACY	0x06
+-#define SDHCI_CDNS_PHY_DLY_EMMC_SDR	0x07
+-#define SDHCI_CDNS_PHY_DLY_EMMC_DDR	0x08
+-#define SDHCI_CDNS_PHY_DLY_SDCLK	0x0b
+-#define SDHCI_CDNS_PHY_DLY_HSMMC	0x0c
+-#define SDHCI_CDNS_PHY_DLY_STROBE	0x0d
+-/* PHY register values */
+-#define PHY_DQ_TIMING_REG			0x2000
+-#define PHY_DQS_TIMING_REG			0x2004
+-#define PHY_GATE_LPBK_CTRL_REG			0x2008
+-#define PHY_DLL_MASTER_CTRL_REG			0x200C
+-#define PHY_DLL_SLAVE_CTRL_REG			0x2010
+-#define PHY_CTRL_REG				0x2080
+-#define USE_EXT_LPBK_DQS			BIT(22)
+-#define USE_LPBK_DQS				BIT(21)
+-#define USE_PHONY_DQS				BIT(20)
+-#define USE_PHONY_DQS_CMD			BIT(19)
+-#define SYNC_METHOD				BIT(31)
+-#define SW_HALF_CYCLE_SHIFT			BIT(28)
+-#define RD_DEL_SEL				GENMASK(24, 19)
+-#define RD_DEL_SEL_DATA				0x34
+-#define GATE_CFG_ALWAYS_ON			BIT(6)
+-#define UNDERRUN_SUPPRESS			BIT(18)
+-#define PARAM_DLL_BYPASS_MODE			BIT(23)
+-#define PARAM_PHASE_DETECT_SEL			GENMASK(22, 20)
+-#define PARAM_DLL_START_POINT			GENMASK(7, 0)
+-#define PARAM_PHASE_DETECT_SEL_DATA		0x2
+-#define PARAM_DLL_START_POINT_DATA		0x4
+-#define PARAM_DLL_START_POINT_DATA_SDR50	254
+-
+-#define READ_DQS_CMD_DELAY		GENMASK(31, 24)
+-#define CLK_WRDQS_DELAY			GENMASK(23, 16)
+-#define CLK_WR_DELAY			GENMASK(15, 8)
+-#define READ_DQS_DELAY			GENMASK(7, 0)
+-#define READ_DQS_CMD_DELAY_DATA		0x0
+-#define CLK_WRDQS_DELAY_DATA		0x0
+-#define CLK_WR_DELAY_DATA		0x0
+-#define READ_DQS_DELAY_DATA		0x0
+-
+-#define PHONY_DQS_TIMING		GENMASK(9, 4)
+-#define PHONY_DQS_TIMING_DATA		0x0
+-
+-#define IO_MASK_ALWAYS_ON		BIT(31)
+-#define IO_MASK_END			GENMASK(29, 27)
+-#define IO_MASK_START			GENMASK(26, 24)
+-#define DATA_SELECT_OE_END		GENMASK(2, 0)
+-#define IO_MASK_END_DATA		0x5
+-/* DDR Mode */
+-#define IO_MASK_END_DATA_DDR		0x2
+-#define IO_MASK_START_DATA		0x0
+-#define DATA_SELECT_OE_END_DATA 	0x1
+-
+-/*
+- * The tuned val register is 6 bit-wide, but not the whole of the range is
+- * available.  The range 0-42 seems to be available (then 43 wraps around to 0)
+- * but I am not quite sure if it is official.  Use only 0 to 39 for safety.
+- */
+-#define SDHCI_CDNS_MAX_TUNING_LOOP	40
+-
+-struct sdhci_cdns_phy_param {
+-	u32 addr;
+-	u32 data;
+-	u32 offset;
+-};
+-
+-struct sdhci_cdns_priv {
+-	struct mci_host mci;
+-	struct sdhci sdhci;
+-	void __iomem *hrs_addr;
+-	bool enhanced_strobe;
+-	unsigned int nr_phy_params;
+-	struct sdhci_cdns_phy_param phy_params[];
+-};
+-
+-struct sdhci_cdns_phy_cfg {
+-	const char *property;
+-	u32 addr;
+-	u32 offset;
+-};
+-
+-static const struct sdhci_cdns_phy_cfg sdhci_cdns_phy_cfgs[] = {
+-	{ "cdns,phy-input-delay-sd-highspeed", SDHCI_CDNS_PHY_DLY_SD_HS, },
+-	{ "cdns,phy-input-delay-legacy", SDHCI_CDNS_PHY_DLY_SD_DEFAULT, },
+-	{ "cdns,phy-input-delay-sd-uhs-sdr12", SDHCI_CDNS_PHY_DLY_UHS_SDR12, },
+-	{ "cdns,phy-input-delay-sd-uhs-sdr25", SDHCI_CDNS_PHY_DLY_UHS_SDR25, },
+-	{ "cdns,phy-input-delay-sd-uhs-sdr50", SDHCI_CDNS_PHY_DLY_UHS_SDR50, },
+-	{ "cdns,phy-input-delay-sd-uhs-ddr50", SDHCI_CDNS_PHY_DLY_UHS_DDR50, },
+-	{ "cdns,phy-input-delay-mmc-highspeed", SDHCI_CDNS_PHY_DLY_EMMC_SDR, },
+-	{ "cdns,phy-input-delay-mmc-ddr", SDHCI_CDNS_PHY_DLY_EMMC_DDR, },
+-	{ "cdns,phy-dll-delay-sdclk", SDHCI_CDNS_PHY_DLY_SDCLK, },
+-	{ "cdns,phy-dll-delay-sdclk-hsmmc", SDHCI_CDNS_PHY_DLY_HSMMC, },
+-	{ "cdns,phy-dll-delay-strobe", SDHCI_CDNS_PHY_DLY_STROBE, },
+-	{ "cdns,phy-use-ext-lpbk-dqs", PHY_DQS_TIMING_REG, 22,},
+-	{ "cdns,phy-use-lpbk-dqs", PHY_DQS_TIMING_REG, 21,},
+-	{ "cdns,phy-use-phony-dqs", PHY_DQS_TIMING_REG, 20,},
+-	{ "cdns,phy-use-phony-dqs-cmd", PHY_DQS_TIMING_REG, 19,},
+-	{ "cdns,phy-io-mask-always-on", PHY_DQ_TIMING_REG, 31,},
+-	{ "cdns,phy-io-mask-end", PHY_DQ_TIMING_REG, 27,},
+-	{ "cdns,phy-io-mask-start", PHY_DQ_TIMING_REG, 24,},
+-	{ "cdns,phy-data-select-oe-end", PHY_DQ_TIMING_REG, 0,},
+-	{ "cdns,phy-sync-method", PHY_GATE_LPBK_CTRL_REG, 31,},
+-	{ "cdns,phy-sw-half-cycle-shift", PHY_GATE_LPBK_CTRL_REG, 28,},
+-	{ "cdns,phy-rd-del-sel", PHY_GATE_LPBK_CTRL_REG, 19,},
+-	{ "cdns,phy-underrun-suppress", PHY_GATE_LPBK_CTRL_REG, 18,},
+-	{ "cdns,phy-gate-cfg-always-on", PHY_GATE_LPBK_CTRL_REG, 6,},
+-	{ "cdns,phy-param-dll-bypass-mode", PHY_DLL_MASTER_CTRL_REG, 23,},
+-	{ "cdns,phy-param-phase-detect-sel", PHY_DLL_MASTER_CTRL_REG, 20,},
+-	{ "cdns,phy-param-dll-start-point", PHY_DLL_MASTER_CTRL_REG, 0,},
+-	{ "cdns,phy-read-dqs-cmd-delay", PHY_DLL_SLAVE_CTRL_REG, 24,},
+-	{ "cdns,phy-clk-wrdqs-delay", PHY_DLL_SLAVE_CTRL_REG, 16,},
+-	{ "cdns,phy-clk-wr-delay", PHY_DLL_SLAVE_CTRL_REG, 8,},
+-	{ "cdns,phy-read-dqs-delay", PHY_DLL_SLAVE_CTRL_REG, 0,},
+-	{ "cdns,phy-phony-dqs-timing", PHY_CTRL_REG, 4,},
+-	{ "cdns,hrs09-rddata-en", SDHCI_CDNS_HRS09, 16,},
+-	{ "cdns,hrs09-rdcmd-en", SDHCI_CDNS_HRS09, 15,},
+-	{ "cdns,hrs09-extended-wr-mode", SDHCI_CDNS_HRS09, 3,},
+-	{ "cdns,hrs09-extended-rd-mode", SDHCI_CDNS_HRS09, 2,},
+-	{ "cdns,hrs10-hcsdclkadj", SDHCI_CDNS_HRS10, 16,},
+-	{ "cdns,hrs16-wrdata1-sdclk-dly", SDHCI_CDNS_HRS16, 28,},
+-	{ "cdns,hrs16-wrdata0-sdclk-dly", SDHCI_CDNS_HRS16, 24,},
+-	{ "cdns,hrs16-wrcmd1-sdclk-dly", SDHCI_CDNS_HRS16, 20,},
+-	{ "cdns,hrs16-wrcmd0-sdclk-dly", SDHCI_CDNS_HRS16, 16,},
+-	{ "cdns,hrs16-wrdata1-dly", SDHCI_CDNS_HRS16, 12,},
+-	{ "cdns,hrs16-wrdata0-dly", SDHCI_CDNS_HRS16, 8,},
+-	{ "cdns,hrs16-wrcmd1-dly", SDHCI_CDNS_HRS16, 4,},
+-	{ "cdns,hrs16-wrcmd0-dly", SDHCI_CDNS_HRS16, 0,},
+-	{ "cdns,hrs07-rw-compensate", SDHCI_CDNS_HRS07, 16,},
+-	{ "cdns,hrs07-idelay-val", SDHCI_CDNS_HRS07, 0,},
+-};
+-
+-static int sdhci_cdns_write_phy_reg(struct sdhci_cdns_priv *priv,
+-				    u8 addr, u8 data)
+-{
+-	void __iomem *reg = priv->hrs_addr + SDHCI_CDNS_HRS04;
+-	u32 tmp;
+-	int ret;
+-
+-	ret = readl_poll_timeout(reg, tmp, !(tmp & SDHCI_CDNS_HRS04_ACK), 10);
+-	if (ret)
+-		return ret;
+-
+-	tmp = FIELD_PREP(SDHCI_CDNS_HRS04_WDATA, data) |
+-	      FIELD_PREP(SDHCI_CDNS_HRS04_ADDR, addr);
+-	writel(tmp, reg);
+-
+-	tmp |= SDHCI_CDNS_HRS04_WR;
+-	writel(tmp, reg);
+-
+-	ret = readl_poll_timeout(reg, tmp, tmp & SDHCI_CDNS_HRS04_ACK, 10);
+-	if (ret)
+-		return ret;
+-
+-	tmp &= ~SDHCI_CDNS_HRS04_WR;
+-	writel(tmp, reg);
+-
+-	ret = readl_poll_timeout(reg, tmp, !(tmp & SDHCI_CDNS_HRS04_ACK), 10);
+-
+-	return ret;
+-}
+-
+-static int sdhci_cdns_write_phy_reg_mask(struct sdhci_cdns_priv *priv,
+-			u32 addr, u32 data, u32 mask)
+-{
+-	u32 tmp;
+-
+-	tmp = addr;
+-
+-	/* get PHY address */
+-	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS04);
+-
+-	/* read current PHY register value, before write */
+-	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS05);
+-
+-	tmp &= ~mask;
+-	tmp |= data;
+-
+-	/* write operation */
+-	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS05);
+-
+-	/* re-read PHY address */
+-	writel(addr, priv->hrs_addr + SDHCI_CDNS_HRS04);
+-
+-	/* re-read current PHY register value, check */
+-	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS05);
+-
+-	return 0;
+-}
+-
+-static u32 sdhci_cdns_read_phy_reg(struct sdhci_cdns_priv *priv,
+-			u32 addr)
+-{
+-	u32 tmp;
+-
+-	tmp = addr;
+-
+-	/* get PHY address */
+-	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS04);
+-
+-	/* read current PHY register value, before write */
+-	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS05);
+-
+-	return tmp;
+-}
+-
+-static int sdhci_cdns_dfi_phy_val(struct sdhci_cdns_priv *priv, u32 reg)
+-{
+-	int i;
+-	u32 tmp;
+-
+-	tmp = 0;
+-
+-	for (i = 0; i < priv->nr_phy_params; i++) {
+-		if (priv->phy_params[i].addr == reg)
+-			tmp |= priv->phy_params[i].data << priv->phy_params[i].offset;
+-	}
+-
+-	return tmp;
+-}
+-
+-static int sdhci_cdns_combophy_init_sd_dfi_init(struct sdhci_cdns_priv *priv)
+-{
+-	int ret = 0;
+-	u32 mask = 0x0;
+-	u32 tmp = 0;
+-
+-	writel(0x0, priv->hrs_addr + SDHCI_CDNS_SRS11);
+-	writel(1<<0, priv->hrs_addr + SDHCI_CDNS_HRS00);
+-	while ((readl(priv->hrs_addr + SDHCI_CDNS_HRS00) & 1<<0) == 1)
+-
+-	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS09) & ~1;
+-	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS09);
+-
+-	tmp = (1 << 22) | (1 << 21) | (1 << 20) | (1 << 19);
+-	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_DQS_TIMING_REG, tmp, tmp);
+-
+-	tmp = (1 << 31) | (0 << 28) | (52 << 19) | (1 << 18) | (1 << 6);
+-	mask = SYNC_METHOD | SW_HALF_CYCLE_SHIFT | RD_DEL_SEL | UNDERRUN_SUPPRESS |
+-			GATE_CFG_ALWAYS_ON;
+-	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_GATE_LPBK_CTRL_REG, tmp,
+-			mask);
+-
+-	tmp = (1 << 23) | (2 << 20) | (4 << 0);
+-	mask = PARAM_DLL_BYPASS_MODE | PARAM_PHASE_DETECT_SEL |
+-			PARAM_DLL_START_POINT;
+-	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_DLL_MASTER_CTRL_REG, tmp,
+-			mask);
+-
+-	tmp = (0 << 24) | (0 << 16) | (0 << 8) | (0 << 0);
+-	mask = READ_DQS_CMD_DELAY | CLK_WRDQS_DELAY | CLK_WR_DELAY | READ_DQS_DELAY;
+-	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_DLL_SLAVE_CTRL_REG, tmp,
+-			mask);
+-
+-	writel(0x2080, priv->hrs_addr + SDHCI_CDNS_HRS04);
+-	tmp &= ~(0x3f << 4);
+-	mask = PHONY_DQS_TIMING;
+-	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_CTRL_REG, tmp, mask);
+-
+-	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS09) | 1;
+-	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS09);
+-
+-	while (~readl(priv->hrs_addr + SDHCI_CDNS_HRS09) & (1 << 1))
+-
+-	tmp = sdhci_cdns_read_phy_reg(priv, PHY_DQ_TIMING_REG) & 0x07FFFF8;
+-	tmp |= (0 << 31) | (0 << 27) | (0 << 24) | (1 << 0);
+-	mask = IO_MASK_ALWAYS_ON | IO_MASK_END | IO_MASK_START | DATA_SELECT_OE_END;
+-
+-	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_DQ_TIMING_REG, tmp, mask);
+-
+-	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS09) & 0xFFFE7FF3;
+-
+-	tmp |= (1 << 16) | (1 << 15) | (1 << 3) | (1 << 2);
+-	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS09);
+-
+-	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS10) & 0xFFF0FFFF;
+-
+-	tmp |= (0 << 16);
+-	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS10);
+-
+-	tmp = (0 << 28) | (0 << 24) | (0 << 20) | (0 << 16) | (0 << 12) | (1 << 8) |
+-			(0 << 4) | (1 << 0);
+-	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS16);
+-
+-	tmp = (9 << 16) | (0 << 0);
+-	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS07);
+-
+-	return ret;
+-}
+-
+-static int sdhci_cdns_combophy_init_sd_gen(struct sdhci_cdns_priv *priv)
+-{
+-	u32 tmp;
+-	int ret = 0;
+-	u32 mask = 0x0;
+-
+-	/* step 1, switch on DLL_RESET */
+-	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS09) & ~1;
+-	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS09);
+-
+-	/* step 2, program PHY_DQS_TIMING_REG */
+-	tmp = sdhci_cdns_dfi_phy_val(priv, PHY_DQS_TIMING_REG);
+-	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_DQS_TIMING_REG, tmp, tmp);
+-
+-	/* step 3, program PHY_GATE_LPBK_CTRL_REG */
+-	tmp = sdhci_cdns_dfi_phy_val(priv, PHY_GATE_LPBK_CTRL_REG);
+-	mask = SYNC_METHOD | SW_HALF_CYCLE_SHIFT | RD_DEL_SEL | UNDERRUN_SUPPRESS |
+-	GATE_CFG_ALWAYS_ON;
+-	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_GATE_LPBK_CTRL_REG, tmp,
+-	mask);
+-
+-	/* step 4, program PHY_DLL_MASTER_CTRL_REG */
+-	tmp = sdhci_cdns_dfi_phy_val(priv, PHY_DLL_MASTER_CTRL_REG);
+-	mask = PARAM_DLL_BYPASS_MODE | PARAM_PHASE_DETECT_SEL |
+-	PARAM_DLL_START_POINT;
+-	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_DLL_MASTER_CTRL_REG, tmp,
+-	mask);
+-
+-	/* step 5, program PHY_DLL_SLAVE_CTRL_REG */
+-	tmp = sdhci_cdns_dfi_phy_val(priv, PHY_DLL_SLAVE_CTRL_REG);
+-	mask = READ_DQS_CMD_DELAY | CLK_WRDQS_DELAY | CLK_WR_DELAY | READ_DQS_DELAY;
+-	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_DLL_SLAVE_CTRL_REG, tmp,
+-	mask);
+-
+-	/* step 7, switch off DLL_RESET */
+-	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS09) | 1;
+-	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS09);
+-
+-	/* step 8, polling PHY_INIT_COMPLETE */
+-	while (~readl(priv->hrs_addr + SDHCI_CDNS_HRS09) & (1 << 1))
+-	/* polling for PHY_INIT_COMPLETE bit */
+-
+-	/* step 9, program PHY_DQ_TIMING_REG */
+-	tmp = sdhci_cdns_read_phy_reg(priv, PHY_DQ_TIMING_REG) & 0x07FFFF8;
+-	tmp |= sdhci_cdns_dfi_phy_val(priv, PHY_DQ_TIMING_REG);
+-	mask = IO_MASK_ALWAYS_ON | IO_MASK_END | IO_MASK_START | DATA_SELECT_OE_END;
+-	ret = sdhci_cdns_write_phy_reg_mask(priv, PHY_DQ_TIMING_REG, tmp, mask);
+-
+-	/* step 10, program HRS09, register 42 */
+-	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS09) & 0xFFFE7FF3;
+-
+-	tmp |= sdhci_cdns_dfi_phy_val(priv, SDHCI_CDNS_HRS09);
+-	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS09);
+-
+-	/* step 11, program HRS10, register 43 */
+-	tmp = readl(priv->hrs_addr + SDHCI_CDNS_HRS10) & 0xFFF0FFFF;
+-	tmp |= sdhci_cdns_dfi_phy_val(priv, SDHCI_CDNS_HRS10);
+-	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS10);
+-
+-	/* step 12, program HRS16, register 48 */
+-	tmp = sdhci_cdns_dfi_phy_val(priv, SDHCI_CDNS_HRS16);
+-	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS16);
+-
+-	/* step 13, program HRS07, register 40 */
+-	tmp = sdhci_cdns_dfi_phy_val(priv, SDHCI_CDNS_HRS07);
+-	writel(tmp, priv->hrs_addr + SDHCI_CDNS_HRS07);
+-	/* end of combophy init */
+-
+-	return ret;
+-}
+-
+-
+-static unsigned int sdhci_cdns_phy_param_count(struct device_node *np)
+-{
+-	unsigned int count = 0;
+-	int i;
+-
+-	for (i = 0; i < ARRAY_SIZE(sdhci_cdns_phy_cfgs); i++)
+-		if (of_property_read_bool(np, sdhci_cdns_phy_cfgs[i].property))
+-			count++;
+-
+-	return count;
+-}
+-
+-static void sdhci_cdns_phy_param_parse(struct device_node *np,
+-				       struct sdhci_cdns_priv *priv)
+-{
+-	struct sdhci_cdns_phy_param *p = priv->phy_params;
+-	u32 val;
+-	int ret, i;
+-
+-	for (i = 0; i < ARRAY_SIZE(sdhci_cdns_phy_cfgs); i++) {
+-		ret = of_property_read_u32(np, sdhci_cdns_phy_cfgs[i].property,
+-					   &val);
+-		if (ret)
+-			continue;
+-
+-		p->addr = sdhci_cdns_phy_cfgs[i].addr;
+-		p->data = val;
+-		p->offset = sdhci_cdns_phy_cfgs[i].offset;
+-		p++;
+-	}
+-}
+-
+-static int sdhci_cdns_phy_init(struct sdhci_cdns_priv *priv)
+-{
+-	int ret, i;
+-
+-	for (i = 0; i < priv->nr_phy_params; i++) {
+-		if (priv->phy_params[i].offset)
+-			break;
+-		ret = sdhci_cdns_write_phy_reg(priv, priv->phy_params[i].addr,
+-					       priv->phy_params[i].data);
+-		if (ret)
+-			return ret;
+-	}
+-
+-	return 0;
+-}
+-
+-static void sdhci_cdns_set_clock(struct mci_host *host, unsigned int clock)
+-{
+-	struct sdhci_cdns_priv *priv = host->hw_dev->priv;
+-	int ret;
+-
+-	ret = sdhci_cdns_combophy_init_sd_gen(priv);
+-
+-	sdhci_set_clock(&priv->sdhci, clock, host->f_max);
+-}
+-
+-static void sdhci_cdns_set_ios(struct mci_host *host, struct mci_ios *ios)
+-{
+-	struct sdhci_cdns_priv *priv = host->hw_dev->priv;
+-
+-	if (ios->clock)
+-		sdhci_cdns_set_clock(host, ios->clock);
+-
+-	sdhci_set_bus_width(&priv->sdhci, ios->bus_width);
+-}
+-
+-static const struct mci_ops sdhci_cdns_ops = {
+-	.set_ios = sdhci_cdns_set_ios,
+-};
+-
+-static int sdhci_cdns_probe(struct device *dev)
+-{
+-	struct sdhci_cdns_priv *priv;
+-	struct mci_host *mci;
+-	struct clk *clk;
+-	struct resource *iores;
+-	struct reset_control *rst;
+-	unsigned int nr_phy_params;
+-	int ret;
+-
+-	priv = xzalloc(sizeof(*priv));
+-	mci = &priv->mci;
+-
+-	clk = clk_get(dev, "biu");
+-	if (IS_ERR(clk))
+-		return PTR_ERR(clk);
+-
+-	iores = dev_request_mem_resource(dev, 0);
+-	if (IS_ERR(iores))
+-		return PTR_ERR(iores);
+-
+-	rst = reset_control_get(dev, "reset");
+-	if (IS_ERR(rst)) {
+-		dev_err(dev, "Invalid reset line 'reset'.\n");
+-		return PTR_ERR(rst);
+-	}
+-	reset_control_deassert(rst);
+-	ret = clk_prepare_enable(clk);
+-	if (ret)
+-		return ret;
+-
+-	mci->ops = sdhci_cdns_ops;
+-	mci->hw_dev = dev;
+-
+-	nr_phy_params = sdhci_cdns_phy_param_count(dev->of_node);
+-
+-	priv->nr_phy_params = nr_phy_params;
+-	priv->hrs_addr = IOMEM(iores->start);
+-	priv->enhanced_strobe = false;
+-	priv->sdhci.base = IOMEM(iores->start + SDHCI_CDNS_SRS_BASE);
+-	priv->sdhci.quirks2 = SDHCI_QUIRK2_40_BIT_DMA_MASK;
+-	priv->sdhci.mci = mci;
+-
+-	mci_of_parse(mci);
+-
+-	sdhci_cdns_phy_param_parse(dev->of_node, priv);
+-
+-	ret = sdhci_cdns_phy_init(priv);
+-	if (ret)
+-		goto disable_clk;
+-
+-	ret = sdhci_cdns_combophy_init_sd_dfi_init(priv);
+-	if (ret)
+-		goto disable_clk;
+-
+-	dev->priv = priv;
+-
+-	ret = sdhci_setup_host(&priv->sdhci);
+-	if (ret)
+-		goto disable_clk;
+-
+-	return 0;
+-
+-disable_clk:
+-	clk_disable_unprepare(clk);
+-
+-	return ret;
+-}
+-
+-static __maybe_unused struct of_device_id sdhci_cdns_match[] = {
+-	{
+-		.compatible = "cdns,sd4hc"
+-	},
+-	{
+-		.compatible = "intel,agilex5-sd4hc",
+-	},
+-	{ /* sentinel */ }
+-};
+-
+-static struct driver sdhci_cdns_driver = {
+-	.name = "sdhci-cdns",
+-	.of_compatible = DRV_OF_COMPAT(sdhci_cdns_match),
+-	.probe = sdhci_cdns_probe,
+-};
+-device_platform_driver(sdhci_cdns_driver);
 
 -- 
 2.52.0
