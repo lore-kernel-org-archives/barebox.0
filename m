@@ -1,71 +1,60 @@
-Delivery-date: Wed, 11 Mar 2026 11:14:24 +0100
+Delivery-date: Wed, 11 Mar 2026 12:07:19 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w0Ga7-00APdF-0U
+	id 1w0HPK-00AQOp-2o
 	for lore@lore.pengutronix.de;
-	Wed, 11 Mar 2026 11:14:24 +0100
+	Wed, 11 Mar 2026 12:07:19 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w0Ga4-00072o-48
-	for lore@pengutronix.de; Wed, 11 Mar 2026 11:14:23 +0100
+	id 1w0HPL-00080D-7e
+	for lore@pengutronix.de; Wed, 11 Mar 2026 12:07:19 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=YboZG7xaGbq8LzTjE8xPM2UD7FT3VQyc5r7/3QfBG58=; b=QR7zhg1Zlj36SJNk/jQEvvnzJI
-	2/t5dHH5XRkbVRBHHtEri7wH8pdE630qPi/ALljhnlmNZAJOV9YNFAMjV42ZjHiezAQpk9o2ffkQx
-	XBqa1bfHs+4piPy/pyKp4PDYCif9PRap4EIvCCS4AUzmeSEkHl5r0DkInC/yS5mjfQHGypmER5w9S
-	TfXoAYN7zikPPRhuC0TFC25X2BUMnCJxidng/pR75BhAkJJ0OnqA02Vhy9cqZ1BtalALMCBQNYYjq
-	Unnis91l4Kipf6hb2JewyRIaLiUdRrrTsgpf63FqB0GZhsuNjAVpFuH3B/7kAaUpdLfkMCaWj6Urr
-	yV2KcVaQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=wAxtfyCLoEU+R5F4U1gDtwtPt8elLuDzL2tmB9OoFRw=; b=seySuVRCnNXa++
+	1VEXEPP57wY8uoVJo9FeXbai3J8hcJnNv2OQIr3zfVV3v+yVpFrotcUrvGhFEGdiUdkjw3gCICV1y
+	laQDYpGY8VOsP2cMOxQy4od6ERzwbIf2BVYjO+7D5ecLc2CWA1uhtVggpYA9VbvGivnGeGlrJoPKU
+	kwqXmB2/qB9IyF2B/oF7ch86PalTPjn7wQzmHpb21Yx9bAU3p06urLMNtOjXdTdRp9V4SnzDA1A1G
+	8lNJexLVCRNoIl3pZpCMNhBxgj5uso8rUuZRhMWG0DrX4cdLQx3zzNG1wDPP7RJsWJ9uPsJgAbFvB
+	EZq3gWsz/s4yZRHidCJg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w0GZd-0000000BNb3-1euQ;
-	Wed, 11 Mar 2026 10:13:53 +0000
+	id 1w0HOu-0000000BTB4-0OzH;
+	Wed, 11 Mar 2026 11:06:52 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w0GZb-0000000BNZz-0yG9
+	id 1w0HOs-0000000BTAD-1pQJ
 	for barebox@lists.infradead.org;
-	Wed, 11 Mar 2026 10:13:52 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
+	Wed, 11 Mar 2026 11:06:51 +0000
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.tretter@pengutronix.de>)
-	id 1w0GZY-0006xJ-9i; Wed, 11 Mar 2026 11:13:48 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <m.tretter@pengutronix.de>)
-	id 1w0GZV-004qKz-2v;
-	Wed, 11 Mar 2026 11:13:47 +0100
-Received: from mtr by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <m.tretter@pengutronix.de>)
-	id 1w0GZX-0000000DKRy-0fjA;
-	Wed, 11 Mar 2026 11:13:47 +0100
-Date: Wed, 11 Mar 2026 11:13:47 +0100
+	id 1w0HOq-0007lL-NP; Wed, 11 Mar 2026 12:06:48 +0100
 From: Michael Tretter <m.tretter@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>,
-	Robin van der Gracht <robin@protonic.nl>
-Message-ID: <abFAW56rE6Pr6xIz@pengutronix.de>
-References: <20260311100347.3761707-1-s.hauer@pengutronix.de>
+Date: Wed, 11 Mar 2026 12:06:38 +0100
+Message-Id: <20260311-agilex5-qspi-v1-0-be8a8e1318e1@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260311100347.3761707-1-s.hauer@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAL5MsWkC/x3MTQqAIBBA4avIrBP8QaGuEi3EJhsIM4UQxLsnL
+ b/Few0KZsICC2uQ8aVCdxyQEwN/uhiQ0z4MSigrtJTcBbqwGv6URNw4gzgLL7Q1MJKU8aD679a
+ t9w9QmpsdXgAAAA==
+X-Change-ID: 20260311-agilex5-qspi-5a5ee90c0365
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>
+Cc: Michael Tretter <m.tretter@pengutronix.de>
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260311_031351_269713_B36CC162 
-X-CRM114-Status: GOOD (  20.08  )
+X-CRM114-CacheID: sfid-20260311_040650_498486_1CDC3A1A 
+X-CRM114-Status: UNSURE (   7.51  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,54 +72,40 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] scripts: rk-usb-loader: push header first
+Subject: [PATCH 0/4] arm: socfpga: mailbox_s10: cleanup and error handling
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, 11 Mar 2026 11:03:47 +0100, Sascha Hauer wrote:
-> From: Michael Tretter <m.tretter@pengutronix.de>
-> 
-> Board that have secure boot enabled need the image header to be able
-> to verify the signature. Boards with secure boot disabled still work
-> with this patch as tested on a RK3588 board.
+On Agilex 5, barebox uses the mailbox_s10 to gain access to the QSPI
+flash. Depending on the system configuration, the SDM may deny this
+access. barebox assumes that the access always works and surprisingly
+fails, if this isn't the case. Add at least some error messages for this
+situation.
 
-I'm not against adding this to the rk-usb-loader, but maybe add some
-comment that this change is based on a wild guess and works by chance. I
-still don't know, how the ROM code or the USB protocol works and if it
-is really correct or necessary to send the entire header.
+While at it, cleanup the code to make it more readable and easier to
+follow.
 
-Michael
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+---
+Michael Tretter (4):
+      arm: socfpga: mailbox_s10: make retry logic more visible
+      arm: socfpga: mailbox_s10: cleanup send command
+      arm: socfpga: mailbox_s10: add error messages for QSPI
+      arm: socfpga: mailbox_s10: handle error 0x8f explicitly
 
-> 
-> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  scripts/rk-usb-loader.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/scripts/rk-usb-loader.c b/scripts/rk-usb-loader.c
-> index c9769d79d3..157bb5ad5c 100644
-> --- a/scripts/rk-usb-loader.c
-> +++ b/scripts/rk-usb-loader.c
-> @@ -256,6 +256,11 @@ static int upload_image(const char *filename)
->  		goto err;
->  	}
->  
-> +	log_info("Uploading header\n");
-> +	ret = upload(dev, 0x471, hdr, sizeof(*hdr));
-> +	if (ret)
-> +		goto err;
-> +
->  	for (i = 0; i < n_files; i++) {
->  		struct newidb_entry *entry = &hdr->entries[i];
->  		int foffset, fsize, wIndex;
-> -- 
-> 2.47.3
-> 
-> 
+ arch/arm/mach-socfpga/mailbox_s10.c | 43 ++++++++++++++++++++++---------------
+ 1 file changed, 26 insertions(+), 17 deletions(-)
+---
+base-commit: 019645e2b1cf0561afa7dd043e169eff416123ee
+change-id: 20260311-agilex5-qspi-5a5ee90c0365
+
+Best regards,
+-- 
+Michael Tretter <m.tretter@pengutronix.de>
+
 
 
