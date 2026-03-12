@@ -1,67 +1,68 @@
-Delivery-date: Thu, 12 Mar 2026 16:03:21 +0100
+Delivery-date: Thu, 12 Mar 2026 16:03:22 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w0hZI-00Argq-2V
+	id 1w0hZJ-00ArhB-0z
 	for lore@lore.pengutronix.de;
-	Thu, 12 Mar 2026 16:03:21 +0100
+	Thu, 12 Mar 2026 16:03:22 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w0hZI-0000ab-Gt
-	for lore@pengutronix.de; Thu, 12 Mar 2026 16:03:21 +0100
+	id 1w0hZI-0000aa-GN
+	for lore@pengutronix.de; Thu, 12 Mar 2026 16:03:22 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=EjVxNe4vMyAR1XRA6/dJo5tNq7ynHH6eMzRKXj9c6oM=; b=aR/TF1gMISvSEn6D2vUZJG5s1S
-	pNOHEzA+ZhzCJsSDX29ssF52jn7t1ifQKZ+1FuN93p8jI/Aworn0VogDabiyiI4D8ce9nJQ1Y+3Y5
-	Smv2b4WTJIOQ/lrEHq7QHfaz9/gwioLTMppyvFMqulL7hLaBGcK9f44+DgAXppEtYYZo98JlKJesU
-	cLoM/c4RpFEgeMfkCI/WfSfLxPNXJrp6z2cJR5TGaiyRYYCUn+ZfJpMDVH2hK6iAd8Yzl4kTziSxJ
-	MsQiOONrr+MPDeOGfCVhsmmpZ274WEL2i0uBJpgFakoztSZGT9pv4hMLUj1fRaNECern2hLLos8lz
-	nnrMeRNQ==;
+	bh=rREuxLRO9PAnsjWp2oKWAyZa+O5BhLo1dgai3O4CqMI=; b=SmxxIlNeH1NrdfVntkiXEhWw9M
+	UW93ZZnbzo/nUcplIpByNKKQcpzOokVGeFUYZP8Yr8Si61eCODmD9p6Hwel5GhJsvMLeM2zAfqgCt
+	YtKmAoZQ2TAZZZi31ecCZb9GAo/ql61UHCslC86LyZ1PMAsx0INgFmelf7BDJmihOHeSk5Q1oMsZ7
+	p7njz9kihctzhrUELiivrR+u3Jn08cdCa3GcE7BfG3Nfi7v/5Tqo58WuVnN6wzQdhxmJTcpGDjP8h
+	9/hbL7P6BGFQ3P7CZaHWRP+ctBPy00KvmsMTmzgEOL4EjKRRJAstSN+reobA1JDLrf0fLlOOJYFdo
+	Mb0PjKuA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w0hYc-0000000EI7V-2dMN;
-	Thu, 12 Mar 2026 15:02:38 +0000
+	id 1w0hYb-0000000EI6m-48hR;
+	Thu, 12 Mar 2026 15:02:37 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w0hYX-0000000EI34-2MUu
+	id 1w0hYX-0000000EI33-2MiM
 	for barebox@lists.infradead.org;
 	Thu, 12 Mar 2026 15:02:36 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w0hYV-0008Uo-PS; Thu, 12 Mar 2026 16:02:31 +0100
+	id 1w0hYV-0008Uj-K6; Thu, 12 Mar 2026 16:02:31 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w0hYU-0052Pt-0o;
+	id 1w0hYU-0052Pn-0F;
 	Thu, 12 Mar 2026 16:02:31 +0100
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w0hHe-000000093tN-0urx;
+	id 1w0hHe-000000093tN-0Mnq;
 	Thu, 12 Mar 2026 15:45:06 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 12 Mar 2026 15:44:57 +0100
-Message-ID: <20260312144505.2159816-14-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	"Claude Opus 4.5" <noreply@anthropic.com>
+Date: Thu, 12 Mar 2026 15:44:54 +0100
+Message-ID: <20260312144505.2159816-11-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260312144505.2159816-1-a.fatoum@pengutronix.de>
 References: <20260312144505.2159816-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260312_080233_763226_D42A2955 
-X-CRM114-Status: GOOD (  31.31  )
+X-CRM114-CacheID: sfid-20260312_080233_759603_CE4F580D 
+X-CRM114-Status: GOOD (  26.38  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,345 +84,311 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=ham
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 14/16] defaultenv: base: add new devboot script
+Subject: [PATCH 11/16] bootm: implement plain and FIT bootm.image override
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-devboot is a new command wrapper that makes it easier to use overrides
-with network-provided artifacts:
+Add support for overriding the boot image via bootm.image when using
+either plain files or FIT images. The override behavior depends on the
+file types involved:
 
-- On the host side, add a *-devboot-* script that describes which
-  overrides to use
+- If the override is not a FIT image, it replaces only the OS loadable,
+  regardless of whether the original was a FIT image or not.
 
-- On the barebox side, ensure the script can be found at either
-  ${fetchfs}/${global.user}-devboot-${global.hostname} or
-  ${fetchfs}/${global.user}-devboot-${global.arch}
+- If the override is a FIT image, it replaces the current OS, whether
+  it's a FIT or not.
 
-- barebox will source this script and pass the applicable overrides
-  to the boot command in addition to whatever arguments devboot
-  was given
+This allows developers to use devboot scripts to redirect FIT image
+loading to alternate locations (e.g., network) while preserving the
+configuration selection from the original boot entry.
 
-Here's an example *-devboot-* script:
-
-  devboot_image=afa-fit-rock3a
-  devboot_oftree=                    # force use of barebox DT
-  devboot_initrd=":afa-rsinit-arm64" # append specified CPIO to FIT's
-
-  global linux.bootargs.dyn.rsinit=rsinit.bind=/lib/modules
-
+Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/user/booting-linux.rst     |   5 +-
- Documentation/user/devboot.rst           | 204 +++++++++++++++++++++++
- Documentation/user/user-manual.rst       |   1 +
- defaultenv/defaultenv-2-base/bin/devboot |  48 ++++++
- defaultenv/defaultenv-2-base/boot/devel  |   3 +
- 5 files changed, 260 insertions(+), 1 deletion(-)
- create mode 100644 Documentation/user/devboot.rst
- create mode 100644 defaultenv/defaultenv-2-base/bin/devboot
- create mode 100755 defaultenv/defaultenv-2-base/boot/devel
+ commands/boot.c           |   2 +-
+ common/bootm-fit.c        |  11 +++-
+ common/bootm-overrides.c  | 119 +++++++++++++++++++++++++++++++++++++-
+ common/bootm.c            |   4 +-
+ include/bootm-fit.h       |   4 +-
+ include/bootm-overrides.h |   3 +
+ include/bootm.h           |   2 +
+ 7 files changed, 134 insertions(+), 11 deletions(-)
 
-diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
-index ed1ec3f68a93..3972777f30cf 100644
---- a/Documentation/user/booting-linux.rst
-+++ b/Documentation/user/booting-linux.rst
-@@ -182,7 +182,10 @@ and configure the overrides as arguments to the ``boot`` command:
+diff --git a/commands/boot.c b/commands/boot.c
+index 555667ee098c..04bb9eb9186f 100644
+--- a/commands/boot.c
++++ b/commands/boot.c
+@@ -44,7 +44,7 @@ static int boot_add_override(struct bootm_overrides *overrides, char *var)
+ 	if (!strcmp(var, "bootm.image")) {
+ 		if (isempty(val))
+ 			return -EINVAL;
+-		return -ENOSYS;
++		overrides->os_file = val;
+ 	} else if (!strcmp(var, "bootm.oftree")) {
+ 		overrides->oftree_file = val;
+ 	} else if (!strcmp(var, "bootm.initrd")) {
+diff --git a/common/bootm-fit.c b/common/bootm-fit.c
+index 5b110ad2f19e..995bd7181223 100644
+--- a/common/bootm-fit.c
++++ b/common/bootm-fit.c
+@@ -4,6 +4,7 @@
+ #include <image-fit.h>
+ #include <bootm-fit.h>
+ #include <memory.h>
++#include <string.h>
+ #include <zero_page.h>
+ #include <filetype.h>
+ #include <fs.h>
+@@ -143,7 +144,7 @@ static enum filetype bootm_fit_update_os_header(struct image_data *data)
+ 	return os_type;
+ }
  
- .. code-block:: sh
+-int bootm_open_fit(struct image_data *data)
++int bootm_open_fit(struct image_data *data, bool override)
+ {
+ 	struct fit_handle *fit;
+ 	void *fit_config;
+@@ -164,8 +165,12 @@ int bootm_open_fit(struct image_data *data)
+ 	}
  
--  boot -o bootm.image=/mnt/tftp/oftree mmc
-+  boot -o bootm.image=/mnt/tftp/zImage mmc
-+
-+See :ref:`devboot` for the full override syntax and the ``devboot``
-+convenience script for network-based development.
+ 	loadable_from_fit_os(data, fit, fit_config);
+-	loadable_from_fit_initrd(data, fit, fit_config);
+-	loadable_from_fit_oftree(data, fit, fit_config);
++	if (override)
++		data->is_override.os = true;
++	if (loadable_from_fit_initrd(data, fit, fit_config) && override)
++		data->is_override.initrd = true;
++	if (loadable_from_fit_oftree(data, fit, fit_config) && override)
++		data->is_override.oftree = true;
+ 	loadable_from_fit_tee(data, fit, fit_config);
  
- Generic Boot Targets
- ^^^^^^^^^^^^^^^^^^^^
-diff --git a/Documentation/user/devboot.rst b/Documentation/user/devboot.rst
-new file mode 100644
-index 000000000000..ad1b4c909ab0
---- /dev/null
-+++ b/Documentation/user/devboot.rst
-@@ -0,0 +1,204 @@
-+.. _devboot:
-+
-+Devboot
-+=======
-+
-+Devboot is a development convenience that builds on top of the
-+:ref:`boot override <boot_overrides>` mechanism. It sources a per-user,
-+per-board script from the network and translates it into ``boot -o``
-+arguments, making it easy to redirect any combination of kernel, device tree
-+and initrd to network-hosted files without touching the boot medium.
-+
-+.. _boot_overrides:
-+
-+Boot overrides
-+--------------
-+
-+Enable ``CONFIG_BOOT_OVERRIDE`` to allow partial overrides of boot entries.
-+This is already enabled in ``multi_v7_defconfig`` and ``multi_v8_defconfig``.
-+
-+The ``boot`` command then accepts one or more ``-o`` flags:
-+
-+.. code-block:: sh
-+
-+  boot -o bootm.image=/mnt/tftp/my-zImage mmc
-+  boot -o bootm.oftree=/mnt/tftp/my-board.dtb mmc
-+  boot -o bootm.initrd=/mnt/tftp/my-initrd mmc
-+
-+Multiple overrides can be combined in a single invocation:
-+
-+.. code-block:: sh
-+
-+  boot -o bootm.image=/mnt/tftp/zImage \
-+       -o bootm.oftree=/mnt/tftp/board.dtb \
-+       -o bootm.initrd=/mnt/tftp/initrd \
-+       mmc
-+
-+Overrides are applied after the boot entry has been loaded, so the original
-+entry still selects the boot handler, kernel arguments, etc. Only the
-+specified components are replaced.
-+
-+Override rules
-+^^^^^^^^^^^^^^
-+
-+``bootm.image``
-+  The override file is probed for its type. If it is a FIT image, the
-+  FIT configuration is re-opened and all components (kernel, initrd, device
-+  tree) are taken from the override FIT. If it is a plain kernel image
-+  (zImage, Image, uImage, ...), only the OS loadable is replaced.
-+
-+``bootm.oftree``
-+  A colon-separated list of files. The first entry is the base device tree;
-+  subsequent entries are applied as overlays:
-+
-+  .. code-block:: sh
-+
-+    # Use a as the device tree
-+    boot -o bootm.oftree=a mmc
-+
-+    # Use a as the device tree, apply b as overlay
-+    boot -o bootm.oftree=a:b mmc
-+
-+    # Keep the existing device tree, apply b as overlay
-+    boot -o bootm.oftree=:b mmc
-+
-+    # Use a as the device tree, apply b and c as overlays
-+    boot -o bootm.oftree=a:b:c mmc
-+
-+  Setting ``bootm.oftree`` to an empty string (``bootm.oftree=``) discards
-+  whatever device tree the boot entry provides. If
-+  ``CONFIG_BOOTM_OFTREE_FALLBACK`` is enabled (the default), the
-+  barebox-internal device tree is passed to the kernel instead. If the
-+  option is disabled, no device tree is passed at all.
-+
-+``bootm.initrd``
-+  A colon-separated list of initrd/CPIO files. Linux can transparently
-+  extract any number of concatenated CPIOs, even if individually compressed.
-+  A leading colon appends to the initrd that the boot entry already provides:
-+
-+  .. code-block:: sh
-+
-+    # Replace with a single initrd
-+    boot -o bootm.initrd=/mnt/tftp/initrd mmc
-+
-+    # Concatenate two initrds
-+    boot -o bootm.initrd=initrd1:initrd2 mmc
-+
-+    # Append an extra CPIO to the existing initrd
-+    boot -o bootm.initrd=:extra.cpio mmc
-+
-+  .. tip::
-+
-+     The Linux kernel ``make cpio-modules-pkg`` target builds a CPIO archive
-+     containing all kernel modules. This is useful for supplementing an existing
-+     initramfs with modules without modifying the root filesystem.
-+     Combined with initrd concatenation, a devboot script
-+     can append it to any boot entry's initrd::
-+
-+       devboot_initrd=":afa-modules-arm64"
-+
-+     To make use of the modules, the initramfs init will need to make initramfs
-+     /modules available to the rootfs, e.g. via a bind mount:
-+
-+       mount -n --bind /lib/modules ${ROOT_MOUNT}/lib/modules
-+
-+.. note::
-+
-+   When secure boot is enforced (``bootm_signed_images_are_forced()``),
-+   overrides are silently ignored.
-+
-+The devboot script
-+------------------
-+
-+The ``devboot`` command (``/env/bin/devboot``) automates the override
-+workflow for network-based development:
-+
-+1. Brings up the network (``ifup -a1``).
-+2. Changes into the fetch directory
-+   (:ref:`global.net.fetchdir <magicvar_global_net_fetchdir>`, default
-+   ``/mnt/tftp``).
-+3. Sources a configuration script named
-+   ``${global.user}-devboot-${global.hostname}``. If that file does not
-+   exist, it falls back to ``${global.user}-devboot-${global.arch}``.
-+4. Translates the variables set by the script into ``boot -o`` arguments.
-+5. Passes any extra arguments through to the ``boot`` command.
-+
-+.. note::
-+
-+   TFTP is not a real file system, e.g., listing of directories is not
-+   possible. Keep that in mind if the devboot script does more than
-+   just fetch files by name from TFTP.
-+
-+Usage
-+^^^^^
-+
-+.. code-block:: sh
-+
-+  # Boot from MMC with devboot overrides
-+  devboot mmc
-+
-+  # Boot from the default boot entry
-+  devboot
-+
-+  # Make devboot the default for subsequent boots
-+  nv.boot.default=devel
-+
-+Configuration script
-+^^^^^^^^^^^^^^^^^^^^
-+
-+The configuration script lives in the fetch directory and sets up to three
-+variables:
-+
-+``devboot_image``
-+  Override for ``bootm.image``. Path is relative to the fetch directory.
-+
-+``devboot_oftree``
-+  Override for ``bootm.oftree``. An empty string discards the boot
-+  entry's device tree (see ``bootm.oftree`` rules above).
-+
-+``devboot_initrd``
-+  Override for ``bootm.initrd``. A leading colon appends to the boot
-+  entry's existing initrd.
-+
-+Variables that are not set (using ``[[ -v ... ]]``) are left alone,
-+so unset variables do not generate override arguments.
-+
-+The script can also set arbitrary barebox variables, for example
-+kernel command line fragments:
-+
-+.. code-block:: sh
-+
-+  # /tftpboot/afa-devboot-rock3a
-+  devboot_image=afa-fit-rock3a
-+  devboot_oftree=
-+  devboot_initrd=":afa-rsinit-arm64"
-+
-+  global linux.bootargs.dyn.rsinit="rsinit.bind=/lib/modules"
-+
-+With this script in place and ``global.user=afa``, ``global.hostname=rock3a``,
-+running ``devboot mmc`` on the board expands to::
-+
-+  boot -o bootm.image="afa-fit-rock3a" \
-+       -o bootm.oftree="" \
-+       -o bootm.initrd=":afa-rsinit-arm64" \
-+       mmc
-+
-+This fetches the FIT image ``afa-fit-rock3a`` from the fetch directory,
-+discards the FIT's device tree (falling back to the barebox-internal one
-+when ``CONFIG_BOOTM_OFTREE_FALLBACK`` is enabled), and appends the
-+``afa-rsinit-arm64`` CPIO archive to whatever initrd the FIT already
-+contains.
-+
-+Setting up the variables
-+^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+The ``global.user`` and ``global.hostname`` variables control which
-+script is loaded. Make them persistent with:
-+
-+.. code-block:: sh
-+
-+  nv user=afa
-+  nv hostname=rock3a
-+
-+``global.hostname`` is typically derived from the device tree, but can be
-+overridden.
-diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
-index cb01721863dd..aa55017c69d7 100644
---- a/Documentation/user/user-manual.rst
-+++ b/Documentation/user/user-manual.rst
-@@ -26,6 +26,7 @@ Contents:
-    usb
-    ubi
-    booting-linux
-+   devboot
-    bootchooser
-    remote-control
-    security
-diff --git a/defaultenv/defaultenv-2-base/bin/devboot b/defaultenv/defaultenv-2-base/bin/devboot
-new file mode 100644
-index 000000000000..124bfec01ba3
---- /dev/null
-+++ b/defaultenv/defaultenv-2-base/bin/devboot
-@@ -0,0 +1,48 @@
-+#!/bin/sh
-+
-+devboot_path="${global.net.fetchdir}"
-+
-+# global.net.server and global.hostname may be set by DHCP, so trigger it first
-+ifup -a1
-+
-+cd "${devboot_path}" || exit 1
-+saved_pwd="$OLDPWD"
-+
-+devboot_script="${global.user}-devboot-${global.hostname}"
-+if [ ! -f "${devboot_script}" ]; then
-+	devboot_script2="${global.user}-devboot-${global.arch}"
-+	if [ ! -f "${devboot_script2}" ]; then
-+		echo "Error: Neither ${devboot_script} nor ${devboot_script2} found"
-+		echo "Create one of them and set as needed:"
-+		echo "  devboot_image, devboot_initrd, devboot_oftree"
-+		cd "${saved_pwd}"
-+		exit 1
-+	fi
-+	devboot_script="${devboot_script2}"
-+fi
-+
-+echo Sourcing "${devboot_path}/${devboot_script}"
-+source "${devboot_path}/${devboot_script}"
-+if [ $? -ne 0 ]; then
-+	cd "${saved_pwd}"
-+	exit 1
-+fi
-+
-+override_args=""
-+
-+if [[ -v devboot_image ]]; then
-+	override_args="${override_args} -o bootm.image=\"${devboot_image}\""
-+fi
-+
-+if [[ -v devboot_oftree ]]; then
-+	override_args="${override_args} -o bootm.oftree=\"${devboot_oftree}\""
-+fi
-+
-+if [[ -v devboot_initrd ]]; then
-+	override_args="${override_args} -o bootm.initrd=\"${devboot_initrd}\""
-+fi
-+
-+echo boot ${override_args} $*
-+boot ${override_args} $*
-+
-+cd "${saved_pwd}"
-diff --git a/defaultenv/defaultenv-2-base/boot/devel b/defaultenv/defaultenv-2-base/boot/devel
-new file mode 100755
-index 000000000000..9bcaaffb5870
---- /dev/null
-+++ b/defaultenv/defaultenv-2-base/boot/devel
-@@ -0,0 +1,3 @@
-+#!/bin/sh
-+
-+devboot
+ 	data->kernel_type = bootm_fit_update_os_header(data);
+diff --git a/common/bootm-overrides.c b/common/bootm-overrides.c
+index 59ca90a58684..8c71ceb5f80d 100644
+--- a/common/bootm-overrides.c
++++ b/common/bootm-overrides.c
+@@ -2,14 +2,118 @@
+ 
+ #include <bootm.h>
+ #include <bootm-overrides.h>
++#include <bootm-fit.h>
++#include <libfile.h>
++#include <linux/pagemap.h>
++
++/**
++ * bootm_apply_image_override - apply bootm.image override
++ * @data: image data context
++ * @override: override path (may include @config suffix for FIT)
++ *
++ * Applies a bootm.image override according to these rules:
++ * - If the override is not a FIT image, it replaces only data->os.
++ * - If the override is a FIT image, it is re-opened via bootm_open_fit()
++ *   using the default configuration or the @config suffix if given.
++ *
++ * Return: 0 on success, negative errno on failure
++ */
++static int bootm_apply_image_override(struct image_data *data,
++				      const char *override)
++{
++	char *override_file, *override_part;
++	void *override_header = NULL;
++	int ret;
++
++	ret = bootm_image_name_and_part(override, &override_file, &override_part);
++	if (ret)
++		return ret;
++
++	/* Read header to detect file type */
++	ret = file_read_and_detect_boot_image_type(override_file, &override_header);
++	if (ret < 0) {
++		free(override_file);
++		return ret;
++	}
++
++	data->image_type = ret;
++
++	/*
++	 * bootm_image_name_and_part() returns os_part pointing inside the
++	 * os_file allocation, so we must NULLify os_part before freeing
++	 * os_file to avoid a use-after-free.
++	 */
++	data->os_part = NULL;
++	free(data->os_file);
++	data->os_file = override_file;
++	if (override_part)
++		data->os_part = override_part;
++
++	/* Update the detected type for the handler */
++	free(data->os_header);
++	data->os_header = override_header;
++
++	switch (data->image_type) {
++	case filetype_fit:
++		/* Restore, so bootm_open_fit looks for them in the new FIT */
++		data->os_address = data->os_address_hint;
++		data->os_entry = data->os_entry_hint;
++
++		/* Re-open configuration and collect loadables */
++		return bootm_open_fit(data, true);
++	default:
++		loadable_release(&data->os);
++		data->os = loadable_from_file(override_file, LOADABLE_KERNEL);
++		if (IS_ERR(data->os))
++			return PTR_ERR(data->os);
++
++		data->kernel_type = data->image_type;
++		data->is_override.os = true;
++
++		if (file_is_compressed_file(data->kernel_type))
++			return bootm_open_os_compressed(data);
++
++		return 0;
++	}
++}
++
++static void report_active_override(const char *type_str, struct loadable *l)
++{
++	struct loadable *lc;
++	char *buf = NULL;
++
++	if (!l) {
++		pr_notice("[bootm override active] removed %s\n", type_str);
++		return;
++	}
++
++	buf = xrasprintf(buf, "[bootm override active] replacement %s: %s",
++		      type_str, l->name);
++
++	list_for_each_entry(lc, &l->chained_loadables, list)
++		buf = xrasprintf(buf, ", %s", lc->name);
++
++	pr_notice("%s\n", buf);
++	free(buf);
++}
++
++static void report_active_overrides(const struct image_data *data)
++{
++	if (data->is_override.os)
++		report_active_override("OS", data->os);
++	if (data->is_override.initrd)
++		report_active_override("initrd", data->initrd);
++	if (data->is_override.oftree)
++		report_active_override("FDT", data->oftree);
++}
+ 
+ /**
+  * bootm_apply_overrides - apply overrides
+  * @data: image data context
+  * @overrides: overrides to apply
+  *
+- * Applies bootm.initrd and bootm.oftree overrides by translating
+- * them into file-based loadables.
++ * Applies bootm.image, bootm.initrd, and bootm.oftree overrides by translating
++ * them into file-based loadables or FIT image replacements.
+  *
+  * Context: Called during boot preparation
+  * Return: 0 on success, negative error code otherwise
+@@ -17,9 +121,17 @@
+ int bootm_apply_overrides(struct image_data *data,
+ 			  const struct bootm_overrides *overrides)
+ {
++	int ret;
++
+ 	if (bootm_signed_images_are_forced())
+ 		return 0;
+ 
++	if (nonempty(overrides->os_file)) {
++		ret = bootm_apply_image_override(data, overrides->os_file);
++		if (ret)
++			return ret;
++	}
++
+ 	if (IS_ENABLED(CONFIG_BOOTM_INITRD) && overrides->initrd_file) {
+ 		/* loadables_from_files() will set data->initrd on empty initrd_file */
+ 		int ret = loadables_from_files(&data->initrd, overrides->initrd_file, ":",
+@@ -42,6 +154,7 @@ int bootm_apply_overrides(struct image_data *data,
+ 		data->is_override.oftree = true;
+ 	}
+ 
++	report_active_overrides(data);
++
+ 	return 0;
+ }
+-
+diff --git a/common/bootm.c b/common/bootm.c
+index ddc656fb34c8..ed79c20c0972 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -400,7 +400,7 @@ static void bootm_print_info(struct image_data *data)
+ 		printf("OS image not yet relocated\n");
+ }
+ 
+-static int bootm_image_name_and_part(const char *name, char **filename, char **part)
++int bootm_image_name_and_part(const char *name, char **filename, char **part)
+ {
+ 	char *at, *ret;
+ 
+@@ -570,7 +570,7 @@ struct image_data *bootm_boot_prep(const struct bootm_data *bootm_data)
+ 
+ 	switch (data->image_type) {
+ 	case filetype_fit:
+-		ret = bootm_open_fit(data);
++		ret = bootm_open_fit(data, false);
+ 		break;
+ 	case filetype_uimage:
+ 		ret = bootm_open_uimage(data);
+diff --git a/include/bootm-fit.h b/include/bootm-fit.h
+index 05f4f5acfe9a..972d9e4fac8e 100644
+--- a/include/bootm-fit.h
++++ b/include/bootm-fit.h
+@@ -10,11 +10,11 @@ struct image_data;
+ 
+ #ifdef CONFIG_BOOTM_FITIMAGE
+ 
+-int bootm_open_fit(struct image_data *data);
++int bootm_open_fit(struct image_data *data, bool override);
+ 
+ #else
+ 
+-static inline int bootm_open_fit(struct image_data *data)
++static inline int bootm_open_fit(struct image_data *data, bool override)
+ {
+ 	return -ENOSYS;
+ }
+diff --git a/include/bootm-overrides.h b/include/bootm-overrides.h
+index a52a498b97a2..9b133928a923 100644
+--- a/include/bootm-overrides.h
++++ b/include/bootm-overrides.h
+@@ -3,6 +3,7 @@
+ #define __BOOTM_OVERRIDES_H
+ 
+ struct bootm_overrides {
++	const char *os_file;
+ 	const char *oftree_file;
+ 	const char *initrd_file;
+ };
+@@ -13,6 +14,8 @@ struct image_data;
+ static inline void bootm_merge_overrides(struct bootm_overrides *dst,
+ 					 const struct bootm_overrides *src)
+ {
++	if (src->os_file)
++		dst->os_file = src->os_file;
+ 	if (src->oftree_file)
+ 		dst->oftree_file = src->oftree_file;
+ 	if (src->initrd_file)
+diff --git a/include/bootm.h b/include/bootm.h
+index 570ac4d289f2..85199fc702b4 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -53,6 +53,8 @@ struct bootm_data {
+ 	unsigned long os_entry;
+ };
+ 
++int bootm_image_name_and_part(const char *name, char **filename, char **part);
++
+ int bootm_boot(const struct bootm_data *data);
+ 
+ struct image_data *bootm_boot_prep(const struct bootm_data *bootm_data);
 -- 
 2.47.3
 
