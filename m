@@ -1,67 +1,67 @@
-Delivery-date: Thu, 12 Mar 2026 16:03:18 +0100
+Delivery-date: Thu, 12 Mar 2026 16:03:21 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w0hZF-00ArgS-1v
+	id 1w0hZI-00Argq-2V
 	for lore@lore.pengutronix.de;
-	Thu, 12 Mar 2026 16:03:18 +0100
+	Thu, 12 Mar 2026 16:03:21 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w0hZF-0000ZW-Gl
-	for lore@pengutronix.de; Thu, 12 Mar 2026 16:03:18 +0100
+	id 1w0hZI-0000ab-Gt
+	for lore@pengutronix.de; Thu, 12 Mar 2026 16:03:21 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Yedi3tJMii9Ulx5Y+YFltfqSmad2iHOTEF7ZgCQvOA4=; b=1pCXo3ZMi1Gw8YEkbOMI75cuqE
-	UCN45SeAxBOn8z4HkcjUefk8xF7xigQmX1gYCJOKMl5UwPX0cZnjO51nU5MSdxtXD2AXwvNcMrSuw
-	11mXNKx0YQuwP/opFJe6oqqYyzflvVg7seuxhpbDCB0NobAat/blBmtphR+BaKWCy8P/vNpWrFDPW
-	I7lzZPeWKhxvoF834vGSF4VYl/ifiF8oeov76+oNuqxlM7pY+4W9ZUJyUH/C9W1bU40Vt2jc0y0xN
-	1azwJfylNgjmWoLLxKa2Sb6I9nUpBqgIQy7rOAEg5tZTw3Q9akSdrZF8DHoMUAabW4bL0J9mqgGAZ
-	vyE42MhA==;
+	bh=EjVxNe4vMyAR1XRA6/dJo5tNq7ynHH6eMzRKXj9c6oM=; b=aR/TF1gMISvSEn6D2vUZJG5s1S
+	pNOHEzA+ZhzCJsSDX29ssF52jn7t1ifQKZ+1FuN93p8jI/Aworn0VogDabiyiI4D8ce9nJQ1Y+3Y5
+	Smv2b4WTJIOQ/lrEHq7QHfaz9/gwioLTMppyvFMqulL7hLaBGcK9f44+DgAXppEtYYZo98JlKJesU
+	cLoM/c4RpFEgeMfkCI/WfSfLxPNXJrp6z2cJR5TGaiyRYYCUn+ZfJpMDVH2hK6iAd8Yzl4kTziSxJ
+	MsQiOONrr+MPDeOGfCVhsmmpZ274WEL2i0uBJpgFakoztSZGT9pv4hMLUj1fRaNECern2hLLos8lz
+	nnrMeRNQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w0hYc-0000000EI7G-1AgQ;
+	id 1w0hYc-0000000EI7V-2dMN;
 	Thu, 12 Mar 2026 15:02:38 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w0hYX-0000000EI3D-2Q8f
+	id 1w0hYX-0000000EI34-2MUu
 	for barebox@lists.infradead.org;
 	Thu, 12 Mar 2026 15:02:36 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w0hYW-0008VQ-3M; Thu, 12 Mar 2026 16:02:32 +0100
+	id 1w0hYV-0008Uo-PS; Thu, 12 Mar 2026 16:02:31 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w0hYU-0052Q5-1f;
+	id 1w0hYU-0052Pt-0o;
 	Thu, 12 Mar 2026 16:02:31 +0100
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w0hHe-000000093tN-0jQK;
+	id 1w0hHe-000000093tN-0urx;
 	Thu, 12 Mar 2026 15:45:06 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 12 Mar 2026 15:44:56 +0100
-Message-ID: <20260312144505.2159816-13-a.fatoum@pengutronix.de>
+Date: Thu, 12 Mar 2026 15:44:57 +0100
+Message-ID: <20260312144505.2159816-14-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260312144505.2159816-1-a.fatoum@pengutronix.de>
 References: <20260312144505.2159816-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260312_080233_764698_21606ED1 
-X-CRM114-Status: GOOD (  14.86  )
+X-CRM114-CacheID: sfid-20260312_080233_763226_D42A2955 
+X-CRM114-Status: GOOD (  31.31  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,211 +83,345 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=ham
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 13/16] test: py: add test for initrd concatenation
+Subject: [PATCH 14/16] defaultenv: base: add new devboot script
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Now that the FIT code supports processing multiple entries in the
-ramdisk property, add a test to ensure this doesn't regress.
+devboot is a new command wrapper that makes it easier to use overrides
+with network-provided artifacts:
+
+- On the host side, add a *-devboot-* script that describes which
+  overrides to use
+
+- On the barebox side, ensure the script can be found at either
+  ${fetchfs}/${global.user}-devboot-${global.hostname} or
+  ${fetchfs}/${global.user}-devboot-${global.arch}
+
+- barebox will source this script and pass the applicable overrides
+  to the boot command in addition to whatever arguments devboot
+  was given
+
+Here's an example *-devboot-* script:
+
+  devboot_image=afa-fit-rock3a
+  devboot_oftree=                    # force use of barebox DT
+  devboot_initrd=":afa-rsinit-arm64" # append specified CPIO to FIT's
+
+  global linux.bootargs.dyn.rsinit=rsinit.bind=/lib/modules
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- test/py/test_fit.py                          | 38 +++++++++++++-------
- test/py/testfs.py                            | 23 ++++++++++++
- test/testdata/multi_v7_defconfig-gzipped.its | 28 +++++++++++++--
- test/testdata/multi_v8_defconfig-gzipped.its | 28 +++++++++++++--
- 4 files changed, 98 insertions(+), 19 deletions(-)
- create mode 100644 test/py/testfs.py
+ Documentation/user/booting-linux.rst     |   5 +-
+ Documentation/user/devboot.rst           | 204 +++++++++++++++++++++++
+ Documentation/user/user-manual.rst       |   1 +
+ defaultenv/defaultenv-2-base/bin/devboot |  48 ++++++
+ defaultenv/defaultenv-2-base/boot/devel  |   3 +
+ 5 files changed, 260 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/user/devboot.rst
+ create mode 100644 defaultenv/defaultenv-2-base/bin/devboot
+ create mode 100755 defaultenv/defaultenv-2-base/boot/devel
 
-diff --git a/test/py/test_fit.py b/test/py/test_fit.py
-index 8bcee6a75f23..0fd5a3c5dcc5 100644
---- a/test/py/test_fit.py
-+++ b/test/py/test_fit.py
-@@ -7,6 +7,7 @@ import shutil
- import subprocess
- from pathlib import Path
- from .helper import of_get_property, filter_errors
-+from .testfs import mkcpio
+diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
+index ed1ec3f68a93..3972777f30cf 100644
+--- a/Documentation/user/booting-linux.rst
++++ b/Documentation/user/booting-linux.rst
+@@ -182,7 +182,10 @@ and configure the overrides as arguments to the ``boot`` command:
  
+ .. code-block:: sh
  
- def generate_bootscript(barebox, image, name="test"):
-@@ -37,16 +38,9 @@ def fit_testdata(barebox_config, testfs):
-             input=(builddir / "images" / "barebox-dt-2nd.img").read_bytes(),
-             stdout=open(builddir / "barebox-dt-2nd.img.gz", "wb"))
- 
--        find = subprocess.Popen(["find", "COPYING", "LICENSES/"],
--                                stdout=subprocess.PIPE)
--        cpio = subprocess.Popen(["cpio", "-o", "-H", "newc"],
--                                stdin=find.stdout, stdout=subprocess.PIPE)
--        gzip = subprocess.Popen(["gzip"], stdin=cpio.stdout,
--                                stdout=open(builddir / "ramdisk.cpio.gz", "wb"))
--
--        find.wait()
--        cpio.wait()
--        gzip.wait()
-+        mkcpio("COPYING", outdir / "ramdisk1.cpio.gz")
-+        mkcpio("LICENSES/exceptions/", outdir / "ramdisk2.cpio")
-+        mkcpio("LICENSES/preferred/", outdir / "ramdisk3.cpio.gz")
- 
-         run(["mkimage", "-G", "test/self/development_rsa2048.pem", "-r", "-f",
-              str(builddir / its_name), str(outfile)])
-@@ -105,6 +99,15 @@ def test_fit(barebox, strategy, fitimage):
- 
-     barebox.run_check("global linux.bootargs.testarg=barebox.chainloaded")
- 
-+    barebox.run_check("cat -o /tmp/ramdisks.cpio /mnt/9p/testfs/ramdisk*.cpio*")
-+    [hashsum1] = barebox.run_check("md5sum /tmp/ramdisks.cpio")
+-  boot -o bootm.image=/mnt/tftp/oftree mmc
++  boot -o bootm.image=/mnt/tftp/zImage mmc
 +
-+    hashsum1 = re.split("/tmp/ramdisks.cpio", hashsum1, maxsplit=1)[0]
-+    # Get the actual size of the concatenated ramdisks file
-+    [fileinfo] = barebox.run_check("ls -l /tmp/ramdisks.cpio")
-+    # Parse the size from ls -l output (format: permissions links user group size ...)
-+    actual_size = int(fileinfo.split()[1])
-+
-     boottarget = generate_bootscript(barebox, fitimage)
++See :ref:`devboot` for the full override syntax and the ``devboot``
++convenience script for network-based development.
  
-     with strategy.boot_barebox(boottarget) as barebox:
-@@ -118,7 +121,16 @@ def test_fit(barebox, strategy, fitimage):
-         bootargs = of_get_property(barebox, "/chosen/bootargs")
-         assert "barebox.chainloaded" in bootargs
- 
--        initrd_start = of_get_property(barebox, "/chosen/linux,initrd-start", 0)
--        initrd_end = of_get_property(barebox, "/chosen/linux,initrd-end", 0)
-+        initrd_start = of_get_property(barebox, "/chosen/linux,initrd-start", ncells=0)
-+        initrd_end = of_get_property(barebox, "/chosen/linux,initrd-end", ncells=0)
-+        initrd_size = initrd_end - initrd_start
- 
--        assert initrd_start < initrd_end
-+        # Verify the DT-reported size matches the actual file size
-+        assert initrd_size == actual_size, \
-+            f"Initrd size mismatch: DT says {initrd_size}, file is {actual_size}"
-+
-+        [hashsum2] = barebox.run_check(f"md5sum {initrd_start}+{initrd_size}")
-+
-+        hashsum2 = re.split("/dev/mem", hashsum2, maxsplit=1)[0]
-+
-+        assert hashsum1 == hashsum2
-diff --git a/test/py/testfs.py b/test/py/testfs.py
+ Generic Boot Targets
+ ^^^^^^^^^^^^^^^^^^^^
+diff --git a/Documentation/user/devboot.rst b/Documentation/user/devboot.rst
 new file mode 100644
-index 000000000000..3ead67c0621b
+index 000000000000..ad1b4c909ab0
 --- /dev/null
-+++ b/test/py/testfs.py
-@@ -0,0 +1,23 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
++++ b/Documentation/user/devboot.rst
+@@ -0,0 +1,204 @@
++.. _devboot:
 +
-+import subprocess
++Devboot
++=======
 +
++Devboot is a development convenience that builds on top of the
++:ref:`boot override <boot_overrides>` mechanism. It sources a per-user,
++per-board script from the network and translates it into ``boot -o``
++arguments, making it easy to redirect any combination of kernel, device tree
++and initrd to network-hosted files without touching the boot medium.
 +
-+def mkcpio(inpath, outname):
-+    compress = outname.suffix == ".gz"
++.. _boot_overrides:
 +
-+    find = subprocess.Popen(["find", inpath], stdout=subprocess.PIPE)
++Boot overrides
++--------------
 +
-+    with open(outname, "wb") as outfile:
-+        cpio = subprocess.Popen(["cpio", "-o", "-H", "newc"], stdin=find.stdout,
-+                                stdout=(subprocess.PIPE if compress else outfile))
++Enable ``CONFIG_BOOT_OVERRIDE`` to allow partial overrides of boot entries.
++This is already enabled in ``multi_v7_defconfig`` and ``multi_v8_defconfig``.
 +
-+        find.stdout.close()
++The ``boot`` command then accepts one or more ``-o`` flags:
 +
-+        if compress:
-+            gzip = subprocess.Popen(["gzip"], stdin=cpio.stdout, stdout=outfile)
-+            cpio.stdout.close()
-+            gzip.wait()
++.. code-block:: sh
 +
-+        cpio.wait()
-+        find.wait()
-diff --git a/test/testdata/multi_v7_defconfig-gzipped.its b/test/testdata/multi_v7_defconfig-gzipped.its
-index 11595c39baa1..1cb84fd41564 100644
---- a/test/testdata/multi_v7_defconfig-gzipped.its
-+++ b/test/testdata/multi_v7_defconfig-gzipped.its
-@@ -26,8 +26,30 @@
-             };
-         };
-         ramdisk-1 {
--            description = "initramfs";
--            data = /incbin/("ramdisk.cpio.gz");
-+            description = "initramfs 1 (compressed)";
-+            data = /incbin/("testfs/ramdisk1.cpio.gz");
-+            type = "ramdisk";
-+            arch = "arm";
-+            os = "linux";
-+            compression = "none";
-+            hash-1 {
-+                algo = "sha256";
-+            };
-+        };
-+        ramdisk-2 {
-+            description = "initramfs 2 (uncompressed)";
-+            data = /incbin/("testfs/ramdisk2.cpio");
-+            type = "ramdisk";
-+            arch = "arm";
-+            os = "linux";
-+            compression = "none";
-+            hash-1 {
-+                algo = "sha256";
-+            };
-+        };
-+        ramdisk-3 {
-+            description = "initramfs 3 (compressed)";
-+            data = /incbin/("testfs/ramdisk3.cpio.gz");
-             type = "ramdisk";
-             arch = "arm";
-             os = "linux";
-@@ -44,7 +66,7 @@
-             description = "Qemu Virt32";
-             kernel = "kernel-1";
-             fdt = "fdt-qemu-virt32.dtb";
--            ramdisk = "ramdisk-1";
-+            ramdisk = "ramdisk-1", "ramdisk-2", "ramdisk-3";
-             compatible = "linux,dummy-virt";
-             signature-1 {
-                 algo = "sha256,rsa2048";
-diff --git a/test/testdata/multi_v8_defconfig-gzipped.its b/test/testdata/multi_v8_defconfig-gzipped.its
-index 5ce678eec9a8..3786d0f12187 100644
---- a/test/testdata/multi_v8_defconfig-gzipped.its
-+++ b/test/testdata/multi_v8_defconfig-gzipped.its
-@@ -26,8 +26,30 @@
-             };
-         };
-         ramdisk-1 {
--            description = "initramfs";
--            data = /incbin/("ramdisk.cpio.gz");
-+            description = "initramfs 1 (compressed)";
-+            data = /incbin/("testfs/ramdisk1.cpio.gz");
-+            type = "ramdisk";
-+            arch = "arm64";
-+            os = "linux";
-+            compression = "none";
-+            hash-1 {
-+                algo = "sha256";
-+            };
-+        };
-+        ramdisk-2 {
-+            description = "initramfs 2 (uncompressed)";
-+            data = /incbin/("testfs/ramdisk2.cpio");
-+            type = "ramdisk";
-+            arch = "arm64";
-+            os = "linux";
-+            compression = "none";
-+            hash-1 {
-+                algo = "sha256";
-+            };
-+        };
-+        ramdisk-3 {
-+            description = "initramfs 3 (compressed)";
-+            data = /incbin/("testfs/ramdisk3.cpio.gz");
-             type = "ramdisk";
-             arch = "arm64";
-             os = "linux";
-@@ -44,7 +66,7 @@
-             description = "Qemu Virt64";
-             kernel = "kernel-1";
-             fdt = "fdt-qemu-virt64.dtb";
--            ramdisk = "ramdisk-1";
-+            ramdisk = "ramdisk-1", "ramdisk-2", "ramdisk-3";
-             compatible = "linux,dummy-virt";
-             signature-1 {
-                 algo = "sha256,rsa2048";
++  boot -o bootm.image=/mnt/tftp/my-zImage mmc
++  boot -o bootm.oftree=/mnt/tftp/my-board.dtb mmc
++  boot -o bootm.initrd=/mnt/tftp/my-initrd mmc
++
++Multiple overrides can be combined in a single invocation:
++
++.. code-block:: sh
++
++  boot -o bootm.image=/mnt/tftp/zImage \
++       -o bootm.oftree=/mnt/tftp/board.dtb \
++       -o bootm.initrd=/mnt/tftp/initrd \
++       mmc
++
++Overrides are applied after the boot entry has been loaded, so the original
++entry still selects the boot handler, kernel arguments, etc. Only the
++specified components are replaced.
++
++Override rules
++^^^^^^^^^^^^^^
++
++``bootm.image``
++  The override file is probed for its type. If it is a FIT image, the
++  FIT configuration is re-opened and all components (kernel, initrd, device
++  tree) are taken from the override FIT. If it is a plain kernel image
++  (zImage, Image, uImage, ...), only the OS loadable is replaced.
++
++``bootm.oftree``
++  A colon-separated list of files. The first entry is the base device tree;
++  subsequent entries are applied as overlays:
++
++  .. code-block:: sh
++
++    # Use a as the device tree
++    boot -o bootm.oftree=a mmc
++
++    # Use a as the device tree, apply b as overlay
++    boot -o bootm.oftree=a:b mmc
++
++    # Keep the existing device tree, apply b as overlay
++    boot -o bootm.oftree=:b mmc
++
++    # Use a as the device tree, apply b and c as overlays
++    boot -o bootm.oftree=a:b:c mmc
++
++  Setting ``bootm.oftree`` to an empty string (``bootm.oftree=``) discards
++  whatever device tree the boot entry provides. If
++  ``CONFIG_BOOTM_OFTREE_FALLBACK`` is enabled (the default), the
++  barebox-internal device tree is passed to the kernel instead. If the
++  option is disabled, no device tree is passed at all.
++
++``bootm.initrd``
++  A colon-separated list of initrd/CPIO files. Linux can transparently
++  extract any number of concatenated CPIOs, even if individually compressed.
++  A leading colon appends to the initrd that the boot entry already provides:
++
++  .. code-block:: sh
++
++    # Replace with a single initrd
++    boot -o bootm.initrd=/mnt/tftp/initrd mmc
++
++    # Concatenate two initrds
++    boot -o bootm.initrd=initrd1:initrd2 mmc
++
++    # Append an extra CPIO to the existing initrd
++    boot -o bootm.initrd=:extra.cpio mmc
++
++  .. tip::
++
++     The Linux kernel ``make cpio-modules-pkg`` target builds a CPIO archive
++     containing all kernel modules. This is useful for supplementing an existing
++     initramfs with modules without modifying the root filesystem.
++     Combined with initrd concatenation, a devboot script
++     can append it to any boot entry's initrd::
++
++       devboot_initrd=":afa-modules-arm64"
++
++     To make use of the modules, the initramfs init will need to make initramfs
++     /modules available to the rootfs, e.g. via a bind mount:
++
++       mount -n --bind /lib/modules ${ROOT_MOUNT}/lib/modules
++
++.. note::
++
++   When secure boot is enforced (``bootm_signed_images_are_forced()``),
++   overrides are silently ignored.
++
++The devboot script
++------------------
++
++The ``devboot`` command (``/env/bin/devboot``) automates the override
++workflow for network-based development:
++
++1. Brings up the network (``ifup -a1``).
++2. Changes into the fetch directory
++   (:ref:`global.net.fetchdir <magicvar_global_net_fetchdir>`, default
++   ``/mnt/tftp``).
++3. Sources a configuration script named
++   ``${global.user}-devboot-${global.hostname}``. If that file does not
++   exist, it falls back to ``${global.user}-devboot-${global.arch}``.
++4. Translates the variables set by the script into ``boot -o`` arguments.
++5. Passes any extra arguments through to the ``boot`` command.
++
++.. note::
++
++   TFTP is not a real file system, e.g., listing of directories is not
++   possible. Keep that in mind if the devboot script does more than
++   just fetch files by name from TFTP.
++
++Usage
++^^^^^
++
++.. code-block:: sh
++
++  # Boot from MMC with devboot overrides
++  devboot mmc
++
++  # Boot from the default boot entry
++  devboot
++
++  # Make devboot the default for subsequent boots
++  nv.boot.default=devel
++
++Configuration script
++^^^^^^^^^^^^^^^^^^^^
++
++The configuration script lives in the fetch directory and sets up to three
++variables:
++
++``devboot_image``
++  Override for ``bootm.image``. Path is relative to the fetch directory.
++
++``devboot_oftree``
++  Override for ``bootm.oftree``. An empty string discards the boot
++  entry's device tree (see ``bootm.oftree`` rules above).
++
++``devboot_initrd``
++  Override for ``bootm.initrd``. A leading colon appends to the boot
++  entry's existing initrd.
++
++Variables that are not set (using ``[[ -v ... ]]``) are left alone,
++so unset variables do not generate override arguments.
++
++The script can also set arbitrary barebox variables, for example
++kernel command line fragments:
++
++.. code-block:: sh
++
++  # /tftpboot/afa-devboot-rock3a
++  devboot_image=afa-fit-rock3a
++  devboot_oftree=
++  devboot_initrd=":afa-rsinit-arm64"
++
++  global linux.bootargs.dyn.rsinit="rsinit.bind=/lib/modules"
++
++With this script in place and ``global.user=afa``, ``global.hostname=rock3a``,
++running ``devboot mmc`` on the board expands to::
++
++  boot -o bootm.image="afa-fit-rock3a" \
++       -o bootm.oftree="" \
++       -o bootm.initrd=":afa-rsinit-arm64" \
++       mmc
++
++This fetches the FIT image ``afa-fit-rock3a`` from the fetch directory,
++discards the FIT's device tree (falling back to the barebox-internal one
++when ``CONFIG_BOOTM_OFTREE_FALLBACK`` is enabled), and appends the
++``afa-rsinit-arm64`` CPIO archive to whatever initrd the FIT already
++contains.
++
++Setting up the variables
++^^^^^^^^^^^^^^^^^^^^^^^^
++
++The ``global.user`` and ``global.hostname`` variables control which
++script is loaded. Make them persistent with:
++
++.. code-block:: sh
++
++  nv user=afa
++  nv hostname=rock3a
++
++``global.hostname`` is typically derived from the device tree, but can be
++overridden.
+diff --git a/Documentation/user/user-manual.rst b/Documentation/user/user-manual.rst
+index cb01721863dd..aa55017c69d7 100644
+--- a/Documentation/user/user-manual.rst
++++ b/Documentation/user/user-manual.rst
+@@ -26,6 +26,7 @@ Contents:
+    usb
+    ubi
+    booting-linux
++   devboot
+    bootchooser
+    remote-control
+    security
+diff --git a/defaultenv/defaultenv-2-base/bin/devboot b/defaultenv/defaultenv-2-base/bin/devboot
+new file mode 100644
+index 000000000000..124bfec01ba3
+--- /dev/null
++++ b/defaultenv/defaultenv-2-base/bin/devboot
+@@ -0,0 +1,48 @@
++#!/bin/sh
++
++devboot_path="${global.net.fetchdir}"
++
++# global.net.server and global.hostname may be set by DHCP, so trigger it first
++ifup -a1
++
++cd "${devboot_path}" || exit 1
++saved_pwd="$OLDPWD"
++
++devboot_script="${global.user}-devboot-${global.hostname}"
++if [ ! -f "${devboot_script}" ]; then
++	devboot_script2="${global.user}-devboot-${global.arch}"
++	if [ ! -f "${devboot_script2}" ]; then
++		echo "Error: Neither ${devboot_script} nor ${devboot_script2} found"
++		echo "Create one of them and set as needed:"
++		echo "  devboot_image, devboot_initrd, devboot_oftree"
++		cd "${saved_pwd}"
++		exit 1
++	fi
++	devboot_script="${devboot_script2}"
++fi
++
++echo Sourcing "${devboot_path}/${devboot_script}"
++source "${devboot_path}/${devboot_script}"
++if [ $? -ne 0 ]; then
++	cd "${saved_pwd}"
++	exit 1
++fi
++
++override_args=""
++
++if [[ -v devboot_image ]]; then
++	override_args="${override_args} -o bootm.image=\"${devboot_image}\""
++fi
++
++if [[ -v devboot_oftree ]]; then
++	override_args="${override_args} -o bootm.oftree=\"${devboot_oftree}\""
++fi
++
++if [[ -v devboot_initrd ]]; then
++	override_args="${override_args} -o bootm.initrd=\"${devboot_initrd}\""
++fi
++
++echo boot ${override_args} $*
++boot ${override_args} $*
++
++cd "${saved_pwd}"
+diff --git a/defaultenv/defaultenv-2-base/boot/devel b/defaultenv/defaultenv-2-base/boot/devel
+new file mode 100755
+index 000000000000..9bcaaffb5870
+--- /dev/null
++++ b/defaultenv/defaultenv-2-base/boot/devel
+@@ -0,0 +1,3 @@
++#!/bin/sh
++
++devboot
 -- 
 2.47.3
 
