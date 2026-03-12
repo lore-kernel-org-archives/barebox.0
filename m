@@ -1,67 +1,67 @@
-Delivery-date: Thu, 12 Mar 2026 15:45:48 +0100
+Delivery-date: Thu, 12 Mar 2026 15:45:50 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w0hIK-00ArQz-01
+	id 1w0hIL-00ArRY-1J
 	for lore@lore.pengutronix.de;
-	Thu, 12 Mar 2026 15:45:48 +0100
+	Thu, 12 Mar 2026 15:45:50 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w0hIJ-00051K-Uj
-	for lore@pengutronix.de; Thu, 12 Mar 2026 15:45:48 +0100
+	id 1w0hIK-000524-FN
+	for lore@pengutronix.de; Thu, 12 Mar 2026 15:45:50 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=BWl+bDsZDR18vRpSwEMkyL8y9cpde52NK94qWqqi2xY=; b=SSdUcdtOrJP5li749NxS0jNGwX
-	XmuDdpwrTImX6ZIFRSbN2vPe0DaNwaswsDaCcw+arGqf8T/A3SaSgq/5oQ836ezcQDdJhzsOzR3Lx
-	M8lllC2y5yNhjTCxrePcF8DWQz2MlZHFKvsu7Ehk9BqmF2Ce4pSXGycx1yT41E+nfkWH4pgM3XXWd
-	WdN450emZaSMgxrBK9/zkzBibuEz1Xdif4rcYQFwhojKLjTSrGsAgMJ65PgiztyrU418eTYAzW0ZD
-	WHadqBmPioeY2CIk6I1W4NhDjYeEILG6BDKrYeAK2AOjlWUuCwB4t5a6U0cZTYLMHl0ofJ/RqjONj
-	Ha9peiag==;
+	bh=tagyRoOoe9c5EqSR0SPWeiUInnnu9fo4VhVPDhR2fRQ=; b=yUxpMI16pNQ35CNYGxWEKzYdZk
+	NefyPJBksb6267pLHDoPldANnRmRFeZjSdi+LsF/UJfad2Kz8/7KlC/ktD4i/vWcwOqYfOWbhIWiV
+	Xn9X5Ve/Bhsn6NoluYFsi+vBozL9pd97YBsg6v8rnteK0uhXr4JGQXUXMNkw9KlO4EmANjIOaUBQj
+	0xYJIj/BXWIwjdiYLsJPK4K72XdOkXIPAXi6dKlUgwPxXxpcqMyNhJ8Js5pVEbnOhfBSXahN6680p
+	V/0Eu69gRscTyb1VST2nA7YVpI04zk/ksa0wpEATBxhC39Ik4WELckb8eEa+KLhB/48ffQzEPYLGw
+	Yo2VVR4A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w0hHl-0000000EEs1-0PV1;
+	id 1w0hHl-0000000EEsc-1n0t;
 	Thu, 12 Mar 2026 14:45:13 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w0hHf-0000000EEmD-3WRm
+	id 1w0hHg-0000000EEmM-0BgI
 	for barebox@lists.infradead.org;
-	Thu, 12 Mar 2026 14:45:09 +0000
+	Thu, 12 Mar 2026 14:45:10 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w0hHe-0004TG-3T; Thu, 12 Mar 2026 15:45:06 +0100
+	id 1w0hHe-0004U2-HS; Thu, 12 Mar 2026 15:45:06 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w0hHc-0052O2-1d;
-	Thu, 12 Mar 2026 15:45:05 +0100
+	id 1w0hHc-0052OM-2a;
+	Thu, 12 Mar 2026 15:45:06 +0100
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w0hHd-000000093tN-3ANI;
-	Thu, 12 Mar 2026 15:45:05 +0100
+	id 1w0hHe-000000093tN-0BKu;
+	Thu, 12 Mar 2026 15:45:06 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 12 Mar 2026 15:44:47 +0100
-Message-ID: <20260312144505.2159816-4-a.fatoum@pengutronix.de>
+Date: Thu, 12 Mar 2026 15:44:53 +0100
+Message-ID: <20260312144505.2159816-10-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260312144505.2159816-1-a.fatoum@pengutronix.de>
 References: <20260312144505.2159816-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260312_074507_884338_E7D7EA36 
-X-CRM114-Status: GOOD (  11.70  )
+X-CRM114-CacheID: sfid-20260312_074508_084586_D81D8E57 
+X-CRM114-Status: GOOD (  13.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,82 +83,113 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 04/16] bootchooser: pass along struct bootentry
+Subject: [PATCH 10/16] bootm: support multiple entries for bootm.initrd
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-By plumbing through the parent bootentry, we can merge the overrides
-applied for the bootchooser targets onto the actual children if boot
-override support is enabled.
+Linux can extract transparently any number of concatenated CPIOs, even
+if individually compressed. This can be useful if we have two CPIOs from
+different sources, e.g. an rdinit and a CPIO with the kernel modules.
+
+Teach bootm how to collect multiple initrd entries by leveraging the
+loadable chaining support.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/bootchooser.c  | 13 +++++++++----
- include/bootchooser.h |  2 +-
- 2 files changed, 10 insertions(+), 5 deletions(-)
+ common/bootm-fit.c       | 13 +++++++++----
+ common/bootm-overrides.c | 17 +++++++----------
+ common/bootm.c           |  7 ++++---
+ 3 files changed, 20 insertions(+), 17 deletions(-)
 
-diff --git a/common/bootchooser.c b/common/bootchooser.c
-index 07cbdacfeb0a..2a75dfdcc88e 100644
---- a/common/bootchooser.c
-+++ b/common/bootchooser.c
-@@ -839,7 +839,8 @@ void bootchooser_lock_attempts(bool locked)
- 	attempts_locked = locked;
- }
- 
--static int bootchooser_boot_one(struct bootchooser *bc, int *tryagain)
-+static int bootchooser_boot_one(struct bootchooser *bc, int *tryagain,
-+				struct bootentry *parent_entry)
+diff --git a/common/bootm-fit.c b/common/bootm-fit.c
+index 089f376fd7f1..5b110ad2f19e 100644
+--- a/common/bootm-fit.c
++++ b/common/bootm-fit.c
+@@ -36,7 +36,7 @@ static void loadable_from_fit_os(struct image_data *data,
+  * @fit:		handle of FIT image
+  * @config:		config to look up kernel in
+  *
+- * This creates a loadable for the first initial ram disk in the config.
++ * This creates loadables for all initial ram disks in the config and chains them.
+  *
+  * Return: true if initrd booting is supported and a ramdisk exists or
+  *         false otherwise.
+@@ -45,17 +45,22 @@ static bool loadable_from_fit_initrd(struct image_data *data,
+ 				struct fit_handle *fit,
+ 				void *config)
  {
- 	char *system;
- 	struct bootentries *entries;
-@@ -873,6 +874,10 @@ static int bootchooser_boot_one(struct bootchooser *bc, int *tryagain)
- 	ret = -ENOENT;
- 
- 	bootentries_for_each_entry(entries, entry) {
-+		if (parent_entry)
-+			bootm_merge_overrides(&entry->overrides,
-+					      &parent_entry->overrides);
++	int nramdisks;
 +
- 		ret = boot_entry(entry, bc->verbose, bc->dryrun);
- 		if (!ret) {
- 			*tryagain = 0;
-@@ -889,12 +894,12 @@ static int bootchooser_boot_one(struct bootchooser *bc, int *tryagain)
- 	return ret;
+ 	if (!IS_ENABLED(CONFIG_BOOTM_INITRD))
+ 		return false;
+ 
+-	if (!fit_has_image(fit, config, "ramdisk"))
++	nramdisks = fit_count_images(fit, config, "ramdisk");
++	if (nramdisks < 0)
+ 		return false;
+ 
+ 	loadable_release(&data->initrd);
+ 
+-	data->initrd = loadable_from_fit(fit, config, "ramdisk", 0, LOADABLE_INITRD);
++	for (int i = 0; i < nramdisks; i++)
++		loadable_chain(&data->initrd, loadable_from_fit(fit, config, "ramdisk",
++								i, LOADABLE_INITRD));
+ 
+-	return true;
++	return nramdisks > 0;
  }
  
--int bootchooser_boot(struct bootchooser *bc)
-+int bootchooser_boot(struct bootchooser *bc, struct bootentry *entry)
- {
- 	int ret, tryagain;
+ /*
+diff --git a/common/bootm-overrides.c b/common/bootm-overrides.c
+index c1f3ee7cade8..59ca90a58684 100644
+--- a/common/bootm-overrides.c
++++ b/common/bootm-overrides.c
+@@ -20,16 +20,12 @@ int bootm_apply_overrides(struct image_data *data,
+ 	if (bootm_signed_images_are_forced())
+ 		return 0;
  
- 	do {
--		ret = bootchooser_boot_one(bc, &tryagain);
-+		ret = bootchooser_boot_one(bc, &tryagain, entry);
+-	if (overrides->initrd_file) {
+-		loadable_release(&data->initrd);
+-
+-		/* Empty string means to mask the original initrd */
+-		if (nonempty(overrides->initrd_file)) {
+-			data->initrd = loadable_from_file(overrides->initrd_file,
+-							   LOADABLE_INITRD);
+-			if (IS_ERR(data->initrd))
+-				return PTR_ERR(data->initrd);
+-		}
++	if (IS_ENABLED(CONFIG_BOOTM_INITRD) && overrides->initrd_file) {
++		/* loadables_from_files() will set data->initrd on empty initrd_file */
++		int ret = loadables_from_files(&data->initrd, overrides->initrd_file, ":",
++					       LOADABLE_INITRD);
++		if (ret)
++			return ret;
+ 		data->is_override.initrd = true;
+ 	}
  
- 		if (!retry)
- 			break;
-@@ -915,7 +920,7 @@ int bootchooser_entry_boot(struct bootentry *entry, int verbose, int dryrun)
- 	bc->verbose = verbose;
- 	bc->dryrun = dryrun;
+@@ -48,3 +44,4 @@ int bootm_apply_overrides(struct image_data *data,
  
--	ret = bootchooser_boot(bc);
-+	ret = bootchooser_boot(bc, entry);
+ 	return 0;
+ }
++
+diff --git a/common/bootm.c b/common/bootm.c
+index 25cbce6ccb3f..ddc656fb34c8 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -463,9 +463,10 @@ static int bootm_open_files(struct image_data *data)
+ 	}
  
- 	bootchooser_put(bc);
+ 	if (data->initrd_file) {
+-		data->initrd = loadable_from_file(data->initrd_file, LOADABLE_INITRD);
+-		if (IS_ERR(data->initrd))
+-			return PTR_ERR(data->initrd);
++		int ret = loadables_from_files(&data->initrd, data->initrd_file, ":",
++					       LOADABLE_INITRD);
++		if (ret)
++			return ret;
+ 	}
  
-diff --git a/include/bootchooser.h b/include/bootchooser.h
-index 36cbd0dd0a01..da3b974ef6f6 100644
---- a/include/bootchooser.h
-+++ b/include/bootchooser.h
-@@ -14,7 +14,7 @@ int bootchooser_put(struct bootchooser *bootchooser);
- 
- void bootchooser_info(struct bootchooser *bootchooser);
- 
--int bootchooser_boot(struct bootchooser *bc);
-+int bootchooser_boot(struct bootchooser *bc, struct bootentry *entry);
- 
- struct bootchooser_target *bootchooser_get_last_chosen(struct bootchooser *bootchooser);
- void bootchooser_lock_attempts(bool locked);
+ 	if (data->tee_file) {
 -- 
 2.47.3
 
