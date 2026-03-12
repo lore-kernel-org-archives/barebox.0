@@ -1,67 +1,59 @@
-Delivery-date: Thu, 12 Mar 2026 09:30:39 +0100
+Delivery-date: Thu, 12 Mar 2026 10:17:48 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w0bRG-00Al3Q-37
+	id 1w0cAt-00Alrl-2M
 	for lore@lore.pengutronix.de;
-	Thu, 12 Mar 2026 09:30:39 +0100
+	Thu, 12 Mar 2026 10:17:48 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w0bRH-0006pv-9d
-	for lore@pengutronix.de; Thu, 12 Mar 2026 09:30:39 +0100
+	id 1w0cAu-0006P0-1x
+	for lore@pengutronix.de; Thu, 12 Mar 2026 10:17:48 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=eE2x5arEewgWACeLNV3xHpncR63VeN0E1Jskk5zosxA=; b=daj73YPQ7FJAa5Y1z1DZtpYChN
-	DhEZ9u9A7atJTgpE7lmFjqFsPe5jZxzsvXajS/CXDejBODnby+32AWQ2hS6vuBzbjKADJJwGLLLhX
-	1F2w0GfnKyLD9I85DggQ95r++CPdtETNrCn6jTVoef1xyxzT9eu7zx0q4XBFf1A/vAGKjW04Qih04
-	wRo/qrAf6dGaCA0qK9vnEXPYnT693GjbBXvH/A8oSdhDeVoi4Y7PnqVyjk/7IlL01+Z56Z5TGqZs3
-	gGfyxQ+wxhnsf0RDnH8fn4XpHQNZhsRwCWzHB83N1VO0cMwRGGkYByfvthDTctITsqfA/WKdi7Zwf
-	MtapG2CA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=ADz0ub3YBvm0ttNYNTMxKy8KP5dKU5CntuCLrxV51BE=; b=Ad3+FuIEkk7SuU
+	YRlAD27/KFKDlTFJZACrci2YmNdVaXqBA5NBVmNKAkdeFVYAJw+QhSVfik7u9mgrKlQyhy/oti1zp
+	qodBCA3O3mtNW0e1eoGDRMFGxYYV7HRru4fnSn+xCe2moqydkLQUYlP2nyUziDErBXuBy5IZm3zmR
+	42XoskBNVg0f3psqANVstC1BSlhXw7uJGx/EQUpTQB62iqcPLEG6lto6cYHdUhIuVvTvSy0yAAwXM
+	tJbw/YaWgIK+LG2kR2SV5ld0VMPiS21+Wd0I3eXpqLWVHCSbnx51ssBIukX879bkpgzMeMEozM6ic
+	c8WlXM2oAFTa8u+KZy7w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w0bQl-0000000DeBH-2O67;
-	Thu, 12 Mar 2026 08:30:07 +0000
-Received: from smtp28.bhosted.nl ([2a02:9e0:8000::40])
+	id 1w0cAJ-0000000DhPz-4Acl;
+	Thu, 12 Mar 2026 09:17:11 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w0bQi-0000000DeAC-4AGa
+	id 1w0cAD-0000000DhN9-1GNS
 	for barebox@lists.infradead.org;
-	Thu, 12 Mar 2026 08:30:06 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=protonic.nl; s=202111;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:cc:to:
-	 subject:mime-version:date:message-id:from;
-	bh=eE2x5arEewgWACeLNV3xHpncR63VeN0E1Jskk5zosxA=;
-	b=GS59mLqHQhbnFD9eU5FrmjsmZtcdngM2dfg/84C8Uun5MBBlTtBu2AOrjOSPCLWzyRS2FPPeX95XP
-	 aDyiZ8uxn55m3hf9f1lN6cznyB2LHqF13Og+M+1DH0X2C6hxF5QNNMHXNNXOyMNrmo//LRU0THt+ks
-	 e3i7Cgy9fZuIOnpHIO/IwPOCsbCb/n253dS8nFHumnWjj9GfEcLzLMfzSmI9NmqRGtGJB2UDlyTwJ4
-	 OCg76sPZQCkpGLMia5t1NQnIi7o5FzFdtIDgrzNH9Bc90phFTJ9erd8Kq5F4hcpH1BOi0XH0VW3mgC
-	 Aj3aTLQXWUcJzxQURfm6oO5BfiTdKIA==
-X-MSG-ID: a7ba1742-1ded-11f1-b533-0050568164d1
-Message-ID: <04d4e7fb-1c17-4a85-9dbe-433dd52fc4bf@protonic.nl>
-Date: Thu, 12 Mar 2026 09:29:58 +0100
+	Thu, 12 Mar 2026 09:17:07 +0000
+Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <f.pflug@pengutronix.de>)
+	id 1w0cA9-00066g-QP; Thu, 12 Mar 2026 10:17:01 +0100
+From: Fabian Pflug <f.pflug@pengutronix.de>
+Date: Thu, 12 Mar 2026 10:16:41 +0100
+Message-Id: <20260312-v2026-02-0-topic-sconfig_console-v1-0-4c3fccafab1e@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Michael Tretter <m.tretter@pengutronix.de>,
- Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-References: <20260311100347.3761707-1-s.hauer@pengutronix.de>
- <abFAW56rE6Pr6xIz@pengutronix.de>
-Content-Language: en-US, nl-NL
-From: Robin van der Gracht <robin@protonic.nl>
-Organization: Protonic Holland
-In-Reply-To: <abFAW56rE6Pr6xIz@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHqEsmkC/x2NQQqDMBBFryKz7kAmDcX2KlJEkokdkEQyIkLw7
+ o2u3n+b/yooF2GFT1eh8C4qOTWhRwf+N6WZUUJzsMa+zJMI92uhsWhwy6t4VJ9TlHls0Lww0tv
+ 1zk7kmAK0m7VwlONODN/z/AMRPhfzcgAAAA==
+X-Change-ID: 20260311-v2026-02-0-topic-sconfig_console-194842a14e1d
+To: BAREBOX <barebox@lists.infradead.org>
+Cc: Fabian Pflug <f.pflug@pengutronix.de>
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260312_013005_213244_ABE93B20 
-X-CRM114-Status: GOOD (  10.36  )
+X-CRM114-CacheID: sfid-20260312_021705_359411_F606849E 
+X-CRM114-Status: UNSURE (   6.94  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,34 +71,42 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-2.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] scripts: rk-usb-loader: push header first
+Subject: [PATCH 0/4] Add helper for security policies
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Michael,
+This series adds helper functions to the security policy framework to
+do additional work based on the selected policy.
+Like adding the policy name to the commandline and configuring pinmux
+based on the selected policy.
 
-On 3/11/26 11:13, Michael Tretter wrote:
-> On Wed, 11 Mar 2026 11:03:47 +0100, Sascha Hauer wrote:
->> From: Michael Tretter <m.tretter@pengutronix.de>
->>
->> Board that have secure boot enabled need the image header to be able
->> to verify the signature. Boards with secure boot disabled still work
->> with this patch as tested on a RK3588 board.
-> I'm not against adding this to the rk-usb-loader, but maybe add some
-> comment that this change is based on a wild guess and works by chance. I
-> still don't know, how the ROM code or the USB protocol works and if it
-> is really correct or necessary to send the entire header.
-Right, add it to the list ;)
+Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
+---
+Fabian Pflug (4):
+      common: bootm: add policy to commandline
+      security: policy: set active policy on boot
+      security: configure pinctrl based on policy name
+      security: kernel_pinctrl: fixup pinctrl in kernel dts
 
-I already have this change to my repo so I think its great that this 
-gets mainlined.
+ common/bootm.c            | 23 ++++++++++++++++
+ drivers/base/driver.c     | 12 +++++++-
+ include/bootm.h           |  5 ++++
+ security/Kconfig.policy   |  8 ++++++
+ security/Makefile         |  1 +
+ security/kernel_pinctrl.c | 70 +++++++++++++++++++++++++++++++++++++++++++++++
+ security/policy.c         | 15 ++++++++++
+ 7 files changed, 133 insertions(+), 1 deletion(-)
+---
+base-commit: 8c9d58cef2c65434e719ccbd3799b23014cb779d
+change-id: 20260311-v2026-02-0-topic-sconfig_console-194842a14e1d
 
-Tested-By: Robin van der Gracht <robin.van.der.gracht@protonic.nl>
+Best regards,
+-- 
+Fabian Pflug <f.pflug@pengutronix.de>
 
-- Robin
 
 
