@@ -3,63 +3,65 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w0hHX-00ArOe-1u
+	id 1w0hHX-00ArP4-3D
 	for lore@lore.pengutronix.de;
 	Thu, 12 Mar 2026 15:45:00 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w0hHX-0004Oy-Pc
+	id 1w0hHY-0004P8-7l
 	for lore@pengutronix.de; Thu, 12 Mar 2026 15:45:00 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=4ArOescKbo80ghtM5/nWgPf8lO+ycKy2cKEn0++ELso=; b=ccA7Je9Sixgw7jYOqPY2zQLfg8
-	jtRhq4JwP9LA2MDEj5B87Lv0x1o048EucjOJ+MvgYma8y+ZBnnbzBF9PgpJb1Hu9xRQ8Wkb+B6Il7
-	nxQ8EWfgoFpRLCmWTENaoep6w3AXYtdvGjdYM/IxNF/37uyWbGvN8J+Mc3854Gk/deaM6mCdC4g1j
-	hddAsXMWip4af6lXr2FzvVJf2FI+0HagBK8FSwjoKY0uZosaTdebMiv7UsiDJa0oCtFJ4J0hsP4qN
-	BpvX3JMZ3IUkJf4NAXxWvgCypZrDatNQpeUdGwnT673QyOW4MHzs6kfzeviZXz0w4MoBlQ1iff+q5
-	a3LtY2/Q==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=fe3XPZQkRRiQ+UauQS+6DdqLdOWvHBZhHUuniJG3e1c=; b=2ioPFatyOMzYZPafCHHNp0bSUk
+	cK55w6UafJKn3bVWJqg1b/Wb+aJGaCQEF60lU5WXDXy6w2FaGtI8VMgbkbdph+ojWlaDVxLudCvFa
+	T8sNEgbuWhzDcEMOxhmEF1S1cyCtvNw7x71W2qWsQXQv/xpagq6PIC7Wc0k/kzjxS5t3H+mWOEYzQ
+	Yx8m+fDBwkqL5EfY3bznbI7SFJWiKw0Kxww6q+KcUGUZb5U38qVWwMgzTVNz4Kgozg3Kn/C80tveH
+	0cm68ApjIm6iq5XlWDSBHeLWNieM9aHpkWzmoaK8McyukYSyjN183qU6n9smuWa18xwXkFJSoXte4
+	OnHEqsPg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w0hH8-0000000EEUM-0kfZ;
-	Thu, 12 Mar 2026 14:44:34 +0000
+	id 1w0hHA-0000000EEWt-39lO;
+	Thu, 12 Mar 2026 14:44:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w0hH4-0000000EES8-3b2W
+	id 1w0hH4-0000000EES9-3bKr
 	for barebox@lists.infradead.org;
-	Thu, 12 Mar 2026 14:44:32 +0000
+	Thu, 12 Mar 2026 14:44:33 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w0hH3-00048N-4q; Thu, 12 Mar 2026 15:44:29 +0100
+	id 1w0hH3-00048P-7n; Thu, 12 Mar 2026 15:44:29 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w0hH1-0052Nb-1x;
-	Thu, 12 Mar 2026 15:44:28 +0100
+	id 1w0hH1-0052Nf-2F;
+	Thu, 12 Mar 2026 15:44:29 +0100
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w0hH2-000000093bb-3beR;
+	id 1w0hH2-000000093bb-3zTl;
 	Thu, 12 Mar 2026 15:44:28 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 12 Mar 2026 15:44:21 +0100
-Message-ID: <20260312144428.2158727-1-a.fatoum@pengutronix.de>
+Date: Thu, 12 Mar 2026 15:44:23 +0100
+Message-ID: <20260312144428.2158727-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260312144428.2158727-1-a.fatoum@pengutronix.de>
+References: <20260312144428.2158727-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260312_074430_985770_9BFDBC95 
-X-CRM114-Status: GOOD (  16.07  )
+X-CRM114-CacheID: sfid-20260312_074431_002777_B5B7D0C0 
+X-CRM114-Status: GOOD (  15.50  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,102 +83,96 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=ham
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 1/5] tftp: skip memory allocation when seeking to current position
+Subject: [PATCH 3/5] tftp: emulate backwards seek by reopening the file
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We currently allocate 1K of memory, only to discard it when seeking to
-the same offset, we are currently at.
+TFTP is a streaming protocol with no native seek support.
+We emulate forward seeks are emulated by reading and discarding data.
+Backwards seeks were previously rejected with -ENOSYS, breaking higher
+level code that assumes seeking to be possible.
 
-Restructure tftp_lseek() to use early returns for the unsupported
-backward-seek and early-exit also for the no-op case of new pos being
-the same as the old pos.
+Given that we have a heuristic in-place for detecting excessive data
+discards through seeking, let's implement backwards seeking to allow the
+pattern of reading the start of a buffer to detect type at one location
+and then reading everything at once at a later time.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/tftp.c | 63 +++++++++++++++++++++++++++++--------------------------
- 1 file changed, 33 insertions(+), 30 deletions(-)
+ fs/tftp.c | 33 +++++++++++++++++++++++++++++++--
+ 1 file changed, 31 insertions(+), 2 deletions(-)
 
 diff --git a/fs/tftp.c b/fs/tftp.c
-index a454306b4b5a..dd4804041cde 100644
+index e5a276ed5cae..8683c3841c68 100644
 --- a/fs/tftp.c
 +++ b/fs/tftp.c
-@@ -902,42 +902,45 @@ static int tftp_read(struct file *f, void *buf, size_t insize)
+@@ -822,6 +822,9 @@ static int tftp_close(struct inode *inode, struct file *f)
+ {
+ 	struct file_priv *priv = f->private_data;
+ 
++	if (!priv)
++		return 0;
++
+ 	return tftp_do_close(priv);
+ }
+ 
+@@ -831,6 +834,9 @@ static int tftp_write(struct file *f, const void *inbuf, size_t insize)
+ 	size_t size, now;
+ 	int ret;
+ 
++	if (!priv)
++		return -EREMOTEIO;
++
+ 	pr_vdebug("%s: %zu\n", __func__, insize);
+ 
+ 	size = insize;
+@@ -866,6 +872,9 @@ static int tftp_read(struct file *f, void *buf, size_t insize)
+ 	size_t outsize = 0, now;
+ 	int ret = 0;
+ 
++	if (!priv)
++		return -EREMOTEIO;
++
+ 	pr_vdebug("%s %zu\n", __func__, insize);
+ 
+ 	while (insize) {
+@@ -902,14 +911,34 @@ static int tftp_read(struct file *f, void *buf, size_t insize)
  
  static int tftp_lseek(struct file *f, loff_t pos)
  {
--	/* We cannot seek backwards without reloading or caching the file */
-+	int ret = 0;
-+	char *buf;
++	struct file_priv *priv = f->private_data;
+ 	static loff_t seek_discard_total;
+ 	int ret = 0;
+ 	char *buf;
  	loff_t f_pos = f->f_pos;
  
--	if (pos >= f_pos) {
--		int ret = 0;
--		char *buf = xmalloc(1024);
--
--		while (pos > f_pos) {
--			size_t len = min_t(size_t, 1024, pos - f_pos);
--
--			ret = tftp_read(f, buf, len);
--
--			if (!ret)
--				/* EOF, so the desired pos is invalid. */
--				ret = -EINVAL;
--			if (ret < 0)
--				goto out_free;
--
--			f_pos += ret;
--		}
--
--out_free:
--		free(buf);
--		if (ret < 0) {
--			/*
--			 * Update f->pos even if the overall request
--			 * failed since we can't move backwards
--			 */
--			f->f_pos = f_pos;
--			return ret;
--		}
-+	/* We cannot seek backwards without reloading or caching the file */
-+	if (pos < f_pos)
-+		return -ENOSYS;
- 
-+	if (pos == f_pos)
- 		return 0;
++	if (!priv)
++		return -EREMOTEIO;
 +
-+	buf = xmalloc(1024);
+ 	/* We cannot seek backwards without reloading or caching the file */
+-	if (pos < f_pos)
+-		return -ENOSYS;
++	if (pos < f_pos) {
++		/* We can reopen read streams, but not write streams */
++		if (priv->push)
++			return -ENOSYS;
 +
-+	while (pos > f_pos) {
-+		size_t len = min_t(size_t, 1024, pos - f_pos);
++		tftp_do_close(priv);
 +
-+		ret = tftp_read(f, buf, len);
++		priv = tftp_do_open(&f->fsdev->dev, f->f_flags,
++				    f->f_path.dentry, false);
++		if (IS_ERR(priv)) {
++			f->private_data = NULL;
++			return PTR_ERR(priv);
++		}
 +
-+		if (!ret)
-+			/* EOF, so the desired pos is invalid. */
-+			ret = -EINVAL;
-+		if (ret < 0)
-+			goto out_free;
-+
-+		f_pos += ret;
- 	}
- 
--	return -ENOSYS;
-+out_free:
-+	free(buf);
-+	if (ret < 0) {
-+		/*
-+		 * Update f->pos even if the overall request
-+		 * failed since we can't move backwards
-+		 */
-+		f->f_pos = f_pos;
-+		return ret;
++		f->private_data = priv;
++		f->f_pos = 0;
++		f_pos = 0;
 +	}
-+
-+	return 0;
- }
  
- static const struct inode_operations tftp_file_inode_operations;
+ 	if (pos == f_pos)
+ 		return 0;
 -- 
 2.47.3
 
