@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w0hIJ-00ArQo-2b
+	id 1w0hIK-00ArQz-01
 	for lore@lore.pengutronix.de;
 	Thu, 12 Mar 2026 15:45:48 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w0hIJ-00051O-SH
+	id 1w0hIJ-00051K-Uj
 	for lore@pengutronix.de; Thu, 12 Mar 2026 15:45:48 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,50 +18,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kovyw10dlePBZ66KqYN8BfI05pxIV8ocqCHmG9T3cCk=; b=d74LI+FQvT0Id0A7dJpZf39z9C
-	nmTMIBnNnq2NTNwEGUjN5nx389mUSwylHYTkcGxL8jXS/mxalliyTWXr4vkty6c0xETEbDXRbdkEc
-	eUDbmx+C25Z5sdPuk1l9Q1DEt1wnpgqJBVfpRsExi0jWz5sVZpSjsUqVZBqXIa5irGLUc13TK7Qrd
-	p92gHFnKR5bk2X0+HkNAp06hFKvOCtrrIclpAoAZXxdnj1NC0bhrHDwtaTw2Q/nMeAUkPs1IdGMP6
-	DQ5NBxN/YWEhTYUmSggmexKWFABuKOUNlRR1nNCgGHTM52Zw0Cc57XbxczhLkjRRbjpbfi9cfKrAH
-	rqQwKuJw==;
+	bh=BWl+bDsZDR18vRpSwEMkyL8y9cpde52NK94qWqqi2xY=; b=SSdUcdtOrJP5li749NxS0jNGwX
+	XmuDdpwrTImX6ZIFRSbN2vPe0DaNwaswsDaCcw+arGqf8T/A3SaSgq/5oQ836ezcQDdJhzsOzR3Lx
+	M8lllC2y5yNhjTCxrePcF8DWQz2MlZHFKvsu7Ehk9BqmF2Ce4pSXGycx1yT41E+nfkWH4pgM3XXWd
+	WdN450emZaSMgxrBK9/zkzBibuEz1Xdif4rcYQFwhojKLjTSrGsAgMJ65PgiztyrU418eTYAzW0ZD
+	WHadqBmPioeY2CIk6I1W4NhDjYeEILG6BDKrYeAK2AOjlWUuCwB4t5a6U0cZTYLMHl0ofJ/RqjONj
+	Ha9peiag==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w0hHl-0000000EEtE-3Eeh;
+	id 1w0hHl-0000000EEs1-0PV1;
 	Thu, 12 Mar 2026 14:45:13 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w0hHf-0000000EEmE-3jXS
+	id 1w0hHf-0000000EEmD-3WRm
 	for barebox@lists.infradead.org;
-	Thu, 12 Mar 2026 14:45:10 +0000
+	Thu, 12 Mar 2026 14:45:09 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w0hHe-0004TT-7D; Thu, 12 Mar 2026 15:45:06 +0100
+	id 1w0hHe-0004TG-3T; Thu, 12 Mar 2026 15:45:06 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w0hHc-0052O8-1w;
+	id 1w0hHc-0052O2-1d;
 	Thu, 12 Mar 2026 15:45:05 +0100
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w0hHd-000000093tN-3aWw;
+	id 1w0hHd-000000093tN-3ANI;
 	Thu, 12 Mar 2026 15:45:05 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 12 Mar 2026 15:44:49 +0100
-Message-ID: <20260312144505.2159816-6-a.fatoum@pengutronix.de>
+Date: Thu, 12 Mar 2026 15:44:47 +0100
+Message-ID: <20260312144505.2159816-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260312144505.2159816-1-a.fatoum@pengutronix.de>
 References: <20260312144505.2159816-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260312_074507_943214_D2C57ECB 
-X-CRM114-Status: GOOD (  18.07  )
+X-CRM114-CacheID: sfid-20260312_074507_884338_E7D7EA36 
+X-CRM114-Status: GOOD (  11.70  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,133 +83,82 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 06/16] uimage: add offset parameter to uimage_load
+Subject: [PATCH 04/16] bootchooser: pass along struct bootentry
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The loadable API allows users to specify an offset at which reading
-should start. In preparation for wrapping the uImage loading as
-loadable, extend uimage_load to allow specifying a start offset.
+By plumbing through the parent bootentry, we can merge the overrides
+applied for the bootchooser targets onto the actual children if boot
+override support is enabled.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/bootm-uimage.c |  4 ++--
- common/uimage.c       | 39 ++++++++++++++++++++++++++++++++++-----
- include/image.h       |  2 +-
- 3 files changed, 37 insertions(+), 8 deletions(-)
+ common/bootchooser.c  | 13 +++++++++----
+ include/bootchooser.h |  2 +-
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/common/bootm-uimage.c b/common/bootm-uimage.c
-index b32ed5b0e95f..a1cb39d3ecd8 100644
---- a/common/bootm-uimage.c
-+++ b/common/bootm-uimage.c
-@@ -30,7 +30,7 @@ int bootm_load_uimage_os(struct image_data *data, unsigned long load_address)
- 	num = uimage_part_num(data->os_part);
- 
- 	data->os_res = uimage_load_to_sdram(data->os_uimage,
--		num, load_address);
-+		num, load_address, 0);
- 	if (!data->os_res)
- 		return -ENOMEM;
- 
-@@ -91,7 +91,7 @@ bootm_load_uimage_initrd(struct image_data *data, unsigned long load_address)
- 	num = uimage_part_num(data->initrd_part);
- 
- 	res = uimage_load_to_sdram(data->initrd_uimage,
--		num, load_address);
-+		num, load_address, 0);
- 	if (!res)
- 		return ERR_PTR(-ENOMEM);
- 
-diff --git a/common/uimage.c b/common/uimage.c
-index d34205572510..510f91a26bee 100644
---- a/common/uimage.c
-+++ b/common/uimage.c
-@@ -338,10 +338,24 @@ EXPORT_SYMBOL(uimage_load);
- 
- static void *uimage_buf;
- static size_t uimage_size;
-+static size_t uimage_skip;
- static struct resource *uimage_resource;
- 
- static long uimage_sdram_flush(void *buf, unsigned long len)
- {
-+	unsigned long skip_now = 0;
-+
-+	/* Skip the first uimage_skip bytes of decompressed data */
-+	if (uimage_skip > 0) {
-+		skip_now = min_t(unsigned long, uimage_skip, len);
-+		buf += skip_now;
-+		len -= skip_now;
-+		uimage_skip -= skip_now;
-+
-+		if (len == 0)
-+			return skip_now;
-+	}
-+
- 	if (uimage_size + len > resource_size(uimage_resource)) {
- 		resource_size_t start = uimage_resource->start;
- 		resource_size_t size = resource_size(uimage_resource) + len;
-@@ -362,27 +376,42 @@ static long uimage_sdram_flush(void *buf, unsigned long len)
- 
- 	uimage_size += len;
- 
--	return len;
-+	return len + skip_now;
+diff --git a/common/bootchooser.c b/common/bootchooser.c
+index 07cbdacfeb0a..2a75dfdcc88e 100644
+--- a/common/bootchooser.c
++++ b/common/bootchooser.c
+@@ -839,7 +839,8 @@ void bootchooser_lock_attempts(bool locked)
+ 	attempts_locked = locked;
  }
  
- /*
-  * Load an uImage to a dynamically allocated sdram resource.
-  * the resource must be freed afterwards with release_sdram_region
-+ *
-+ * @handle: uImage handle
-+ * @image_no: image number within the uImage
-+ * @load_address: address to load the image to
-+ * @offset: offset in bytes to skip from the beginning of the decompressed data
-+ *
-+ * Returns: SDRAM resource on success, NULL on error
-  */
- struct resource *uimage_load_to_sdram(struct uimage_handle *handle,
--		int image_no, unsigned long load_address)
-+		int image_no, unsigned long load_address, loff_t offset)
+-static int bootchooser_boot_one(struct bootchooser *bc, int *tryagain)
++static int bootchooser_boot_one(struct bootchooser *bc, int *tryagain,
++				struct bootentry *parent_entry)
  {
- 	int ret;
--	ssize_t size;
-+	ssize_t total_size;
-+	size_t size;
- 	resource_size_t start = (resource_size_t)load_address;
+ 	char *system;
+ 	struct bootentries *entries;
+@@ -873,6 +874,10 @@ static int bootchooser_boot_one(struct bootchooser *bc, int *tryagain)
+ 	ret = -ENOENT;
  
- 	uimage_buf = (void *)load_address;
- 	uimage_size = 0;
-+	uimage_skip = offset;
- 
--	size = uimage_get_size(handle, image_no);
--	if (size < 0)
-+	total_size = uimage_get_size(handle, image_no);
-+	if (total_size < 0)
- 		return NULL;
- 
-+	if (offset > total_size)
-+		return NULL;
+ 	bootentries_for_each_entry(entries, entry) {
++		if (parent_entry)
++			bootm_merge_overrides(&entry->overrides,
++					      &parent_entry->overrides);
 +
-+	/* Allocate for the data after offset: size = total_size - offset */
-+	size = total_size - offset;
-+
- 	uimage_resource = request_sdram_region("uimage",
- 				start, size, MEMTYPE_LOADER_CODE,
- 				MEMATTRS_RWX);
-diff --git a/include/image.h b/include/image.h
-index 769523d6fcaf..b37e04f54bae 100644
---- a/include/image.h
-+++ b/include/image.h
-@@ -304,7 +304,7 @@ int uimage_load(struct uimage_handle *handle, unsigned int image_no,
- void uimage_print_contents(struct uimage_handle *handle);
- ssize_t uimage_get_size(struct uimage_handle *handle, unsigned int image_no);
- struct resource *uimage_load_to_sdram(struct uimage_handle *handle,
--		int image_no, unsigned long load_address);
-+		int image_no, unsigned long load_address, loff_t offset);
- void *uimage_load_to_buf(struct uimage_handle *handle, int image_no,
- 		size_t *size);
- #define MAX_MULTI_IMAGE_COUNT 16
+ 		ret = boot_entry(entry, bc->verbose, bc->dryrun);
+ 		if (!ret) {
+ 			*tryagain = 0;
+@@ -889,12 +894,12 @@ static int bootchooser_boot_one(struct bootchooser *bc, int *tryagain)
+ 	return ret;
+ }
+ 
+-int bootchooser_boot(struct bootchooser *bc)
++int bootchooser_boot(struct bootchooser *bc, struct bootentry *entry)
+ {
+ 	int ret, tryagain;
+ 
+ 	do {
+-		ret = bootchooser_boot_one(bc, &tryagain);
++		ret = bootchooser_boot_one(bc, &tryagain, entry);
+ 
+ 		if (!retry)
+ 			break;
+@@ -915,7 +920,7 @@ int bootchooser_entry_boot(struct bootentry *entry, int verbose, int dryrun)
+ 	bc->verbose = verbose;
+ 	bc->dryrun = dryrun;
+ 
+-	ret = bootchooser_boot(bc);
++	ret = bootchooser_boot(bc, entry);
+ 
+ 	bootchooser_put(bc);
+ 
+diff --git a/include/bootchooser.h b/include/bootchooser.h
+index 36cbd0dd0a01..da3b974ef6f6 100644
+--- a/include/bootchooser.h
++++ b/include/bootchooser.h
+@@ -14,7 +14,7 @@ int bootchooser_put(struct bootchooser *bootchooser);
+ 
+ void bootchooser_info(struct bootchooser *bootchooser);
+ 
+-int bootchooser_boot(struct bootchooser *bc);
++int bootchooser_boot(struct bootchooser *bc, struct bootentry *entry);
+ 
+ struct bootchooser_target *bootchooser_get_last_chosen(struct bootchooser *bootchooser);
+ void bootchooser_lock_attempts(bool locked);
 -- 
 2.47.3
 
