@@ -1,82 +1,86 @@
-Delivery-date: Fri, 13 Mar 2026 14:35:23 +0100
+Delivery-date: Fri, 13 Mar 2026 14:36:57 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w12fj-000Db0-2Y
+	id 1w12hF-000Dcf-1q
 	for lore@lore.pengutronix.de;
-	Fri, 13 Mar 2026 14:35:23 +0100
+	Fri, 13 Mar 2026 14:36:57 +0100
 Received: from bombadil.infradead.org ([198.137.202.133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w12fS-0001P4-Hp
-	for lore@pengutronix.de; Fri, 13 Mar 2026 14:35:23 +0100
+	id 1w12hE-0002Vj-UW
+	for lore@pengutronix.de; Fri, 13 Mar 2026 14:36:57 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ZYcmPR76MfITQNFuiGTS6dvz2UZTOOt5EXKHbhuX2WA=; b=Ogwl3tyYwAob8FnBAiUW2ORb9r
-	81IK3Blf8PTITCvoy+iMBcYfGzG02IcP/Uh25KVRYj/Adx8sqA1PS3a5FxyoegyXPVzHIuMin6DxZ
-	g2coW2R9kvb/cKaGOfWHDFBPZkP4JGSrCWriK8uteDa8Q3F7aA2FudXh7Z67VrEuzX+h6+wPaP0zW
-	Io+hRl2a1eMKExB1w0dtaJQsjEbWr15Qafs+Ff9jnZpHqHFCzea3TYzL+5OZh/hRdpn2jUHV7R3W6
-	ca6/VbihCSvw1Kay/Xi/SEZA8c5e3HzJPcS19or+2TvG/a6sqoJnX8+Ct4iQKCFDhd4G+G4Mts1G1
-	jj9yoNlg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=8Le0JBy7Gc81wN1ZnRKr3QX8iiGkORDhQ88vc87sJAQ=; b=lCAb61OAbS3v5e8DFppFm3GVgE
+	Y+ixapvRjzgvJqdsnD6J/3iOId8bUS/TmQNgfdrhwvJZ1nCMXhhtZILEgwQr64nc43p2lawmUEOGi
+	ML3NiIPWpkfNcJX4eRpu8W9mryYKii9UqJ/WgiU5UhDjQmqacNitpnLq8vMpwQE60eQ+Ei2RobEMV
+	kfRQW+rrJG+8sMpL6nZxj3ZU6dRl44HH+2BXjFsTvHc5lrwydRXOGsxUZ/+2bUTwy4Zz/yGHwHolY
+	jZZHGnwlHPv0kZX0GfmRo9CEyYEdmrm0D8hr/Mc+STrEK953OSV340MjFx41x9aMieLDI5fxLw96i
+	fqkTic7g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w12dp-00000000GlY-40qS;
-	Fri, 13 Mar 2026 13:33:25 +0000
+	id 1w12gm-00000000Hxy-3TWl;
+	Fri, 13 Mar 2026 13:36:28 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w12dI-00000000FoD-24rg
+	id 1w12gk-00000000Hxn-47Ml
 	for barebox@bombadil.infradead.org;
-	Fri, 13 Mar 2026 13:32:52 +0000
+	Fri, 13 Mar 2026 13:36:27 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=ZYcmPR76MfITQNFuiGTS6dvz2UZTOOt5EXKHbhuX2WA=; b=GP5Jl9MqWM/3kRQ5vnPngQtzHq
-	TXtlTzUY2QQZLAlANPye3bYhZTElpO+aTtZhqGdb0H1CHgEfm043deW6ncT1AWyB89iEVOJbABAdS
-	esRMbDLJETQDXldu6LZsODQaJq0Z1KRoGrw73d5SbZ6jNTWYB4PPDqMMe16IMSi8atjKOgkV+guLQ
-	K5a+Vdwnyr641baAeggLlyalm7Ci/9uQlDhz9KQ9MO/kQsmHX0Y9a6tH+SZGN6zxIwvO+QENIB5le
-	3F8kqTANySqLoo/Y7NMADMaROlq6ab+2ZDG34TsVxurVP7gmL6nwZeq3jq6r9rpBTBz6ZJKedXdaH
-	Lx1oNkDA==;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=8Le0JBy7Gc81wN1ZnRKr3QX8iiGkORDhQ88vc87sJAQ=; b=WkmtFw5o3TYQxWrjr1Yulu2dFp
+	oezZNOwyXpXxPi61k08UITjRFsSyVqxht1s3e0f9NlkSUA5dUVjH2IO+E+7ZBJPcEUQ7CoFJHc6oY
+	jVQptSOA/z0BEzrbZvKF0qSNavUuFxXIBwyxJ6qCYpxyKM0rDtKVxkws7yd6ZNh1q/L0QZmF2oDSA
+	w69EyWjH31aQxt4Db9wsPXFdA0PyG6GZBajHnrN4GKsu+wqiwRWZ0BjOK+Ql6MPhWHtJUxxgNi7+u
+	OTXtQY4RnyMqtnbip5sVr6y6YoSyiW3N6bGJS7rsMQR5fNkXaBgCl1bgtfR7xJjswfGP0fGYlvGBp
+	kMrESZjg==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w12d2-00000003OSh-1TgS
+	id 1w12gY-00000003PJO-3zMJ
 	for barebox@lists.infradead.org;
-	Fri, 13 Mar 2026 13:32:49 +0000
+	Fri, 13 Mar 2026 13:36:24 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w12d1-0006xf-Gg; Fri, 13 Mar 2026 14:32:35 +0100
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <sha@pengutronix.de>)
+	id 1w12gV-0002M2-IV; Fri, 13 Mar 2026 14:36:11 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w12d1-0005VI-11;
-	Fri, 13 Mar 2026 14:32:35 +0100
-Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w12XL-00000009ULB-1AIy;
-	Fri, 13 Mar 2026 14:26:43 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 13 Mar 2026 14:25:07 +0100
-Message-ID: <20260313132631.2257573-24-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260313132631.2257573-1-a.fatoum@pengutronix.de>
-References: <20260313132631.2257573-1-a.fatoum@pengutronix.de>
+	(envelope-from <sha@pengutronix.de>)
+	id 1w12gV-0005aG-1F;
+	Fri, 13 Mar 2026 14:36:11 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1w12gV-0000000HEij-1EwS;
+	Fri, 13 Mar 2026 14:36:11 +0100
+Date: Fri, 13 Mar 2026 14:36:11 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Fabian Pflug <f.pflug@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Message-ID: <abQSywI_nJlVD2dJ@pengutronix.de>
+References: <20260312-v2026-02-0-topic-sconfig_console-v1-0-4c3fccafab1e@pengutronix.de>
+ <20260312-v2026-02-0-topic-sconfig_console-v1-1-4c3fccafab1e@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260312-v2026-02-0-topic-sconfig_console-v1-1-4c3fccafab1e@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260313_133236_555400_86808820 
-X-CRM114-Status: GOOD (  11.14  )
+X-CRM114-CacheID: sfid-20260313_133622_064316_46E6FF0C 
+X-CRM114-Status: GOOD (  23.94  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -94,49 +98,94 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,RCVD_IN_VALIDITY_RPBL_BLOCKED,
-	RCVD_IN_VALIDITY_SAFE_BLOCKED,SPF_HELO_NONE,SPF_NONE,
-	SUBJECT_IN_BLACKLIST,SUBJECT_IN_BLOCKLIST autolearn=no
+	RCVD_IN_VALIDITY_SAFE_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=no
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2025.09.y 23/58] net: phy: mdio_bus: fix freeing of cdev name before devfs_remove
+Subject: Re: [PATCH 1/4] common: bootm: add policy to commandline
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-devfs_remove acces struct cdev::name to do an unlink on the path in
-/dev. This leads to a use-after-free inside mdio_bus_remove.
+On Thu, Mar 12, 2026 at 10:16:42AM +0100, Fabian Pflug wrote:
+> If security policies are used, then the variable bootm.provide_policy
+> can be set to automatically append the currently selected security
+> policy to the kernel commandline with the prefix
+> barebox.security.policy=
+> This allows the the system to behave different based on the selected
+> security policy.
+> 
+> Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
+> ---
+>  common/bootm.c  | 23 +++++++++++++++++++++++
+>  include/bootm.h |  5 +++++
+>  2 files changed, 28 insertions(+)
+> 
+> diff --git a/common/bootm.c b/common/bootm.c
+> index 6318509884..cd90aa81e1 100644
+> --- a/common/bootm.c
+> +++ b/common/bootm.c
+> @@ -22,6 +22,7 @@
+>  #include <uncompress.h>
+>  #include <zero_page.h>
+>  #include <security/config.h>
+> +#include <security/policy.h>
+>  
+>  static LIST_HEAD(handler_list);
+>  static struct sconfig_notifier_block sconfig_notifier;
+> @@ -75,6 +76,7 @@ static int bootm_dryrun;
+>  static int bootm_earlycon;
+>  static int bootm_provide_machine_id;
+>  static int bootm_provide_hostname;
+> +static int bootm_provide_policy;
+>  static int bootm_verbosity;
+>  static int bootm_efi_mode = BOOTM_EFI_AVAILABLE;
+>  
+> @@ -97,6 +99,7 @@ void bootm_data_init_defaults(struct bootm_data *data)
+>  	data->appendroot = bootm_appendroot;
+>  	data->provide_machine_id = bootm_provide_machine_id;
+>  	data->provide_hostname = bootm_provide_hostname;
+> +	data->provide_policy = bootm_provide_policy;
+>  	data->verbose = bootm_verbosity;
+>  	data->dryrun = bootm_dryrun;
+>  	data->efi_boot = bootm_efi_mode;
+> @@ -118,6 +121,7 @@ void bootm_data_restore_defaults(const struct bootm_data *data)
+>  	bootm_appendroot = data->appendroot;
+>  	bootm_provide_machine_id = data->provide_machine_id;
+>  	bootm_provide_hostname = data->provide_hostname;
+> +	bootm_provide_policy = data->provide_policy;
+>  	bootm_verbosity = data->verbose;
+>  	bootm_dryrun = data->dryrun;
+>  	bootm_efi_mode = data->efi_boot;
+> @@ -712,6 +716,20 @@ int bootm_boot(struct bootm_data *bootm_data)
+>  		free(hostname_bootarg);
+>  	}
+>  
+> +	if (IS_ENABLED(CONFIG_SECURITY_POLICY) && bootm_data->provide_policy) {
+> +		char *policy_bootargs;
+> +
+> +		if (!active_policy->name) {
 
-Reorder the free after devfs_remove to fix this. This is the way that
-other drivers in tree that have /free.*cdev(\.|->)name/ do it.
+Could active_policy be NULL here?
 
-Issue was detected by KASAN being active during kernel boot.
+> +			pr_err("Providing policy is enabled but policy has no name\n");
+> +			ret = -EINVAL;
+> +			goto err_out;
+> +		}
+> +
+> +		policy_bootargs = basprintf("barebox.security.policy=%s", active_policy->name);
+> +		globalvar_add_simple("linux.bootargs.policy", policy_bootargs);
 
-(cherry picked from commit 0a67f4f35d64aa25318640ec2858c75f46d9a986)
+Should be linux.bootargs.dyn.policy to make sure it gets cleared after a
+boot attempt.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Link: https://lore.barebox.org/20260126104153.547505-1-a.fatoum@pengutronix.de
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/net/phy/mdio_bus.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Sascha
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index a7eda3f84a11..1381f70f1cf8 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -610,8 +610,8 @@ static void mdio_bus_remove(struct device *_dev)
- 	if (drv->remove)
- 		drv->remove(dev);
- 
--	free(dev->cdev.name);
- 	devfs_remove(&dev->cdev);
-+	free(dev->cdev.name);
- 	bus->phy_map[dev->addr] = NULL;
- }
- 
+
 -- 
-2.47.3
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
