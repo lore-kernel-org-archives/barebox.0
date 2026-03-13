@@ -3,82 +3,80 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w12eI-000DKH-0P
+	id 1w12eI-000DKI-0t
 	for lore@lore.pengutronix.de;
 	Fri, 13 Mar 2026 14:33:54 +0100
 Received: from bombadil.infradead.org ([198.137.202.133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w12dy-00081W-3v
-	for lore@pengutronix.de; Fri, 13 Mar 2026 14:33:53 +0100
+	id 1w12dy-00081z-J4
+	for lore@pengutronix.de; Fri, 13 Mar 2026 14:33:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=VZORrMcdXW/n2jHf5BQQf5p2rRpbhLnPfNdGlbKuxsE=; b=YGCQvRYAwyCX2AkA4w/bivfv8P
-	afVjBl5f4VsS/oMGc3h5xs7572pVam5WG5jBeW3x9F4gWUej5seo9FTTwPn8G5qre4FkKHC3oH8U1
-	1sOmUK48jakikuGUpqDDznJbz9gNe3U+0eTYVcHhTg1W/WVtuKh6w5w3YulteBFYuhSKfZav+JPNn
-	RUGN+vXMRNfQjfLOV1aKq7BTq+lloN9K0bzDN8IuW3ThTk6wPGYA1nIs2oeYHfahdluIA4DTcAxyO
-	aCDqzh9sB3lsBSoEgbyqObO9bhkOrMy3xqWmjhNyJ1zq7uGw2XmJoJeUr8CeC4Ageo63XeICbPw/o
-	FCfVq4Ng==;
+	bh=YFW1krIYgTRq+ruoV4sYITDOYYnYJUEAZq0yXiWbodk=; b=0nDzmD06VabBsK6CQ7QDOc0DEz
+	Z37QP67bkM8cbbn+CH2QExZprPdZvZgBNNEEOhq5Z+2F8hXLa5QLF3iIcIeZWubU7ZOcMCnPVeRkK
+	71ODIT5ejP5w3VI3e7S0Tc1v7k3c3t2vbt/6N5R6XzBUO2vQCsYg2QWRQIdsbwlUSvdDQpOv7t8oj
+	5VKBfakK6Xd05pXYOjj68qGS79w4HUfnOKQHb63QxzquHappEuwvVUeylFl5t8b2F6kD5HCPtWl6Q
+	02wzeRAbjiG2v5E0Jq0BpIbtdK3iN/5TMhfFagqkncH83EZUjlxMX0PbWu4AcUw4QVGR76NoqC8bD
+	FVQ6/p/A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w12d8-00000000FYz-3xgR;
+	id 1w12d8-00000000FYG-2Z5E;
 	Fri, 13 Mar 2026 13:32:42 +0000
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w12d5-00000000FVa-3j0t
+	id 1w12d5-00000000FVY-1T6z
 	for barebox@bombadil.infradead.org;
 	Fri, 13 Mar 2026 13:32:39 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=VZORrMcdXW/n2jHf5BQQf5p2rRpbhLnPfNdGlbKuxsE=; b=Qxq5bIGDiwH+9GhDCGG/4MiRu5
-	DQLQwDwoHgnegGMHHcaoWZgUiTpFjzq2p82kQYc/QsBfBFSvNKRh8/W4AWlGRReqJQXDmp4a4sevA
-	lXVjOBMaGo39vCobuT9F5a3dyEUxTkT2X+d4gNMA+YXejPp6wfdt5WZHzjyFqCi8hzPmrtAj6dQt7
-	u7yY5D1OsDHrN/HQ1t/2rsyDKwBCmYwcVS7laC2iIrhWiDhSrrmr4IqgKis660JgGAPiKiXEvB40+
-	qlr8gOHGHxJGORouzPT/7cqcctkCTpOgH37mnsCn1FbO5N+VpatQ9bghdbXmMc2SEu+YO/YkR6Rat
-	t5k8U61A==;
+	bh=YFW1krIYgTRq+ruoV4sYITDOYYnYJUEAZq0yXiWbodk=; b=E6sIINnyqXZAFGBEdvPFfrfsIH
+	U4Af/dS1aZL6U7GAv17cEew7nQoKGQD/fXb5p6DKh5JSyZWnlu8LFFzV0hu/D1a+JkbRzATcJRTd2
+	qaGiYEdXrV/JIILTrj/zhwNd6crbWDkqGpgr/Ao+gLHck718I+aSKR2wFSUCm+bdx7onkpcjw4Itc
+	9Tv3B8ncsL2D4h8IJcLPEOSljn6zNKBF65w4UnULjgiIuZcoVk/TlO7oyofraTFvdxk0FDjhQM6f2
+	tEWbnHZ0fi/PPCNLiWUn9jXx2eAcaAOe4lWORA1JRTr7+mWYUt+j+ZGZZXolAUjCbBslGYhh3cg3H
+	I10Q/Sxw==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by casper.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w12d2-0000000D9w6-0Pgf
+	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w12cy-00000003OSX-3B3W
 	for barebox@lists.infradead.org;
-	Fri, 13 Mar 2026 13:32:38 +0000
+	Fri, 13 Mar 2026 13:32:37 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w12cz-0006q6-1X; Fri, 13 Mar 2026 14:32:33 +0100
+	id 1w12cx-0006mt-Cp; Fri, 13 Mar 2026 14:32:31 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w12cy-0005TR-2W;
-	Fri, 13 Mar 2026 14:32:32 +0100
+	id 1w12cx-0005SO-0f;
+	Fri, 13 Mar 2026 14:32:31 +0100
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w12XM-00000009ULB-0YtW;
-	Fri, 13 Mar 2026 14:26:44 +0100
+	id 1w12XL-00000009ULB-1LoZ;
+	Fri, 13 Mar 2026 14:26:43 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	"Claude Opus 4.6" <noreply@anthropic.com>
-Date: Fri, 13 Mar 2026 14:25:26 +0100
-Message-ID: <20260313132631.2257573-43-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 13 Mar 2026 14:25:08 +0100
+Message-ID: <20260313132631.2257573-25-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260313132631.2257573-1-a.fatoum@pengutronix.de>
 References: <20260313132631.2257573-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260313_133236_164657_AABA428F 
-X-CRM114-Status: UNSURE (   8.58  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260313_133234_063816_E81C52D9 
+X-CRM114-Status: GOOD (  11.30  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -101,39 +99,93 @@ X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,RCVD_IN_VALIDITY_RPBL_BLOCKED,
 	RCVD_IN_VALIDITY_SAFE_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=no
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2025.09.y 42/58] mci: imx-esdhc: remove misleading NULL check for cmd pointer
+Subject: [PATCH v2025.09.y 24/58] bootm: fix bootm override saving/restoring
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The ternary `cmd ? cmd->cmdidx : 0` suggests cmd can be NULL, but all
-callers always pass a valid pointer and sdhci_set_cmd_xfer_mode()
-unconditionally dereferences cmd a few lines later. Remove the
-unnecessary guard to make the code consistent.
+As bootm_set_overrides() only sets non-NULL members, it's not suitable
+to restore old settings as once a member is non-NULL, it can't change
+it.
 
-(cherry picked from commit 2a7768ce1640575f175760296ec033eee26a07af)
+This may lead to use-after-frees, as the original strings are free'd,
+but the override keeps pointing at it.
+Fix this by merging overrides only before the boot and resetting all
+members after.
 
-Reported-by: GCC 14.2 -fanalyzer
-Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+Fixes: d2dae53f0dc5 ("bootm: fix boot override inheritance")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Link: https://lore.barebox.org/20260216084253.3547270-11-a.fatoum@pengutronix.de
+Link: https://lore.barebox.org/20260126104656.832582-1-a.fatoum@pengutronix.de
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/imx-esdhc-common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ common/boot.c             | 4 ++--
+ common/bootm.c            | 6 +++++-
+ include/bootm-overrides.h | 6 ++++--
+ 3 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mci/imx-esdhc-common.c b/drivers/mci/imx-esdhc-common.c
-index 66f3edc670e0..050621d7fb06 100644
---- a/drivers/mci/imx-esdhc-common.c
-+++ b/drivers/mci/imx-esdhc-common.c
-@@ -327,7 +327,7 @@ int __esdhc_send_cmd(struct fsl_esdhc_host *host, struct mci_cmd *cmd,
- 	dma_addr_t dma = SDHCI_NO_DMA;
- 	int ret;
+diff --git a/common/boot.c b/common/boot.c
+index 07bd288df29d..f54c812991ad 100644
+--- a/common/boot.c
++++ b/common/boot.c
+@@ -171,13 +171,13 @@ int boot_entry(struct bootentry *be, int verbose, int dryrun)
+ 		}
+ 	}
  
--	host->last_cmd = cmd ? cmd->cmdidx : 0;
-+	host->last_cmd = cmd->cmdidx;
+-	old = bootm_set_overrides(be->overrides);
++	old = bootm_save_overrides(be->overrides);
  
- 	sdhci_write32(&host->sdhci, SDHCI_INT_STATUS, -1);
+ 	ret = be->boot(be, verbose, dryrun);
+ 	if (ret && ret != -ENOMEDIUM)
+ 		pr_err("Booting entry '%s' failed: %pe\n", be->title, ERR_PTR(ret));
  
+-	bootm_set_overrides(old);
++	bootm_restore_overrides(old);
+ 
+ 	globalvar_set_match("linux.bootargs.dyn.", "");
+ 
+diff --git a/common/bootm.c b/common/bootm.c
+index 34c72282d6ba..0cdaf30613fc 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -976,13 +976,17 @@ int bootm_boot(struct bootm_data *bootm_data)
+ }
+ 
+ #ifdef CONFIG_BOOT_OVERRIDE
+-struct bootm_overrides bootm_set_overrides(const struct bootm_overrides overrides)
++struct bootm_overrides bootm_save_overrides(const struct bootm_overrides overrides)
+ {
+ 	struct bootm_overrides old = bootm_overrides;
+ 	/* bootm_merge_overrides copies only actual (non-NULL) overrides */
+ 	bootm_merge_overrides(&bootm_overrides, &overrides);
+ 	return old;
+ }
++void bootm_restore_overrides(const struct bootm_overrides overrides)
++{
++	bootm_overrides = overrides;
++}
+ #endif
+ 
+ static int do_bootm_compressed(struct image_data *img_data)
+diff --git a/include/bootm-overrides.h b/include/bootm-overrides.h
+index 4a270b95afcc..b807e5be310a 100644
+--- a/include/bootm-overrides.h
++++ b/include/bootm-overrides.h
+@@ -8,12 +8,14 @@ struct bootm_overrides {
+ };
+ 
+ #ifdef CONFIG_BOOT_OVERRIDE
+-struct bootm_overrides bootm_set_overrides(const struct bootm_overrides overrides_new);
++struct bootm_overrides bootm_save_overrides(const struct bootm_overrides overrides);
++void bootm_restore_overrides(const struct bootm_overrides overrides);
+ #else
+-static inline struct bootm_overrides bootm_set_overrides(const struct bootm_overrides overrides)
++static inline struct bootm_overrides bootm_save_overrides(const struct bootm_overrides overrides)
+ {
+ 	return (struct bootm_overrides) {};
+ }
++static inline void bootm_restore_overrides(const struct bootm_overrides overrides) {}
+ #endif
+ 
+ static inline void bootm_merge_overrides(struct bootm_overrides *dst,
 -- 
 2.47.3
 
