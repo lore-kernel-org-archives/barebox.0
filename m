@@ -1,84 +1,83 @@
-Delivery-date: Fri, 13 Mar 2026 14:33:52 +0100
+Delivery-date: Fri, 13 Mar 2026 14:33:53 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w12eG-000DJU-0D
+	id 1w12eH-000DJw-23
 	for lore@lore.pengutronix.de;
-	Fri, 13 Mar 2026 14:33:52 +0100
+	Fri, 13 Mar 2026 14:33:53 +0100
 Received: from bombadil.infradead.org ([198.137.202.133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w12dx-00080V-H4
-	for lore@pengutronix.de; Fri, 13 Mar 2026 14:33:51 +0100
+	id 1w12dx-00080E-Ds
+	for lore@pengutronix.de; Fri, 13 Mar 2026 14:33:53 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=LBnwJbLTQit1Grt5DxkjIwQZr6S6dsgOw2I+QvZW7D4=; b=HdrnXNYmhIpP6VT/KBwodloAL6
-	zGvnTvLy0ytiOp3Cily0vdWgg51N1z3nY+2yg2CtPo2zh4lLa0r2X8iu3PJ4WNVaRXaFf5qxNoV/e
-	Y4IY987DbLcg94v2xkbB52qTF+XmbilskLLGP+uDzEv99IhcrbW5y+JiFRHp6YQWFRM0Ezr+bXjO7
-	KexhE/hbzIGi8SLKoHIbmal86sMRlWtVW5Hyko4UIjp6mkSBfQBlaqOrITEbRbhJV9fihkbspuach
-	pM6XU7LK5QbnDYMAZWbYVcPeSCOtgyu/aQlDRH62qGPZc8akrsmfvC8taFCuyHdgTh4vomkDwbQK2
-	/ehnxNnA==;
+	bh=kiH3rPjOoOl5BR7YtHpiC1SaVZ0+CWl+wJLovDQAREA=; b=uKjxsHkqBtQa4VPYGX4RMG27ZF
+	+D0K73ieEMEGmdouQMeR11oHDFtNGmw2QOEeWOuVbRXQ1+apda8fGAwtkG8rPAlIRzbRJHPmOeuy7
+	1b8m1GmrAy+vnezbAQL8kKyodbMmfeAxmroIcFl+Upf4qUQ2vX4XF6ErO/JHiv5/x96VsiRBytedy
+	DgQr/DEQCAT4op1YN4Oj5FSQqIp2kiIopPd3X1OUS4Zo7JuXm5M5AvCK9/wBf1NIJfrdn2KnvpI1U
+	bvoYcwTlN+yd+7nYnKZ6A7n94PlKMR4DMtHemolWbJWkPvYkOojCAxDoYhoETonJJfEt5uq9NB41s
+	+q7yHiWA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w12d5-00000000FWF-3J1q;
-	Fri, 13 Mar 2026 13:32:39 +0000
+	id 1w12d7-00000000FXV-338N;
+	Fri, 13 Mar 2026 13:32:41 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w12d3-00000000FVI-1uxl
+	id 1w12d5-00000000FVW-15Zz
 	for barebox@bombadil.infradead.org;
-	Fri, 13 Mar 2026 13:32:37 +0000
+	Fri, 13 Mar 2026 13:32:39 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=LBnwJbLTQit1Grt5DxkjIwQZr6S6dsgOw2I+QvZW7D4=; b=Zn45h8Be4mfu7U7UtErIwZXwyH
-	Kkm9zP12idiKFVpRygdZxtke9kcqhsTf1FuS5g3UcsMS2l9/JRb+YJLju5ek41DD+LntHmjel1ONq
-	KEpCZUlJ7o1NHd1zMoGwOkyCfF0GvBzYLNiJVltn0DKYB3mID6KHqo2PRDbDfu9jz8wOrlVmBZSaD
-	AHcKORmRuuSld0ppoWmp94LBGcHrf6P10P+l72T765y6wUbue9I+5T0SmRxm9QExLiKa8uBAcu4dp
-	zbK/2IjdkJd1S1E6C8shk8RZBuNQ60720Y6eaKmbNoUTYgxwfKZ43105sJ8qNZizxgM40cq9rxiih
-	XVm1PGGA==;
+	bh=kiH3rPjOoOl5BR7YtHpiC1SaVZ0+CWl+wJLovDQAREA=; b=G+THQ7rJZ6WCmJe8j271234IHl
+	kkp4tGV7q1aZafzorui0tMk+aO2mExyW/vyKREGyDF3IPopti3qS31WoVhEJ9+tw15Aorl2ilrauV
+	GW5ULG9bBAk/KIwR8iVHntlVQy8QDE1MAMhlx+P+r0kDjLyJOazH0va5R5ZRzOJ99f6l8cN5n0QKo
+	avJL/Q/JNlkE9G7VleRvu/GJq53aPW5JS09hWjCFtm/+V4VEU7K42dHKbdzakPMQS1BKY2JA2a3N+
+	zn2Ar9Zlhu+C2iBExT8jO2/69NC21nuYhh/G999DLMkaTdz8X35n4VE6IO3iylaBSf6xqgE4XyX+Q
+	qhQqALQQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w12cy-00000003OSa-3Auc
+	id 1w12cy-00000003OSd-3BU1
 	for barebox@lists.infradead.org;
-	Fri, 13 Mar 2026 13:32:35 +0000
+	Fri, 13 Mar 2026 13:32:37 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w12cx-0006nH-Q0; Fri, 13 Mar 2026 14:32:31 +0100
+	id 1w12cy-0006o7-4b; Fri, 13 Mar 2026 14:32:32 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w12cx-0005Sc-1u;
+	id 1w12cx-0005Sr-32;
 	Fri, 13 Mar 2026 14:32:31 +0100
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w12XM-00000009ULB-0vrD;
-	Fri, 13 Mar 2026 14:26:44 +0100
+	id 1w12XL-00000009ULB-2saZ;
+	Fri, 13 Mar 2026 14:26:43 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
 	"Claude Opus 4.6" <noreply@anthropic.com>
-Date: Fri, 13 Mar 2026 14:25:28 +0100
-Message-ID: <20260313132631.2257573-45-a.fatoum@pengutronix.de>
+Date: Fri, 13 Mar 2026 14:25:16 +0100
+Message-ID: <20260313132631.2257573-33-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260313132631.2257573-1-a.fatoum@pengutronix.de>
 References: <20260313132631.2257573-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260313_133234_007535_D80F9EE0 
-X-CRM114-Status: UNSURE (   8.72  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260313_133234_027347_62CFEFCE 
+X-CRM114-Status: GOOD (  10.38  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -96,45 +95,67 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-1.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,RCVD_IN_VALIDITY_RPBL_BLOCKED,
-	RCVD_IN_VALIDITY_SAFE_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=no
+	RCVD_IN_VALIDITY_SAFE_BLOCKED,SPF_HELO_NONE,SPF_NONE,
+	SUBJECT_IN_BLACKLIST,SUBJECT_IN_BLOCKLIST autolearn=no
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2025.09.y 44/58] virtio: fix variable shadowing in virtqueue_add_sgs input scatter loop
+Subject: [PATCH v2025.09.y 32/58] of: fdt: fix double free in fdt_ensure_space
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The inner for loop in the in_sgs processing section had a local
-declaration 'struct scatterlist *sg = sgs[n]' that shadowed the loop
-variable 'sg' from the enclosing for statement.
+fdt_ensure_space() frees the original buffer on memalign_realloc()
+failure, but on error, the buffer is already freed by
+memalign_realloc() unlike realloc().
 
-Remove the shadowing declaration so the loop variable is used
-consistently, matching the out_sgs loop.
-This aligns the loop with the logic above for out_sgs.
+Fix this by aligning memalign_realloc() behavior with normal realloc()
+and adapting callers accordingly.
 
-(cherry picked from commit 2731cfdb8dcc449b96b5829a2947866a5c6b19eb)
+(cherry picked from commit 3d6d2414d85e43b53bc2e7b3e3986a888307a689)
 
-Reported-by: Claude Opus 4.6 <noreply@anthropic.com>
+Fixes: dd36494ae2 ("of: fdt: fix memory leak in fdt_ensure_space")
+Reported-by: GCC 14.2 -fanalyzer
+Co-authored-by: Claude Opus 4.6 <noreply@anthropic.com>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Link: https://lore.barebox.org/20260215171125.2646877-1-a.fatoum@pengutronix.de
+Link: https://lore.barebox.org/20260216084142.3546363-3-a.fatoum@pengutronix.de
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/virtio/virtio_ring.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/of/fdt.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/virtio/virtio_ring.c b/drivers/virtio/virtio_ring.c
-index 8b6469f54d2a..d28aed7ad1e4 100644
---- a/drivers/virtio/virtio_ring.c
-+++ b/drivers/virtio/virtio_ring.c
-@@ -107,7 +107,6 @@ int virtqueue_add_sgs(struct virtqueue *vq, struct scatterlist *sgs[],
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index f2f4aa03de2d..b529b4d1fe3d 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -421,10 +421,8 @@ static void *memalign_realloc(void *orig, size_t oldsize, size_t newsize)
+ 		return memalign(align, newsize);
  
- 	for (; n < (out_sgs + in_sgs); n++) {
- 		for (sg = sgs[n]; sg; sg = sg_next(sg)) {
--			struct scatterlist *sg = sgs[n];
- 			dma_addr_t addr = vring_map_one_sg(vq, sg, DMA_FROM_DEVICE);
- 			if (vring_mapping_error(vq, addr))
- 				goto unmap_release;
+ 	newbuf = memalign(align, newsize);
+-	if (!newbuf) {
+-		free(orig);
++	if (!newbuf)
+ 		return NULL;
+-	}
+ 
+ 	memcpy(newbuf, orig, oldsize);
+ 	free(orig);
+@@ -606,10 +604,13 @@ void *of_flatten_dtb(struct device_node *node)
+ 	header.size_dt_strings = cpu_to_fdt32(fdt.str_nextofs);
+ 
+ 	if (fdt.dt_size - fdt.dt_nextofs < fdt.str_nextofs) {
+-		fdt.dt = memalign_realloc(fdt.dt, fdt.dt_size,
++		void *newmem;
++
++		newmem = memalign_realloc(fdt.dt, fdt.dt_size,
+ 				fdt.dt_nextofs + fdt.str_nextofs);
+-		if (!fdt.dt)
++		if (!newmem)
+ 			goto out_free;
++		fdt.dt = newmem;
+ 	}
+ 
+ 	memcpy(fdt.dt + fdt.dt_nextofs, fdt.strings, fdt.str_nextofs);
 -- 
 2.47.3
 
