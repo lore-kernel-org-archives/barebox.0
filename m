@@ -1,81 +1,81 @@
-Delivery-date: Fri, 13 Mar 2026 14:34:12 +0100
+Delivery-date: Fri, 13 Mar 2026 14:34:15 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w12ea-000DNY-34
+	id 1w12ed-000DNu-1o
 	for lore@lore.pengutronix.de;
-	Fri, 13 Mar 2026 14:34:12 +0100
+	Fri, 13 Mar 2026 14:34:15 +0100
 Received: from bombadil.infradead.org ([198.137.202.133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w12eK-0008UT-Iz
-	for lore@pengutronix.de; Fri, 13 Mar 2026 14:34:12 +0100
+	id 1w12eK-0008Ub-Lf
+	for lore@pengutronix.de; Fri, 13 Mar 2026 14:34:15 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=rH8yh6r+0UuNUS0KXlFggUUgOj8kxRdSmLzQ67yY8+o=; b=o8LbJrZSVwAUxTrWI9ahGUbFmI
-	1P4rbxf+oCZ87BAb01R/9qUKXaBIOsp/3FfG5MnYG2TEdUdm2Bso4wwxQHDJ3cAD8QXPhqh+YrSjF
-	6+8HzefhVtG4ZC4PBK8p3Et64LTlGQHCcYctRnhVlbs/WFCF2Sr8iQMQNaPMFyXgIwmrRYFYx6Dbo
-	ORevPSqb0/R091llzlNr+XQATOx9A7+nrroIMxeV49hRQycFRgItyECsve2s3McxROcAL4ov+T3+m
-	wsb/S3Te8slmmNSowH9CbsIfJUH8AI3NIDG/2No914F0zhtmzDoG12LVtxRRsfxB1q8kR1TXMdwsT
-	gUQg36BA==;
+	bh=NX624ik//O42jmtE4YB5snNT8FKMqbpOfCQ4fnO47yk=; b=yIP0xRatAksZMJRjvh8rRASmTy
+	BhQq93EHxwyCm094dNWWxyxFNExDGx5hG3HXjU9bb76jmZJxTtnOFA7rXt+iceYwIwY2CnULQ7TML
+	TqOH/pfLycVQwCSDJJQfm+/P5+A9x0qPLCyLVk49nInRCqsTMYOyiwiGLUPX9ubzYg+tupFANp/dm
+	sIpWSmWrGI44dMKMZ6HkSyvcHCaQ5EX+es2l3KjVotzNNWK5IRxhQ2P8EmEJKeTFk8YPO+zne+8KW
+	nrukoveoZxtu0ZYOjQi0B4UCDN6Lo9CyCAbNn/EX9/k0mormEk6lUx6p0cbM0wHkM4EibNvyirSpZ
+	7fnFPFSg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w12dH-00000000FnM-0TZQ;
-	Fri, 13 Mar 2026 13:32:51 +0000
+	id 1w12d8-00000000FXq-097l;
+	Fri, 13 Mar 2026 13:32:42 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w12d8-00000000FXp-3VVo
+	id 1w12d5-00000000FVZ-1SxG
 	for barebox@bombadil.infradead.org;
-	Fri, 13 Mar 2026 13:32:42 +0000
+	Fri, 13 Mar 2026 13:32:39 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=rH8yh6r+0UuNUS0KXlFggUUgOj8kxRdSmLzQ67yY8+o=; b=pwf9+6oskT3ktNtII8tgYLC/Zj
-	DIWz0oUfJNzbRGdsfDSXQG/IBf+vz1RnodheR5sowhOWKKPYmnnJDASAhCJOXUoWOF9F0ofvEt6nk
-	cwUoNew3w2tMPgiNfglPjbaOi7Am8/Ytrdn3wRukDvZOYgc5Q1xp2zNuwB/GWvtFFbh2w/zMUXbdf
-	G/L/sZxK7025yWr4NKi6VbpJw+uNWLk/mZ3I3g+WSts2GdF/irq9NRhbssfMo3lBt07OJgGKBgvWV
-	7aK/M7D1to+Ppd+0ms4mbZG4NwFXo7kjkRbxFhysL5wu8X6cdz34AlVKBsek/QMfYayxTSVlyysHG
-	V6d/ElRQ==;
+	bh=NX624ik//O42jmtE4YB5snNT8FKMqbpOfCQ4fnO47yk=; b=V3cLzm0yMlFIH5YVNcCzBwLS22
+	EafXYGZO+FYvjS5/n59ULErPSPlU187BXFLcUTMoLCAeCkQ0M9m/lXDLpVL65yA1TQ6+lRHVl0cNX
+	32R8wNyquGRcHOsPJ9+OW36Fh9t4gPD+R3sgFr9jFJe2rn0fg5lpmJ0Nil/EfATg5PqdufCzJpSCr
+	vsDtr0pf/SqA7NyxZqndiPZlFi6I6KNJA7hlQZT3ScnF7RkkjO8X7pX6P8TkM/P/7Hzi9xah0p8Tp
+	20SkpUeWkWr4ZWZkspYdAywA81ghsqIU2UCa4g8AtdkyUgvXImFM7dA1h24caoAW68DOF6HjAgL5d
+	eyG+F6rg==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w12cy-00000003OSe-3BZL
+	id 1w12cz-00000003OSk-0Ve5
 	for barebox@lists.infradead.org;
-	Fri, 13 Mar 2026 13:32:41 +0000
+	Fri, 13 Mar 2026 13:32:37 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w12cy-0006oQ-9g; Fri, 13 Mar 2026 14:32:32 +0100
+	id 1w12cy-0006pL-OW; Fri, 13 Mar 2026 14:32:32 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w12cy-0005Sy-0K;
+	id 1w12cy-0005TE-1g;
 	Fri, 13 Mar 2026 14:32:32 +0100
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w12XK-00000009ULB-3Tuk;
-	Fri, 13 Mar 2026 14:26:42 +0100
+	id 1w12XM-00000009ULB-32sJ;
+	Fri, 13 Mar 2026 14:26:44 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Fri, 13 Mar 2026 14:24:57 +0100
-Message-ID: <20260313132631.2257573-14-a.fatoum@pengutronix.de>
+Date: Fri, 13 Mar 2026 14:25:39 +0100
+Message-ID: <20260313132631.2257573-56-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260313132631.2257573-1-a.fatoum@pengutronix.de>
 References: <20260313132631.2257573-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260313_133234_152751_4BE53DAC 
-X-CRM114-Status: GOOD (  16.53  )
+X-CRM114-CacheID: sfid-20260313_133234_061419_94A7F870 
+X-CRM114-Status: GOOD (  13.28  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,100 +98,92 @@ X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,RCVD_IN_VALIDITY_RPBL_BLOCKED,
 	RCVD_IN_VALIDITY_SAFE_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=no
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2025.09.y 13/58] gpio: Fix GPIOD_ASIS flag
+Subject: [PATCH v2025.09.y 55/58] net: r8169: drain RX descriptor ring
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Sascha Hauer <s.hauer@pengutronix.de>
 
-GPIOs can be requested with GPIOD_ASIS and with this the GPIO should be
-kept in its current state. This doesn't work currently as GPIOD_ASIS is
-defined as 0 and the flags are then interpreted as GPIOF_INIT_LOW (also
-0).
+When not busy waiting for incoming packets we poll for new packets only
+every 10ms. Each time only a single frame is fetched from the hardware.
+On a network with many broadcast traffic there might be more than
+100 packets/s incoming, which will sooner or later fill up our RX descriptor
+ring. Unfortunately the Realtek Hardware has no way to gracefully handle
+a RX queue overflow. Fix this by fetching multiple packets from the
+hardware in each receive callback.
 
-To fix this set GPIOD_ASIS to a bit value which makes it a flag which
-can be explicitly tested for.
+(cherry picked from commit ba8dab21987b75add872d7c0d4ca668c82f39e64)
 
-Note this is different than in Linux. Linux defines GPIOD_ASIS to 0 just
-like barebox did, but in Linux the other GPIOD_* flags have an explicit
-"change this setting" flag which we don't have in barebox. Introducing
-these flags in barebox would mean we have to add the "change this
-setting" flags in various other places, like for example
-gpiod_request_one().
-
-Motivation for this patch is the only current user of GPIOD_ASIS, the
-fixed regulator driver. Without this patch regulators will already be
-enabled in the fixed regulator drivers probe function.
-
-(cherry picked from commit 6436a1dc83dd98c38b119a7efbe8b0a999172749)
-
-Link: https://lore.barebox.org/20260105-riotboard-v1-3-789b844d7e36@pengutronix.de
+Link: https://lore.barebox.org/20260302172630.2713540-1-s.hauer@pengutronix.de
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/gpio/gpiolib.c        | 15 +++++++++------
- include/gpio.h                |  2 ++
- include/linux/gpio/consumer.h |  2 +-
- 3 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/net/r8169_main.c | 39 ++++++++++++++++++++-------------------
+ 1 file changed, 20 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index ec4d8e889bb1..e1493ffb6640 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -622,6 +622,7 @@ static int gpiodesc_request_one(struct gpio_desc *desc, unsigned long lflags,
- 	const bool logical     = (dflags & GPIOF_LOGICAL) == GPIOF_LOGICAL;
- 	const bool init_active = (dflags & GPIOF_INIT_ACTIVE) == GPIOF_INIT_ACTIVE;
- 	const bool init_high   = (dflags & GPIOF_INIT_HIGH) == GPIOF_INIT_HIGH;
-+	const bool set         = (dflags & GPIOF_ASIS) == GPIOF_ASIS;
+diff --git a/drivers/net/r8169_main.c b/drivers/net/r8169_main.c
+index b74cc43ab064..bc2040a0173f 100644
+--- a/drivers/net/r8169_main.c
++++ b/drivers/net/r8169_main.c
+@@ -3013,14 +3013,19 @@ static void rtl8169_eth_rx(struct eth_device *edev)
+ {
+ 	struct rtl8169_private *tp = edev->priv;
+ 	struct device *dev = &tp->pci_dev->dev;
+-	unsigned int entry, pkt_size = 0;
+-	u8 status;
++	unsigned int entry, pkt_size;
++	u32 opts;
++	int budget = NUM_RX_DESC;
  
- 	err = gpiodesc_request(desc, label);
- 	if (err)
-@@ -631,12 +632,14 @@ static int gpiodesc_request_one(struct gpio_desc *desc, unsigned long lflags,
- 	if (active_low)
- 		desc->flags |= OF_GPIO_ACTIVE_LOW;
+-	entry = tp->cur_rx % NUM_RX_DESC;
++	while (budget-- > 0) {
++		entry = tp->cur_rx % NUM_RX_DESC;
++		opts = le32_to_cpu(tp->RxDescArray[entry].opts1);
  
--	if (dir_in)
--		err = gpiod_direction_input(desc);
--	else if (logical)
--		err = gpiod_direction_output(desc, init_active);
--	else
--		err = gpiod_direction_output_raw(desc, init_high);
-+	if (!set) {
-+		if (dir_in)
-+			err = gpiod_direction_input(desc);
-+		else if (logical)
-+			err = gpiod_direction_output(desc, init_active);
-+		else
-+			err = gpiod_direction_output_raw(desc, init_high);
-+	}
- 
- 	if (err)
- 		gpiodesc_free(desc);
-diff --git a/include/gpio.h b/include/gpio.h
-index 92fd27b2b996..2264d0c495a4 100644
---- a/include/gpio.h
-+++ b/include/gpio.h
-@@ -114,6 +114,8 @@ static inline int gpio_is_valid(int gpio)
- #define GPIOF_OUT_INIT_ACTIVE	(GPIOF_DIR_OUT | GPIOF_INIT_ACTIVE)
- #define GPIOF_OUT_INIT_INACTIVE	(GPIOF_DIR_OUT | GPIOF_INIT_INACTIVE)
- 
-+#define GPIOF_ASIS	BIT(4)
+-	if ((le32_to_cpu(tp->RxDescArray[entry].opts1) & DescOwn) == 0) {
+-		if (!(le32_to_cpu(tp->RxDescArray[entry].opts1) & RxRES)) {
+-			pkt_size = (le32_to_cpu(tp->RxDescArray[entry].opts1) & 0x1fff) - 4;
++		if (opts & DescOwn)
++			break;
 +
- /**
-  * struct gpio - a structure describing a GPIO with configuration
-  * @gpio:	the GPIO number
-diff --git a/include/linux/gpio/consumer.h b/include/linux/gpio/consumer.h
-index c461f3f3108b..a425145351b0 100644
---- a/include/linux/gpio/consumer.h
-+++ b/include/linux/gpio/consumer.h
-@@ -13,7 +13,7 @@
-  * and output value. These values cannot be OR'd.
-  */
- enum gpiod_flags {
--	GPIOD_ASIS	= 0,
-+	GPIOD_ASIS	= GPIOF_ASIS,
- 	GPIOD_IN	= GPIOF_IN,
- 	/*
- 	 * To change this later to a different logic level (i.e. taking
++		if (!(opts & RxRES)) {
++			pkt_size = (opts & 0x1fff) - 4;
+ 
+ 			dma_sync_single_for_cpu(dev, tp->rx_buf_phys + entry * PKT_BUF_SIZE,
+ 						pkt_size, DMA_FROM_DEVICE);
+@@ -3030,24 +3035,20 @@ static void rtl8169_eth_rx(struct eth_device *edev)
+ 
+ 			dma_sync_single_for_device(dev, tp->rx_buf_phys + entry * PKT_BUF_SIZE,
+ 						   pkt_size, DMA_FROM_DEVICE);
+-
+-			if (entry == NUM_RX_DESC - 1)
+-				tp->RxDescArray[entry].opts1 = cpu_to_le32(DescOwn |
+-					RingEnd | PKT_BUF_SIZE);
+-			else
+-				tp->RxDescArray[entry].opts1 =
+-					cpu_to_le32(DescOwn | PKT_BUF_SIZE);
+-			tp->RxDescArray[entry].addr = cpu_to_le64(tp->rx_buf_phys +
+-					    entry * PKT_BUF_SIZE);
+ 		} else {
+ 			dev_err(&edev->dev, "rx error\n");
+ 		}
+ 
++		if (entry == NUM_RX_DESC - 1)
++			tp->RxDescArray[entry].opts1 = cpu_to_le32(DescOwn |
++				RingEnd | PKT_BUF_SIZE);
++		else
++			tp->RxDescArray[entry].opts1 =
++				cpu_to_le32(DescOwn | PKT_BUF_SIZE);
++		tp->RxDescArray[entry].addr = cpu_to_le64(tp->rx_buf_phys +
++				    entry * PKT_BUF_SIZE);
++
+ 		tp->cur_rx++;
+-	} else {
+-		status = RTL_R8(tp, IntrStatus);
+-		RTL_W8(tp, IntrStatus, status & ~(TxErr | RxErr | SYSErr));
+-		udelay(100);	/* wait */
+ 	}
+ }
+ 
 -- 
 2.47.3
 
