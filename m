@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w12fX-000DXU-1X
+	id 1w12fX-000DXl-2f
 	for lore@lore.pengutronix.de;
 	Fri, 13 Mar 2026 14:35:11 +0100
 Received: from bombadil.infradead.org ([198.137.202.133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w12fE-00018k-H0
+	id 1w12fF-00019d-34
 	for lore@pengutronix.de; Fri, 13 Mar 2026 14:35:11 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,65 +18,66 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=AOQEkxUQw5bkk1RX1vscWjlVI0oX1xIqCkgs3suHRc4=; b=mDmdb/W4etwFAUCyQEJyYJH+HO
-	D3YS05coAPt6MESxzGV7+qKdfK9fHyXNTUd5EXORHLzMNXeyRY+TrLuzKHbWPPLSl9H3I3YzqbtTN
-	S6wCDBnRGrHZwc5Tjix66EZAJsBcGTah10rG+5jA3Eq4pfS/pr7DPP+qEmMVXacRxWym4Uh14aBc8
-	n7hJpV9vIM8/wducOd3vPoVaPFfHTllCxOwl16p1hnJG/17enWIW56pfqHeb7OxcHu7Jh8KE0nhPU
-	1BSwI9nol9IAXC758JCWtj4lnqfMDE0xUxyAIXMDt++oxUQmyFnqhQaNAu8cOw7PgcROJTMXDNU6h
-	Q2nflnmw==;
+	bh=ctR94n/dHtw+pOAvoMT918PLdNV2nfcrz4gq0jlKBJQ=; b=V4DqF7ZKAtw36f7m58xr+/j7mN
+	m6yU1hJH63xRZ2S8RcmzIb4Odd4munkZixvHUDaiBuPxYljh/ecr6+H/s+VJjVcD18lGid745gr41
+	CvFCsMPiNdTFaZNatH3u3wX+swu+CPsTP9CvqS4Fc+3WpA8aqxTJ8zgN7nsZuxl/qKRS2sszz4oKQ
+	WLlAA8Dwr7oGAYLjFkk4XSk5ROCfNwm/I/xAiMXEdoN8RTqA/jpyLaQRjMnJWqRnOP46Utdft0Og2
+	Kgo6bRMA2QUer7zVcxA7ywLsgKskpHw6K/CKy5RgQbr1ccO7SMhy/gLICWyAh7qXybF+KeOxd5m6s
+	vXc1m+mw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w12di-00000000GY9-06pU;
-	Fri, 13 Mar 2026 13:33:18 +0000
+	id 1w12dn-00000000Ggz-39U3;
+	Fri, 13 Mar 2026 13:33:23 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w12dI-00000000Fo7-25KK
+	id 1w12dI-00000000Fok-290L
 	for barebox@bombadil.infradead.org;
 	Fri, 13 Mar 2026 13:32:52 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=AOQEkxUQw5bkk1RX1vscWjlVI0oX1xIqCkgs3suHRc4=; b=jSIBCnBTb6cL4JYpOu9T7QFAe4
-	rmW5zwMHn4Ki9SAGNVdcIi5OMac8M+BgNH3ri8hFZBT+iAjyDJLXDjwSsxIgAe1Zbq1lnM81w9W28
-	ceJaDdbnMcBAHjO5ilSR/aF6RnPrPWl5QJ29Qy9EWnKcTVDhu8Xgno2zyAFcOpC45CqBbUI7EbCrX
-	Fert9ZSzMYmdmLqZDep9uDw/96DaL5Zrc2jSe3li0DvIVsH410HVVyarqYD+QuGGd4vuk/uZepB8T
-	7HmCPF/8l4ERUv0RJ9UgKFb6Ns4f11yiKnGkf+BBBft5qNBXmLfmPbmZkG4SmSxl0TpGFJJPTXOsB
-	gq4Dwx2g==;
+	bh=ctR94n/dHtw+pOAvoMT918PLdNV2nfcrz4gq0jlKBJQ=; b=Bns1YlC+0e6/Ft2S5ZHdSQ2cq7
+	BmV4snnacFov4JvOu+/4x7q53rzs0aZsqoN+Hy456fOjPIvJjImJpj00AZukokV/ld7XFk9LJa4DN
+	icTraFlI2zzVpZqscak7+Rso7WCxt6UitPj9JuGcg+5r3G7+YUJwxfXOZZ5bV7D2e0d/VDLuYtydc
+	s0pYJqBM8qAmYd23BW/3kAdrB3cHIeGAyBDcKZ/mp2U8ufIudcTQ1eVbCHSfxTpTIqMkshT8CJ4we
+	vmU+BKrcKWWNhoCGMwCp5yN76r2Z6J3K3AFrGWIRMU8YwUDwGHxtqcSSeczQMmyioii72GmeMzV6O
+	Vxfbr1sg==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w12d2-00000003OSa-1jc8
+	id 1w12d4-00000003OSk-13eD
 	for barebox@lists.infradead.org;
-	Fri, 13 Mar 2026 13:32:48 +0000
+	Fri, 13 Mar 2026 13:32:50 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w12d0-0006vU-TZ; Fri, 13 Mar 2026 14:32:34 +0100
+	id 1w12d1-0006wj-Bl; Fri, 13 Mar 2026 14:32:35 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w12d0-0005Uq-2H;
-	Fri, 13 Mar 2026 14:32:34 +0100
+	id 1w12d1-0005VA-0T;
+	Fri, 13 Mar 2026 14:32:35 +0100
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w12XK-00000009ULB-3qr8;
-	Fri, 13 Mar 2026 14:26:42 +0100
+	id 1w12XL-00000009ULB-2UaH;
+	Fri, 13 Mar 2026 14:26:43 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Fri, 13 Mar 2026 14:24:59 +0100
-Message-ID: <20260313132631.2257573-16-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	"Claude Opus 4.6" <noreply@anthropic.com>
+Date: Fri, 13 Mar 2026 14:25:14 +0100
+Message-ID: <20260313132631.2257573-31-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260313132631.2257573-1-a.fatoum@pengutronix.de>
 References: <20260313132631.2257573-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260313_133236_566072_2064FD5D 
-X-CRM114-Status: UNSURE (   9.49  )
+X-CRM114-CacheID: sfid-20260313_133238_536992_4AA49C32 
+X-CRM114-Status: UNSURE (   8.98  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -100,95 +101,38 @@ X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,RCVD_IN_VALIDITY_RPBL_BLOCKED,
 	RCVD_IN_VALIDITY_SAFE_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=no
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2025.09.y 15/58] ARM: cpu: common: skip R_ARM_NONE relocations
+Subject: [PATCH v2025.09.y 30/58] efi: fix potential NULL dereference
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Ahmad Fatoum <a.fatoum@barebox.org>
+Add NULL check for name buffer before writing to it.  When called with
+name=NULL (for length query), the loop would dereference a NULL pointer.
 
-Relocations may be turned into no-op in place by strip running on an
-executable by having their type set to 0 (R_ARM_NONE).
+(cherry picked from commit c54a80c2e557dafb970d21df9fd4a025908bee16)
 
-This can happen with the incoming ELF loading in PBL support, so teach
-relocate_to_current_adr() to skip these no-op relocation entries.
-
-(cherry picked from commit 9ef816e176d9ace3a88911e37eb280552c2223e4)
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
-Link: https://lore.barebox.org/20260106081659.3491945-1-a.fatoum@barebox.org
+Reported-by: clang-analyzer 19.1.7
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Link: https://lore.barebox.org/20260216084758.3548990-2-a.fatoum@pengutronix.de
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/common.c | 30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ efi/efivar-filename.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm/cpu/common.c b/arch/arm/cpu/common.c
-index 339ef2db2534..5b65b0745b98 100644
---- a/arch/arm/cpu/common.c
-+++ b/arch/arm/cpu/common.c
-@@ -36,6 +36,7 @@ void sync_caches_for_execution(void)
- 	arm_early_mmu_cache_flush();
- }
+diff --git a/efi/efivar-filename.c b/efi/efivar-filename.c
+index 51d0130fa774..7660d6cb0c57 100644
+--- a/efi/efivar-filename.c
++++ b/efi/efivar-filename.c
+@@ -78,6 +78,9 @@ int __efivarfs_parse_filename(const char *filename, efi_guid_t *vendor,
+ 	if (ret)
+ 		return ret;
  
-+#define R_ARM_NONE 0
- #define R_ARM_RELATIVE 23
- #define R_AARCH64_RELATIVE 1027
++	if (!name)
++		return 0;
++
+ 	for (i = 0; i < *namelen - 1; i++)
+ 		name[i] = filename[i];
  
-@@ -78,14 +79,19 @@ void __prereloc relocate_to_current_adr(void)
- #if defined(CONFIG_CPU_64)
- 	while (dstart < dend) {
- 		struct elf64_rela *rel = dstart;
-+		unsigned long *fixup;
- 
--		if (ELF64_R_TYPE(rel->r_info) == R_AARCH64_RELATIVE) {
--			unsigned long *fixup = (unsigned long *)(rel->r_offset + offset);
-+		switch(ELF64_R_TYPE(rel->r_info)) {
-+		case R_AARCH64_RELATIVE:
-+			fixup = (unsigned long *)(rel->r_offset + offset);
- 
- 			*fixup = rel->r_addend + offset;
- 			rel->r_addend += offset;
- 			rel->r_offset += offset;
--		} else {
-+			break;
-+		case R_ARM_NONE:
-+			break;
-+		default:
- 			putc_ll('>');
- 			puthex_ll(rel->r_info);
- 			putc_ll(' ');
-@@ -104,20 +110,26 @@ void __prereloc relocate_to_current_adr(void)
- 
- 	while (dstart < dend) {
- 		struct elf32_rel *rel = dstart;
-+		unsigned long r, *fixup;
- 
--		if (ELF32_R_TYPE(rel->r_info) == R_ARM_RELATIVE) {
--			unsigned long *fixup = (unsigned long *)(rel->r_offset + offset);
-+		switch (ELF32_R_TYPE(rel->r_info)) {
-+		case R_ARM_RELATIVE:
-+			fixup = (unsigned long *)(rel->r_offset + offset);
- 
- 			*fixup = *fixup + offset;
- 
- 			rel->r_offset += offset;
--		} else if (ELF32_R_TYPE(rel->r_info) == R_ARM_ABS32) {
--			unsigned long r = dynsym[ELF32_R_SYM(rel->r_info) * 4 + 1];
--			unsigned long *fixup = (unsigned long *)(rel->r_offset + offset);
-+			break;
-+		case R_ARM_ABS32:
-+			r = dynsym[ELF32_R_SYM(rel->r_info) * 4 + 1];
-+			fixup = (unsigned long *)(rel->r_offset + offset);
- 
- 			*fixup = *fixup + r + offset;
- 			rel->r_offset += offset;
--		} else {
-+			break;
-+		case R_ARM_NONE:
-+			break;
-+		default:
- 			putc_ll('>');
- 			puthex_ll(rel->r_info);
- 			putc_ll(' ');
 -- 
 2.47.3
 
