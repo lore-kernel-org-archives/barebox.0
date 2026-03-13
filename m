@@ -1,84 +1,81 @@
-Delivery-date: Fri, 13 Mar 2026 14:34:11 +0100
+Delivery-date: Fri, 13 Mar 2026 14:34:12 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w12eZ-000DNA-2a
+	id 1w12ea-000DNY-34
 	for lore@lore.pengutronix.de;
-	Fri, 13 Mar 2026 14:34:11 +0100
+	Fri, 13 Mar 2026 14:34:12 +0100
 Received: from bombadil.infradead.org ([198.137.202.133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w12eG-0008Pp-Pz
-	for lore@pengutronix.de; Fri, 13 Mar 2026 14:34:11 +0100
+	id 1w12eK-0008UT-Iz
+	for lore@pengutronix.de; Fri, 13 Mar 2026 14:34:12 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=cS3Us/jnAFTOfZwyuwqC1k+rekzMxHA/bdM0ZN+jG/g=; b=ZCr2UHIT7MtLOpAq7DDRCRFlnV
-	fFW17fJHgQS60ypBat+ZMmA22zG9BhPvPSB2+RJLFrsIsMM0sD46BL/P1Fx+iUr8tBCNzO/ahHz3N
-	XkLTYu0RpazXJ6aGmZA912RD1KKLj5lGev9FM8l1FOaTloRfGli0E6pFE3j65pu1slhiOMzcDI3/c
-	pXUO7+Pgyi0IWNbypyemi69dpFI5s/HZ/91+J5c18ZcPRpmUAxhWf1S1kxassuOKpUiIkudg5egle
-	3qh/2hamxWxyfMy3lrTdwg1PCd6+e1EAUcdpeqBh21m+gDay2DdgclyVZd3KU/ZxEWXN+E4Wy33hB
-	guP0V+Lg==;
+	bh=rH8yh6r+0UuNUS0KXlFggUUgOj8kxRdSmLzQ67yY8+o=; b=o8LbJrZSVwAUxTrWI9ahGUbFmI
+	1P4rbxf+oCZ87BAb01R/9qUKXaBIOsp/3FfG5MnYG2TEdUdm2Bso4wwxQHDJ3cAD8QXPhqh+YrSjF
+	6+8HzefhVtG4ZC4PBK8p3Et64LTlGQHCcYctRnhVlbs/WFCF2Sr8iQMQNaPMFyXgIwmrRYFYx6Dbo
+	ORevPSqb0/R091llzlNr+XQATOx9A7+nrroIMxeV49hRQycFRgItyECsve2s3McxROcAL4ov+T3+m
+	wsb/S3Te8slmmNSowH9CbsIfJUH8AI3NIDG/2No914F0zhtmzDoG12LVtxRRsfxB1q8kR1TXMdwsT
+	gUQg36BA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w12dD-00000000Ffo-0iKV;
-	Fri, 13 Mar 2026 13:32:47 +0000
+	id 1w12dH-00000000FnM-0TZQ;
+	Fri, 13 Mar 2026 13:32:51 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w12d7-00000000FWd-0NSk
+	id 1w12d8-00000000FXp-3VVo
 	for barebox@bombadil.infradead.org;
-	Fri, 13 Mar 2026 13:32:41 +0000
+	Fri, 13 Mar 2026 13:32:42 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=cS3Us/jnAFTOfZwyuwqC1k+rekzMxHA/bdM0ZN+jG/g=; b=gx5ExggDGcOpXX8mAn2SCk4uhg
-	bWSZxiEL9SBHM9ZlqYc8HoLHQFGyWOBmBzKzOVO4F3BkYQrurG//JFN6oyAkm4rp6X4T4041XMO2Y
-	eRdxbVwQjiX497v03306sgnB3xwK3A1Q3JezRA/mjQp38fUI8Kh7ijVeQjPAPAIqueZh8fcL2ggje
-	/OorlB9PJd7F1d8w7VTQcwnJi4i+sKmuSBBPUnsDdYPDzteHWylFP4kTZl4FEx5u/0q28DLfpWYi/
-	ML9S1pu9U0YE7nlwYNGd8YctpbBzV8al4aJivRiRK8eM0PQf2RL+eaqd3955h8VMxSQiZSES8VgZW
-	7/Lk9+dA==;
+	bh=rH8yh6r+0UuNUS0KXlFggUUgOj8kxRdSmLzQ67yY8+o=; b=pwf9+6oskT3ktNtII8tgYLC/Zj
+	DIWz0oUfJNzbRGdsfDSXQG/IBf+vz1RnodheR5sowhOWKKPYmnnJDASAhCJOXUoWOF9F0ofvEt6nk
+	cwUoNew3w2tMPgiNfglPjbaOi7Am8/Ytrdn3wRukDvZOYgc5Q1xp2zNuwB/GWvtFFbh2w/zMUXbdf
+	G/L/sZxK7025yWr4NKi6VbpJw+uNWLk/mZ3I3g+WSts2GdF/irq9NRhbssfMo3lBt07OJgGKBgvWV
+	7aK/M7D1to+Ppd+0ms4mbZG4NwFXo7kjkRbxFhysL5wu8X6cdz34AlVKBsek/QMfYayxTSVlyysHG
+	V6d/ElRQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w12cy-00000003OSZ-3BAI
+	id 1w12cy-00000003OSe-3BZL
 	for barebox@lists.infradead.org;
-	Fri, 13 Mar 2026 13:32:39 +0000
+	Fri, 13 Mar 2026 13:32:41 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w12cx-0006n9-Mt; Fri, 13 Mar 2026 14:32:31 +0100
+	id 1w12cy-0006oQ-9g; Fri, 13 Mar 2026 14:32:32 +0100
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w12cx-0005SY-1c;
-	Fri, 13 Mar 2026 14:32:31 +0100
+	id 1w12cy-0005Sy-0K;
+	Fri, 13 Mar 2026 14:32:32 +0100
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w12XM-00000009ULB-18Fa;
-	Fri, 13 Mar 2026 14:26:44 +0100
+	id 1w12XK-00000009ULB-3Tuk;
+	Fri, 13 Mar 2026 14:26:42 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>,
-	"Claude Opus 4.6" <noreply@anthropic.com>
-Date: Fri, 13 Mar 2026 14:25:29 +0100
-Message-ID: <20260313132631.2257573-46-a.fatoum@pengutronix.de>
+Date: Fri, 13 Mar 2026 14:24:57 +0100
+Message-ID: <20260313132631.2257573-14-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260313132631.2257573-1-a.fatoum@pengutronix.de>
 References: <20260313132631.2257573-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260313_133234_099299_1DB846C7 
-X-CRM114-Status: UNSURE (   7.63  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260313_133234_152751_4BE53DAC 
+X-CRM114-Status: GOOD (  16.53  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -101,54 +98,100 @@ X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_LOW,RCVD_IN_VALIDITY_RPBL_BLOCKED,
 	RCVD_IN_VALIDITY_SAFE_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=no
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2025.09.y 45/58] video: mode-helpers: preserve sync polarity in fb_videomode conversion
+Subject: [PATCH v2025.09.y 13/58] gpio: Fix GPIOD_ASIS flag
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Ahmad Fatoum <a.fatoum@barebox.org>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-The FB_SYNC_*_HIGH_ACT flags indicate that the respective sync signal is
-active high when set and active low when unset.
+GPIOs can be requested with GPIOD_ASIS and with this the GPIO should be
+kept in its current state. This doesn't work currently as GPIOD_ASIS is
+defined as 0 and the flags are then interpreted as GPIOF_INIT_LOW (also
+0).
 
-The DISPLAY_FLAGS_*SYNC_* flags on the other hands have separate
-non-zero _HIGH and _LOW flags, which fb_videomode_to_videomode() failed
-to account for.
+To fix this set GPIOD_ASIS to a bit value which makes it a flag which
+can be explicitly tested for.
 
-This causes a DPI sync polarity mismatch for MIPI-DSI panels with
-negative sync polarity, which was hackily worked around by enabling the
-video pattern generator intermittently.
+Note this is different than in Linux. Linux defines GPIOD_ASIS to 0 just
+like barebox did, but in Linux the other GPIOD_* flags have an explicit
+"change this setting" flag which we don't have in barebox. Introducing
+these flags in barebox would mean we have to add the "change this
+setting" flags in various other places, like for example
+gpiod_request_one().
 
-Fix by explicitly setting the LOW polarity flags, which restores
-DRM_MODE_FLAG_NHSYNC/NVSYNC after the fb_videomode round-trip.
+Motivation for this patch is the only current user of GPIOD_ASIS, the
+fixed regulator driver. Without this patch regulators will already be
+enabled in the fixed regulator drivers probe function.
 
-(cherry picked from commit f66af1ff3a2042bfbadbfc952359d1cdc6fb07c3)
+(cherry picked from commit 6436a1dc83dd98c38b119a7efbe8b0a999172749)
 
-Reported-by: Claude Opus 4.6 <noreply@anthropic.com>
-Fixes: 7fc6f7b5daa0 ("video: add videomode helpers")
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
-Link: https://lore.barebox.org/20260213092906.3960051-1-a.fatoum@barebox.org
+Link: https://lore.barebox.org/20260105-riotboard-v1-3-789b844d7e36@pengutronix.de
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/video/mode-helpers.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpio/gpiolib.c        | 15 +++++++++------
+ include/gpio.h                |  2 ++
+ include/linux/gpio/consumer.h |  2 +-
+ 3 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/video/mode-helpers.c b/drivers/video/mode-helpers.c
-index 4a1d31813e79..89abd8342bf4 100644
---- a/drivers/video/mode-helpers.c
-+++ b/drivers/video/mode-helpers.c
-@@ -143,8 +143,12 @@ void fb_videomode_to_videomode(const struct fb_videomode *fbmode,
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index ec4d8e889bb1..e1493ffb6640 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -622,6 +622,7 @@ static int gpiodesc_request_one(struct gpio_desc *desc, unsigned long lflags,
+ 	const bool logical     = (dflags & GPIOF_LOGICAL) == GPIOF_LOGICAL;
+ 	const bool init_active = (dflags & GPIOF_INIT_ACTIVE) == GPIOF_INIT_ACTIVE;
+ 	const bool init_high   = (dflags & GPIOF_INIT_HIGH) == GPIOF_INIT_HIGH;
++	const bool set         = (dflags & GPIOF_ASIS) == GPIOF_ASIS;
  
- 	if (fbmode->sync & FB_SYNC_HOR_HIGH_ACT)
- 		vm->flags |= DISPLAY_FLAGS_HSYNC_HIGH;
-+	else
-+		vm->flags |= DISPLAY_FLAGS_HSYNC_LOW;
- 	if (fbmode->sync & FB_SYNC_VERT_HIGH_ACT)
- 		vm->flags |= DISPLAY_FLAGS_VSYNC_HIGH;
-+	else
-+		vm->flags |= DISPLAY_FLAGS_VSYNC_LOW;
- 	if (fbmode->vmode & FB_VMODE_INTERLACED)
- 		vm->flags |= DISPLAY_FLAGS_INTERLACED;
- 	if (fbmode->vmode & FB_VMODE_DOUBLE)
+ 	err = gpiodesc_request(desc, label);
+ 	if (err)
+@@ -631,12 +632,14 @@ static int gpiodesc_request_one(struct gpio_desc *desc, unsigned long lflags,
+ 	if (active_low)
+ 		desc->flags |= OF_GPIO_ACTIVE_LOW;
+ 
+-	if (dir_in)
+-		err = gpiod_direction_input(desc);
+-	else if (logical)
+-		err = gpiod_direction_output(desc, init_active);
+-	else
+-		err = gpiod_direction_output_raw(desc, init_high);
++	if (!set) {
++		if (dir_in)
++			err = gpiod_direction_input(desc);
++		else if (logical)
++			err = gpiod_direction_output(desc, init_active);
++		else
++			err = gpiod_direction_output_raw(desc, init_high);
++	}
+ 
+ 	if (err)
+ 		gpiodesc_free(desc);
+diff --git a/include/gpio.h b/include/gpio.h
+index 92fd27b2b996..2264d0c495a4 100644
+--- a/include/gpio.h
++++ b/include/gpio.h
+@@ -114,6 +114,8 @@ static inline int gpio_is_valid(int gpio)
+ #define GPIOF_OUT_INIT_ACTIVE	(GPIOF_DIR_OUT | GPIOF_INIT_ACTIVE)
+ #define GPIOF_OUT_INIT_INACTIVE	(GPIOF_DIR_OUT | GPIOF_INIT_INACTIVE)
+ 
++#define GPIOF_ASIS	BIT(4)
++
+ /**
+  * struct gpio - a structure describing a GPIO with configuration
+  * @gpio:	the GPIO number
+diff --git a/include/linux/gpio/consumer.h b/include/linux/gpio/consumer.h
+index c461f3f3108b..a425145351b0 100644
+--- a/include/linux/gpio/consumer.h
++++ b/include/linux/gpio/consumer.h
+@@ -13,7 +13,7 @@
+  * and output value. These values cannot be OR'd.
+  */
+ enum gpiod_flags {
+-	GPIOD_ASIS	= 0,
++	GPIOD_ASIS	= GPIOF_ASIS,
+ 	GPIOD_IN	= GPIOF_IN,
+ 	/*
+ 	 * To change this later to a different logic level (i.e. taking
 -- 
 2.47.3
 
