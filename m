@@ -1,67 +1,67 @@
-Delivery-date: Fri, 13 Mar 2026 12:14:12 +0100
+Delivery-date: Fri, 13 Mar 2026 12:18:04 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w10T6-000AfO-0l
+	id 1w10Wq-000Aiz-09
 	for lore@lore.pengutronix.de;
-	Fri, 13 Mar 2026 12:14:12 +0100
+	Fri, 13 Mar 2026 12:18:04 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w10T5-00052D-N7
-	for lore@pengutronix.de; Fri, 13 Mar 2026 12:14:12 +0100
+	id 1w10Wp-0005n6-H2
+	for lore@pengutronix.de; Fri, 13 Mar 2026 12:18:03 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=X4NV4iPCUcBIfdCPBvOOKJmUTcI/rM7z3wJdpxSKI7E=; b=anlTabUVs3w1+MXQvNsK1mWYdd
-	p+iWjFpq7Ipphr0ubk0UWcVVmxrYsG1B4qec1LjWQxNHlQ3PCCVSFP17d2kfS94inhNJogFZkHxs7
-	AIGhR0DVa7bKsDcZgNr07jGGbd6wZW0nx1YIXek1qb8pVRC6OOUx36+B7RyHAJ8RtqjPsLumEMxuu
-	0OXG0pMo6JaJaxn7YWy0u4R21RHcyTYwpxVDjbC9tph+xoX4nI3rRPDcePg3WRzjq5joUv/ksCgp/
-	yPNcBL1j5jHTiMKilkLg55nEq/NbetI44qlJzEA0QdF/vlLVVSB1FvLPnJDoyOqt8koXSNBh01w/u
-	AVXf6LSw==;
+	bh=DaFiJr7IEBQtHCMcs+rb8kldVuObFBqERz7tLqTtcd4=; b=gtP3WG8pBwruUmtBrv/28IaipI
+	yUnF719LuP97//x7fyO761+Z2Cx7FUe6G/G4J2vVSqtPw8O2tQpHTnOW1CuiaZKXApHHNG4U9XaSA
+	qbMkR6whpxz3vQFKnFRJ0IOLK1xqN+IiEw6N7BDC5SuhLa8HXispWc7FP0eVq8CC7E7wZD3Brp8D6
+	yju5k0P7Mg5NV0eNhy6AeCTk5HYrsE+nktLox/6yh1YRdA2COacJ7OvWq/L/ZxJEa8/eMCeKzVTB2
+	FReaY04bxaDMYZZi4xOJ+eD1wvh7d358/F5W2DvtY0o29nsIBl233dKjtG2Sfuhv/UGCHmM0o8il6
+	+w0pDOkw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w10Se-0000000Hb2F-0svY;
-	Fri, 13 Mar 2026 11:13:44 +0000
+	id 1w10WJ-000000000lo-1xe4;
+	Fri, 13 Mar 2026 11:17:31 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w10Sc-0000000Hb0m-0RHY
+	id 1w10WH-000000000kx-1zLX
 	for barebox@lists.infradead.org;
-	Fri, 13 Mar 2026 11:13:43 +0000
+	Fri, 13 Mar 2026 11:17:30 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1w10Sa-0004vV-8h; Fri, 13 Mar 2026 12:13:40 +0100
+	id 1w10WF-0005e6-Nd; Fri, 13 Mar 2026 12:17:27 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1w10Sa-0004RX-0H;
-	Fri, 13 Mar 2026 12:13:40 +0100
+	id 1w10WF-0004Rr-1k;
+	Fri, 13 Mar 2026 12:17:27 +0100
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1w10Sa-00000000rga-08HT;
-	Fri, 13 Mar 2026 12:13:40 +0100
+	id 1w10WF-00000000sD3-21UB;
+	Fri, 13 Mar 2026 12:17:27 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260312160433.194560-1-a.fatoum@pengutronix.de>
-References: <20260312160433.194560-1-a.fatoum@pengutronix.de>
-Message-Id: <177340042002.206359.73330334326620046.b4-ty@pengutronix.de>
-Date: Fri, 13 Mar 2026 12:13:40 +0100
+In-Reply-To: <20260312192110.539601-1-a.fatoum@pengutronix.de>
+References: <20260312192110.539601-1-a.fatoum@pengutronix.de>
+Message-Id: <177340064747.208368.4405735321340509838.b4-ty@pengutronix.de>
+Date: Fri, 13 Mar 2026 12:17:27 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260313_041342_143045_D9AA1FC5 
-X-CRM114-Status: UNSURE (   5.60  )
+X-CRM114-CacheID: sfid-20260313_041729_537331_E269B55E 
+X-CRM114-Status: UNSURE (   7.59  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -82,23 +82,31 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=ham
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master] of: fdt: refuse / in property and node names
+Subject: Re: [PATCH 1/2] ARM: cpu: setupc: relocate BSS in
+ relocate_to_adr()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Thu, 12 Mar 2026 17:03:54 +0100, Ahmad Fatoum wrote:
-> / is used as delimiter between nodes, so seeing it in a device node name
-> hints at something fishy going on, so refuse that outright.
+On Thu, 12 Mar 2026 20:20:42 +0100, Ahmad Fatoum wrote:
+> When calling relocate_to_adr(), barebox is copied without BSS to a new
+> place. The new BSS region is not necessarily zeroed, but setupc()
+> following relocate_to_adr() will take care of that.
 > 
+> With incoming change to make setupc() idempotent, this will become
+> problematic as the variable in .data will indicate that the BSS is
+> zeroed, while the new BSS region isn't actually.
 > 
+> [...]
 
 Applied, thanks!
 
-[1/1] of: fdt: refuse / in property and node names
-      https://git.pengutronix.de/cgit/barebox/commit/?id=aca01795056d (link may not be stable)
+[1/2] ARM: cpu: setupc: relocate BSS in relocate_to_adr()
+      https://git.pengutronix.de/cgit/barebox/commit/?id=d443585bcce6 (link may not be stable)
+[2/2] fixup! ARM: setup_c: avoid clearing BSS twice
+      (no commit info)
 
 Best regards,
 -- 
