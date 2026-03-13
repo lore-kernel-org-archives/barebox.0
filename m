@@ -1,58 +1,75 @@
-Delivery-date: Fri, 13 Mar 2026 15:27:13 +0100
+Delivery-date: Fri, 13 Mar 2026 15:28:24 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w13Tt-000Eez-2L
+	id 1w13V2-000EgN-0D
 	for lore@lore.pengutronix.de;
-	Fri, 13 Mar 2026 15:27:13 +0100
+	Fri, 13 Mar 2026 15:28:24 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w13Ts-0004W4-Ln
-	for lore@pengutronix.de; Fri, 13 Mar 2026 15:27:13 +0100
+	id 1w13V0-0004ly-NJ
+	for lore@pengutronix.de; Fri, 13 Mar 2026 15:28:24 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
-	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:Cc:To:From
-	:Subject:Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=VDtERtUrtE0/kgy/OkoAB/yhf73W8Nj3sEHgnafarxo=; b=Jxurr/kNgNhAtMJjEbGQo+4xX9
-	2+ITesWJXWKAL0NbJSCX+A268VWfbkJ/k3pmbvzSRAnGmhJNcf5fOP4rEgGzCMNNlMvb6oJS/0KCK
-	Nx8NEr2rxpxorbDrJp6upDEDOWnxsdfmuzmRalC2aXDwdy0fg+LcWSSHoipdBaY3I0Oi8Hx8ol/EU
-	QiqQwVlSHfpij8kK0rNlFog12X2gCmS/QQd49dY7NSZga6ZEMuZ1P5f9kXGJpk/TKzn+KLWKzVSsc
-	+TzT2oLYDW47dhoJHKWDoKXT0Q8miAd6vmERyNAp3DYtlorLn4eZFTJUqzgg0dx26yBL7H+Fqon5m
-	cM/dTeUA==;
+	bh=ZAkI9L52gNQ0Q9QT3Me6OnfRSVRfxiZOkUyYHiXYfhw=; b=g8VX8qrawlAyMpTHXunPVjW7qf
+	S4xTwUSs0wsHVIxOMNH18Mx9/vBORsXs6hVvx9bflznqpJj29bahWMwDGqJ6l6tFxlKQe6t5wm4n0
+	SdNl7xMcNBKt754pBPiu0pmHL0AlYj8WNkMAna5NCr+fwUpHRnJ89BP0xB6Ht2P7L157d9HDgweV9
+	IXWPvYYOdOorMrosa9sRmmZDHvg1XLYvoXCZN2UQZIMBbkxFaQyyk+BC6wR/FiJD3tLGjr2EhryGV
+	xGICZXkogHpPpBcKcdcDgGhGBUoynkhiU9NYT7DPBK4N+quETR+BEQpl1h1Sb2JgXGz2o1jk//CqM
+	qlEaALqA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w13TL-00000000O0H-26aT;
-	Fri, 13 Mar 2026 14:26:39 +0000
+	id 1w13UY-00000000O6y-3Zh4;
+	Fri, 13 Mar 2026 14:27:54 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w13TI-00000000Nzs-2xz9
+	id 1w13UV-00000000O6S-1JYX
 	for barebox@lists.infradead.org;
-	Fri, 13 Mar 2026 14:26:37 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <f.pflug@pengutronix.de>)
-	id 1w13TH-0004Lu-1x; Fri, 13 Mar 2026 15:26:35 +0100
-Message-ID: <ec2368a0a5f831df07116738da1ef02b376398b9.camel@pengutronix.de>
-From: Fabian Pflug <f.pflug@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>
-Date: Fri, 13 Mar 2026 15:26:34 +0100
-In-Reply-To: <abQSywI_nJlVD2dJ@pengutronix.de>
-References: <20260312-v2026-02-0-topic-sconfig_console-v1-0-4c3fccafab1e@pengutronix.de>
-	 <20260312-v2026-02-0-topic-sconfig_console-v1-1-4c3fccafab1e@pengutronix.de>
-	 <abQSywI_nJlVD2dJ@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	Fri, 13 Mar 2026 14:27:53 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1w13UT-0004e5-Sd; Fri, 13 Mar 2026 15:27:49 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1w13UT-0005vq-2E;
+	Fri, 13 Mar 2026 15:27:49 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1w13UT-0000000HFPD-2V2l;
+	Fri, 13 Mar 2026 15:27:49 +0100
+Date: Fri, 13 Mar 2026 15:27:49 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Fabian Pflug <f.pflug@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>,
+	Marco Felsch <m.felsch@pengutronix.de>
+Message-ID: <abQe5T9JDUWZtz89@pengutronix.de>
+References: <20260312-v2026-01-0-topic-tqma8mpxs-v4-0-88472a13347d@pengutronix.de>
+ <20260312-v2026-01-0-topic-tqma8mpxs-v4-2-88472a13347d@pengutronix.de>
+ <abQPA1BFyCN4M51O@pengutronix.de>
+ <2d81955609d42ee98e53e1510d4267634df68bff.camel@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2d81955609d42ee98e53e1510d4267634df68bff.camel@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260313_072636_750920_FA5C9943 
-X-CRM114-Status: GOOD (  19.49  )
+X-CRM114-CacheID: sfid-20260313_072752_289089_0D5A6867 
+X-CRM114-Status: GOOD (  28.66  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,105 +87,98 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/4] common: bootm: add policy to commandline
+Subject: Re: [PATCH v4 2/3] ARM: boards: tqma8mpxl: extend with support for xs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Fri, 2026-03-13 at 14:36 +0100, Sascha Hauer wrote:
-> On Thu, Mar 12, 2026 at 10:16:42AM +0100, Fabian Pflug wrote:
-> > If security policies are used, then the variable bootm.provide_policy
-> > can be set to automatically append the currently selected security
-> > policy to the kernel commandline with the prefix
-> > barebox.security.policy=3D
-> > This allows the the system to behave different based on the selected
-> > security policy.
-> >=20
-> > Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
-> > ---
-> > =C2=A0common/bootm.c=C2=A0 | 23 +++++++++++++++++++++++
-> > =C2=A0include/bootm.h |=C2=A0 5 +++++
-> > =C2=A02 files changed, 28 insertions(+)
-> >=20
-> > diff --git a/common/bootm.c b/common/bootm.c
-> > index 6318509884..cd90aa81e1 100644
-> > --- a/common/bootm.c
-> > +++ b/common/bootm.c
-> > @@ -22,6 +22,7 @@
-> > =C2=A0#include <uncompress.h>
-> > =C2=A0#include <zero_page.h>
-> > =C2=A0#include <security/config.h>
-> > +#include <security/policy.h>
-> > =C2=A0
-> > =C2=A0static LIST_HEAD(handler_list);
-> > =C2=A0static struct sconfig_notifier_block sconfig_notifier;
-> > @@ -75,6 +76,7 @@ static int bootm_dryrun;
-> > =C2=A0static int bootm_earlycon;
-> > =C2=A0static int bootm_provide_machine_id;
-> > =C2=A0static int bootm_provide_hostname;
-> > +static int bootm_provide_policy;
-> > =C2=A0static int bootm_verbosity;
-> > =C2=A0static int bootm_efi_mode =3D BOOTM_EFI_AVAILABLE;
-> > =C2=A0
-> > @@ -97,6 +99,7 @@ void bootm_data_init_defaults(struct bootm_data *data=
-)
-> > =C2=A0	data->appendroot =3D bootm_appendroot;
-> > =C2=A0	data->provide_machine_id =3D bootm_provide_machine_id;
-> > =C2=A0	data->provide_hostname =3D bootm_provide_hostname;
-> > +	data->provide_policy =3D bootm_provide_policy;
-> > =C2=A0	data->verbose =3D bootm_verbosity;
-> > =C2=A0	data->dryrun =3D bootm_dryrun;
-> > =C2=A0	data->efi_boot =3D bootm_efi_mode;
-> > @@ -118,6 +121,7 @@ void bootm_data_restore_defaults(const struct bootm=
-_data *data)
-> > =C2=A0	bootm_appendroot =3D data->appendroot;
-> > =C2=A0	bootm_provide_machine_id =3D data->provide_machine_id;
-> > =C2=A0	bootm_provide_hostname =3D data->provide_hostname;
-> > +	bootm_provide_policy =3D data->provide_policy;
-> > =C2=A0	bootm_verbosity =3D data->verbose;
-> > =C2=A0	bootm_dryrun =3D data->dryrun;
-> > =C2=A0	bootm_efi_mode =3D data->efi_boot;
-> > @@ -712,6 +716,20 @@ int bootm_boot(struct bootm_data *bootm_data)
-> > =C2=A0		free(hostname_bootarg);
-> > =C2=A0	}
-> > =C2=A0
-> > +	if (IS_ENABLED(CONFIG_SECURITY_POLICY) && bootm_data->provide_policy)=
- {
-> > +		char *policy_bootargs;
-> > +
-> > +		if (!active_policy->name) {
->=20
-> Could active_policy be NULL here?
-I'm not totally sure. If you have activated security policies, then did not=
- specify any policy, it may be NULL.
-Or if you have activated security policies, but never ran into a path, wher=
-e 'is_allowed' is checked, because everything
-that could be configured by security policies is disabled by Kconfig and yo=
-u did not set an initial policy, then it
-might be NULL.
-Will add an extra check.
->=20
-> > +			pr_err("Providing policy is enabled but policy has no name\n");
-> > +			ret =3D -EINVAL;
-> > +			goto err_out;
-> > +		}
-> > +
-> > +		policy_bootargs =3D basprintf("barebox.security.policy=3D%s", active=
-_policy->name);
-> > +		globalvar_add_simple("linux.bootargs.policy", policy_bootargs);
->=20
-> Should be linux.bootargs.dyn.policy to make sure it gets cleared after a
-> boot attempt.
+On Fri, Mar 13, 2026 at 03:19:52PM +0100, Fabian Pflug wrote:
+> Hi,
+> 
+> On Fri, 2026-03-13 at 14:20 +0100, Sascha Hauer wrote:
+> > On Thu, Mar 12, 2026 at 12:34:32PM +0100, Fabian Pflug wrote:
+> > > The TQMA8MPxS is another board from TQ with the same processor, but a
+> > > different formfactor. Nevertheless they share a lot of code and can be
+> > > used from the same barebox resulting in the rename of tqma8mpxl to
+> > > tqma8mpxx.
+> > > 
+> > > Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
+> > > ---
+> > >  arch/arm/boards/tqma8mpxx/board.c                  |    1 +
+> > >  arch/arm/boards/tqma8mpxx/lowlevel.c               |   97 +-
+> > >  arch/arm/dts/Makefile                              |    2 +-
+> > >  .../dts/imx8mp-tqma8mpqs-mb-smarc-2-upstream.dts   |  402 ++++++++
+> > >  arch/arm/dts/imx8mp-tqma8mpqs-mba8mpxs.dts         |   15 +
+> > >  arch/arm/dts/imx8mp-tqma8mpqs-upstream.dtsi        | 1075 ++++++++++++++++++++
+> > >  arch/arm/mach-imx/Kconfig                          |    3 +-
+> > >  7 files changed, 1574 insertions(+), 21 deletions(-)
+> > > 
+> > > -static void power_init_board(void)
+> > > +static bool tqma_is_eeprom_valid(struct tq_eeprom *eeprom)
+> > >  {
+> > > -	struct pbl_i2c *i2c;
+> > > +	int ramsize;
+> > >  
+> > > -	imx8mp_setup_pad(MX8MP_PAD_I2C1_SCL__I2C1_SCL | I2C_PAD_CTRL);
+> > > -	imx8mp_setup_pad(MX8MP_PAD_I2C1_SDA__I2C1_SDA | I2C_PAD_CTRL);
+> > > -
+> > > -	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_I2C1);
+> > > -
+> > > -	i2c = imx8m_i2c_early_init(IOMEM(MX8MP_I2C1_BASE_ADDR));
+> > > -
+> > > -	pmic_configure(i2c, 0x25, pca9450_cfg, ARRAY_SIZE(pca9450_cfg));
+> > > +	if (!*eeprom->serial || !*eeprom->id)
+> > > +		return false;
+> > > +	ramsize = tq_vard_ramsize(&eeprom->vard) / (SZ_1G);
+> > > +	if (ramsize != 1 && ramsize != 2 && ramsize != 4 && ramsize != 8)
+> > > +		return false;
+> > > +	return true;
+> > >  }
+> > >  
+> > > -static __noreturn noinline void tqma8mpxx_start(void)
+> > > +static noinline void tqma8mpxx_start(void)
+> > >  {
+> > >  	extern char __dtb_z_imx8mp_tqma8mpql_mba8mpxl_start[];
+> > > +	extern char __dtb_z_imx8mp_tqma8mpqs_mba8mpxs_start[];
+> > >  
+> > > -	setup_uart();
+> > > +	struct tq_eeprom *eeprom;
+> > > +	struct pbl_i2c *i2c;
+> > > +	void *boarddata;
+> > > +
+> > > +	i2c = tqma_i2c1_init();
+> > > +
+> > > +	/**
+> > > +	 * The difference for the lowlevel code between xS and xL is:
+> > > +	 * PMIC: xS on i2c2, xL on i2C1
+> > > +	 * VARD: address 0x50 on xS, address 0x53 on xL.
+> > > +	 *       offset 0x1000 on xS, offset 0x0 on xL
+> > > +	 */
+> > > +
+> > > +	eeprom = pbl_tq_read_eeprom(i2c, 0x50, 0x1000 | I2C_ADDR_16_BIT);
+> > > +	if (tqma_is_eeprom_valid(eeprom)) {
+> > > +		/* found xS board */
+> > > +		i2c = tqma_i2c2_init();
+> > 
+> > Something is mixed up here. You come here when you find a valid EEPROM
+> > on I2C1 which according to the comment indicates you're on a xL board.
+> > Also i2c is set here but unused for the rest of this function.
+> 
+> No, the i2c is used later to setup the pmic in line 171.
+> The xS has the pmic on i2c2, wheras the xL has the PMIc on i2c1.
 
-Will change.
+Ah, now I get it. I was fooled by PMIC vs EEPROM and didn't really get
+there are two I2C devices. Nevermind, fine the way it is.
 
-Fabian
+Sascha
 
->=20
-> Sascha
->=20
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
