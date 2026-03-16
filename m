@@ -3,87 +3,87 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2BdU-001VeU-0j
+	id 1w2BdU-001Vee-12
 	for lore@lore.pengutronix.de;
 	Mon, 16 Mar 2026 18:21:48 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2BdT-0004yz-7C
+	id 1w2BdS-0004yR-BQ
 	for lore@pengutronix.de; Mon, 16 Mar 2026 18:21:48 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
-	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=/lfNRHk2ulMBsKG9DC3sOK/10jI4ZY45Vj3Gi9G6Bcc=; b=QhujisSM0xrR2kvNGR2uzJ4bRw
-	z5de1flzys5ivBhHVq4rEeuMPc9jOW07xvd28EiGL867HJfzvgNf5x8R0M/tapcqmogykhCq+4wNJ
-	/JuWqIZuiZJL8TqYE/wieWvbbYYMjE61GWnl+VNKmTQaZBZk4qTw83t+D2Uma6nrJw8iACIDvqLZZ
-	VyDxnQhFjx0WJ2gQTZXEUroLykShkw0M5fYNBCqhE65vyT1ZWdTYzZd/E59GwPREUkASoy/MmIFcp
-	HqAYwrijIYlMvYPw7UGIpT77YQLsFcNWF9sWAHO+NYquLqp2osDW8os9MSwMGX7Cj0hKqENoqrsuC
-	61TSMnXA==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=uWgK+jxsPk6HUoHeKhNyubvZ4I/739OAdAYlPQ/6kBM=; b=M85b9TdyuWe4rGf/4s//EXaTK+
+	Qt/9619V1el5ROJQNiYUIbq9szLK4Byb+/RhaEVnfK8KQUk0kjNlelffBqHM7FtbF6U61H3/H4Eup
+	+2mfYDLBbGFuFQCG2bMvWpi5Zb9O7vhY1ten8NehE8RQq/5NdOqoomjfQCLwpfJggQB7v/xGPyK3U
+	nRKiWL5LdcmwNay5GOJVb2YlwHDXNRdNOBiVSOUXXbryh0IWS6WIdKrz+6z4QbBIDQvO1BTs/Gad0
+	5BnMee9T8FqGt5JimB8AHaN5xmnWbEM0rGZnmthk+Pk6z/Yrtbrv1sgeO+p9V+Wxqg3DjEMy2WuSM
+	2EHvOFug==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2Bd5-00000004Y35-2rBR;
+	id 1w2Bd5-00000004Y2S-0TqM;
 	Mon, 16 Mar 2026 17:21:23 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2Bd4-00000004Y1b-183W
+	id 1w2Bd3-00000004Y1U-43IA
 	for barebox@bombadil.infradead.org;
-	Mon, 16 Mar 2026 17:21:22 +0000
+	Mon, 16 Mar 2026 17:21:21 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=/lfNRHk2ulMBsKG9DC3sOK/10jI4ZY45Vj3Gi9G6Bcc=; b=FyedY+kC4AIWHlRI6ig0ovdVoE
-	W0sDwJALU7D8Lq7O/KYX4qc+dT7upEkVWwvyCOUZwqyGraeiHm6hQ7dpYU4EMS9f025IWpXWBYL3x
-	QWkqJwdl7sY09A1h2l/2C7pHrDsSYOipMTc4eNZjIQs0HiN24I5u5p76Z/LdHb8nSJ4ZjhJNy4kjA
-	ySwFeBm/ypE4ST+Zi/wLRQ7X6iu7FpiaGcqqFxwILUpqEMcBacDYlGLDQltZOX7KhSIZkpXTyIT/k
-	VHcyZYh7Eh+esnV6336h+D6eeK/jHyqe3/g/NYYT30rKwIEV7Jj5cyMDREL4R3kejdHVfxxfJ4ePB
-	7ZJ/vQyA==;
+	bh=uWgK+jxsPk6HUoHeKhNyubvZ4I/739OAdAYlPQ/6kBM=; b=DwWL15ulJ44327GoPrfDQamp+6
+	wPDuasfNdIVAAsIYFQR8Mi6OadoLxQVD/4McaW3FcFpc8TJol1muQAZ+ysP9qD2S8KEozRTP89krC
+	ltgAs9Xb7wHijhlFHwkOeuNvN108J88kHPgNjFak+kJbM9ZiJ2E5dYrfYvUR5ejmbQ41rubaSVZ4v
+	2PIDwdaItpm6NWTXxMxxoREoDvOjHXct9p7tV95I6C52ROJp4SRohQfIXcmcd6Npo3u9WqQ//z4PU
+	RZ0bNaKNWYcKpl6lDnxZRnGdQy34c6iEh4CbEAhIvbnkAXGUUiUrvfHG8Yq6wol6wHbnHw/QD3trp
+	pRgQ22AA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2Bd0-00000007JbR-483Z
+	id 1w2Bd0-00000007JbQ-3mEe
 	for barebox@lists.infradead.org;
 	Mon, 16 Mar 2026 17:21:20 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1w2Bcz-0004fg-8h; Mon, 16 Mar 2026 18:21:17 +0100
+	id 1w2Bcz-0004fh-4k; Mon, 16 Mar 2026 18:21:17 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1w2Bcy-000bi3-2W;
+	id 1w2Bcy-000bi8-2W;
 	Mon, 16 Mar 2026 18:21:16 +0100
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1w2Bcy-0000000AaeX-2cpo;
+	id 1w2Bcy-0000000AaeX-2iMp;
 	Mon, 16 Mar 2026 18:21:16 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 16 Mar 2026 18:21:17 +0100
+Date: Mon, 16 Mar 2026 18:21:21 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260316-compressed-firmware-v1-4-d9712142881e@pengutronix.de>
+Message-Id: <20260316-compressed-firmware-v1-8-d9712142881e@pengutronix.de>
 References: <20260316-compressed-firmware-v1-0-d9712142881e@pengutronix.de>
 In-Reply-To: <20260316-compressed-firmware-v1-0-d9712142881e@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773681676; l=5654;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773681676; l=3155;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=S+6EagxvIZ+SphVppy6lPmyP1WzlmmggFFTs6fKqj2s=;
- b=185YlSW0YbbmUEy1ORlOoRPUKYCxs4e1v/0QJxCi+qfLyJhTrDCM53+Q1HUUPEfLOXVjAhXRm
- ygfIZeFkL6ECmfEZ1v3f56bKoEjgNfyY3ufKwGgQWww45z9wCl2Gx87
+ bh=JujKfYGHEZTs2le5HXOmdgL3SusTCuF62binANMDfdY=;
+ b=b/9ymuo/6rYysUmz1okkgtXQF+2UVSBI5PJez+Hs8AAIr0gP2IkmXG+RoDmNn1DCrZd+PsfXf
+ S1EWRoBEbPuDcX7plScMzsxOdFqIMiI48eOIP5gwzE3/sFQaDtsZxIO
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260316_172119_172625_38537D52 
-X-CRM114-Status: GOOD (  14.97  )
+X-CRM114-CacheID: sfid-20260316_172119_038440_CC835D3D 
+X-CRM114-Status: GOOD (  15.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -95,7 +95,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Sascha Hauer <sascha@saschahauer.de>, "Claude Opus 4.6" <noreply@anthropic.com>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -106,169 +105,96 @@ X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 4/9] firmware: Move firmware assembly generation to
- scripts/gen-fw-s
+Subject: [PATCH 8/9] ARM: Rockchip: Use compressed OP-TEE binary
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Sascha Hauer <sascha@saschahauer.de>
+Rockchip images are often size constraint due to the ROM limiting the
+maximum image size to 2MiB, at least when redundant copies on SD/eMMC
+are desired. For this reason use the compressed variant of the OP-TEE
+image.
 
-Extract the inline filechk_fwbin shell code from firmware/Makefile into
-a standalone script at scripts/gen-fw-s, following the pattern of
-scripts/gen-dtb-s.
+FIXME: Uncompress address currently hardcoded.
 
-The FWSTR and FWNAME_EXISTS variables are no longer needed in the
-Makefile as they are now computed within the script.
-
-Some #ifdefs are already known during execution of gen-fw-s. As it is
-raw shell now instead of shell encapsulated in a Makefile we can improve
-readability by replacing these #ifdefs with shell "if".
-
-Also while at it add some comments what is happening as the missing
-firmware handling is not entirely obvious.
-
-Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- firmware/Makefile | 51 +++++---------------------------------------
- scripts/gen-fw-s  | 63 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 68 insertions(+), 46 deletions(-)
+ arch/arm/mach-rockchip/atf.c | 26 ++++++++++++++++++++------
+ 1 file changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/firmware/Makefile b/firmware/Makefile
-index a3b1887dc6..b247db8da2 100644
---- a/firmware/Makefile
-+++ b/firmware/Makefile
-@@ -60,56 +60,15 @@ obj-pbl-y := $(addsuffix .gen.o, $(firmware-y))
- pbl-fwext-y := $(addsuffix .extgen.o, $(fw-external-y))
+diff --git a/arch/arm/mach-rockchip/atf.c b/arch/arm/mach-rockchip/atf.c
+index 0d26dfb740..2ba7f074ce 100644
+--- a/arch/arm/mach-rockchip/atf.c
++++ b/arch/arm/mach-rockchip/atf.c
+@@ -8,6 +8,7 @@
+ #include <asm/atf_common.h>
+ #include <asm/barebox-arm.h>
+ #include <asm-generic/memory_layout.h>
++#include <asm-generic/sections.h>
+ #include <mach/rockchip/dmc.h>
+ #include <mach/rockchip/rockchip.h>
+ #include <mach/rockchip/bootrom.h>
+@@ -29,7 +30,12 @@ static void rk_scratch_save_optee_hdr(const struct optee_header *hdr)
+ 	rk_scratch->optee_hdr = *hdr;
+ }
  
- FWNAME    = $(patsubst $(obj)/%.extgen.S,%,$(patsubst $(obj)/%.gen.S,%,$@))
--FWSTR     = $(subst /,_,$(subst .,_,$(subst -,_,$(FWNAME))))
--FWNAME_EXISTS = $(if $(wildcard $(FIRMWARE_DIR)/$(FWNAME)),1,0)
--
--filechk_fwbin = { \
--	SHA=$$(sha256sum $(FIRMWARE_DIR)/$(FWNAME) |		\
--		sed 's/ .*$$//;s/../0x&, /g;s/, $$//')		\
--		2>/dev/null					;\
--	\
--	echo "/* Generated by $(src)/Makefile */"		;\
--	echo "\#include <asm-generic/pointer.h>"		;\
--	echo ".section .note.GNU-stack,\"\",%progbits"		;\
--	echo "    .section $2,\"$3\""				;\
--	echo "    .p2align ASM_LGPTR"				;\
--	echo ".global _fw_$(FWSTR)_start"			;\
--	echo "_fw_$(FWSTR)_start:"				;\
--	echo "\#if $(FWNAME_EXISTS)"				;\
--	echo "    .incbin \"$(FIRMWARE_DIR)/$(FWNAME)\""		;\
--	echo "\#elif defined(__PBL__)"				;\
--	echo "ASM_PTR _fwname_$(FWSTR)"				;\
--	echo "\#endif"						;\
--	echo ".global _fw_$(FWSTR)_end"				;\
--	echo "_fw_$(FWSTR)_end:"				;\
--	echo "\#ifdef __PBL__"					;\
--	echo "    .section .missing_fw,\"a\""			;\
--	echo "_fwname_$(FWSTR):"				;\
--	printf '.ascii "%s"\n' 'firmware/$(FWNAME)\n'		;\
--	echo "\#endif" 						;\
--	echo "    .section .rodata.$(FWSTR).sha"		;\
--	echo "    .p2align ASM_LGPTR"				;\
--	echo ".global _fw_$(FWSTR)_sha_start"			;\
--	echo "_fw_$(FWSTR)_sha_start:"				;\
--	echo "    .byte $${SHA}"				;\
--	echo ".global _fw_$(FWSTR)_sha_end"			;\
--	echo "_fw_$(FWSTR)_sha_end:"				;\
--	echo "\#if $(FWNAME_EXISTS)"				;\
--	echo ".if _fw_$(FWSTR)_sha_start + 32 - _fw_$(FWSTR)_sha_end";\
--	echo ".error \"sha256sum invalid\""			;\
--	echo ".endif"						;\
--	echo "\#endif"						;\
--}
--
--filechk_fwbin_ext = { \
--	$(filechk_fwbin)					;\
--}
+-static unsigned long load_elf64_image_phdr(const void *elf)
++static void *free_mem(void)
++{
++	return (void *)PTR_ALIGN(&__image_end, SZ_1M);
++}
 +
-+filechk_fwbin = $(srctree)/scripts/gen-fw-s $(FWNAME) $(FIRMWARE_DIR) .rodata
-+filechk_fwbin_ext = $(srctree)/scripts/gen-fw-s $(FWNAME) $(FIRMWARE_DIR) .pblext a
++static unsigned long load_elf64_image_phdr(struct fwobj *bl31)
+ {
+ 	const Elf64_Ehdr *ehdr; /* Elf header structure pointer */
+ 	const Elf64_Phdr *phdr; /* Program header structure pointer */
+@@ -56,11 +62,17 @@ static unsigned long load_elf64_image_phdr(const void *elf)
+ 	return ehdr->e_entry;
+ }
  
- $(obj)/%.gen.S: FORCE
--	$(call filechk,fwbin,.rodata.$(FWSTR),)
-+	$(call filechk,fwbin)
+-static uintptr_t rk_load_optee(uintptr_t bl32, const void *bl32_image,
+-			       size_t bl32_size)
++static uintptr_t rk_load_optee(uintptr_t bl32, struct fwobj *bl32_fw)
+ {
+-	const struct optee_header *hdr = bl32_image;
++	const struct optee_header *hdr;
+ 	struct optee_header dummy_hdr;
++	int ret;
++	void *bl32_image = free_mem();
++	size_t bl32_size = bl32_fw->uncompressed_size;
++
++	ret = fwobj_uncompress(bl32_fw, bl32_image);
++	if (ret)
++		panic("Failed to uncompress OP-TEE\n");
  
- $(obj)/%.extgen.S: FORCE
--	$(call filechk,fwbin_ext,.pblext.$(FWSTR),a)
-+	$(call filechk,fwbin_ext)
+ 	/* We already have ELF support for BL31, but adding it for BL32,
+ 	 * would require us to identify a range that fits all ELF
+@@ -70,6 +82,8 @@ static uintptr_t rk_load_optee(uintptr_t bl32, const void *bl32_image,
+ 	 */
+ 	BUG_ON(memcmp(bl32_image, ELFMAG, 4) == 0);
  
- # This dependency is used if missing firmware should fail the build immediately
- fwdep-required-y = $(FIRMWARE_DIR)/%
-diff --git a/scripts/gen-fw-s b/scripts/gen-fw-s
-new file mode 100755
-index 0000000000..653e6f013a
---- /dev/null
-+++ b/scripts/gen-fw-s
-@@ -0,0 +1,63 @@
-+#!/usr/bin/env bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Generate assembly source to embed firmware binary
-+#
-+# Usage: gen-fw-s <fwname> <fwdir> <secprefix> [secflags]
++	hdr = bl32_image;
 +
-+fwname=$1
-+fwdir=$2
-+secprefix=$3
-+secflags=$4
-+
-+fwstr=$(echo "$fwname" | tr '/.-' '___')
-+fwpath="$fwdir/$fwname"
-+
-+sha=$(sha256sum "$fwpath" 2>/dev/null | sed 's/ .*$//;s/../0x&, /g;s/, $//')
-+
-+echo "/* Generated by scripts/gen-fw-s */"
-+echo "#include <asm-generic/pointer.h>"
-+echo ".section .note.GNU-stack,\"\",%progbits"
-+
-+# include firmware if exists, otherwise include a reference to
-+# the firmware filename in the .missing_fw section
-+echo "    .section ${secprefix}.${fwstr},\"${secflags}\""
-+echo "    .p2align ASM_LGPTR"
-+echo ".global _fw_${fwstr}_start"
-+echo "_fw_${fwstr}_start:"
-+if [ -f "$fwpath" ]; then
-+	echo ".incbin \"${fwpath}\""
-+else
-+	echo "#if defined(__PBL__)"
-+	echo "ASM_PTR _fwname_${fwstr}"
-+	echo "#endif"
-+fi
-+echo ".global _fw_${fwstr}_end"
-+echo "_fw_${fwstr}_end:"
-+
-+# include sha256, needed for external firmware
-+echo "    .section .rodata.${fwstr}.sha"
-+echo "    .p2align ASM_LGPTR"
-+echo ".global _fw_${fwstr}_sha_start"
-+echo "_fw_${fwstr}_sha_start:"
-+echo "    .byte ${sha}"
-+echo ".global _fw_${fwstr}_sha_end"
-+echo "_fw_${fwstr}_sha_end:"
-+if [ -f "$fwpath" ]; then
-+	echo ".if _fw_${fwstr}_sha_start + 32 - _fw_${fwstr}_sha_end"
-+	echo ".error \"sha256sum invalid\""
-+	echo ".endif"
-+fi
-+
-+# include a string containing the firmware name. When a non existing
-+# firmware is referenced in the PBL then _fwname_${fwstr} is referenced
-+# above rather than the firmware itself. The barebox build system checks
-+# if the missing_fw section is empty. If it is, then we have all necessary
-+# firmware files. If not, then we either fail the compilation
-+# (CONFIG_MISSING_FIRMWARE_ERROR=y) or print a missing firmware warning
-+# (CONFIG_MISSING_FIRMWARE_ERROR=n).
-+echo "#ifdef __PBL__"
-+echo "    .section .missing_fw,\"a\""
-+echo "_fwname_${fwstr}:"
-+printf '.ascii "%s"\n' "firmware/${fwname}\\n"
-+echo "#endif"
+ 	if (optee_verify_header(hdr) == 0) {
+ 		bl32_size -= sizeof(*hdr);
+ 		bl32_image += sizeof(*hdr);
+@@ -119,7 +133,7 @@ static struct fwobj bl32; /* OP-TEE in barebox image */
+ 		optee_load_address = SOC##_OPTEE_LOAD_ADDRESS;			\
+ 		get_builtin_firmware(atf_bin, &bl31);				\
+ 		if (IS_ENABLED(CONFIG_ARCH_ROCKCHIP_OPTEE))			\
+-			get_builtin_firmware(tee_bin, &bl32);			\
++			get_builtin_firmware_compressed(tee_bin, &bl32);	\
+ 	} while (0)
+ 
+ 
+@@ -130,7 +144,7 @@ static void rockchip_atf_load_bl31(void *fdt)
+ 	bl31_ep = load_elf64_image_phdr(bl31.data);
+ 
+ 	if (IS_ENABLED(CONFIG_ARCH_ROCKCHIP_OPTEE))
+-		optee_load_address = rk_load_optee(optee_load_address, bl32.data, bl32.size);
++		optee_load_address = rk_load_optee(optee_load_address, &bl32);
+ 
+ 	/* Setup an initial stack for EL2 */
+ 	asm volatile("msr sp_el2, %0" : :
 
 -- 
 2.47.3
