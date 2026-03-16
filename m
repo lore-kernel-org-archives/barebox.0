@@ -1,80 +1,79 @@
-Delivery-date: Mon, 16 Mar 2026 17:01:21 +0100
+Delivery-date: Mon, 16 Mar 2026 17:01:23 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2ANd-001U4D-2Z
+	id 1w2ANf-001U4j-2p
 	for lore@lore.pengutronix.de;
-	Mon, 16 Mar 2026 17:01:21 +0100
+	Mon, 16 Mar 2026 17:01:23 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2ANd-0002fH-6j
-	for lore@pengutronix.de; Mon, 16 Mar 2026 17:01:21 +0100
+	id 1w2ANf-0002gl-61
+	for lore@pengutronix.de; Mon, 16 Mar 2026 17:01:23 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=XT3RJ1LwYJFUlIttFTKjcr1UQulpB1YUT/PoMMO2c70=; b=FLR0t4JLf0whVJAUb8tXI+15pU
-	ZeCmWGzFLJb8a3M5/5wq0Ex3zEvXdBGiMICijF48eDV3+zcuxJHI08ISMQk3+tNJKRF4112vLGrYZ
-	0r+OISGb/tyMl7ZauEoV9eveyjLaBF1dIZSLKupnsQAvWHw5smSG5BwiNQBW1raGpzOhILfWS0ruB
-	XF3gMTnFhUL1sSqsfg+SelcqWFis0EyJMi64axOPtkyLaYuw9VGo8Q4jHQKlXS/3zm/GQz9Dwig+8
-	AMaTpIDK8hiBciDRIvO75rHb6zoqvsr0/F3m87+PXsLPP5Yjk7UZSm9vGloBiEdC/RhpgYTkJips2
-	504buoZA==;
+	bh=plw/8brlie9uD5GRVohqCbMhwfN8SP6t0voZFjvNp4Q=; b=H/KrGUS67YfuIitb8cYDCI3yPL
+	NA8QKFiljvWx8yR5E2bYgRqRJ8r+F9LV2lnMQ4zu1kNst+Q2mj7aXrKJ8XX95UayW5G3fMjdRNau0
+	ASPjXuWssBrZsA8rILlLqPcbf1Ak9EEDfYG0cP9dXcclVgtPF7ayPlc2WBLEWdY/NuRhGWLPUMse6
+	fftSPL5PaSh4frM5dLQKc0j9bY/SA/W7CxaeM5mcEurVK4d9M+l4qaVGqBSZxP6ktvVIyXDhn30II
+	Jgu/iQlvdDxo32tZkpF6Vv1OhT50HTHUzV/6Vu/wpfJrTmhW9QAU4LXIvNxW0PHvUPLEbhMtCz6xY
+	ipnyhQuA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2AMz-00000004OdF-1eoC;
+	id 1w2AMz-00000004OdW-2rIr;
 	Mon, 16 Mar 2026 16:00:41 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2AMx-00000004Ocn-31nL
+	id 1w2AMx-00000004Oco-31SB
 	for barebox@bombadil.infradead.org;
 	Mon, 16 Mar 2026 16:00:39 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=XT3RJ1LwYJFUlIttFTKjcr1UQulpB1YUT/PoMMO2c70=; b=XqvkzqPbCj4uskE0hiQMJUVd5H
-	h4L8zTSydGsaLhZVzDkiUFCCIkKbIV6NyDCaAOPNiSNLlzdhJetvA0GB6l2uhC4zZtzJd7X+7dSfW
-	TZ7w5vS08jgkpUuhmHr354GqaoBcvKI6laatHahQcumjrw2xtIJZnAHacDSkZZfgielmHpvqV+rhD
-	pK6TrENo0E+0hfBIA1UpcN1dqsgAR3Ma5cH4nS2vpxTE2/Q/C6JXSXxi8YcJzRxp1q7yUyw18o81s
-	MoBetFOsggO9yultJPKIB5OhYdR+5sMOxBp8I5r8jN6orp34SpugeHlL0YqC4tI0SPTs+f6DSCqpp
-	46wXuMOQ==;
+	bh=plw/8brlie9uD5GRVohqCbMhwfN8SP6t0voZFjvNp4Q=; b=FLq5TWMbaS8DUHMg7645x1Ql9d
+	Omclam1HemVOX14mlPyRdkr8Jf9c9bUYEEoVRz9vUZOQK/Ct4sfgiEf/RegZXYyVrDnFwWTyTTrwG
+	2qwZog2/iVwth33yEU8rlCHaz79ULSzBissyNy42x9DcmkwuU0+K097ztpdQV8TbnxW3wfkOOq9K6
+	bJOj/qoSdP1fIxHerpxjL8xPI5LdRYOo3fdQI1CVLFsCRngRlkhssqoATJx7piBe3ZjN35bbv95wv
+	bf8A+3njgD+3DBzqhQxZVWVbVHzR7HDAmB7jQht1mPKrcOczuA5eQKI1/HtuQL+ZAxdAy+Rww9D4v
+	56yqlNFA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2AMu-000000079AA-24Aq
+	id 1w2AMu-000000079AD-2L3V
 	for barebox@lists.infradead.org;
 	Mon, 16 Mar 2026 16:00:38 +0000
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <jre@pengutronix.de>)
-	id 1w2AMs-0002LF-K0; Mon, 16 Mar 2026 17:00:34 +0100
+	id 1w2AMs-0002LF-Hx; Mon, 16 Mar 2026 17:00:34 +0100
 From: Jonas Rebmann <jre@pengutronix.de>
-Date: Mon, 16 Mar 2026 17:00:27 +0100
+Date: Mon, 16 Mar 2026 17:00:25 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260316-keytoc-multi-env-v3-4-433591ef3198@pengutronix.de>
+Message-Id: <20260316-keytoc-multi-env-v3-2-433591ef3198@pengutronix.de>
 References: <20260316-keytoc-multi-env-v3-0-433591ef3198@pengutronix.de>
 In-Reply-To: <20260316-keytoc-multi-env-v3-0-433591ef3198@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.15-dev-18f8f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1395; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=dtswALHk/2WfE/kITq1m3OXCo5AhqhDnQ24MtjTJZk4=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjcoakUtWYPt131w1nzsuZvf39qxi7TBeZPXVd0dJ5+d
- /N+f4jRzI5SFgYxLgZZMUWWWDU5BSFj/+tmlXaxMHNYmUCGMHBxCsBE7ixlZNisfJf9vIPI3Mer
- 2t81/fWffVjUYL+Qie8JZ96Jas9n67Iz/A9/d1zo7c67T7808PI1H1XeucYvM/aH90Vt19plZQX
- 9MxgB
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3167; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=aN8lQi+hzLXzEkwIWJn2QCW5UXgdBkdZGU/40BqXqYk=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjcoan47nbMIpbs8DjPNSGHJuyM+cMgJ+NcemzZoe//W
+ d4z8+5J7yhlYRDjYpAVU2SJVZNTEDL2v25WaRcLM4eVCWQIAxenAEzk4QRGhk2Zx66J9B1Yt/vf
+ s0Q3q8MbGf8vE7j6+lCUV+Sdiz03/v5n+B9zrFWAZ2H89sRb6nsPqQq7RWv1//c6+XrNh2a5TZp
+ vV7ACAA==
 X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
  fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260316_160036_641834_D1F76F1B 
-X-CRM114-Status: UNSURE (   7.72  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260316_160036_700209_A5243000 
+X-CRM114-Status: GOOD (  11.93  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -97,47 +96,103 @@ X-Spam-Status: No, score=-3.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v3 4/4] Documentation: migration-guides: Document change in
- keyspec env vars
+Subject: [PATCH v3 2/4] crypto: keytoc: Improve readability
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Only users providing complete keyspecs containing backslashes or spaces
-via an environment variable are affected by this change in the handling
-of keytoc's command line arguments.
+In preparation to a bigger change in the handling of the arguments list,
+update variable names, function names and comments to improve
+readability.
 
 Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
- Documentation/migration-guides/migration-master.rst | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ scripts/keytoc.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/Documentation/migration-guides/migration-master.rst b/Documentation/migration-guides/migration-master.rst
-index 42e370d42f..9d1756bdc4 100644
---- a/Documentation/migration-guides/migration-master.rst
-+++ b/Documentation/migration-guides/migration-master.rst
-@@ -1,5 +1,22 @@
- :orphan:
+diff --git a/scripts/keytoc.c b/scripts/keytoc.c
+index 77ada3af45..1b99393fdc 100644
+--- a/scripts/keytoc.c
++++ b/scripts/keytoc.c
+@@ -6,9 +6,10 @@
+  * URI to a C struct suitable to compile with barebox.
+  *
+  * TODO: Find a better way for reimport_key()
+- *
+  */
+-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
++
++#pragma GCC diagnostic ignored "-Wdeprecated-declarations" /* ENGINE deprecated in OpenSSL 3.0 */
++
+ #include <stdio.h>
+ #include <string.h>
+ #include <time.h>
+@@ -784,7 +785,7 @@ static bool parse_info(char *p, struct keyinfo *out)
+ 	}
+ }
  
-+CONFIG_CRYPTO_PUBLIC_KEYS
-+-------------------------
-+
-+The syntax of keytoc keyspecs when fully provided via an environment variable
-+was slightly changed to allow any number of keyspecs to be provided via an
-+environment variable. Such environment variables are now split at spaces to be
-+interpreted as multiple keyspecs. Any literal spaces and backslashes contained
-+in such keyspecs need to be escaped with a backslash.
-+
-+This only applies to the form:
-+
-+  CONFIG_CRYPTO_PUBLIC_KEYS="__ENV__A"
-+
-+While the interpretation of environment variables specifying hint or URI remains unchanged:
-+
-+  CONFIG_CRYPTO_PUBLIC_KEYS="keyring=kr:__ENV__B"
-+
- ARM i.MX HAB
- ------------
+-static bool get_name_path(const char *keyspec, struct keyinfo *out)
++static bool parse_keyspec(const char *keyspec, struct keyinfo *out)
+ {
+ 	char *sep, *spec;
  
+@@ -814,7 +815,7 @@ static bool get_name_path(const char *keyspec, struct keyinfo *out)
+ 
+ int main(int argc, char *argv[])
+ {
+-	int i, opt, ret;
++	int argi, opt, ret;
+ 	char *outfile = NULL;
+ 	int keycount;
+ 	struct keyinfo *keylist;
+@@ -855,9 +856,9 @@ int main(int argc, char *argv[])
+ 	keycount = argc - optind;
+ 	keylist = calloc(sizeof(struct keyinfo), keycount);
+ 
+-	for (i = 0; i < keycount; i++) {
+-		const char *keyspec = try_resolve_env(argv[optind + i]);
+-		struct keyinfo *info = &keylist[i];
++	for (argi = 0; argi < keycount; argi++) {
++		const char *keyspec = try_resolve_env(argv[optind + argi]);
++		struct keyinfo *info = &keylist[argi];
+ 
+ 		if (!keyspec)
+ 			exit(1);
+@@ -865,7 +866,7 @@ int main(int argc, char *argv[])
+ 		if (!strncmp(keyspec, "pkcs11:", 7)) { // legacy format of pkcs11 URI
+ 			info->path = strdup(keyspec);
+ 		} else {
+-			if (!get_name_path(keyspec, info)) {
++			if (!parse_keyspec(keyspec, info)) {
+ 				fprintf(stderr, "invalid keyspec %i: %s\n", optind, keyspec);
+ 				exit(1);
+ 			}
+@@ -885,14 +886,14 @@ int main(int argc, char *argv[])
+ 	}
+ 
+ 
+-	for (i = 0; i < keycount; i++) {
+-		struct keyinfo *info = &keylist[i];
++	for (argi = 0; argi < keycount; argi++) {
++		struct keyinfo *info = &keylist[argi];
+ 
+ 		/* resolve __ENV__ for name_hint and path */
+ 		info->name_hint = try_resolve_env(info->name_hint);
+ 		info->path = try_resolve_env(info->path);
+ 
+-		if (asprintf(&info->name_c, "key_%i", i + 1) < 0)
++		if (asprintf(&info->name_c, "key_%i", argi + 1) < 0)
+ 			enomem_exit("asprintf");
+ 
+ 		/* unfortunately, the fit name hint is mandatory in the barebox codebase */
+@@ -901,7 +902,7 @@ int main(int argc, char *argv[])
+ 
+ 		if (!info->keyring) {
+ 			info->keyring = strdup("fit");
+-			fprintf(stderr, "Warning: No keyring provided in keyspec, defaulting to keyring=fit for %s\n", argv[optind + i]);
++			fprintf(stderr, "Warning: No keyring provided in keyspec, defaulting to keyring=fit for %s\n", argv[optind + argi]);
+ 		}
+ 
+ 		ret = gen_key(info);
 
 -- 
 2.53.0.308.g50d063e335
