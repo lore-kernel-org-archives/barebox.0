@@ -1,57 +1,60 @@
-Delivery-date: Mon, 16 Mar 2026 09:15:27 +0100
+Delivery-date: Mon, 16 Mar 2026 09:15:28 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w236l-001N40-12
+	id 1w236m-001N4M-2Q
 	for lore@lore.pengutronix.de;
-	Mon, 16 Mar 2026 09:15:27 +0100
+	Mon, 16 Mar 2026 09:15:28 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w236k-0002SZ-Gn
-	for lore@pengutronix.de; Mon, 16 Mar 2026 09:15:27 +0100
+	id 1w236m-0002TD-1j
+	for lore@pengutronix.de; Mon, 16 Mar 2026 09:15:28 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=x8TpblUQ3r2PbdLpamzCmQwO8xA9DSSd/Szc/YHfJio=; b=SegXWatHujEV8ZNjPd4KtUr9ne
-	s76pAak2hi5CXDQBoFgDfYX+bN4+/nGeGhp5mU26VHFPEK7iFDgSdUeHvwnHZFaZrW7e2uTaqUCDG
-	JLHAQ+ANPd0VHEoHb86XgVRv1fjQFveeQd4dcJn2NkKUsBpcU19kAvjeAbr2DNWoq4A6NFRjErELY
-	+26H1/WGXVvjKfQe/cYSG6anzzpziYIjkxbuGSFgMBIR8FP8TJVBPx9dOQcFk4GjfKnF5C2TPFowr
-	D+FTtlxqJet8eYZn2XnY99s5iga7mua3wPSG5GB8XDVy9e5xspRWyIInVQ2FuyvahNHg7lSvpuy+v
-	4v3uWaCQ==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=r6iI3cDsiIwSBLtaxBJTCILhvk+gBKAMKaZtFZvSW3o=; b=TpyVFzVX12ZWPh
+	DJuGn6rN60+JeiHmrxCzYJ/Ld9QgXb0EWXZxSXoGzs26lSnRzpeka3fGoajhEL30ElCGZ5EXs9Cnq
+	E3DS1gU8BOyur6yGe8zgwwbMhNb35OeCl+o5/Y+nSOLToDj9/e/fs71SAhrsCzIK1D+HMsP0v1pDp
+	Zngq2eCakHXEmIIWQejji0j3xPd8QpSgsHdzFn9CF6sGHtOuLyiVF77heO3EQ/x5lEchor+a1aN0N
+	h6dz2aP4k8lfztl6hloTpaKDdYvYF0chGYH2uMq55UHbwfwORk5APd+NYY4XntVyxgJnhBhVhMWeD
+	sYVYj3uWh2cTFvbM40RQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w236B-00000003Wk9-1o2q;
+	id 1w236B-00000003Wjq-0LuA;
 	Mon, 16 Mar 2026 08:14:51 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2366-00000003Wgr-0AY1
+	id 1w2366-00000003Wgj-07S7
 	for barebox@lists.infradead.org;
 	Mon, 16 Mar 2026 08:14:48 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1w2362-000296-GS; Mon, 16 Mar 2026 09:14:42 +0100
+	id 1w2361-000296-Ue; Mon, 16 Mar 2026 09:14:41 +0100
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 16 Mar 2026 09:14:33 +0100
+Date: Mon, 16 Mar 2026 09:14:30 +0100
+Message-Id: <20260316-v2026-02-0-topic-imx8-ecc-v4-0-e5ecc09cfafd@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260316-v2026-02-0-topic-imx8-ecc-v4-3-e5ecc09cfafd@pengutronix.de>
-References: <20260316-v2026-02-0-topic-imx8-ecc-v4-0-e5ecc09cfafd@pengutronix.de>
-In-Reply-To: <20260316-v2026-02-0-topic-imx8-ecc-v4-0-e5ecc09cfafd@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAOa7t2kC/43NQQ6CMBCF4auQrq2ZttBSV97DuMAy1VkIpGCDI
+ dzdwopEQ9z1/cl8nViPgbBnp2xiASP11DZp5IeMuUfV3JFTnTaTIDUoyHlcXhwkBz60HTlOz7H
+ k6By3ErRHFB6UYem+C+hpXO3LNe0H9UMb3utXUSz1HzWK1AyAtmWhwBXu3GFzfw2hbWg81sgWO
+ sotZ/e4pemquuna2AK0+MmpDSfEHqdS87721hgNef7NzfP8AWqMOHdlAQAA
+X-Change-ID: 20260304-v2026-02-0-topic-imx8-ecc-9206fee1f037
 To: barebox@lists.infradead.org, Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
- David Jander <david@protonic.nl>
+ Ahmad Fatoum <a.fatoum@pengutronix.de>, David Jander <david@protonic.nl>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260316_011446_093510_28E068C6 
-X-CRM114-Status: GOOD (  16.66  )
+X-CRM114-CacheID: sfid-20260316_011446_094331_46F02356 
+X-CRM114-Status: GOOD (  10.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,184 +76,74 @@ X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v4 3/4] drivers: ddr: imx8m: ddr_init.c: support ECC
- scrubbing
+Subject: [PATCH v4 0/4] ARM: i.MX8: add DDRC-ECC support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: David Jander <david@protonic.nl>
+The i.MX8 DDRC controller supports using inline ECC with the DDR RAM.
+Inline ECC reduces the usable RAM size by 1/8: 7/8 RAM is for data and
+1/8 RAM is for the ECC bits. Also, measuring random memory writes in
+linux with
 
-This code comes from u-boot [1] and was introduced in commit [2].
+    stress-ng --memthrash 4 --memthrash-method chunk1 -t 1m --metrics
 
-A fix from the patch [3] is also included, which doesn't seem to be
-added to u-boot, yet.
+shows a performance decrease by ~10%.
 
-[1] https://github.com/u-boot/u-boot/
-[2] commit f3acb02386f4 ("drivers: ddr: imx8mp: Add inline ECC feature support")
-[3] https://patchwork.ozlabs.org/project/uboot/patch/20230123091702.7472-32-peng.fan@oss.nxp.com/
+If a board wants to support ECC, the lpddr4 RAM settings in the
+according lpddr4-timing-* must be adapted to enable and configure the
+ECC registers.
 
-Signed-off-by: David Jander <david@protonic.nl>
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/ddr/imx/imx8m_ddr_init.c | 96 ++++++++++++++++++++++++++++++++++++++++
- include/soc/imx/ddr.h            |  1 +
- include/soc/imx8m/ddr.h          |  2 +
- 3 files changed, 99 insertions(+)
+Changes in v4:
+- rebase to 2026.03.0
+- rework functioncalls in esdctl accordingly
+- Link to v3: https://lore.barebox.org/20260311-v2026-02-0-topic-imx8-ecc-v3-0-ffdf97760441@pengutronix.de
 
-diff --git a/drivers/ddr/imx/imx8m_ddr_init.c b/drivers/ddr/imx/imx8m_ddr_init.c
-index c16e04d274..ee59bd4128 100644
---- a/drivers/ddr/imx/imx8m_ddr_init.c
-+++ b/drivers/ddr/imx/imx8m_ddr_init.c
-@@ -8,11 +8,17 @@
- #include <common.h>
- #include <errno.h>
- #include <io.h>
-+#include <linux/sizes.h>
- #include <soc/imx8m/ddr.h>
- #include <mach/imx/generic.h>
- #include <mach/imx/imx8m-regs.h>
- #include <mach/imx/imx8m-ccm-regs.h>
- 
-+#define ECC_STRIDE_SIZE		SZ_2G
-+#define ECC_INLINE_SIZE		SZ_256M
-+/* The scrub size is in words not bytes */
-+#define ECC_SCRUB_SIZE		(ECC_STRIDE_SIZE - ECC_INLINE_SIZE) / 4
-+
- struct dram_controller imx8m_dram_controller = {
- 	.phy_base = IOMEM(IP2APB_DDRPHY_IPS_BASE_ADDR(0)),
- };
-@@ -45,6 +51,93 @@ static void ddr_cfg_umctl2(struct dram_controller *dram, struct dram_cfg_param *
- 	}
- }
- 
-+static void ddrc_inline_ecc_scrub(unsigned int start_address,
-+				  unsigned int range_address)
-+{
-+	unsigned int tmp;
-+
-+	pr_debug("ECC scrub %08x-%08x\n", start_address, range_address);
-+	/* Step1: Enable quasi-dynamic programming */
-+	reg32_write(DDRC_SWCTL(0), 0x00000000);
-+	/* Step2: Set ECCCFG1.ecc_parity_region_lock to 1 */
-+	reg32setbit(DDRC_ECCCFG1(0), 0x4);
-+	/* Step3: Block the AXI ports from taking the transaction */
-+	reg32_write(DDRC_PCTRL_0(0), 0x0);
-+	/* Step4: Set scrub start address */
-+	reg32_write(DDRC_SBRSTART0(0), start_address);
-+	/* Step5: Set scrub range address */
-+	reg32_write(DDRC_SBRRANGE0(0), range_address);
-+	/* Step6: Set scrub_mode to write */
-+	reg32_write(DDRC_SBRCTL(0), 0x00000014);
-+	/* Step7: Set the desired pattern through SBRWDATA0 registers */
-+	reg32_write(DDRC_SBRWDATA0(0), 0x55aa55aa);
-+	/* Step8: Enable the SBR by programming SBRCTL.scrub_en=1 */
-+	reg32setbit(DDRC_SBRCTL(0), 0x0);
-+	/* Step9: Poll SBRSTAT.scrub_done=1 */
-+	tmp = reg32_read(DDRC_SBRSTAT(0));
-+	while (tmp != 0x00000002)
-+		tmp = reg32_read(DDRC_SBRSTAT(0)) & 0x2;
-+	/* Step10: Poll SBRSTAT.scrub_busy=0 */
-+	tmp = reg32_read(DDRC_SBRSTAT(0));
-+	while (tmp != 0x0)
-+		tmp = reg32_read(DDRC_SBRSTAT(0)) & 0x1;
-+	/* Step11: Disable SBR by programming SBRCTL.scrub_en=0 */
-+	clrbits_le32(DDRC_SBRCTL(0), 0x1);
-+	/* Step12: Prepare for normal scrub operation(Read) and set scrub_interval*/
-+	reg32_write(DDRC_SBRCTL(0), 0xff20);
-+	/* Step13: Enable the SBR by programming SBRCTL.scrub_en=1 */
-+	reg32_write(DDRC_SBRCTL(0), 0xff21);
-+	/* Step14: Enable AXI ports by programming */
-+	reg32_write(DDRC_PCTRL_0(0), 0x1);
-+	/* Step15: Disable quasi-dynamic programming */
-+	reg32_write(DDRC_SWCTL(0), 0x00000001);
-+}
-+
-+static void ddrc_inline_ecc_scrub_end(unsigned int start_address,
-+				      unsigned int range_address)
-+{
-+	pr_debug("ECC  end %08x-%08x\n", start_address, range_address);
-+	/* Step1: Enable quasi-dynamic programming */
-+	reg32_write(DDRC_SWCTL(0), 0x00000000);
-+	/* Step2: Block the AXI ports from taking the transaction */
-+	reg32_write(DDRC_PCTRL_0(0), 0x0);
-+	/* Step3: Set scrub start address */
-+	reg32_write(DDRC_SBRSTART0(0), start_address);
-+	/* Step4: Set scrub range address */
-+	reg32_write(DDRC_SBRRANGE0(0), range_address);
-+	/* Step5: Disable SBR by programming SBRCTL.scrub_en=0 */
-+	clrbits_le32(DDRC_SBRCTL(0), 0x1);
-+	/* Step6: Prepare for normal scrub operation(Read) and set scrub_interval */
-+	reg32_write(DDRC_SBRCTL(0), 0x100);
-+	/* Step7: Enable the SBR by programming SBRCTL.scrub_en=1 */
-+	reg32_write(DDRC_SBRCTL(0), 0x101);
-+	/* Step8: Enable AXI ports by programming */
-+	reg32_write(DDRC_PCTRL_0(0), 0x1);
-+	/* Step9: Disable quasi-dynamic programming */
-+	reg32_write(DDRC_SWCTL(0), 0x00000001);
-+}
-+
-+static void dram_ecc_scrub(struct dram_timing_info *dram_timing)
-+{
-+	/* start scrubbing at RAM address */
-+	unsigned int start_address;
-+	/* scrub up until this address */
-+	unsigned int range_address;
-+
-+	if (!dram_timing->ecc_full_size)
-+		return;
-+
-+	for (start_address = 0x0;
-+	     start_address + ECC_SCRUB_SIZE - 1 <= dram_timing->ecc_full_size / 4;
-+	     start_address += ECC_SCRUB_SIZE + ECC_INLINE_SIZE / 4) {
-+		range_address = start_address + ECC_SCRUB_SIZE - 1;
-+		/* scrub in 1.75G chunk sizes */
-+		ddrc_inline_ecc_scrub(start_address, range_address);
-+	}
-+
-+	ddrc_inline_ecc_scrub_end(0x0, dram_timing->ecc_full_size / 4 - 1);
-+}
-+
- static unsigned int g_cdd_rr_max[4];
- static unsigned int g_cdd_rw_max[4];
- static unsigned int g_cdd_wr_max[4];
-@@ -642,6 +735,9 @@ int imx8m_ddr_init(struct dram_controller *dram, struct dram_timing_info *dram_t
- 	reg32_write(DDRC_PCTRL_0(0), 0x00000001);
- 	pr_debug("ddrmix config done\n");
- 
-+	if (IS_ENABLED(CONFIG_IMX8MP_DRAM_ECC) && dram->ddrc_type == DDRC_TYPE_MP)
-+		dram_ecc_scrub(dram_timing);
-+
- 	/* save the dram timing config into memory */
- 	dram_config_save(dram, dram_timing, IMX8M_SAVED_DRAM_TIMING_BASE);
- 
-diff --git a/include/soc/imx/ddr.h b/include/soc/imx/ddr.h
-index 6426062900..4039b8d6e6 100644
---- a/include/soc/imx/ddr.h
-+++ b/include/soc/imx/ddr.h
-@@ -101,6 +101,7 @@ struct dram_timing_info {
- 		unsigned int ddrphy_pie_num;
- 		/* initialized drate table */
- 		unsigned int fsp_table[4];
-+		resource_size_t ecc_full_size;
- 	);
- };
- 
-diff --git a/include/soc/imx8m/ddr.h b/include/soc/imx8m/ddr.h
-index 5df07772b3..708bcd9d05 100644
---- a/include/soc/imx8m/ddr.h
-+++ b/include/soc/imx8m/ddr.h
-@@ -186,6 +186,8 @@
- #define DDRC_SBRWDATA0(X)        (DDRC_IPS_BASE_ADDR(X) + 0xf2c)
- #define DDRC_SBRWDATA1(X)        (DDRC_IPS_BASE_ADDR(X) + 0xf30)
- #define DDRC_PDCH(X)             (DDRC_IPS_BASE_ADDR(X) + 0xf34)
-+#define DDRC_SBRSTART0(X)        (DDRC_IPS_BASE_ADDR(X) + 0xf38)
-+#define DDRC_SBRRANGE0(X)        (DDRC_IPS_BASE_ADDR(X) + 0xf40)
- 
- #define DDRC_FREQ1_DERATEEN(X)         (DDRC_IPS_BASE_ADDR(X) + 0x2020)
- #define DDRC_FREQ1_DERATEINT(X)        (DDRC_IPS_BASE_ADDR(X) + 0x2024)
+Changes in v3:
+- move timing struct to own noinline function
+- rename dram_timing_info->size -> dram_timing_info->ecc_full_size
+- replace #ifdef with IS_ENABLED
+- add defines for ECC_STRIDE/INLINE/SCRUB_SIZE
+- remove imx8mq-ddrc, only quad x plus has ecc
+- Fix kconfig text
+- Link to v2: https://lore.barebox.org/20260309-v2026-02-0-topic-imx8-ecc-v2-0-6aab6d795061@pengutronix.de
 
+Changes in v2:
+- prt8ml: move ram timings to header
+- prt8ml: build two images: with and without ecc
+- add RAM size and scrubbing function to generic code
+- Link to v1: https://lore.barebox.org/20260304-v2026-02-0-topic-imx8-ecc-v1-0-700698530c5c@pengutronix.de
+
+---
+David Jander (3):
+      arm: mach-imx: esdctl.c: Add support for imx8mp inline ECC
+      drivers: ddr: imx8m: ddr_init.c: support ECC scrubbing
+      arm: boards: protonic-imx8ml: Add ECC + scrubbing
+
+Steffen Trumtrar (1):
+      ARM: i.MX: esdctl: fix spelling of ad(d)ress
+
+ arch/arm/boards/protonic-imx8m/Makefile            |    2 +-
+ arch/arm/boards/protonic-imx8m/lowlevel-prt8ml.c   |   29 +-
+ .../protonic-imx8m/lpddr4-timing-prt8ml-ecc.c      |   26 +
+ .../boards/protonic-imx8m/lpddr4-timing-prt8ml.c   | 1100 +------------------
+ .../boards/protonic-imx8m/lpddr4-timing-prt8ml.h   | 1123 ++++++++++++++++++++
+ arch/arm/dts/imx8mp-prt8ml.dts                     |   10 +-
+ arch/arm/mach-imx/Kconfig                          |   11 +
+ arch/arm/mach-imx/esdctl.c                         |   87 +-
+ drivers/ddr/imx/imx8m_ddr_init.c                   |   96 ++
+ images/Makefile.imx                                |    2 +
+ include/soc/imx/ddr.h                              |    1 +
+ include/soc/imx8m/ddr.h                            |    2 +
+ 12 files changed, 1377 insertions(+), 1112 deletions(-)
+---
+base-commit: 844d4cb7a087a87288bbde4652c3fca8186987b8
+change-id: 20260304-v2026-02-0-topic-imx8-ecc-9206fee1f037
+
+Best regards,
 -- 
-2.52.0
+Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
 
 
