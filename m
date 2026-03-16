@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2ANd-001U3q-0u
+	id 1w2ANd-001U4D-2Z
 	for lore@lore.pengutronix.de;
 	Mon, 16 Mar 2026 17:01:21 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2ANc-0002fB-AD
+	id 1w2ANd-0002fH-6j
 	for lore@pengutronix.de; Mon, 16 Mar 2026 17:01:21 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
@@ -18,62 +18,63 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5BqD0g+2SFRQjG1pdxyctrs5qYRKPBlIVDnGj9UKQlM=; b=x88lviWSVciRRpg5SkmnvPbHZ+
-	jGCUhoNoOKrVpoMOpy+YmT2pPFbR9QQshoIXIvNx7X0UrIPAHYFyUHDLvVAksZMzN+yqMyUE19EHp
-	0ib3oHYIHIq+hEIhrd9woq9xyaccMN1NHlSMzjUxyTuv/uVeirf1+Wy+Y5McEYDj6subiPfmBgCxi
-	wR14rFdeZaV/JyY4xWIrSwN81wEXOydd0lhp8peJWBVT+NnYJ0SPwWLQ2B7eLVd7cRJA4yyEsXI97
-	htGIgn4l9iyXRhT02cP23UCia3DtOGl+sThJcAqGsw1KbdmSVG1W8zA5QUuHraY5iDJ/eFQVLT3jT
-	dxQ5c48A==;
+	bh=XT3RJ1LwYJFUlIttFTKjcr1UQulpB1YUT/PoMMO2c70=; b=FLR0t4JLf0whVJAUb8tXI+15pU
+	ZeCmWGzFLJb8a3M5/5wq0Ex3zEvXdBGiMICijF48eDV3+zcuxJHI08ISMQk3+tNJKRF4112vLGrYZ
+	0r+OISGb/tyMl7ZauEoV9eveyjLaBF1dIZSLKupnsQAvWHw5smSG5BwiNQBW1raGpzOhILfWS0ruB
+	XF3gMTnFhUL1sSqsfg+SelcqWFis0EyJMi64axOPtkyLaYuw9VGo8Q4jHQKlXS/3zm/GQz9Dwig+8
+	AMaTpIDK8hiBciDRIvO75rHb6zoqvsr0/F3m87+PXsLPP5Yjk7UZSm9vGloBiEdC/RhpgYTkJips2
+	504buoZA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2AN1-00000004OeB-2CZ0;
-	Mon, 16 Mar 2026 16:00:43 +0000
+	id 1w2AMz-00000004OdF-1eoC;
+	Mon, 16 Mar 2026 16:00:41 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2AMz-00000004OdD-1ebh
+	id 1w2AMx-00000004Ocn-31nL
 	for barebox@bombadil.infradead.org;
-	Mon, 16 Mar 2026 16:00:41 +0000
+	Mon, 16 Mar 2026 16:00:39 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=5BqD0g+2SFRQjG1pdxyctrs5qYRKPBlIVDnGj9UKQlM=; b=BclnGiiwVbyEPR79LXnidsDOUm
-	y9jtJJpBPUiqnsCnjGuFGd/AhO2ivx5sxSt3RzSolOqQFDbuiTtTr53OYrXLN2za0yMY0S1A4AgaI
-	3Hl0ejtAs+dWzzluI6PvMtWS50wt8Nx2S50fCje9RVDg+jmliAPe6aD0XiqvOKu9DhfUzJ/Vkh7gQ
-	6MBY2UkyzBefRnVS0auHxmYYM0JMOOh0i6fHBjXHnNGZ4MbCmG/P3EbMhyb5p5DMNZknJ8jrlsbMk
-	r+GvpJ0CX6o30txAs98Y+fn0QP7nLHTeHi0NcD9y9rbdcKR6JRatGdGJTyhYDQHgOWqGB+52RYUZb
-	a5Lu6V6g==;
+	bh=XT3RJ1LwYJFUlIttFTKjcr1UQulpB1YUT/PoMMO2c70=; b=XqvkzqPbCj4uskE0hiQMJUVd5H
+	h4L8zTSydGsaLhZVzDkiUFCCIkKbIV6NyDCaAOPNiSNLlzdhJetvA0GB6l2uhC4zZtzJd7X+7dSfW
+	TZ7w5vS08jgkpUuhmHr354GqaoBcvKI6laatHahQcumjrw2xtIJZnAHacDSkZZfgielmHpvqV+rhD
+	pK6TrENo0E+0hfBIA1UpcN1dqsgAR3Ma5cH4nS2vpxTE2/Q/C6JXSXxi8YcJzRxp1q7yUyw18o81s
+	MoBetFOsggO9yultJPKIB5OhYdR+5sMOxBp8I5r8jN6orp34SpugeHlL0YqC4tI0SPTs+f6DSCqpp
+	46wXuMOQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2AMu-000000079AB-2U89
+	id 1w2AMu-000000079AA-24Aq
 	for barebox@lists.infradead.org;
-	Mon, 16 Mar 2026 16:00:39 +0000
+	Mon, 16 Mar 2026 16:00:38 +0000
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <jre@pengutronix.de>)
-	id 1w2AMs-0002LF-Gx; Mon, 16 Mar 2026 17:00:34 +0100
+	id 1w2AMs-0002LF-K0; Mon, 16 Mar 2026 17:00:34 +0100
 From: Jonas Rebmann <jre@pengutronix.de>
-Date: Mon, 16 Mar 2026 17:00:24 +0100
+Date: Mon, 16 Mar 2026 17:00:27 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260316-keytoc-multi-env-v3-1-433591ef3198@pengutronix.de>
+Message-Id: <20260316-keytoc-multi-env-v3-4-433591ef3198@pengutronix.de>
 References: <20260316-keytoc-multi-env-v3-0-433591ef3198@pengutronix.de>
 In-Reply-To: <20260316-keytoc-multi-env-v3-0-433591ef3198@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.15-dev-18f8f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2360; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=zClDcNVexcXTBgMBSXUdGy5G78nblUM6lZzk5O0eKZs=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjcoangxmz3v8NM22xNx98k/fqpeYZrNp04ySBwcfurf
- Qu+r3Dc1lHKwiDGxSArpsgSqyanIGTsf92s0i4WZg4rE8gQBi5OAZhInw/D/5otX12V1XilJ1iJ
- Lt7JnSO3v2fhpzciNy5Zazg7HIvlTmX477Pn9oUbm3fZMn24943d2MlS45aY2OwrqfNUd/xnfHA
- 3iBcA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1395; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=dtswALHk/2WfE/kITq1m3OXCo5AhqhDnQ24MtjTJZk4=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjcoakUtWYPt131w1nzsuZvf39qxi7TBeZPXVd0dJ5+d
+ /N+f4jRzI5SFgYxLgZZMUWWWDU5BSFj/+tmlXaxMHNYmUCGMHBxCsBE7ixlZNisfJf9vIPI3Mer
+ 2t81/fWffVjUYL+Qie8JZ96Jas9n67Iz/A9/d1zo7c67T7808PI1H1XeucYvM/aH90Vt19plZQX
+ 9MxgB
 X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
  fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260316_160036_729487_9689D119 
-X-CRM114-Status: GOOD (  13.40  )
+X-CRM114-CacheID: sfid-20260316_160036_641834_D1F76F1B 
+X-CRM114-Status: UNSURE (   7.72  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -96,94 +97,47 @@ X-Spam-Status: No, score=-3.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v3 1/4] scripts: include: Add string_util.h for
- strsep_unescaped
+Subject: [PATCH v3 4/4] Documentation: migration-guides: Document change in
+ keyspec env vars
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-lib/string.c has strsep_unescaped() that will be useful for the keytoc
-host tool to split ENV specs at spaces not preceded by a backslash in a
-future commit.
-
-In preparation, create scripts/include/string_util.h with a copy of that
-function as to have it available in host tools.
+Only users providing complete keyspecs containing backslashes or spaces
+via an environment variable are affected by this change in the handling
+of keytoc's command line arguments.
 
 Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
- scripts/include/string_util.h | 65 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 65 insertions(+)
+ Documentation/migration-guides/migration-master.rst | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/scripts/include/string_util.h b/scripts/include/string_util.h
-new file mode 100644
-index 0000000000..e71aa60d26
---- /dev/null
-+++ b/scripts/include/string_util.h
-@@ -0,0 +1,65 @@
-+#ifndef _TOOLS_STRING_UTIL_H_
-+#define _TOOLS_STRING_UTIL_H_
+diff --git a/Documentation/migration-guides/migration-master.rst b/Documentation/migration-guides/migration-master.rst
+index 42e370d42f..9d1756bdc4 100644
+--- a/Documentation/migration-guides/migration-master.rst
++++ b/Documentation/migration-guides/migration-master.rst
+@@ -1,5 +1,22 @@
+ :orphan:
+ 
++CONFIG_CRYPTO_PUBLIC_KEYS
++-------------------------
 +
-+#include <linux/types.h>
-+#include <stddef.h>
++The syntax of keytoc keyspecs when fully provided via an environment variable
++was slightly changed to allow any number of keyspecs to be provided via an
++environment variable. Such environment variables are now split at spaces to be
++interpreted as multiple keyspecs. Any literal spaces and backslashes contained
++in such keyspecs need to be escaped with a backslash.
 +
-+// SPDX-SnippetBegin
-+// SPDX-Snippet-Comment: Origin-URL: https://git.pengutronix.de/cgit/barebox/tree/lib/string.c?id=dfcf686f94a5a5387660f2afab79a714baab828a
++This only applies to the form:
 +
-+/**
-+ * strsep_unescaped - Split a string into tokens, while ignoring escaped delimiters
-+ * @s: The string to be searched
-+ * @ct: The delimiter characters to search for
-+ * @delim: optional pointer to store found delimiter into
-+ *
-+ * strsep_unescaped() behaves like strsep unless it meets an escaped delimiter.
-+ * In that case, it shifts the string back in memory to overwrite the escape's
-+ * backslash then continues the search until an unescaped delimiter is found.
-+ *
-+ * On end of string, this function returns NULL. As long as a non-NULL
-+ * value is returned and @delim is not NULL, the found delimiter will
-+ * be stored into *@delim.
-+ */
-+static char *strsep_unescaped(char **s, const char *ct, char *delim)
-+{
-+	char *sbegin = *s, *hay;
-+	const char *needle;
-+	size_t shift = 0;
++  CONFIG_CRYPTO_PUBLIC_KEYS="__ENV__A"
 +
-+	if (sbegin == NULL)
-+		return NULL;
++While the interpretation of environment variables specifying hint or URI remains unchanged:
 +
-+	for (hay = sbegin; *hay != '\0'; ++hay) {
-+		*hay = hay[shift];
++  CONFIG_CRYPTO_PUBLIC_KEYS="keyring=kr:__ENV__B"
 +
-+		if (*hay == '\\') {
-+			*hay = hay[++shift];
-+			if (*hay != '\\')
-+				continue;
-+		}
-+
-+		for (needle = ct; *needle != '\0'; ++needle) {
-+			if (*hay == *needle)
-+				goto match;
-+		}
-+	}
-+
-+	*s = NULL;
-+	if (delim)
-+		*delim = '\0';
-+	return sbegin;
-+
-+match:
-+	if (delim)
-+		*delim = *hay;
-+	*hay = '\0';
-+	*s = &hay[shift + 1];
-+
-+	return sbegin;
-+}
-+
-+// SPDX-SnippetEnd
-+
-+
-+#endif /* _TOOLS_STRING_UTIL_H_ */
+ ARM i.MX HAB
+ ------------
+ 
 
 -- 
 2.53.0.308.g50d063e335
