@@ -1,79 +1,71 @@
-Delivery-date: Tue, 17 Mar 2026 11:00:38 +0100
+Delivery-date: Tue, 17 Mar 2026 11:08:11 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2RE6-001lPL-2t
+	id 1w2RLP-001lU4-0a
 	for lore@lore.pengutronix.de;
-	Tue, 17 Mar 2026 11:00:38 +0100
+	Tue, 17 Mar 2026 11:08:11 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2RE6-0005i0-59
-	for lore@pengutronix.de; Tue, 17 Mar 2026 11:00:38 +0100
+	id 1w2RLO-0007AM-J6
+	for lore@pengutronix.de; Tue, 17 Mar 2026 11:08:11 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:Cc:To:Subject:From:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=vSeebxrNCfx/fg1EmvMZLPemR0mV4Lkmrc4wyrK1YMs=; b=OA8auI1R5tAIcl6Vh1SaWS/lJd
-	4/mMIZMMzpV+Z/gCQYw397Q/lldEa8wka1riY3Vq858b0pMnisDLuK+KnYV2QdbfaUt6niFhZzjni
-	3arB6yQ9o5aRSf2M0UxBp+lgaJypV3+Qihum4JPRetCLMBgcRepxcelp93JEtlv+pOcia7bEUsmeu
-	22qO00IwCqoGcJ+ewogyKZYPy4n/VpFJw/x/CLubUT+YGhsQxBDxRVAhcY5PGBXrtMZcWwnaVwyJ4
-	FhlrlRPC//xQl+EekXRdffcbTODOHutf8/UOtr+4DBdrTHud/h2AC5NBrOTYDobIC+oPtPqOkxdJR
-	UFZHnScg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=e8cEdpQnHjdMfnOrvPMlGDflPh/mKw4PPnD9vHSJBVs=; b=Ns519o7/q53aErb4GYspPd9oEF
+	aD4PEqcO11p8oV2k4ACpVQBvpG0kRvpG+H8RNCYcfC0mBQmxPFn366AMFGK5lh7o0esW8T7p0o6Hn
+	AicbITB+XYXzC7kppYjVgXKH/hpdU70UqOYNH0fwPQVgsB+tYhueX2QQMo5vxc+mlK50mPcd1QnYA
+	6QLe85OP2fNuD2kSMpBN+T4l9UdjqM/Ccq70jy+J/FYXHpZmDeRM2cjDwg5JjH6FAkTLUW/ZYbjeH
+	Fb4WKB2TfFOf1q9ZP/i5v55mEPz4otvQjB90U34JkTzRsIUnGABH2/3Qy0YpxiLSyZy+dcRfVha2x
+	ufIOjxDA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2RDW-00000005wMJ-3Msj;
-	Tue, 17 Mar 2026 10:00:02 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	id 1w2RKu-00000005x8d-23Y4;
+	Tue, 17 Mar 2026 10:07:40 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2RDU-00000005wLj-33Su
-	for barebox@bombadil.infradead.org;
-	Tue, 17 Mar 2026 10:00:00 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:In-Reply-To:References:Cc:To:Subject:From:MIME-Version:Date:Message-ID:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=vSeebxrNCfx/fg1EmvMZLPemR0mV4Lkmrc4wyrK1YMs=; b=Bz0JHdhlQLOK8CO7A8wxQxUz+I
-	eslXEmsU7UFkiD4oA1W2QPLgK1gb/FmhbvSnkN/owfo+mtcc8i7dbEo1O3b37rAXQc3Jf6GwoIuH+
-	omjF+p33CrudNNj2iiXUqz5IDztqsHrywava8LItAMCXHKq41NhdDTtXEQHoTJIV8BOLrE1oc7eCO
-	Aftrdqkyzk+6nFaWXG4iGk5MwOqMEY3JyPuUnA+e3mtVtbzTtrwf3d9LtOXpG2eMrPDu2BpJNbvBC
-	HvryH5geFNF36oklvLRjGGkm1+rQ9Lr0FpdexEGMpVu5BBwIDGCBFgkM0i5pun0/57FKvXL3ZUuIw
-	ZqB9KiDw==;
-Received: from cczrelay02-placeholder.in2p3.fr ([134.158.66.152] helo=cczrelay04.in2p3.fr)
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2RDQ-00000008d0s-2uM2
+	id 1w2RKs-00000005x7m-0FoR
 	for barebox@lists.infradead.org;
-	Tue, 17 Mar 2026 09:59:58 +0000
-Received: from [134.158.124.135] (clrelecpo09w.in2p3.fr [134.158.124.135])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by cczrelay04.in2p3.fr (Postfix) with ESMTPSA id 57EB180C6D9;
-	Tue, 17 Mar 2026 10:50:51 +0100 (CET)
-Message-ID: <1c106271-82dd-4e53-bc84-ff56c4c91622@clermont.in2p3.fr>
-Date: Tue, 17 Mar 2026 10:50:39 +0100
+	Tue, 17 Mar 2026 10:07:39 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1w2RKq-0006si-Dn; Tue, 17 Mar 2026 11:07:36 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1w2RKq-000iru-0m;
+	Tue, 17 Mar 2026 11:07:36 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1w2RKq-00000007HKb-0dGF;
+	Tue, 17 Mar 2026 11:07:36 +0100
+Date: Tue, 17 Mar 2026 11:07:36 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Fabian Pflug <f.pflug@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Message-ID: <abkn6JHOXG59eBOh@pengutronix.de>
+References: <20260316-v2026-02-0-topic-sconfig_console-v2-0-1eee8c762beb@pengutronix.de>
+ <20260316-v2026-02-0-topic-sconfig_console-v2-5-1eee8c762beb@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: David Picard <david.picard@clermont.in2p3.fr>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20260304-arm-setup-c-v2-0-d26af520ab03@pengutronix.de>
- <20260304-arm-setup-c-v2-2-d26af520ab03@pengutronix.de>
- <79efc69c-d161-4dc0-9a95-f6176b7331c7@pengutronix.de>
- <aa_1-MX7hnrlJ3Ff@pengutronix.de>
- <ca6784d7-14c0-4716-8951-67d31fd40cdd@clermont.in2p3.fr>
- <abkZpI9KA1Q2A7VL@pengutronix.de>
-Content-Language: fr
-In-Reply-To: <abkZpI9KA1Q2A7VL@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260316-v2026-02-0-topic-sconfig_console-v2-5-1eee8c762beb@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260317_095956_876096_ACB06E47 
-X-CRM114-Status: GOOD (  27.05  )
+X-CRM114-CacheID: sfid-20260317_030738_102301_47F2AFAC 
+X-CRM114-Status: GOOD (  26.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,178 +83,102 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 2/2] ARM: setup_c: avoid clearing BSS twice
+Subject: Re: [PATCH v2 5/5] security: kernel_pinctrl: fixup pinctrl in kernel
+ dts
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
-
-Sure, I'll do it later today. I need to fix something right now.
-
-David
-
-Le 17/03/2026 à 10:06, Sascha Hauer a écrit :
-> Hi David,
->
-> On Mon, Mar 16, 2026 at 02:21:37PM +0100, David Picard wrote:
->> Hi,
->>
->> I would like this patches be reverted, since, despite the proposed fixes, it
->> prevents the board arch/arm/boards/enclustra-sa2 to boot.
-> I reverted this patch for now, but nevertheless I'd like to understand
-> what's wrong with it.
->
->> With the option CONFIG_DEBUG_LL enabled, the output is:
->>
->> lowlevel init done
->> SDRAM setup...
->> SDRAM calibration...
->> done
->>
->> Then, it hangs.
-> Could you apply the following patch to current master and see what the
-> output is?
->
-> Thanks
->   Sascha
->
-> ----------------------------------8<-----------------------------------
->
->  From b784bc80756d127ae4a824ad235d4e113d5dcc1f Mon Sep 17 00:00:00 2001
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> Date: Wed, 4 Mar 2026 08:53:22 +0100
-> Subject: [PATCH] ARM: setup_c: avoid clearing BSS twice
->
-> Add a bss_cleared variable that is set after the first call to
-> setup_c(). On subsequent calls, the BSS clear is skipped to avoid
-> wiping already-initialized data.
->
-> Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
-> Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> Link: https://lore.barebox.org/20260304-arm-setup-c-v2-2-d26af520ab03@pengutronix.de
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+On Mon, Mar 16, 2026 at 12:36:32PM +0100, Fabian Pflug wrote:
+> Going through the kernel dts and replacing
+> barebox,policy-<active_policy> with default in order to change pinctrl
+> not only for barebox, but also for kernel when booting with security
+> profiles.
+> 
+> Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 > ---
->   arch/arm/cpu/setupc_32.S  | 16 ++++++++++++++--
->   arch/arm/cpu/setupc_64.S  | 15 +++++++++++++--
->   arch/arm/cpu/uncompress.c | 15 +++++++++++++++
->   3 files changed, 42 insertions(+), 4 deletions(-)
->
-> diff --git a/arch/arm/cpu/setupc_32.S b/arch/arm/cpu/setupc_32.S
-> index fa31f94442..fadfc28ae1 100644
-> --- a/arch/arm/cpu/setupc_32.S
-> +++ b/arch/arm/cpu/setupc_32.S
-> @@ -7,18 +7,30 @@
->   .section .text.setupc
->   
->   /*
-> - * setup_c: clear bss
-> + * setup_c: clear bss if not yet done
->    */
->   ENTRY(setup_c)
->   	push	{r4, lr}
-> +	ldr	r0, =bss_cleared
-> +	ldr	r1, [r0]
-> +	cmp	r1, #0
-> +	bne	1f			/* skip if already done */
->   	ldr	r0, =__bss_start
->   	mov	r1, #0
->   	ldr	r2, =__bss_stop
->   	sub	r2, r2, r0
->   	bl	__memset		/* clear bss */
-> -	pop	{r4, pc}
-> +	ldr	r0, =bss_cleared
-> +	mov	r1, #1
-> +	str	r1, [r0]		/* mark bss cleared */
-> +1:	pop	{r4, pc}
->   ENDPROC(setup_c)
->   
-> +.section .data.bss_cleared
-> +.balign 4
-> +bss_cleared:
-> +	.word 	0
+>  security/Makefile         |  1 +
+>  security/kernel_pinctrl.c | 58 +++++++++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 59 insertions(+)
+> 
+> diff --git a/security/Makefile b/security/Makefile
+> index 1096cbfb9b..2e8cdfe7c2 100644
+> --- a/security/Makefile
+> +++ b/security/Makefile
+> @@ -2,6 +2,7 @@
+>  
+>  obj-$(CONFIG_SECURITY_POLICY)		+= policy.o
+>  obj-$(CONFIG_SECURITY_POLICY_NAMES)	+= sconfig_names.o
+> +obj-$(CONFIG_SECURITY_POLICY_PINCTRL)	+= kernel_pinctrl.o
+>  obj-$(CONFIG_CRYPTO_KEYSTORE)	+= keystore.o
+>  obj-$(CONFIG_JWT)		+= jwt.o
+>  obj-pbl-$(CONFIG_HAVE_OPTEE)	+= optee.o
+> diff --git a/security/kernel_pinctrl.c b/security/kernel_pinctrl.c
+> new file mode 100644
+> index 0000000000..af65961bbc
+> --- /dev/null
+> +++ b/security/kernel_pinctrl.c
+> @@ -0,0 +1,58 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
 > +
->   /*
->    * void relocate_to_adr(unsigned long targetadr)
->    *
-> diff --git a/arch/arm/cpu/setupc_64.S b/arch/arm/cpu/setupc_64.S
-> index 18ab7ff3fe..a0767c5136 100644
-> --- a/arch/arm/cpu/setupc_64.S
-> +++ b/arch/arm/cpu/setupc_64.S
-> @@ -7,19 +7,30 @@
->   .section .text.setupc
->   
->   /*
-> - * setup_c: clear bss
-> + * setup_c: clear bss if not yet done
->    */
->   ENTRY(setup_c)
-> +	adr_l	x0, bss_cleared
-> +	ldr	w1, [x0]
-> +	cbnz	w1, 1f			/* skip if already done */
->   	mov	x15, x30
->   	adr_l	x0, __bss_start
->   	mov	x1, #0
->   	adr_l	x2, __bss_stop
->   	sub	x2, x2, x0
->   	bl	__memset		/* clear bss */
-> +	adr_l	x0, bss_cleared
-> +	mov	w1, #1
-> +	str	w1, [x0]		/* mark bss cleared */
->   	mov	x30, x15
-> -	ret
-> +1:	ret
->   ENDPROC(setup_c)
->   
-> +.section .data.bss_cleared
-> +.balign 4
-> +bss_cleared:
-> +	.word 	0
+> +#include <common.h>
+> +#include <linux/printk.h>
+> +#include <pinctrl.h>
+> +#include <security/policy.h>
+> +#include <security/config.h>
 > +
->   /*
->    * void relocate_to_adr(unsigned long targetadr)
->    *
-> diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
-> index 38f7dbc113..bde0f2a0a5 100644
-> --- a/arch/arm/cpu/uncompress.c
-> +++ b/arch/arm/cpu/uncompress.c
-> @@ -50,6 +50,15 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
->   	pg_start = runtime_address(input_data);
->   	pg_end = runtime_address(input_data_end);
->   
-> +	puthex_ll((unsigned long)pg_start); putc_ll('\r'); putc_ll('\n');
-> +	puthex_ll((unsigned long)pg_end); putc_ll('\r'); putc_ll('\n');
-> +	puthex_ll((unsigned long)pc); putc_ll('\r'); putc_ll('\n');
-> +	puthex_ll(membase); putc_ll('\r'); putc_ll('\n');
-> +	puthex_ll(memsize); putc_ll('\r'); putc_ll('\n');
-> +	puthex_ll((unsigned long)&__bss_start); putc_ll('\r'); putc_ll('\n');
-> +	puthex_ll((unsigned long)&__bss_stop); putc_ll('\r'); putc_ll('\n');
-> +	puthex_ll((unsigned long)&__image_end); putc_ll('\r'); putc_ll('\n');
+> +#define NUM_NAMES	10
 > +
->   	/*
->   	 * If we run from inside the memory just relocate the binary
->   	 * to the current address. Otherwise it may be a readonly location.
-> @@ -60,11 +69,17 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
->   	else
->   		relocate_to_adr(membase);
->   
-> +	putc_ll('A');
 > +
->   	pg_len = pg_end - pg_start;
->   	uncompressed_len = get_unaligned((const u32 *)(pg_start + pg_len - 4));
->   
-> +	putc_ll('B');
-> +
->   	setup_c();
->   
-> +	putc_ll('C');
-> +
->   	pr_debug("memory at 0x%08lx, size 0x%08lx\n", membase, memsize);
->   
->   	arm_pbl_init_exceptions();
+> +/**
+> + * Replace 'default' with 'old_default' and 'barebox,policy-<active_policy>'
+> + * with 'default', if both are found in pinctrl.
+> + */
+> +static void kernel_of_fixup_pinctrl(struct device_node *node, char *policy_name)
+> +{
+> +	const char *names[NUM_NAMES];
+> +	int num_read, pos_default, pos_policy;
 
+You could reduce the scope of these variables.
+
+> +	struct device_node *next;
+> +
+> +	while (node) {
+
+list_for_each_entry(np, &node->list, list)
+
+Or move the of_tree_for_each_node_from macro to include/of.h
+
+> +		num_read = of_property_read_string_array(node, "pinctrl-names", names, NUM_NAMES);
+> +
+> +		pos_default = -1;
+> +		pos_policy = -1;
+> +		for (int i = 0; i < num_read; i++) {
+> +			if (strcmp(policy_name, names[i]) == 0)
+> +				pos_policy = i;
+> +			if (strcmp("default", names[i]) == 0)
+> +				pos_default = i;
+> +		}
+> +		if (pos_default >= 0 && pos_policy >= 0) {
+> +			names[pos_default] = "old_default";
+> +			names[pos_policy] = "default";
+> +			of_property_write_string_array(node, "pinctrl-names", names, num_read);
+> +		}
+> +
+> +		next = list_first_entry(&node->list, struct device_node, list);
+> +		node = next->parent ? next : NULL;
+> +	}
+> +}
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
