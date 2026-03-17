@@ -1,82 +1,80 @@
-Delivery-date: Tue, 17 Mar 2026 16:20:47 +0100
+Delivery-date: Tue, 17 Mar 2026 16:20:50 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2WDu-001qeZ-34
+	id 1w2WDy-001qfT-0L
 	for lore@lore.pengutronix.de;
-	Tue, 17 Mar 2026 16:20:46 +0100
+	Tue, 17 Mar 2026 16:20:50 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2WDt-0007a5-B4
-	for lore@pengutronix.de; Tue, 17 Mar 2026 16:20:46 +0100
+	id 1w2WDx-0007d6-II
+	for lore@pengutronix.de; Tue, 17 Mar 2026 16:20:50 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=s1tWy2+rZvKMGMnsH+yELofxmstRudIeVqE2uZOxaPY=; b=YLsydl+4HIGBJn
-	CX+qi/tjKzoxZMFFnOZ1lM6cXOt1qwpdlMlpNmFOwzT/BREeG6f9GLFZVRr7+5JcW0Vm3CwmPPTDt
-	05GtupUZzF/Con0Ci49v9Dh8cr03gnb610cJ89zgA0elTvC9LJe026MSCgqa3DIOJ3D7iSKGr7rCh
-	tPig7B4a08HHyZ6UNlrBe79w1iOGRyRkpGkUKxrM1Hsc1j8JW5sxrXCN6wxxwc5V8G/M7HfMHBOiQ
-	27FjGDE5kna71BARdzxxTOkHGZKSP5DpJXmRnPcOuiAYnJA86tgkUju93wmrwoHBaJiq3TWpGVVFo
-	Zqz4j7vRM44PoIH2RblA==;
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
+	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=VQ17mfQkk5AzOZgAcgjpH/hHwo12MS6IdAbF5E+bgi0=; b=3HODeKB4bg42gCqvb8yxGL9gqi
+	2x1Uit1FRmDCgAD1vTpmZhozr6zfmFHCD4h1i0qkSosVC8L5Q7F+hsi0Uc0qIL4ZFuBGzdplLczwp
+	0zKKvCxAuDVfmVKxUFLzrijaQ91NqxK7CvrmeKvljuOCC3rR0sg8EfyBeNnOgnr3H/5/yNXIBFdnD
+	ldfCVsVqzdMTpQ1OBwubYTooFgIVu4obsvIpYXiZsCmn4xPxA1gCFrjIvSGQsxcbpIuPS5vO7IMbR
+	DW/ahHf296KjSGo83d6a1pDbmmzSI6fGbhC6iBOtudTDcqzk6xdMuFprBhfVPihvdRvaYorS4Ly3m
+	13eQJczQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2WDN-00000006ily-0pqm;
-	Tue, 17 Mar 2026 15:20:13 +0000
+	id 1w2WDR-00000006iqX-06In;
+	Tue, 17 Mar 2026 15:20:17 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2WDK-00000006ihH-1Xs5
+	id 1w2WDP-00000006io9-2TAA
 	for barebox@bombadil.infradead.org;
-	Tue, 17 Mar 2026 15:20:10 +0000
+	Tue, 17 Mar 2026 15:20:15 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Cc:To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Sender:Reply-To:
-	Content-ID:Content-Description:In-Reply-To:References;
-	bh=s1tWy2+rZvKMGMnsH+yELofxmstRudIeVqE2uZOxaPY=; b=fTmFVQ8DJDYia8HHB2gTlE782t
-	tKnQ45/U79JOLaAnCA8lfoNLVHZNay9RkWJujJhFHqU9VxhlJiorct5qeCq773UqE7Dt0WWQPhD/D
-	em1CXmJghqSscmfwtiO5Ky8Ajy7QV2yrhZ9tAJeZ84AeH+xCysUA+TGRrN9Ra/49J0p+WBid8luw3
-	n9boxOMgx+wsui3IWnP2CFwPulW6QB4Qnpq6Iu6Bnv/25Vcbz9yC8zOYkxbJflWA22eSqpOt41euT
-	rhk2wTk2GU+csFwdIpdNemYWO10u7QVJx19JvgY+V48c34Vy/dCEVYOzQxfzHlnAyUpG+3HeZR8vL
-	Uoo2kjJg==;
+	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Sender:Reply-To:Content-ID:Content-Description;
+	bh=VQ17mfQkk5AzOZgAcgjpH/hHwo12MS6IdAbF5E+bgi0=; b=aCWcIoGa0uhesgMNfbg+7d/SeW
+	Q1YYG8NESWFWnoUVs42mEaNfO7Ff3BOXAJ5k+5MCqZlbCFvfyXRKdSqmoClCyqwh+6wG0x1anB3mh
+	2noJBqHtLrbyVE5/vTDS9kh0gC/jmjyNI1hVbOxIrTxWJrYA6win0FbyYXt/05KKqJYG985XS//uH
+	KDgInj4eR9+gL2TWXYG5ktlEp24GyChZKKKlGsEsoAOz0XH1TNecMAsgZkwkKOTjQ99epZF2Vqtf9
+	ks/v8fxuZLrJr6RceOxU8QjlDgnfTaT0WcteNw3BEY4hPXQe3ycrRyu5pjmz1oCHr7/DPkBS1dVP6
+	+71vSTJQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2WDE-00000009MX1-20Kz
+	id 1w2WDK-00000009Mb5-3VSK
 	for barebox@lists.infradead.org;
-	Tue, 17 Mar 2026 15:20:08 +0000
+	Tue, 17 Mar 2026 15:20:12 +0000
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <jre@pengutronix.de>)
-	id 1w2WDC-00076m-7W; Tue, 17 Mar 2026 16:20:02 +0100
+	id 1w2WDC-00076m-Ar; Tue, 17 Mar 2026 16:20:02 +0100
 From: Jonas Rebmann <jre@pengutronix.de>
-Date: Tue, 17 Mar 2026 16:19:44 +0100
-Message-Id: <20260317-keytoc-multi-env-v4-0-38ab473f8034@pengutronix.de>
+Date: Tue, 17 Mar 2026 16:19:47 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIABBxuWkC/33OzQrCMAzA8VeRno00TS2rJ99DPOwj1aJ20s2yM
- fbuVi8KDo//QH7JJDqOnjuxW00icvKdb0MOvV6J+lyGE4NvcgsllZFKGrjw2Lc13B7X3gOHBLo
- kklJZxboUee0e2fnhTR6Ouc++69s4vi8kfE3/YAkBwVDhKqcqMqT3dw6nRx/b4IdNw+IlJvWlY
- LGgKJBAXKI2td02WCwq9FEIl36hrGiirUV2hPZXmef5CfA8DjtBAQAA
-X-Change-ID: 20260206-keytoc-multi-env-4a3300292e4a
+Message-Id: <20260317-keytoc-multi-env-v4-3-38ab473f8034@pengutronix.de>
+References: <20260317-keytoc-multi-env-v4-0-38ab473f8034@pengutronix.de>
+In-Reply-To: <20260317-keytoc-multi-env-v4-0-38ab473f8034@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.15-dev-18f8f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3856; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=RvL7+xYpFU6f/5NBzFSbnMPWhL0ZBWo+M/SJLrJ3VlU=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjcWSi1/Ottb0O7vBBJsaR3exfv5zFyz/6jO7H1vxJX6
- C3BvYxXO0pZGMS4GGTFFFli1eQUhIz9r5tV2sXCzGFlAhnCwMUpABMJv8fIMGtyblaWqZFOQOiX
- KOtXdo+FQ56+LKuRqLx4/lGR8Jc1axj+J3PuSXl96q/ZivMRAeu/G8Wy7Hntybqz+eCfOz38onV
- hnAA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1171; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=8d02Qo4MpxvxzCAc/a2GRPsg+E36Fjq3yfZAi4fY1Ig=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjcWSg/Ras+adc8w336zxb+j5jcGaLjYtM588uqO1+4P
+ 0xmTnhi3FHKwiDGxSArpsgSqyanIGTsf92s0i4WZg4rE8gQBi5OAZjIBQmGfzbqlhOuvj6yqqfd
+ +rL6bI930/KkaiNP2alcmyH15KlOHTPD//BDO6Wk/M3vK53NmtRW9iuek+eK9bo58s8vt78KYXi
+ ziAUA
 X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
  fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260317_152004_781593_DC49A5F5 
-X-CRM114-Status: GOOD (  11.35  )
+X-CRM114-CacheID: sfid-20260317_152010_974908_F068CF2C 
+X-CRM114-Status: UNSURE (   8.62  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,93 +97,54 @@ X-Spam-Status: No, score=-3.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v4 0/8] Allow multiple keyspecs in one environment variable
+Subject: [PATCH v4 3/8] crypto: keytoc: Move special handling of legacy
+ pkcs11 format to parse_keyspec
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This contains the actual change to keytoc as well a migration Note.
-
-Allowing any number of public keys to be provided via a single
-environment variable eases integration in more complex setups where
-multiple public keys per keyring are managed externally.
-
-During testing, it was found that handling of fit-hint env variables was
-broken since 2025.12. Since this is a legacy feature this series
-includes a patch that fixes the bug in the handling of fit-hint env
-variables as well as a patch that removes the feature.
-
-Before removal of the feature, the following tests where performed and
-keytoc output was manually verified:
-
-cd scripts/
-gcc -g keytoc.c $(pkg-config --libs --cflags openssl) -o keytoc
-export rsakey="../crypto/snakeoil-4096-development.pem"
-export ecdsakey="../crypto/snakeoil-ecdsa-development.pem"
-export fullspec="keyring=fit,fit-hint=__ENV__hint:$ecdsakey"
-export triplekey="$rsakey $ecdsakey $fullspec"
-
-export hint=test
-
-diff -q <(./keytoc $ecdsakey) <(./keytoc __ENV__ecdsakey)
-diff -q <(./keytoc $rsakey) <(./keytoc __ENV__rsakey)
-diff -q <(./keytoc $fullspec) <(./keytoc __ENV__fullspec)
-diff -q <(./keytoc __ENV__triplekey __ENV__ecdsakey __ENV__triplekey) <(./keytoc $triplekey $ecdsakey $triplekey)
+This is a preparatory cleanup commit
 
 Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
-Changes in v4:
-- split out two more preparatory patches
-- add patch to remove handling of fit-hint env variables
-- add patch to fix handling of fit-hint env variables
-- drop unneeded strdup of argv (Thanks, Marco)
-- const buffer holding getenv result to prevent modification of
-  environment variable (Thanks, Marco)
-- adapt commit message to explain why keyspec list is looped before
-  writing stdout
-- fix bug where hint and path are only expanded when keyspec is provided
-  via env variable. Instead move expansion and validation into yet
-  another loop over the keyspecs
-- error out on empty/undefined environment variable keyspec
-- fix potential out of bounds when indexing argv with listi
-- use listi index variable when re-interating keys list instead of
-  using argi variable earlier used when iterating both keys and args
-- Link to v3: https://lore.barebox.org/barebox/20260316-keytoc-multi-env-v3-0-433591ef3198@pengutronix.de
+ scripts/keytoc.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-Changes in v3:
-- Where possible, split refactoring/cleanup into a preparatory commit
-- Split copying strsep_unescape into a separate commit
-- Link to v2: https://lore.barebox.org/barebox/20260218-keytoc-multi-env-v2-0-3ea146c95d18@pengutronix.de
+diff --git a/scripts/keytoc.c b/scripts/keytoc.c
+index 135a396d34..6d680422a6 100644
+--- a/scripts/keytoc.c
++++ b/scripts/keytoc.c
+@@ -787,6 +787,11 @@ static bool parse_info(char *p, struct keyinfo *out)
+ 
+ static bool parse_keyspec(const char *keyspec, struct keyinfo *out)
+ {
++	if (!strncmp(keyspec, "pkcs11:", 7)) { /* legacy format of pkcs11 URI */
++		out->path = strdup(keyspec);
++		return true;
++	}
++
+ 	char *sep, *spec;
+ 
+ 	spec = strdup(keyspec);
+@@ -863,13 +868,9 @@ int main(int argc, char *argv[])
+ 		if (!keyspec)
+ 			exit(1);
+ 
+-		if (!strncmp(keyspec, "pkcs11:", 7)) { // legacy format of pkcs11 URI
+-			info->path = strdup(keyspec);
+-		} else {
+-			if (!parse_keyspec(keyspec, info)) {
+-				fprintf(stderr, "invalid keyspec %i: %s\n", optind, keyspec);
+-				exit(1);
+-			}
++		if (!parse_keyspec(keyspec, info)) {
++			fprintf(stderr, "invalid keyspec %i: %s\n", optind, keyspec);
++			exit(1);
+ 		}
+ 	}
+ 
 
-Changes in v2:
-- Split up the keyspec environment variables when multiple are provided
-  too.
-- Use strsep_unescape instead of manual split/unescape
-- Remove RFC tag
-- Link to v1: https://lore.barebox.org/barebox/20260206-keytoc-multi-env-v1-1-638fbf2b3634@pengutronix.de
-
----
-Jonas Rebmann (8):
-      scripts: include: Add string_util.h for strsep_unescaped
-      crypto: keytoc: Improve readability
-      crypto: keytoc: Move special handling of legacy pkcs11 format to parse_keyspec
-      crypto: keytoc: Parse all keyspecs before writing to stdout
-      crypto: keytoc: Split env-provided full keyspec on spaces
-      Documentation: migration-guides: Document change in keyspec env vars
-      crypto: keytoc: Allow fields to start with underscore
-      crypto: keytoc: Deprecate fit-hint from env variable
-
- .../migration-guides/migration-master.rst          |  21 ++++
- crypto/Kconfig                                     |   7 +-
- scripts/include/string_util.h                      |  65 ++++++++++++
- scripts/keytoc.c                                   | 113 ++++++++++++++-------
- 4 files changed, 165 insertions(+), 41 deletions(-)
----
-base-commit: ff814eff55e898037503e942df8e0ba8f1b13222
-change-id: 20260206-keytoc-multi-env-4a3300292e4a
-
-Best regards,
---  
-Jonas Rebmann <jre@pengutronix.de>
+-- 
+2.53.0.308.g50d063e335
 
 
 
