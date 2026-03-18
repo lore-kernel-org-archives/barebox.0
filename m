@@ -1,71 +1,71 @@
-Delivery-date: Wed, 18 Mar 2026 09:12:45 +0100
+Delivery-date: Wed, 18 Mar 2026 10:02:55 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2m1F-0026yH-1x
+	id 1w2mnn-0027dA-1Z
 	for lore@lore.pengutronix.de;
-	Wed, 18 Mar 2026 09:12:45 +0100
+	Wed, 18 Mar 2026 10:02:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2m1E-00014N-V3
-	for lore@pengutronix.de; Wed, 18 Mar 2026 09:12:45 +0100
+	id 1w2mnk-0001cd-8n
+	for lore@pengutronix.de; Wed, 18 Mar 2026 10:02:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=TZltTPnrOVHaX/Kiq2zAbh5LUX4czdiZ6UZnZ1li/58=; b=XXNe/rK+wIi7tdfJtKu0s7kGjR
-	P6AGIBhNnzE/z1cpT4Ik0zw+K3dL+0hxlbYDuwa6KtQA88D/mZSryabrkBzAGcm4TZs9FfMIQ5nXc
-	7ibV7udRXvaFUAFyoTJh88Zy/HoSPQVUvB5BJ1EUYXzEs2IBY9U9R72MTTZuL3mXFttLD0Kas67Y6
-	vOoeaugl3RhkQ8sTTJc0Agkim6y8J2OOVb4mieg+E4DKNA9NT3+ywJfuG6tJfF4FqIw/hf7m2eFHs
-	V7SnyAkHUnqa5P6we22RJA6Syvhqc7ZSqYNoos7hQ5Y1vCnBfFLCwa78EE8uQfs5fL+tsulvl/cEm
-	0rN5HMiQ==;
+	bh=q0XKcPYidlbZkck+SF7gvqmue5Fj7ETZFV8XozxL0E4=; b=mFLxCcZZf5TcJuxmeWJy/Wgd6j
+	bkuIj4Y/q7idmylQiIy01KiO5e1Ps8aiPUt071Q6Zn+pRbPux1C901YbW7kxxWjY8tzi+9din02Kf
+	m9kwfh0VqevLwzAgybf0fkRdu7OxoTIfaO/5xUfd08tGXAGDnoMMh95OgE2fEJC/6drRcPT04qWKE
+	Pi5tYssHMefADdmBeLC53xkT3hMHzRj79jOCT7U9zBIOPe3/NudC/qylmZhJdEZEClc19wYa7FTp/
+	6pBfygEVdfUYKhUvTiRA1UYTjHOpMc0XG07BFUH11U8LT+z9VJDz0DUpOAGP/+ix6IUiTqlXN1w1z
+	apVDjuUw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2m0o-0000000813S-0zc1;
-	Wed, 18 Mar 2026 08:12:18 +0000
+	id 1w2mmo-0000000867m-2QeO;
+	Wed, 18 Mar 2026 09:01:54 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2m0l-0000000812c-3CFK
+	id 1w2mmi-0000000866h-2YxO
 	for barebox@lists.infradead.org;
-	Wed, 18 Mar 2026 08:12:16 +0000
+	Wed, 18 Mar 2026 09:01:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1w2m0j-0000us-W4; Wed, 18 Mar 2026 09:12:14 +0100
+	id 1w2mmg-0001Ba-Dc; Wed, 18 Mar 2026 10:01:46 +0100
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1w2m0j-000sRP-2Z;
-	Wed, 18 Mar 2026 09:12:13 +0100
+	id 1w2mmf-000sml-2B;
+	Wed, 18 Mar 2026 10:01:45 +0100
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1w2m0j-000000097AH-2xmz;
-	Wed, 18 Mar 2026 09:12:13 +0100
-Date: Wed, 18 Mar 2026 09:12:13 +0100
+	id 1w2mmf-000000097d6-2QwL;
+	Wed, 18 Mar 2026 10:01:45 +0100
+Date: Wed, 18 Mar 2026 10:01:45 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <abpeXYhQNkb102YL@pengutronix.de>
-References: <20260312144325.2157379-1-a.fatoum@pengutronix.de>
- <20260312144325.2157379-2-a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, "Claude Opus 4.5" <noreply@anthropic.com>
+Message-ID: <abpp-XThCk_UcyCC@pengutronix.de>
+References: <20260312144505.2159816-1-a.fatoum@pengutronix.de>
+ <20260312144505.2159816-11-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260312144325.2157379-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20260312144505.2159816-11-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260318_011215_800218_9B43FF7E 
-X-CRM114-Status: GOOD (  24.84  )
+X-CRM114-CacheID: sfid-20260318_020148_804241_71CD2AA5 
+X-CRM114-Status: GOOD (  40.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,134 +87,320 @@ X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/2] globalvar: add helpers for stashing global variables
+Subject: Re: [PATCH 11/16] bootm: implement plain and FIT bootm.image override
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Thu, Mar 12, 2026 at 03:43:16PM +0100, Ahmad Fatoum wrote:
-> Configuring a FIT image boot with overlays involves setting not only
-> global.bootm.* variables, but also global.of.overlay.* variables.
+Hi Ahmad,
+
+On Thu, Mar 12, 2026 at 03:44:54PM +0100, Ahmad Fatoum wrote:
+> Add support for overriding the boot image via bootm.image when using
+> either plain files or FIT images. The override behavior depends on the
+> file types involved:
 > 
-> For use in custom boot entry functions, provide functions for stashing
-> and restoring a set of variables. This allows dry run and boot fallback
-> behavior to not affect later boot attempts.
+> - If the override is not a FIT image, it replaces only the OS loadable,
+>   regardless of whether the original was a FIT image or not.
+> 
+> - If the override is a FIT image, it replaces the current OS, whether
+>   it's a FIT or not.
 
-Looks generally good. I assume this is to replace the .dyn. type
-variables, right?
-
-Can we the a user before applying this?
+What's the "current OS" here? Is it just the kernel or dtb/initrd as
+well?
 
 Sascha
 
 > 
+> This allows developers to use devboot scripts to redirect FIT image
+> loading to alternate locations (e.g., network) while preserving the
+> configuration selection from the original boot entry.
+> 
+> Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  common/globalvar.c  | 77 +++++++++++++++++++++++++++++++++++++++++++++
->  include/globalvar.h |  3 ++
->  2 files changed, 80 insertions(+)
+>  commands/boot.c           |   2 +-
+>  common/bootm-fit.c        |  11 +++-
+>  common/bootm-overrides.c  | 119 +++++++++++++++++++++++++++++++++++++-
+>  common/bootm.c            |   4 +-
+>  include/bootm-fit.h       |   4 +-
+>  include/bootm-overrides.h |   3 +
+>  include/bootm.h           |   2 +
+>  7 files changed, 134 insertions(+), 11 deletions(-)
 > 
-> diff --git a/common/globalvar.c b/common/globalvar.c
-> index c2b0d5b4bbad..e168d6055347 100644
-> --- a/common/globalvar.c
-> +++ b/common/globalvar.c
-> @@ -461,6 +461,83 @@ int globalvar_set(const char *name, const char *val)
->  	return dev_set_param(&global_device, name, val);
+> diff --git a/commands/boot.c b/commands/boot.c
+> index 555667ee098c..04bb9eb9186f 100644
+> --- a/commands/boot.c
+> +++ b/commands/boot.c
+> @@ -44,7 +44,7 @@ static int boot_add_override(struct bootm_overrides *overrides, char *var)
+>  	if (!strcmp(var, "bootm.image")) {
+>  		if (isempty(val))
+>  			return -EINVAL;
+> -		return -ENOSYS;
+> +		overrides->os_file = val;
+>  	} else if (!strcmp(var, "bootm.oftree")) {
+>  		overrides->oftree_file = val;
+>  	} else if (!strcmp(var, "bootm.initrd")) {
+> diff --git a/common/bootm-fit.c b/common/bootm-fit.c
+> index 5b110ad2f19e..995bd7181223 100644
+> --- a/common/bootm-fit.c
+> +++ b/common/bootm-fit.c
+> @@ -4,6 +4,7 @@
+>  #include <image-fit.h>
+>  #include <bootm-fit.h>
+>  #include <memory.h>
+> +#include <string.h>
+>  #include <zero_page.h>
+>  #include <filetype.h>
+>  #include <fs.h>
+> @@ -143,7 +144,7 @@ static enum filetype bootm_fit_update_os_header(struct image_data *data)
+>  	return os_type;
 >  }
 >  
-> +struct globalvar_stashed {
-> +	const char *key;
-> +	const char *value;
-> +	struct list_head list;
-> +};
-> +
-> +static void globalvar_stashed_free(struct globalvar_stashed *elem)
-> +{
-> +	list_del(&elem->list);
-> +	free_const(elem->key);
-> +	free_const(elem->value);
-> +	free(elem);
-> +}
-> +
-> +int globalvar_stash_push(struct list_head *stash, ...)
-> +{
-> +	struct globalvar_stashed *elem, *safe;
-> +	const char *name;
-> +	int ret = -ENOMEM;
-> +	va_list args;
-> +	LIST_HEAD(tmp);
-> +
-> +	va_start(args, stash);
-> +
-> +	while ((name = va_arg(args, const char *))) {
-> +		const char *value;
-> +
-> +		elem = calloc(1, sizeof(*elem));
-> +		if (!elem)
-> +			goto out;
-> +
-> +		list_add_tail(&elem->list, &tmp);
-> +
-> +		elem->key = strdup_const(name);
-> +		if (!elem->key)
-> +			goto out;
-> +
-> +		value = globalvar_get(name);
-> +		if (!value) {
-> +			ret = -EINVAL;
-> +			goto out;
-> +		}
-> +
-> +		elem->value = strdup_const(value);
-> +		if (!elem->value)
-> +			goto out;
-> +	}
-> +
-> +	list_splice_tail(&tmp, stash);
-> +
-> +	ret = 0;
-> +out:
-> +	va_end(args);
-> +
-> +	if (ret) {
-> +		list_for_each_entry_safe(elem, safe, &tmp, list)
-> +			globalvar_stashed_free(elem);
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +int globalvar_stash_pop(struct list_head *stash)
-> +{
-> +	struct globalvar_stashed *elem, *tmp;
-> +	int err = 0;
-> +
-> +	list_for_each_entry_safe(elem, tmp, stash, list) {
-> +		int ret = globalvar_set(elem->key, elem->value);
-> +		if (ret)
-> +			err = ret;
-> +		globalvar_stashed_free(elem);
-> +	}
-> +
-> +	return err;
-> +}
-> +
->  static int globalvar_simple_set(struct bobject *bobj, struct param_d *p,
->  				const char *val)
+> -int bootm_open_fit(struct image_data *data)
+> +int bootm_open_fit(struct image_data *data, bool override)
 >  {
-> diff --git a/include/globalvar.h b/include/globalvar.h
-> index 413cf72002a0..1d39849ddbab 100644
-> --- a/include/globalvar.h
-> +++ b/include/globalvar.h
-> @@ -24,6 +24,9 @@ char *globalvar_get_match(const char *match, const char *separator);
->  void globalvar_set_match(const char *match, const char *val);
->  int globalvar_set(const char *name, const char *val);
+>  	struct fit_handle *fit;
+>  	void *fit_config;
+> @@ -164,8 +165,12 @@ int bootm_open_fit(struct image_data *data)
+>  	}
 >  
-> +int globalvar_stash_push(struct list_head *stash, ...) __attribute__((sentinel));
-> +int globalvar_stash_pop(struct list_head *stash);
+>  	loadable_from_fit_os(data, fit, fit_config);
+> -	loadable_from_fit_initrd(data, fit, fit_config);
+> -	loadable_from_fit_oftree(data, fit, fit_config);
+> +	if (override)
+> +		data->is_override.os = true;
+> +	if (loadable_from_fit_initrd(data, fit, fit_config) && override)
+> +		data->is_override.initrd = true;
+> +	if (loadable_from_fit_oftree(data, fit, fit_config) && override)
+> +		data->is_override.oftree = true;
+>  	loadable_from_fit_tee(data, fit, fit_config);
+>  
+>  	data->kernel_type = bootm_fit_update_os_header(data);
+> diff --git a/common/bootm-overrides.c b/common/bootm-overrides.c
+> index 59ca90a58684..8c71ceb5f80d 100644
+> --- a/common/bootm-overrides.c
+> +++ b/common/bootm-overrides.c
+> @@ -2,14 +2,118 @@
+>  
+>  #include <bootm.h>
+>  #include <bootm-overrides.h>
+> +#include <bootm-fit.h>
+> +#include <libfile.h>
+> +#include <linux/pagemap.h>
 > +
->  int globalvar_add_simple_string(const char *name, char **value);
->  int globalvar_add_simple_int(const char *name, int *value,
->  			     const char *format);
+> +/**
+> + * bootm_apply_image_override - apply bootm.image override
+> + * @data: image data context
+> + * @override: override path (may include @config suffix for FIT)
+> + *
+> + * Applies a bootm.image override according to these rules:
+> + * - If the override is not a FIT image, it replaces only data->os.
+> + * - If the override is a FIT image, it is re-opened via bootm_open_fit()
+> + *   using the default configuration or the @config suffix if given.
+> + *
+> + * Return: 0 on success, negative errno on failure
+> + */
+> +static int bootm_apply_image_override(struct image_data *data,
+> +				      const char *override)
+> +{
+> +	char *override_file, *override_part;
+> +	void *override_header = NULL;
+> +	int ret;
+> +
+> +	ret = bootm_image_name_and_part(override, &override_file, &override_part);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Read header to detect file type */
+> +	ret = file_read_and_detect_boot_image_type(override_file, &override_header);
+> +	if (ret < 0) {
+> +		free(override_file);
+> +		return ret;
+> +	}
+> +
+> +	data->image_type = ret;
+> +
+> +	/*
+> +	 * bootm_image_name_and_part() returns os_part pointing inside the
+> +	 * os_file allocation, so we must NULLify os_part before freeing
+> +	 * os_file to avoid a use-after-free.
+> +	 */
+> +	data->os_part = NULL;
+> +	free(data->os_file);
+> +	data->os_file = override_file;
+> +	if (override_part)
+> +		data->os_part = override_part;
+> +
+> +	/* Update the detected type for the handler */
+> +	free(data->os_header);
+> +	data->os_header = override_header;
+> +
+> +	switch (data->image_type) {
+> +	case filetype_fit:
+> +		/* Restore, so bootm_open_fit looks for them in the new FIT */
+> +		data->os_address = data->os_address_hint;
+> +		data->os_entry = data->os_entry_hint;
+> +
+> +		/* Re-open configuration and collect loadables */
+> +		return bootm_open_fit(data, true);
+> +	default:
+> +		loadable_release(&data->os);
+> +		data->os = loadable_from_file(override_file, LOADABLE_KERNEL);
+> +		if (IS_ERR(data->os))
+> +			return PTR_ERR(data->os);
+> +
+> +		data->kernel_type = data->image_type;
+> +		data->is_override.os = true;
+> +
+> +		if (file_is_compressed_file(data->kernel_type))
+> +			return bootm_open_os_compressed(data);
+> +
+> +		return 0;
+> +	}
+> +}
+> +
+> +static void report_active_override(const char *type_str, struct loadable *l)
+> +{
+> +	struct loadable *lc;
+> +	char *buf = NULL;
+> +
+> +	if (!l) {
+> +		pr_notice("[bootm override active] removed %s\n", type_str);
+> +		return;
+> +	}
+> +
+> +	buf = xrasprintf(buf, "[bootm override active] replacement %s: %s",
+> +		      type_str, l->name);
+> +
+> +	list_for_each_entry(lc, &l->chained_loadables, list)
+> +		buf = xrasprintf(buf, ", %s", lc->name);
+> +
+> +	pr_notice("%s\n", buf);
+> +	free(buf);
+> +}
+> +
+> +static void report_active_overrides(const struct image_data *data)
+> +{
+> +	if (data->is_override.os)
+> +		report_active_override("OS", data->os);
+> +	if (data->is_override.initrd)
+> +		report_active_override("initrd", data->initrd);
+> +	if (data->is_override.oftree)
+> +		report_active_override("FDT", data->oftree);
+> +}
+>  
+>  /**
+>   * bootm_apply_overrides - apply overrides
+>   * @data: image data context
+>   * @overrides: overrides to apply
+>   *
+> - * Applies bootm.initrd and bootm.oftree overrides by translating
+> - * them into file-based loadables.
+> + * Applies bootm.image, bootm.initrd, and bootm.oftree overrides by translating
+> + * them into file-based loadables or FIT image replacements.
+>   *
+>   * Context: Called during boot preparation
+>   * Return: 0 on success, negative error code otherwise
+> @@ -17,9 +121,17 @@
+>  int bootm_apply_overrides(struct image_data *data,
+>  			  const struct bootm_overrides *overrides)
+>  {
+> +	int ret;
+> +
+>  	if (bootm_signed_images_are_forced())
+>  		return 0;
+>  
+> +	if (nonempty(overrides->os_file)) {
+> +		ret = bootm_apply_image_override(data, overrides->os_file);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+>  	if (IS_ENABLED(CONFIG_BOOTM_INITRD) && overrides->initrd_file) {
+>  		/* loadables_from_files() will set data->initrd on empty initrd_file */
+>  		int ret = loadables_from_files(&data->initrd, overrides->initrd_file, ":",
+> @@ -42,6 +154,7 @@ int bootm_apply_overrides(struct image_data *data,
+>  		data->is_override.oftree = true;
+>  	}
+>  
+> +	report_active_overrides(data);
+> +
+>  	return 0;
+>  }
+> -
+> diff --git a/common/bootm.c b/common/bootm.c
+> index ddc656fb34c8..ed79c20c0972 100644
+> --- a/common/bootm.c
+> +++ b/common/bootm.c
+> @@ -400,7 +400,7 @@ static void bootm_print_info(struct image_data *data)
+>  		printf("OS image not yet relocated\n");
+>  }
+>  
+> -static int bootm_image_name_and_part(const char *name, char **filename, char **part)
+> +int bootm_image_name_and_part(const char *name, char **filename, char **part)
+>  {
+>  	char *at, *ret;
+>  
+> @@ -570,7 +570,7 @@ struct image_data *bootm_boot_prep(const struct bootm_data *bootm_data)
+>  
+>  	switch (data->image_type) {
+>  	case filetype_fit:
+> -		ret = bootm_open_fit(data);
+> +		ret = bootm_open_fit(data, false);
+>  		break;
+>  	case filetype_uimage:
+>  		ret = bootm_open_uimage(data);
+> diff --git a/include/bootm-fit.h b/include/bootm-fit.h
+> index 05f4f5acfe9a..972d9e4fac8e 100644
+> --- a/include/bootm-fit.h
+> +++ b/include/bootm-fit.h
+> @@ -10,11 +10,11 @@ struct image_data;
+>  
+>  #ifdef CONFIG_BOOTM_FITIMAGE
+>  
+> -int bootm_open_fit(struct image_data *data);
+> +int bootm_open_fit(struct image_data *data, bool override);
+>  
+>  #else
+>  
+> -static inline int bootm_open_fit(struct image_data *data)
+> +static inline int bootm_open_fit(struct image_data *data, bool override)
+>  {
+>  	return -ENOSYS;
+>  }
+> diff --git a/include/bootm-overrides.h b/include/bootm-overrides.h
+> index a52a498b97a2..9b133928a923 100644
+> --- a/include/bootm-overrides.h
+> +++ b/include/bootm-overrides.h
+> @@ -3,6 +3,7 @@
+>  #define __BOOTM_OVERRIDES_H
+>  
+>  struct bootm_overrides {
+> +	const char *os_file;
+>  	const char *oftree_file;
+>  	const char *initrd_file;
+>  };
+> @@ -13,6 +14,8 @@ struct image_data;
+>  static inline void bootm_merge_overrides(struct bootm_overrides *dst,
+>  					 const struct bootm_overrides *src)
+>  {
+> +	if (src->os_file)
+> +		dst->os_file = src->os_file;
+>  	if (src->oftree_file)
+>  		dst->oftree_file = src->oftree_file;
+>  	if (src->initrd_file)
+> diff --git a/include/bootm.h b/include/bootm.h
+> index 570ac4d289f2..85199fc702b4 100644
+> --- a/include/bootm.h
+> +++ b/include/bootm.h
+> @@ -53,6 +53,8 @@ struct bootm_data {
+>  	unsigned long os_entry;
+>  };
+>  
+> +int bootm_image_name_and_part(const char *name, char **filename, char **part);
+> +
+>  int bootm_boot(const struct bootm_data *data);
+>  
+>  struct image_data *bootm_boot_prep(const struct bootm_data *bootm_data);
 > -- 
 > 2.47.3
 > 
