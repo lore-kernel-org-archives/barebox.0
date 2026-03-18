@@ -1,58 +1,65 @@
-Delivery-date: Wed, 18 Mar 2026 15:55:44 +0100
+Delivery-date: Wed, 18 Mar 2026 16:44:31 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2sJE-002EoX-2U
+	id 1w2t4R-002FnY-2Z
 	for lore@lore.pengutronix.de;
-	Wed, 18 Mar 2026 15:55:44 +0100
+	Wed, 18 Mar 2026 16:44:31 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2sJE-0005Ih-8X
-	for lore@pengutronix.de; Wed, 18 Mar 2026 15:55:44 +0100
+	id 1w2t4R-0005d0-5g
+	for lore@pengutronix.de; Wed, 18 Mar 2026 16:44:31 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=czlseARRrk4vIY/mSsO082c5EDVW9xVT0EFgYKP1aHg=; b=43xDnBt//a2TLh6/hkYyLObrQr
-	VCKzIo46k3us7U/qL3fvgkzYzqHJI4ibPDFyGTiStZHDscvUA3dDAdrSfr55xVfHFL8vWe4XaayAF
-	khenTXaeluvp7IyTCUW2S6zPLHMUB5EGXpCZLrsvY7g+jMw+zgZhdI0yGFdLVNYu1pMS3aG4RWFrr
-	SdbwLmdcZ7mLYTpvmdiIEw8Vnrc76wD9ZfBd03MrjNy7BP/YjaFmRahi7rCMj0o/5m400UpmFTNwv
-	v5LsGvs1PCIUhdE3XHgLtkID0zGxbIlXO/waV27Ip8WjRdsE/4m8vQMNFWtGxfvdZBlTwqO5g51Bk
-	7ynVIFgg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=p04xGh5a5dgjsoYkvD8qhnmv4aL6+9MGKtdXzxLt420=; b=061mt908d2GskPlQx4c7OCXwwM
+	c12CCDU52VbkmiieGCl07jSWUL2hyGSMJFmKmyZ4NCuV1sHsK2tHHqeM74bz6CzUAruoqWaCgT8hp
+	R4h9uhz6/Hy4+NwoXndJRwLPGuncdNiXqp8txz9Z1QNiiNZYKz/XIoVYzHpq6StvYE5tK3sYHIr8/
+	I6omPpgvZeeeRHA1rvUETq8gNw5tHN/Jbedd598VLubtWcEL7zM6qBRaZ9Dz68mwVsHpkp5eeHBNP
+	IJ/3/701XjJiq4FIs9yTb6cX+xrVjjv2pkUyrwVPKqAgMn4FijwDaqkhMeJeL3VkXhKOOa8aZVOha
+	VB/Zkj4g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2sIp-00000008dbH-0hO8;
-	Wed, 18 Mar 2026 14:55:19 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1w2t3v-00000008kdk-1KgN;
+	Wed, 18 Mar 2026 15:43:59 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2sIn-00000008da3-0mnW
+	id 1w2t3u-00000008kdb-3AAP
+	for barebox@bombadil.infradead.org;
+	Wed, 18 Mar 2026 15:43:58 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+	:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=p04xGh5a5dgjsoYkvD8qhnmv4aL6+9MGKtdXzxLt420=; b=YgvqjdLt+8MJURjsdhtMmdmUPG
+	2y8FsNiSMy88tkcxFT84Y7HYZq9c1xsndKl7ImtfX0fCEKqXck6DrPEr4dJaWLwq/h4YfQdnDISy+
+	EjzGQlvsOQ1c+wdaI9JSSWGHZJVMutR/1MEkMQg6qP4yQQonMrcBzuiIcQkg6eAKd2A3IG65RMVpl
+	Fu6OoFHqtNYJiEV/8909b8iQQk9XfeJvYT7BH+9FeuQH6husRwq6LGYmiR3nDdpqAj6OboFIgW7Ms
+	oaQymh9PX8zxTPVw6ny+qPD9ZswFuf3eGOEiHw/mt4BMf3upIgBml4ySeyUq/QBS995iFtp7fZ6Jc
+	mx7mumsg==;
+Received: from cczrelay02-placeholder.in2p3.fr ([134.158.66.152] helo=cczrelay04.in2p3.fr)
+	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w2t3r-0000000Baxq-2cF7
 	for barebox@lists.infradead.org;
-	Wed, 18 Mar 2026 14:55:18 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1w2sIl-0005C0-Bz; Wed, 18 Mar 2026 15:55:15 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1w2sIl-000vPH-0Z;
-	Wed, 18 Mar 2026 15:55:15 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1w2sIl-00000009Avp-0LSk;
-	Wed, 18 Mar 2026 15:55:15 +0100
-Date: Wed, 18 Mar 2026 15:55:15 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: David Picard <david.picard@clermont.in2p3.fr>
+	Wed, 18 Mar 2026 15:43:57 +0000
+Received: from [134.158.124.135] (clrelecpo09w.in2p3.fr [134.158.124.135])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cczrelay04.in2p3.fr (Postfix) with ESMTPSA id C0ABE8005FA;
+	Wed, 18 Mar 2026 16:43:49 +0100 (CET)
+Message-ID: <63a902c9-b6e0-4f77-9bd8-a104423468fd@clermont.in2p3.fr>
+Date: Wed, 18 Mar 2026 16:43:49 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-Message-ID: <abq80-X7w9qQgooP@pengutronix.de>
 References: <ca6784d7-14c0-4716-8951-67d31fd40cdd@clermont.in2p3.fr>
  <abkZpI9KA1Q2A7VL@pengutronix.de>
  <227c88b2-009d-4292-a8a6-07e18d10f82b@clermont.in2p3.fr>
@@ -63,17 +70,15 @@ References: <ca6784d7-14c0-4716-8951-67d31fd40cdd@clermont.in2p3.fr>
  <abpbuoyzwbrFOZkd@pengutronix.de>
  <2b87f519-866d-4db2-925f-8a828a4f450b@clermont.in2p3.fr>
  <121dc773-a7f4-4d8d-851f-0ff10dc3c8c8@clermont.in2p3.fr>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <121dc773-a7f4-4d8d-851f-0ff10dc3c8c8@clermont.in2p3.fr>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+ <abq80-X7w9qQgooP@pengutronix.de>
+From: David Picard <david.picard@clermont.in2p3.fr>
+Content-Language: fr
+In-Reply-To: <abq80-X7w9qQgooP@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260318_075517_247676_51172F83 
-X-CRM114-Status: GOOD (  14.49  )
+X-CRM114-CacheID: sfid-20260318_154355_729154_1C37C4F1 
+X-CRM114-Status: GOOD (  11.10  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,7 +96,7 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
@@ -99,25 +104,25 @@ Subject: Re: [PATCH v2 2/2] ARM: setup_c: avoid clearing BSS twice
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, Mar 18, 2026 at 03:12:23PM +0100, David Picard wrote:
-> Did it help? I can make more tests.
+Oh, I'm sorry about that...
 
-Thanks, yes it helps.
+David
 
-The patch you tested basically is the same as I reverted, modulo the
-debug prints. So indeed the original patch seems to work. My assumption
-is that you didn't have Ahmads fix applied which is on current master
-now.
+Le 18/03/2026 à 15:55, Sascha Hauer a écrit :
+> On Wed, Mar 18, 2026 at 03:12:23PM +0100, David Picard wrote:
+>> Did it help? I can make more tests.
+> Thanks, yes it helps.
+>
+> The patch you tested basically is the same as I reverted, modulo the
+> debug prints. So indeed the original patch seems to work. My assumption
+> is that you didn't have Ahmads fix applied which is on current master
+> now.
+>
+> So I am going to re-apply this patch. Please let me know if something
+> still breaks.
+>
+> Sascha
+>
 
-So I am going to re-apply this patch. Please let me know if something
-still breaks.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
