@@ -1,69 +1,72 @@
-Delivery-date: Wed, 18 Mar 2026 11:07:16 +0100
+Delivery-date: Wed, 18 Mar 2026 11:23:47 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2no4-0028s6-16
+	id 1w2o42-0029Nk-38
 	for lore@lore.pengutronix.de;
-	Wed, 18 Mar 2026 11:07:16 +0100
+	Wed, 18 Mar 2026 11:23:46 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2no2-0003dv-As
-	for lore@pengutronix.de; Wed, 18 Mar 2026 11:07:16 +0100
+	id 1w2o42-0005yF-CM
+	for lore@pengutronix.de; Wed, 18 Mar 2026 11:23:46 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=uM2KmXGGQUW8D2OQifFuN2bQdhGVa4T0Fuo1p5XHNGA=; b=RWgbPyd5WP1rq90ZJwzheiqfQx
-	AtFqz4+Q4Eyo16YiSn96LfwgEDy4DdbSzJ69ZSaEhuzgxk5Bs8y4rbhoHm1CudKo5xACuBSj+Yi4/
-	thHLmZmAYHp4IX5linT36HrVKchpM9dCfLtggIYgBF8WQSI9v3IKIZrikW7Hgo7Mw0TuSVObGHcjj
-	dr//Qcw3R+TKmpI4yHkNMdIxJVl68CVqrogkr0HIO7CADywVyleWtltuyrF0FdO67OxeczY716Erd
-	rOej35ZB8+GaG59oL2SPRFtaYI0A/P0FDVQtSo/QrkQeaGKP8UKfJg6SPzgqra8mAHMdchohwCnCN
-	Q67hYeFQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=GF2CI7972gyuBsvJbrWZa4YRHYp4ypOyHuiStAuRrPE=; b=j/OsI2bJYJrXLw4AdBx8IFCGol
+	1LuDKUXbAvt+hPQpmSgPmt/nCebmEaTrq85dP4SRyU4/OEcxOeBjQB8afBm4rfDCFNhs77ya4t9H5
+	lsHPGqDAQ8faIiexesGTPqy8Wh9br8eafZlpcrvA4ysP5clUqxpo9MJp2fYMCZFQy4YV3g09xNw3r
+	zHR6dYeBKixJW1TJ6GgyQg+qcJmRUFauRp1LdQmhvMQ8FpOkQP4Tpsi5Q3c36crZS2JYXw9SBOGli
+	k5gnAoxm+rIvolABwcQgYyG7rxjqmugPTXDwIFM5DDdj+CcXn875lDbSJhefDnwLoRz9mbvT1tjwX
+	fWTV5hig==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2nng-00000008BFe-0bxl;
-	Wed, 18 Mar 2026 10:06:52 +0000
-Received: from cczrelay01-placeholder.in2p3.fr ([134.158.66.151] helo=cczrelay03.in2p3.fr)
+	id 1w2o3b-00000008Cb2-2F89;
+	Wed, 18 Mar 2026 10:23:19 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2nnd-00000008BF4-1MFH
+	id 1w2o3Y-00000008CaC-3Hnh
 	for barebox@lists.infradead.org;
-	Wed, 18 Mar 2026 10:06:50 +0000
-Received: from [134.158.124.135] (clrelecpo09w.in2p3.fr [134.158.124.135])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	by cczrelay03.in2p3.fr (Postfix) with ESMTPSA id E305A1800826;
-	Wed, 18 Mar 2026 11:06:45 +0100 (CET)
-Message-ID: <2b87f519-866d-4db2-925f-8a828a4f450b@clermont.in2p3.fr>
-Date: Wed, 18 Mar 2026 11:06:45 +0100
+	Wed, 18 Mar 2026 10:23:17 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1w2o3W-0005sA-UI; Wed, 18 Mar 2026 11:23:14 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1w2o3W-000tKY-2Q;
+	Wed, 18 Mar 2026 11:23:14 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1w2o3W-000000098Vi-2lam;
+	Wed, 18 Mar 2026 11:23:14 +0100
+Date: Wed, 18 Mar 2026 11:23:14 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Fabian Pflug <f.pflug@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>,
+	Ahmad Fatoum <afa@pengutronix.de>
+Message-ID: <abp9Es5u4tm-60rI@pengutronix.de>
+References: <20260318-v2026-02-0-topic-sconfig_console-v3-0-e26055294723@pengutronix.de>
+ <20260318-v2026-02-0-topic-sconfig_console-v3-2-e26055294723@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-References: <20260304-arm-setup-c-v2-2-d26af520ab03@pengutronix.de>
- <79efc69c-d161-4dc0-9a95-f6176b7331c7@pengutronix.de>
- <aa_1-MX7hnrlJ3Ff@pengutronix.de>
- <ca6784d7-14c0-4716-8951-67d31fd40cdd@clermont.in2p3.fr>
- <abkZpI9KA1Q2A7VL@pengutronix.de>
- <227c88b2-009d-4292-a8a6-07e18d10f82b@clermont.in2p3.fr>
- <57f1a773-8ead-486d-88a3-415d96966918@pengutronix.de>
- <e0c8e7e3-13d2-4f1d-a2f2-47e5d94c25cb@clermont.in2p3.fr>
- <9c45c9dd-757f-4a13-8b6d-34eccab8fc5b@pengutronix.de>
- <1f36feab-574b-4dc5-9a2d-4eb1da213d6f@clermont.in2p3.fr>
- <abpbuoyzwbrFOZkd@pengutronix.de>
-From: David Picard <david.picard@clermont.in2p3.fr>
-Content-Language: fr
-In-Reply-To: <abpbuoyzwbrFOZkd@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260318-v2026-02-0-topic-sconfig_console-v3-2-e26055294723@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260318_030649_496757_D069BE99 
-X-CRM114-Status: GOOD (  10.97  )
+X-CRM114-CacheID: sfid-20260318_032316_825917_E209E426 
+X-CRM114-Status: GOOD (  23.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,40 +84,87 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 2/2] ARM: setup_c: avoid clearing BSS twice
+Subject: Re: [PATCH v3 2/5] common: bootm: add policy to commandline
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-https://paste.debian.net/hidden/5de2d5d1
+On Wed, Mar 18, 2026 at 10:22:00AM +0100, Fabian Pflug wrote:
+> If security policies are used, then the variable bootm.provide_policy
+> can be set to automatically append the currently selected security
+> policy to the kernel commandline with the prefix
+> barebox.security.policy=
+> This allows the the system to behave different based on the selected
+> security policy.
+> 
+> Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
+> ---
+>  common/bootm.c  | 23 +++++++++++++++++++++++
+>  include/bootm.h |  5 +++++
+>  2 files changed, 28 insertions(+)
+> 
+> diff --git a/common/bootm.c b/common/bootm.c
+> index d43079bb81..9484539bc3 100644
+> --- a/common/bootm.c
+> +++ b/common/bootm.c
+> @@ -22,6 +22,7 @@
+>  #include <uncompress.h>
+>  #include <zero_page.h>
+>  #include <security/config.h>
+> +#include <security/policy.h>
+>  
+>  static LIST_HEAD(handler_list);
+>  static struct sconfig_notifier_block sconfig_notifier;
+> @@ -75,6 +76,7 @@ static int bootm_dryrun;
+>  static int bootm_earlycon;
+>  static int bootm_provide_machine_id;
+>  static int bootm_provide_hostname;
+> +static int bootm_provide_policy;
+>  static int bootm_verbosity;
+>  static int bootm_efi_mode = BOOTM_EFI_AVAILABLE;
+>  
+> @@ -97,6 +99,7 @@ void bootm_data_init_defaults(struct bootm_data *data)
+>  	data->appendroot = bootm_appendroot;
+>  	data->provide_machine_id = bootm_provide_machine_id;
+>  	data->provide_hostname = bootm_provide_hostname;
+> +	data->provide_policy = bootm_provide_policy;
+>  	data->verbose = bootm_verbosity;
+>  	data->dryrun = bootm_dryrun;
+>  	data->efi_boot = bootm_efi_mode;
+> @@ -118,6 +121,7 @@ void bootm_data_restore_defaults(const struct bootm_data *data)
+>  	bootm_appendroot = data->appendroot;
+>  	bootm_provide_machine_id = data->provide_machine_id;
+>  	bootm_provide_hostname = data->provide_hostname;
+> +	bootm_provide_policy = data->provide_policy;
+>  	bootm_verbosity = data->verbose;
+>  	bootm_dryrun = data->dryrun;
+>  	bootm_efi_mode = data->efi_boot;
+> @@ -759,6 +763,20 @@ int bootm_boot(struct bootm_data *bootm_data)
+>  		free(hostname_bootarg);
+>  	}
+>  
+> +	if (IS_ENABLED(CONFIG_SECURITY_POLICY) && bootm_data->provide_policy) {
 
-Le 18/03/2026 à 09:00, Sascha Hauer a écrit :
-> Hi David,
->
-> On Wed, Mar 18, 2026 at 08:49:02AM +0100, David Picard wrote:
->> Hi,
->>
->> The boot log with CONFIG_DEBUG_LL enabled for 1st and 2nd stage:
->> https://paste.debian.net/hidden/d82f6a59
-> This starts with:
->
->> lowlevel init done
->> SDRAM setup...
->> SDRAM calibration...
->> done
->> Switch to console [cs0]
->>
->>
->> barebox 2026.03.0 #1 Tue Mar 17 14:17:44 CET 2026
-> The binary has the same timestamp as the one you posted yesterday and it
-> doesn't have my patch applied, otherwise it should print the 8 hex
-> numbers followed by ABC, just like the 2nd stage shows.
->
-> Sascha
->
+This change conflicts with Ahmads bootm override series. In that series
 
+int bootm_boot(struct bootm_data *bootm_data)
+
+is replaced with
+
+int bootm_boot_handler(struct image_data *data)
+
+So bootm_data is no longer available here. I replaced bootm_data->provide_policy
+with 0 for now, but this needs a proper fix. Ahmad, Fabian, Could you look into it?
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
