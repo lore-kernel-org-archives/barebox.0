@@ -1,57 +1,59 @@
-Delivery-date: Wed, 18 Mar 2026 10:22:38 +0100
+Delivery-date: Wed, 18 Mar 2026 10:22:58 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2n6s-0028BR-0f
+	id 1w2n7C-0028C7-1u
 	for lore@lore.pengutronix.de;
-	Wed, 18 Mar 2026 10:22:38 +0100
+	Wed, 18 Mar 2026 10:22:58 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2n6q-0004tW-6g
-	for lore@pengutronix.de; Wed, 18 Mar 2026 10:22:38 +0100
+	id 1w2n7B-0005Jj-QF
+	for lore@pengutronix.de; Wed, 18 Mar 2026 10:22:58 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=h5yAmF5OO5OuEWJ+NJ8Dyw2jPBkt9igsRtgKC+wuVcU=; b=MSfwjz6joJBlE7EqHp0q/7zeob
-	3VZ9YqUDMSWNRaUrSs9zDQ0f5scJRg4pwRMSaGeqNUdmhy7Ul2TnmiXnG9eOislo0mFoDVKb6lpJU
-	UiZzb3syYMhHo/sllsTWUqmrt19rg4wNTXrm0pJmbdPl1MqED+uDR/qPuLHcyRDNvwH0CPAzSQgVL
-	7PidRXJiFf2HB+bZWndBscdJwoHEsQq8xIfJVZfmYk3FnPrxBhS2B0tAWsxwb0tnNjeYxR6y+Rc7j
-	LcS4mYuWjpJ3SwWkXQ7VBdSb6kILNNmg0FzGL3Smi6diKItMviG9VgJI6KcAqJONsddYlervq58Wg
-	vb1vS6Aw==;
+	bh=uvUWxbk15psTywCIi4pzlH4AbDCbJSErp5iDuoRA3ZQ=; b=dAosnq5QvROpV/iwB9+lnh+6Rg
+	/mm4fGqFQvy/qHa8VnkTYmsGRbFNBejrJ7v3zBG5lYzfqcVUm5GrhSdvsjMCscN2g9y5VzoHFnO0S
+	hNnBn3ush/i0iMSZeYsJN8CsZXpzeeWcN0JQzNexsLzJS9PV4SUsnKKnxkYBCpPVb6IlIPhwsbReT
+	gQ37VJuwf0EcSjki63kV83omIHw6t6Hjl1kYYwHYvwublbpklgq19lfbX9KkOTFrykqwXUsW/Q5Mm
+	SrCooKXIwIMtAyjn7mu3yJm3n7oUytQJyKEJX8DX6uPDFq9dcpD0uEOCB+9rYiCCDGLeEpUBJXPa3
+	5ORynL/A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2n6T-000000087ti-35rx;
-	Wed, 18 Mar 2026 09:22:13 +0000
+	id 1w2n6n-0000000888S-36Yx;
+	Wed, 18 Mar 2026 09:22:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2n6N-000000087on-3dxV
+	id 1w2n6j-00000008847-3Zve
 	for barebox@lists.infradead.org;
-	Wed, 18 Mar 2026 09:22:10 +0000
-Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
+	Wed, 18 Mar 2026 09:22:31 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <f.pflug@pengutronix.de>)
-	id 1w2n6L-0004T5-1s; Wed, 18 Mar 2026 10:22:05 +0100
-From: Fabian Pflug <f.pflug@pengutronix.de>
-Date: Wed, 18 Mar 2026 10:22:02 +0100
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1w2n6i-0004jE-1d; Wed, 18 Mar 2026 10:22:28 +0100
+Message-ID: <a8d3272f-d0f4-4728-84e2-0baafa6761f8@pengutronix.de>
+Date: Wed, 18 Mar 2026 10:22:27 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <20260312144325.2157379-1-a.fatoum@pengutronix.de>
+ <20260312144325.2157379-2-a.fatoum@pengutronix.de>
+ <abpeXYhQNkb102YL@pengutronix.de>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <abpeXYhQNkb102YL@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260318-v2026-02-0-topic-sconfig_console-v3-4-e26055294723@pengutronix.de>
-References: <20260318-v2026-02-0-topic-sconfig_console-v3-0-e26055294723@pengutronix.de>
-In-Reply-To: <20260318-v2026-02-0-topic-sconfig_console-v3-0-e26055294723@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Fabian Pflug <f.pflug@pengutronix.de>
-X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260318_022207_933951_86E6BB6A 
-X-CRM114-Status: GOOD (  20.10  )
+X-CRM114-CacheID: sfid-20260318_022229_909912_298E408C 
+X-CRM114-Status: GOOD (  22.15  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,148 +71,178 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v3 4/5] security: configure pinctrl based on policy name
+Subject: Re: [PATCH 2/2] globalvar: add helpers for stashing global variables
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-When using security policies to disable console input on the default
-console, it might be more advantagous to also disable the RX pin hard
-in pinctrl, so that if there is a software error with the security
-policy implementation input does not reach to system and cannot be
-exploited.
+Hello Sascha,
 
-An example devicetree could look like this:
-/ {
-	chosen {
-		stdout-path = &uart3;
-	};
-};
+On 3/18/26 09:12, Sascha Hauer wrote:
+> On Thu, Mar 12, 2026 at 03:43:16PM +0100, Ahmad Fatoum wrote:
+>> Configuring a FIT image boot with overlays involves setting not only
+>> global.bootm.* variables, but also global.of.overlay.* variables.
+>>
+>> For use in custom boot entry functions, provide functions for stashing
+>> and restoring a set of variables. This allows dry run and boot fallback
+>> behavior to not affect later boot attempts.
+> 
+> Looks generally good. I assume this is to replace the .dyn. type
+> variables, right?
 
-&uart3 {
-	pinctrl-names = "default", "barebox,policy-devel";
-	pinctrl-0 = <&pinctrl_uart3_tx_only>;
-	pinctrl-1 = <&pinctrl_uart3_interactive>;
-	status = "okay";
-};
+Not on its own, because there is no means to use this from scripts.
+For the .dyn. case I was thinking about a locally scope bootm bobject
+that can be modified in the boot script and then discarded afterwards.
 
-&iomuxc {
-	pinctrl_uart3_interactive: uart3ingrp {
-		fsl,pins = <MX8MP_IOMUXC_SD1_DATA6__UART3_DCE_TX	0x140>,
-			   <MX8MP_IOMUXC_SD1_DATA7__UART3_DCE_RX	0x140>;
-	};
+> Can we the a user before applying this?
 
-	pinctrl_uart3_tx_only: uart3txgrp {
-		fsl,pins = <MX8MP_IOMUXC_SD1_DATA6__UART3_DCE_TX	0x140>,
-			   <MX8MP_IOMUXC_SD1_DATA7__GPIO2_IO09		0x140>;
-	};
-};
+The single user on my side is out-of-tree board code that uses it scope
+use of global.of.overlay.filter Here's an excerpt:
 
-This would apply the devel pinmux on selecting the devel config and the
-default on every other configuration.
+ LIST_HEAD(stash);
 
-A Kconfig option to enable this feature has been chosen, because parsing
-pinctrl and mapping the names is a lot of string operations, that could
-increase boottime for a feature, that is maybe not needed for everyone.
+ globalvar_stash_push(stash, "of.overlay.pattern", "of.overlay.filter", 
+                      "of.overlay.path", NULL);
 
-Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
----
- drivers/base/driver.c   | 12 +++++++++++-
- security/Kconfig.policy |  8 ++++++++
- security/policy.c       | 12 ++++++++++++
- 3 files changed, 31 insertions(+), 1 deletion(-)
+ globalvar_set("of.overlay.path", kernel);                              
+ globalvar_set("of.overlay.filter", "pattern");                         
+ globalvar_set("of.overlay.pattern", pattern);                          
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 20beb1e9e6..147c3cbad8 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -30,6 +30,7 @@
- #include <pinctrl.h>
- #include <featctrl.h>
- #include <linux/clk/clk-conf.h>
-+#include <security/policy.h>
- 
- #ifdef CONFIG_DEBUG_PROBES
- #define pr_report_probe		pr_info
-@@ -135,7 +136,16 @@ int device_probe(struct device *dev)
- 
- 	pr_report_probe("%*sprobe-> %s\n", depth * 4, "", dev_name(dev));
- 
--	pinctrl_select_state_default(dev);
-+
-+	if (IS_ENABLED(CONFIG_SECURITY_POLICY_PINCTRL)) {
-+		char *policy_pinctrl;
-+
-+		policy_pinctrl = basprintf("barebox,policy-%s", active_policy->name);
-+		if (IS_ERR(pinctrl_get_select(dev, policy_pinctrl)))
-+			pinctrl_select_state_default(dev);
-+		free(policy_pinctrl);
-+	} else
-+		pinctrl_select_state_default(dev);
- 	of_clk_set_defaults(dev->of_node, false);
- 
- 	list_add(&dev->active, &active_device_list);
-diff --git a/security/Kconfig.policy b/security/Kconfig.policy
-index 9ea52e91da..8ddb67ac2d 100644
---- a/security/Kconfig.policy
-+++ b/security/Kconfig.policy
-@@ -68,6 +68,14 @@ config SECURITY_POLICY_DEFAULT_PERMISSIVE
- 	  A security policy should always be selected, either early on by
- 	  board code or via CONFIG_SECURITY_POLICY_INIT.
- 
-+config SECURITY_POLICY_PINCTRL
-+	bool "Update pinctrl based on policy-name"
-+	help
-+	  Changing the security policy, will look for a pinctrl with the name
-+	  barebox,policy-<policyname>. If there is one, it will change the
-+	  pinctrl for this. This could be used to disable the RX (and TX)
-+	  Pin in lockdown mode for the console or disable the usage of SPI.
-+
- config SECURITY_POLICY_PATH
- 	string
- 	depends on SECURITY_POLICY
-diff --git a/security/policy.c b/security/policy.c
-index e2d1b10a78..4d51af63e7 100644
---- a/security/policy.c
-+++ b/security/policy.c
-@@ -7,6 +7,7 @@
- #include <linux/bitmap.h>
- #include <param.h>
- #include <device.h>
-+#include <pinctrl.h>
- #include <stdio.h>
- 
- #include <security/policy.h>
-@@ -90,12 +91,23 @@ bool is_allowed(const struct security_policy *policy, unsigned option)
- int security_policy_activate(const struct security_policy *policy)
- {
- 	const struct security_policy *old_policy = active_policy;
-+	struct device *dev;
-+	char *policy_pinctrl;
- 
- 	if (policy == old_policy)
- 		return 0;
- 
- 	active_policy = policy;
- 
-+	if (IS_ENABLED(CONFIG_SECURITY_POLICY_PINCTRL)) {
-+		policy_pinctrl = basprintf("barebox,policy-%s", active_policy->name);
-+		list_for_each_entry(dev, &active_device_list, active) {
-+			if (IS_ERR(pinctrl_get_select(dev, policy_pinctrl)))
-+				pinctrl_select_state_default(dev);
-+		}
-+		free(policy_pinctrl);
-+	}
-+
- 	for (int i = 0; i < SCONFIG_NUM; i++) {
- 		if (__is_allowed(policy, i) == __is_allowed(old_policy, i))
- 			continue;
+ ret = bootm_entry(entry, &bootm_data);
+
+ globalvar_stash_pop(&stash);
+
+
+Thanks,
+Ahmad
+
+> 
+> Sascha
+> 
+>>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>>  common/globalvar.c  | 77 +++++++++++++++++++++++++++++++++++++++++++++
+>>  include/globalvar.h |  3 ++
+>>  2 files changed, 80 insertions(+)
+>>
+>> diff --git a/common/globalvar.c b/common/globalvar.c
+>> index c2b0d5b4bbad..e168d6055347 100644
+>> --- a/common/globalvar.c
+>> +++ b/common/globalvar.c
+>> @@ -461,6 +461,83 @@ int globalvar_set(const char *name, const char *val)
+>>  	return dev_set_param(&global_device, name, val);
+>>  }
+>>  
+>> +struct globalvar_stashed {
+>> +	const char *key;
+>> +	const char *value;
+>> +	struct list_head list;
+>> +};
+>> +
+>> +static void globalvar_stashed_free(struct globalvar_stashed *elem)
+>> +{
+>> +	list_del(&elem->list);
+>> +	free_const(elem->key);
+>> +	free_const(elem->value);
+>> +	free(elem);
+>> +}
+>> +
+>> +int globalvar_stash_push(struct list_head *stash, ...)
+>> +{
+>> +	struct globalvar_stashed *elem, *safe;
+>> +	const char *name;
+>> +	int ret = -ENOMEM;
+>> +	va_list args;
+>> +	LIST_HEAD(tmp);
+>> +
+>> +	va_start(args, stash);
+>> +
+>> +	while ((name = va_arg(args, const char *))) {
+>> +		const char *value;
+>> +
+>> +		elem = calloc(1, sizeof(*elem));
+>> +		if (!elem)
+>> +			goto out;
+>> +
+>> +		list_add_tail(&elem->list, &tmp);
+>> +
+>> +		elem->key = strdup_const(name);
+>> +		if (!elem->key)
+>> +			goto out;
+>> +
+>> +		value = globalvar_get(name);
+>> +		if (!value) {
+>> +			ret = -EINVAL;
+>> +			goto out;
+>> +		}
+>> +
+>> +		elem->value = strdup_const(value);
+>> +		if (!elem->value)
+>> +			goto out;
+>> +	}
+>> +
+>> +	list_splice_tail(&tmp, stash);
+>> +
+>> +	ret = 0;
+>> +out:
+>> +	va_end(args);
+>> +
+>> +	if (ret) {
+>> +		list_for_each_entry_safe(elem, safe, &tmp, list)
+>> +			globalvar_stashed_free(elem);
+>> +	}
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +int globalvar_stash_pop(struct list_head *stash)
+>> +{
+>> +	struct globalvar_stashed *elem, *tmp;
+>> +	int err = 0;
+>> +
+>> +	list_for_each_entry_safe(elem, tmp, stash, list) {
+>> +		int ret = globalvar_set(elem->key, elem->value);
+>> +		if (ret)
+>> +			err = ret;
+>> +		globalvar_stashed_free(elem);
+>> +	}
+>> +
+>> +	return err;
+>> +}
+>> +
+>>  static int globalvar_simple_set(struct bobject *bobj, struct param_d *p,
+>>  				const char *val)
+>>  {
+>> diff --git a/include/globalvar.h b/include/globalvar.h
+>> index 413cf72002a0..1d39849ddbab 100644
+>> --- a/include/globalvar.h
+>> +++ b/include/globalvar.h
+>> @@ -24,6 +24,9 @@ char *globalvar_get_match(const char *match, const char *separator);
+>>  void globalvar_set_match(const char *match, const char *val);
+>>  int globalvar_set(const char *name, const char *val);
+>>  
+>> +int globalvar_stash_push(struct list_head *stash, ...) __attribute__((sentinel));
+>> +int globalvar_stash_pop(struct list_head *stash);
+>> +
+>>  int globalvar_add_simple_string(const char *name, char **value);
+>>  int globalvar_add_simple_int(const char *name, int *value,
+>>  			     const char *format);
+>> -- 
+>> 2.47.3
+>>
+>>
+>>
+> 
+
 
 -- 
-2.47.3
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
