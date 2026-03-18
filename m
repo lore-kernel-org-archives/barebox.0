@@ -1,59 +1,71 @@
-Delivery-date: Wed, 18 Mar 2026 10:22:58 +0100
+Delivery-date: Wed, 18 Mar 2026 10:51:06 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2n7C-0028C7-1u
+	id 1w2nYQ-0028de-2V
 	for lore@lore.pengutronix.de;
-	Wed, 18 Mar 2026 10:22:58 +0100
+	Wed, 18 Mar 2026 10:51:06 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2n7B-0005Jj-QF
-	for lore@pengutronix.de; Wed, 18 Mar 2026 10:22:58 +0100
+	id 1w2nYQ-00015X-7T
+	for lore@pengutronix.de; Wed, 18 Mar 2026 10:51:06 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=uvUWxbk15psTywCIi4pzlH4AbDCbJSErp5iDuoRA3ZQ=; b=dAosnq5QvROpV/iwB9+lnh+6Rg
-	/mm4fGqFQvy/qHa8VnkTYmsGRbFNBejrJ7v3zBG5lYzfqcVUm5GrhSdvsjMCscN2g9y5VzoHFnO0S
-	hNnBn3ush/i0iMSZeYsJN8CsZXpzeeWcN0JQzNexsLzJS9PV4SUsnKKnxkYBCpPVb6IlIPhwsbReT
-	gQ37VJuwf0EcSjki63kV83omIHw6t6Hjl1kYYwHYvwublbpklgq19lfbX9KkOTFrykqwXUsW/Q5Mm
-	SrCooKXIwIMtAyjn7mu3yJm3n7oUytQJyKEJX8DX6uPDFq9dcpD0uEOCB+9rYiCCDGLeEpUBJXPa3
-	5ORynL/A==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=tUMG7m3V9iXJ5BuzGwj52ZZL5QDejLcZ2K+odumD5fY=; b=ZTUBRsNOEpDhK1z0qECKMkTUL+
+	cvGkOkZY5mXpQgRzUCvzvLzgp2yJ/5h2cphp4LObX/6pAqydJvthwKkf6zQAh84isA1HGFU1hnUvJ
+	LoL11rZVWUeAstbyXkPjv36Ogz4KiSt/5QJavtwzSy8qeCp68kaiYZVxn8heAWzLbzlDfjc6o8Bla
+	UHM4tJU/HnPCpOEzRnFbB+vB2NlkGvUIeZ6lW0/TL6ZKVDTuA8amJQnN2MaDh3z2Fkk8kAULa0FH/
+	rfntkJ0l+36toCLX1I+lu1Qexq88xdVlh3GBvb6ySmkCZwkvDlwCZq2SlozBxVSe+NMMMWdXCrJOQ
+	aUrCnSFQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2n6n-0000000888S-36Yx;
-	Wed, 18 Mar 2026 09:22:33 +0000
+	id 1w2nXu-00000008AKV-16nl;
+	Wed, 18 Mar 2026 09:50:34 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2n6j-00000008847-3Zve
+	id 1w2nXr-00000008AK8-0b2m
 	for barebox@lists.infradead.org;
-	Wed, 18 Mar 2026 09:22:31 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1w2n6i-0004jE-1d; Wed, 18 Mar 2026 10:22:28 +0100
-Message-ID: <a8d3272f-d0f4-4728-84e2-0baafa6761f8@pengutronix.de>
-Date: Wed, 18 Mar 2026 10:22:27 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>
+	Wed, 18 Mar 2026 09:50:32 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1w2nXn-0000xv-Pr; Wed, 18 Mar 2026 10:50:27 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1w2nXn-000t0Q-1x;
+	Wed, 18 Mar 2026 10:50:27 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1w2nXn-000000098Cw-29El;
+	Wed, 18 Mar 2026 10:50:27 +0100
+Date: Wed, 18 Mar 2026 10:50:27 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-References: <20260312144325.2157379-1-a.fatoum@pengutronix.de>
- <20260312144325.2157379-2-a.fatoum@pengutronix.de>
- <abpeXYhQNkb102YL@pengutronix.de>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <abpeXYhQNkb102YL@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Message-ID: <abp1Y3WwJTTtxpdk@pengutronix.de>
+References: <20260312144505.2159816-1-a.fatoum@pengutronix.de>
+ <20260312144505.2159816-14-a.fatoum@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260312144505.2159816-14-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260318_022229_909912_298E408C 
-X-CRM114-Status: GOOD (  22.15  )
+X-CRM114-CacheID: sfid-20260318_025031_182591_C49E2D99 
+X-CRM114-Status: GOOD (  18.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,173 +83,58 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/2] globalvar: add helpers for stashing global variables
+Subject: Re: [PATCH 14/16] defaultenv: base: add new devboot script
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Sascha,
+On Thu, Mar 12, 2026 at 03:44:57PM +0100, Ahmad Fatoum wrote:
+> +The devboot script
+> +------------------
+> +
+> +The ``devboot`` command (``/env/bin/devboot``) automates the override
+> +workflow for network-based development:
+> +
+> +1. Brings up the network (``ifup -a1``).
+> +2. Changes into the fetch directory
+> +   (:ref:`global.net.fetchdir <magicvar_global_net_fetchdir>`, default
+> +   ``/mnt/tftp``).
 
-On 3/18/26 09:12, Sascha Hauer wrote:
-> On Thu, Mar 12, 2026 at 03:43:16PM +0100, Ahmad Fatoum wrote:
->> Configuring a FIT image boot with overlays involves setting not only
->> global.bootm.* variables, but also global.of.overlay.* variables.
->>
->> For use in custom boot entry functions, provide functions for stashing
->> and restoring a set of variables. This allows dry run and boot fallback
->> behavior to not affect later boot attempts.
-> 
-> Looks generally good. I assume this is to replace the .dyn. type
-> variables, right?
+Is this default actually set somewhere? I can't find it.
 
-Not on its own, because there is no means to use this from scripts.
-For the .dyn. case I was thinking about a locally scope bootm bobject
-that can be modified in the boot script and then discarded afterwards.
+> +3. Sources a configuration script named
+> +   ``${global.user}-devboot-${global.hostname}``. If that file does not
+> +   exist, it falls back to ``${global.user}-devboot-${global.arch}``.
+> +4. Translates the variables set by the script into ``boot -o`` arguments.
+> +5. Passes any extra arguments through to the ``boot`` command.
+> +
+> +.. note::
+> +
+> +   TFTP is not a real file system, e.g., listing of directories is not
+> +   possible. Keep that in mind if the devboot script does more than
+> +   just fetch files by name from TFTP.
+> +
+> +Usage
+> +^^^^^
+> +
+> +.. code-block:: sh
+> +
+> +  # Boot from MMC with devboot overrides
+> +  devboot mmc
+> +
+> +  # Boot from the default boot entry
+> +  devboot
+> +
+> +  # Make devboot the default for subsequent boots
+> +  nv.boot.default=devel
 
-> Can we the a user before applying this?
+So that would be equivalent to a permanent "devboot". Is there also a
+way to specifiy permanent "devboot mmc"?
 
-The single user on my side is out-of-tree board code that uses it scope
-use of global.of.overlay.filter Here's an excerpt:
-
- LIST_HEAD(stash);
-
- globalvar_stash_push(stash, "of.overlay.pattern", "of.overlay.filter", 
-                      "of.overlay.path", NULL);
-
- globalvar_set("of.overlay.path", kernel);                              
- globalvar_set("of.overlay.filter", "pattern");                         
- globalvar_set("of.overlay.pattern", pattern);                          
-
- ret = bootm_entry(entry, &bootm_data);
-
- globalvar_stash_pop(&stash);
-
-
-Thanks,
-Ahmad
-
-> 
-> Sascha
-> 
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  common/globalvar.c  | 77 +++++++++++++++++++++++++++++++++++++++++++++
->>  include/globalvar.h |  3 ++
->>  2 files changed, 80 insertions(+)
->>
->> diff --git a/common/globalvar.c b/common/globalvar.c
->> index c2b0d5b4bbad..e168d6055347 100644
->> --- a/common/globalvar.c
->> +++ b/common/globalvar.c
->> @@ -461,6 +461,83 @@ int globalvar_set(const char *name, const char *val)
->>  	return dev_set_param(&global_device, name, val);
->>  }
->>  
->> +struct globalvar_stashed {
->> +	const char *key;
->> +	const char *value;
->> +	struct list_head list;
->> +};
->> +
->> +static void globalvar_stashed_free(struct globalvar_stashed *elem)
->> +{
->> +	list_del(&elem->list);
->> +	free_const(elem->key);
->> +	free_const(elem->value);
->> +	free(elem);
->> +}
->> +
->> +int globalvar_stash_push(struct list_head *stash, ...)
->> +{
->> +	struct globalvar_stashed *elem, *safe;
->> +	const char *name;
->> +	int ret = -ENOMEM;
->> +	va_list args;
->> +	LIST_HEAD(tmp);
->> +
->> +	va_start(args, stash);
->> +
->> +	while ((name = va_arg(args, const char *))) {
->> +		const char *value;
->> +
->> +		elem = calloc(1, sizeof(*elem));
->> +		if (!elem)
->> +			goto out;
->> +
->> +		list_add_tail(&elem->list, &tmp);
->> +
->> +		elem->key = strdup_const(name);
->> +		if (!elem->key)
->> +			goto out;
->> +
->> +		value = globalvar_get(name);
->> +		if (!value) {
->> +			ret = -EINVAL;
->> +			goto out;
->> +		}
->> +
->> +		elem->value = strdup_const(value);
->> +		if (!elem->value)
->> +			goto out;
->> +	}
->> +
->> +	list_splice_tail(&tmp, stash);
->> +
->> +	ret = 0;
->> +out:
->> +	va_end(args);
->> +
->> +	if (ret) {
->> +		list_for_each_entry_safe(elem, safe, &tmp, list)
->> +			globalvar_stashed_free(elem);
->> +	}
->> +
->> +	return ret;
->> +}
->> +
->> +int globalvar_stash_pop(struct list_head *stash)
->> +{
->> +	struct globalvar_stashed *elem, *tmp;
->> +	int err = 0;
->> +
->> +	list_for_each_entry_safe(elem, tmp, stash, list) {
->> +		int ret = globalvar_set(elem->key, elem->value);
->> +		if (ret)
->> +			err = ret;
->> +		globalvar_stashed_free(elem);
->> +	}
->> +
->> +	return err;
->> +}
->> +
->>  static int globalvar_simple_set(struct bobject *bobj, struct param_d *p,
->>  				const char *val)
->>  {
->> diff --git a/include/globalvar.h b/include/globalvar.h
->> index 413cf72002a0..1d39849ddbab 100644
->> --- a/include/globalvar.h
->> +++ b/include/globalvar.h
->> @@ -24,6 +24,9 @@ char *globalvar_get_match(const char *match, const char *separator);
->>  void globalvar_set_match(const char *match, const char *val);
->>  int globalvar_set(const char *name, const char *val);
->>  
->> +int globalvar_stash_push(struct list_head *stash, ...) __attribute__((sentinel));
->> +int globalvar_stash_pop(struct list_head *stash);
->> +
->>  int globalvar_add_simple_string(const char *name, char **value);
->>  int globalvar_add_simple_int(const char *name, int *value,
->>  			     const char *format);
->> -- 
->> 2.47.3
->>
->>
->>
-> 
-
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
