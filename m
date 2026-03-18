@@ -1,66 +1,71 @@
-Delivery-date: Tue, 17 Mar 2026 22:45:13 +0100
+Delivery-date: Wed, 18 Mar 2026 08:35:10 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2cDx-001wk8-0c
+	id 1w2lQs-0026B0-15
 	for lore@lore.pengutronix.de;
-	Tue, 17 Mar 2026 22:45:13 +0100
+	Wed, 18 Mar 2026 08:35:10 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2cDv-00069F-8E
-	for lore@pengutronix.de; Tue, 17 Mar 2026 22:45:13 +0100
+	id 1w2lQr-0003pL-Na
+	for lore@pengutronix.de; Wed, 18 Mar 2026 08:35:10 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ccXaYk+/HAV3hg914AuMmi/GQtrMishKWiCslINjdT4=; b=t4WabKaWLtIymOfmXFTJdT/BC4
-	dkbyytccPDN3JgIK7q4BfdBA+aTekezpNVKic7oNbS2j30cFzhSFZ6+xjqtgNPlvjO62xWOfqXUPI
-	pkVTQZtM6QnGcr6Z76LuPIxxJdFBLFmzJllHSD4nVDZkoPGJ/DKYxcgcq7C8sxPbA7w2oA6w4kecj
-	tRAvaD5xwgG0V2aaSEBxP2hemhJB0QXnPctn1jbHvQ8jaSTsdwaUIWEDeVtflW19w5GX/z++w2fkb
-	xAHIHUVbBw3MmU//wnfxiaiowVRhhVCU5c6Hjeb3PK5n7ypsn71VeZfenFwUhJ4juLmSiMBKrDwzp
-	nahyaogA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=p3GDzEb5N+ADwFLbrtMz2zw1tgFpsau1dXTWtAIPv2w=; b=QXabrrYuxqZ7XAC2SnUslOf3lp
+	ZPMrz2HSFnW2bT8EAnIJoE7nFqzvabJc+b8hGH0WONjWTVxVK7k4NJi8rOUe5VA0ZeqjkI250yaPS
+	Wcbkj8HmqnKIzW23GrrnxXL/w34n3S0X571kJ4FTW2s7tnLTiCiuFHvN1aQI20kgINqTdyAyhWP8K
+	Y+qsFxlbJ6kBpq9gTFL5fkVd3M3Ju/hbQ/SdS1wYxXhwwKGjqWFJ1y0GZGYOenqd9HyZrbkC5zzFi
+	4i0yc3rMkLVNLBFdrryZ2AnQIrPksoZ5Tv5bG+lCfVm/aJ0XXv9dTKt3vkuVXKTWxoqaVMHmtoRVz
+	SCBTQubQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2cDM-00000007Gro-3qIB;
-	Tue, 17 Mar 2026 21:44:36 +0000
+	id 1w2lQD-00000007vqv-4ABF;
+	Wed, 18 Mar 2026 07:34:29 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2cDK-00000007GrR-3WbG
+	id 1w2lQA-00000007vqC-49fe
 	for barebox@lists.infradead.org;
-	Tue, 17 Mar 2026 21:44:36 +0000
+	Wed, 18 Mar 2026 07:34:28 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1w2cDJ-000636-5y; Tue, 17 Mar 2026 22:44:33 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1w2lQ7-0003iM-FL; Wed, 18 Mar 2026 08:34:23 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1w2cDJ-000nz0-00;
-	Tue, 17 Mar 2026 22:44:33 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1w2cDI-00000007Nwc-3prs;
-	Tue, 17 Mar 2026 22:44:32 +0100
-Date: Tue, 17 Mar 2026 22:44:32 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <zr3s6fhjqpwnfzu5oat3bk2qniatbjp246qlazxz7cluu5qh3p@z4kbl43wq2je>
-References: <20260317134755.3184029-1-s.hauer@pengutronix.de>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1w2lQ7-000s4r-0s;
+	Wed, 18 Mar 2026 08:34:23 +0100
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1w2lQ7-000000060I8-0sf9;
+	Wed, 18 Mar 2026 08:34:23 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: BAREBOX <barebox@lists.infradead.org>, 
+ Jonas Rebmann <jre@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, 
+ Marco Felsch <m.felsch@pengutronix.de>
+In-Reply-To: <20260317-keytoc-multi-env-v4-0-38ab473f8034@pengutronix.de>
+References: <20260317-keytoc-multi-env-v4-0-38ab473f8034@pengutronix.de>
+Message-Id: <177381926320.1430991.10456820598440017614.b4-ty@pengutronix.de>
+Date: Wed, 18 Mar 2026 08:34:23 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260317134755.3184029-1-s.hauer@pengutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260317_144434_879869_421F167C 
-X-CRM114-Status: GOOD (  29.36  )
+X-CRM114-CacheID: sfid-20260318_003427_057406_E9980A87 
+X-CRM114-Status: UNSURE (   9.98  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,174 +83,52 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] nvmem: rockchip-otp: implement SoC UID reading
+Subject: Re: [PATCH v4 0/8] Allow multiple keyspecs in one environment
+ variable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Sascha,
 
-On 26-03-17, Sascha Hauer wrote:
-> The Rockchip SoCs supported by the rockchip-otp driver have a SoC UID in
-> the OTP data. Read it out and forward it to barebox. The raw SoC UID
-> goes through some crc32 code before it is used. This is based on U-Boot
-> code which itself is based on the Rockchip Downstream Linux support.
+On Tue, 17 Mar 2026 16:19:44 +0100, Jonas Rebmann wrote:
+> This contains the actual change to keytoc as well a migration Note.
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  drivers/nvmem/rockchip-otp.c | 54 ++++++++++++++++++++++++++++++++++--
->  1 file changed, 51 insertions(+), 3 deletions(-)
+> Allowing any number of public keys to be provided via a single
+> environment variable eases integration in more complex setups where
+> multiple public keys per keyring are managed externally.
 > 
-> diff --git a/drivers/nvmem/rockchip-otp.c b/drivers/nvmem/rockchip-otp.c
-> index d2145bba52..041d628480 100644
-> --- a/drivers/nvmem/rockchip-otp.c
-> +++ b/drivers/nvmem/rockchip-otp.c
-> @@ -9,6 +9,7 @@
->  #include <common.h>
->  #include <driver.h>
->  #include <init.h>
-> +#include <crc.h>
->  #include <of.h>
->  #include <of_device.h>
->  #include <linux/clk.h>
-> @@ -86,6 +87,7 @@ struct rockchip_data {
->  	const char * const *clks;
->  	int num_clks;
->  	int (*reg_read)(void *ctx, unsigned int reg, void *val, size_t val_size);
-> +	int cpuid_offset;
-		^
-Would be nice to have it as function hook, like the reg_read() in case
-RK SoCs find just another way to readout the ID in the future or the ID
-gets more bits (like NXP did for the i.MX8MP).
-
-In such cases the function hook is more future proof.
-
-Regards,
-  Marco
-
-
->  };
->  
->  struct rockchip_otp {
-> @@ -400,6 +402,7 @@ static const struct rockchip_data px30_data = {
->  	.clks = px30_otp_clocks,
->  	.num_clks = ARRAY_SIZE(px30_otp_clocks),
->  	.reg_read = px30_otp_read,
-> +	.cpuid_offset = -1,
->  };
->  
->  static const char * const rk3562_otp_clocks[] = {
-> @@ -411,6 +414,7 @@ static const struct rockchip_data rk3562_data = {
->  	.clks = rk3562_otp_clocks,
->  	.num_clks = ARRAY_SIZE(rk3562_otp_clocks),
->  	.reg_read = rk3562_otp_read,
-> +	.cpuid_offset = -1,
->  };
->  
->  static const char * const rk3568_otp_clocks[] = {
-> @@ -422,6 +426,7 @@ static const struct rockchip_data rk3568_data = {
->  	.clks = rk3568_otp_clocks,
->  	.num_clks = ARRAY_SIZE(rk3568_otp_clocks),
->  	.reg_read = rk3568_otp_read,
-> +	.cpuid_offset = 0xa,
->  };
->  
->  static const struct rockchip_data rk3576_data = {
-> @@ -429,6 +434,7 @@ static const struct rockchip_data rk3576_data = {
->  	.clks = px30_otp_clocks,
->  	.num_clks = ARRAY_SIZE(px30_otp_clocks),
->  	.reg_read = rk3588_otp_read,
-> +	.cpuid_offset = 0xa,
->  };
->  
->  static const char * const rk3588_otp_clocks[] = {
-> @@ -440,6 +446,7 @@ static const struct rockchip_data rk3588_data = {
->  	.clks = rk3588_otp_clocks,
->  	.num_clks = ARRAY_SIZE(rk3588_otp_clocks),
->  	.reg_read = rk3588_otp_read,
-> +	.cpuid_offset = 0x7,
->  };
->  
->  static __maybe_unused const struct of_device_id rockchip_otp_match[] = {
-> @@ -471,6 +478,42 @@ static __maybe_unused const struct of_device_id rockchip_otp_match[] = {
->  };
->  MODULE_DEVICE_TABLE(of, rockchip_otp_match);
->  
-> +#define CPUID_SIZE 16
-> +
-> +static int rockchip_otp_read_socuid(struct rockchip_otp *otp, struct nvmem_device *nvmem)
-> +{
-> +	u8 low[CPUID_SIZE / 2], high[CPUID_SIZE / 2];
-> +	unsigned char cpuid[CPUID_SIZE];
-> +	char uidstr[CPUID_SIZE * 2 + 1];
-> +	u64 serialno;
-> +	int i, ret, offset;
-> +
-> +	offset = otp->data->cpuid_offset;
-> +	if (offset < 0)
-> +		return 0;
-> +
-> +	ret = rockchip_otp_read(otp, offset, cpuid, CPUID_SIZE);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/*
-> +	 * Do the same mangling as U-Boot and downstream Rockchip Linux does.
-> +	 */
-> +	for (i = 0; i < CPUID_SIZE / 2; i++) {
-> +		low[i] = cpuid[1 + (i << 1)];
-> +		high[i] = cpuid[i << 1];
-> +	}
-> +
-> +	serialno = crc32_no_comp(0, low, CPUID_SIZE / 2);
-> +	serialno |= (u64)crc32_no_comp(serialno, high, CPUID_SIZE / 2) << 32;
-> +
-> +	snprintf(uidstr, sizeof(uidstr), "%016llx", serialno);
-> +
-> +	barebox_set_soc_uid(uidstr, &serialno, sizeof(serialno));
-> +
-> +	return 0;
-> +}
-> +
->  static int rockchip_otp_probe(struct device *dev)
->  {
->  	struct rockchip_otp *otp;
-> @@ -521,11 +564,16 @@ static int rockchip_otp_probe(struct device *dev)
->  	otp_config.dev = dev;
->  
->  	nvmem = nvmem_register(&otp_config);
-> -	if (!IS_ERR(nvmem))
-> -		return 0;
-> +	if (IS_ERR(nvmem)) {
-> +		ret = PTR_ERR(nvmem);
-> +		goto err_register;
-> +	}
->  
-> -	ret = PTR_ERR(nvmem);
-> +	rockchip_otp_read_socuid(otp, nvmem);
-> +
-> +	return 0;
->  
-> +err_register:
->  	reset_control_put(otp->rst);
->  
->  err_rst:
-> -- 
-> 2.47.3
+> During testing, it was found that handling of fit-hint env variables was
+> broken since 2025.12. Since this is a legacy feature this series
+> includes a patch that fixes the bug in the handling of fit-hint env
+> variables as well as a patch that removes the feature.
 > 
-> 
-> 
+> [...]
 
+Applied, thanks!
+
+[1/8] scripts: include: Add string_util.h for strsep_unescaped
+      https://git.pengutronix.de/cgit/barebox/commit/?id=7f971d0c543b (link may not be stable)
+[2/8] crypto: keytoc: Improve readability
+      https://git.pengutronix.de/cgit/barebox/commit/?id=6c863153dcc6 (link may not be stable)
+[3/8] crypto: keytoc: Move special handling of legacy pkcs11 format to parse_keyspec
+      https://git.pengutronix.de/cgit/barebox/commit/?id=4dbe43c9c0e5 (link may not be stable)
+[4/8] crypto: keytoc: Parse all keyspecs before writing to stdout
+      https://git.pengutronix.de/cgit/barebox/commit/?id=f63827c7478c (link may not be stable)
+[5/8] crypto: keytoc: Split env-provided full keyspec on spaces
+      https://git.pengutronix.de/cgit/barebox/commit/?id=bcf316ce1495 (link may not be stable)
+[6/8] Documentation: migration-guides: Document change in keyspec env vars
+      https://git.pengutronix.de/cgit/barebox/commit/?id=594abefb8251 (link may not be stable)
+[7/8] crypto: keytoc: Allow fields to start with underscore
+      https://git.pengutronix.de/cgit/barebox/commit/?id=e6e36288c9f2 (link may not be stable)
+[8/8] crypto: keytoc: Deprecate fit-hint from env variable
+      https://git.pengutronix.de/cgit/barebox/commit/?id=5207773f43a6 (link may not be stable)
+
+Best regards,
 -- 
-#gernperDu 
-#CallMeByMyFirstName
+Sascha Hauer <s.hauer@pengutronix.de>
 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
 
 
