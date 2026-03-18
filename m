@@ -1,71 +1,59 @@
-Delivery-date: Wed, 18 Mar 2026 11:33:03 +0100
+Delivery-date: Wed, 18 Mar 2026 11:51:22 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2oD1-0029Vq-0F
+	id 1w2oUk-0029pU-08
 	for lore@lore.pengutronix.de;
-	Wed, 18 Mar 2026 11:33:03 +0100
+	Wed, 18 Mar 2026 11:51:22 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w2oD0-0007KS-F8
-	for lore@pengutronix.de; Wed, 18 Mar 2026 11:33:03 +0100
+	id 1w2oUj-0001Ve-El
+	for lore@pengutronix.de; Wed, 18 Mar 2026 11:51:21 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=iV0i2ceK483ljH7nP9Ajrgf0maRmretnvoVHYEswPV8=; b=nuDbzbNT+du6N5Q6OJ8sYkXhlv
-	A1LUbLIqjEFHkDnV1nLb0DmMZsRE6CbofOckMJC/Aon15fQP1Xzkm2hZoufyEQLgPMmeWKAIy/Wd/
-	2uyusr3HJ1tYAj147Pl0auei2WN6o5XjQxCuXVaNuVD+xJy375DjUqwUh+1bmKyY80jaGvuXEOA9Y
-	FjYpoTb7BBYekuVCe0WJXVvPeM0ZdiDGrKtsKWiHtNchX81+kDBRiqrRC2cycrKUUzKYxRsQPO03B
-	JqbvEHyAmMthw7ns5AXjR1Zv6eZK1sm7peUGHbUkgqLHdq3Kmfpg2MgMp+wmkd+6DnLZ9ievICmqi
-	VhvMNjJw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=SQ9xs1g4ZJRpyBUzCt7ITnsRZWgl6TweS0uY66XlTiQ=; b=eVFxlEdlfhSq4JXI3l3WcHcbTP
+	A27xQISjBcfNk9qAJZnVA9jaItTQO4uXKOAc7AMGXK0bosXPmvYqO/YQp7Et6Sz1mbd9OX1LM6oSZ
+	iscRRMtNDcI7qkZyzyH4aQ2u3/gd4FVlgJbso35yPOCgwTA5cfDhIdq44IPJEkLgDNK66YjkqK17T
+	P9TrasyAnhO7EHwuAHmLtbNPBLGJftivJey50vPPgp5Z8c2dp95aj9E25gAtivedgk0BY7jdBGMxE
+	swOThoc//SkALdK1RUyXYQxow+YEjKHD3ElWGNPuPWNJxBXw3uOC9ivLzSCnMwjconGOh/4MriZL6
+	n/+9B8Fw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2oCb-00000008DJz-1sHa;
-	Wed, 18 Mar 2026 10:32:37 +0000
+	id 1w2oUC-00000008EqS-0sno;
+	Wed, 18 Mar 2026 10:50:48 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w2oCZ-00000008DJT-1gtC
+	id 1w2oU8-00000008Epw-2LP2
 	for barebox@lists.infradead.org;
-	Wed, 18 Mar 2026 10:32:36 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1w2oCX-0007Eh-OK; Wed, 18 Mar 2026 11:32:33 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1w2oCX-000tM3-1l;
-	Wed, 18 Mar 2026 11:32:33 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1w2oCX-000000098ee-1tXt;
-	Wed, 18 Mar 2026 11:32:33 +0100
-Date: Wed, 18 Mar 2026 11:32:33 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <abp_QTdP5UyvhdXq@pengutronix.de>
-References: <20260317134755.3184029-1-s.hauer@pengutronix.de>
- <zr3s6fhjqpwnfzu5oat3bk2qniatbjp246qlazxz7cluu5qh3p@z4kbl43wq2je>
+	Wed, 18 Mar 2026 10:50:45 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1w2oU7-0001Ow-0a; Wed, 18 Mar 2026 11:50:43 +0100
+Message-ID: <edd64ade-0956-484f-a79c-a59513de4f96@pengutronix.de>
+Date: Wed, 18 Mar 2026 11:50:42 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <zr3s6fhjqpwnfzu5oat3bk2qniatbjp246qlazxz7cluu5qh3p@z4kbl43wq2je>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <20260312144505.2159816-1-a.fatoum@pengutronix.de>
+ <20260312144505.2159816-14-a.fatoum@pengutronix.de>
+ <abp1Y3WwJTTtxpdk@pengutronix.de>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <abp1Y3WwJTTtxpdk@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260318_033235_439733_60107B89 
-X-CRM114-Status: GOOD (  26.24  )
+X-CRM114-CacheID: sfid-20260318_035044_611231_13431927 
+X-CRM114-Status: GOOD (  18.12  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,56 +71,73 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=ham
+	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] nvmem: rockchip-otp: implement SoC UID reading
+Subject: Re: [PATCH 14/16] defaultenv: base: add new devboot script
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, Mar 17, 2026 at 10:44:32PM +0100, Marco Felsch wrote:
-> Hi Sascha,
+On 3/18/26 10:50, Sascha Hauer wrote:
+> On Thu, Mar 12, 2026 at 03:44:57PM +0100, Ahmad Fatoum wrote:
+>> +The devboot script
+>> +------------------
+>> +
+>> +The ``devboot`` command (``/env/bin/devboot``) automates the override
+>> +workflow for network-based development:
+>> +
+>> +1. Brings up the network (``ifup -a1``).
+>> +2. Changes into the fetch directory
+>> +   (:ref:`global.net.fetchdir <magicvar_global_net_fetchdir>`, default
+>> +   ``/mnt/tftp``).
 > 
-> On 26-03-17, Sascha Hauer wrote:
-> > The Rockchip SoCs supported by the rockchip-otp driver have a SoC UID in
-> > the OTP data. Read it out and forward it to barebox. The raw SoC UID
-> > goes through some crc32 code before it is used. This is based on U-Boot
-> > code which itself is based on the Rockchip Downstream Linux support.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  drivers/nvmem/rockchip-otp.c | 54 ++++++++++++++++++++++++++++++++++--
-> >  1 file changed, 51 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/nvmem/rockchip-otp.c b/drivers/nvmem/rockchip-otp.c
-> > index d2145bba52..041d628480 100644
-> > --- a/drivers/nvmem/rockchip-otp.c
-> > +++ b/drivers/nvmem/rockchip-otp.c
-> > @@ -9,6 +9,7 @@
-> >  #include <common.h>
-> >  #include <driver.h>
-> >  #include <init.h>
-> > +#include <crc.h>
-> >  #include <of.h>
-> >  #include <of_device.h>
-> >  #include <linux/clk.h>
-> > @@ -86,6 +87,7 @@ struct rockchip_data {
-> >  	const char * const *clks;
-> >  	int num_clks;
-> >  	int (*reg_read)(void *ctx, unsigned int reg, void *val, size_t val_size);
-> > +	int cpuid_offset;
-> 		^
-> Would be nice to have it as function hook, like the reg_read() in case
-> RK SoCs find just another way to readout the ID in the future or the ID
-> gets more bits (like NXP did for the i.MX8MP).
+> Is this default actually set somewhere? I can't find it.
+
+global.net.fetchdir is defined in net/net.c since commit
+4f328e47e5c6 ("net: make default netboot artifact directory configurable")
+
 > 
-> In such cases the function hook is more future proof.
+>> +3. Sources a configuration script named
+>> +   ``${global.user}-devboot-${global.hostname}``. If that file does not
+>> +   exist, it falls back to ``${global.user}-devboot-${global.arch}``.
+>> +4. Translates the variables set by the script into ``boot -o`` arguments.
+>> +5. Passes any extra arguments through to the ``boot`` command.
+>> +
+>> +.. note::
+>> +
+>> +   TFTP is not a real file system, e.g., listing of directories is not
+>> +   possible. Keep that in mind if the devboot script does more than
+>> +   just fetch files by name from TFTP.
+>> +
+>> +Usage
+>> +^^^^^
+>> +
+>> +.. code-block:: sh
+>> +
+>> +  # Boot from MMC with devboot overrides
+>> +  devboot mmc
+>> +
+>> +  # Boot from the default boot entry
+>> +  devboot
+>> +
+>> +  # Make devboot the default for subsequent boots
+>> +  nv.boot.default=devel
+> 
+> So that would be equivalent to a permanent "devboot". Is there also a
+> way to specifiy permanent "devboot mmc"?
 
-I think this is easy enough to refactor once we get in this situation
-and once we really know in which way we have to adjust.
+No, but it's clear to me this is a non-sense boot target as boot would
+refer to boot.default... I'd just drop it from v2.
 
-Sascha
+Please let me know when you are done with the review and I can resend.
+
+Cheers,
+Ahmad
+
+> 
+> Sascha
+> 
 
 
 -- 
