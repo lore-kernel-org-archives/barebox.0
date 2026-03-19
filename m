@@ -1,57 +1,66 @@
-Delivery-date: Thu, 19 Mar 2026 12:04:07 +0100
+Delivery-date: Thu, 19 Mar 2026 15:20:35 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w3BAd-002c1i-1o
+	id 1w3EEl-002foj-0E
 	for lore@lore.pengutronix.de;
-	Thu, 19 Mar 2026 12:04:07 +0100
+	Thu, 19 Mar 2026 15:20:35 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w3BAc-0002BX-QC
-	for lore@pengutronix.de; Thu, 19 Mar 2026 12:04:07 +0100
+	id 1w3EEk-0005YD-Hr
+	for lore@pengutronix.de; Thu, 19 Mar 2026 15:20:34 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3bQa5HsTlKN/NkVE6wWyWusoUXSIkFQOgYRnnXrLg/M=; b=vLbmnsxZKI7FV8HI20XYo1DhYd
-	AldVaEELwiSM/G/AZTR1VMwdNNSn1UKrMms6du3JVaOnUqSPSADB9QQnSOBXWZ92BvKRbsEONe9Ps
-	Y5xKFF76ViBVGOj9PXqgfmBE+0a/9zIwVWK1BFFjyw0dwWNw5ZvlafuBuFAcoOivlMO1cgYheGp7L
-	dOg6F7msFIvElgSBWlRDOcBLXmrJTEmOxsRG88I0Yiv+48Jq9tknKNVdmtOOQR0hrdbt0ZO2YUt3e
-	UYJCyQLfqrTQtovhfSpoGdsI8Y1rEVqo/SjisK9Mce9UuRghRIGqz6McQi7IdAEmXmqfZNi3WhLeB
-	o6pcQV6A==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=LErO7iPSNryzy3Ep9ofsF3Pv57zELU4/aFR7j6ALSFk=; b=ofnpKRPYB27uuGoIPrwN4lV4+T
+	lO1qIYzKn7ozkOb9lMz35ruC64yIPd/PHAJnBFt2JmxTT9PL+wvXWpaHhbVNH78jHtD7Rr5M/sTX6
+	EAslemr9kcUTkYXzE12AsQJ8LBDcVVAIZxbO+ebYI/ArST9kh1WO8qg6vTvzu0UG3AsNMa27uBvQg
+	XJl0AbUh94G1IUa0cojKzN3bQ7uTWl+yWB2y3pgOS6bFZLAMSeurs/HPAIzc802Kq9cTGxI0QGTYT
+	KlPmQBpDsM8qQtOV5hwD5tUkZgi0N7v/TCokcM/PovMT56Dj1SjdLQMtDZe4TQSAFhitqSjIdURHI
+	rLmG4cLw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w3B9t-0000000AUCP-2foi;
-	Thu, 19 Mar 2026 11:03:21 +0000
+	id 1w3EED-0000000Am35-0QsW;
+	Thu, 19 Mar 2026 14:20:01 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w3B9r-0000000AUC3-1xGw
+	id 1w3EE8-0000000Am0c-49eV
 	for barebox@lists.infradead.org;
-	Thu, 19 Mar 2026 11:03:20 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <jre@pengutronix.de>)
-	id 1w3B9o-00022E-J8; Thu, 19 Mar 2026 12:03:16 +0100
-Message-ID: <75813116-0e87-4f1f-9bbd-42e30812dc4c@pengutronix.de>
-Date: Thu, 19 Mar 2026 12:03:16 +0100
+	Thu, 19 Mar 2026 14:20:00 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1w3EE4-0005Pf-Sy; Thu, 19 Mar 2026 15:19:52 +0100
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1w3EE4-0015gQ-0H;
+	Thu, 19 Mar 2026 15:19:52 +0100
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1w3EE3-0000000GXgJ-40u9;
+	Thu, 19 Mar 2026 15:19:51 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Thu, 19 Mar 2026 15:19:51 +0100
+Message-ID: <20260319141951.3942710-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260316-compressed-firmware-v1-6-d9712142881e@pengutronix.de>
+References: <20260316-compressed-firmware-v1-6-d9712142881e@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Barebox List <barebox@lists.infradead.org>
-References: <20260319072035.2389862-1-s.hauer@pengutronix.de>
-Content-Language: en-US
-From: Jonas Rebmann <jre@pengutronix.de>
-In-Reply-To: <20260319072035.2389862-1-s.hauer@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260319_040319_512728_0F1E888E 
-X-CRM114-Status: GOOD (  22.44  )
+X-CRM114-CacheID: sfid-20260319_071957_051711_B2BC03C7 
+X-CRM114-Status: GOOD (  11.09  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,114 +78,37 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2] scripts: bareboxtlv-generator: add engine support
+Subject: [PATCH] fixup! firmware: Add compressed firmware symbols for PBL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Sascha,
+_fw_z_##name##_uncompressed_size is an absolute symbol, we must use its
+address, not interpret as a memory location.
 
-On 2026-03-19 08:20, Sascha Hauer wrote:
-> Add a -engine option to optionally use engine e.g. to support PKCS# URIs
-> via engine.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ include/firmware.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I think this is a red herring.
-
-PKCS#11 URIs are already supported by bareboxtlv-generator.py as-is via
-pkcs11-provider, and I tested that when I implemented signature.
-
-https://manpages.debian.org/testing/pkcs11-provider/provider-pkcs11.7.en.html
-
-Maybe we need to document this clearly for bareboxtlv-generator.py in
-particular?
-
-The engine model is deprecated in OpenSSL 3.0 released in 2021, in favor
-of providers. Earlier versions are by now unsupported. Even if for some
-reason someone needed to use PKCS#11 URIs with unsupported OpenSSL 1.x
-versions, I believe that Engine configuration could and should be
-performed in openssl.cnf and/or via the Environment but not via the
-bareboxtlv-generator.py/openssl CLI.
-
-Regards,
-Jonas
-
-> Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->   .../bareboxtlv-generator.py                   | 20 +++++++++++++------
->   1 file changed, 14 insertions(+), 6 deletions(-)
-> 
-> diff --git a/scripts/bareboxtlv-generator/bareboxtlv-generator.py b/scripts/bareboxtlv-generator/bareboxtlv-generator.py
-> index 806d2d8b94..b568e13a37 100755
-> --- a/scripts/bareboxtlv-generator/bareboxtlv-generator.py
-> +++ b/scripts/bareboxtlv-generator/bareboxtlv-generator.py
-> @@ -47,11 +47,12 @@ class PrivateKey:
->       A private key for signing TLVs, requires the cryptography module
->       """
->   
-> -    def __init__(self, path: str | None = None):
-> +    def __init__(self, path: str | None = None, engine: str | None = None):
->           """
->           Load a private key from:
->           - PKCS#12 (.p12/.pfx)
->           - PEM/DER private key file
-> +        - Engine-backed key (e.g. PKCS#11 URI with --engine pkcs11)
->           """
->   
->           try:
-> @@ -65,7 +66,13 @@ class PrivateKey:
->               sys.exit(127)
->   
->           self.inkey = path
-> -        self.public_key = serialization.load_pem_public_key(openssl(["pkey", "-pubout", "-in", self.inkey]));
-> +        if engine:
-> +            pkey_args = ["-engine", engine, "-inform", "engine"]
-> +            self.pkeyutl_args = ["-engine", engine, "-keyform", "engine"]
-> +        else:
-> +            pkey_args = []
-> +            self.pkeyutl_args = []
-> +        self.public_key = serialization.load_pem_public_key(openssl(["pkey"] + pkey_args + ["-pubout", "-in", self.inkey]));
->   
->       def sign(self, message: bytes) -> bytes:
->           """
-> @@ -75,8 +82,8 @@ class PrivateKey:
->           from cryptography.hazmat.primitives.asymmetric import rsa, ec
->           from cryptography.hazmat.primitives.asymmetric.utils import decode_dss_signature
->   
-> -        # Access private keys only via the openssl cli so that any configured provider, such as pkcs11, can be used.
-> -        sig = openssl(["pkeyutl", "-sign", "-rawin", "-digest", "sha256", "-inkey", self.inkey], stdin = message)
-> +        # Access private keys only via the openssl cli so that any configured engine/provider, such as pkcs11, can be used.
-> +        sig = openssl(["pkeyutl"] + self.pkeyutl_args + ["-sign", "-rawin", "-digest", "sha256", "-inkey", self.inkey], stdin = message)
->   
->           if isinstance(self.public_key, rsa.RSAPublicKey):
->               return sig
-> @@ -503,7 +510,8 @@ def _main():
->       parser = argparse.ArgumentParser(description="Generate a TLV dataset for the Barebox TLV parser")
->       parser.add_argument("schema", help="YAML file describing the data.")
->       parser.add_argument("--input-data", help="YAML file containing data to write to the binary.")
-> -    parser.add_argument("--sign", help=" When using --input-data: Private key to sign the TLV with.")
-> +    parser.add_argument("--sign", help="When using --input-data: Private key to sign the TLV with.")
-> +    parser.add_argument("--engine", help="OpenSSL engine to use for private key operations (e.g. pkcs11).")
->       parser.add_argument("--output-data", help="YAML file where the contents of the binary will be written to.")
->       parser.add_argument("--verify", help="When using --output-data: Public key to verify the signature against")
->       parser.add_argument("binary", help="Path to where export data to be copied into DUT's EEPROM.")
-> @@ -519,7 +527,7 @@ def _main():
->               data = yaml.load(d_fh, Loader=yaml.SafeLoader)
->   
->           if args.sign:
-> -            privkey = PrivateKey(path=args.sign)
-> +            privkey = PrivateKey(path=args.sign, engine=args.engine)
->           else:
->               privkey = None
->           bin = eeprom.encode(data, sign=privkey)
-
+diff --git a/include/firmware.h b/include/firmware.h
+index 07651f1a93..6511d56b2e 100644
+--- a/include/firmware.h
++++ b/include/firmware.h
+@@ -127,7 +127,7 @@ int fwobj_uncompress(struct fwobj *fwobj, void *dest);
+ 	do {								\
+ 		extern char _fw_z_##name##_start[];			\
+ 		extern char _fw_z_##name##_end[];			\
+-		extern unsigned long _fw_z_##name##_uncompressed_size;	\
++		extern char _fw_z_##name##_uncompressed_size[];		\
+ 		(fwobj)->data = _fw_z_##name##_start;			\
+ 		(fwobj)->size = _fw_z_##name##_end - _fw_z_##name##_start;\
+ 		(fwobj)->uncompressed_size =				\
 -- 
-Pengutronix e.K.                           | Jonas Rebmann               |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
+2.47.3
+
 
 
