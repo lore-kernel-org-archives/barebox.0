@@ -1,81 +1,64 @@
-Delivery-date: Thu, 19 Mar 2026 08:03:47 +0100
+Delivery-date: Thu, 19 Mar 2026 08:21:43 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w37Q3-002Xsr-1K
+	id 1w37hP-002YBk-1z
 	for lore@lore.pengutronix.de;
-	Thu, 19 Mar 2026 08:03:47 +0100
+	Thu, 19 Mar 2026 08:21:43 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w37Q2-0006TD-Qn
-	for lore@pengutronix.de; Thu, 19 Mar 2026 08:03:47 +0100
+	id 1w37hO-00010O-Th
+	for lore@pengutronix.de; Thu, 19 Mar 2026 08:21:43 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
-	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=wj54wcEs9oz7CdBK1PK/g8SLUsqEnxKjUREqNa3vwQw=; b=oq/0j5em/NOD0g
-	8+3CPDehLkVDENHys27RHXqrpLNpVH+9BkSzRZLD68rX3xpdinzLQMEqBFGuC8PLMyO/U/pmGxL9i
-	2ualC33yDPuupkNJhaEQhSQd26HHhQW2//PXhyWWUnjSMTJ4bQCrcT1oZcweAX5OmdGYS/oQ/CZaz
-	ZyCaNRB5xpMOptlpQJcfWABeHsp7ZM2ZCHkvu5qoFpr2q0ada7R9I4dcjvyIQygdDYUhNysvr9Osq
-	MqJerc/tTRObkXcNxUoTzDdzJWbUQCbZlZftr/9z453bU0bOPlee7xUgjPpVfIzz3e/Fd9mpyHFMn
-	XX5KdmV7nZeUz0RAFgMQ==;
+	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=hk1Thx448nZVjhTyueXlRRGoFe3NB5hlke9jblG3OUU=; b=ZZRD3PGqLJJH4n
+	l7Es6UkirQ+3J4NT8EKu1Gf+AgM1zm4pkLyx0IXiwSeepjU/R4LR0jsketksra/a4Jn/hQPwAijEN
+	JZo9+gV/AXJe38txfujapxpMaGHtG7EXzmuq4M9oh3MDrfVbqgyhtlTYbL9CDueBo5+dHp0IAMFuH
+	UqFjjdb/yw4Wpv9E1Jnv73bkd8A4HA51f68hs3p+d/M+SlbOu/rWQdrjMGdoh1VfCGQxxrjlAycPe
+	fm2cLbejI7og01TGRy0B1Rt4/EFBIlHDbMQrCuzemPx6ESWdv+wjM2Y+1ycDyWh9dJ+kx4WnonKOk
+	cEDeE3YlBqaRsjFtS/uw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w37PW-0000000A66l-1KJt;
-	Thu, 19 Mar 2026 07:03:14 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w37PT-0000000A65Q-3IDY
-	for barebox@bombadil.infradead.org;
-	Thu, 19 Mar 2026 07:03:11 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=wj54wcEs9oz7CdBK1PK/g8SLUsqEnxKjUREqNa3vwQw=; b=Ko52CQF8iVlq0lg/CLSHF16xR3
-	cWMcs/rHnS/XeXC87zOQJTI5PM2/UfQG399gpDPMkWDEETkVpM7IxNJd4Lis3N3iiGtmbhVqIfsdE
-	ehx+yFQQauAJt90RIKynclrOyQtgGCMCE6xOYgvetWlGfiU7oKKA5WKLi5BCFp7v5BdAQYQMy5dY1
-	khpZLEQHxQeHh0gyTMcEt2fzEFdc7cd7gzm7Lk0kEc29mVkfG7Hi8bq/TEe7yWPn+2jIx4xiWkLVm
-	PUnk4yhoJMTzifqiS+ZEUjY4lMRt1FOlxw0XLUgkuPUX0Es5XOl14EjzFV2FjGk7E8hcr9ocEKfZ0
-	3/iiQgmg==;
+	id 1w37gt-0000000A8je-3ARn;
+	Thu, 19 Mar 2026 07:21:11 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w37PQ-0000000Ct0O-2VRV
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w37go-0000000A8h2-1GZg
 	for barebox@lists.infradead.org;
-	Thu, 19 Mar 2026 07:03:10 +0000
+	Thu, 19 Mar 2026 07:21:07 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1w37PO-0006FA-6a; Thu, 19 Mar 2026 08:03:06 +0100
+	id 1w37gm-0000tU-MN; Thu, 19 Mar 2026 08:21:04 +0100
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1w37PN-0012Ae-34;
-	Thu, 19 Mar 2026 08:03:05 +0100
+	id 1w37gm-0012Ga-1b;
+	Thu, 19 Mar 2026 08:21:04 +0100
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1w37PN-00000008FE7-3b3N;
-	Thu, 19 Mar 2026 08:03:05 +0100
+	id 1w37gm-0000000A54C-1aNC;
+	Thu, 19 Mar 2026 08:21:04 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu, 19 Mar 2026 08:03:04 +0100
-Message-ID: <20260319070304.1965024-2-s.hauer@pengutronix.de>
+Date: Thu, 19 Mar 2026 08:20:35 +0100
+Message-ID: <20260319072035.2389862-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260319070304.1965024-1-s.hauer@pengutronix.de>
-References: <20260319070304.1965024-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260319_070308_717474_B4AC571C 
-X-CRM114-Status: GOOD (  12.02  )
+X-CRM114-CacheID: sfid-20260319_002106_338603_51ECBE64 
+X-CRM114-Status: GOOD (  12.09  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,49 +81,82 @@ X-Spam-Status: No, score=-3.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] optee: skip registration of already known TEE bus devices
+Subject: [PATCH v2] scripts: bareboxtlv-generator: add engine support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-optee_enumerate_devices() may be called multiple times, e.g. when a
-new RPMB device appears. Check if a device with the same name is
-already registered on the TEE bus before registering it again.
+Add a -engine option to optionally use engine e.g. to support PKCS# URIs
+via engine.
 
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/tee/optee/device.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ .../bareboxtlv-generator.py                   | 20 +++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/tee/optee/device.c b/drivers/tee/optee/device.c
-index f5e03630b1..ab05a4dfc9 100644
---- a/drivers/tee/optee/device.c
-+++ b/drivers/tee/optee/device.c
-@@ -57,14 +57,23 @@ static int get_devices(struct tee_context *ctx, u32 session,
- static int optee_register_device(const uuid_t *device_uuid)
- {
- 	struct tee_client_device *optee_device = NULL;
-+	struct device *dev;
-+	char name[39];
- 	int rc;
+diff --git a/scripts/bareboxtlv-generator/bareboxtlv-generator.py b/scripts/bareboxtlv-generator/bareboxtlv-generator.py
+index 806d2d8b94..b568e13a37 100755
+--- a/scripts/bareboxtlv-generator/bareboxtlv-generator.py
++++ b/scripts/bareboxtlv-generator/bareboxtlv-generator.py
+@@ -47,11 +47,12 @@ class PrivateKey:
+     A private key for signing TLVs, requires the cryptography module
+     """
  
-+	snprintf(name, sizeof(name), "optee-ta-%pUb", device_uuid);
-+
-+	dev = bus_find_device_by_name(&tee_bus_type, NULL, name);
-+	if (dev)
-+		return 0;
-+
- 	optee_device = kzalloc(sizeof(*optee_device), GFP_KERNEL);
- 	if (!optee_device)
- 		return -ENOMEM;
+-    def __init__(self, path: str | None = None):
++    def __init__(self, path: str | None = None, engine: str | None = None):
+         """
+         Load a private key from:
+         - PKCS#12 (.p12/.pfx)
+         - PEM/DER private key file
++        - Engine-backed key (e.g. PKCS#11 URI with --engine pkcs11)
+         """
  
-+	optee_device->dev.id = DEVICE_ID_SINGLE;
- 	optee_device->dev.bus = &tee_bus_type;
--	if (dev_set_name(&optee_device->dev, "optee-ta-%pUb", device_uuid)) {
-+	if (dev_set_name(&optee_device->dev, "%s", name)) {
- 		kfree(optee_device);
- 		return -ENOMEM;
- 	}
+         try:
+@@ -65,7 +66,13 @@ class PrivateKey:
+             sys.exit(127)
+ 
+         self.inkey = path
+-        self.public_key = serialization.load_pem_public_key(openssl(["pkey", "-pubout", "-in", self.inkey]));
++        if engine:
++            pkey_args = ["-engine", engine, "-inform", "engine"]
++            self.pkeyutl_args = ["-engine", engine, "-keyform", "engine"]
++        else:
++            pkey_args = []
++            self.pkeyutl_args = []
++        self.public_key = serialization.load_pem_public_key(openssl(["pkey"] + pkey_args + ["-pubout", "-in", self.inkey]));
+ 
+     def sign(self, message: bytes) -> bytes:
+         """
+@@ -75,8 +82,8 @@ class PrivateKey:
+         from cryptography.hazmat.primitives.asymmetric import rsa, ec
+         from cryptography.hazmat.primitives.asymmetric.utils import decode_dss_signature
+ 
+-        # Access private keys only via the openssl cli so that any configured provider, such as pkcs11, can be used.
+-        sig = openssl(["pkeyutl", "-sign", "-rawin", "-digest", "sha256", "-inkey", self.inkey], stdin = message)
++        # Access private keys only via the openssl cli so that any configured engine/provider, such as pkcs11, can be used.
++        sig = openssl(["pkeyutl"] + self.pkeyutl_args + ["-sign", "-rawin", "-digest", "sha256", "-inkey", self.inkey], stdin = message)
+ 
+         if isinstance(self.public_key, rsa.RSAPublicKey):
+             return sig
+@@ -503,7 +510,8 @@ def _main():
+     parser = argparse.ArgumentParser(description="Generate a TLV dataset for the Barebox TLV parser")
+     parser.add_argument("schema", help="YAML file describing the data.")
+     parser.add_argument("--input-data", help="YAML file containing data to write to the binary.")
+-    parser.add_argument("--sign", help=" When using --input-data: Private key to sign the TLV with.")
++    parser.add_argument("--sign", help="When using --input-data: Private key to sign the TLV with.")
++    parser.add_argument("--engine", help="OpenSSL engine to use for private key operations (e.g. pkcs11).")
+     parser.add_argument("--output-data", help="YAML file where the contents of the binary will be written to.")
+     parser.add_argument("--verify", help="When using --output-data: Public key to verify the signature against")
+     parser.add_argument("binary", help="Path to where export data to be copied into DUT's EEPROM.")
+@@ -519,7 +527,7 @@ def _main():
+             data = yaml.load(d_fh, Loader=yaml.SafeLoader)
+ 
+         if args.sign:
+-            privkey = PrivateKey(path=args.sign)
++            privkey = PrivateKey(path=args.sign, engine=args.engine)
+         else:
+             privkey = None
+         bin = eeprom.encode(data, sign=privkey)
 -- 
 2.47.3
 
