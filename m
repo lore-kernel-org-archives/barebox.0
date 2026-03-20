@@ -1,63 +1,48 @@
-Delivery-date: Fri, 20 Mar 2026 08:18:02 +0100
+Delivery-date: Fri, 20 Mar 2026 08:18:03 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w3U7O-002wo7-00
+	id 1w3U7P-002wog-1r
 	for lore@lore.pengutronix.de;
-	Fri, 20 Mar 2026 08:18:02 +0100
+	Fri, 20 Mar 2026 08:18:03 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w3U7M-0000p0-S3
-	for lore@pengutronix.de; Fri, 20 Mar 2026 08:18:01 +0100
+	id 1w3U7O-0000qg-NY
+	for lore@pengutronix.de; Fri, 20 Mar 2026 08:18:03 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=swU67efUGuKbgR2AkYehBq+bokWS6xD83ZyEuoWAIWA=; b=IRtGefoTbe361OuiKG4mDCIz/+
-	0EKKVT53MF7atNjlT5GGUD4ns2M0Aw/DJa3uQG9Yzsd+Cz5QQNR1/ihS5azcXFLEFi+Y0ondGlQfe
-	IXmVs31SM7K8qmRK8hwkLkRRcJztJPFk5nEaXTcXLKjnhJbu0jC4y4uxED1mGdMmy0CtsOG21BoUN
-	f7AeO4LA/4xGx/63gze779XrjB8CLIUiwyd1vajn/2mI6UKvvos9DYXONFmrRwQhR6AmiMYkEozX9
-	zM2enTJOkKPQ7jzYTTvFu+jpIKH7J4ujKG31Fd52WYd28O7kWv+Ob9W4bO8Hl9fa6j1tI1L7NpX7I
-	1PNmb1bw==;
+	bh=WOSB5073df+s2r8Fv8SpMf34/DKNVUuHu+sBvD7HpAY=; b=zYYp2St2vNezaN51Gmcxf5SflU
+	sCzo9TgtCT/IYwrN0bBY6+ShSEgpjGdV6P3+GPUbbT/GDccLrxqJUZFYhBFw6sD+UBA1jWfZoEbCD
+	E8N8eeqTBftTDW/CDD33d9YPxv1p0AxcCOONNn2+V6WllXWWsle+3safCbSjcNGb/CM4TNFYtxySq
+	bT4sdnH2x+0l6YlqQgykLwj+7X0jyBlwDpy6W32N3EQY71LBZy4k5/7g5Ij5PLT2OrNAOLuCm4SuJ
+	NqyD9Hxjbi8i0c5ChBa57mQpn0KfkJ+22Ufz3voiVs4rF7Kk6db7DC5N9x33nESvxhtvARNe5oPs7
+	tcTphnoQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w3U71-0000000CE7r-0s2j;
-	Fri, 20 Mar 2026 07:17:39 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w3U6y-0000000CE3S-0FHJ
-	for barebox@bombadil.infradead.org;
-	Fri, 20 Mar 2026 07:17:36 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=swU67efUGuKbgR2AkYehBq+bokWS6xD83ZyEuoWAIWA=; b=OWfglyptZrXjxFSxRUELTQ6sTO
-	lgov88J+R8pWDvpgs3lBsFORWAm7KiOSGNiUVl2ErmB1Pf+TZf3kNYUyKfhO7mbs/9Q7hSsuHl2I6
-	c1rZWQ4Bu+ZFMMXF+upez3OVIP+copH+RaNWErf76EjnwBXB8hMumHyenrxa5fCpgMo+rpziREnps
-	3o37e0BK+rGCSNM2Rn78K0TrcriOdq4uDL7tIFbIjZmsqBMQ+TWp06iIEDgzgZC+heNx80oOFgd/+
-	a2sShUET9tNNS3Vdk8RNqWKdvbC9h8IBThK2bBrT0fOXqHd2VXOFAU6VliJrtIVvgKkGi8+xKFn3q
-	Z3UES72A==;
+	id 1w3U6w-0000000CE3O-3GzM;
+	Fri, 20 Mar 2026 07:17:34 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w3U6t-0000000F2Go-0wrO
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w3U6t-0000000CE1J-2nGu
 	for barebox@lists.infradead.org;
-	Fri, 20 Mar 2026 07:17:33 +0000
+	Fri, 20 Mar 2026 07:17:32 +0000
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <f.pflug@pengutronix.de>)
-	id 1w3U6s-0000T8-3R; Fri, 20 Mar 2026 08:17:30 +0100
+	id 1w3U6r-0000T8-To; Fri, 20 Mar 2026 08:17:29 +0100
 From: Fabian Pflug <f.pflug@pengutronix.de>
-Date: Fri, 20 Mar 2026 08:17:32 +0100
+Date: Fri, 20 Mar 2026 08:17:27 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260320-v2026-02-0-topic-sconfig_console-v5-6-2efcaa7cb03e@pengutronix.de>
+Message-Id: <20260320-v2026-02-0-topic-sconfig_console-v5-1-2efcaa7cb03e@pengutronix.de>
 References: <20260320-v2026-02-0-topic-sconfig_console-v5-0-2efcaa7cb03e@pengutronix.de>
 In-Reply-To: <20260320-v2026-02-0-topic-sconfig_console-v5-0-2efcaa7cb03e@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>, 
@@ -65,8 +50,8 @@ To: BAREBOX <barebox@lists.infradead.org>,
 Cc: Fabian Pflug <f.pflug@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260320_071731_510290_F45FB039 
-X-CRM114-Status: GOOD (  22.05  )
+X-CRM114-CacheID: sfid-20260320_001731_703617_391E72A0 
+X-CRM114-Status: GOOD (  17.03  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,186 +73,140 @@ X-Spam-Status: No, score=-2.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v5 6/7] drivers: pinctrl: configure pinctrl based on policy
- name
+Subject: [PATCH v5 1/7] of: add of_property_write_string_array()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-When using security policies to disable console input on the default
-console, it might be more advantagous to also disable the RX pin hard
-in pinctrl, so that if there is a software error with the security
-policy implementation input does not reach to system and cannot be
-exploited.
-
-An example devicetree could look like this:
-/ {
-	chosen {
-		stdout-path = &uart3;
-	};
-};
-
-&uart3 {
-	pinctrl-names = "default", "barebox,policy-devel-default";
-	pinctrl-0 = <&pinctrl_uart3_tx_only>;
-	pinctrl-1 = <&pinctrl_uart3_interactive>;
-	status = "okay";
-};
-
-&iomuxc {
-	pinctrl_uart3_interactive: uart3ingrp {
-		fsl,pins = <MX8MP_IOMUXC_SD1_DATA6__UART3_DCE_TX	0x140>,
-			   <MX8MP_IOMUXC_SD1_DATA7__UART3_DCE_RX	0x140>;
-	};
-
-	pinctrl_uart3_tx_only: uart3txgrp {
-		fsl,pins = <MX8MP_IOMUXC_SD1_DATA6__UART3_DCE_TX	0x140>,
-			   <MX8MP_IOMUXC_SD1_DATA7__GPIO2_IO09		0x140>;
-	};
-};
-
-This would apply the devel pinmux on selecting the devel config and the
-default on every other security policy configuration.
-
-A Kconfig option to enable this feature has been chosen, because parsing
-pinctrl and mapping the names is a lot of string operations, that could
-increase boottime for a feature, that is maybe not needed for everyone.
+Helper function to write an array of string into a property.
 
 Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 ---
- drivers/pinctrl/pinctrl.c | 73 +++++++++++++++++++++++++++++++++++++++++++++--
- security/Kconfig.policy   | 12 ++++++++
- 2 files changed, 83 insertions(+), 2 deletions(-)
+ drivers/of/base.c             | 43 +++++++++++++++++++++++++++++++++++++++++++
+ include/of.h                  |  3 +++
+ test/self/of_manipulation.c   | 14 +++++++++++++-
+ test/self/of_manipulation.dts |  5 +++++
+ 4 files changed, 64 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl.c b/drivers/pinctrl/pinctrl.c
-index 01567aa5ae..eb4103c5fd 100644
---- a/drivers/pinctrl/pinctrl.c
-+++ b/drivers/pinctrl/pinctrl.c
-@@ -10,11 +10,22 @@
- #include <linux/overflow.h>
- #include <errno.h>
- #include <of.h>
-+#include <security/config.h>
-+#include <security/policy.h>
- 
- struct pinctrl {
- 	struct device_node consumer_np;
- };
- 
-+LIST_HEAD(pinctrl_devices_name_list);
-+
-+struct pinctrl_devices_name_info {
-+	struct device_node *node;
-+	const char *name;
-+	struct list_head list;
-+};
-+
-+
- static LIST_HEAD(pinctrl_consumer_list);
- 
- struct pinctrl_state {
-@@ -218,15 +229,48 @@ int pinctrl_select_state(struct pinctrl *pinctrl, struct pinctrl_state *state)
- 	return ret;
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 460b5e2f4b..376a2ac6a8 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1570,6 +1570,49 @@ int of_property_write_u64_array(struct device_node *np,
+ 	return 0;
  }
  
-+static void of_pinctrl_policy_update_or_add(struct device_node *np, const char *name)
++/**
++ * of_property_write_string_array - Write strings to a property. If
++ * the property does not exist, it will be created and appended to the given
++ * device node.
++ *
++ * @np:		device node to which the property value is to be written.
++ * @propname:	name of the property to be written.
++ * @values:	pointer to array elements to write.
++ * @sz:		number of array elements to write.
++ *
++ * Search for a property in a device node and write a string to
++ * it. If the property does not exist, it will be created and appended to
++ * the device node. Returns 0 on success, -ENOMEM if the property or array
++ * of elements cannot be created, -EINVAL if no strings specified.
++ */
++int of_property_write_string_array(struct device_node *np,
++				   const char *propname, const char **values,
++				   size_t sz)
 +{
-+	struct pinctrl_devices_name_info *dev;
++	char *buf = NULL, *next;
++	size_t len = 0;
++	int ret = 0, i;
 +
-+	list_for_each_entry(dev, &pinctrl_devices_name_list, list) {
-+		if (dev->node == np) {
-+			free_const(dev->name);
-+			dev->name = xstrdup_const(name);
-+			return;
-+		}
-+	}
-+	dev = xzalloc(sizeof(*dev));
-+	dev->node = np;
-+	dev->name = xstrdup_const(name);
-+	list_add(&dev->list, &pinctrl_devices_name_list);
++	for (i = 0; i < sz; i++)
++		len += strlen(values[i]) + 1;
++
++	if (!len)
++		return -EINVAL;
++
++	buf = malloc(len);
++	if (!buf)
++		return -ENOMEM;
++
++	next = buf;
++
++	for (i = 0; i < sz; i++)
++		next = stpcpy(next, values[i]) + 1;
++
++	ret = of_set_property(np, propname, buf, len, 1);
++	free(buf);
++	return ret;
 +}
 +
- int of_pinctrl_select_state(struct device_node *np, const char *name)
+ /**
+  * of_property_write_strings - Write strings to a property. If
+  * the property does not exist, it will be created and appended to the given
+diff --git a/include/of.h b/include/of.h
+index ba8d1e358d..34439ee763 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -310,6 +310,9 @@ extern int of_property_write_string(struct device_node *np, const char *propname
+ 				    const char *value);
+ extern int of_property_write_strings(struct device_node *np, const char *propname,
+ 				    ...) __attribute__((__sentinel__));
++int of_property_write_string_array(struct device_node *np,
++				   const char *propname, const char **values,
++				   size_t sz);
+ int of_property_sprintf(struct device_node *np, const char *propname, const char *fmt, ...)
+ 	__printf(3, 4);
+ 
+diff --git a/test/self/of_manipulation.c b/test/self/of_manipulation.c
+index 8d645b1137..faf948a17b 100644
+--- a/test/self/of_manipulation.c
++++ b/test/self/of_manipulation.c
+@@ -71,13 +71,19 @@ static void test_of_basics(struct device_node *root)
+ 
+ static void test_of_property_strings(struct device_node *root)
  {
- 	struct pinctrl *pinctrl = of_pinctrl_get(np);
--	struct pinctrl_state *state;
-+	struct pinctrl_state *state = NULL;
+-	struct device_node *np1, *np2, *np3, *np4;
++	struct device_node *np1, *np2, *np3, *np4, *np5;
+ 	char properties[] = "ayy\0bee\0sea";
++	static const char * const prop_array[] = {
++		"ayy",
++		"bee\0\0\0",
++		"sea\0",
++	};
  
- 	if (!of_find_property(np, "pinctrl-0", NULL))
- 		return 0;
+ 	np1 = of_new_node(root, "np1");
+ 	np2 = of_new_node(root, "np2");
+ 	np3 = of_new_node(root, "np3");
+ 	np4 = of_new_node(root, "np4");
++	np5 = of_new_node(root, "np5");
  
--	state = pinctrl_lookup_state(pinctrl, name);
-+	if (IS_ENABLED(CONFIG_SECURITY_POLICY_PINCTRL)) {
-+		const struct security_policy *active_policy = security_policy_get_active();
-+
-+		of_pinctrl_policy_update_or_add(np, name);
-+
-+		if (active_policy && active_policy->name && name) {
-+			char *policy_pinctrl;
-+
-+			policy_pinctrl = basprintf("barebox,policy-%s-%s",
-+						   active_policy->name,
-+						   name);
-+			state = pinctrl_lookup_state(pinctrl, policy_pinctrl);
-+			free(policy_pinctrl);
-+		}
-+	}
-+	if (IS_ERR_OR_NULL(state))
-+		state = pinctrl_lookup_state(pinctrl, name);
- 	if (IS_ERR(state))
- 		return PTR_ERR(state);
+ 	of_property_sprintf(np1, "property-single", "%c%c%c", 'a', 'y', 'y');
  
-@@ -331,3 +375,28 @@ void of_pinctrl_unregister_consumer(struct device *dev)
- 	}
+@@ -108,6 +114,12 @@ static void test_of_property_strings(struct device_node *root)
+ 	of_prepend_property(np4, "property-multi", "ayy", 4);
+ 
+ 	assert_equal(np3, np4);
++
++	of_property_write_string_array(np5, "property-single", prop_array, 1);
++
++	of_property_write_string_array(np5, "property-multi", prop_array, 3);
++
++	assert_equal(np4, np5);
  }
- #endif
-+
-+static int pinctrl_change_policy(struct notifier_block *nb,
-+				  unsigned long _ignored,
-+				  void *_data)
-+{
-+	struct pinctrl_devices_name_info *dev;
-+
-+	list_for_each_entry(dev, &pinctrl_devices_name_list, list) {
-+		of_pinctrl_select_state(dev->node, dev->name);
-+	}
-+	return 0;
-+}
-+
-+static struct notifier_block pinctrl_policy_notifier = {
-+	.notifier_call = pinctrl_change_policy
-+};
-+
-+static int pinctrl_policy_init(void)
-+{
-+	if (!IS_ENABLED(CONFIG_SECURITY_POLICY_PINCTRL))
-+		return 0;
-+
-+	return notifier_chain_register(&sconfig_name_notifier, &pinctrl_policy_notifier);
-+}
-+pure_initcall(pinctrl_policy_init);
-diff --git a/security/Kconfig.policy b/security/Kconfig.policy
-index e778327b0d..2c8e8399a0 100644
---- a/security/Kconfig.policy
-+++ b/security/Kconfig.policy
-@@ -69,6 +69,18 @@ config SECURITY_POLICY_DEFAULT_PERMISSIVE
- 	  A security policy should always be selected, either early on by
- 	  board code or via CONFIG_SECURITY_POLICY_INIT.
  
-+config SECURITY_POLICY_PINCTRL
-+	bool "Update pinctrl based on policy-name"
-+	help
-+	  When selecting a pinctrl with the name <pinctrlname>, if there exists
-+	  a pinctrl with the name barebox,policy-<policyname>-<pinctrlname>,
-+	  then this pinctrl will be used instead.
-+	  This could be used for example to disable the RX (and TX) Pin in
-+	  lockdown mode for the console or disable the usage of SPI.
+ static void __init test_of_manipulation(void)
+diff --git a/test/self/of_manipulation.dts b/test/self/of_manipulation.dts
+index 2cc6773fa9..7a1fb1217d 100644
+--- a/test/self/of_manipulation.dts
++++ b/test/self/of_manipulation.dts
+@@ -34,4 +34,9 @@ np4 {
+ 		property-single = "ayy";
+ 		property-multi = "ayy", "bee", "sea";
+ 	};
 +
-+	  Enabling this option does increase the boottime.
-+	  If unsure, say N.
-+
- config SECURITY_POLICY_PATH
- 	string
- 	depends on SECURITY_POLICY
++	np5 {
++		property-single = "ayy";
++		property-multi = "ayy", "bee", "sea";
++	};
+ };
 
 -- 
 2.47.3
