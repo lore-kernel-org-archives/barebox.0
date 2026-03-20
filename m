@@ -1,57 +1,61 @@
-Delivery-date: Fri, 20 Mar 2026 08:18:03 +0100
+Delivery-date: Fri, 20 Mar 2026 08:18:04 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w3U7P-002wog-1r
+	id 1w3U7Q-002wp1-0h
 	for lore@lore.pengutronix.de;
-	Fri, 20 Mar 2026 08:18:03 +0100
+	Fri, 20 Mar 2026 08:18:04 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w3U7O-0000qg-NY
-	for lore@pengutronix.de; Fri, 20 Mar 2026 08:18:03 +0100
+	id 1w3U7P-0000rI-6j
+	for lore@pengutronix.de; Fri, 20 Mar 2026 08:18:04 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=WOSB5073df+s2r8Fv8SpMf34/DKNVUuHu+sBvD7HpAY=; b=zYYp2St2vNezaN51Gmcxf5SflU
-	sCzo9TgtCT/IYwrN0bBY6+ShSEgpjGdV6P3+GPUbbT/GDccLrxqJUZFYhBFw6sD+UBA1jWfZoEbCD
-	E8N8eeqTBftTDW/CDD33d9YPxv1p0AxcCOONNn2+V6WllXWWsle+3safCbSjcNGb/CM4TNFYtxySq
-	bT4sdnH2x+0l6YlqQgykLwj+7X0jyBlwDpy6W32N3EQY71LBZy4k5/7g5Ij5PLT2OrNAOLuCm4SuJ
-	NqyD9Hxjbi8i0c5ChBa57mQpn0KfkJ+22Ufz3voiVs4rF7Kk6db7DC5N9x33nESvxhtvARNe5oPs7
-	tcTphnoQ==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=lFfs5AqqS2EqNittDkj6mPA+F/XJ9ts42ZaWC71n2Lc=; b=W342agP/xP5sMT
+	Li20oYVj9HN8TvOzFWEPU6Q3rc+vYH3QG7SkR5yFuJahA+lSPkZ9TgWxh3MOuqWp28R/q1pOnot7T
+	cRQwhPBvqa0f0GSMDocsKxzl3dMc3aD841ZYu99rzoLoelKjgKkpluCegPuV/+K1VwRaukOLrfqX8
+	zKW2rT4kR98B2k9aFW8pVxnvpQwjAYVfBhLBRqwrsVZhjWTbqF7nlAAbWygWckIrFmlFN8gdIPZyi
+	HjRxS7U3F79Yf3F6YdtzZRJHN2srMs6+NGMQEWD3EQzXr3jH2lJUokYiM0KO8Eg+VWjlL37YhAcEO
+	lSrINcuX1Tf3/KuDuz7A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w3U6w-0000000CE3O-3GzM;
-	Fri, 20 Mar 2026 07:17:34 +0000
+	id 1w3U6x-0000000CE3W-0Oof;
+	Fri, 20 Mar 2026 07:17:35 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w3U6t-0000000CE1J-2nGu
+	id 1w3U6t-0000000CE1G-3Cz9
 	for barebox@lists.infradead.org;
-	Fri, 20 Mar 2026 07:17:32 +0000
+	Fri, 20 Mar 2026 07:17:33 +0000
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <f.pflug@pengutronix.de>)
-	id 1w3U6r-0000T8-To; Fri, 20 Mar 2026 08:17:29 +0100
+	id 1w3U6r-0000T8-Sm; Fri, 20 Mar 2026 08:17:29 +0100
 From: Fabian Pflug <f.pflug@pengutronix.de>
-Date: Fri, 20 Mar 2026 08:17:27 +0100
+Date: Fri, 20 Mar 2026 08:17:26 +0100
+Message-Id: <20260320-v2026-02-0-topic-sconfig_console-v5-0-2efcaa7cb03e@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260320-v2026-02-0-topic-sconfig_console-v5-1-2efcaa7cb03e@pengutronix.de>
-References: <20260320-v2026-02-0-topic-sconfig_console-v5-0-2efcaa7cb03e@pengutronix.de>
-In-Reply-To: <20260320-v2026-02-0-topic-sconfig_console-v5-0-2efcaa7cb03e@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAIb0vGkC/43N3YrDIBAF4FcpXq/FGc3fXu17LGUxZkyFRYNmp
+ aXk3dcUCoEWmis9HvnOjSWKjhL7PNxYpOySC76E6uPAzFn7kbgbSmYosBYSgOf1xgVywecwOcO
+ TCd668accKfwSh061CjUogoEVZopk3eU+8X0q+ezSHOL1vphhfX3g+B7PUCplpDVGW90DfU3kx
+ 785Bu8ux4HYupBxq9Y71LUCImpNU2NP/UtVbtV2hypLReV3VWGnGpQvVbVRUexQVam06eTQdI1
+ tjX1Sl2X5B3NbTGjXAQAA
+X-Change-ID: 20260311-v2026-02-0-topic-sconfig_console-194842a14e1d
 To: BAREBOX <barebox@lists.infradead.org>, 
  Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Fabian Pflug <f.pflug@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260320_001731_703617_391E72A0 
-X-CRM114-Status: GOOD (  17.03  )
+X-CRM114-CacheID: sfid-20260320_001731_811544_F51362DF 
+X-CRM114-Status: GOOD (  12.65  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,143 +77,83 @@ X-Spam-Status: No, score=-2.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v5 1/7] of: add of_property_write_string_array()
+Subject: [PATCH v5 0/7] Add helper for security policies
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Helper function to write an array of string into a property.
+This series adds helper functions to the security policy framework to
+do additional work based on the selected policy.
+Like adding the policy name to the commandline and configuring pinmux
+based on the selected policy.
+
+If this series is to be applied after Ahamad's bootm change series, then
+the block to change the commandline has to be moved up to roughly line
+720 into the function bootm_boot_prep, where all the other
+bootm_data->provide_*** checks are, so that the previous context remains
+the same.
 
 Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 ---
- drivers/of/base.c             | 43 +++++++++++++++++++++++++++++++++++++++++++
- include/of.h                  |  3 +++
- test/self/of_manipulation.c   | 14 +++++++++++++-
- test/self/of_manipulation.dts |  5 +++++
- 4 files changed, 64 insertions(+), 1 deletion(-)
+Changes in v5:
+- Fix error in kernel_pinctrl. The array was never written back.
+- Link to v4: https://lore.barebox.org/barebox/20260320-v2026-02-0-topic-sconfig_console-v4-0-ac93d797f8cf@pengutronix.de
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 460b5e2f4b..376a2ac6a8 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1570,6 +1570,49 @@ int of_property_write_u64_array(struct device_node *np,
- 	return 0;
- }
- 
-+/**
-+ * of_property_write_string_array - Write strings to a property. If
-+ * the property does not exist, it will be created and appended to the given
-+ * device node.
-+ *
-+ * @np:		device node to which the property value is to be written.
-+ * @propname:	name of the property to be written.
-+ * @values:	pointer to array elements to write.
-+ * @sz:		number of array elements to write.
-+ *
-+ * Search for a property in a device node and write a string to
-+ * it. If the property does not exist, it will be created and appended to
-+ * the device node. Returns 0 on success, -ENOMEM if the property or array
-+ * of elements cannot be created, -EINVAL if no strings specified.
-+ */
-+int of_property_write_string_array(struct device_node *np,
-+				   const char *propname, const char **values,
-+				   size_t sz)
-+{
-+	char *buf = NULL, *next;
-+	size_t len = 0;
-+	int ret = 0, i;
-+
-+	for (i = 0; i < sz; i++)
-+		len += strlen(values[i]) + 1;
-+
-+	if (!len)
-+		return -EINVAL;
-+
-+	buf = malloc(len);
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	next = buf;
-+
-+	for (i = 0; i < sz; i++)
-+		next = stpcpy(next, values[i]) + 1;
-+
-+	ret = of_set_property(np, propname, buf, len, 1);
-+	free(buf);
-+	return ret;
-+}
-+
- /**
-  * of_property_write_strings - Write strings to a property. If
-  * the property does not exist, it will be created and appended to the given
-diff --git a/include/of.h b/include/of.h
-index ba8d1e358d..34439ee763 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -310,6 +310,9 @@ extern int of_property_write_string(struct device_node *np, const char *propname
- 				    const char *value);
- extern int of_property_write_strings(struct device_node *np, const char *propname,
- 				    ...) __attribute__((__sentinel__));
-+int of_property_write_string_array(struct device_node *np,
-+				   const char *propname, const char **values,
-+				   size_t sz);
- int of_property_sprintf(struct device_node *np, const char *propname, const char *fmt, ...)
- 	__printf(3, 4);
- 
-diff --git a/test/self/of_manipulation.c b/test/self/of_manipulation.c
-index 8d645b1137..faf948a17b 100644
---- a/test/self/of_manipulation.c
-+++ b/test/self/of_manipulation.c
-@@ -71,13 +71,19 @@ static void test_of_basics(struct device_node *root)
- 
- static void test_of_property_strings(struct device_node *root)
- {
--	struct device_node *np1, *np2, *np3, *np4;
-+	struct device_node *np1, *np2, *np3, *np4, *np5;
- 	char properties[] = "ayy\0bee\0sea";
-+	static const char * const prop_array[] = {
-+		"ayy",
-+		"bee\0\0\0",
-+		"sea\0",
-+	};
- 
- 	np1 = of_new_node(root, "np1");
- 	np2 = of_new_node(root, "np2");
- 	np3 = of_new_node(root, "np3");
- 	np4 = of_new_node(root, "np4");
-+	np5 = of_new_node(root, "np5");
- 
- 	of_property_sprintf(np1, "property-single", "%c%c%c", 'a', 'y', 'y');
- 
-@@ -108,6 +114,12 @@ static void test_of_property_strings(struct device_node *root)
- 	of_prepend_property(np4, "property-multi", "ayy", 4);
- 
- 	assert_equal(np3, np4);
-+
-+	of_property_write_string_array(np5, "property-single", prop_array, 1);
-+
-+	of_property_write_string_array(np5, "property-multi", prop_array, 3);
-+
-+	assert_equal(np4, np5);
- }
- 
- static void __init test_of_manipulation(void)
-diff --git a/test/self/of_manipulation.dts b/test/self/of_manipulation.dts
-index 2cc6773fa9..7a1fb1217d 100644
---- a/test/self/of_manipulation.dts
-+++ b/test/self/of_manipulation.dts
-@@ -34,4 +34,9 @@ np4 {
- 		property-single = "ayy";
- 		property-multi = "ayy", "bee", "sea";
- 	};
-+
-+	np5 {
-+		property-single = "ayy";
-+		property-multi = "ayy", "bee", "sea";
-+	};
- };
+Changes in v4:
+- removed the global variable active_policy and replaced with a getter
+  function
+- add sanity check for is_allow parameter
+- add new notifier chain to security_policy on change without checking
+  policies is_allowed
+- rewrote the pinctrl to make use of new notify chain
+- changed pinctrl to use barebox,policy-<active-policy>-<name> to
+  replace pinctrl for <name> instead of replacing 'default'
+- Link to v3: https://lore.barebox.org/barebox/20260318-v2026-02-0-topic-sconfig_console-v3-0-e26055294723@pengutronix.de
 
+Changes in v3:
+- replaced while loop with of_tree_for_each_node_from
+- removed unsused variable definition in base.c
+- Link to v2: https://lore.barebox.org/barebox/20260316-v2026-02-0-topic-sconfig_console-v2-0-1eee8c762beb@pengutronix.de
+
+Changes in v2:
+- Add of_property_write_string_array function
+- Add selftest for of_property_write_string_array
+- Add exra-check for active-policy
+- Use "linux.bootargs.dyn.policy" instead of version without dyn
+- Iterate over device-nodes instead of recurse through tree
+- Link to v1: https://lore.barebox.org/barebox/20260312-v2026-02-0-topic-sconfig_console-v1-0-4c3fccafab1e@pengutronix.de
+
+---
+Fabian Pflug (7):
+      of: add of_property_write_string_array()
+      security: policy: sanity check parameters
+      security: policy: remove global active_policy var
+      security: policy: add notifier chain for name change
+      common: bootm: add policy to commandline
+      drivers: pinctrl: configure pinctrl based on policy name
+      security: kernel_pinctrl: fixup pinctrl in kernel dts
+
+ commands/sconfig.c            |  9 +++++-
+ common/bootm.c                | 24 ++++++++++++++
+ drivers/of/base.c             | 43 +++++++++++++++++++++++++
+ drivers/pinctrl/pinctrl.c     | 73 +++++++++++++++++++++++++++++++++++++++++--
+ include/bootm.h               |  5 +++
+ include/of.h                  |  3 ++
+ include/security/config.h     |  1 +
+ include/security/policy.h     |  3 +-
+ security/Kconfig.policy       | 15 ++++++++-
+ security/Makefile             |  1 +
+ security/kernel_pinctrl.c     | 67 +++++++++++++++++++++++++++++++++++++++
+ security/policy.c             | 21 +++++++++----
+ test/self/of_manipulation.c   | 14 ++++++++-
+ test/self/of_manipulation.dts |  5 +++
+ 14 files changed, 271 insertions(+), 13 deletions(-)
+---
+base-commit: 1d386a53086d28a0c4eda138ae9408a418b97b7e
+change-id: 20260311-v2026-02-0-topic-sconfig_console-194842a14e1d
+
+Best regards,
 -- 
-2.47.3
+Fabian Pflug <f.pflug@pengutronix.de>
 
 
 
