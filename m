@@ -3,61 +3,46 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w3Tbz-002wBF-37
+	id 1w3Tc0-002wBR-0x
 	for lore@lore.pengutronix.de;
-	Fri, 20 Mar 2026 07:45:35 +0100
+	Fri, 20 Mar 2026 07:45:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w3Tby-0003R6-Rt
-	for lore@pengutronix.de; Fri, 20 Mar 2026 07:45:35 +0100
+	id 1w3Tbz-0003RY-Aa
+	for lore@pengutronix.de; Fri, 20 Mar 2026 07:45:36 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=QPxaEKCWzTImgeqPfIGUIP6LMBLuc9Yd0L0+JxfwkEU=; b=snkgSiY3VKmiHjX14h0gx+bvGY
-	qDPDxyPBRZU4koYZSnYU0PzyscLxojK0RDrGhOJX1/hEYsJcWYCxmYHQbIvg8PPIZCSrnLgSLygkK
-	3VgKHafxt9tyLunmigwU0OWOz3aHP+fzL3d3w3ZEgtprX9SBdEE0ELBW10eTV5bllBBT70C/Ut6y2
-	nCAM9E5Mk5xOmEK5s/LuJhdq2L4oQiJC4HbkgtgvXiO2vfckwbq1wVmRsXGJGn3T6MAOadkTCAebW
-	ED5qWj5teghMSiHD2SZoZ337+00Or3fZUyftqGMSqspFGZm2t8KPe6eykpNtx/j89Uy6ssTBv1I8P
-	67gXTuKg==;
+	bh=TzgOZIsFmKXoCGCZMQMuWHscsFpNie+MVZfdd5AR2Ds=; b=r6KWKQzeFaVPhzdbMgZdWcMPy6
+	FPuANy+dwMv0WN8hwhLD+FQgwGKbG6jtp1yDFXZd+TteLFtPWOpuec9FlxQmU3RQAy+fMarA4HJ5r
+	RF2YX4tffPBCDUaRp54/B9doQUNlFxa3PgdNTa5zyB64YIjqofTRxTgEV6Ejv3ctW1FAOeAGX0RnE
+	rKiD9lLc9/S+hY0VGj+BA/uxDt1C3Tlnkh3NBDO0djd6arJ80SxcaPswAB1x5Thx4wRTYJZCuSCxZ
+	8t51Eg5QcPTM9w7ReIpuvMcIPkxYq0r1j1n7TRhm85JfrpbNVv+95W9d2pkE8lN5yQmzQcqEvxMZj
+	EfEbakdg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w3TbY-0000000CBvb-2QHp;
-	Fri, 20 Mar 2026 06:45:08 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w3TbW-0000000CBtY-3aFX
-	for barebox@bombadil.infradead.org;
+	id 1w3TbW-0000000CBui-421Y;
 	Fri, 20 Mar 2026 06:45:06 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=QPxaEKCWzTImgeqPfIGUIP6LMBLuc9Yd0L0+JxfwkEU=; b=jnDdK0OqJ3yQChFIiuCj99xja0
-	Jz1zwErqe0h84e7HaB+QxUuuzyVg5Ex2FwhYmt7Hv1tHwcwoPX/URIlemlgna5b1IutoR7t7FumgU
-	FOKDwfGFQa4sfyvzALzgBtKRPX/28c4Si/P3daiO+VDL4bK0XZIaodCizP+RHTGdL3TEbwAhIsUIB
-	OoFbHvIpyzcBlfAYLDV70nqTKIo0l0I5fqaAstac/myyas6eFTze8MLWGebJeezKzDHJZqYuZMFFV
-	z7yg5m3LH4U6mL82KTQM6RMrIvwkISmQc4Oi+eko9aP0NN9r6JqjskXXHwOWmQtye4h0ZseHkawpn
-	hdONOHKA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w3TbS-0000000F0Yg-2uXg
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w3TbS-0000000CBrE-45Nm
 	for barebox@lists.infradead.org;
-	Fri, 20 Mar 2026 06:45:04 +0000
+	Fri, 20 Mar 2026 06:45:05 +0000
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <f.pflug@pengutronix.de>)
-	id 1w3TbQ-00033a-60; Fri, 20 Mar 2026 07:45:00 +0100
+	id 1w3TbQ-00033a-1B; Fri, 20 Mar 2026 07:45:00 +0100
 From: Fabian Pflug <f.pflug@pengutronix.de>
-Date: Fri, 20 Mar 2026 07:44:54 +0100
+Date: Fri, 20 Mar 2026 07:44:50 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260320-v2026-02-0-topic-sconfig_console-v4-7-ac93d797f8cf@pengutronix.de>
+Message-Id: <20260320-v2026-02-0-topic-sconfig_console-v4-3-ac93d797f8cf@pengutronix.de>
 References: <20260320-v2026-02-0-topic-sconfig_console-v4-0-ac93d797f8cf@pengutronix.de>
 In-Reply-To: <20260320-v2026-02-0-topic-sconfig_console-v4-0-ac93d797f8cf@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>, 
@@ -65,8 +50,8 @@ To: BAREBOX <barebox@lists.infradead.org>,
 Cc: Fabian Pflug <f.pflug@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260320_064503_374150_8FE122F3 
-X-CRM114-Status: GOOD (  14.61  )
+X-CRM114-CacheID: sfid-20260319_234503_023951_8225F9EA 
+X-CRM114-Status: GOOD (  14.38  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,105 +73,108 @@ X-Spam-Status: No, score=-2.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v4 7/7] security: kernel_pinctrl: fixup pinctrl in kernel
- dts
+Subject: [PATCH v4 3/7] security: policy: remove global active_policy var
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Going through the kernel dts and replacing
-barebox,policy-<active_policy> with default in order to change pinctrl
-not only for barebox, but also for kernel when booting with security
-profiles.
+Replace with a getter function called security_policy_get_active(), that
+automatically initializes the active_policy, if an initial policy is
+set.
 
 Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 ---
- security/Makefile         |  1 +
- security/kernel_pinctrl.c | 65 +++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 66 insertions(+)
+ commands/sconfig.c        |  2 ++
+ include/security/policy.h |  3 +--
+ security/Kconfig.policy   |  3 ++-
+ security/policy.c         | 16 ++++++++++------
+ 4 files changed, 15 insertions(+), 9 deletions(-)
 
-diff --git a/security/Makefile b/security/Makefile
-index 1096cbfb9b..2e8cdfe7c2 100644
---- a/security/Makefile
-+++ b/security/Makefile
-@@ -2,6 +2,7 @@
- 
- obj-$(CONFIG_SECURITY_POLICY)		+= policy.o
- obj-$(CONFIG_SECURITY_POLICY_NAMES)	+= sconfig_names.o
-+obj-$(CONFIG_SECURITY_POLICY_PINCTRL)	+= kernel_pinctrl.o
- obj-$(CONFIG_CRYPTO_KEYSTORE)	+= keystore.o
- obj-$(CONFIG_JWT)		+= jwt.o
- obj-pbl-$(CONFIG_HAVE_OPTEE)	+= optee.o
-diff --git a/security/kernel_pinctrl.c b/security/kernel_pinctrl.c
-new file mode 100644
-index 0000000000..5ab17fbfd5
---- /dev/null
-+++ b/security/kernel_pinctrl.c
-@@ -0,0 +1,65 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <common.h>
-+#include <linux/printk.h>
-+#include <pinctrl.h>
-+#include <security/policy.h>
-+#include <security/config.h>
-+
-+/* Maximun number of names to be available in pinctrl-names. Best guess.*/
-+#define MAX_NAMES	10
-+
-+
-+/**
-+ * Replace 'default' with 'old_default' and 'barebox,policy-<active_policy>-default'
-+ * with 'default', if both are found in pinctrl.
-+ * Same for every other name, that starts with barebox,policy-<active_policy>- and
-+ * has another name without the prefix.
-+ */
-+static int kernel_of_fixup_pinctrl(struct device_node *root, void *unused)
-+{
-+	char *basename;
-+	int base_len;
-+	struct device_node *node;
+diff --git a/commands/sconfig.c b/commands/sconfig.c
+index 3ca4478270..7afb24366b 100644
+--- a/commands/sconfig.c
++++ b/commands/sconfig.c
+@@ -114,6 +114,7 @@ static int do_sconfig_flags(int argc, char *argv[])
+ static struct security_policy *alloc_policy(void)
+ {
+ 	struct security_policy *override;
 +	const struct security_policy *active_policy = security_policy_get_active();
-+
-+	if (!active_policy || !active_policy->name)
-+		return -EINVAL;
-+	basename = basprintf("barebox,policy-%s-", active_policy->name);
-+	base_len = strlen(basename);
-+
-+	list_for_each_entry(node, &root->list, list) {
-+		const char *names[MAX_NAMES];
-+		int num_read;
-+		bool changed = false;
-+
-+		num_read = of_property_read_string_array(node, "pinctrl-names", names, MAX_NAMES);
-+
-+		for (int i = 0; i < num_read; i++) {
-+			if (strncmp(basename, names[i], base_len) == 0) {
-+				const char *name = names[i] + base_len;
-+
-+				for (int ii = 0; ii < num_read; ii++) {
-+					if (strcmp(name, names[i]) == 0) {
-+						/* this never gets freed,
-+						 * but we are starting the kernel,
-+						 * so there should be no problem.
-+						 */
-+						names[ii] = basprintf("old_%s", name);
-+						names[i] = name;
-+					}
-+				}
-+			}
-+		}
-+		if (changed)
-+			of_property_write_string_array(node, "pinctrl-names", names, num_read);
-+	}
-+	free(basename);
-+	return 0;
-+}
-+
-+static int policy_console_pinctrl_init(void)
+ 
+ 	override = xmalloc(sizeof(*override));
+ 
+@@ -137,6 +138,7 @@ static void free_policy(struct security_policy *policy)
+ 
+ static int do_sconfig(int argc, char *argv[])
+ {
++	const struct security_policy *active_policy = security_policy_get_active();
+ 	struct security_policy *override;
+ 	bool allow_color;
+ 	int i, ret;
+diff --git a/include/security/policy.h b/include/security/policy.h
+index c41220ef3b..11490bf173 100644
+--- a/include/security/policy.h
++++ b/include/security/policy.h
+@@ -25,9 +25,8 @@
+ #define POLICY_TAMPER		"tamper"
+ #define POLICY_FIELD_RETURN	"return"
+ 
+-extern const struct security_policy *active_policy;
+-
+ const struct security_policy *security_policy_get(const char *name);
++const struct security_policy *security_policy_get_active(void);
+ 
+ int security_policy_activate(const struct security_policy *policy);
+ int security_policy_select(const char *name);
+diff --git a/security/Kconfig.policy b/security/Kconfig.policy
+index 9ea52e91da..e778327b0d 100644
+--- a/security/Kconfig.policy
++++ b/security/Kconfig.policy
+@@ -49,7 +49,8 @@ config SECURITY_POLICY_INIT
+ 	prompt "Initial security policy"
+ 	help
+ 	  The policy named here will be automatically selected the first
+-	  time a security policy is to be consulted.
++	  time a security policy is to be consulted or the currently active
++	  policy is queried.
+ 	  It's recommended to use a restrictive policy here and remove
+ 	  the restrictions if needed instead of the other way round.
+ 
+diff --git a/security/policy.c b/security/policy.c
+index 95e7bf99a2..fce527df67 100644
+--- a/security/policy.c
++++ b/security/policy.c
+@@ -60,15 +60,12 @@ static bool __is_allowed(const struct security_policy *policy, unsigned option)
+ 
+ bool is_allowed(const struct security_policy *policy, unsigned option)
+ {
+-	policy = policy ?: active_policy;
+-
+ 	if (WARN(option > SCONFIG_NUM))
+ 		return false;
+ 
+-	if (!policy && *CONFIG_SECURITY_POLICY_INIT) {
+-		security_policy_select(CONFIG_SECURITY_POLICY_INIT);
+-		policy = active_policy;
+-	}
++	/* initialize and use active policy if none is selected */
++	if (!policy)
++		policy = security_policy_get_active();
+ 
+ 	if (policy) {
+ 		bool allow = __is_allowed(policy, option);
+@@ -108,6 +105,13 @@ int security_policy_activate(const struct security_policy *policy)
+ 	return 0;
+ }
+ 
++const struct security_policy *security_policy_get_active(void)
 +{
-+	return of_register_fixup(kernel_of_fixup_pinctrl, NULL);
++	if (!active_policy && *CONFIG_SECURITY_POLICY_INIT)
++		security_policy_select(CONFIG_SECURITY_POLICY_INIT);
++	return active_policy;
 +}
-+late_initcall(policy_console_pinctrl_init);
++
+ const struct security_policy *security_policy_get(const char *name)
+ {
+ 	const struct policy_list_entry *entry;
 
 -- 
 2.47.3
