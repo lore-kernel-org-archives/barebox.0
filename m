@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w3Tc0-002wBR-0x
+	id 1w3Tc0-002wBf-1a
 	for lore@lore.pengutronix.de;
 	Fri, 20 Mar 2026 07:45:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w3Tbz-0003RY-Aa
+	id 1w3Tbz-0003Rd-Bh
 	for lore@pengutronix.de; Fri, 20 Mar 2026 07:45:36 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,31 +18,46 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=TzgOZIsFmKXoCGCZMQMuWHscsFpNie+MVZfdd5AR2Ds=; b=r6KWKQzeFaVPhzdbMgZdWcMPy6
-	FPuANy+dwMv0WN8hwhLD+FQgwGKbG6jtp1yDFXZd+TteLFtPWOpuec9FlxQmU3RQAy+fMarA4HJ5r
-	RF2YX4tffPBCDUaRp54/B9doQUNlFxa3PgdNTa5zyB64YIjqofTRxTgEV6Ejv3ctW1FAOeAGX0RnE
-	rKiD9lLc9/S+hY0VGj+BA/uxDt1C3Tlnkh3NBDO0djd6arJ80SxcaPswAB1x5Thx4wRTYJZCuSCxZ
-	8t51Eg5QcPTM9w7ReIpuvMcIPkxYq0r1j1n7TRhm85JfrpbNVv+95W9d2pkE8lN5yQmzQcqEvxMZj
-	EfEbakdg==;
+	bh=BpDA05AkgFNLyaHKgp+SJfJlzL4oWXTIMoR9uM9doSY=; b=VwIlCipmgeqWn3qOhlyagdoBN3
+	r2f7gOiMLvWr9NbmjYCMXrY2uYnbVG5Qw/K3+CwzLdRdiHspSLBxrtDBYSGZuCqqjNeBdexujZder
+	erE4gZ5cIkAPKqygt4iJk+5+0elQDDe5m6c41D66fS1mnAITtks4Wd3f2o2E8WGNl4RUSl4wGUpvI
+	U+ITAprlUH9vmCehIwdB6bi3s1TAglxMEvDczb7uCrqU2LrrZUFEr3l4RqjAHyhGtD6Ef502gdQFC
+	6wcAec+NcHpuGE9e34F+B1Rlg4sz2IiU4w2+9UsNe2eHvsKrwkEbONBSFcsoFlnjbC6CynxNbmfzs
+	hxKbViTA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w3TbW-0000000CBui-421Y;
-	Fri, 20 Mar 2026 06:45:06 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1w3TbY-0000000CBvH-16ZK;
+	Fri, 20 Mar 2026 06:45:08 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w3TbS-0000000CBrE-45Nm
+	id 1w3TbW-0000000CBtU-3DHV
+	for barebox@bombadil.infradead.org;
+	Fri, 20 Mar 2026 06:45:06 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Sender:Reply-To:Content-ID:Content-Description;
+	bh=BpDA05AkgFNLyaHKgp+SJfJlzL4oWXTIMoR9uM9doSY=; b=reg6tuzFwCLpbX6ntW3UtFssTe
+	SQz2J/Li9WujMmbczPFQoi9JaMb3msLR2J4sOqky6ed4ObAEUnplmNK3E6uOD8eAsqSLN5RVPim2w
+	AitgU6zxG+jg6bPAEwWcr9XVH3k6Q8rIuDkVH2G/S5d5JMMOFIbR6aJZ1fecmtomTVzkGVbmpiiOY
+	r/Sobm87XSb3OQQzajvUwcxsrWkb0qQFmmH1JiTruxQ7FwhK6d3cdz8LpGjRdxm6YtTRBcUjd6yUW
+	eQzmeBMhrpGDw/Zaos2vkxmulfyv6kYahqF4lLe3354ZIlT5Cs3H0CsBIpGr3Qs8UcLtNkDMA52gl
+	obUBUang==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1w3TbS-0000000F0Ye-2CvO
 	for barebox@lists.infradead.org;
-	Fri, 20 Mar 2026 06:45:05 +0000
+	Fri, 20 Mar 2026 06:45:04 +0000
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <f.pflug@pengutronix.de>)
-	id 1w3TbQ-00033a-1B; Fri, 20 Mar 2026 07:45:00 +0100
+	id 1w3TbQ-00033a-3O; Fri, 20 Mar 2026 07:45:00 +0100
 From: Fabian Pflug <f.pflug@pengutronix.de>
-Date: Fri, 20 Mar 2026 07:44:50 +0100
+Date: Fri, 20 Mar 2026 07:44:52 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260320-v2026-02-0-topic-sconfig_console-v4-3-ac93d797f8cf@pengutronix.de>
+Message-Id: <20260320-v2026-02-0-topic-sconfig_console-v4-5-ac93d797f8cf@pengutronix.de>
 References: <20260320-v2026-02-0-topic-sconfig_console-v4-0-ac93d797f8cf@pengutronix.de>
 In-Reply-To: <20260320-v2026-02-0-topic-sconfig_console-v4-0-ac93d797f8cf@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>, 
@@ -50,8 +65,8 @@ To: BAREBOX <barebox@lists.infradead.org>,
 Cc: Fabian Pflug <f.pflug@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260319_234503_023951_8225F9EA 
-X-CRM114-Status: GOOD (  14.38  )
+X-CRM114-CacheID: sfid-20260320_064503_024747_A53FA11C 
+X-CRM114-Status: GOOD (  12.85  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,108 +88,113 @@ X-Spam-Status: No, score=-2.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v4 3/7] security: policy: remove global active_policy var
+Subject: [PATCH v4 5/7] common: bootm: add policy to commandline
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Replace with a getter function called security_policy_get_active(), that
-automatically initializes the active_policy, if an initial policy is
-set.
+If security policies are used, then the variable bootm.provide_policy
+can be set to automatically append the currently selected security
+policy to the kernel commandline with the prefix
+barebox.security.policy=
+This allows the the system to behave different based on the selected
+security policy.
 
 Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 ---
- commands/sconfig.c        |  2 ++
- include/security/policy.h |  3 +--
- security/Kconfig.policy   |  3 ++-
- security/policy.c         | 16 ++++++++++------
- 4 files changed, 15 insertions(+), 9 deletions(-)
+ common/bootm.c  | 24 ++++++++++++++++++++++++
+ include/bootm.h |  5 +++++
+ 2 files changed, 29 insertions(+)
 
-diff --git a/commands/sconfig.c b/commands/sconfig.c
-index 3ca4478270..7afb24366b 100644
---- a/commands/sconfig.c
-+++ b/commands/sconfig.c
-@@ -114,6 +114,7 @@ static int do_sconfig_flags(int argc, char *argv[])
- static struct security_policy *alloc_policy(void)
- {
- 	struct security_policy *override;
-+	const struct security_policy *active_policy = security_policy_get_active();
+diff --git a/common/bootm.c b/common/bootm.c
+index d43079bb81..68631c392d 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -22,6 +22,7 @@
+ #include <uncompress.h>
+ #include <zero_page.h>
+ #include <security/config.h>
++#include <security/policy.h>
  
- 	override = xmalloc(sizeof(*override));
+ static LIST_HEAD(handler_list);
+ static struct sconfig_notifier_block sconfig_notifier;
+@@ -75,6 +76,7 @@ static int bootm_dryrun;
+ static int bootm_earlycon;
+ static int bootm_provide_machine_id;
+ static int bootm_provide_hostname;
++static int bootm_provide_policy;
+ static int bootm_verbosity;
+ static int bootm_efi_mode = BOOTM_EFI_AVAILABLE;
  
-@@ -137,6 +138,7 @@ static void free_policy(struct security_policy *policy)
+@@ -97,6 +99,7 @@ void bootm_data_init_defaults(struct bootm_data *data)
+ 	data->appendroot = bootm_appendroot;
+ 	data->provide_machine_id = bootm_provide_machine_id;
+ 	data->provide_hostname = bootm_provide_hostname;
++	data->provide_policy = bootm_provide_policy;
+ 	data->verbose = bootm_verbosity;
+ 	data->dryrun = bootm_dryrun;
+ 	data->efi_boot = bootm_efi_mode;
+@@ -118,6 +121,7 @@ void bootm_data_restore_defaults(const struct bootm_data *data)
+ 	bootm_appendroot = data->appendroot;
+ 	bootm_provide_machine_id = data->provide_machine_id;
+ 	bootm_provide_hostname = data->provide_hostname;
++	bootm_provide_policy = data->provide_policy;
+ 	bootm_verbosity = data->verbose;
+ 	bootm_dryrun = data->dryrun;
+ 	bootm_efi_mode = data->efi_boot;
+@@ -759,6 +763,21 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		free(hostname_bootarg);
+ 	}
  
- static int do_sconfig(int argc, char *argv[])
- {
-+	const struct security_policy *active_policy = security_policy_get_active();
- 	struct security_policy *override;
- 	bool allow_color;
- 	int i, ret;
-diff --git a/include/security/policy.h b/include/security/policy.h
-index c41220ef3b..11490bf173 100644
---- a/include/security/policy.h
-+++ b/include/security/policy.h
-@@ -25,9 +25,8 @@
- #define POLICY_TAMPER		"tamper"
- #define POLICY_FIELD_RETURN	"return"
- 
--extern const struct security_policy *active_policy;
--
- const struct security_policy *security_policy_get(const char *name);
-+const struct security_policy *security_policy_get_active(void);
- 
- int security_policy_activate(const struct security_policy *policy);
- int security_policy_select(const char *name);
-diff --git a/security/Kconfig.policy b/security/Kconfig.policy
-index 9ea52e91da..e778327b0d 100644
---- a/security/Kconfig.policy
-+++ b/security/Kconfig.policy
-@@ -49,7 +49,8 @@ config SECURITY_POLICY_INIT
- 	prompt "Initial security policy"
- 	help
- 	  The policy named here will be automatically selected the first
--	  time a security policy is to be consulted.
-+	  time a security policy is to be consulted or the currently active
-+	  policy is queried.
- 	  It's recommended to use a restrictive policy here and remove
- 	  the restrictions if needed instead of the other way round.
- 
-diff --git a/security/policy.c b/security/policy.c
-index 95e7bf99a2..fce527df67 100644
---- a/security/policy.c
-+++ b/security/policy.c
-@@ -60,15 +60,12 @@ static bool __is_allowed(const struct security_policy *policy, unsigned option)
- 
- bool is_allowed(const struct security_policy *policy, unsigned option)
- {
--	policy = policy ?: active_policy;
--
- 	if (WARN(option > SCONFIG_NUM))
- 		return false;
- 
--	if (!policy && *CONFIG_SECURITY_POLICY_INIT) {
--		security_policy_select(CONFIG_SECURITY_POLICY_INIT);
--		policy = active_policy;
--	}
-+	/* initialize and use active policy if none is selected */
-+	if (!policy)
-+		policy = security_policy_get_active();
- 
- 	if (policy) {
- 		bool allow = __is_allowed(policy, option);
-@@ -108,6 +105,13 @@ int security_policy_activate(const struct security_policy *policy)
- 	return 0;
- }
- 
-+const struct security_policy *security_policy_get_active(void)
-+{
-+	if (!active_policy && *CONFIG_SECURITY_POLICY_INIT)
-+		security_policy_select(CONFIG_SECURITY_POLICY_INIT);
-+	return active_policy;
-+}
++	if (IS_ENABLED(CONFIG_SECURITY_POLICY) && bootm_data->provide_policy) {
++		char *policy_bootargs;
++		const struct security_policy *active_policy = security_policy_get_active();
 +
- const struct security_policy *security_policy_get(const char *name)
- {
- 	const struct policy_list_entry *entry;
++		if (active_policy && !active_policy->name) {
++			pr_err("Providing policy is enabled but policy has no name\n");
++			ret = -EINVAL;
++			goto err_out;
++		}
++
++		policy_bootargs = basprintf("barebox.security.policy=%s", active_policy->name);
++		globalvar_add_simple("linux.bootargs.dyn.policy", policy_bootargs);
++		free(policy_bootargs);
++	}
++
+ 	pr_info("\nLoading %s '%s'", file_type_to_string(data->kernel_type),
+ 		data->os_file);
+ 	if (data->kernel_type == filetype_uimage &&
+@@ -967,6 +986,8 @@ static int bootm_init(void)
+ 	globalvar_add_simple_bool("bootm.earlycon", &bootm_earlycon);
+ 	globalvar_add_simple_bool("bootm.provide_machine_id", &bootm_provide_machine_id);
+ 	globalvar_add_simple_bool("bootm.provide_hostname", &bootm_provide_hostname);
++	if (IS_ENABLED(CONFIG_SECURITY_POLICY))
++		globalvar_add_simple_bool("bootm.provide_policy", &bootm_provide_policy);
+ 	if (IS_ENABLED(CONFIG_BOOTM_INITRD)) {
+ 		globalvar_add_simple("bootm.initrd", NULL);
+ 		globalvar_add_simple("bootm.initrd.loadaddr", NULL);
+@@ -1030,3 +1051,6 @@ BAREBOX_MAGICVAR(global.bootm.root_dev, "bootm default root device (overrides de
+ BAREBOX_MAGICVAR(global.bootm.root_param, "bootm root parameter name (normally 'root' for root=/dev/...)");
+ BAREBOX_MAGICVAR(global.bootm.provide_machine_id, "If true, append systemd.machine_id=$global.machine_id to Kernel command line");
+ BAREBOX_MAGICVAR(global.bootm.provide_hostname, "If true, append systemd.hostname=$global.hostname to Kernel command line");
++#ifdef CONFIG_SECURITY_POLICY
++BAREBOX_MAGICVAR(global.bootm.provide_policy, "Add barebox.security.policy= option to Kernel");
++#endif
+diff --git a/include/bootm.h b/include/bootm.h
+index 21feb1ca98..a712010b2b 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -46,6 +46,11 @@ struct bootm_data {
+ 	 * of global.hostname to Kernel.
+ 	 */
+ 	bool provide_hostname;
++	/*
++	 * provide_policy - if true, try to add barebox.security.policy= with
++	 * with value of currently selected policy
++	 */
++	bool provide_policy;
+ 	enum bootm_efi_mode efi_boot;
+ 	unsigned long initrd_address;
+ 	unsigned long os_address;
 
 -- 
 2.47.3
