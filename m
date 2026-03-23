@@ -1,54 +1,69 @@
-Delivery-date: Mon, 23 Mar 2026 09:59:24 +0100
+Delivery-date: Mon, 23 Mar 2026 14:23:02 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w4b88-0044Ux-34
+	id 1w4fFG-0048YH-0S
 	for lore@lore.pengutronix.de;
-	Mon, 23 Mar 2026 09:59:24 +0100
+	Mon, 23 Mar 2026 14:23:02 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w4b88-0003kO-Bv
-	for lore@pengutronix.de; Mon, 23 Mar 2026 09:59:24 +0100
+	id 1w4fFE-0005ZT-NJ
+	for lore@pengutronix.de; Mon, 23 Mar 2026 14:23:02 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=luCgasFFKbOGpExjmo0fJU1NurB+u3ITlTVDUBhNxT0=; b=zFR5P+piF5RGnoZry2YeokpMM/
-	oDAm490uCz3gEsV2lp6gvHxmfPRlSNbktAm8hxVKr8Ho+Fi7z7FZYrbRPGhyQYDHri3LEko6hI5NJ
-	fa4o6QsQ/IKYl8g2/mT/x2WvqTREFqh+kjJomw6SLPjTHzMuhTQDBUGSY7HN/jwh75ppvL6vM2xrX
-	4hWvgkVOX98MwWgju7/xauQmbV44LGLak6eb2FJ5Bto8FH/4fT///f0tShkwLILSbXoFJUs2MpAno
-	UHS5G5dtj+NRo32DS5lCD/hB5ke96TnV7ts62iClofFl2Fx+7Af8svVSJ46p+wSiluEUREM980rEq
-	fCxugUtw==;
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=XfbyLpKDX3PF0L73HOou/RKeOo8w8vRcxq5d3oE0d04=; b=XeDaU2jVhxd8IY5T6i+8qQeb9/
+	FDkQY6Y12e/uI/O9cghTJ5QSp3NQbdNNXGx+Uy3OdIw7imlywrWgN9Pix0drEfNHk+9FwCjvPId9D
+	mzqOUzlwsH0UOT7OxI6pxsgQEkAcUpY47l3v5VYKVB38EH1MU8wVyrlMsTM6DSVxYzqY6BYjXAIcR
+	qQ7+L550Dt6yCNRoDvz1eJ9pHIShwWnMhszrLwcpEYl6Rs/MbL9n6sSQm5qKxmegTc8bKNgBeH/uv
+	pmKjXaOOmQfcYBrfJ88Iu1CbyhP7WpUzTJXnn7pEQxd9ijFsoDk1R7diNeYEQmHpc20DZdvnfnPVr
+	nlt+TIvQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w4b7i-0000000GJuW-2Ey7;
-	Mon, 23 Mar 2026 08:58:58 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1w4fEV-0000000GnhU-3SRW;
+	Mon, 23 Mar 2026 13:22:15 +0000
+Received: from cczrelay02.in2p3.fr ([134.158.66.152] helo=cczrelay04.in2p3.fr)
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w4b7f-0000000GJtQ-2uCX
+	id 1w4fER-0000000GnWR-3yD5
 	for barebox@lists.infradead.org;
-	Mon, 23 Mar 2026 08:58:56 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=localhost.localdomain)
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@barebox.org>)
-	id 1w4b7e-0003XY-13; Mon, 23 Mar 2026 09:58:54 +0100
-From: Ahmad Fatoum <a.fatoum@barebox.org>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon, 23 Mar 2026 09:58:51 +0100
-Message-ID: <20260323085851.4073528-1-a.fatoum@barebox.org>
-X-Mailer: git-send-email 2.47.3
+	Mon, 23 Mar 2026 13:22:14 +0000
+Received: from [172.27.130.86] (unknown [194.199.39.1])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by cczrelay04.in2p3.fr (Postfix) with ESMTPSA id 5F6918006C6;
+	Mon, 23 Mar 2026 14:22:06 +0100 (CET)
+Message-ID: <aa77c7f5-0039-43a6-9d3f-2cbb59406bc6@clermont.in2p3.fr>
+Date: Mon, 23 Mar 2026 14:22:05 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+References: <ca6784d7-14c0-4716-8951-67d31fd40cdd@clermont.in2p3.fr>
+ <abkZpI9KA1Q2A7VL@pengutronix.de>
+ <227c88b2-009d-4292-a8a6-07e18d10f82b@clermont.in2p3.fr>
+ <57f1a773-8ead-486d-88a3-415d96966918@pengutronix.de>
+ <e0c8e7e3-13d2-4f1d-a2f2-47e5d94c25cb@clermont.in2p3.fr>
+ <9c45c9dd-757f-4a13-8b6d-34eccab8fc5b@pengutronix.de>
+ <1f36feab-574b-4dc5-9a2d-4eb1da213d6f@clermont.in2p3.fr>
+ <abpbuoyzwbrFOZkd@pengutronix.de>
+ <2b87f519-866d-4db2-925f-8a828a4f450b@clermont.in2p3.fr>
+ <121dc773-a7f4-4d8d-851f-0ff10dc3c8c8@clermont.in2p3.fr>
+ <abq80-X7w9qQgooP@pengutronix.de>
+From: David Picard <david.picard@clermont.in2p3.fr>
+Content-Language: en-US
+In-Reply-To: <abq80-X7w9qQgooP@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260323_015855_745200_25C63D82 
-X-CRM114-Status: UNSURE (   8.14  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260323_062212_137776_2A558450 
+X-CRM114-Status: GOOD (  12.82  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -66,73 +81,40 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-2.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH master] ci: pytest: test against Debian 13.4.0 image
+Subject: Re: [PATCH v2 2/2] ARM: setup_c: avoid clearing BSS twice
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The Debian 13.3.0 CDROM ISO is no longer available, bump the minor revision
-as a minimal fix to get CI going again.
+Hi,
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
----
- .github/workflows/test-labgrid-pytest.yml  | 2 +-
- scripts/fetch-os.sh                        | 2 +-
- test/arm/multi_v8_efiloader_defconfig.yaml | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+I just tested today's master (0933e8f2ebf0d91dfcf177a4e4292b02921a53f1) 
+with your patch applied, and it works.
 
-diff --git a/.github/workflows/test-labgrid-pytest.yml b/.github/workflows/test-labgrid-pytest.yml
-index f87e0761df82..94b314230874 100644
---- a/.github/workflows/test-labgrid-pytest.yml
-+++ b/.github/workflows/test-labgrid-pytest.yml
-@@ -35,7 +35,7 @@ jobs:
-           - ARCH: arm
-             lgenv: test/arm/multi_v8_efiloader_defconfig.yaml
-             defconfig: multi_v8_efiloader_defconfig
--            osimg: debian-13.3.0-arm64-netinst.iso
-+            osimg: debian-13.4.0-arm64-netinst.iso
- 
-           - ARCH: mips
-             lgenv: test/mips/qemu-malta_defconfig.yaml
-diff --git a/scripts/fetch-os.sh b/scripts/fetch-os.sh
-index e22185af2a00..126b50f758e8 100755
---- a/scripts/fetch-os.sh
-+++ b/scripts/fetch-os.sh
-@@ -8,7 +8,7 @@ fi
- set -euo pipefail
- 
- declare -A images=(
--	["debian-13.3.0-arm64-netinst.iso"]="https://cloud.debian.org/images/release/current/arm64/iso-cd/debian-13.3.0-arm64-netinst.iso"
-+	["debian-13.4.0-arm64-netinst.iso"]="https://cloud.debian.org/images/release/current/arm64/iso-cd/debian-13.4.0-arm64-netinst.iso"
- )
- 
- found=0
-diff --git a/test/arm/multi_v8_efiloader_defconfig.yaml b/test/arm/multi_v8_efiloader_defconfig.yaml
-index 579ac9f50d25..86d6a4c391d0 100644
---- a/test/arm/multi_v8_efiloader_defconfig.yaml
-+++ b/test/arm/multi_v8_efiloader_defconfig.yaml
-@@ -9,7 +9,7 @@ targets:
-         kernel: barebox-dt-2nd.img
-         display: qemu-default
-         extra_args: >
--          -drive if=virtio,snapshot=on,file=debian-13.3.0-arm64-netinst.iso
-+          -drive if=virtio,snapshot=on,file=debian-13.4.0-arm64-netinst.iso
-           -device virtio-rng
-       BareboxDriver:
-         prompt: 'barebox@[^:]+:[^ ]+ '
-@@ -35,6 +35,6 @@ targets:
- 
- images:
-   barebox-dt-2nd.img: !template "$LG_BUILDDIR/images/barebox-dt-2nd.img"
--  debian_iso: !template "../../debian-13.3.0-arm64-netinst.iso"
-+  debian_iso: !template "../../debian-13.4.0-arm64-netinst.iso"
- imports:
-   -  ../strategy.py
--- 
-2.47.3
+I did checked the timestamp, this time...
+barebox 2026.03.0 #1 Mon Mar 23 14:07:47 CET 2026
+
+David
+
+
+Le 18/03/2026 à 15:55, Sascha Hauer a écrit :
+> On Wed, Mar 18, 2026 at 03:12:23PM +0100, David Picard wrote:
+>> Did it help? I can make more tests.
+> Thanks, yes it helps.
+>
+> The patch you tested basically is the same as I reverted, modulo the
+> debug prints. So indeed the original patch seems to work. My assumption
+> is that you didn't have Ahmads fix applied which is on current master
+> now.
+>
+> So I am going to re-apply this patch. Please let me know if something
+> still breaks.
+>
+> Sascha
+>
 
 
 
