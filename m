@@ -1,55 +1,54 @@
-Delivery-date: Mon, 23 Mar 2026 08:18:37 +0100
+Delivery-date: Mon, 23 Mar 2026 08:24:43 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w4ZYb-0043AA-1i
+	id 1w4ZeV-0043EN-0w
 	for lore@lore.pengutronix.de;
-	Mon, 23 Mar 2026 08:18:37 +0100
+	Mon, 23 Mar 2026 08:24:43 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w4ZYa-00019O-UD
-	for lore@pengutronix.de; Mon, 23 Mar 2026 08:18:37 +0100
+	id 1w4ZeU-0001tP-MW
+	for lore@pengutronix.de; Mon, 23 Mar 2026 08:24:43 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=uThyaKqlGDcICk+rW9A8JSq69Sdk4ohrAC1aaRzx/cM=; b=sfS20QjvyqZsiDn6Ofg6x3GMd+
-	y+Pdq2BQZr5AVsuTfmKGS1fA/xZsTxpDCcP5+EGyD6lJQ9uybHcmiO1LtLRBjANDkRqLv69AXdc5d
-	lRZbqGLUybuboiJse9s5jYOovyyXh0v9FARjrXG/yQ5zgpJDseW8MC2jTGjr2wVA6ocKLmhmTd9Z3
-	Y3byuPl3zKglqQCc9f7219/fy2tfNKxQ+FXFyrYLVQ+v8bU7aLK2yY78JJXw68ieOSvrkmyPPVkpe
-	3UHcYDpHE6tAeuLxpf2dA7qHsGctiGu/pjEUkkBJwu8alOsUiP2nD8Uw5O5+9h5wxcpwsR0igqbYm
-	M+O1u8mw==;
+	bh=oBczXhynaIBP6WUCTW4CGze5tXwLRjY2Xi6OKNO6wSU=; b=nyPxn+cLBzzXExk+ksvBKduFRt
+	FcpiA9FF8HSFAh02k3lGq0vlFcazbeEiERXNpbp68XWw5/UfNJisRsHJl9lkQuv0+LopwlYk2LLs2
+	cOR8blteZ/Fwg5SYaGDPmaLrH5FEtVuENUzoEhSBUJouMJejuV3pckue2rbdNoXKsj0eZm5iA9hZ5
+	Hlt2LxBTiDfUa9ISyTCflEv6A6IkWolMcAwaL32GBZlaIncJBhcwvGm+8bv8kOWxsO9wByEcIvqpF
+	S3NSiQYzwgVK0ss3pchtX/yy90HWZZhzlo6hGiFm6zsEmtEK/cNBdpQdImXAmB5sc5erqaSDJXFmH
+	R0LXW0pA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w4ZXs-0000000GBM1-2pDI;
-	Mon, 23 Mar 2026 07:17:52 +0000
+	id 1w4Ze2-0000000GBZy-30Ea;
+	Mon, 23 Mar 2026 07:24:14 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w4ZXq-0000000GBLL-18R5
+	id 1w4Zdz-0000000GBZc-4A5K
 	for barebox@lists.infradead.org;
-	Mon, 23 Mar 2026 07:17:51 +0000
+	Mon, 23 Mar 2026 07:24:13 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=localhost.localdomain)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1w4ZXl-00012N-78; Mon, 23 Mar 2026 08:17:45 +0100
+	id 1w4Zdy-0001nR-15; Mon, 23 Mar 2026 08:24:10 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
-Cc: "Claude Opus 4.6" <noreply@anthropic.com>,
+Cc: Sohaib Mohamed <sohaib.amhmd@gmail.com>,
 	Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon, 23 Mar 2026 08:17:28 +0100
-Message-ID: <20260323071738.4005127-1-a.fatoum@barebox.org>
+Date: Mon, 23 Mar 2026 08:24:07 +0100
+Message-ID: <20260323072408.4011172-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260323_001750_333706_8EB2C644 
-X-CRM114-Status: UNSURE (   9.94  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260323_002412_094067_90EE05D1 
+X-CRM114-Status: GOOD (  13.60  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,37 +70,90 @@ X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] x86: fix initjmp storing base pointer at wrong address
+Subject: [PATCH] regmap: align dev_get_regmap error return with Linux
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-initjmp was writing zero to 8(%edx), which is func + 8 (corrupting
-memory at the function pointer address), instead of 8(%eax), which is
-the __ebp (base pointer) slot in the jmp_buf. When longjmp later
-restored the buffer, it would load uninitialized data into %ebp.
+dev_get_regmap returns NULL in Linux and not an error pointer as in
+barebox. Align the barebox return, so kernel code using it can be ported
+unmodified.
 
-With regparm(3), the arguments are passed as:
-  %eax = jmp_buf, %edx = func, %ecx = stack_top
-
-Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+Reported-by: Sohaib Mohamed <sohaib.amhmd@gmail.com>
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- arch/x86/lib/setjmp_32.S | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/regmap/regmap.c          | 4 ++--
+ drivers/regulator/stpmic1_regulator.c | 4 ++--
+ drivers/watchdog/rn5t568_wdt.c        | 4 ++--
+ drivers/watchdog/stpmic1_wdt.c        | 4 ++--
+ 4 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/x86/lib/setjmp_32.S b/arch/x86/lib/setjmp_32.S
-index cf340d35d8fd..ff080179ef9d 100644
---- a/arch/x86/lib/setjmp_32.S
-+++ b/arch/x86/lib/setjmp_32.S
-@@ -56,7 +56,7 @@ ENDPROC(longjmp)
- ENTRY(initjmp)
+diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
+index e27ba53dec58..e4b20c07809d 100644
+--- a/drivers/base/regmap/regmap.c
++++ b/drivers/base/regmap/regmap.c
+@@ -148,7 +148,7 @@ struct regmap *regmap_init(struct device *dev,
+  * @dev:         The device the maps is attached to
+  * @name:        Optional name for the map. If given it must match.
+  *
+- * Returns a pointer to the regmap or a ERR_PTR value on failure
++ * Returns the regmap for the device if one is present, or NULL.
+  */
+ struct regmap *dev_get_regmap(struct device *dev, const char *name)
+ {
+@@ -163,7 +163,7 @@ struct regmap *dev_get_regmap(struct device *dev, const char *name)
+ 			return map;
+ 	}
  
- 	movl %edx, 20(%eax)	/* Return address */
--	movl   $0, 8(%edx)	/* Base pointer */
-+	movl   $0, 8(%eax)	/* Base pointer */
- 	sub $ASM_SZPTR, %ecx	/* ESP - 4 has to be 16-byte aligned on entry */
- 	movl %ecx, 4(%eax)	/* Stack top */
- 	xorl %eax, %eax		/* Return value */
+-	return ERR_PTR(-ENOENT);
++	return NULL;
+ }
+ 
+ struct device *regmap_get_device(struct regmap *map)
+diff --git a/drivers/regulator/stpmic1_regulator.c b/drivers/regulator/stpmic1_regulator.c
+index 3ed351b5801a..eade6046d603 100644
+--- a/drivers/regulator/stpmic1_regulator.c
++++ b/drivers/regulator/stpmic1_regulator.c
+@@ -401,8 +401,8 @@ static int stpmic1_regulator_register(struct device *dev, int id,
+ 	cfg->rdev.desc = &cfg->desc;
+ 	cfg->rdev.dev = dev;
+ 	cfg->rdev.regmap = dev_get_regmap(dev->parent, NULL);
+-	if (IS_ERR(cfg->rdev.regmap))
+-		return PTR_ERR(cfg->rdev.regmap);
++	if (!cfg->rdev.regmap)
++		return -ENOENT;
+ 
+ 	ret = of_regulator_register(&cfg->rdev, match->of_node);
+ 	if (ret) {
+diff --git a/drivers/watchdog/rn5t568_wdt.c b/drivers/watchdog/rn5t568_wdt.c
+index 2011e3e01c5f..8c3e4175f9c0 100644
+--- a/drivers/watchdog/rn5t568_wdt.c
++++ b/drivers/watchdog/rn5t568_wdt.c
+@@ -117,8 +117,8 @@ static int rn5t568_wdt_probe(struct device *dev)
+ 	wdt = xzalloc(sizeof(*wdt));
+ 
+ 	wdt->regmap = dev_get_regmap(dev->parent, NULL);
+-	if (IS_ERR(wdt->regmap))
+-		return PTR_ERR(wdt->regmap);
++	if (!wdt->regmap)
++		return -ENOENT;
+ 
+ 	wdd = &wdt->wdd;
+ 	wdd->hwdev = dev;
+diff --git a/drivers/watchdog/stpmic1_wdt.c b/drivers/watchdog/stpmic1_wdt.c
+index f25656e75c12..21cf721de790 100644
+--- a/drivers/watchdog/stpmic1_wdt.c
++++ b/drivers/watchdog/stpmic1_wdt.c
+@@ -169,8 +169,8 @@ static int stpmic1_wdt_probe(struct device *dev)
+ 	wdt = xzalloc(sizeof(*wdt));
+ 
+ 	wdt->regmap = dev_get_regmap(dev->parent, NULL);
+-	if (IS_ERR(wdt->regmap))
+-		return PTR_ERR(wdt->regmap);
++	if (!wdt->regmap)
++		return -ENOENT;
+ 
+ 	wdd = &wdt->wdd;
+ 	wdd->hwdev = dev;
 -- 
 2.47.3
 
