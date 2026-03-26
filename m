@@ -1,70 +1,62 @@
-Delivery-date: Thu, 26 Mar 2026 07:54:20 +0100
+Delivery-date: Thu, 26 Mar 2026 08:29:59 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w5ebk-005FiK-0L
+	id 1w5fAF-005GdH-14
 	for lore@lore.pengutronix.de;
-	Thu, 26 Mar 2026 07:54:20 +0100
+	Thu, 26 Mar 2026 08:29:59 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w5ebj-0001tp-EZ
-	for lore@pengutronix.de; Thu, 26 Mar 2026 07:54:20 +0100
+	id 1w5fAE-0000uJ-NO
+	for lore@pengutronix.de; Thu, 26 Mar 2026 08:29:59 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=K8EFzA0i6T44PA8kQCHIz+JxJuqbkU2rywIGLNxeJF8=; b=P7+xQP5n4bKczNt/XTwVCrRtWh
-	5G/3zNevcBhxq6GwX49/Basz17bGkkKbVkr8CaBlaqzRaj6UHYY3NhPKdI67FgO7NEyIltrpKmlkm
-	gOC5V/19FeuvbS/c4qXDhFXK/9wTrRvUtCc2BFR5hAswF4oq4jTQEgqqEold4OjUceNZ231ZiTaN+
-	r8BPQ4TEyH9oP9Kt7IcYvTBLFrWbh6behUtv8PELzwSMoVH0hh7OEaJioXHDM4dR3we5WedVH5dE4
-	8b1nW91z3C/bwc8frjUgZnmYpra7ffcpQuHtWe61NaqGSFSyOqJqYhWYNiR76Cg6e5ooEGrqj33o6
-	O6bWpjrA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-ID:Subject:From:To:Date:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=klOh0G9DeFtQF5toKDUjnzZIh+DoB46Gy9wI7o4/vX0=; b=vo1vCPcNZHkqjrL6v8Lia7ybja
+	X6V2zSdrHoq+OIoiZBUIGJFs0HfJPaoRVM1WG8oSVnwPAYfwIMRKQuOiCXJKLUCRRwvZvyRS1cshy
+	mF+1DICoDgdHXiirQRIl8pnTVzTioz65qbkFs0nNwQPQgEUHiZpenTkUwkgV3ypRG0IujOiYmaNFw
+	EtJ2btPIB7U4ZnHwnGUFHrKWxgH8QnELRqaKtCc+r83GLjorIT9rHUtSSVsQDMpnpvdBupSC0ECZC
+	mfBWYjBhlrQjRSjzuZBg7t15DRdt8DqaYg0ycbjGYbIqBR7yPtPg1WIt5ClgrtmPpSOuZMH7+853a
+	yPCEIl+g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w5eb3-00000004sWC-1Emq;
-	Thu, 26 Mar 2026 06:53:37 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1w5f9o-00000004wPf-0W67;
+	Thu, 26 Mar 2026 07:29:32 +0000
+Received: from mail-106103.protonmail.ch ([79.135.106.103])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w5eb0-00000004sVo-086Z
+	id 1w5f9l-00000004wO2-0FqC
 	for barebox@lists.infradead.org;
-	Thu, 26 Mar 2026 06:53:35 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1w5eaw-0001lz-6D; Thu, 26 Mar 2026 07:53:30 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1w5eav-002BPU-2h;
-	Thu, 26 Mar 2026 07:53:29 +0100
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1w5eav-00000006eJU-3747;
-	Thu, 26 Mar 2026 07:53:29 +0100
-Date: Thu, 26 Mar 2026 07:53:29 +0100
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: David Picard <david.picard@clermont.in2p3.fr>
-Cc: ML_Barebox <barebox@lists.infradead.org>
-Message-ID: <acTX6Wgh1meZgedk@pengutronix.de>
-References: <fdced1c1-5efd-481c-8b3b-a8cb43d0c220@clermont.in2p3.fr>
+	Thu, 26 Mar 2026 07:29:30 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1774510166; x=1774769366;
+	bh=klOh0G9DeFtQF5toKDUjnzZIh+DoB46Gy9wI7o4/vX0=;
+	h=Date:To:From:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=baAdYjQscjBkorD0sTAT0d+Hnc4aDLSFkhy6pFjC0WRYBrO0ELWvxgeF8/mfMet7g
+	 ojtFFdlp8d4jUDGQVUDbDsUDzDaIXARTvK4mKkpxXiAnSGHIMFvc0ZUzBgs9HJ3iId
+	 aBb625S7DPHlR5mGBZZwt229h17RJdzLCAY4brgzDJTJrQLK10CDqNpTG3iK0AhDBQ
+	 9gtWhgF4yCTwzsYpDTouMFX5C4xGKqSl7P1QZqr81FjBWUTBO8JhiRUS9CJmXiBxCz
+	 UdF/gSr+6Ex3EfHPFH7E6zi7r4MvEX+1MwIbo57KuyYkHiw64Gtvae0IkNMgIolj8A
+	 Ne9czGrIZUDYA==
+Date: Thu, 26 Mar 2026 07:29:22 +0000
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+From: =?utf-8?Q?Micha=C5=82_Kruszewski?= <mkru@protonmail.com>
+Message-ID: <mO0lDEdknvuZ-6R4RSHJePbDBcwiBmMAZB_d_sZMBEWJKoRltrWPiQqPxiF3Pukxv8_JAhFxG7-RFL5VUbOnDpwOEJ2_HkmE7lfSVEFA5bs=@protonmail.com>
+Feedback-ID: 2463531:user:proton
+X-Pm-Message-ID: f0df0bf12fda923202ae44fd387f4439e086b371
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <fdced1c1-5efd-481c-8b3b-a8cb43d0c220@clermont.in2p3.fr>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260325_235334_091885_5ED1C9C9 
-X-CRM114-Status: GOOD (  23.37  )
+X-CRM114-CacheID: sfid-20260326_002929_928886_D9DFBD7A 
+X-CRM114-Status: UNSURE (   9.60  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,80 +74,60 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: Re: Enclustra SA2: enable dual fast Ethernet
+X-Spam-Status: No, score=-2.7 required=4.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Compiling barebox without PBL and using dts from Linux dts upstream for Zynq SoC
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi David,
+Hello,
 
-Ethernet is usually my playground, so I'll answer here as far as I can
-:)
+I try to boot Linux using barebox on the MYiR Z-turn board (Xilinx Zynq SoC=
+).
+I have generated the default configuration using `make zynq_defconfig`.
+After compiling and trying to boot nothing works.
+I am not surprised at all.
+I started digging, and here are a few things that are not clear to me.
 
-On Wed, Mar 25, 2026 at 05:13:52PM +0100, David Picard wrote:
-> Hello,
-> 
-> I am still using the same Mercury_SA2_ST1_Reference_Design [1][2] released
-> by the manufacturer:
-> https://github.com/enclustra/Mercury_SA2_ST1_Reference_Design.git
-> 
-> But I compiled a variant of the project to enable dual fast Ethernet,
-> because I need a 2nd Ethernet interface.
+Issue number one.
+Barebox consists of 2 bootloaders, the Pre-BootLoader (PBL) and Second-Stag=
+e BootLoader (SSBL).
+However, in my case I use the First Stage BootLoader (FSBL) compiled by Vit=
+is.
+The FSBL does all the required hardware initialization.
+In such a case, the PBL is superfluous.
+I would like to disable it.
+However, I can't disable PBL_IMAGE in menuconfig, it is forced to Y.
+It is selected by PBL_MULTI_IMAGES [=3Dy] && HAVE_PBL_MULTI_IMAGES [=3Dy].
+Moreover, I can't disable HAVE_PBL_MULTI_IMAGES, it is forced to Y by selec=
+ting ARM.
+Disabling ARM of course makes no sense.
+Is it even possible to configure barebox as a SSBL-only for the Zynq SoC?
+How to achieve this?
 
-> SA2 module Ethernet layout:
-> - 1 Ethernet MAC ("gmac1" in the DTS) of the HPS [3] is used for gigabit
-> Ethernet, and connects with RGMII to PHY at address 3 >> working!
-> - 2 Ethernet MACs are implemented as FPGA IP cores and connect with RMII to
-> PHYs at addresses 1 and 2 >> to be configured...
-> 
-> All 3 PHYs share the same MDIO bus.
+The second issues is that the MYiR Z-turn board is not supported directly b=
+y barebox.
+However, there is a valid dts description in the dts directory (Linux upstr=
+eam device tree directory).
+How can I tell barebox to use a dts from the Linux dts upstream directory?
+I looked for some config in menuconfig but without success.
 
-In this case barebox will need to resolve all pre-dependencies in the
-correct order, which make things tricky:
-- FPGA MACs should be probed after MDIO bus was scanned and PHYs
-  detected. If PHY resets are asserted, we need to deasserted them in
-  software, before MDIO bus scan.
-- if MDIO bus is a part of the gmac1 block and driver, then this one
-  should be probed as the first one in the chain.
-- except of resets and MDIO bus, we need also clocks for the PHYs and
-  and MACs.
+The third issue is that I can't compile dts in the dts directory.
+The make help message says:
+>   src/<ARCH>/<DTS>.dtb   Build a single device tree binary
+However, when I try I get:
+  [user@host] make src/arm/xilinx/zynq-zturn-v5.dtb
+    DTC     src/arm/xilinx/zynq-zturn-v5.dtb
+  /bin/sh: 1: -Wp,-MD,src/arm/xilinx/.zynq-zturn-v5.dtb.d.pre.tmp: not foun=
+d
+  make: *** [Makefile:148: src/arm/xilinx/zynq-zturn-v5.dtb] Error 127
+Of course the ARCH and CROSS_COMPILE are exported.
 
-As soon as all related topology is reconstructed in the correct order,
-it will magically work :D
+Regards,
+Micha=C5=82 Kruszewski
 
-> I generated a DTS file with Intel's tool:
-> $ sopc2dts --force-altr -t dts -i
-> ./Quartus/ME-SA2-D6-7I-D11-DFE/sdmmc/Mercury_SA2_pd.sopcinfo -o
-> Mercury_SA2_pd.dts
-> 
-> The file is here [4]:
-> https://filesender.renater.fr/?s=download&token=b2eeab16-063c-41ef-8abe-ea5b44f8f25a&lang=en
 
-Hm, i see some MACs, but no PHY configurations in attached devicetree.
-PHYs should be properly described with resets and MAC <> PHY linkage.
-
-> Now, I am trying to merge the fast Ethernet section with the
-> socfpga_cyclone5_mercury_sa2.dtsi, but I really need a hint, here...
-> https://git.pengutronix.de/cgit/barebox/tree/arch/arm/dts/socfpga_cyclone5_mercury_sa2.dtsi
-> https://git.pengutronix.de/cgit/barebox/tree/dts/src/arm/intel/socfpga/socfpga.dtsi
-> 
-> However, I do know for a fact that the 2 PHYs at addresses 1 and 2 share the
-> same reset pin and can be released from reset by:
-> reset-gpios = <&portb 6 GPIO_ACTIVE_LOW>;
-
-Shared reset for PHYs is not very nice design :)  Some times PHYs need
-to be reset for each link up/down cycle. A shared reset makes it
-impossible.
-
-Best Regards,
-Oleksij
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
