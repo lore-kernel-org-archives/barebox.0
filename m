@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w67Ly-005jmu-0T
+	id 1w67Ly-005jmv-0Z
 	for lore@lore.pengutronix.de;
 	Fri, 27 Mar 2026 14:35:58 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w67Lx-0007UM-FQ
+	id 1w67Lx-0007UO-JZ
 	for lore@pengutronix.de; Fri, 27 Mar 2026 14:35:58 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,41 +18,41 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=atf7Y+xTRYRotAV0bdQqXYsFDWE52NMF8pPT6bw721k=; b=YTDhEX+EKsmGPXlbL7x2NJuwjc
-	y8QcB5kZfkEKMp5h4eJ909xMjsVWGcN71v8punMuKtLKS5djwiViJRYLS6dIlsHlpjexjKOEG4b8c
-	49mIqJ+Fq2RSi6EE8DiMc5n+04TMM8W0FDsF3rIvcmON2IGiH/d5bnXDKIkSFkA8zyX++jH2ASqvn
-	jgHXNTclm6vcFZ8Rf2vTCi3B4ux6hBmA+sM/FvfWQKU+OuYZebCyViDM03LUy94V6BBt8CzbSfB/d
-	1C+5s9rxaFmZc3aUKsEDZCPi/2zpeY4wUHB+ccCeCk6vrzLrcAeDv0MDZDBWPCcYSJN/tCT/XpiQm
-	MX7LZysQ==;
+	bh=iNJNBWCVWMoPI0xwRE5rIwG+ILgsLfEW30AZP7EIysE=; b=RO5F/lHuH7F3Pkv/8ZkR/Y0Nmw
+	fEja5Q+N9waV5wHYHdV7t/UyQEKxRJpZxqNeGGHTRHx0YZdmaY5T1mQcHNMacDnt0lbfHkZGINDez
+	l9SY/Xp/EGDXh3UjJLncVru8Hzh96+0+JjtE75FVyPdFq80MngKbmr2uDzO5n6KbEDtiB+zF6i8a6
+	4hhcFyI6ge84FYfg64IDiVHEa5b1oECRVZS7pHo1JSMEJ/ZLLIGLUCMCpYDPUNr0R8DBejF3XsuYb
+	CjJdbaGUDMj1K93hSdINWEVrITnOSsnFixYssmFYteskLuu5i0jMOp+Ew/E/4cZ2DaFH0yhRNh1sQ
+	q6DaU0oQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w67LO-00000007S9E-1oBo;
-	Fri, 27 Mar 2026 13:35:22 +0000
+	id 1w67LN-00000007S8Z-25YP;
+	Fri, 27 Mar 2026 13:35:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w67LH-00000007S58-3om6
+	id 1w67LH-00000007S54-3kEw
 	for barebox@lists.infradead.org;
 	Fri, 27 Mar 2026 13:35:18 +0000
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <f.pflug@pengutronix.de>)
-	id 1w67LE-0006yD-D1; Fri, 27 Mar 2026 14:35:12 +0100
+	id 1w67LE-0006yD-E0; Fri, 27 Mar 2026 14:35:12 +0100
 From: Fabian Pflug <f.pflug@pengutronix.de>
-Date: Fri, 27 Mar 2026 14:35:01 +0100
+Date: Fri, 27 Mar 2026 14:35:02 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260327-v2026-02-0-topic-sconfig_console-v7-3-67a52ff65ed3@pengutronix.de>
+Message-Id: <20260327-v2026-02-0-topic-sconfig_console-v7-4-67a52ff65ed3@pengutronix.de>
 References: <20260327-v2026-02-0-topic-sconfig_console-v7-0-67a52ff65ed3@pengutronix.de>
 In-Reply-To: <20260327-v2026-02-0-topic-sconfig_console-v7-0-67a52ff65ed3@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>, 
  Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Fabian Pflug <f.pflug@pengutronix.de>, 
- Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Fabian Pflug <f.pflug@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260327_063515_994241_2F612011 
-X-CRM114-Status: GOOD (  14.84  )
+X-CRM114-CacheID: sfid-20260327_063515_970004_69006920 
+X-CRM114-Status: UNSURE (   8.93  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,118 +74,55 @@ X-Spam-Status: No, score=-2.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v7 3/7] security: policy: remove global active_policy var
+Subject: [PATCH v7 4/7] security: policy: add notifier chain for name
+ change
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Replace with a getter function called security_policy_get_active(), that
-automatically initializes the active_policy, if an initial policy is
-set.
+Add an additional notifier chain, that gets called, whenever a security
+policy itself is changed, independent of the policies that have changed,
+which could be used to inform users about the currently selected policy
+name.
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 ---
- commands/sconfig.c        |  2 ++
- include/security/policy.h |  3 +--
- security/Kconfig.policy   |  3 ++-
- security/policy.c         | 18 +++++++++++-------
- 4 files changed, 16 insertions(+), 10 deletions(-)
+ include/security/config.h | 1 +
+ security/policy.c         | 3 +++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/commands/sconfig.c b/commands/sconfig.c
-index 3ca4478270..7afb24366b 100644
---- a/commands/sconfig.c
-+++ b/commands/sconfig.c
-@@ -114,6 +114,7 @@ static int do_sconfig_flags(int argc, char *argv[])
- static struct security_policy *alloc_policy(void)
- {
- 	struct security_policy *override;
-+	const struct security_policy *active_policy = security_policy_get_active();
+diff --git a/include/security/config.h b/include/security/config.h
+index b37ef4272c..35a5e963f7 100644
+--- a/include/security/config.h
++++ b/include/security/config.h
+@@ -20,6 +20,7 @@ extern const char *sconfig_names[SCONFIG_NUM];
+ int sconfig_lookup(const char *name);
  
- 	override = xmalloc(sizeof(*override));
+ extern struct notifier_head sconfig_notifier_list;
++extern struct notifier_head sconfig_name_notifier;
  
-@@ -137,6 +138,7 @@ static void free_policy(struct security_policy *policy)
- 
- static int do_sconfig(int argc, char *argv[])
- {
-+	const struct security_policy *active_policy = security_policy_get_active();
- 	struct security_policy *override;
- 	bool allow_color;
- 	int i, ret;
-diff --git a/include/security/policy.h b/include/security/policy.h
-index c41220ef3b..11490bf173 100644
---- a/include/security/policy.h
-+++ b/include/security/policy.h
-@@ -25,9 +25,8 @@
- #define POLICY_TAMPER		"tamper"
- #define POLICY_FIELD_RETURN	"return"
- 
--extern const struct security_policy *active_policy;
--
- const struct security_policy *security_policy_get(const char *name);
-+const struct security_policy *security_policy_get_active(void);
- 
- int security_policy_activate(const struct security_policy *policy);
- int security_policy_select(const char *name);
-diff --git a/security/Kconfig.policy b/security/Kconfig.policy
-index 9ea52e91da..e778327b0d 100644
---- a/security/Kconfig.policy
-+++ b/security/Kconfig.policy
-@@ -49,7 +49,8 @@ config SECURITY_POLICY_INIT
- 	prompt "Initial security policy"
- 	help
- 	  The policy named here will be automatically selected the first
--	  time a security policy is to be consulted.
-+	  time a security policy is to be consulted or the currently active
-+	  policy is queried.
- 	  It's recommended to use a restrictive policy here and remove
- 	  the restrictions if needed instead of the other way round.
+ bool is_allowed(const struct security_policy *policy, unsigned option);
  
 diff --git a/security/policy.c b/security/policy.c
-index bdfc480500..2924bfeabc 100644
+index 2924bfeabc..e3c68aa992 100644
 --- a/security/policy.c
 +++ b/security/policy.c
-@@ -43,7 +43,7 @@ struct policy_list_entry {
- 	struct list_head list;
- };
- 
--const struct security_policy *active_policy;
-+static const struct security_policy *active_policy;
+@@ -47,6 +47,7 @@ static const struct security_policy *active_policy;
  
  static LIST_HEAD(policy_list);
  NOTIFIER_HEAD(sconfig_notifier_list);
-@@ -60,15 +60,12 @@ static bool __is_allowed(const struct security_policy *policy, unsigned option)
++NOTIFIER_HEAD(sconfig_name_notifier);
  
- bool is_allowed(const struct security_policy *policy, unsigned option)
+ static bool __is_allowed(const struct security_policy *policy, unsigned option)
  {
--	policy = policy ?: active_policy;
--
- 	if (WARN(option >= SCONFIG_NUM))
- 		return false;
+@@ -102,6 +103,8 @@ int security_policy_activate(const struct security_policy *policy)
+ 		notifier_call_chain(&sconfig_notifier_list, i, NULL);
+ 	}
  
--	if (!policy && *CONFIG_SECURITY_POLICY_INIT) {
--		security_policy_select(CONFIG_SECURITY_POLICY_INIT);
--		policy = active_policy;
--	}
-+	/* initialize and use active policy if none is selected */
-+	if (!policy)
-+		policy = security_policy_get_active();
- 
- 	if (policy) {
- 		bool allow = __is_allowed(policy, option);
-@@ -108,6 +105,13 @@ int security_policy_activate(const struct security_policy *policy)
++	notifier_call_chain(&sconfig_name_notifier, 0, NULL);
++
  	return 0;
  }
  
-+const struct security_policy *security_policy_get_active(void)
-+{
-+	if (!active_policy && *CONFIG_SECURITY_POLICY_INIT)
-+		security_policy_select(CONFIG_SECURITY_POLICY_INIT);
-+	return active_policy;
-+}
-+
- const struct security_policy *security_policy_get(const char *name)
- {
- 	const struct policy_list_entry *entry;
 
 -- 
 2.47.3
