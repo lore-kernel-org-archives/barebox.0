@@ -1,48 +1,48 @@
-Delivery-date: Fri, 27 Mar 2026 14:35:56 +0100
+Delivery-date: Fri, 27 Mar 2026 14:35:57 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w67Lw-005jmC-0C
+	id 1w67Lx-005jmi-2a
 	for lore@lore.pengutronix.de;
-	Fri, 27 Mar 2026 14:35:56 +0100
+	Fri, 27 Mar 2026 14:35:57 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w67Lv-0007Rz-Ej
-	for lore@pengutronix.de; Fri, 27 Mar 2026 14:35:55 +0100
+	id 1w67Lw-0007Tw-WD
+	for lore@pengutronix.de; Fri, 27 Mar 2026 14:35:57 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=PvBExvlyOA+/1fO65YEkpmjLNUjLfAKoSO/bIODyIsw=; b=X34LhRR8fdZzu9QP/6ZFWhIWtS
-	j5mkiIkWY1GG1dVW9Dc9mT0FEWCtMnJFXtlkcKlclNJFc5eGd8rKXNFRdWWTVnx6BJVvyg0nRnatC
-	HHS8vqsPeCjNnC+XKq5ipgb+Qw3gT9YLn5/Hc37Mubpie1UFZknSdayIVWpSaEI2GDUT3GpE6PcG+
-	Y0Mhwj8aToF8fceX7pxO0BVQjANRorusFyR/CPGKpMrLp3C1Ox8BCN7BN88BX91t4F44oTmJy3KXO
-	uUwFykvfddz4YZLLAuF5jeNTP5QtCeZWk7LmWbntmkICae3uNQsNbTI/hKGZt34PZV/a5HkYf9z0w
-	TpJaetyg==;
+	bh=7euoq2W1tA3QQBr9Th51HIRlWDklLR9A1rgNS+9IZlE=; b=ceZtbaaCsQ+xCP+F5wPMgVzVbQ
+	AHl0h+j1qc8fk3fRri1j/7mjnPGYxDuXmtP43gZT4nYhuUClW0YZw6DZ60d2n13uJI6RBEmef9QpT
+	ufdPaMOP5Ev32o2oMHPIQMvNEWEGwq/QScqdxro2qkuTVKeN0c2udw2kC/w1zcGap+43JyP0QqcnT
+	GhzMmy8aHjMuwhMWTxeVlR8x7oNs8so074ygeOly4aqh+2Jcrul1LOGscMYMYAOF4hYWEBc8REiIQ
+	OUwfrrB/ngfM3O+XINEK+1xkB/KbMTlmx5Mtm8VmauJ+jnxBmmyegBNbymwPCRie/nyHxK8UumHdB
+	jze7GWUg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w67LK-00000007S7Y-3nEz;
-	Fri, 27 Mar 2026 13:35:18 +0000
+	id 1w67LP-00000007S9g-0C6j;
+	Fri, 27 Mar 2026 13:35:23 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w67LH-00000007S53-3dPV
+	id 1w67LH-00000007S56-3oFb
 	for barebox@lists.infradead.org;
-	Fri, 27 Mar 2026 13:35:17 +0000
+	Fri, 27 Mar 2026 13:35:19 +0000
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <f.pflug@pengutronix.de>)
-	id 1w67LE-0006yD-Bi; Fri, 27 Mar 2026 14:35:12 +0100
+	id 1w67LE-0006yD-G6; Fri, 27 Mar 2026 14:35:12 +0100
 From: Fabian Pflug <f.pflug@pengutronix.de>
-Date: Fri, 27 Mar 2026 14:35:00 +0100
+Date: Fri, 27 Mar 2026 14:35:04 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260327-v2026-02-0-topic-sconfig_console-v7-2-67a52ff65ed3@pengutronix.de>
+Message-Id: <20260327-v2026-02-0-topic-sconfig_console-v7-6-67a52ff65ed3@pengutronix.de>
 References: <20260327-v2026-02-0-topic-sconfig_console-v7-0-67a52ff65ed3@pengutronix.de>
 In-Reply-To: <20260327-v2026-02-0-topic-sconfig_console-v7-0-67a52ff65ed3@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>, 
@@ -50,8 +50,8 @@ To: BAREBOX <barebox@lists.infradead.org>,
 Cc: Fabian Pflug <f.pflug@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260327_063515_909936_19A2F2C1 
-X-CRM114-Status: GOOD (  10.99  )
+X-CRM114-CacheID: sfid-20260327_063516_001257_5C5921E3 
+X-CRM114-Status: GOOD (  23.09  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,61 +73,191 @@ X-Spam-Status: No, score=-2.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v7 2/7] security: policy: sanity check parameters
+Subject: [PATCH v7 6/7] drivers: pinctrl: configure pinctrl based on policy
+ name
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Do a sanity check for the __is_allowed, before using it as array
-index.
+Security policies can be used to have different functionality on the
+system. If systems have different functionality, they might have
+different pinctrl settings.
 
-Also updated the off-by-one error in is_allowed.
+One example could be the console input:
+When using security policies to disable console input on the default
+console, it might be more advantageous to also disable the RX pin hard
+in pinctrl, so that if there is a software error with the security
+policy implementation input does not reach to system and cannot be
+exploited.
+
+An example devicetree could look like this:
+/ {
+	chosen {
+		stdout-path = &uart3;
+	};
+};
+
+&uart3 {
+	pinctrl-names = "default", "barebox,policy-devel-default";
+	pinctrl-0 = <&pinctrl_uart3_tx_only>;
+	pinctrl-1 = <&pinctrl_uart3_interactive>;
+	status = "okay";
+};
+
+&iomuxc {
+	pinctrl_uart3_interactive: uart3ingrp {
+		fsl,pins = <MX8MP_IOMUXC_SD1_DATA6__UART3_DCE_TX	0x140>,
+			   <MX8MP_IOMUXC_SD1_DATA7__UART3_DCE_RX	0x140>;
+	};
+
+	pinctrl_uart3_tx_only: uart3txgrp {
+		fsl,pins = <MX8MP_IOMUXC_SD1_DATA6__UART3_DCE_TX	0x140>,
+			   <MX8MP_IOMUXC_SD1_DATA7__GPIO2_IO09		0x140>;
+	};
+};
+
+This would apply the devel pinmux on selecting the devel config and the
+default on every other security policy configuration.
+
+A Kconfig option to enable this feature has been chosen, because parsing
+pinctrl and mapping the names is a lot of string operations, that could
+increase boottime for a feature, that is maybe not needed for everyone.
 
 Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 ---
- commands/sconfig.c | 7 ++++++-
- security/policy.c  | 4 +++-
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ drivers/pinctrl/pinctrl.c | 73 +++++++++++++++++++++++++++++++++++++++++++++--
+ security/Kconfig.policy   | 12 ++++++++
+ 2 files changed, 83 insertions(+), 2 deletions(-)
 
-diff --git a/commands/sconfig.c b/commands/sconfig.c
-index 02c3a6b1ed..3ca4478270 100644
---- a/commands/sconfig.c
-+++ b/commands/sconfig.c
-@@ -37,7 +37,12 @@ static void sconfig_print(const struct security_policy *policy)
- static int sconfig_command_notify(struct notifier_block *nb,
- 				  unsigned long opt, void *unused)
- {
--	bool allow = is_allowed(NULL, opt);
-+	bool allow;
+diff --git a/drivers/pinctrl/pinctrl.c b/drivers/pinctrl/pinctrl.c
+index 01567aa5ae..eb4103c5fd 100644
+--- a/drivers/pinctrl/pinctrl.c
++++ b/drivers/pinctrl/pinctrl.c
+@@ -10,11 +10,22 @@
+ #include <linux/overflow.h>
+ #include <errno.h>
+ #include <of.h>
++#include <security/config.h>
++#include <security/policy.h>
+ 
+ struct pinctrl {
+ 	struct device_node consumer_np;
+ };
+ 
++LIST_HEAD(pinctrl_devices_name_list);
 +
-+	if (opt >= SCONFIG_NUM)
++struct pinctrl_devices_name_info {
++	struct device_node *node;
++	const char *name;
++	struct list_head list;
++};
++
++
+ static LIST_HEAD(pinctrl_consumer_list);
+ 
+ struct pinctrl_state {
+@@ -218,15 +229,48 @@ int pinctrl_select_state(struct pinctrl *pinctrl, struct pinctrl_state *state)
+ 	return ret;
+ }
+ 
++static void of_pinctrl_policy_update_or_add(struct device_node *np, const char *name)
++{
++	struct pinctrl_devices_name_info *dev;
++
++	list_for_each_entry(dev, &pinctrl_devices_name_list, list) {
++		if (dev->node == np) {
++			free_const(dev->name);
++			dev->name = xstrdup_const(name);
++			return;
++		}
++	}
++	dev = xzalloc(sizeof(*dev));
++	dev->node = np;
++	dev->name = xstrdup_const(name);
++	list_add(&dev->list, &pinctrl_devices_name_list);
++}
++
+ int of_pinctrl_select_state(struct device_node *np, const char *name)
+ {
+ 	struct pinctrl *pinctrl = of_pinctrl_get(np);
+-	struct pinctrl_state *state;
++	struct pinctrl_state *state = NULL;
+ 
+ 	if (!of_find_property(np, "pinctrl-0", NULL))
+ 		return 0;
+ 
+-	state = pinctrl_lookup_state(pinctrl, name);
++	if (IS_ENABLED(CONFIG_SECURITY_POLICY_PINCTRL)) {
++		const struct security_policy *active_policy = security_policy_get_active();
++
++		of_pinctrl_policy_update_or_add(np, name);
++
++		if (active_policy && active_policy->name && name) {
++			char *policy_pinctrl;
++
++			policy_pinctrl = basprintf("barebox,policy-%s-%s",
++						   active_policy->name,
++						   name);
++			state = pinctrl_lookup_state(pinctrl, policy_pinctrl);
++			free(policy_pinctrl);
++		}
++	}
++	if (IS_ERR_OR_NULL(state))
++		state = pinctrl_lookup_state(pinctrl, name);
+ 	if (IS_ERR(state))
+ 		return PTR_ERR(state);
+ 
+@@ -331,3 +375,28 @@ void of_pinctrl_unregister_consumer(struct device *dev)
+ 	}
+ }
+ #endif
++
++static int pinctrl_change_policy(struct notifier_block *nb,
++				  unsigned long _ignored,
++				  void *_data)
++{
++	struct pinctrl_devices_name_info *dev;
++
++	list_for_each_entry(dev, &pinctrl_devices_name_list, list) {
++		of_pinctrl_select_state(dev->node, dev->name);
++	}
++	return 0;
++}
++
++static struct notifier_block pinctrl_policy_notifier = {
++	.notifier_call = pinctrl_change_policy
++};
++
++static int pinctrl_policy_init(void)
++{
++	if (!IS_ENABLED(CONFIG_SECURITY_POLICY_PINCTRL))
 +		return 0;
 +
-+	allow = is_allowed(NULL, opt);
++	return notifier_chain_register(&sconfig_name_notifier, &pinctrl_policy_notifier);
++}
++pure_initcall(pinctrl_policy_init);
+diff --git a/security/Kconfig.policy b/security/Kconfig.policy
+index e778327b0d..2c8e8399a0 100644
+--- a/security/Kconfig.policy
++++ b/security/Kconfig.policy
+@@ -69,6 +69,18 @@ config SECURITY_POLICY_DEFAULT_PERMISSIVE
+ 	  A security policy should always be selected, either early on by
+ 	  board code or via CONFIG_SECURITY_POLICY_INIT.
  
- 	printf("%s%s%s%s\n", allow ? green : red, allow ? "+" : "-", nc,
- 	       sconfig_names[opt]);
-diff --git a/security/policy.c b/security/policy.c
-index 85333d9e6f..bdfc480500 100644
---- a/security/policy.c
-+++ b/security/policy.c
-@@ -52,6 +52,8 @@ static bool __is_allowed(const struct security_policy *policy, unsigned option)
- {
- 	if (!policy)
- 		return true;
-+	if (WARN(option >= SCONFIG_NUM))
-+		return false;
- 
- 	return policy->policy[option];
- }
-@@ -60,7 +62,7 @@ bool is_allowed(const struct security_policy *policy, unsigned option)
- {
- 	policy = policy ?: active_policy;
- 
--	if (WARN(option > SCONFIG_NUM))
-+	if (WARN(option >= SCONFIG_NUM))
- 		return false;
- 
- 	if (!policy && *CONFIG_SECURITY_POLICY_INIT) {
++config SECURITY_POLICY_PINCTRL
++	bool "Update pinctrl based on policy-name"
++	help
++	  When selecting a pinctrl with the name <pinctrlname>, if there exists
++	  a pinctrl with the name barebox,policy-<policyname>-<pinctrlname>,
++	  then this pinctrl will be used instead.
++	  This could be used for example to disable the RX (and TX) Pin in
++	  lockdown mode for the console or disable the usage of SPI.
++
++	  Enabling this option does increase the boottime.
++	  If unsure, say N.
++
+ config SECURITY_POLICY_PATH
+ 	string
+ 	depends on SECURITY_POLICY
 
 -- 
 2.47.3
