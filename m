@@ -1,62 +1,57 @@
-Delivery-date: Fri, 27 Mar 2026 14:35:58 +0100
+Delivery-date: Fri, 27 Mar 2026 14:36:00 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w67Ly-005jnS-2M
+	id 1w67M0-005jo5-0w
 	for lore@lore.pengutronix.de;
-	Fri, 27 Mar 2026 14:35:58 +0100
+	Fri, 27 Mar 2026 14:36:00 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w67Ly-0007US-2R
-	for lore@pengutronix.de; Fri, 27 Mar 2026 14:35:58 +0100
+	id 1w67Lz-0007Vk-KE
+	for lore@pengutronix.de; Fri, 27 Mar 2026 14:36:00 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=SytkMNHiy34zgc1WCTBa3ZQxSN8P4XGl1scPuHjD43c=; b=nYrqcujrFa1Oqe
-	Ugfc/YtZxw26VGsiGAMba+Q0MP23I48RlvrwhfLxeOaKi55QFp+11f/5K4e4bwNBkvR0n/i57P5xZ
-	R3alDlCmgrDA2HAmEVcfbTuY8Gm7aBqsuthd5HpXuHPEKH5n10m3oDuTztMV71w2ex7P6WvhpNktK
-	5hDlC7rR5CNcd65LUPT8exBZb9I8BnlBUd1qqVfw06ekYulbMIAyvY1/jpxZ2FGzY7HbY1LAGVqin
-	jxLqobSiKY7QiPUsCykMVkW8LJ1GPAYLz9VgnsWPaCJYbfxvppi7R+tdbccfitNr1PxgJDiM6k/i2
-	txni1MremdS7hWbgP8+A==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=G9a7u0HtUphoBuOuxGU/SxBC/KTpyHrdllsKSK6wbfE=; b=STaC5BJgG1IadGHJMD0iqyxJve
+	o1tSCEbuAxYbPc1AQ1WhEa3nUgf851TQpRSvPbpHI6S1fZ0y4uvq6bpyWpj7NmbHCLdG07SpBXrav
+	htIIXkXzWF9+mD8VEwWIA+1b5J1jZuCNjtgCzbqXwpD8ApZ7nGkcshg/ilxCaJ5o9iEmK5fYLF0AN
+	ZFvFEx3fIorze8of1A/wqQOL0GEYa9esah9gr/H5T90XqxldXzLtGAxNf4zk8Bh+Aa9FZCXX4SpoT
+	kqv+VJiswbeQwVZkiBZ/gQNlZweOheM9mc+szN5oUk+OsBbd8p6ND5tXTt+ID63TBh6HGLqxTmxrD
+	RdiNytsQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w67LO-00000007S9Q-34MV;
-	Fri, 27 Mar 2026 13:35:22 +0000
+	id 1w67LL-00000007S7o-0jYr;
+	Fri, 27 Mar 2026 13:35:19 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w67LH-00000007S59-3loE
+	id 1w67LH-00000007S55-3P1X
 	for barebox@lists.infradead.org;
-	Fri, 27 Mar 2026 13:35:19 +0000
+	Fri, 27 Mar 2026 13:35:18 +0000
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <f.pflug@pengutronix.de>)
-	id 1w67LE-0006yD-9h; Fri, 27 Mar 2026 14:35:12 +0100
+	id 1w67LE-0006yD-F1; Fri, 27 Mar 2026 14:35:12 +0100
 From: Fabian Pflug <f.pflug@pengutronix.de>
-Date: Fri, 27 Mar 2026 14:34:58 +0100
-Message-Id: <20260327-v2026-02-0-topic-sconfig_console-v7-0-67a52ff65ed3@pengutronix.de>
+Date: Fri, 27 Mar 2026 14:35:03 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIKHxmkC/5XQ0WrEIBAF0F9ZfK5FR6PJPvU/SilmMu4KJYaYh
- i1L/r2ThUKggaZPOnPlXPAuCo2Jijif7mKkOZWUex7800ngNfQXkqnjWYACp4zWcl5vUoFUcsp
- DQlkw9zFd3vko+YOkbmxtIWhLuhPMDCPFdHtUvL7xfE1lyuPXo3HW6/YHh7/xWXNk0UTEEEOr6
- WWg/vI5jblPt+eOxNoww1Z1B9Q10kRUo3fQUrurmq1aH1ANR8Svqwoa68HsqnajgjqgWo4CNqb
- zjY81xl21+q9acQQUMQSPrTL7/+q2qj2gciqjotaFCIjK/VKXZfkG7WIe/IMCAAA=
-X-Change-ID: 20260311-v2026-02-0-topic-sconfig_console-194842a14e1d
+Message-Id: <20260327-v2026-02-0-topic-sconfig_console-v7-5-67a52ff65ed3@pengutronix.de>
+References: <20260327-v2026-02-0-topic-sconfig_console-v7-0-67a52ff65ed3@pengutronix.de>
+In-Reply-To: <20260327-v2026-02-0-topic-sconfig_console-v7-0-67a52ff65ed3@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>, 
  Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Fabian Pflug <f.pflug@pengutronix.de>, 
- Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Fabian Pflug <f.pflug@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260327_063516_008150_38FCA5D3 
-X-CRM114-Status: GOOD (  13.43  )
+X-CRM114-CacheID: sfid-20260327_063515_856313_FCA181D7 
+X-CRM114-Status: GOOD (  13.01  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,95 +73,116 @@ X-Spam-Status: No, score=-2.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v7 0/7] Add helper for security policies
+Subject: [PATCH v7 5/7] common: bootm: add policy to commandline
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This series adds helper functions to the security policy framework to
-do additional work based on the selected policy.
-Like adding the policy name to the commandline and configuring pinmux
-based on the selected policy.
-
-If this series is to be applied after Ahamad's bootm change series, then
-the block to change the commandline has to be moved up to roughly line
-720 into the function bootm_boot_prep, where all the other
-bootm_data->provide_*** checks are, so that the previous context remains
-the same.
+If security policies are used, then the variable bootm.provide_policy
+can be set to automatically append the currently selected security
+policy to the kernel commandline with the prefix
+barebox.security.policy=
+This allows the system to behave differently based on the selected
+security policy.
 
 Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 ---
-Changes in v7:
-- Replaced > SCONFIG_NUM with >=
-- Check for active_policy in bootm
-- Add warning, if more then 10 pinctrl names are used in dtb.
-- Fix spelling errors
-- Link to v6: https://lore.barebox.org/barebox/20260324-v2026-02-0-topic-sconfig_console-v6-0-f0eb6af2cc06@pengutronix.de
+ common/bootm.c  | 24 ++++++++++++++++++++++++
+ include/bootm.h |  5 +++++
+ 2 files changed, 29 insertions(+)
 
-Changes in v6:
-- Made active_policy static
-- Add trailer for Ahamad
-- Link to v5: https://lore.barebox.org/barebox/20260320-v2026-02-0-topic-sconfig_console-v5-0-2efcaa7cb03e@pengutronix.de
+diff --git a/common/bootm.c b/common/bootm.c
+index d43079bb81..e376f0b6bc 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -22,6 +22,7 @@
+ #include <uncompress.h>
+ #include <zero_page.h>
+ #include <security/config.h>
++#include <security/policy.h>
+ 
+ static LIST_HEAD(handler_list);
+ static struct sconfig_notifier_block sconfig_notifier;
+@@ -75,6 +76,7 @@ static int bootm_dryrun;
+ static int bootm_earlycon;
+ static int bootm_provide_machine_id;
+ static int bootm_provide_hostname;
++static int bootm_provide_policy;
+ static int bootm_verbosity;
+ static int bootm_efi_mode = BOOTM_EFI_AVAILABLE;
+ 
+@@ -97,6 +99,7 @@ void bootm_data_init_defaults(struct bootm_data *data)
+ 	data->appendroot = bootm_appendroot;
+ 	data->provide_machine_id = bootm_provide_machine_id;
+ 	data->provide_hostname = bootm_provide_hostname;
++	data->provide_policy = bootm_provide_policy;
+ 	data->verbose = bootm_verbosity;
+ 	data->dryrun = bootm_dryrun;
+ 	data->efi_boot = bootm_efi_mode;
+@@ -118,6 +121,7 @@ void bootm_data_restore_defaults(const struct bootm_data *data)
+ 	bootm_appendroot = data->appendroot;
+ 	bootm_provide_machine_id = data->provide_machine_id;
+ 	bootm_provide_hostname = data->provide_hostname;
++	bootm_provide_policy = data->provide_policy;
+ 	bootm_verbosity = data->verbose;
+ 	bootm_dryrun = data->dryrun;
+ 	bootm_efi_mode = data->efi_boot;
+@@ -759,6 +763,21 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 		free(hostname_bootarg);
+ 	}
+ 
++	if (IS_ENABLED(CONFIG_SECURITY_POLICY) && bootm_data->provide_policy) {
++		char *policy_bootargs;
++		const struct security_policy *active_policy = security_policy_get_active();
++
++		if (!active_policy) {
++			pr_err("Providing policy is enabled but no policy is selected\n");
++			ret = -EINVAL;
++			goto err_out;
++		}
++
++		policy_bootargs = basprintf("barebox.security.policy=%s", active_policy->name);
++		globalvar_add_simple("linux.bootargs.dyn.policy", policy_bootargs);
++		free(policy_bootargs);
++	}
++
+ 	pr_info("\nLoading %s '%s'", file_type_to_string(data->kernel_type),
+ 		data->os_file);
+ 	if (data->kernel_type == filetype_uimage &&
+@@ -967,6 +986,8 @@ static int bootm_init(void)
+ 	globalvar_add_simple_bool("bootm.earlycon", &bootm_earlycon);
+ 	globalvar_add_simple_bool("bootm.provide_machine_id", &bootm_provide_machine_id);
+ 	globalvar_add_simple_bool("bootm.provide_hostname", &bootm_provide_hostname);
++	if (IS_ENABLED(CONFIG_SECURITY_POLICY))
++		globalvar_add_simple_bool("bootm.provide_policy", &bootm_provide_policy);
+ 	if (IS_ENABLED(CONFIG_BOOTM_INITRD)) {
+ 		globalvar_add_simple("bootm.initrd", NULL);
+ 		globalvar_add_simple("bootm.initrd.loadaddr", NULL);
+@@ -1030,3 +1051,6 @@ BAREBOX_MAGICVAR(global.bootm.root_dev, "bootm default root device (overrides de
+ BAREBOX_MAGICVAR(global.bootm.root_param, "bootm root parameter name (normally 'root' for root=/dev/...)");
+ BAREBOX_MAGICVAR(global.bootm.provide_machine_id, "If true, append systemd.machine_id=$global.machine_id to Kernel command line");
+ BAREBOX_MAGICVAR(global.bootm.provide_hostname, "If true, append systemd.hostname=$global.hostname to Kernel command line");
++#ifdef CONFIG_SECURITY_POLICY
++BAREBOX_MAGICVAR(global.bootm.provide_policy, "Add barebox.security.policy= option to Kernel");
++#endif
+diff --git a/include/bootm.h b/include/bootm.h
+index 21feb1ca98..a712010b2b 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -46,6 +46,11 @@ struct bootm_data {
+ 	 * of global.hostname to Kernel.
+ 	 */
+ 	bool provide_hostname;
++	/*
++	 * provide_policy - if true, try to add barebox.security.policy= with
++	 * with value of currently selected policy
++	 */
++	bool provide_policy;
+ 	enum bootm_efi_mode efi_boot;
+ 	unsigned long initrd_address;
+ 	unsigned long os_address;
 
-Changes in v5:
-- Fix error in kernel_pinctrl. The array was never written back.
-- Link to v4: https://lore.barebox.org/barebox/20260320-v2026-02-0-topic-sconfig_console-v4-0-ac93d797f8cf@pengutronix.de
-
-Changes in v4:
-- removed the global variable active_policy and replaced with a getter
-  function
-- add sanity check for is_allow parameter
-- add new notifier chain to security_policy on change without checking
-  policies is_allowed
-- rewrote the pinctrl to make use of new notify chain
-- changed pinctrl to use barebox,policy-<active-policy>-<name> to
-  replace pinctrl for <name> instead of replacing 'default'
-- Link to v3: https://lore.barebox.org/barebox/20260318-v2026-02-0-topic-sconfig_console-v3-0-e26055294723@pengutronix.de
-
-Changes in v3:
-- replaced while loop with of_tree_for_each_node_from
-- removed unsused variable definition in base.c
-- Link to v2: https://lore.barebox.org/barebox/20260316-v2026-02-0-topic-sconfig_console-v2-0-1eee8c762beb@pengutronix.de
-
-Changes in v2:
-- Add of_property_write_string_array function
-- Add selftest for of_property_write_string_array
-- Add exra-check for active-policy
-- Use "linux.bootargs.dyn.policy" instead of version without dyn
-- Iterate over device-nodes instead of recurse through tree
-- Link to v1: https://lore.barebox.org/barebox/20260312-v2026-02-0-topic-sconfig_console-v1-0-4c3fccafab1e@pengutronix.de
-
----
-Fabian Pflug (7):
-      of: add of_property_write_string_array()
-      security: policy: sanity check parameters
-      security: policy: remove global active_policy var
-      security: policy: add notifier chain for name change
-      common: bootm: add policy to commandline
-      drivers: pinctrl: configure pinctrl based on policy name
-      security: kernel_pinctrl: fixup pinctrl in kernel dts
-
- commands/sconfig.c            |  9 +++++-
- common/bootm.c                | 24 ++++++++++++++
- drivers/of/base.c             | 43 +++++++++++++++++++++++++
- drivers/pinctrl/pinctrl.c     | 73 +++++++++++++++++++++++++++++++++++++++++--
- include/bootm.h               |  5 +++
- include/of.h                  |  3 ++
- include/security/config.h     |  1 +
- include/security/policy.h     |  3 +-
- security/Kconfig.policy       | 15 ++++++++-
- security/Makefile             |  1 +
- security/kernel_pinctrl.c     | 73 +++++++++++++++++++++++++++++++++++++++++++
- security/policy.c             | 25 ++++++++++-----
- test/self/of_manipulation.c   | 14 ++++++++-
- test/self/of_manipulation.dts |  5 +++
- 14 files changed, 279 insertions(+), 15 deletions(-)
----
-base-commit: 1d386a53086d28a0c4eda138ae9408a418b97b7e
-change-id: 20260311-v2026-02-0-topic-sconfig_console-194842a14e1d
-
-Best regards,
 -- 
-Fabian Pflug <f.pflug@pengutronix.de>
+2.47.3
 
 
 
