@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w8CuF-007m8J-1d
+	id 1w8CuF-007m8X-2j
 	for lore@lore.pengutronix.de;
 	Thu, 02 Apr 2026 09:55:59 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w8CuE-0006Yz-UL
+	id 1w8CuF-0006Z2-8C
 	for lore@pengutronix.de; Thu, 02 Apr 2026 09:55:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
@@ -18,57 +18,57 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=EbRU2Ai51mBQ80XP+FZAcSP3whUj/ald3MKGqEVaA5w=; b=3NGaAGFmF5W68PZjVr5ckMzNx1
-	SHYZzLNFPF7D1NVD5rk3ArCrhMrz2WEZ2XunhwseBCRlBipcxh4pM4TMJbMRG1x+VP0xJZQcNQtk6
-	3M3KpWc2dLWHyStwfuoMyEdIKCYPlbhhlZ3n8r3A3B2meat/nwbmqfTEP1JC09iNLm5aFW1rN8XNs
-	knGIoFbiWJy2yDFwyi13hoeFzFF4gmzAZv4gQPEoq5Wr09UPirotre9UQUA4W7K+t64z/leqKn32S
-	9PG3QKRHTUf2IoH4krg0g7NDShQm40NMDLpI2T8qHK1SOzHJsxPzAEAH0F01nYlSSSf7j8pPooUoK
-	MDMzsgTA==;
+	bh=8P3S0CDg9c1zp/vmos4NWlJ6sfRq54R8KioI7hFIbgM=; b=ggJb6Egt4X4+jAe/MK1mzcCQFU
+	UKLjL/CEsd+mR/+FiPNmchbWIbupOQjt+l6ZZxM80672BYGMitXdvHQjkpzsqZ2j58Wkq3GFMkJxU
+	55xbVKVOSTWGCgT3gVPpYJ+IFsDFpglQFjqLCRtEGy+kwYN4w5pMQErbIn2vB4V5QxzNIU4XXPF3Y
+	eh163aLWJbmiQq68n/48hB8kFj9tWZ9bzu8r/IkDcaRcsciDC4i7aw5k0WONjcMIhFAl8kEoRvk+w
+	7Jcnr7tcNdUK/BOT7N6a6/FPwDVJluG9m/BOYv1vAkHKI43uPpSn7SywKSJNkj+syikg1WQQzFVbG
+	FsYteXww==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w8Ctn-0000000H7ez-1r3w;
-	Thu, 02 Apr 2026 07:55:31 +0000
+	id 1w8Ctr-0000000H7ft-2zzh;
+	Thu, 02 Apr 2026 07:55:35 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w8Cth-0000000H7ec-0EwU
+	id 1w8Cto-0000000H7fA-3Zmh
 	for barebox@lists.infradead.org;
-	Thu, 02 Apr 2026 07:55:27 +0000
+	Thu, 02 Apr 2026 07:55:34 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1w8Ctf-0006Nw-Ds; Thu, 02 Apr 2026 09:55:23 +0200
+	id 1w8Ctf-0006Nv-E2; Thu, 02 Apr 2026 09:55:23 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1w8Ctf-003L4j-0i;
+	id 1w8Ctf-003L4i-0f;
 	Thu, 02 Apr 2026 09:55:23 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1w8Ctf-00000003RCj-0cUg;
+	id 1w8Ctf-00000003RCj-0bY7;
 	Thu, 02 Apr 2026 09:55:23 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 02 Apr 2026 09:55:24 +0200
+Date: Thu, 02 Apr 2026 09:55:23 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260402-net-nfs-buffer-overflows-v1-2-5dc46ef1da81@pengutronix.de>
+Message-Id: <20260402-net-nfs-buffer-overflows-v1-1-5dc46ef1da81@pengutronix.de>
 References: <20260402-net-nfs-buffer-overflows-v1-0-5dc46ef1da81@pengutronix.de>
 In-Reply-To: <20260402-net-nfs-buffer-overflows-v1-0-5dc46ef1da81@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775116523; l=969;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775116523; l=2174;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=/kME9kpan9A2g9KVChk79Xs+FoGBITSUlRyB460yi10=;
- b=1n8R6wzxkB7nRa4TR7ZCuIX9Y4NPrsCIBMWWDV0kg7pVQRniGkKfN67voOC6S2W+PzshGenn+
- tRzLVcKAC5kDnxkSoppEXxwLZ/IiRtnu5XrsTsiwhfcf2sDhjWibldA
+ bh=x2iJTIQRRShQtGZiR40jL5lkVW3A/0DSgbEQiTpk4tw=;
+ b=G6GdsG18PVuX/yTMQq/h6xMPfpfRfCHC808e0bxcIqBoYGY6L00CJtE+dNaS9tHYGmB9LQ0og
+ rTp3As+jXPVCJAtbDaVjewpj31NdjKINZ7CGpXSbqLNek9Mq6lVG7zs
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260402_005525_103202_0D8399C6 
-X-CRM114-Status: GOOD (  10.15  )
+X-CRM114-CacheID: sfid-20260402_005533_843785_AE1D2B1C 
+X-CRM114-Status: GOOD (  10.26  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,40 +91,72 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] fs: nfs: fix NULL dereference in nfs_read_req on
- truncated packets
+Subject: [PATCH 1/2] fs: nfs: fix stack and packet buffer overflows from
+ long NFS paths
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-nfs_read_req() reads the data length (rlen) from the server's READ3res
-response and uses it to extract the payload via nfs_packet_read(). If a
-malicious server sends an rlen larger than the remaining packet data,
-nfs_packet_read() returns NULL. The subsequent kfifo_put() with a NULL
-source pointer causes a NULL pointer dereference.
+nfs_mount_req() and nfs_umount_req() copy the NFS mount path into a
+stack-allocated uint32_t data[1024] buffer (4096 bytes) with only ~40
+bytes of RPC header overhead. A mount path longer than ~4056 characters
+overflows the stack array.
 
-Add a NULL check after nfs_packet_read() to catch truncated responses.
+Additionally, rpc_req() copies the data array into the PKTSIZE (1536)
+packet buffer with only 1494 bytes available for UDP payload. After the
+28-byte RPC call header, paths longer than ~1424 characters overflow
+the packet buffer.
+
+Fix by:
+- Adding a path length check in nfs_mount_req() and nfs_umount_req()
+  against the stack buffer capacity before constructing the request
+- Adding a payload size check in rpc_req() before the memcpy to the
+  packet buffer, protecting all RPC callers from overflows
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
 ---
- fs/nfs.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/nfs.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/fs/nfs.c b/fs/nfs.c
-index edc15e0ce6..d42ef6bc86 100644
+index 0b40c56ff3..edc15e0ce6 100644
 --- a/fs/nfs.c
 +++ b/fs/nfs.c
-@@ -1194,6 +1194,10 @@ static int nfs_read_req(struct file_priv *priv, uint64_t offset,
+@@ -534,6 +534,13 @@ static struct packet *rpc_req(struct nfs_priv *npriv, int rpc_prog,
+ 		pkt.vers = hton32(3);
  	}
  
- 	p = nfs_packet_read(nfs_packet, rlen);
-+	if (!p) {
-+		ret = -EINVAL;
-+		goto err_free_packet;
++	if (sizeof(pkt) + datalen * sizeof(uint32_t) >
++	    PKTSIZE - ETHER_HDR_SIZE - sizeof(struct iphdr) - sizeof(struct udphdr)) {
++		dev_err(dev, "RPC request too large (%zu bytes)\n",
++			sizeof(pkt) + datalen * sizeof(uint32_t));
++		return ERR_PTR(-EMSGSIZE);
 +	}
++
+ 	memcpy(payload, &pkt, sizeof(pkt));
+ 	memcpy(payload + sizeof(pkt), data, datalen * sizeof(uint32_t));
  
- 	kfifo_put(priv->fifo, (char *)p, rlen);
+@@ -786,6 +793,11 @@ static int nfs_mount_req(struct nfs_priv *npriv)
  
+ 	pathlen = strlen(npriv->path);
+ 
++	if (pathlen > sizeof(data) - 11 * sizeof(uint32_t)) {
++		dev_err(dev, "path too long (%d bytes)\n", pathlen);
++		return -ENAMETOOLONG;
++	}
++
+ 	dev_dbg(dev, "%s: %s\n", __func__, npriv->path);
+ 
+ 	p = &(data[0]);
+@@ -862,6 +874,8 @@ static void nfs_umount_req(struct nfs_priv *npriv)
+ 	struct packet *nfs_packet;
+ 
+ 	pathlen = strlen(npriv->path);
++	if (pathlen > sizeof(data) - 11 * sizeof(uint32_t))
++		return;
+ 
+ 	p = &(data[0]);
+ 	p = rpc_add_credentials(p);
 
 -- 
 2.47.3
