@@ -1,89 +1,90 @@
-Delivery-date: Thu, 02 Apr 2026 12:13:18 +0200
+Delivery-date: Thu, 02 Apr 2026 12:13:21 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w8F38-007oN9-2I
+	id 1w8F3B-007oNr-08
 	for lore@lore.pengutronix.de;
-	Thu, 02 Apr 2026 12:13:18 +0200
+	Thu, 02 Apr 2026 12:13:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w8F36-00036K-IW
-	for lore@pengutronix.de; Thu, 02 Apr 2026 12:13:18 +0200
+	id 1w8F3A-000386-Cm
+	for lore@pengutronix.de; Thu, 02 Apr 2026 12:13:20 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qUQDOCrkmETzK2Uqalw3d728SACQh723TVaSBe7Nmmg=; b=pkaWLa1aNC7pL9KuTe721bq89a
-	itXgZ6oG5oDO+rQEhZMmkGuQcgZ2+eChjq3feBMY+5AlG1BpUAmF3aOBYNCaYacG466NNLa9z8SEH
-	Tu3Vn/iRNS43AYQZbXV+B0rNftp73EGE8FGZQKHJ7l4p/pYssM9NT5HlMTQPYzb2Bfhrf1Oef9FoC
-	Bp+Qws0+0YRcQuNNe9zRJTrcSe+26efqdWs5GB8y4JbjfTmY1T/Rddl0pnQI8AEAFUykh0sZsHOft
-	6cOBM13oToHWCokUEPu8E8abeILtckerDe70CzBu3Idgwi8XC5y6WNbC5JmAQqvL9cmRmNGwqX41R
-	AP0hjtYg==;
+	bh=TblOGNmSn8ASLdo7ByP39E4IkM3CNdocyQjCVqPAU3I=; b=EYXVI+bso3cvNyOQHCUnwOJewj
+	9nNd1Bd8IFHnyfvBzVD+NZGvvF367hLoRzMHTS+KeUZp1jqVpFipcUnlIQy4gJKFF0LTuLxUVd+we
+	4In5aTQ6lMKxYYZif9qF17iID22pnjZ2esiU7F1QULXY63ZWmoZ0EUIa3ptD+ZZrTUFdkgMBVamP5
+	sgLQSUfIsqq3Fq6or8h+TuSoF+5yBgK/17THCjVGqAblrg8hWMNPTp68gpxtET/oHNxm8+PNPqnRy
+	tqSrjNWpgzkVIgcnoAAUgYrMGe6vLAYehfNbvqZHpp/rr4DRRJZXf3IAevJGBDHuWfhczTjzZgKGC
+	ETlnx+fA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w8F2h-0000000HNYI-2aQS;
-	Thu, 02 Apr 2026 10:12:51 +0000
+	id 1w8F2V-0000000HNUP-2iZP;
+	Thu, 02 Apr 2026 10:12:39 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w8F2g-0000000HNXM-121V
+	id 1w8F2U-0000000HNU4-27oi
 	for barebox@bombadil.infradead.org;
-	Thu, 02 Apr 2026 10:12:50 +0000
+	Thu, 02 Apr 2026 10:12:38 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=qUQDOCrkmETzK2Uqalw3d728SACQh723TVaSBe7Nmmg=; b=kK7QIlX+lMjWzfOBsVVMENblxf
-	AemN6npjih65ktZpcSkzl7qRvoAOkzJ7GDk5vkyJeN7U0CqRZ7BeW6aECAHWlGHaIEVESSvcNMM6/
-	59oWYCkgM0RKMcZZ3vO5LbGweNf//qDuCWg2SsXyXfMLIWZLHjrdX1Z/vBgF1XJs9kJcul17YEBmC
-	K0WfD0bc/KoceQy+0GM8/XtfYKiNCC+TW9oBeFHCVDRNkB1qN9AQLyQck8qUgG5NdvN5RojdhNlyj
-	7KtXMvxb2eAJ2zJKC3NL4yl9sTIvhb6vLIfAWUCSP3sUu+XQRz+4Rtd+X8anKiXN9y3Yq1eX5rdS9
-	b8pDNo1w==;
+	bh=TblOGNmSn8ASLdo7ByP39E4IkM3CNdocyQjCVqPAU3I=; b=pMvWdE4rqmNlGG3NU371Om+354
+	kscDH570Pjr1QGQfDbylLk4cqfq/8IxT16huyDvLrLUS/QSQBpEjPPQDT4dWFW+0lI+jhQIB2zCuB
+	hlaQx9IqbbCsZUZ8dL2klKtQ8rEagyniHmFl4mNYt70/LPue8I+AyF5ODmUZmx8ndvSl5oWFbIgSk
+	Q1wHdZCAyi1bTzPthmsOld/xK7gWiCpqxmBqfjOH4j30KOQm2gRvuR4mTaSqljF4uEooLm9B+3RGH
+	CusbGtlpuBpOvEa6MFqbkzyvatMUj2Vjnhx2TLg9EQ5a3InJJrK8WJ68aV4AqxgIVlKfWUthfROU9
+	kytKLFFA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w8F2c-00000002DIv-3X8X
+	id 1w8F2N-00000002DG4-3kSQ
 	for barebox@lists.infradead.org;
-	Thu, 02 Apr 2026 10:12:48 +0000
+	Thu, 02 Apr 2026 10:12:36 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1w8F2M-0002li-FI; Thu, 02 Apr 2026 12:12:30 +0200
+	id 1w8F2M-0002lg-FI; Thu, 02 Apr 2026 12:12:30 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1w8F2M-003MCY-0O;
+	id 1w8F2M-003MCZ-0R;
 	Thu, 02 Apr 2026 12:12:30 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1w8F2M-00000004I4C-06Dl;
+	id 1w8F2M-00000004I4C-074t;
 	Thu, 02 Apr 2026 12:12:30 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 02 Apr 2026 12:12:31 +0200
+Date: Thu, 02 Apr 2026 12:12:32 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260402-fs-ext4-buffer-overflows-v1-3-b9f8a909fe58@pengutronix.de>
+Message-Id: <20260402-fs-ext4-buffer-overflows-v1-4-b9f8a909fe58@pengutronix.de>
 References: <20260402-fs-ext4-buffer-overflows-v1-0-b9f8a909fe58@pengutronix.de>
 In-Reply-To: <20260402-fs-ext4-buffer-overflows-v1-0-b9f8a909fe58@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775124749; l=2032;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775124750; l=1520;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=NCZ7yaGHbe7wIfQQ+FOws0efTNmmVhHWmTH4f+qewA4=;
- b=knvZndIkCjfedJ3/OkgC/GgvM+kDnSn+BSZdjL5zl3gK0BiosCApkMLwhqYEfV/br706i0B3X
- RuKExTS+BI6DOfjjAe5eBpGEDXJtR1+N8qcfc4J/uLHUFLYSJ+GAsdO
+ bh=BXAgL5k1E3Tkwx7471Y2SG3d8zAOFMtY9UiAq4773d0=;
+ b=tIUNLfSbpTWo7kGrQDKSUFhDXkJLX6NVg0Wq5+3Vyg0VfcJyeDfAqiFXEN4o0BWKbuisb+ADi
+ cPCgEcgR5J5C6C9Pa+euDpOO/akqdejRTs349+VGvXC0NZevT//kbUH
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260402_111247_141504_0BEDF010 
-X-CRM114-Status: GOOD (  12.79  )
+X-CRM114-CacheID: sfid-20260402_111234_768011_FF601C2D 
+X-CRM114-Status: UNSURE (   8.87  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -106,67 +107,53 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/5] fs: ext4: fix OOB read and infinite loop in
- ext_iterate()
+Subject: [PATCH 4/5] fs: ext4: reject dirents with too-small direntlen to
+ prevent infinite loops
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-ext_iterate() reads the entire directory into a buffer and walks it
-parsing ext2_dirent entries, but has several issues with untrusted
-on-disk data:
+ext4fs_iterate_dir() and ext4fs_get_ino() walk directory entries using
+dirent->direntlen from disk to advance the position. If a crafted
+filesystem has direntlen == 0, the position never advances, causing an
+infinite loop that can only be broken by a reset.
 
-1. No check that a full ext2_dirent struct fits before reading it,
-   causing an OOB read for the last partial entry.
-
-2. No check that fpos + sizeof(dirent) + namelen fits within the
-   buffer before passing the filename pointer to dir_emit(), causing
-   an OOB read if namelen extends past the allocation.
-
-3. If dirent->direntlen is 0, fpos never advances, causing an
-   infinite loop.
-
-Fix by:
-- Checking that a full dirent struct fits before each iteration
-- Validating that the filename region is within bounds before emitting
-- Breaking out of the loop if direntlen is smaller than the minimum
-  dirent size (which also catches the zero case)
-
-All three are triggerable from a crafted ext4 filesystem image.
+Reject directory entries where direntlen is smaller than the minimum
+dirent struct size. This catches the zero case and also prevents
+reading overlapping dirents.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
 ---
- fs/ext4/ext_barebox.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ fs/ext4/ext4_common.c | 2 ++
+ fs/ext4/ext_barebox.c | 2 ++
+ 2 files changed, 4 insertions(+)
 
+diff --git a/fs/ext4/ext4_common.c b/fs/ext4/ext4_common.c
+index 5d252b4a2c..b0c78f9e9a 100644
+--- a/fs/ext4/ext4_common.c
++++ b/fs/ext4/ext4_common.c
+@@ -359,6 +359,8 @@ int ext4fs_iterate_dir(struct ext2fs_node *dir, char *name,
+ 
+ 			free(fdiro);
+ 		}
++		if (le16_to_cpu(dirent.direntlen) < sizeof(struct ext2_dirent))
++			return -EINVAL;
+ 		fpos += le16_to_cpu(dirent.direntlen);
+ 	}
+ 	return -ENOENT;
 diff --git a/fs/ext4/ext_barebox.c b/fs/ext4/ext_barebox.c
-index 5bee4853d4..ef1a71368d 100644
+index ef1a71368d..f9a978c10c 100644
 --- a/fs/ext4/ext_barebox.c
 +++ b/fs/ext4/ext_barebox.c
-@@ -157,15 +157,20 @@ static int ext_iterate(struct file *file, struct dir_context *ctx)
- 		goto out;
+@@ -106,6 +106,8 @@ static int ext4fs_get_ino(struct ext2fs_node *dir, struct qstr *name, int *inum)
+ 				return 0;
+ 			}
+ 		}
++		if (le16_to_cpu(dirent.direntlen) < sizeof(struct ext2_dirent))
++			return -EINVAL;
+ 		fpos += le16_to_cpu(dirent.direntlen);
  	}
  
--	while (fpos < dir->i_size) {
-+	while (fpos + sizeof(struct ext2_dirent) <= dir->i_size) {
- 		const struct ext2_dirent *dirent = buf + fpos;
- 		const char *filename = buf + fpos + sizeof(*dirent);
-+		uint16_t direntlen = le16_to_cpu(dirent->direntlen);
- 
--		if (dirent->namelen != 0)
-+		if (direntlen < sizeof(struct ext2_dirent))
-+			break;
-+
-+		if (dirent->namelen != 0 &&
-+		    fpos + sizeof(*dirent) + dirent->namelen <= dir->i_size)
- 			dir_emit(ctx, filename, dirent->namelen,
- 				 le32_to_cpu(dirent->inode), DT_UNKNOWN);
- 
--		fpos += le16_to_cpu(dirent->direntlen);
-+		fpos += direntlen;
- 	}
- 	ret = 0;
- out:
 
 -- 
 2.47.3
