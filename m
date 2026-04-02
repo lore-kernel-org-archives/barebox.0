@@ -1,74 +1,74 @@
-Delivery-date: Thu, 02 Apr 2026 09:22:01 +0200
+Delivery-date: Thu, 02 Apr 2026 09:55:59 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w8CNN-007ljB-2m
+	id 1w8CuF-007m8J-1d
 	for lore@lore.pengutronix.de;
-	Thu, 02 Apr 2026 09:22:01 +0200
+	Thu, 02 Apr 2026 09:55:59 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1w8CNN-0008Vh-83
-	for lore@pengutronix.de; Thu, 02 Apr 2026 09:22:01 +0200
+	id 1w8CuE-0006Yz-UL
+	for lore@pengutronix.de; Thu, 02 Apr 2026 09:55:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=mIrU6sQza4R/MxUtsEZIGohS9UjILpqp6wkF3vOu6Tk=; b=EKFnqnzrYrM+8axkRd6YYvXaMu
-	qWy5EAgdVR4XG49kuDYrP5PNqJgCrfqnf5fv6sfPHundZQ68kFQwO+qc0Pr7PaoLRU5cafYGdTcaE
-	bWB96qxMo3BLIYvo+pxSpggUCU2fzszuzejJICR4xpCu6wWTQJsfvs6wHGpGvGWYX2zzlEEU0oeil
-	M7mwanfhTYEPbmeGN+Mtulk5XhYks73TnGN9oyJG6Wz8L9hFZvLu02CtF65iAm81oG/pF1RlDLrFf
-	Lux+4ojBJbNIilJJBh6V5wINzfpt635KL5KV8icLoiGXKmKPp85AroOU/XoI6fGqcSto8uVeXMEP/
-	5tZpSQQQ==;
+	bh=EbRU2Ai51mBQ80XP+FZAcSP3whUj/ald3MKGqEVaA5w=; b=3NGaAGFmF5W68PZjVr5ckMzNx1
+	SHYZzLNFPF7D1NVD5rk3ArCrhMrz2WEZ2XunhwseBCRlBipcxh4pM4TMJbMRG1x+VP0xJZQcNQtk6
+	3M3KpWc2dLWHyStwfuoMyEdIKCYPlbhhlZ3n8r3A3B2meat/nwbmqfTEP1JC09iNLm5aFW1rN8XNs
+	knGIoFbiWJy2yDFwyi13hoeFzFF4gmzAZv4gQPEoq5Wr09UPirotre9UQUA4W7K+t64z/leqKn32S
+	9PG3QKRHTUf2IoH4krg0g7NDShQm40NMDLpI2T8qHK1SOzHJsxPzAEAH0F01nYlSSSf7j8pPooUoK
+	MDMzsgTA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w8CMq-0000000H2Hv-3jnJ;
-	Thu, 02 Apr 2026 07:21:28 +0000
+	id 1w8Ctn-0000000H7ez-1r3w;
+	Thu, 02 Apr 2026 07:55:31 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1w8CMl-0000000H2FS-1ky5
+	id 1w8Cth-0000000H7ec-0EwU
 	for barebox@lists.infradead.org;
-	Thu, 02 Apr 2026 07:21:27 +0000
+	Thu, 02 Apr 2026 07:55:27 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1w8CMj-0008Db-OS; Thu, 02 Apr 2026 09:21:21 +0200
+	id 1w8Ctf-0006Nw-Ds; Thu, 02 Apr 2026 09:55:23 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1w8CMj-003Kwe-1e;
-	Thu, 02 Apr 2026 09:21:21 +0200
+	id 1w8Ctf-003L4j-0i;
+	Thu, 02 Apr 2026 09:55:23 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1w8CMj-00000003PEH-1ns0;
-	Thu, 02 Apr 2026 09:21:21 +0200
+	id 1w8Ctf-00000003RCj-0cUg;
+	Thu, 02 Apr 2026 09:55:23 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 02 Apr 2026 09:21:19 +0200
+Date: Thu, 02 Apr 2026 09:55:24 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260402-net-tftp-buffer-overflows-v1-1-0a18aa8ea19e@pengutronix.de>
-References: <20260402-net-tftp-buffer-overflows-v1-0-0a18aa8ea19e@pengutronix.de>
-In-Reply-To: <20260402-net-tftp-buffer-overflows-v1-0-0a18aa8ea19e@pengutronix.de>
+Message-Id: <20260402-net-nfs-buffer-overflows-v1-2-5dc46ef1da81@pengutronix.de>
+References: <20260402-net-nfs-buffer-overflows-v1-0-5dc46ef1da81@pengutronix.de>
+In-Reply-To: <20260402-net-nfs-buffer-overflows-v1-0-5dc46ef1da81@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1775114481; l=2906;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1775116523; l=969;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=1lxZjBQ/E12iS+rK0EBNHT9tkuxQslJGgOnxH/0G3WQ=;
- b=9+QpiXVHzUg36wMtyrKGJnu8roBejuhjy+AKO+YlDFute4CMjoiF2DenLcjl3GSW76iCL8VHh
- AFKD0Ud1GnCDBwI4knWszetbpnjqWod+0PY6ezBfRtcf39VRMqukQ4p
+ bh=/kME9kpan9A2g9KVChk79Xs+FoGBITSUlRyB460yi10=;
+ b=1n8R6wzxkB7nRa4TR7ZCuIX9Y4NPrsCIBMWWDV0kg7pVQRniGkKfN67voOC6S2W+PzshGenn+
+ tRzLVcKAC5kDnxkSoppEXxwLZ/IiRtnu5XrsTsiwhfcf2sDhjWibldA
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260402_002123_600156_6611492B 
-X-CRM114-Status: GOOD (  14.19  )
+X-CRM114-CacheID: sfid-20260402_005525_103202_0D8399C6 
+X-CRM114-Status: GOOD (  10.15  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -91,107 +91,40 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/4] fs: tftp: prevent packet buffer overflow from long
- filenames
+Subject: [PATCH 2/2] fs: nfs: fix NULL dereference in nfs_read_req on
+ truncated packets
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-tftp_send() constructs RRQ/WRQ packets by sprintf'ing the filename and
-TFTP options directly into the packet buffer with no bounds checking.
-The packet buffer is PKTSIZE (1536) bytes with 42 bytes of headers,
-leaving 1494 bytes of UDP payload. A filename longer than ~1418 bytes
-overflows the packet buffer, corrupting adjacent heap memory.
+nfs_read_req() reads the data length (rlen) from the server's READ3res
+response and uses it to extract the payload via nfs_packet_read(). If a
+malicious server sends an rlen larger than the remaining packet data,
+nfs_packet_read() returns NULL. The subsequent kfifo_put() with a NULL
+source pointer causes a NULL pointer dereference.
 
-Replace sprintf with snprintf, tracking available buffer space and
-returning -ENAMETOOLONG if the packet would exceed the buffer.
+Add a NULL check after nfs_packet_read() to catch truncated responses.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
 ---
- fs/tftp.c | 36 +++++++++++++++++++++++++++++-------
- 1 file changed, 29 insertions(+), 7 deletions(-)
+ fs/nfs.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/tftp.c b/fs/tftp.c
-index a454306b4b..1b15bc18e7 100644
---- a/fs/tftp.c
-+++ b/fs/tftp.c
-@@ -79,6 +79,10 @@
- /* allocate this number of blocks more than needed in the fifo */
- #define TFTP_EXTRA_BLOCKS	2
+diff --git a/fs/nfs.c b/fs/nfs.c
+index edc15e0ce6..d42ef6bc86 100644
+--- a/fs/nfs.c
++++ b/fs/nfs.c
+@@ -1194,6 +1194,10 @@ static int nfs_read_req(struct file_priv *priv, uint64_t offset,
+ 	}
  
-+/* Maximum UDP payload that fits in a PKTSIZE packet buffer */
-+#define TFTP_MAX_UDP_PAYLOAD	(PKTSIZE - ETHER_HDR_SIZE - \
-+				 sizeof(struct iphdr) - sizeof(struct udphdr))
-+
- /* marker for an emtpy 'tftp_cache' */
- #define TFTP_CACHE_NO_ID	(-1)
- 
-@@ -218,7 +222,9 @@ static int tftp_send(struct file_priv *priv)
- 
- 	switch (priv->state) {
- 	case STATE_RRQ:
--	case STATE_WRQ:
-+	case STATE_WRQ: {
-+		int room, n;
-+
- 		if (priv->push || priv->is_getattr)
- 			/* atm, windowsize is supported only for RRQ and there
- 			   is no need to request a full window when we are
-@@ -235,7 +241,9 @@ static int tftp_send(struct file_priv *priv)
- 		else
- 			*s++ = htons(TFTP_WRQ);
- 		pkt = (unsigned char *)s;
--		pkt += sprintf((unsigned char *)pkt,
-+		room = TFTP_MAX_UDP_PAYLOAD - (pkt - xp);
-+
-+		n = snprintf(pkt, room,
- 				"%s%c"
- 				"octet%c"
- 				"timeout%c"
-@@ -250,24 +258,38 @@ static int tftp_send(struct file_priv *priv)
- 				/* use only a minimal blksize for getattr
- 				   operations, */
- 				priv->is_getattr ? TFTP_BLOCK_SIZE : TFTP_MTU_SIZE);
--		pkt++;
-+		if (n >= room)
-+			return -ENAMETOOLONG;
-+		pkt += n + 1;
-+		room -= n + 1;
- 
--		if (!priv->push)
-+		if (!priv->push) {
- 			/* we do not know the filesize in WRQ requests and
- 			   'priv->filesize' will always be zero */
--			pkt += sprintf((unsigned char *)pkt,
-+			n = snprintf(pkt, room,
- 				       "tsize%c%lld%c",
- 				       '\0', priv->filesize,
- 				       '\0');
-+			if (n >= room)
-+				return -ENAMETOOLONG;
-+			pkt += n;
-+			room -= n;
-+		}
- 
--		if (window_size > 1)
--			pkt += sprintf((unsigned char *)pkt,
-+		if (window_size > 1) {
-+			n = snprintf(pkt, room,
- 				       "windowsize%c%u%c",
- 				       '\0', window_size,
- 				       '\0');
-+			if (n >= room)
-+				return -ENAMETOOLONG;
-+			pkt += n;
-+			room -= n;
-+		}
- 
- 		len = pkt - xp;
- 		break;
+ 	p = nfs_packet_read(nfs_packet, rlen);
++	if (!p) {
++		ret = -EINVAL;
++		goto err_free_packet;
 +	}
  
- 	case STATE_RDATA:
- 		xp = pkt;
+ 	kfifo_put(priv->fifo, (char *)p, rlen);
+ 
 
 -- 
 2.47.3
