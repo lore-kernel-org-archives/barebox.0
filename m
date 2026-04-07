@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wA9x0-009dXq-0X
+	id 1wA9x0-009dY9-1E
 	for lore@lore.pengutronix.de;
 	Tue, 07 Apr 2026 19:10:54 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wA9wz-0000rL-EP
+	id 1wA9wz-0000rN-IE
 	for lore@pengutronix.de; Tue, 07 Apr 2026 19:10:54 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,31 +18,31 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=g/DY9+NPsg49ol+Q8mVMIjYCPBXdyC+bbCOkrUUQekE=; b=bTsa+CNbcEKhhGWs5Ap93KEMtZ
-	vo7A9VRITl7Y7RFq7B99NGRD65Ad39yVV1uGm9CeBPDL/AADt+Ha9VUxqfDxrX2Tp8eoGmtjoPefl
-	xAl+zcrlq3CUIhleo7dYfU559VvHjV3VVScTgCFfjcRNpKWoS+ncaL6+ZT7vV37csbUrGH9waWesM
-	J2DXwZmuhBHGeP+rgLo2Bz5NkDGV81nEsAanCxenlXGNCaS9+ztxK9bQcmKaL822gnXOWxivui8kr
-	vArQ2AOA8UfkEw/UNIc6SaDtOXLovmxyLv6PYgXEcSsv/7UAlcgDagq6j6XdYdr/S2yHDfDIQNxOp
-	668hr3Lg==;
+	bh=kMBYO9JIVCtqEfGkP4WHLlREY1DdrjGC8BXTykSzMLc=; b=rhvsBd/q7iagGwsyzJvCVVfahr
+	Jqu0j0etplPvzyeVejLS97vsljYwKu//nsLM1Abzs9jzV/1ua+oXKfeeyRp6Kp2GbIEojQRhz+vkP
+	MeA7am904s8XsyT6ZiMHEDJ/CrmGfhUQNCyHrtv+8nzkXffBWjnhrSLGHMntUjI9+F8n3guMokReE
+	a27giGWszo5ELQq/25CcUZg5JI9qNr6lJNZ/3r9kIGVE05Qb9fs60qlzjjFviA6TNSKtN++Lmnx2G
+	vvMOXyBRNCCEYlc1TvkqEUhe/ISUB+kxlm3/wO9ASRbl2eTaPs7fHZ7Eq3TnQ+iCJ92tB4dKILirV
+	vdQqttXg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wA9wK-00000006pio-1iBq;
+	id 1wA9wK-00000006piu-2xYI;
 	Tue, 07 Apr 2026 17:10:12 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wA9wD-00000006peH-3H2b
+	id 1wA9wD-00000006peG-3IJk
 	for barebox@lists.infradead.org;
 	Tue, 07 Apr 2026 17:10:08 +0000
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.tretter@pengutronix.de>)
-	id 1wA9wA-0000PH-BG; Tue, 07 Apr 2026 19:10:02 +0200
+	id 1wA9wA-0000PH-A7; Tue, 07 Apr 2026 19:10:02 +0200
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Tue, 07 Apr 2026 19:10:03 +0200
+Date: Tue, 07 Apr 2026 19:10:02 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260407-socfpga-iossm-v1-v1-9-6440a5337eff@pengutronix.de>
+Message-Id: <20260407-socfpga-iossm-v1-v1-8-6440a5337eff@pengutronix.de>
 References: <20260407-socfpga-iossm-v1-v1-0-6440a5337eff@pengutronix.de>
 In-Reply-To: <20260407-socfpga-iossm-v1-v1-0-6440a5337eff@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -51,8 +51,8 @@ Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>,
  Michael Tretter <m.tretter@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260407_101005_913166_58FDCB78 
-X-CRM114-Status: GOOD (  14.09  )
+X-CRM114-CacheID: sfid-20260407_101005_931653_99B1BD69 
+X-CRM114-Status: GOOD (  14.69  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,115 +74,122 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 09/10] arm: socfpga: iossm: add memory initialization with
- inline ecc
+Subject: [PATCH 08/10] arm: socfgpa: iossm: extract initialization of one
+ interface
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The memory interfaces may support for inline ECC and report their
-configuration via the ECC status. The software is responsible for
-initializing the memory accordingly.
+Each memory interface of each instance has to be initialized. Extract
+the code that initializes exactly one interface to reduce the nesting
+level and make the code more readable.
 
-Check the memory interface configuration and initialize the memory if
-necessary.
-
-Inline ECC uses 1/8 of the available memory for error correction. Thus,
-only 7/8 of the reported memory size is actually available.
+While at it, prepare the initialize function to handle situations which
+need a different initialization than full memory initialization like
+inline_ecc. Simplify the error handling and reporting, too.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
- arch/arm/mach-socfpga/agilex5-sdram.c |  2 ++
- arch/arm/mach-socfpga/iossm_mailbox.c | 31 +++++++++++++++++++++++++++----
- arch/arm/mach-socfpga/iossm_mailbox.h |  1 +
- 3 files changed, 30 insertions(+), 4 deletions(-)
+ arch/arm/mach-socfpga/iossm_mailbox.c | 76 +++++++++++++++++++++++------------
+ 1 file changed, 50 insertions(+), 26 deletions(-)
 
-diff --git a/arch/arm/mach-socfpga/agilex5-sdram.c b/arch/arm/mach-socfpga/agilex5-sdram.c
-index 5fb59d413e8f..4e7994985d26 100644
---- a/arch/arm/mach-socfpga/agilex5-sdram.c
-+++ b/arch/arm/mach-socfpga/agilex5-sdram.c
-@@ -323,6 +323,8 @@ int agilex5_ddr_init_full(void)
- 	}
- 
- 	hw_size = io96b_ctrl.overall_size;
-+	if (io96b_ctrl.inline_ecc)
-+		hw_size -= hw_size / 8;
- 	pr_debug("%s: %lld MiB\n", io96b_ctrl.ddr_type, hw_size / SZ_1M);
- 
- 	sdram_set_firewall(hw_size);
 diff --git a/arch/arm/mach-socfpga/iossm_mailbox.c b/arch/arm/mach-socfpga/iossm_mailbox.c
-index 6be1119724d6..4c6a84feccc5 100644
+index 67000d2cf300..6be1119724d6 100644
 --- a/arch/arm/mach-socfpga/iossm_mailbox.c
 +++ b/arch/arm/mach-socfpga/iossm_mailbox.c
-@@ -456,6 +456,7 @@ int io96b_ecc_enable_status(struct io96b_info *io96b_ctrl)
- 	u32 ecc_enable_intf;
- 	bool ecc_stat_set = false;
- 	bool ecc_stat;
-+	bool inline_ecc = false;
+@@ -526,43 +526,67 @@ static int io96b_poll_bist_mem_init_status(struct io96b_info *io96b_ctrl,
+ 	return 0;
+ }
  
- 	/* Initialize ECC status */
- 	io96b_ctrl->ecc_status = false;
-@@ -472,13 +473,19 @@ int io96b_ecc_enable_status(struct io96b_info *io96b_ctrl)
- 			ecc_enable_intf = IOSSM_CMD_RESPONSE_DATA_SHORT(usr_resp.cmd_resp_status)
- 
- 			ecc_stat = (ecc_enable_intf & GENMASK(1, 0)) == 0 ? false : true;
-+			inline_ecc = FIELD_GET(BIT(8), ecc_enable_intf);
- 
- 			if (!ecc_stat_set) {
- 				io96b_ctrl->ecc_status = ecc_stat;
++static int bist_mem_init_by_addr(struct io96b_info *io96b_ctrl,
++				 int instance, int interface,
++				 phys_addr_t base_addr, phys_size_t size)
++{
++	phys_addr_t io96b_csr_addr = io96b_ctrl->io96b[instance].io96b_csr_addr;
++	struct io96b_mb_ctrl *mb_ctrl = &io96b_ctrl->io96b[instance].mb_ctrl;
++	struct io96b_mb_resp usr_resp;
++	bool bist_start = false;
++	int bist_error = 0;
++	u32 mem_init_status;
++	int ret = 0;
++	u32 mem_exp;
 +
-+				if (io96b_ctrl->ecc_status)
-+					io96b_ctrl->inline_ecc = inline_ecc;
++	pr_debug("%s: Start memory initialization BIST on full memory address",
++		 __func__);
++	mem_exp = 0x40;
 +
- 				ecc_stat_set = true;
- 			}
- 
--			if (ecc_stat != io96b_ctrl->ecc_status) {
-+			if (ecc_stat != io96b_ctrl->ecc_status ||
-+			    (io96b_ctrl->ecc_status && inline_ecc != io96b_ctrl->inline_ecc)) {
- 				pr_err("%s: Mismatch DDR ECC status on IO96B_%d\n",
- 				       __func__, i);
- 				return -ENOEXEC;
-@@ -539,9 +546,25 @@ static int bist_mem_init_by_addr(struct io96b_info *io96b_ctrl,
- 	int ret = 0;
- 	u32 mem_exp;
- 
--	pr_debug("%s: Start memory initialization BIST on full memory address",
--		 __func__);
--	mem_exp = 0x40;
-+	if (io96b_ctrl->inline_ecc) {
-+		phys_size_t chunk_size;
++	ret = io96b_mb_req(io96b_csr_addr,
++			   mb_ctrl->ip_type[interface],
++			   mb_ctrl->ip_instance_id[interface],
++			   CMD_TRIG_CONTROLLER_OP, BIST_MEM_INIT_START,
++			   FIELD_PREP(GENMASK(5, 0), mem_exp),
++			   FIELD_GET(GENMASK(31, 0), base_addr),
++			   FIELD_GET(GENMASK(37, 32), base_addr),
++			   0, 0, 0, 0, &usr_resp);
++	if (ret)
++		return ret;
 +
-+		/* Check if size is a power of 2 */
-+		if (size == 0 || (size & (size - 1)) != 0)
-+			return -EINVAL;
++	mem_init_status = IOSSM_CMD_RESPONSE_DATA_SHORT(usr_resp.cmd_resp_status);
 +
-+		mem_exp = 0;
-+		chunk_size = size;
-+		while (chunk_size >>= 1)
-+			mem_exp++;
++	bist_start = FIELD_GET(BIT(0), mem_init_status);
++	bist_error = FIELD_GET(GENMASK(2, 1), mem_init_status);
 +
-+		pr_debug("%s: Initializing memory: Addr=0x%llx, Size=2^%u\n",
-+			 __func__, base_addr, mem_exp);
-+	} else {
-+		pr_debug("%s: Start memory initialization BIST on full memory address",
-+			 __func__);
-+		mem_exp = 0x40;
++	if (!bist_start) {
++		pr_err("%s: Failed to initialize memory on IO96B_%d (Error 0x%x)\n",
++		       __func__, instance, bist_error);
++		return -ENOEXEC;
 +	}
++
++	return io96b_poll_bist_mem_init_status(io96b_ctrl, instance, interface);
++}
++
+ int io96b_bist_mem_init_start(struct io96b_info *io96b_ctrl)
+ {
+-	struct io96b_mb_resp usr_resp;
+ 	int i, j;
+-	bool bist_start;
+-	u32 mem_init_status_intf;
+ 	int ret = 0;
  
- 	ret = io96b_mb_req(io96b_csr_addr,
- 			   mb_ctrl->ip_type[interface],
-diff --git a/arch/arm/mach-socfpga/iossm_mailbox.h b/arch/arm/mach-socfpga/iossm_mailbox.h
-index 1b1bb1c7a19a..940678fa9d2b 100644
---- a/arch/arm/mach-socfpga/iossm_mailbox.h
-+++ b/arch/arm/mach-socfpga/iossm_mailbox.h
-@@ -127,6 +127,7 @@ struct io96b_info {
- 	bool			 overall_cal_status;
- 	const char		*ddr_type;
- 	bool			 ecc_status;
-+	bool			 inline_ecc;
- 	phys_size_t		 overall_size;
- 	struct io96b_instance	 io96b[MAX_IO96B_SUPPORTED];
- 	bool			 ckgen_lock;
+-	/* Full memory initialization BIST performed on all memory interface(s) */
++	/* Memory initialization BIST performed on all memory interface(s) */
+ 	for (i = 0; i < io96b_ctrl->num_instance; i++) {
+ 		for (j = 0; j < io96b_ctrl->io96b[i].mb_ctrl.num_mem_interface; j++) {
+-			bist_start = false;
+-
+-			/* Start memory initialization BIST on full memory address */
+-			io96b_mb_req(io96b_ctrl->io96b[i].io96b_csr_addr,
+-				     io96b_ctrl->io96b[i].mb_ctrl.ip_type[j],
+-				     io96b_ctrl->io96b[i].mb_ctrl.ip_instance_id[j],
+-				     CMD_TRIG_CONTROLLER_OP, BIST_MEM_INIT_START,
+-				     0x40, 0, 0, 0, 0, 0, 0, &usr_resp);
+-			mem_init_status_intf = IOSSM_CMD_RESPONSE_DATA_SHORT(usr_resp.cmd_resp_status);
+-
+-			bist_start = mem_init_status_intf & BIT(0);
+-
+-			if (!bist_start) {
+-				pr_err("%s: Failed to initialized memory on IO96B_%d\n",
+-				       __func__, i);
+-				pr_err("%s: BIST_MEM_INIT_START Error code 0x%x\n",
+-				       __func__, (mem_init_status_intf & GENMASK(2, 1)) > 0x1);
+-				return -ENOEXEC;
+-			}
+-
+-			ret = io96b_poll_bist_mem_init_status(io96b_ctrl, i, j);
+-			if (ret)
++			ret = bist_mem_init_by_addr(io96b_ctrl, i, j, 0x0,
++						    io96b_ctrl->io96b[i].mb_ctrl.memory_size[j]);
++			if (ret) {
++				pr_err("%s: Memory init failed at Instance %d, Interface %d\n",
++				       __func__, i, j);
+ 				return ret;
++			}
+ 		}
+ 
+ 		pr_debug("%s: Memory initialized successfully on IO96B_%d\n", __func__, i);
+ 	}
++
+ 	return 0;
+ }
 
 -- 
 2.47.3
