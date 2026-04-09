@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wApqT-00AJOS-1P
+	id 1wApqT-00AJOT-1g
 	for lore@lore.pengutronix.de;
 	Thu, 09 Apr 2026 15:54:57 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wApqQ-0006fC-I1
+	id 1wApqS-0006gC-6o
 	for lore@pengutronix.de; Thu, 09 Apr 2026 15:54:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,31 +18,31 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Nr7p4RAmk2EEaGuUoWSCklhlaquyvady2HZiA6JlS5Q=; b=P+ohDRTpDm4Gv2WY9lEf3Nopdo
-	ZEuZye/9vziyT8XuvuxG/P5QWSv8EGecIERo7KXo87FaTlBQTQbjHAMbURYIq4plA+aFGWH46AMcw
-	iyt14nif8Cylqrt994taLF5Iewz2VTDMrjQXWmPR6wimaZ1YpFv08sbE2buZNH2TCrj8XB8pIlTbV
-	t680p/O1pWzzqQWQjQwesnlriNC48tyRVmolYhbDayyRf2AiuOIlzgUW+oAErKH/lq6E08ohyUwza
-	JJ3XvzFifzZzXXifg+2sZ7kaH1lYTNYowowiYCyn+2y+FMjlegpgY/U2LTVwHkOI7Q2iWKrIGbyTU
-	mLPm4pZw==;
+	bh=dWixyhQo7/Q9/eGF0upyhvGuMJFpMo6BFZVGkn5bIPI=; b=Nbt6WyKMPP6K5LTT1Xgsds6Uy9
+	VCBQS9VBK0CErP+c4T7pIHWolGt9K5rQxyDmeWBfAgQk5WJN+8NGURsHz4ohwjj+wmwA7x8niRHDR
+	J4Pi1m+KaDofhoNa4kscBXhtQ2nl1rPt4nltCCNlsyXBwyICQxYqYaA6c7hUcboAUxpKzKrzBeYsO
+	wmm2p4xAwNZYHFOC4joKT3xUhHloZukSZWTyTEJ5N73yi3w0KZYJzUILwnxeaHQTFlHbGkL8Ererw
+	U2yMWFNL+7+5DHszmo6sTKNoA3Pbrlf+fSjjoWtu/OD55kPp1Q0QfGL2gkq7HRxvSjWJvL+Bs4gaz
+	81b/s8Lw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wApp3-0000000Aapy-0wmH;
-	Thu, 09 Apr 2026 13:53:29 +0000
+	id 1wAppO-0000000Aary-2e7k;
+	Thu, 09 Apr 2026 13:53:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wApoW-0000000AaX1-3wCA
+	id 1wApoX-0000000AaWz-2NBa
 	for barebox@lists.infradead.org;
-	Thu, 09 Apr 2026 13:53:08 +0000
+	Thu, 09 Apr 2026 13:53:13 +0000
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.tretter@pengutronix.de>)
-	id 1wApoL-0005uF-Ar; Thu, 09 Apr 2026 15:52:45 +0200
+	id 1wApoL-0005uF-8e; Thu, 09 Apr 2026 15:52:45 +0200
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Thu, 09 Apr 2026 15:52:43 +0200
+Date: Thu, 09 Apr 2026 15:52:41 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260409-socfpga-iossm-v1-v2-3-09effab91bc1@pengutronix.de>
+Message-Id: <20260409-socfpga-iossm-v1-v2-1-09effab91bc1@pengutronix.de>
 References: <20260409-socfpga-iossm-v1-v2-0-09effab91bc1@pengutronix.de>
 In-Reply-To: <20260409-socfpga-iossm-v1-v2-0-09effab91bc1@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -51,8 +51,9 @@ Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>,
  Michael Tretter <m.tretter@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260409_065257_559955_DE72F824 
-X-CRM114-Status: GOOD (  12.50  )
+X-CRM114-CacheID: sfid-20260409_065257_759766_664D7E8F 
+X-CRM114-Status: UNSURE (   8.65  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,12 +75,14 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 03/10] arm: socfpga: iossm: use local mb_ctrl variable
+Subject: [PATCH v2 01/10] arm: socfpga: iossm: remove uninitialized
+ variable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Introduce a local variable to improve the readablility and avoid long
-names when accessing the variables.
+The variable i is not initialized. As the index when writing values to
+cmd_resp_data is hard-coded, we may use a hard coded index in the print
+statements, too.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
@@ -87,158 +90,40 @@ Changes in v2:
 
 - none
 ---
- arch/arm/mach-socfpga/iossm_mailbox.c | 47 +++++++++++++++++++++--------------
- 1 file changed, 29 insertions(+), 18 deletions(-)
+ arch/arm/mach-socfpga/iossm_mailbox.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/arch/arm/mach-socfpga/iossm_mailbox.c b/arch/arm/mach-socfpga/iossm_mailbox.c
-index d14399f305de..9299fee71e0b 100644
+index 0e8c9e36017d..d89117da4fd4 100644
 --- a/arch/arm/mach-socfpga/iossm_mailbox.c
 +++ b/arch/arm/mach-socfpga/iossm_mailbox.c
-@@ -185,6 +185,7 @@ static int io96b_mb_version(struct io96b_info *io96b_ctrl)
- void io96b_mb_init(struct io96b_info *io96b_ctrl)
+@@ -82,7 +82,6 @@ int io96b_mb_req(phys_addr_t io96b_csr_addr, u32 ip_type, u32 instance_id,
+ 		 u32 cmd_param_4, u32 cmd_param_5, u32 cmd_param_6,
+ 		 struct io96b_mb_resp *resp)
  {
- 	struct io96b_mb_resp usr_resp;
-+	struct io96b_mb_ctrl *mb_ctrl;
- 	u8 ip_type_ret, instance_id_ret;
- 	int i, j, k;
- 	int version;
-@@ -202,27 +203,28 @@ void io96b_mb_init(struct io96b_info *io96b_ctrl)
+-	int i;
+ 	int ret;
+ 	u32 cmd_req, cmd_resp;
  
- 	pr_debug("%s: num_instance %d\n", __func__, io96b_ctrl->num_instance);
- 	for (i = 0; i < io96b_ctrl->num_instance; i++) {
-+		mb_ctrl = &io96b_ctrl->io96b[i].mb_ctrl;
- 		pr_debug("%s: get memory interface IO96B %d\n", __func__, i);
- 		/* Get memory interface IP type and instance ID (IP identifier) */
- 		io96b_mb_req_no_param(io96b_ctrl->io96b[i].io96b_csr_addr, 0, 0,
- 				      CMD_GET_SYS_INFO, GET_MEM_INTF_INFO, &usr_resp);
- 		pr_debug("%s: get response from memory interface IO96B %d\n", __func__, i);
- 		/* Retrieve number of memory interface(s) */
--		io96b_ctrl->io96b[i].mb_ctrl.num_mem_interface =
-+		mb_ctrl->num_mem_interface =
- 			IOSSM_CMD_RESPONSE_DATA_SHORT(usr_resp.cmd_resp_status) & 0x3;
--		pr_debug("%s: IO96B %d: num_mem_interface: 0x%x\n", __func__,
--			 i, io96b_ctrl->io96b[i].mb_ctrl.num_mem_interface);
-+		pr_debug("%s: IO96B %d: num_mem_interface: %d\n", __func__,
-+			 i, mb_ctrl->num_mem_interface);
+@@ -138,15 +137,15 @@ int io96b_mb_req(phys_addr_t io96b_csr_addr, u32 ip_type, u32 instance_id,
+ 	resp->cmd_resp_data[0] = readl(io96b_csr_addr + IOSSM_CMD_RESPONSE_DATA_0_OFFSET);
+ 	pr_debug("%s: IOSSM_CMD_RESPONSE_DATA_0_OFFSET 0x%llx: 0x%x\n",
+ 		 __func__, io96b_csr_addr + IOSSM_CMD_RESPONSE_DATA_0_OFFSET,
+-		 resp->cmd_resp_data[i]);
++		 resp->cmd_resp_data[0]);
+ 	resp->cmd_resp_data[1] = readl(io96b_csr_addr + IOSSM_CMD_RESPONSE_DATA_1_OFFSET);
+ 	pr_debug("%s: IOSSM_CMD_RESPONSE_DATA_1_OFFSET 0x%llx: 0x%x\n",
+ 		 __func__, io96b_csr_addr + IOSSM_CMD_RESPONSE_DATA_1_OFFSET,
+-		 resp->cmd_resp_data[i]);
++		 resp->cmd_resp_data[1]);
+ 	resp->cmd_resp_data[2] = readl(io96b_csr_addr + IOSSM_CMD_RESPONSE_DATA_2_OFFSET);
+ 	pr_debug("%s: IOSSM_CMD_RESPONSE_DATA_2_OFFSET 0x%llx: 0x%x\n",
+ 		 __func__, io96b_csr_addr + IOSSM_CMD_RESPONSE_DATA_2_OFFSET,
+-		 resp->cmd_resp_data[i]);
++		 resp->cmd_resp_data[2]);
  
- 		/* Retrieve memory interface IP type and instance ID (IP identifier) */
- 		j = 0;
--		for (k = 0; k < io96b_ctrl->io96b[i].mb_ctrl.num_mem_interface; k++) {
-+		for (k = 0; k < mb_ctrl->num_mem_interface; k++) {
- 			ip_type_ret = FIELD_GET(INTF_IP_TYPE_MASK, usr_resp.cmd_resp_data[k]);
- 			instance_id_ret = FIELD_GET(INTF_INSTANCE_ID_MASK,
- 						    usr_resp.cmd_resp_data[k]);
- 
- 			if (ip_type_ret) {
--				io96b_ctrl->io96b[i].mb_ctrl.ip_type[j] = ip_type_ret;
--				io96b_ctrl->io96b[i].mb_ctrl.ip_instance_id[j] = instance_id_ret;
-+				mb_ctrl->ip_type[j] = ip_type_ret;
-+				mb_ctrl->ip_instance_id[j] = instance_id_ret;
- 				pr_debug("%s: IO96B %d mem_interface %d: ip_type_ret: 0x%x\n",
- 					 __func__, i, j, ip_type_ret);
- 				pr_debug("%s: IO96B %d mem_interface %d: instance_id_ret: 0x%x\n",
-@@ -297,6 +299,7 @@ void io96b_init_mem_cal(struct io96b_info *io96b_ctrl)
- int io96b_trig_mem_cal(struct io96b_info *io96b_ctrl)
- {
- 	struct io96b_mb_resp usr_resp;
-+	struct io96b_mb_ctrl *mb_ctrl;
- 	bool recal_success;
- 	int i, j, k;
- 	u32 cal_stat_offset;
-@@ -305,10 +308,12 @@ int io96b_trig_mem_cal(struct io96b_info *io96b_ctrl)
- 	int count = 0;
- 
- 	for (i = 0; i < io96b_ctrl->num_instance; i++) {
-+		mb_ctrl = &io96b_ctrl->io96b[i].mb_ctrl;
-+
- 		if (io96b_ctrl->io96b[i].cal_status)
- 			continue;
- 
--		for (j = 0; j < io96b_ctrl->io96b[i].mb_ctrl.num_mem_interface; j++) {
-+		for (j = 0; j < mb_ctrl->num_mem_interface; j++) {
- 			recal_success = false;
- 
- 			/* Re-calibration first memory interface with failed calibration */
-@@ -326,8 +331,8 @@ int io96b_trig_mem_cal(struct io96b_info *io96b_ctrl)
- 					break;
- 				}
- 				io96b_mb_req_no_param(io96b_ctrl->io96b[i].io96b_csr_addr,
--						      io96b_ctrl->io96b[i].mb_ctrl.ip_type[j],
--						      io96b_ctrl->io96b[i].mb_ctrl.ip_instance_id[j],
-+						      mb_ctrl->ip_type[j],
-+						      mb_ctrl->ip_instance_id[j],
- 						      CMD_TRIG_MEM_CAL_OP,
- 						      TRIG_MEM_CAL, &usr_resp);
- 
-@@ -361,6 +366,7 @@ int io96b_trig_mem_cal(struct io96b_info *io96b_ctrl)
- int io96b_get_mem_technology(struct io96b_info *io96b_ctrl)
- {
- 	struct io96b_mb_resp usr_resp;
-+	struct io96b_mb_ctrl *mb_ctrl;
- 	int i, j;
- 	u8 ddr_type_ret;
- 
-@@ -369,10 +375,11 @@ int io96b_get_mem_technology(struct io96b_info *io96b_ctrl)
- 
- 	/* Get and ensure all memory interface(s) same DDR type */
- 	for (i = 0; i < io96b_ctrl->num_instance; i++) {
--		for (j = 0; j < io96b_ctrl->io96b[i].mb_ctrl.num_mem_interface; j++) {
-+		mb_ctrl = &io96b_ctrl->io96b[i].mb_ctrl;
-+		for (j = 0; j < mb_ctrl->num_mem_interface; j++) {
- 			io96b_mb_req_no_param(io96b_ctrl->io96b[i].io96b_csr_addr,
--					      io96b_ctrl->io96b[i].mb_ctrl.ip_type[j],
--					      io96b_ctrl->io96b[i].mb_ctrl.ip_instance_id[j],
-+					      mb_ctrl->ip_type[j],
-+					      mb_ctrl->ip_instance_id[j],
- 					      CMD_GET_MEM_INFO, GET_MEM_TECHNOLOGY, &usr_resp);
- 
- 			ddr_type_ret =
-@@ -395,17 +402,19 @@ int io96b_get_mem_technology(struct io96b_info *io96b_ctrl)
- int io96b_get_mem_width_info(struct io96b_info *io96b_ctrl)
- {
- 	struct io96b_mb_resp usr_resp;
-+	struct io96b_mb_ctrl *mb_ctrl;
- 	int i, j;
- 	u16 memory_size;
- 	u16 total_memory_size = 0;
- 
- 	/* Get all memory interface(s) total memory size on all instance(s) */
- 	for (i = 0; i < io96b_ctrl->num_instance; i++) {
-+		mb_ctrl = &io96b_ctrl->io96b[i].mb_ctrl;
- 		memory_size = 0;
--		for (j = 0; j < io96b_ctrl->io96b[i].mb_ctrl.num_mem_interface; j++) {
-+		for (j = 0; j < mb_ctrl->num_mem_interface; j++) {
- 			io96b_mb_req_no_param(io96b_ctrl->io96b[i].io96b_csr_addr,
--					      io96b_ctrl->io96b[i].mb_ctrl.ip_type[j],
--					      io96b_ctrl->io96b[i].mb_ctrl.ip_instance_id[j],
-+					      mb_ctrl->ip_type[j],
-+					      mb_ctrl->ip_instance_id[j],
- 					      CMD_GET_MEM_INFO, GET_MEM_WIDTH_INFO, &usr_resp);
- 
- 			memory_size = memory_size +
-@@ -435,6 +444,7 @@ int io96b_get_mem_width_info(struct io96b_info *io96b_ctrl)
- int io96b_ecc_enable_status(struct io96b_info *io96b_ctrl)
- {
- 	struct io96b_mb_resp usr_resp;
-+	struct io96b_mb_ctrl *mb_ctrl;
- 	int i, j;
- 	bool ecc_stat_set = false;
- 	bool ecc_stat;
-@@ -444,10 +454,11 @@ int io96b_ecc_enable_status(struct io96b_info *io96b_ctrl)
- 
- 	/* Get and ensure all memory interface(s) same ECC status */
- 	for (i = 0; i < io96b_ctrl->num_instance; i++) {
--		for (j = 0; j < io96b_ctrl->io96b[i].mb_ctrl.num_mem_interface; j++) {
-+		mb_ctrl = &io96b_ctrl->io96b[i].mb_ctrl;
-+		for (j = 0; j < mb_ctrl->num_mem_interface; j++) {
- 			io96b_mb_req_no_param(io96b_ctrl->io96b[i].io96b_csr_addr,
--					      io96b_ctrl->io96b[i].mb_ctrl.ip_type[j],
--					      io96b_ctrl->io96b[i].mb_ctrl.ip_instance_id[j],
-+					      mb_ctrl->ip_type[j],
-+					      mb_ctrl->ip_instance_id[j],
- 					      CMD_TRIG_CONTROLLER_OP, ECC_ENABLE_STATUS,
- 					      &usr_resp);
- 
+ 	resp->cmd_resp_status = readl(io96b_csr_addr + IOSSM_CMD_RESPONSE_STATUS_OFFSET);
+ 	pr_debug("%s: CMD_RESPONSE_STATUS 0x%llx: 0x%x\n", __func__,
 
 -- 
 2.47.3
