@@ -1,58 +1,62 @@
-Delivery-date: Thu, 09 Apr 2026 15:54:56 +0200
+Delivery-date: Thu, 09 Apr 2026 15:54:57 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wApqS-00AJNu-1L
+	id 1wApqS-00AJOG-37
 	for lore@lore.pengutronix.de;
 	Thu, 09 Apr 2026 15:54:56 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wApqQ-0006fE-FW
+	id 1wApqQ-0006fD-IS
 	for lore@pengutronix.de; Thu, 09 Apr 2026 15:54:56 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Sz6Yqi/xjajVmSVE8Hha4G8+x1XsQ91kvq+BPO0aWTA=; b=3GnuW2eWTphDPfVPvfEfSfMSay
-	8kglSlQZa2IrGYq3QiLbHTRrjxjhyWZiVswdsaUs7mIVFtr/x/bDDzvsvRXZK+Qa5ygA7TK2nPI7X
-	4lxDwxIBWm9ePveJ3fFgBSTsQSPvXkpVrdnzxddechCSYsB9ZD5SLd5ic3Pqzr7pPFt62oDWPSmwj
-	ijo/MfHwN8XfyYRHtgHmESnqAYVt8kw4jTbdvxVHlfJt9HGuhtrW4A6TSCh3/o3pv7u/DTIz5IlTn
-	NEzXSpdQc3KHnYOiMZR0VLp1HNEy0DNM0c6p4id7ZJLr5uy3o7D217hCVlW0yKJ3QuB76y4ydkbD6
-	HVr0sd8g==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=s00yOtph4jh0bHjjV4qGZNfPN2Mfy5bjiAS4Mhpl9GY=; b=KHeE4OFm9hK7dM
+	jFfHvwmKOcqieepM+vfGQT6U3zidprO7HEok8X101WfpaVY/v7shl8uV2RKrrDwteDoA9nsx5ZlmS
+	OhXor/p5sUPPs2EBy0PT4s10MN4NnVE7YLwBu/lj0F/ITyrl3i8OWa20IqGB1Ju+Qk9PSEn/hxnOB
+	N4ijV+PbsZBzMyVDP+32SmutA+pSIwLENUSkxyVK0ax7bxgxOUhk44w0uFIXi7SemV9R9mPW59Ft9
+	Xj+Kowvxv9GMFlZIDNUrf8Q3lKGCita4nDsXImBQl45YqtVxpDnHY2i0gf951b98JVGRqJUOZH72y
+	+nvbTpiTBE7L+RpoGvDg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wApp4-0000000AarW-2dMo;
-	Thu, 09 Apr 2026 13:53:30 +0000
+	id 1wApp3-0000000Aaqq-3uJI;
+	Thu, 09 Apr 2026 13:53:29 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wApoX-0000000AaX0-1QRu
+	id 1wApoX-0000000AaWy-1THx
 	for barebox@lists.infradead.org;
 	Thu, 09 Apr 2026 13:53:12 +0000
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.tretter@pengutronix.de>)
-	id 1wApoL-0005uF-9i; Thu, 09 Apr 2026 15:52:45 +0200
+	id 1wApoL-0005uF-7Q; Thu, 09 Apr 2026 15:52:45 +0200
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Thu, 09 Apr 2026 15:52:42 +0200
+Date: Thu, 09 Apr 2026 15:52:40 +0200
+Message-Id: <20260409-socfpga-iossm-v1-v2-0-09effab91bc1@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260409-socfpga-iossm-v1-v2-2-09effab91bc1@pengutronix.de>
-References: <20260409-socfpga-iossm-v1-v2-0-09effab91bc1@pengutronix.de>
-In-Reply-To: <20260409-socfpga-iossm-v1-v2-0-09effab91bc1@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIACiv12kC/32NQQ6DIBBFr2JmXRoE1NhV79G4sDjoLAqGscTGc
+ PdSD9Dkb95P/vsHMEZChlt1QMRETMEXUJcK7DL6GQVNhUFJ1UojO8HBunUeBQXml0i1aHpb96i
+ NHNUTymyN6Gg/lY+h8EK8hfg5H1L9a//ISqRoTZE1Wnfo3H1FP7+3GDzt1wlhyDl/AXniyC21A
+ AAA
+X-Change-ID: 20260407-socfpga-iossm-v1-59c19e340a2b
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
  Michael Tretter <m.tretter@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260409_065257_556973_F711A8AB 
-X-CRM114-Status: GOOD (  13.25  )
+X-CRM114-CacheID: sfid-20260409_065257_691300_C2229C37 
+X-CRM114-Status: UNSURE (   9.89  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,100 +78,57 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 02/10] arm: socfpga: iossm: add version check
+Subject: [PATCH v2 00/10] arm: socfpga: iossm: add support for mailbox v1
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-There is a version 1 of the IOSSM, which is used if the board
-configuration was created with Quartus 25.3.0 or later.
+The IOSSM on the Agilex5 may have different mailbox versions depending
+on the Quartus version that was used to generate the SoC configuration.
+Up until now, barebox only supports mailbox version 0, which was
+configured by versions before Quartus 25.3.0. With Quartus 25.3.0 and
+later, the IOSSM provides mailbox version 1, which exposes many
+configuration options as registers instead of mailbox responses.
 
-Warn the user if barebox didn't detect the supported version 0.
+Since the IOSSM is used for SDRAM setup, barebox didn't boot on devices
+configured with Quartus 25.3.0 or later.
+
+Refactor the iossm handling and add the handling of IOSSM mailbox
+version 1.
+
+While at it, also add inline ECC handling. If the memory interface of
+the Agilex5 is configured for inline ECC (which is the current default)
+the bootloader has to be aware of inline ECC, too.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
 Changes in v2:
+- Patch 4: Change memory_size in io96b_mb_ctrl to phys_size_t to prevent overflow
+- Link to v1: https://patch.msgid.link/20260407-socfpga-iossm-v1-v1-0-6440a5337eff@pengutronix.de
 
-- none
 ---
- arch/arm/mach-socfpga/iossm_mailbox.c | 27 +++++++++++++++++++++++++++
- arch/arm/mach-socfpga/iossm_mailbox.h |  2 ++
- 2 files changed, 29 insertions(+)
+Michael Tretter (10):
+      arm: socfpga: iossm: remove uninitialized variable
+      arm: socfpga: iossm: add version check
+      arm: socfpga: iossm: use local mb_ctrl variable
+      arm: socfpga: iossm: store size in bytes
+      arm: socfpga: iossm: refactor io96b_mb_init
+      arm: socfpga: iossm: refactor return value handling
+      arm: socfgpa: iossm: extract poll_bist_mem_init_status
+      arm: socfgpa: iossm: extract initialization of one interface
+      arm: socfpga: iossm: add memory initialization with inline ecc
+      arm: socfpga: iossm: add support for mailbox v1
 
-diff --git a/arch/arm/mach-socfpga/iossm_mailbox.c b/arch/arm/mach-socfpga/iossm_mailbox.c
-index d89117da4fd4..d14399f305de 100644
---- a/arch/arm/mach-socfpga/iossm_mailbox.c
-+++ b/arch/arm/mach-socfpga/iossm_mailbox.c
-@@ -27,6 +27,9 @@
- #define INTF_IP_TYPE_MASK	GENMASK(31, 29)
- #define INTF_INSTANCE_ID_MASK	GENMASK(28, 24)
- 
-+#define IOSSM_MAILBOX_HEADER_OFFSET			0x0
-+#define IOSSM_MAILBOX_SPEC_VERSION_MASK			GENMASK(2, 0)
-+
- /* supported DDR type list */
- static const char *ddr_type_list[7] = {
- 		"DDR4", "DDR5", "DDR5_RDIMM", "LPDDR4", "LPDDR5", "QDRIV", "UNKNOWN"
-@@ -163,6 +166,18 @@ int io96b_mb_req(phys_addr_t io96b_csr_addr, u32 ip_type, u32 instance_id,
- 	return 0;
- }
- 
-+static int io96b_mb_version(struct io96b_info *io96b_ctrl)
-+{
-+	phys_addr_t io96b_csr_addr = io96b_ctrl->io96b[0].io96b_csr_addr;
-+	u32 mailbox_header;
-+	int version;
-+
-+	mailbox_header = readl(io96b_csr_addr + IOSSM_MAILBOX_HEADER_OFFSET);
-+	version = FIELD_GET(IOSSM_MAILBOX_SPEC_VERSION_MASK, mailbox_header);
-+
-+	return version;
-+}
-+
- /*
-  * Initial function to be called to set memory interface IP type and instance ID
-  * IP type and instance ID need to be determined before sending mailbox command
-@@ -172,6 +187,18 @@ void io96b_mb_init(struct io96b_info *io96b_ctrl)
- 	struct io96b_mb_resp usr_resp;
- 	u8 ip_type_ret, instance_id_ret;
- 	int i, j, k;
-+	int version;
-+
-+	version = io96b_mb_version(io96b_ctrl);
-+	switch (version) {
-+	case 0:
-+		pr_debug("IOSSM: mailbox version %d\n", version);
-+		break;
-+	default:
-+		pr_warn("IOSSM: unsupported mailbox version %d\n", version);
-+		break;
-+	}
-+	io96b_ctrl->version = version;
- 
- 	pr_debug("%s: num_instance %d\n", __func__, io96b_ctrl->num_instance);
- 	for (i = 0; i < io96b_ctrl->num_instance; i++) {
-diff --git a/arch/arm/mach-socfpga/iossm_mailbox.h b/arch/arm/mach-socfpga/iossm_mailbox.h
-index 29b3f069072d..bd66621d5f70 100644
---- a/arch/arm/mach-socfpga/iossm_mailbox.h
-+++ b/arch/arm/mach-socfpga/iossm_mailbox.h
-@@ -110,6 +110,7 @@ struct io96b_instance {
- /*
-  * Overall IO96B instance(s) information
-  *
-+ * @version:		Version of the IO96B
-  * @num_instance:	Number of instance(s) assigned to HPS
-  * @overall_cal_status: Overall calibration status for all IO96B instance(s)
-  * @ddr_type:		DDR memory type
-@@ -120,6 +121,7 @@ struct io96b_instance {
-  * @num_port:		Number of IO96B port.
-  */
- struct io96b_info {
-+	int			 version;
- 	u8			 num_instance;
- 	bool			 overall_cal_status;
- 	const char		*ddr_type;
+ arch/arm/mach-socfpga/agilex5-sdram.c |   9 +-
+ arch/arm/mach-socfpga/iossm_mailbox.c | 359 ++++++++++++++++++++++++----------
+ arch/arm/mach-socfpga/iossm_mailbox.h |   8 +-
+ 3 files changed, 272 insertions(+), 104 deletions(-)
+---
+base-commit: 0933e8f2ebf0d91dfcf177a4e4292b02921a53f1
+change-id: 20260407-socfpga-iossm-v1-59c19e340a2b
 
+Best regards,
 -- 
-2.47.3
+Michael Tretter <m.tretter@pengutronix.de>
 
 
 
