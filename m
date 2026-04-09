@@ -1,48 +1,48 @@
-Delivery-date: Thu, 09 Apr 2026 15:54:57 +0200
+Delivery-date: Thu, 09 Apr 2026 15:55:16 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wApqT-00AJOd-2J
+	id 1wApqm-00AJQA-1E
 	for lore@lore.pengutronix.de;
-	Thu, 09 Apr 2026 15:54:57 +0200
+	Thu, 09 Apr 2026 15:55:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wApqS-0006g7-7Y
-	for lore@pengutronix.de; Thu, 09 Apr 2026 15:54:57 +0200
+	id 1wApql-0006nN-0i
+	for lore@pengutronix.de; Thu, 09 Apr 2026 15:55:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qQC6A+bWR5FDY2+2Gi/tidPvYH8XKOkvsCk5svTOKMc=; b=OF1K5Sxijj/jjkDoU+9FWCBG8J
-	cAMoynDLCZ1/MsC9jQ+xuOJtAW/N96PVaqXmcyR/yKubYVsdDeyUQVGpBx2SX0BGD+P+FAmYgL5ZK
-	obnFO+yHfa7pOXuvAyGDB4R43+bhIG/uFuf6UdzFjfn2Y2UDni0K5PCVg2kMLw4OICkIz+GyI/SiY
-	tzK3jyjkNb08ZaeftIRuLhyaRGZU3huSp7B54kvF+F1KIcrXKK0cSmh4k7iFxBpf2+d7yOQEl2ZWl
-	CwvUrB47ektbTWu/ZFWJvtXEQRqrlf4gs19XsX+tcF1NnfCThqCB3+2BhwJtJwulHVNS5mxYtA/TR
-	NN64Y/bw==;
+	bh=KET8C4dskbbSTlZIESNXADyFdhQUa1bg4gOI0NlymRA=; b=oRw5dmVTmu4vwcyu3vkTjOLSny
+	j0sLnVLT4mkj+5aWNlUmwAUdN3XheJt75Z7ILUSoCDwjd4mLi/p1XV+ZvmKEjVFGhxgioCV2G/mdk
+	gdmrgW3YRFhyF9LBWCnMnJSooIET9OaPDQQEw3/VUJGGUQbZwRFBx1TBh9kZLcfMRTMQvgyVxIGat
+	U90d6f40UOtbzkt4dcVp5d+U09WifuwaZH7MFEPLwygaFsjvuJPoWhFveVJTZ7/XJy+QaLDvjPmGP
+	ihOYcUv5LEfr6g2A+uBdkPff81x0ic994QXt5fwPKoyJLjS7OPYthwiLpot+SKAwoMV3oPzv2zqRT
+	CidBGhpQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wApp4-0000000AarE-1Asd;
-	Thu, 09 Apr 2026 13:53:30 +0000
+	id 1wAppY-0000000Ab9f-1nca;
+	Thu, 09 Apr 2026 13:54:00 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wApoX-0000000AaX3-3CMS
+	id 1wApoX-0000000AaX8-3kUM
 	for barebox@lists.infradead.org;
-	Thu, 09 Apr 2026 13:53:12 +0000
+	Thu, 09 Apr 2026 13:53:26 +0000
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.tretter@pengutronix.de>)
-	id 1wApoL-0005uF-D9; Thu, 09 Apr 2026 15:52:45 +0200
+	id 1wApoL-0005uF-H2; Thu, 09 Apr 2026 15:52:45 +0200
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Thu, 09 Apr 2026 15:52:45 +0200
+Date: Thu, 09 Apr 2026 15:52:48 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260409-socfpga-iossm-v1-v2-5-09effab91bc1@pengutronix.de>
+Message-Id: <20260409-socfpga-iossm-v1-v2-8-09effab91bc1@pengutronix.de>
 References: <20260409-socfpga-iossm-v1-v2-0-09effab91bc1@pengutronix.de>
 In-Reply-To: <20260409-socfpga-iossm-v1-v2-0-09effab91bc1@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -51,8 +51,8 @@ Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>,
  Michael Tretter <m.tretter@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260409_065257_845103_DB59E1BA 
-X-CRM114-Status: GOOD (  12.04  )
+X-CRM114-CacheID: sfid-20260409_065258_424120_7B7A1BF3 
+X-CRM114-Status: GOOD (  15.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,15 +74,18 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 05/10] arm: socfpga: iossm: refactor io96b_mb_init
+Subject: [PATCH v2 08/10] arm: socfgpa: iossm: extract initialization of
+ one interface
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Keep the returned number of interfaces in a local variable and store it
-only after checking the type of the memory.
+Each memory interface of each instance has to be initialized. Extract
+the code that initializes exactly one interface to reduce the nesting
+level and make the code more readable.
 
-This brings the behavior closer to the behavior of the iossm v1 API and
-simplifies the addition of the iossm v1 implementation.
+While at it, prepare the initialize function to handle situations which
+need a different initialization than full memory initialization like
+inline_ecc. Simplify the error handling and reporting, too.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
@@ -90,50 +93,107 @@ Changes in v2:
 
 - none
 ---
- arch/arm/mach-socfpga/iossm_mailbox.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ arch/arm/mach-socfpga/iossm_mailbox.c | 76 +++++++++++++++++++++++------------
+ 1 file changed, 50 insertions(+), 26 deletions(-)
 
 diff --git a/arch/arm/mach-socfpga/iossm_mailbox.c b/arch/arm/mach-socfpga/iossm_mailbox.c
-index 042ea4a99e5c..53c8687f4db8 100644
+index 67000d2cf300..6be1119724d6 100644
 --- a/arch/arm/mach-socfpga/iossm_mailbox.c
 +++ b/arch/arm/mach-socfpga/iossm_mailbox.c
-@@ -204,26 +204,27 @@ void io96b_mb_init(struct io96b_info *io96b_ctrl)
+@@ -526,43 +526,67 @@ static int io96b_poll_bist_mem_init_status(struct io96b_info *io96b_ctrl,
+ 	return 0;
+ }
  
- 	pr_debug("%s: num_instance %d\n", __func__, io96b_ctrl->num_instance);
- 	for (i = 0; i < io96b_ctrl->num_instance; i++) {
-+		int num_mem_interface = 0;
-+		u32 mem_intf_info[2];
++static int bist_mem_init_by_addr(struct io96b_info *io96b_ctrl,
++				 int instance, int interface,
++				 phys_addr_t base_addr, phys_size_t size)
++{
++	phys_addr_t io96b_csr_addr = io96b_ctrl->io96b[instance].io96b_csr_addr;
++	struct io96b_mb_ctrl *mb_ctrl = &io96b_ctrl->io96b[instance].mb_ctrl;
++	struct io96b_mb_resp usr_resp;
++	bool bist_start = false;
++	int bist_error = 0;
++	u32 mem_init_status;
++	int ret = 0;
++	u32 mem_exp;
 +
- 		mb_ctrl = &io96b_ctrl->io96b[i].mb_ctrl;
- 		pr_debug("%s: get memory interface IO96B %d\n", __func__, i);
- 		/* Get memory interface IP type and instance ID (IP identifier) */
- 		io96b_mb_req_no_param(io96b_ctrl->io96b[i].io96b_csr_addr, 0, 0,
- 				      CMD_GET_SYS_INFO, GET_MEM_INTF_INFO, &usr_resp);
--		pr_debug("%s: get response from memory interface IO96B %d\n", __func__, i);
--		/* Retrieve number of memory interface(s) */
--		mb_ctrl->num_mem_interface =
-+		num_mem_interface =
- 			IOSSM_CMD_RESPONSE_DATA_SHORT(usr_resp.cmd_resp_status) & 0x3;
--		pr_debug("%s: IO96B %d: num_mem_interface: %d\n", __func__,
--			 i, mb_ctrl->num_mem_interface);
-+		for (j = 0; j < num_mem_interface; j++)
-+			mem_intf_info[j] = usr_resp.cmd_resp_data[j];
++	pr_debug("%s: Start memory initialization BIST on full memory address",
++		 __func__);
++	mem_exp = 0x40;
++
++	ret = io96b_mb_req(io96b_csr_addr,
++			   mb_ctrl->ip_type[interface],
++			   mb_ctrl->ip_instance_id[interface],
++			   CMD_TRIG_CONTROLLER_OP, BIST_MEM_INIT_START,
++			   FIELD_PREP(GENMASK(5, 0), mem_exp),
++			   FIELD_GET(GENMASK(31, 0), base_addr),
++			   FIELD_GET(GENMASK(37, 32), base_addr),
++			   0, 0, 0, 0, &usr_resp);
++	if (ret)
++		return ret;
++
++	mem_init_status = IOSSM_CMD_RESPONSE_DATA_SHORT(usr_resp.cmd_resp_status);
++
++	bist_start = FIELD_GET(BIT(0), mem_init_status);
++	bist_error = FIELD_GET(GENMASK(2, 1), mem_init_status);
++
++	if (!bist_start) {
++		pr_err("%s: Failed to initialize memory on IO96B_%d (Error 0x%x)\n",
++		       __func__, instance, bist_error);
++		return -ENOEXEC;
++	}
++
++	return io96b_poll_bist_mem_init_status(io96b_ctrl, instance, interface);
++}
++
+ int io96b_bist_mem_init_start(struct io96b_info *io96b_ctrl)
+ {
+-	struct io96b_mb_resp usr_resp;
+ 	int i, j;
+-	bool bist_start;
+-	u32 mem_init_status_intf;
+ 	int ret = 0;
  
- 		/* Retrieve memory interface IP type and instance ID (IP identifier) */
- 		j = 0;
--		for (k = 0; k < mb_ctrl->num_mem_interface; k++) {
--			ip_type_ret = FIELD_GET(INTF_IP_TYPE_MASK, usr_resp.cmd_resp_data[k]);
--			instance_id_ret = FIELD_GET(INTF_INSTANCE_ID_MASK,
--						    usr_resp.cmd_resp_data[k]);
-+		for (k = 0; k < num_mem_interface; k++) {
-+			ip_type_ret = FIELD_GET(INTF_IP_TYPE_MASK, mem_intf_info[k]);
-+			instance_id_ret = FIELD_GET(INTF_INSTANCE_ID_MASK, mem_intf_info[k]);
+-	/* Full memory initialization BIST performed on all memory interface(s) */
++	/* Memory initialization BIST performed on all memory interface(s) */
+ 	for (i = 0; i < io96b_ctrl->num_instance; i++) {
+ 		for (j = 0; j < io96b_ctrl->io96b[i].mb_ctrl.num_mem_interface; j++) {
+-			bist_start = false;
+-
+-			/* Start memory initialization BIST on full memory address */
+-			io96b_mb_req(io96b_ctrl->io96b[i].io96b_csr_addr,
+-				     io96b_ctrl->io96b[i].mb_ctrl.ip_type[j],
+-				     io96b_ctrl->io96b[i].mb_ctrl.ip_instance_id[j],
+-				     CMD_TRIG_CONTROLLER_OP, BIST_MEM_INIT_START,
+-				     0x40, 0, 0, 0, 0, 0, 0, &usr_resp);
+-			mem_init_status_intf = IOSSM_CMD_RESPONSE_DATA_SHORT(usr_resp.cmd_resp_status);
+-
+-			bist_start = mem_init_status_intf & BIT(0);
+-
+-			if (!bist_start) {
+-				pr_err("%s: Failed to initialized memory on IO96B_%d\n",
+-				       __func__, i);
+-				pr_err("%s: BIST_MEM_INIT_START Error code 0x%x\n",
+-				       __func__, (mem_init_status_intf & GENMASK(2, 1)) > 0x1);
+-				return -ENOEXEC;
+-			}
+-
+-			ret = io96b_poll_bist_mem_init_status(io96b_ctrl, i, j);
+-			if (ret)
++			ret = bist_mem_init_by_addr(io96b_ctrl, i, j, 0x0,
++						    io96b_ctrl->io96b[i].mb_ctrl.memory_size[j]);
++			if (ret) {
++				pr_err("%s: Memory init failed at Instance %d, Interface %d\n",
++				       __func__, i, j);
+ 				return ret;
++			}
+ 		}
  
- 			if (ip_type_ret) {
-+				mb_ctrl->num_mem_interface++;
- 				mb_ctrl->ip_type[j] = ip_type_ret;
- 				mb_ctrl->ip_instance_id[j] = instance_id_ret;
- 				pr_debug("%s: IO96B %d mem_interface %d: ip_type_ret: 0x%x\n",
+ 		pr_debug("%s: Memory initialized successfully on IO96B_%d\n", __func__, i);
+ 	}
++
+ 	return 0;
+ }
 
 -- 
 2.47.3
