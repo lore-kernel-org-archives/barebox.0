@@ -1,48 +1,48 @@
-Delivery-date: Thu, 09 Apr 2026 15:55:37 +0200
+Delivery-date: Thu, 09 Apr 2026 15:55:42 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wApr6-00AJRd-38
+	id 1wAprC-00AJS4-0f
 	for lore@lore.pengutronix.de;
-	Thu, 09 Apr 2026 15:55:36 +0200
+	Thu, 09 Apr 2026 15:55:42 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wApr5-0006sH-4s
-	for lore@pengutronix.de; Thu, 09 Apr 2026 15:55:36 +0200
+	id 1wAprB-0006yD-A6
+	for lore@pengutronix.de; Thu, 09 Apr 2026 15:55:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fR1MkHw/P1F7KqFmEauYGldBmIdyWc8GXcDU0qn2OLA=; b=TCGIiCrcLnuZGVzD4IGsY3w7Rl
-	rLi+bIyfHxwla4ADFzlRl3t2i1EMMMxtV0SExqHTRjZfG5YO3Ia4ZCMrbUDWtfPePFQAcPP5qCBFP
-	61ChQPEXmLyI5C5dvzy3NDGvfXgoKdraEY13LlsuLfEhqhP+6A4Z0xp7up7txwfiO5h9ci18jqn0Y
-	tvdqqMB0/gFevpL510p4baW9fP6s/+n/P4gPav1FvJp+JMYWBQr7NM9/3ISJ7PplGDmfcin8pVw93
-	vM63s9fBeOxwvCvI4Ts2srZ6fZ2r6jxK+Aqi7kZRmkWv0I/U8Uxld8xb7jcyntygXI/560WlEUjmz
-	OFLV58NQ==;
+	bh=fQr8CO4X9Pof0hYt8nbKn8Mcclc4WpPEf3LxltDX4D4=; b=PnG15qW2nRUqxWyxm1+AGEztRv
+	/AGeFDlH8UBJfWP+MUqS2y/dzlN3Kbw6cQKFZFCixoyj9pfVaGk6Ix6PBzwvzygoQksAh74iAdLKQ
+	0oOzMjuvCilXlFUBNgusyoCEw9/M90WlKC1f782dd8tlRVoTvFMBQ6onLJB0YJCmWCo+y597h9Ywo
+	vRHYQJcAYvZY6LnU5cgsEgmFARedwGWNLyT9OLCYfyygiDnsTEkvwjMCOM0XHdASF3etUzMK0IqI0
+	fzRuX3bZobFqa5Cxq8sAbOl9LSL2nveofl/Y5ZH0TuTq00AQJHEn8008BJb/PBX3v7KT31B105yj9
+	jbm1ko5Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wAppX-0000000Ab86-1vlt;
-	Thu, 09 Apr 2026 13:53:59 +0000
+	id 1wAppx-0000000AbSc-3MZu;
+	Thu, 09 Apr 2026 13:54:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wApoY-0000000AaXA-09t4
+	id 1wApoX-0000000AaX9-43Mc
 	for barebox@lists.infradead.org;
-	Thu, 09 Apr 2026 13:53:22 +0000
+	Thu, 09 Apr 2026 13:53:28 +0000
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.tretter@pengutronix.de>)
-	id 1wApoL-0005uF-J6; Thu, 09 Apr 2026 15:52:45 +0200
+	id 1wApoL-0005uF-I1; Thu, 09 Apr 2026 15:52:45 +0200
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Thu, 09 Apr 2026 15:52:50 +0200
+Date: Thu, 09 Apr 2026 15:52:49 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260409-socfpga-iossm-v1-v2-10-09effab91bc1@pengutronix.de>
+Message-Id: <20260409-socfpga-iossm-v1-v2-9-09effab91bc1@pengutronix.de>
 References: <20260409-socfpga-iossm-v1-v2-0-09effab91bc1@pengutronix.de>
 In-Reply-To: <20260409-socfpga-iossm-v1-v2-0-09effab91bc1@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -51,8 +51,8 @@ Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>,
  Michael Tretter <m.tretter@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260409_065258_446078_B6A3A12F 
-X-CRM114-Status: GOOD (  14.20  )
+X-CRM114-CacheID: sfid-20260409_065258_514497_9C5C3428 
+X-CRM114-Status: GOOD (  14.94  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,15 +74,20 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 10/10] arm: socfpga: iossm: add support for mailbox v1
+Subject: [PATCH v2 09/10] arm: socfpga: iossm: add memory initialization
+ with inline ecc
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The iossm mailbox v1 exposes the interface configuration as registers
-instead of mailbox messages.
+The memory interfaces may support for inline ECC and report their
+configuration via the ECC status. The software is responsible for
+initializing the memory accordingly.
 
-Use either mailbox messages or register accessed depending on the
-detected iossm mailbox version.
+Check the memory interface configuration and initialize the memory if
+necessary.
+
+Inline ECC uses 1/8 of the available memory for error correction. Thus,
+only 7/8 of the reported memory size is actually available.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
@@ -90,202 +95,98 @@ Changes in v2:
 
 - none
 ---
- arch/arm/mach-socfpga/iossm_mailbox.c | 117 +++++++++++++++++++++++++---------
- 1 file changed, 88 insertions(+), 29 deletions(-)
+ arch/arm/mach-socfpga/agilex5-sdram.c |  2 ++
+ arch/arm/mach-socfpga/iossm_mailbox.c | 31 +++++++++++++++++++++++++++----
+ arch/arm/mach-socfpga/iossm_mailbox.h |  1 +
+ 3 files changed, 30 insertions(+), 4 deletions(-)
 
+diff --git a/arch/arm/mach-socfpga/agilex5-sdram.c b/arch/arm/mach-socfpga/agilex5-sdram.c
+index 5fb59d413e8f..4e7994985d26 100644
+--- a/arch/arm/mach-socfpga/agilex5-sdram.c
++++ b/arch/arm/mach-socfpga/agilex5-sdram.c
+@@ -323,6 +323,8 @@ int agilex5_ddr_init_full(void)
+ 	}
+ 
+ 	hw_size = io96b_ctrl.overall_size;
++	if (io96b_ctrl.inline_ecc)
++		hw_size -= hw_size / 8;
+ 	pr_debug("%s: %lld MiB\n", io96b_ctrl.ddr_type, hw_size / SZ_1M);
+ 
+ 	sdram_set_firewall(hw_size);
 diff --git a/arch/arm/mach-socfpga/iossm_mailbox.c b/arch/arm/mach-socfpga/iossm_mailbox.c
-index 4c6a84feccc5..9fd50fe042de 100644
+index 6be1119724d6..4c6a84feccc5 100644
 --- a/arch/arm/mach-socfpga/iossm_mailbox.c
 +++ b/arch/arm/mach-socfpga/iossm_mailbox.c
-@@ -30,6 +30,18 @@
- 
- #define IOSSM_MAILBOX_HEADER_OFFSET			0x0
- #define IOSSM_MAILBOX_SPEC_VERSION_MASK			GENMASK(2, 0)
-+#define IOSSM_MEM_INTF_INFO_0_OFFSET			0x200
-+#define IOSSM_MEM_TECHNOLOGY_INTF0_OFFSET               0x210
-+#define IOSSM_MEM_WIDTH_INFO_INTF0_OFFSET               0x230
-+#define IOSSM_MEM_TOTAL_CAPACITY_INTF0_OFFSET           0x234
-+#define IOSSM_MEM_INTF_INFO_1_OFFSET			0x280
-+#define IOSSM_MEM_TECHNOLOGY_INTF1_OFFSET               0x290
-+#define IOSSM_MEM_TOTAL_CAPACITY_INTF1_OFFSET           0x2B4
-+#define IOSSM_MEM_WIDTH_INFO_INTF1_OFFSET               0x2B0
-+#define IOSSM_ECC_ENABLE_INTF0_OFFSET			0x240
-+#define IOSSM_ECC_ENABLE_INTF1_OFFSET			0x2C0
-+#define IOSSM_MEM_INIT_STATUS_INTF0_OFFSET		0x260
-+#define IOSSM_MEM_INIT_STATUS_INTF1_OFFSET		0x2E0
- 
- /* supported DDR type list */
- static const char *ddr_type_list[7] = {
-@@ -194,6 +206,7 @@ void io96b_mb_init(struct io96b_info *io96b_ctrl)
- 	version = io96b_mb_version(io96b_ctrl);
- 	switch (version) {
- 	case 0:
-+	case 1:
- 		pr_debug("IOSSM: mailbox version %d\n", version);
- 		break;
- 	default:
-@@ -210,12 +223,20 @@ void io96b_mb_init(struct io96b_info *io96b_ctrl)
- 		mb_ctrl = &io96b_ctrl->io96b[i].mb_ctrl;
- 		pr_debug("%s: get memory interface IO96B %d\n", __func__, i);
- 		/* Get memory interface IP type and instance ID (IP identifier) */
--		io96b_mb_req_no_param(io96b_ctrl->io96b[i].io96b_csr_addr, 0, 0,
--				      CMD_GET_SYS_INFO, GET_MEM_INTF_INFO, &usr_resp);
--		num_mem_interface =
--			IOSSM_CMD_RESPONSE_DATA_SHORT(usr_resp.cmd_resp_status) & 0x3;
--		for (j = 0; j < num_mem_interface; j++)
--			mem_intf_info[j] = usr_resp.cmd_resp_data[j];
-+		if (io96b_ctrl->version == 1) {
-+			mem_intf_info[0] = readl(io96b_ctrl->io96b[i].io96b_csr_addr +
-+						 IOSSM_MEM_INTF_INFO_0_OFFSET);
-+			mem_intf_info[1] = readl(io96b_ctrl->io96b[i].io96b_csr_addr +
-+						 IOSSM_MEM_INTF_INFO_1_OFFSET);
-+			num_mem_interface = 2;
-+		} else {
-+			io96b_mb_req_no_param(io96b_ctrl->io96b[i].io96b_csr_addr, 0, 0,
-+					      CMD_GET_SYS_INFO, GET_MEM_INTF_INFO, &usr_resp);
-+			num_mem_interface =
-+				IOSSM_CMD_RESPONSE_DATA_SHORT(usr_resp.cmd_resp_status) & 0x3;
-+			for (j = 0; j < num_mem_interface; j++)
-+				mem_intf_info[j] = usr_resp.cmd_resp_data[j];
-+		}
- 
- 		/* Retrieve memory interface IP type and instance ID (IP identifier) */
- 		j = 0;
-@@ -373,6 +394,11 @@ int io96b_get_mem_technology(struct io96b_info *io96b_ctrl)
- 	u32 mem_technology_intf;
- 	u8 ddr_type_ret;
- 
-+	u32 mem_technology_intf_offset[] = {
-+		IOSSM_MEM_TECHNOLOGY_INTF0_OFFSET,
-+		IOSSM_MEM_TECHNOLOGY_INTF1_OFFSET
-+	};
-+
- 	/* Initialize ddr type */
- 	io96b_ctrl->ddr_type = ddr_type_list[6];
- 
-@@ -380,12 +406,17 @@ int io96b_get_mem_technology(struct io96b_info *io96b_ctrl)
- 	for (i = 0; i < io96b_ctrl->num_instance; i++) {
- 		mb_ctrl = &io96b_ctrl->io96b[i].mb_ctrl;
- 		for (j = 0; j < mb_ctrl->num_mem_interface; j++) {
--			io96b_mb_req_no_param(io96b_ctrl->io96b[i].io96b_csr_addr,
--					      mb_ctrl->ip_type[j],
--					      mb_ctrl->ip_instance_id[j],
--					      CMD_GET_MEM_INFO, GET_MEM_TECHNOLOGY, &usr_resp);
-+			if (io96b_ctrl->version == 1) {
-+				mem_technology_intf = readl(io96b_ctrl->io96b[i].io96b_csr_addr +
-+							    mem_technology_intf_offset[j]);
-+			} else {
-+				io96b_mb_req_no_param(io96b_ctrl->io96b[i].io96b_csr_addr,
-+						      mb_ctrl->ip_type[j],
-+						      mb_ctrl->ip_instance_id[j],
-+						      CMD_GET_MEM_INFO, GET_MEM_TECHNOLOGY, &usr_resp);
- 
--			mem_technology_intf = IOSSM_CMD_RESPONSE_DATA_SHORT(usr_resp.cmd_resp_status);
-+				mem_technology_intf = IOSSM_CMD_RESPONSE_DATA_SHORT(usr_resp.cmd_resp_status);
-+			}
- 
- 			ddr_type_ret = mem_technology_intf & GENMASK(2, 0);
- 
-@@ -411,17 +442,27 @@ int io96b_get_mem_width_info(struct io96b_info *io96b_ctrl)
- 	u32 mem_width_info;
- 	phys_size_t total_memory_size = 0;
- 
-+	u32 mem_total_capacity_intf_offset[] = {
-+		IOSSM_MEM_TOTAL_CAPACITY_INTF0_OFFSET,
-+		IOSSM_MEM_TOTAL_CAPACITY_INTF1_OFFSET
-+	};
-+
- 	/* Get all memory interface(s) total memory size on all instance(s) */
- 	for (i = 0; i < io96b_ctrl->num_instance; i++) {
- 		mb_ctrl = &io96b_ctrl->io96b[i].mb_ctrl;
- 		memory_size = 0;
- 
- 		for (j = 0; j < mb_ctrl->num_mem_interface; j++) {
--			io96b_mb_req_no_param(io96b_ctrl->io96b[i].io96b_csr_addr,
--					      mb_ctrl->ip_type[j],
--					      mb_ctrl->ip_instance_id[j],
--					      CMD_GET_MEM_INFO, GET_MEM_WIDTH_INFO, &usr_resp);
--			mem_width_info = usr_resp.cmd_resp_data[1] & GENMASK(7, 0);
-+			if (io96b_ctrl->version == 1) {
-+				mem_width_info = readl(io96b_ctrl->io96b[i].io96b_csr_addr +
-+						       mem_total_capacity_intf_offset[j]);
-+			} else {
-+				io96b_mb_req_no_param(io96b_ctrl->io96b[i].io96b_csr_addr,
-+						      mb_ctrl->ip_type[j],
-+						      mb_ctrl->ip_instance_id[j],
-+						      CMD_GET_MEM_INFO, GET_MEM_WIDTH_INFO, &usr_resp);
-+				mem_width_info = usr_resp.cmd_resp_data[1] & GENMASK(7, 0);
-+			}
- 
- 			mb_ctrl->memory_size[j] = mem_width_info * (SZ_1G / SZ_8);
- 
-@@ -458,6 +499,11 @@ int io96b_ecc_enable_status(struct io96b_info *io96b_ctrl)
+@@ -456,6 +456,7 @@ int io96b_ecc_enable_status(struct io96b_info *io96b_ctrl)
+ 	u32 ecc_enable_intf;
+ 	bool ecc_stat_set = false;
  	bool ecc_stat;
- 	bool inline_ecc = false;
++	bool inline_ecc = false;
  
-+	u32 ecc_enable_intf_offset[] = {
-+		IOSSM_ECC_ENABLE_INTF0_OFFSET,
-+		IOSSM_ECC_ENABLE_INTF1_OFFSET
-+	};
-+
  	/* Initialize ECC status */
  	io96b_ctrl->ecc_status = false;
+@@ -472,13 +473,19 @@ int io96b_ecc_enable_status(struct io96b_info *io96b_ctrl)
+ 			ecc_enable_intf = IOSSM_CMD_RESPONSE_DATA_SHORT(usr_resp.cmd_resp_status)
  
-@@ -465,13 +511,17 @@ int io96b_ecc_enable_status(struct io96b_info *io96b_ctrl)
- 	for (i = 0; i < io96b_ctrl->num_instance; i++) {
- 		mb_ctrl = &io96b_ctrl->io96b[i].mb_ctrl;
- 		for (j = 0; j < mb_ctrl->num_mem_interface; j++) {
--			io96b_mb_req_no_param(io96b_ctrl->io96b[i].io96b_csr_addr,
--					      mb_ctrl->ip_type[j],
--					      mb_ctrl->ip_instance_id[j],
--					      CMD_TRIG_CONTROLLER_OP, ECC_ENABLE_STATUS,
--					      &usr_resp);
--			ecc_enable_intf = IOSSM_CMD_RESPONSE_DATA_SHORT(usr_resp.cmd_resp_status)
--
-+			if (io96b_ctrl->version == 1) {
-+				ecc_enable_intf = readl(io96b_ctrl->io96b[i].io96b_csr_addr +
-+							ecc_enable_intf_offset[j]);
-+			} else {
-+				io96b_mb_req_no_param(io96b_ctrl->io96b[i].io96b_csr_addr,
-+						      mb_ctrl->ip_type[j],
-+						      mb_ctrl->ip_instance_id[j],
-+						      CMD_TRIG_CONTROLLER_OP, ECC_ENABLE_STATUS,
-+						      &usr_resp);
-+				ecc_enable_intf = IOSSM_CMD_RESPONSE_DATA_SHORT(usr_resp.cmd_resp_status);
-+			}
  			ecc_stat = (ecc_enable_intf & GENMASK(1, 0)) == 0 ? false : true;
- 			inline_ecc = FIELD_GET(BIT(8), ecc_enable_intf);
++			inline_ecc = FIELD_GET(BIT(8), ecc_enable_intf);
  
-@@ -509,14 +559,23 @@ static int io96b_poll_bist_mem_init_status(struct io96b_info *io96b_ctrl,
- 	struct io96b_mb_resp usr_resp;
- 	u32 mem_init_status;
- 
-+	u32 mem_init_status_offset[] = {
-+		IOSSM_MEM_INIT_STATUS_INTF0_OFFSET,
-+		IOSSM_MEM_INIT_STATUS_INTF1_OFFSET
-+	};
+ 			if (!ecc_stat_set) {
+ 				io96b_ctrl->ecc_status = ecc_stat;
 +
- 	/* Polling for the initiated memory initialization BIST status */
- 	while (!bist_success) {
--		io96b_mb_req_no_param(io96b_csr_addr,
--				      mb_ctrl->ip_type[interface],
--				      mb_ctrl->ip_instance_id[interface],
--				      CMD_TRIG_CONTROLLER_OP,
--				      BIST_MEM_INIT_STATUS, &usr_resp);
--		mem_init_status = IOSSM_CMD_RESPONSE_DATA_SHORT(usr_resp.cmd_resp_status);
-+		if (io96b_ctrl->version == 1) {
-+			mem_init_status = readl(io96b_csr_addr + mem_init_status_offset[interface]);
-+		} else {
-+			io96b_mb_req_no_param(io96b_csr_addr,
-+					      mb_ctrl->ip_type[interface],
-+					      mb_ctrl->ip_instance_id[interface],
-+					      CMD_TRIG_CONTROLLER_OP,
-+					      BIST_MEM_INIT_STATUS, &usr_resp);
-+			mem_init_status = IOSSM_CMD_RESPONSE_DATA_SHORT(usr_resp.cmd_resp_status);
-+		}
++				if (io96b_ctrl->ecc_status)
++					io96b_ctrl->inline_ecc = inline_ecc;
++
+ 				ecc_stat_set = true;
+ 			}
  
- 		bist_success = FIELD_GET(BIT(0), mem_init_status);
- 		bist_error = FIELD_GET(GENMASK(2, 1), mem_init_status);
+-			if (ecc_stat != io96b_ctrl->ecc_status) {
++			if (ecc_stat != io96b_ctrl->ecc_status ||
++			    (io96b_ctrl->ecc_status && inline_ecc != io96b_ctrl->inline_ecc)) {
+ 				pr_err("%s: Mismatch DDR ECC status on IO96B_%d\n",
+ 				       __func__, i);
+ 				return -ENOEXEC;
+@@ -539,9 +546,25 @@ static int bist_mem_init_by_addr(struct io96b_info *io96b_ctrl,
+ 	int ret = 0;
+ 	u32 mem_exp;
+ 
+-	pr_debug("%s: Start memory initialization BIST on full memory address",
+-		 __func__);
+-	mem_exp = 0x40;
++	if (io96b_ctrl->inline_ecc) {
++		phys_size_t chunk_size;
++
++		/* Check if size is a power of 2 */
++		if (size == 0 || (size & (size - 1)) != 0)
++			return -EINVAL;
++
++		mem_exp = 0;
++		chunk_size = size;
++		while (chunk_size >>= 1)
++			mem_exp++;
++
++		pr_debug("%s: Initializing memory: Addr=0x%llx, Size=2^%u\n",
++			 __func__, base_addr, mem_exp);
++	} else {
++		pr_debug("%s: Start memory initialization BIST on full memory address",
++			 __func__);
++		mem_exp = 0x40;
++	}
+ 
+ 	ret = io96b_mb_req(io96b_csr_addr,
+ 			   mb_ctrl->ip_type[interface],
+diff --git a/arch/arm/mach-socfpga/iossm_mailbox.h b/arch/arm/mach-socfpga/iossm_mailbox.h
+index 0c15c92bb867..febe51591ca0 100644
+--- a/arch/arm/mach-socfpga/iossm_mailbox.h
++++ b/arch/arm/mach-socfpga/iossm_mailbox.h
+@@ -127,6 +127,7 @@ struct io96b_info {
+ 	bool			 overall_cal_status;
+ 	const char		*ddr_type;
+ 	bool			 ecc_status;
++	bool			 inline_ecc;
+ 	phys_size_t		 overall_size;
+ 	struct io96b_instance	 io96b[MAX_IO96B_SUPPORTED];
+ 	bool			 ckgen_lock;
 
 -- 
 2.47.3
