@@ -1,59 +1,59 @@
-Delivery-date: Fri, 10 Apr 2026 10:14:19 +0200
+Delivery-date: Fri, 10 Apr 2026 10:19:29 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wB70N-00Aa9J-02
+	id 1wB75N-00AaDC-1B
 	for lore@lore.pengutronix.de;
-	Fri, 10 Apr 2026 10:14:19 +0200
+	Fri, 10 Apr 2026 10:19:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wB70M-000703-BE
-	for lore@pengutronix.de; Fri, 10 Apr 2026 10:14:18 +0200
+	id 1wB75M-00083V-Nd
+	for lore@pengutronix.de; Fri, 10 Apr 2026 10:19:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kB2+EA3vgvUV02M7IRQSaSCrLizL/XJJ5atBFqED82U=; b=iA2tTsBFadflNd4RPlsv5S1qbz
-	P9ZdzTWOKdceNbZ8HaaSyDGgr/lX+KGc86mcB6IQGKRPjAFpg7dK8fUAmgyDbT1ZuEaT5pyhY8IFd
-	xVbGdWMhwyozu5MzgFMUGejNBWonOBMGxt5FWKKvCJet5O7qyj3zBfRVZ+x5XuLWMqIpWFIKAqNQE
-	k4fDSEjYyMHk6jDULadiZYz3dc6Rk3ttFiKMCFum+0wB74zQQTg1Awa1u3jbnn3ch6whCaBhZgwNJ
-	3K1qKFO/BupXjCjje2yvNUJJFQVQlka6ALiHcMJ5H5Ij3vWDBIw8BsyjxYsZNH0Tvyj27N70LE8H6
-	iihag+6w==;
+	bh=YiM0xT8YmtGpUtbJeobavOqviY7jXA7nOVLGXjom/6M=; b=kURgNfLkoZZEbSSYPpnSLCMtil
+	2x+HOXn8tWassrXu/46TD9S+zryS8xYiZt7+fux+bBfVtcApQyWjHqX8rvkouLSZeDl8+JL4UXM3O
+	RcjAoi8aj54UU9JkXArGMSCoEq04SwS03jxA0cfWOneYqbo5BaHXdYzo1rkUCiQ/pFDRy8DyjS4Lo
+	eN4UlIkne6wCivOVoLRor9p63vJwx1RCnOQnUEBlmsYdDSQkUF/cH3nos/0mUTEofJpUy7jcHtQ6E
+	PVkQl4L3X5bezxvaAhfLhUOUnaFcjr+VMWln/kcOcadDzauT0muFTXnRaXSdyeEhbNTj+eqIf0ZyM
+	yk3bqadg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wB6zq-0000000Bowu-0fvx;
-	Fri, 10 Apr 2026 08:13:46 +0000
+	id 1wB74x-0000000BpeI-32p4;
+	Fri, 10 Apr 2026 08:19:03 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wB6zn-0000000BowA-3xzQ
+	id 1wB74v-0000000Bpdv-0EeB
 	for barebox@lists.infradead.org;
-	Fri, 10 Apr 2026 08:13:45 +0000
+	Fri, 10 Apr 2026 08:19:02 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wB6zl-0006tF-Ls; Fri, 10 Apr 2026 10:13:41 +0200
-Message-ID: <39a08f69-3461-48da-a890-0e3b879bb40a@pengutronix.de>
-Date: Fri, 10 Apr 2026 10:13:41 +0200
+	id 1wB74t-0007ps-41; Fri, 10 Apr 2026 10:18:59 +0200
+Message-ID: <6a85db06-090f-4be3-b184-1f558a4c4f4a@pengutronix.de>
+Date: Fri, 10 Apr 2026 10:18:58 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Michael Tretter <m.tretter@pengutronix.de>,
  Sascha Hauer <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 References: <20260409-socfpga-iossm-v1-v2-0-09effab91bc1@pengutronix.de>
- <20260409-socfpga-iossm-v1-v2-4-09effab91bc1@pengutronix.de>
+ <20260409-socfpga-iossm-v1-v2-2-09effab91bc1@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20260409-socfpga-iossm-v1-v2-4-09effab91bc1@pengutronix.de>
+In-Reply-To: <20260409-socfpga-iossm-v1-v2-2-09effab91bc1@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260410_011343_993761_63F4F416 
-X-CRM114-Status: GOOD (  23.90  )
+X-CRM114-CacheID: sfid-20260410_011901_100396_06E70A66 
+X-CRM114-Status: GOOD (  26.69  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,115 +74,113 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 04/10] arm: socfpga: iossm: store size in bytes
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v2 02/10] arm: socfpga: iossm: add version check
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 Hello,
 
 On 4/9/26 3:52 PM, Michael Tretter wrote:
-> The mem_width_info is the memory size in gigabits. Convert it to bytes
-> before storing it for each bank to have a more convenient format and
-> simplify the conversion when reading the value.
+> There is a version 1 of the IOSSM, which is used if the board
+> configuration was created with Quartus 25.3.0 or later.
+> 
+> Warn the user if barebox didn't detect the supported version 0.
 > 
 > Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 > ---
 > Changes in v2:
 > 
-> - Change memory_size in io96b_mb_ctrl to phys_size_t to prevent overflow
-
-Thanks for addressing the concern. I looked it over and there's still a
-chance for overflow.
-
+> - none
+> ---
+>  arch/arm/mach-socfpga/iossm_mailbox.c | 27 +++++++++++++++++++++++++++
+>  arch/arm/mach-socfpga/iossm_mailbox.h |  2 ++
+>  2 files changed, 29 insertions(+)
+> 
 > diff --git a/arch/arm/mach-socfpga/iossm_mailbox.c b/arch/arm/mach-socfpga/iossm_mailbox.c
-> index 9299fee71e0b..042ea4a99e5c 100644
+> index d89117da4fd4..d14399f305de 100644
 > --- a/arch/arm/mach-socfpga/iossm_mailbox.c
 > +++ b/arch/arm/mach-socfpga/iossm_mailbox.c
-> @@ -9,6 +9,7 @@
->  #include <common.h>
->  #include <io.h>
->  #include <linux/bitfield.h>
-> +#include <linux/sizes.h>
->  #include "iossm_mailbox.h"
->  #include <mach/socfpga/generic.h>
->  #include <mach/socfpga/soc64-regs.h>
-> @@ -404,21 +405,25 @@ int io96b_get_mem_width_info(struct io96b_info *io96b_ctrl)
->  	struct io96b_mb_resp usr_resp;
->  	struct io96b_mb_ctrl *mb_ctrl;
->  	int i, j;
-> -	u16 memory_size;
-> -	u16 total_memory_size = 0;
-> +	phys_size_t memory_size;
-> +	u32 mem_width_info;
-> +	phys_size_t total_memory_size = 0;
+> @@ -27,6 +27,9 @@
+>  #define INTF_IP_TYPE_MASK	GENMASK(31, 29)
+>  #define INTF_INSTANCE_ID_MASK	GENMASK(28, 24)
 >  
->  	/* Get all memory interface(s) total memory size on all instance(s) */
->  	for (i = 0; i < io96b_ctrl->num_instance; i++) {
->  		mb_ctrl = &io96b_ctrl->io96b[i].mb_ctrl;
->  		memory_size = 0;
+> +#define IOSSM_MAILBOX_HEADER_OFFSET			0x0
+> +#define IOSSM_MAILBOX_SPEC_VERSION_MASK			GENMASK(2, 0)
 > +
->  		for (j = 0; j < mb_ctrl->num_mem_interface; j++) {
->  			io96b_mb_req_no_param(io96b_ctrl->io96b[i].io96b_csr_addr,
->  					      mb_ctrl->ip_type[j],
->  					      mb_ctrl->ip_instance_id[j],
->  					      CMD_GET_MEM_INFO, GET_MEM_WIDTH_INFO, &usr_resp);
-> +			mem_width_info = usr_resp.cmd_resp_data[1] & GENMASK(7, 0);
-
-I assume this is the RAM memory width in bytes, e.g. 2 or 4 bytes, but
-the mask  allows it to be up to 255.
-
+>  /* supported DDR type list */
+>  static const char *ddr_type_list[7] = {
+>  		"DDR4", "DDR5", "DDR5_RDIMM", "LPDDR4", "LPDDR5", "QDRIV", "UNKNOWN"
+> @@ -163,6 +166,18 @@ int io96b_mb_req(phys_addr_t io96b_csr_addr, u32 ip_type, u32 instance_id,
+>  	return 0;
+>  }
 >  
-> -			memory_size = memory_size +
-> -				(usr_resp.cmd_resp_data[1] & GENMASK(7, 0));
-> +			mb_ctrl->memory_size[j] = mem_width_info * (SZ_1G / SZ_8);
+> +static int io96b_mb_version(struct io96b_info *io96b_ctrl)
+> +{
+> +	phys_addr_t io96b_csr_addr = io96b_ctrl->io96b[0].io96b_csr_addr;
+> +	u32 mailbox_header;
+> +	int version;
+> +
+> +	mailbox_header = readl(io96b_csr_addr + IOSSM_MAILBOX_HEADER_OFFSET);
 
-SZ_4G / (SZ_1G / 8) = 32
+Nitpick: readl() is supposed to take void __iomem * (virtual addresses),
+not physical addresses, so a phys_to_virt is missing here.
 
-So the maximum value permitted in mem_width_info without overflowing is
-31, but the code accepts up to 255. As all types on the left hand side
-are 32-bit only.
+They currently expands to the same value (with different types) though
+on ARM.
 
-Worth a check or adaptation of the mask?
+You don't have to resend just for this though.
 
-Cheers,
+Thanks,
 Ahmad
 
+> +	version = FIELD_GET(IOSSM_MAILBOX_SPEC_VERSION_MASK, mailbox_header);
 > +
-> +			memory_size += mb_ctrl->memory_size[j];
->  		}
+> +	return version;
+> +}
+> +
+>  /*
+>   * Initial function to be called to set memory interface IP type and instance ID
+>   * IP type and instance ID need to be determined before sending mailbox command
+> @@ -172,6 +187,18 @@ void io96b_mb_init(struct io96b_info *io96b_ctrl)
+>  	struct io96b_mb_resp usr_resp;
+>  	u8 ip_type_ret, instance_id_ret;
+>  	int i, j, k;
+> +	int version;
+> +
+> +	version = io96b_mb_version(io96b_ctrl);
+> +	switch (version) {
+> +	case 0:
+> +		pr_debug("IOSSM: mailbox version %d\n", version);
+> +		break;
+> +	default:
+> +		pr_warn("IOSSM: unsupported mailbox version %d\n", version);
+> +		break;
+> +	}
+> +	io96b_ctrl->version = version;
 >  
->  		if (!memory_size) {
+>  	pr_debug("%s: num_instance %d\n", __func__, io96b_ctrl->num_instance);
+>  	for (i = 0; i < io96b_ctrl->num_instance; i++) {
 > diff --git a/arch/arm/mach-socfpga/iossm_mailbox.h b/arch/arm/mach-socfpga/iossm_mailbox.h
-> index bd66621d5f70..0c15c92bb867 100644
+> index 29b3f069072d..bd66621d5f70 100644
 > --- a/arch/arm/mach-socfpga/iossm_mailbox.h
 > +++ b/arch/arm/mach-socfpga/iossm_mailbox.h
-> @@ -79,6 +79,7 @@ struct io96b_mb_ctrl {
->  	u32 num_mem_interface;
->  	u32 ip_type[2];
->  	u32 ip_instance_id[2];
-> +	phys_size_t memory_size[2];
->  };
->  
+> @@ -110,6 +110,7 @@ struct io96b_instance {
 >  /*
-> @@ -101,7 +102,7 @@ struct io96b_mb_resp {
->   * @mb_ctrl:		IOSSM mailbox required information
+>   * Overall IO96B instance(s) information
+>   *
+> + * @version:		Version of the IO96B
+>   * @num_instance:	Number of instance(s) assigned to HPS
+>   * @overall_cal_status: Overall calibration status for all IO96B instance(s)
+>   * @ddr_type:		DDR memory type
+> @@ -120,6 +121,7 @@ struct io96b_instance {
+>   * @num_port:		Number of IO96B port.
 >   */
->  struct io96b_instance {
-> -	u16 size;
-> +	phys_size_t size;
->  	phys_addr_t io96b_csr_addr;
->  	bool cal_status;
->  	struct io96b_mb_ctrl mb_ctrl;
-> @@ -126,7 +127,7 @@ struct io96b_info {
+>  struct io96b_info {
+> +	int			 version;
+>  	u8			 num_instance;
 >  	bool			 overall_cal_status;
 >  	const char		*ddr_type;
->  	bool			 ecc_status;
-> -	u16			 overall_size;
-> +	phys_size_t		 overall_size;
->  	struct io96b_instance	 io96b[MAX_IO96B_SUPPORTED];
->  	bool			 ckgen_lock;
->  	u8			 num_port;
 > 
 
 -- 
