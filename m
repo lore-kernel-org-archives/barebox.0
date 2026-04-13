@@ -1,64 +1,83 @@
-Delivery-date: Mon, 13 Apr 2026 13:23:27 +0200
+Delivery-date: Mon, 13 Apr 2026 13:25:22 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCFO2-00BhSP-33
+	id 1wCFPu-00BhU6-0j
 	for lore@lore.pengutronix.de;
-	Mon, 13 Apr 2026 13:23:27 +0200
+	Mon, 13 Apr 2026 13:25:22 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCFO2-0001ed-Ct
-	for lore@pengutronix.de; Mon, 13 Apr 2026 13:23:26 +0200
+	id 1wCFPt-0001wl-Mo
+	for lore@pengutronix.de; Mon, 13 Apr 2026 13:25:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=KWzwfh7sz+4cQb5flkoWBBmOq7rJvf5TqqgknjM+oyI=; b=doSV6UVj/ftvCEDIl75sAcgVKS
-	uMqR7mruJkAQiH0NwePGv8Te4/f47UKVUd/TSZT5U2rQT2M1WHeKfweq0Lg8ztnBxXVYPWHkrvs0M
-	hfOpC9znCzRrwtgD90RW+oyx9xybw/ZV97bbYW90GzrPp9jXSzAA1eiWQb0Rpl4obDpOTZ+tAeFr2
-	sTmqXl5JUr4QgHDwDWSWU6XzzDoaDErLaWb2eN0JSn9eS2/GmHjV3vEan4RsifOpFfcYglb0u0DAv
-	Uo5XnZTXPDssHBZUjcoTbG1cAvYA8pKEauUMGEqSxBzofyJWXQE0qVhHtSImGcHKlEcJm2QIqh9eT
-	mcrnEoWw==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=3PsDvlzjqtGRRrWk+lFTx7M/SBXFa6CQV9cLAcUtlaM=; b=y5qA2bxbUxO+HpuLipazFebxVI
+	Utf6N4+mWFl04JwbUp1iPD8GV0oQM2Ho+aXisGixHiPEpYkTBeXNsATGIpHlsTb9t90psTiZZ9xhE
+	UXxg9jN+Yj+BJHUco5dxq1QrCjYgaeIEmllAL1OYZ4zCSnyFUCBVlAjONbQKJOA26FlQsm3XtdMW1
+	rXGlaYmY7N0BDTeIU8kJN7Z8UGOnljNvAjjOiQtss21HxWp4kOwwm+N+mWhXwdm1eF3/kjKLArSYb
+	eDhXkj+J4PhVpNdX8zfSZqqlIBJ7bsXNf3LkEAsi5efUcLHPHz8ThIF263j/1M5douk2sVHzGjKk+
+	9n0YMTRQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCFNa-0000000FZKE-2wFp;
-	Mon, 13 Apr 2026 11:22:58 +0000
-Received: from smtp15.bhosted.nl ([2a02:9e0:8000::26])
+	id 1wCFPW-0000000FZV4-2SdU;
+	Mon, 13 Apr 2026 11:24:58 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCFNX-0000000FZJr-2Nxw
+	id 1wCFPV-0000000FZUx-0PGk
+	for barebox@bombadil.infradead.org;
+	Mon, 13 Apr 2026 11:24:57 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+	:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:From:Sender:
+	Reply-To:Cc:Content-ID:Content-Description;
+	bh=3PsDvlzjqtGRRrWk+lFTx7M/SBXFa6CQV9cLAcUtlaM=; b=QCqFZ95k/cV7kdnvNlviVkup/H
+	I+vb91iHPCA4U97Okko921wBWe2nTNTXuGBoSlLZoHHzlgSWhyCAjP1MZE491U/rj8wsFGc6iJcbe
+	bnUS0xQEJoIzztdwQM7lSKe50PtTSYjnmra6Hz04Z/hkPxjw+3HNYqeY8HIOkzDB9s2yBbEhZq56/
+	1PfuD4iHiplaKn9RLtIZ/M/QOq0j1Hkw3RYtRajDqzGr1e8C5UXArpOqoQaPea864EAxWM/jz9VeT
+	jhKhfbJS5PFfX34/EoC/uITfktdwmSkxjD9PQfL28ieezHQ7WIA7rSn7346Kb1cTfYxHxyV/A2oMu
+	2YFSnjgA==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wCFPR-0000000GguB-3mfl
 	for barebox@lists.infradead.org;
-	Mon, 13 Apr 2026 11:22:57 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=protonic.nl; s=202111;
-	h=content-transfer-encoding:content-type:in-reply-to:from:references:to:subject:
-	 mime-version:date:message-id:from;
-	bh=KWzwfh7sz+4cQb5flkoWBBmOq7rJvf5TqqgknjM+oyI=;
-	b=RJdZNIRmrt32q7VIE828J2+6MAiCVniW8cco0hM4pAr6WpAQlmedaa2k62NUY4A+r4UqZE2/kTtjE
-	 43EnFmY1KXBXx+MfOvKYMR0Z+1rjNJOfI2cCTsf+MjPzMcZaZ3xd32ftxfHALj8It9DpbpzyZaXCMB
-	 kWDSuZxgb5oYqV4KnSrGkZKP8U6k5UPSRAF6yL7uxR0md39848zHuWN/vIDZ5dVy7ga6/bGEr671vX
-	 NhtzjQb3pZilLS7cumGfNZBzMPJ/bA15ixGCXe4cML4uphMZwD3vTmTGBMWcXYUSewqsQjtCmAQ/Hc
-	 YvnG0woHZQCmfS/3J9DPFutjhiqL0PQ==
-X-MSG-ID: 188ec138-372b-11f1-bcdc-00505681446f
-Message-ID: <0378d500-7b92-4e41-b341-2601e874106e@protonic.nl>
-Date: Mon, 13 Apr 2026 13:22:45 +0200
+	Mon, 13 Apr 2026 11:24:55 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wCFPQ-0001qu-Fq; Mon, 13 Apr 2026 13:24:52 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wCFPQ-005A4l-0y;
+	Mon, 13 Apr 2026 13:24:52 +0200
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wCFPQ-0000000EqjY-10tL;
+	Mon, 13 Apr 2026 13:24:52 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
+In-Reply-To: <20260413102812.1481805-1-a.fatoum@barebox.org>
+References: <20260413102812.1481805-1-a.fatoum@barebox.org>
+Message-Id: <177607949223.3539265.3440992560595115923.b4-ty@pengutronix.de>
+Date: Mon, 13 Apr 2026 13:24:52 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-References: <20260408121912.1428585-1-yunus@protonic.nl>
- <56377c59-066d-4e49-a249-0216a9d6629d@pengutronix.de>
-Content-Language: en-US
-From: Yunus Taskopru <yunus@protonic.nl>
-In-Reply-To: <56377c59-066d-4e49-a249-0216a9d6629d@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260413_042256_025070_DC85F5A0 
-X-CRM114-Status: GOOD (  18.04  )
+X-CRM114-CacheID: sfid-20260413_122454_109420_F7B77608 
+X-CRM114-Status: UNSURE (   6.19  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,75 +95,33 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: dts: rk3588-rock-5b: use broken-cd for sdmmc
+Subject: Re: [PATCH] mem: add flush callback to sync caches for execution
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Ahmad,
 
-At the moment, I am experiencing some hardware issues with the SD card 
-slot, so I am unable to test whether the ROCK 5T workaround also works 
-on the ROCK 5B.
+On Mon, 13 Apr 2026 12:28:12 +0200, Ahmad Fatoum wrote:
+> barebox always calls sync_caches_for_execution() on boot, but it can be
+> useful to trigger it manually when testing:
+> 
+> - memcpy -s /dev/zero -d /dev/mem 0 $TFA_REGION_BASE $TFA_REGION_SIZE
+> - sync /dev/mem # flush D$ and invalidate I$
+> - smc -i        # check if PSCI monitor is still usable
+> 
+> [...]
 
-Op 08-04-2026 om 3:59 p.m. schreef Ahmad Fatoum:
-> Hello Yunus,
-> 
-> On 4/8/26 2:19 PM, Yunus Taskopru wrote:
->> Using the card-detect GPIO caused SD card access to fail on a tested
->> ROCK 5B.
->>
->> Replace the card-detect GPIO setup with broken-cd and drop the detect
->> pin from the sdmmc pinctrl configuration.
->>
->> Signed-off-by: Yunus Taskopru <yunus@protonic.nl>
-> 
-> This sound very similar to commit bd5518cd7e34 ("ARM: rockchip: fix SD
-> card startup for Radxa ROCK 5T").
-> 
-> Optimally, we would support whatever is needed for the hardware chip
-> select to work, so we can use the same pinmux as Linux.
-> 
-> Next best thing is that we don't have different workarounds for the same
-> issue.
-> 
-> Can you check if the workaround in above commit also works for you if
-> you add it into the ROCK 5b DT?
-> 
-> Thanks,
-> Ahmad
-> 
->> ---
->>   arch/arm/dts/rk3588-rock-5b.dts | 6 ++++++
->>   1 file changed, 6 insertions(+)
->>
->> diff --git a/arch/arm/dts/rk3588-rock-5b.dts b/arch/arm/dts/rk3588-rock-5b.dts
->> index aca675f57f..decece25d4 100644
->> --- a/arch/arm/dts/rk3588-rock-5b.dts
->> +++ b/arch/arm/dts/rk3588-rock-5b.dts
->> @@ -55,6 +55,12 @@ environment_sd: partition@408000 {
->>   	};
->>   };
->>   
->> +&sdmmc {
->> +	broken-cd;
->> +	/delete-property/ cd-gpios;
->> +	pinctrl-0 = <&sdmmc_bus4 &sdmmc_clk &sdmmc_cmd>;
->> +};
->> +
->>   &pcie3x4 {
->>   	/* Does not work in barebox (missing phy driver) */
->>   	status = "disabled";
-> 
+Applied, thanks!
 
+[1/1] mem: add flush callback to sync caches for execution
+      https://git.pengutronix.de/cgit/barebox/commit/?id=4f0cf6a66d84 (link may not be stable)
+
+Best regards,
 -- 
-Yunus Taskopru
-Protonic Holland.
-tel.: +31 (0) 229 212928
-De Factorij 36 / 1689 AL Zwaag
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
