@@ -1,65 +1,53 @@
-Delivery-date: Mon, 13 Apr 2026 21:52:02 +0200
+Delivery-date: Mon, 13 Apr 2026 22:04:15 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCNKE-00BpMD-2E
+	id 1wCNW3-00BpTV-2n
 	for lore@lore.pengutronix.de;
-	Mon, 13 Apr 2026 21:52:02 +0200
+	Mon, 13 Apr 2026 22:04:15 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCNKE-0007mY-5p
-	for lore@pengutronix.de; Mon, 13 Apr 2026 21:52:02 +0200
+	id 1wCNW3-0001Bb-BL
+	for lore@pengutronix.de; Mon, 13 Apr 2026 22:04:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=4YUgICDNO1+4cQmM0CBLp68OIgpUI42r1SUAjHvmpvY=; b=e1UPDQakCWsnAidJACdtkZkOGQ
-	rFnGGgb24nvFOQHhJ/OvebFtnWvL2X82UOLZczMQXbrutw+F4umFLXPXRbLj7m3buaxBoKT8skfcw
-	PJiKCDOYtCAE7Hvnyt5guDM6f9aQYKR3M5Mnw8SEtSJgxfiPh95HjLXPbpYCvrFcKjVkzFuvmUJY/
-	tkcCWN54P1VD4xyETIU1Bn59P/qlw2sOmo4Ss+Hys8nf4SyjqVmDECGh5vx6gQ8zTQbmj0vjVIE9J
-	17ou0p19R1KIsD/H/aqNddjh/O6rjbkM/VT2Q1m9WENLJLSO2Ro2FWzjOchcM7btvVFLROJKKeskG
-	VaKne4qA==;
+	bh=uQ775e+M8yD3sWnfYCnfOt6frmyud0QJbN66Kgd7Y0U=; b=nAHtMRzBxyGDJorwIr10HTOWyQ
+	e0gOAEeIJEjC/6qEMu0WnUJyYyYt40fewheFUKim8enh8D7Bdaz2LLpJCv8vLaW9XmkkBbQHXprEV
+	Me7IawyCNlATinAa50yms2pBjrERJBjA3YpiWHmTi5H4sac+5/Zwr2EWXdl6imCl2+N/9+/hOxKXT
+	UBw3xgWABCva3PX6GXv/iTAOUMLDl9KOf0XwJZNPr7Wvz+KFzz7Ijsm/2FtChl98CfXMHJ+w/6/XM
+	7kmO/u41Ww3wFrmv7y6eIFwD3I3hU+9zdgR03SXPSVm0hHtoZWSRjYV7h6ZUi3RJlY9nw5cKA1Gna
+	PNqeRGgg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCNJh-0000000GKQA-3Xc7;
-	Mon, 13 Apr 2026 19:51:29 +0000
+	id 1wCNVR-0000000GL9k-0G0A;
+	Mon, 13 Apr 2026 20:03:37 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCNJf-0000000GKPq-1xi1
+	id 1wCNVN-0000000GL8w-3Y7Y
 	for barebox@lists.infradead.org;
-	Mon, 13 Apr 2026 19:51:28 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wCNJd-0007i9-Th; Mon, 13 Apr 2026 21:51:25 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wCNJd-005Dur-2M;
-	Mon, 13 Apr 2026 21:51:25 +0200
-Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wCNJd-0000000CD7T-2aAd;
-	Mon, 13 Apr 2026 21:51:25 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Mon, 13 Apr 2026 21:51:24 +0200
-Message-ID: <20260413195124.2910057-1-s.hauer@pengutronix.de>
+	Mon, 13 Apr 2026 20:03:35 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@barebox.org>)
+	id 1wCNVM-00014b-26; Mon, 13 Apr 2026 22:03:32 +0200
+From: Ahmad Fatoum <a.fatoum@barebox.org>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Mon, 13 Apr 2026 22:03:26 +0200
+Message-ID: <20260413200330.1558038-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260413_125127_501295_C77B3301 
-X-CRM114-Status: UNSURE (   9.25  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260413_130333_882512_2F23636C 
+X-CRM114-Status: GOOD (  10.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,44 +65,40 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] usb: gadget: Use put_unaligned_le16() from asm/unaligned.h
+Subject: [PATCH] efi: gop: use screen_base directly instead of shadow buffer
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-usbstring.c has its own put_unaligned_le16() function instead of using
-the existing one from asm/unaligned.h. This was never a problem, but
-since 87d3ae4bee ("filetype: fix unaligned access for x86_linux_bootimage")
-the conflicting definition from asm/unaligned.h leaks in which results
-in a failed build. Drop the duplicate function and explicitly include
-the correct definition.
+The EFI GOP protocol operates on the hardware framebuffer and calls
+fb_damage() to notify the driver of updates. Using fb_get_screen_base()
+would return the shadow buffer when enabled, causing GOP writes to go
+into the shadow instead of the actual framebuffer.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Do as the simplefb fixup does and use the screen_base.
+
+Fixes: d040f49ad0b3 ("efi: loader: protocol: add graphical output protocol support")
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- drivers/usb/gadget/usbstring.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ efi/loader/protocols/gop.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/usbstring.c b/drivers/usb/gadget/usbstring.c
-index 58eb28ad1a..209a3d01d8 100644
---- a/drivers/usb/gadget/usbstring.c
-+++ b/drivers/usb/gadget/usbstring.c
-@@ -8,12 +8,7 @@
+diff --git a/efi/loader/protocols/gop.c b/efi/loader/protocols/gop.c
+index 2d87acc9bcc7..5bceb3f68f0f 100644
+--- a/efi/loader/protocols/gop.c
++++ b/efi/loader/protocols/gop.c
+@@ -558,7 +558,7 @@ static efi_status_t efi_gop_register(void *data)
+ 		pixel_information->blue_mask = 0x001f;
+ 	}
+ 	gopobj->info.pixels_per_scan_line = col;
+-	gopobj->fb = fb_get_screen_base(fbi);
++	gopobj->fb = fbi->screen_base;
+ 	gopobj->fbi = fbi;
  
- #include <linux/usb/ch9.h>
- #include <linux/usb/gadget.h>
--
--static inline void put_unaligned_le16(u16 val, u8 *p)
--{
--	*p++ = val;
--	*p++ = val >> 8;
--}
-+#include <asm/unaligned.h>
- 
- static int utf8_to_utf16le(const char *s, __le16 *cp, unsigned len)
- {
+ 	return EFI_SUCCESS;
 -- 
 2.47.3
 
