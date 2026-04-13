@@ -3,66 +3,69 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCEGo-00BgII-0n
+	id 1wCEGo-00BgId-2e
 	for lore@lore.pengutronix.de;
 	Mon, 13 Apr 2026 12:11:54 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCEGn-0001cx-A5
+	id 1wCEGn-0001d4-LP
 	for lore@pengutronix.de; Mon, 13 Apr 2026 12:11:54 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=o7Z/0X2PX2YY9L2oluhmWT3SFU8SCjWoE/lt/n6E5UI=; b=Lls4s+35cmlcLUjHK1YwACqjtQ
-	QoiJK9+AyNfZCO2PLI+UBkcFNFo9Cybe8wg4fyjMdmECxlmLgvJXzZj5HGLdQ7KzrpfVCq3REY91T
-	K/cBrIC1ckNr1Gqs7M7nQjOb6qRy6XRGuFGCKUOuSnreBfuQbxX7T91EGJJTots+3h+lpQ4KbnLYN
-	RVwVevC0AV7LFV+Bh9aCTMaJL9ICFy3+O0YKYCRFEq1Y93ToxxUwyhusphhoXZiWpKlfcA89PLCoi
-	Xn8Cam0OowrjeutU1g5NLMrJrTD+xl/kipq1w8DV6S8e1S+lF0DK0RGl2nmoKYEyoFxWJMePRD0SM
-	xjx8hi1g==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=B7kO7rR+Xvh2V0FtdIEf0GThJk4EWB2HQePaNZoY9pg=; b=GkgAsxJh/abh1OuFHubDL/CENz
+	EwvaY009A2RD1YRzSRx1DJ3h8F9Vo0OmynO3MrFXQCRLIUHOEbSgUyG6qjYKSJIIaUPPWPSgWmAEU
+	Q4VLlvqoDprNS8Uo2mXqGUf/Rpjx6S2nrQFRhSk2JfjSifygqmQjMXMVaIf3jkxNWSIx76k1yXavC
+	/QBjTXCREl9reLQGZVdqyH74do1v8V7pF7JqSBk4TCFAdRFG2UPLMwc0SL7OGLDhM1YsvOU8PduWK
+	m4gFdbTgfH7OZBLzIuHXjO4jQavia/qOIW7Pg47mJhdFHAFaYzp7BUuEicMRi0giaxSP2z/pPMPAc
+	osHna4Wg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCEGM-0000000FS66-33Oj;
-	Mon, 13 Apr 2026 10:11:26 +0000
+	id 1wCEGR-0000000FSCY-39mC;
+	Mon, 13 Apr 2026 10:11:31 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCEGJ-0000000FS3e-2fs6
+	id 1wCEGL-0000000FS5Q-0dcA
 	for barebox@bombadil.infradead.org;
-	Mon, 13 Apr 2026 10:11:23 +0000
+	Mon, 13 Apr 2026 10:11:25 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=o7Z/0X2PX2YY9L2oluhmWT3SFU8SCjWoE/lt/n6E5UI=; b=EukdJSynYIKkcXwey4ArT2fLoo
-	sGVwFFJ0OkaCCgqTp9n5k/u+XuQCuyrB62UbfWHKv190XoODHv9ibQnY5K9OOEQ6C9OULjg65pqNc
-	dWsTXqlIDflHUkgVmUw3GHTwALuGUvvumtUVN1hsWQrlu/S8L0yqkdhARVpmis5uiiW+N7mT293v7
-	5hr3KmrnHQhZVTMOfZUpqV6lzEzyt7rD4+S7KY3LvO08t1NXtT07UYNyUsJAMI+R8DMo+/jvYstSB
-	9TqDHuSS+WoHRW9zRU7TSnwBFkt0+D+ouwNrDpf+mx1hdHU1/0C7/MSEXDrOUlbLR/cps6ZPW+Lc6
-	dSD+z92Q==;
+	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=B7kO7rR+Xvh2V0FtdIEf0GThJk4EWB2HQePaNZoY9pg=; b=WYQTxEUy/uOSN1v5WGDNZi23XG
+	S+yKNtaixBggIizpFAyRH2Pfyq2zgysLz8JDXAilk8URv6uGn4tPc5ub1EquTQA58oPh+y23EQrRW
+	ERy+TM1e5CSyve4iUGWKfKKz3sT3REur+6+HxTAV22B9cwN4c9TsHFWQYL24rA96FxBxDONl8MvlL
+	Z16PhsAMso3KSJr2RsH7CUsSF1IungiUoAZguA2gEB59K8I79VuFrRs8eRiEYgDjFuY5PtwU52ZVj
+	y5b7nJMWdRUDY8i710G3BSw2bNyc1XF60ZjyrR3cTNydreYj7hH+6cMvPFJxr/o0pnYWlWBGzqGrp
+	SiTMQxBQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCEGG-0000000GZ66-0ixK
+	id 1wCEGH-0000000GZ7G-2xdy
 	for barebox@lists.infradead.org;
-	Mon, 13 Apr 2026 10:11:21 +0000
+	Mon, 13 Apr 2026 10:11:23 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1wCEGF-0001Is-C3; Mon, 13 Apr 2026 12:11:19 +0200
+	id 1wCEGH-0001Is-7W; Mon, 13 Apr 2026 12:11:21 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon, 13 Apr 2026 12:09:36 +0200
-Message-ID: <20260413101118.1462119-1-a.fatoum@barebox.org>
+Date: Mon, 13 Apr 2026 12:09:40 +0200
+Message-ID: <20260413101118.1462119-5-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260413101118.1462119-1-a.fatoum@barebox.org>
+References: <20260413101118.1462119-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260413_111120_478441_4F8FCA3F 
-X-CRM114-Status: GOOD (  13.07  )
+X-CRM114-CacheID: sfid-20260413_111122_351018_A02BFE4A 
+X-CRM114-Status: UNSURE (   9.74  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,187 +87,70 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/7] console: return characters written from console_putc
+Subject: [PATCH 5/7] console: implement console_putc in terms of console_putbin
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-console_putc() prints two characters instead of one when it does
-LF -> CRLF conversion.
+console_putc() and console_putbin() both have logic to handle different
+stages of console initialization.
 
-As console_putc already has to do the CRLF check, have it return the
-number of printed characters as well to simplify its users.
+Implement the former in terms of the latter to remove the duplication.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- common/console.c        | 17 +++++++----------
- common/console_common.c |  2 +-
- common/console_simple.c | 13 +++++++------
- include/console.h       |  4 ++--
- pbl/console.c           |  8 ++++++--
- 5 files changed, 23 insertions(+), 21 deletions(-)
+ common/console.c | 36 +++++-------------------------------
+ 1 file changed, 5 insertions(+), 31 deletions(-)
 
 diff --git a/common/console.c b/common/console.c
-index 62ca57e43b05..30a72b2bb6d2 100644
+index 014ce2916835..0ce89390864b 100644
 --- a/common/console.c
 +++ b/common/console.c
-@@ -576,10 +576,11 @@ int tstc(void)
- }
- EXPORT_SYMBOL(tstc);
+@@ -573,40 +573,14 @@ EXPORT_SYMBOL(tstc);
  
--void console_putc(unsigned int ch, char c)
-+int console_putc(unsigned int ch, char c)
+ int console_putc(struct console_device *con, char c)
  {
- 	struct console_device *cdev;
- 	int init = initialized;
-+	bool crlf = c == '\n';
+-	int init = initialized;
+ 	bool crlf = c == '\n';
+-	unsigned int ch;
  
- 	switch (init) {
- 	case CONSOLE_UNINITIALIZED:
-@@ -587,20 +588,20 @@ void console_putc(unsigned int ch, char c)
- 		fallthrough;
- 	case CONSOLE_INITIALIZED_BUFFER:
- 		kfifo_putc(console_output_fifo, c);
--		if (c == '\n')
-+		if (crlf)
- 			putc_ll('\r');
- 		putc_ll(c);
--		return;
-+		return 1 + crlf;
- 
- 	case CONSOLE_INIT_FULL:
- 		for_each_console(cdev) {
- 			if (cdev->f_active & ch) {
--				if (c == '\n')
-+				if (crlf)
- 					cdev->putc(cdev, '\r');
- 				cdev->putc(cdev, c);
- 			}
- 		}
--		return;
-+		return 1 + crlf;
- 	default:
- 		/* If we have problems inititalizing our data
- 		 * get them early
-@@ -626,11 +627,7 @@ int console_puts(unsigned int ch, const char *str)
- 	}
- 
- 	while (*s) {
--		if (*s == '\n')
--			n++;
--
--		console_putc(ch, *s);
--		n++;
-+		n += console_putc(con, *s);
- 		s++;
- 	}
- 	return n;
-diff --git a/common/console_common.c b/common/console_common.c
-index 20c93de68cdc..e3b49200c538 100644
---- a/common/console_common.c
-+++ b/common/console_common.c
-@@ -423,7 +423,7 @@ int dputc(int fd, char c)
- 	if (fd == 1)
- 		putchar(c);
- 	else if (fd == 2)
--		console_putc(CONSOLE_STDERR, c);
-+		return console_putc(CONSOLE_STDERR, c);
- 	else
- 		return write(fd, &c, 1);
- 
-diff --git a/common/console_simple.c b/common/console_simple.c
-index 25fe6217448c..dfc180e70f98 100644
---- a/common/console_simple.c
-+++ b/common/console_simple.c
-@@ -17,28 +17,29 @@ int console_puts(unsigned int ch, const char *str)
- 	int i = 0;
- 
- 	while (*s) {
--		console_putc(ch, *s);
-+		i += console_putc(ch, *s);
- 		s++;
--		i++;
- 	}
- 
- 	return i;
- }
- EXPORT_SYMBOL(console_puts);
- 
--void console_putc(unsigned int ch, char c)
-+int console_putc(unsigned int ch, char c)
- {
-+	bool crlf = c == '\n';
- 	if (!console) {
--		if (c == '\n')
-+		if (crlf)
- 			putc_ll('\r');
- 		putc_ll(c);
--		return;
-+		return 1 + crlf;
- 	}
- 
--	if (c == '\n')
+-	ch = console_dev_is_std(con);
+-	if (!ch) {
+-		if (crlf)
+-			con->putc(con, '\r');
+-		con->putc(con, c);
+-	}
 +	if (crlf)
- 		console->putc(console, '\r');
++		console_putbin(con, "\r\n", 2);
++	else
++		console_putbin(con, &c, 1);
  
- 	console->putc(console, c);
+-	switch (init) {
+-	case CONSOLE_UNINITIALIZED:
+-		console_init_early();
+-		fallthrough;
+-	case CONSOLE_INITIALIZED_BUFFER:
+-		kfifo_putc(console_output_fifo, c);
+-		if (crlf)
+-			putc_ll('\r');
+-		putc_ll(c);
+-		return 1 + crlf;
+-
+-	case CONSOLE_INIT_FULL:
+-		for_each_console(cdev) {
+-			if (cdev->f_active & ch)
+-				console_putc(cdev, c);
+-		}
+-		return 1 + crlf;
+-	default:
+-		/* If we have problems inititalizing our data
+-		 * get them early
+-		 */
+-		hang();
+-	}
 +	return 1 + crlf;
  }
  EXPORT_SYMBOL(console_putc);
  
-diff --git a/include/console.h b/include/console.h
-index cd00e86a805c..353a5088a547 100644
---- a/include/console.h
-+++ b/include/console.h
-@@ -229,7 +229,7 @@ int arch_ctrlc(void);
- 
- #ifndef CONFIG_CONSOLE_NONE
- /* stdout */
--void console_putc(unsigned int ch, const char c);
-+int console_putc(unsigned int ch, const char c);
- int console_puts(unsigned int ch, const char *s);
- void console_putbin(unsigned int ch, const u8 *str, size_t len);
- void console_flush(void);
-@@ -241,7 +241,7 @@ void console_ctrlc_allow(void);
- void console_ctrlc_forbid(void);
- #else
- static inline int console_puts(unsigned int ch, const char *str) { return 0; }
--static inline void console_putc(unsigned int ch, char c) {}
-+static inline int console_putc(unsigned int ch, char c) { return 0;}
- static inline void console_flush(void) {}
- 
- /* test if ctrl-c was pressed */
-diff --git a/pbl/console.c b/pbl/console.c
-index f2e7b3a20e9c..1274552b2088 100644
---- a/pbl/console.c
-+++ b/pbl/console.c
-@@ -32,12 +32,14 @@ static void __putc(void *ctx, int c)
- 	putc(ctx, c);
- }
- 
--void console_putc(unsigned int ch, char c)
-+int console_putc(unsigned int ch, char c)
- {
- 	if (putc_offset)
- 		__putc(putc_ctx, c);
- 	else
- 		putc_ll(c);
-+
-+	return 1;
- }
- 
- int console_puts(unsigned int ch, const char *str)
-@@ -45,8 +47,10 @@ int console_puts(unsigned int ch, const char *str)
- 	int n = 0;
- 
- 	while (*str) {
--		if (*str == '\n')
-+		if (*str == '\n') {
- 			console_putc(ch, '\r');
-+			n++;
-+		}
- 
- 		console_putc(ch, *str);
- 		str++;
 -- 
 2.47.3
 
