@@ -1,82 +1,67 @@
-Delivery-date: Mon, 13 Apr 2026 13:25:22 +0200
+Delivery-date: Mon, 13 Apr 2026 14:29:08 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCFPu-00BhU6-0j
+	id 1wCGPc-00BiPv-1q
 	for lore@lore.pengutronix.de;
-	Mon, 13 Apr 2026 13:25:22 +0200
+	Mon, 13 Apr 2026 14:29:08 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCFPt-0001wl-Mo
-	for lore@pengutronix.de; Mon, 13 Apr 2026 13:25:22 +0200
+	id 1wCGPc-0000j4-16
+	for lore@pengutronix.de; Mon, 13 Apr 2026 14:29:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3PsDvlzjqtGRRrWk+lFTx7M/SBXFa6CQV9cLAcUtlaM=; b=y5qA2bxbUxO+HpuLipazFebxVI
-	Utf6N4+mWFl04JwbUp1iPD8GV0oQM2Ho+aXisGixHiPEpYkTBeXNsATGIpHlsTb9t90psTiZZ9xhE
-	UXxg9jN+Yj+BJHUco5dxq1QrCjYgaeIEmllAL1OYZ4zCSnyFUCBVlAjONbQKJOA26FlQsm3XtdMW1
-	rXGlaYmY7N0BDTeIU8kJN7Z8UGOnljNvAjjOiQtss21HxWp4kOwwm+N+mWhXwdm1eF3/kjKLArSYb
-	eDhXkj+J4PhVpNdX8zfSZqqlIBJ7bsXNf3LkEAsi5efUcLHPHz8ThIF263j/1M5douk2sVHzGjKk+
-	9n0YMTRQ==;
+	bh=HK4neCgB/Ns+gAHMSUKXgknYFgELMYHGjIZidbFY5S4=; b=XAGJPyDUb3RZEzwdIKQ+fgyyOv
+	ygGbBaVLbNNr9e7PZ0Fl8fMu9BoDYHxeUkDR+J6pcp0PWi7XBouCXjS6I2IxJmOwPr/Yyv2Vt4oQl
+	g7NHKkNtojvgx4wh9pGxGk824Bm2LoDR+SplSxJUMsaNpl7gdNNQ9ApKSR7Fq1tQGDQjjh0fVw019
+	gAxQHqig4n5QeAoJ8QMyzYft3kEOO6GjHvjj+An6BE5Yb7w3iXnv/zbw/u33EriLEjhzbfpXisSBD
+	2ZAolXHZPN4fwml0z9WAiyP2dkivrdgtUdB5QDXxRnzIKCBZzdl+G9gEbVzMaSJZRZCqh3pk4bggU
+	seiC5SLw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCFPW-0000000FZV4-2SdU;
-	Mon, 13 Apr 2026 11:24:58 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCFPV-0000000FZUx-0PGk
-	for barebox@bombadil.infradead.org;
-	Mon, 13 Apr 2026 11:24:57 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:From:Sender:
-	Reply-To:Cc:Content-ID:Content-Description;
-	bh=3PsDvlzjqtGRRrWk+lFTx7M/SBXFa6CQV9cLAcUtlaM=; b=QCqFZ95k/cV7kdnvNlviVkup/H
-	I+vb91iHPCA4U97Okko921wBWe2nTNTXuGBoSlLZoHHzlgSWhyCAjP1MZE491U/rj8wsFGc6iJcbe
-	bnUS0xQEJoIzztdwQM7lSKe50PtTSYjnmra6Hz04Z/hkPxjw+3HNYqeY8HIOkzDB9s2yBbEhZq56/
-	1PfuD4iHiplaKn9RLtIZ/M/QOq0j1Hkw3RYtRajDqzGr1e8C5UXArpOqoQaPea864EAxWM/jz9VeT
-	jhKhfbJS5PFfX34/EoC/uITfktdwmSkxjD9PQfL28ieezHQ7WIA7rSn7346Kb1cTfYxHxyV/A2oMu
-	2YFSnjgA==;
+	id 1wCGOx-0000000FdnT-10Uw;
+	Mon, 13 Apr 2026 12:28:27 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCFPR-0000000GguB-3mfl
+	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wCGOu-0000000Fdn9-0rch
 	for barebox@lists.infradead.org;
-	Mon, 13 Apr 2026 11:24:55 +0000
+	Mon, 13 Apr 2026 12:28:25 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wCFPQ-0001qu-Fq; Mon, 13 Apr 2026 13:24:52 +0200
+	id 1wCGOs-0000bD-G7; Mon, 13 Apr 2026 14:28:22 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wCFPQ-005A4l-0y;
-	Mon, 13 Apr 2026 13:24:52 +0200
+	id 1wCGOs-005AZD-0x;
+	Mon, 13 Apr 2026 14:28:22 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wCFPQ-0000000EqjY-10tL;
-	Mon, 13 Apr 2026 13:24:52 +0200
+	id 1wCGOs-0000000EtOS-10PP;
+	Mon, 13 Apr 2026 14:28:22 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20260413102812.1481805-1-a.fatoum@barebox.org>
-References: <20260413102812.1481805-1-a.fatoum@barebox.org>
-Message-Id: <177607949223.3539265.3440992560595115923.b4-ty@pengutronix.de>
-Date: Mon, 13 Apr 2026 13:24:52 +0200
+In-Reply-To: <20260413101118.1462119-1-a.fatoum@barebox.org>
+References: <20260413101118.1462119-1-a.fatoum@barebox.org>
+Message-Id: <177608330223.3549475.17827305299725885418.b4-ty@pengutronix.de>
+Date: Mon, 13 Apr 2026 14:28:22 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260413_122454_109420_F7B77608 
-X-CRM114-Status: UNSURE (   6.19  )
+X-CRM114-CacheID: sfid-20260413_052824_247465_4D93937F 
+X-CRM114-Status: UNSURE (   6.72  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -99,25 +84,38 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] mem: add flush callback to sync caches for execution
+Subject: Re: [PATCH 1/7] console: return characters written from
+ console_putc
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 13 Apr 2026 12:28:12 +0200, Ahmad Fatoum wrote:
-> barebox always calls sync_caches_for_execution() on boot, but it can be
-> useful to trigger it manually when testing:
+On Mon, 13 Apr 2026 12:09:36 +0200, Ahmad Fatoum wrote:
+> console_putc() prints two characters instead of one when it does
+> LF -> CRLF conversion.
 > 
-> - memcpy -s /dev/zero -d /dev/mem 0 $TFA_REGION_BASE $TFA_REGION_SIZE
-> - sync /dev/mem # flush D$ and invalidate I$
-> - smc -i        # check if PSCI monitor is still usable
+> As console_putc already has to do the CRLF check, have it return the
+> number of printed characters as well to simplify its users.
+> 
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] mem: add flush callback to sync caches for execution
-      https://git.pengutronix.de/cgit/barebox/commit/?id=4f0cf6a66d84 (link may not be stable)
+[1/7] console: return characters written from console_putc
+      https://git.pengutronix.de/cgit/barebox/commit/?id=1f2f5516f3ec (link may not be stable)
+[2/7] stddef: implement scoped_var for use in iterators
+      https://git.pengutronix.de/cgit/barebox/commit/?id=59b568e3f41d (link may not be stable)
+[3/7] console: have for_each_console declare the iterator internally
+      https://git.pengutronix.de/cgit/barebox/commit/?id=2cd7ffac2800 (link may not be stable)
+[4/7] console: make console_puts and friends accept a console_device
+      https://git.pengutronix.de/cgit/barebox/commit/?id=1c0c83499823 (link may not be stable)
+[5/7] console: implement console_putc in terms of console_putbin
+      https://git.pengutronix.de/cgit/barebox/commit/?id=7d1261885109 (link may not be stable)
+[6/7] console: implement console_printf
+      https://git.pengutronix.de/cgit/barebox/commit/?id=ec7d76d5dee5 (link may not be stable)
+[7/7] commands: dmesg: give log_print a console_device parameter
+      https://git.pengutronix.de/cgit/barebox/commit/?id=ae1bbd2ab824 (link may not be stable)
 
 Best regards,
 -- 
