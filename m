@@ -1,57 +1,57 @@
-Delivery-date: Mon, 13 Apr 2026 16:03:18 +0200
+Delivery-date: Mon, 13 Apr 2026 16:03:57 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCHsk-00BjnU-2G
+	id 1wCHtN-00BjoL-2z
 	for lore@lore.pengutronix.de;
-	Mon, 13 Apr 2026 16:03:18 +0200
+	Mon, 13 Apr 2026 16:03:57 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCHsk-0004f2-0a
-	for lore@pengutronix.de; Mon, 13 Apr 2026 16:03:18 +0200
+	id 1wCHtN-0004md-BD
+	for lore@pengutronix.de; Mon, 13 Apr 2026 16:03:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=4liQRtll0F/exAOci1+jTY0vxPxS+h6Zh4mHCTFx4jA=; b=BLmiFyuKuqZ3lL3NHEUzKRZYBU
-	02LUyEAilPSMg3wEED14CR56alM2frGIGncFBSaJkSdTORfcRVLeVjO8Scy6cGO+pv7+RkA07x0oz
-	ok1Jc08K4ritB4WsmR0lYYD67ZR0w93E/nB+WbL8LZzCELHjKtt4T1osIqQ8MYpkMZ751Ed7AVkPt
-	Kcpo39JfDiaaubqgyWcfZcyvY/bmXHKa6uqd+XUqACa2HOq32E7UO3/1Tn2GVLVMhChMo5O5dui+z
-	7cHIq3fWzm0hHAqg8BfLX3FVWr22T0pqkp2MUHDrCxEVO96NJJujrhuMDdt9gZCC29jt2oOvqUi4j
-	5x9FOEFg==;
+	bh=CaCi0WfBOaopZqS9hhkOuH54K779XvDT9LKzBrPEPIA=; b=o7omLi6Rh5zRf1r+/PRVUvniuh
+	/c6obwJ3NMqSQaM51K+UvoslLEchYXA6kyy376YOWP5FTQNgeozniy8lC36S6Pc0lrg9RvvUxcdm8
+	+UKjcbgxUprEgnh4t0M5aQfr/7Op9i+3MpruxasFILzMy73RtH3Fpklwz63vpxPpqhGAQNvcgrVGC
+	FcjwIMmMFI6OevhpH1KWCO/iXhyA21+I7khVM+W0O3ku3V+lo3YZ8WF4PQmQQUXfnQX9gazEZ6F/M
+	Lh9rweBAzunJn6M6pDnryoQliUm2RnT5Q7X2IAibknDtCGDYP2KqMrHi3KrhIJI4ls018MtRC9XvV
+	Ba5CgN3w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCHsJ-0000000FpKI-1dGv;
-	Mon, 13 Apr 2026 14:02:51 +0000
+	id 1wCHsp-0000000FpRM-3Kat;
+	Mon, 13 Apr 2026 14:03:23 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCHsH-0000000FpJS-1PMQ
+	id 1wCHsn-0000000FpQO-1F6F
 	for barebox@lists.infradead.org;
-	Mon, 13 Apr 2026 14:02:50 +0000
+	Mon, 13 Apr 2026 14:03:22 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wCHsF-0004Sv-Qg; Mon, 13 Apr 2026 16:02:47 +0200
-Message-ID: <8b171e69-953b-4aa3-923a-f4c7c0911939@pengutronix.de>
-Date: Mon, 13 Apr 2026 16:02:47 +0200
+	id 1wCHsl-0004fw-My; Mon, 13 Apr 2026 16:03:19 +0200
+Message-ID: <6f52b23d-2c68-4694-bca3-de9e05bb1253@pengutronix.de>
+Date: Mon, 13 Apr 2026 16:03:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Sascha Hauer <s.hauer@pengutronix.de>,
  Barebox List <barebox@lists.infradead.org>
-References: <20260320135653.3603064-1-s.hauer@pengutronix.de>
+References: <20260320135744.3624480-1-s.hauer@pengutronix.de>
 Content-Language: en-US, de-DE, de-BE
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260320135653.3603064-1-s.hauer@pengutronix.de>
+In-Reply-To: <20260320135744.3624480-1-s.hauer@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260413_070249_380481_88C6F365 
-X-CRM114-Status: GOOD (  18.42  )
+X-CRM114-CacheID: sfid-20260413_070321_339978_C4E42F5D 
+X-CRM114-Status: GOOD (  17.15  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,48 +72,67 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] mci: register class device before card detection
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] tee: drivers: rksecure: improve logging
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 3/20/26 2:56 PM, Sascha Hauer wrote:
-> mci_card_probe() notifies OP-TEE about the presence of a RPMB device
-> which in turn tries to read from it. The OP-TEE request will end up
-> in mci_get_rpmb_dev() which iterates over MMC class devices in order
-> to find the correct one. Call class_add_device() earlier to make sure
-> the new device is available at that time.
+On 3/20/26 2:57 PM, Sascha Hauer wrote:
+> Add a pr_fmt string to give error messages more context. Also we have
+> "invoke func failed with" message three times in the code, make them
+> unique.
 > 
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
 > ---
->  drivers/mci/mci-core.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/tee/optee/rksecure.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> index cdb20a5625..d3d7bd5e07 100644
-> --- a/drivers/mci/mci-core.c
-> +++ b/drivers/mci/mci-core.c
-> @@ -3111,6 +3111,8 @@ int mci_register(struct mci_host *host)
->  	if (IS_ENABLED(CONFIG_MCI_INFO))
->  		devinfo_add(&mci->dev, mci_info);
+> diff --git a/drivers/tee/optee/rksecure.c b/drivers/tee/optee/rksecure.c
+> index e16f5c0882..06179d7841 100644
+> --- a/drivers/tee/optee/rksecure.c
+> +++ b/drivers/tee/optee/rksecure.c
+> @@ -3,6 +3,8 @@
+>   * Copyright (C) Pengutronix, Michael Tretter <m.tretter@pengutronix.de>
+>   */
 >  
-> +	class_add_device(&mmc_class, &mci->dev);
+> +#define pr_fmt(fmt) "rk-secure: " fmt
 > +
->  	/* if enabled, probe the attached card immediately */
->  	if (IS_ENABLED(CONFIG_MCI_STARTUP) ||
->  	   (IS_ENABLED(CONFIG_MCI_STARTUP_NONREMOVABLE) &&
-> @@ -3124,8 +3126,6 @@ int mci_register(struct mci_host *host)
->  		of_register_fixup(of_broken_cd_fixup, host);
+>  #include <linux/tee_drv.h>
+>  #include <linux/uuid.h>
+>  #include <linux/array_size.h>
+> @@ -86,7 +88,8 @@ int rk_secure_boot_get_info(struct rk_secure_boot_info *out)
+>  	if (res)
+>  		goto out;
+>  	if (inv_arg.ret) {
+> -		pr_err("invoke func failed with 0x%08x\n", inv_arg.ret);
+> +		pr_err("invoke func PTA_RK_SECURE_BOOT_GET_INFO failed with 0x%08x\n",
+> +		        inv_arg.ret);
+>  		res = -EIO;
 >  	}
 >  
-> -	class_add_device(&mmc_class, &mci->dev);
-> -
->  	return 0;
+> @@ -147,7 +150,8 @@ int rk_secure_boot_burn_hash(const u8 *hash, u32 key_size_bits)
+>  	if (res)
+>  		goto out;
+>  	if (inv_arg.ret) {
+> -		pr_err("invoke func failed with 0x%08x\n", inv_arg.ret);
+> +		pr_err("invoke func PTA_RK_SECURE_BOOT_BURN_HASH failed with 0x%08x\n",
+> +		        inv_arg.ret);
+>  		res = -EIO;
+>  	}
 >  
->  err_free:
+> @@ -184,7 +188,8 @@ int rk_secure_boot_lockdown_device(void)
+>  	if (res)
+>  		goto close_session;
+>  	if (inv_arg.ret) {
+> -		pr_err("invoke func failed with 0x%08x\n", inv_arg.ret);
+> +		pr_err("invoke func PTA_RK_SECURE_BOOT_LOCKDOWN_DEVICE failed with 0x%08x\n",
+> +		        inv_arg.ret);
+>  		res = -EIO;
+>  	}
+>  
 
 -- 
 Pengutronix e.K.                  |                             |
