@@ -1,67 +1,68 @@
-Delivery-date: Mon, 13 Apr 2026 17:08:55 +0200
+Delivery-date: Mon, 13 Apr 2026 17:10:30 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCIuF-00Bkqx-2u
+	id 1wCIvm-00Bl4G-33
 	for lore@lore.pengutronix.de;
-	Mon, 13 Apr 2026 17:08:55 +0200
+	Mon, 13 Apr 2026 17:10:30 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCIuF-0004H5-Ca
-	for lore@pengutronix.de; Mon, 13 Apr 2026 17:08:55 +0200
+	id 1wCIvm-0004V5-Du
+	for lore@pengutronix.de; Mon, 13 Apr 2026 17:10:30 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=WeVIqdJBd5sZ+6mTm1eKNpn8+PoijOCbtrmw9cdJrM4=; b=qUQ4SchYWjmkLeW4OTJk+CrOtQ
-	myQI3XDKX2q7ZWBD6d2BrU1mOT7gkNjgniek0Tet+lsC1GlIo2Oq12HVfAiz2HasRvm7h+rmwsuSm
-	3PyOPw1Mnafaj1HAB7nQixdya5TKbR09KRWg8Py/3Q8RODF6Rm7LwnHn+fbG+oPnnxcBp4ABt8MDm
-	Tkx2BxqEyMdNXn4FKtEcGISsPcJOrfsII0BsGmP12qSzGnNw2KkrqJVSNfiNvDPeM/a6xxFuxi6Ta
-	+fzH8l4ifb7HU//EwcGtcm9ULADBYFxoDZfPlWAGaejoA/1YlWEweku80eZVrV8fntCIC86Y5khi6
-	R1aUPbCg==;
+	bh=XoGTXKK4w5iKsQz51gtUouLW+SUAy3vggVYMbmpGu08=; b=j7eupMV3YD3pnTk8TjmJzFixy1
+	RjwMTa5aOfk98bZBNBcddIfJcbERGi2aCRLkgOU2eEdpyEZSdjdqkx+Acw3v9IyKxqdniWzhXsTDD
+	2uCY6FgTuXzcUmfr0N4bIMH8K0wfDfxi3amv0oB7+5lRnjrqXwJH8cywG08LDSX0rvYDq4csgdhvx
+	eYs3LDEiKJw33PfhqrWdp7zYGmN2MxdcRL9+JVe80Jbj3vepYu1pK6puSQMpIUKHtp9toQwWf8Cf0
+	tcR7JWTEqdsmIOwM3njyFR+xyAZR9geRRdgjV0/EfpFJYJhCHrshv90tQHKqIcc+oKUvD9d+tobfS
+	Mrw1YnHg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCItp-0000000Fw0t-1WnM;
-	Mon, 13 Apr 2026 15:08:29 +0000
+	id 1wCIvM-0000000Fw98-38mM;
+	Mon, 13 Apr 2026 15:10:04 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCItn-0000000Fw0B-16Xc
+	id 1wCIvK-0000000Fw8o-0UgR
 	for barebox@lists.infradead.org;
-	Mon, 13 Apr 2026 15:08:28 +0000
+	Mon, 13 Apr 2026 15:10:03 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wCItl-00049e-PC; Mon, 13 Apr 2026 17:08:25 +0200
+	id 1wCIvI-0004Qm-FR; Mon, 13 Apr 2026 17:10:00 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wCItl-005BsP-1u;
-	Mon, 13 Apr 2026 17:08:25 +0200
+	id 1wCIvI-005C4R-0t;
+	Mon, 13 Apr 2026 17:10:00 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wCItl-0000000H2Ns-2GnQ;
-	Mon, 13 Apr 2026 17:08:25 +0200
+	id 1wCIvI-0000000HCdz-0ud2;
+	Mon, 13 Apr 2026 17:10:00 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260413124922.3472858-1-a.fatoum@pengutronix.de>
-References: <20260413124922.3472858-1-a.fatoum@pengutronix.de>
-Message-Id: <177609290553.4060367.17677808588531572020.b4-ty@pengutronix.de>
-Date: Mon, 13 Apr 2026 17:08:25 +0200
+Cc: mfe@pengutronix.de, Ahmad Fatoum <a.fatoum@barebox.org>
+In-Reply-To: <20260413134422.3562639-1-a.fatoum@pengutronix.de>
+References: <20260413134422.3562639-1-a.fatoum@pengutronix.de>
+Message-Id: <177609300021.4099732.15434008868743435544.b4-ty@pengutronix.de>
+Date: Mon, 13 Apr 2026 17:10:00 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260413_080827_306116_441A996B 
-X-CRM114-Status: UNSURE (   5.44  )
+X-CRM114-CacheID: sfid-20260413_081002_246971_B84FB2BD 
+X-CRM114-Status: UNSURE (   8.69  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -83,24 +84,32 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] fixup! serial: introduce clk_get_enabled_for_console()
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v2 1/2] environment: support DT-compatible-specific
+ overlays
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 13 Apr 2026 14:49:21 +0200, Ahmad Fatoum wrote:
-> serial: ns16550: Remove now unused label
+On Mon, 13 Apr 2026 15:43:52 +0200, Ahmad Fatoum wrote:
+> Board-specific environments are registered from board code via
+> defaultenv_append_directory(), but this isn't possible when using
+> CONFIG_DEFAULT_ENVIRONMENT_PATH with an external environment.
 > 
-> With the switch to clk_get_enabled_for_console, nothing does goto
-> clk_put, so remove the label.
+> Add support for a match.of_compatible/ directory convention within
+> the default environment. Subdirectories named after DT root compatible
+> strings are overlaid onto /env from most generic to most specific
+> after the default environment is loaded. The match.of_compatible/
+> directory is removed afterwards to keep /env clean.
 > 
-> 
+> [...]
 
 Applied, thanks!
 
-[1/1] fixup! serial: introduce clk_get_enabled_for_console()
-      https://git.pengutronix.de/cgit/barebox/commit/?id=d31a318079be (link may not be stable)
+[1/2] environment: support DT-compatible-specific overlays
+      https://git.pengutronix.de/cgit/barebox/commit/?id=29bd991c06f4 (link may not be stable)
+[2/2] sandbox: add a match.of_compatible directory to exercise the feature
+      https://git.pengutronix.de/cgit/barebox/commit/?id=b071c63dc663 (link may not be stable)
 
 Best regards,
 -- 
