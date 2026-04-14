@@ -1,58 +1,57 @@
-Delivery-date: Tue, 14 Apr 2026 13:05:07 +0200
+Delivery-date: Tue, 14 Apr 2026 13:11:08 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCbZr-00C3Ms-2G
+	id 1wCbfg-00C3Qa-2B
 	for lore@lore.pengutronix.de;
-	Tue, 14 Apr 2026 13:05:07 +0200
+	Tue, 14 Apr 2026 13:11:08 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCbZr-000484-3v
-	for lore@pengutronix.de; Tue, 14 Apr 2026 13:05:07 +0200
+	id 1wCbfg-0004zm-3A
+	for lore@pengutronix.de; Tue, 14 Apr 2026 13:11:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
 	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:To:From:
 	Subject:Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=6BC2Z66B16dSXGNiMWvjhNFLv4bV6kt/SYiOhIMHN0U=; b=bdPYCsmbgeex+e3Hit4NuTPrWV
-	m652PpXkxWakoo+T6DqVotH5WOpsCkFqtn7EgRVNvoJE2RFV3Rl/6Wgdd24pZ7l8RIIDlTAFuhn+L
-	AMAg436tvi0m6dWzGuQ5IF67FtSTtlI5XZFBPebCiBhro7TAmO9m+GplmKjO0LZaJMvXJ4n+jEbzW
-	ShF29w+OOtQc3S+48PvR6eVtnZxwvXyEQZSPdk5wR4YcqwFuPWXbQo7C/WsfdNNZlj2WPGHNWp8nD
-	P2Nql4nzoYknkuB8/2AQZEr6TuXRDzO2L1SlMry7dCY5dzMDKRQdOQBc2nfKtNdST2ZVcQJwdbVDz
-	U4fFi24A==;
+	bh=OtvnuDW1xH9cQ9fd2qPk+EWB6UoC3k3eeB2n09QlRwM=; b=gmMairu+C60GXTQU4kKR9GxPPZ
+	PSVz7K6Y5QspY8YzB09GyqS4D4z3GIWZZdPl40mTZ5WntfBrLQ5jVgd6vjep0WyxEEBlFE/rTH4iC
+	drkxC+zeuvisU+SGYggp7urpa5L3PNXNQUOBnpBw7RmLq4usm9JBo1kZgANfEgHHbZcnKDHexkmzF
+	yPlihEytaRT2bSfY57XOUKfU29TVFIgLg4frir1F2WUGx+5GOGgHUoJZX0th1UFHVUO7H01Ft37Li
+	KcobAcJq7UyvmbjlVtgUtl4aA0deCAinTfX6cVi16gxotJiIAmRWC4DPxwJFHPxmfe++7RvG96Tv7
+	hGjx7KFw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCbZL-0000000HCET-0EIw;
-	Tue, 14 Apr 2026 11:04:35 +0000
+	id 1wCbfH-0000000HDET-4AFi;
+	Tue, 14 Apr 2026 11:10:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCbZI-0000000HCDK-1gEG
+	id 1wCbfG-0000000HDE8-0QeL
 	for barebox@lists.infradead.org;
-	Tue, 14 Apr 2026 11:04:33 +0000
+	Tue, 14 Apr 2026 11:10:43 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <f.pflug@pengutronix.de>)
-	id 1wCbZF-00042Y-CF; Tue, 14 Apr 2026 13:04:29 +0200
-Message-ID: <1ebef127eee8d212ca43050aefb5b14ba098725d.camel@pengutronix.de>
+	id 1wCbfE-0004ut-EL; Tue, 14 Apr 2026 13:10:40 +0200
+Message-ID: <1bbc8d371d0aacf39039d4f3f2c38c657ba7915a.camel@pengutronix.de>
 From: Fabian Pflug <f.pflug@pengutronix.de>
 To: Jonas Rebmann <jre@pengutronix.de>, Sascha Hauer
  <s.hauer@pengutronix.de>,  BAREBOX <barebox@lists.infradead.org>
-Date: Tue, 14 Apr 2026 13:04:29 +0200
-In-Reply-To: <0b4961bd-7195-4d73-8692-e6d5828ba02a@pengutronix.de>
+Date: Tue, 14 Apr 2026 13:10:40 +0200
+In-Reply-To: <012c0d74-7a91-4294-9d7d-06e87ed57b02@pengutronix.de>
 References: <20260330-v2026-03-0-topic-soc_bin_id-v1-0-11292f75b196@pengutronix.de>
-	 <20260330-v2026-03-0-topic-soc_bin_id-v1-2-11292f75b196@pengutronix.de>
-	 <0b4961bd-7195-4d73-8692-e6d5828ba02a@pengutronix.de>
+	 <012c0d74-7a91-4294-9d7d-06e87ed57b02@pengutronix.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.56.2-0+deb13u1 
 MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260414_040432_438051_B94017DF 
-X-CRM114-Status: GOOD (  24.08  )
+X-CRM114-CacheID: sfid-20260414_041042_164218_D3E455C1 
+X-CRM114-Status: GOOD (  19.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,81 +73,69 @@ X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/2] i.MX: HAB: update text for HABV4_CSF_UNLOCK_UID
+Subject: Re: [PATCH 0/2] Add additional globalvar for soc_uid
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 Hey,
 
 On Mon, 2026-04-13 at 10:21 +0200, Jonas Rebmann wrote:
+> Hi Fabian,
+>=20
 > On 2026-03-30 14:24, Fabian Pflug wrote:
-> > With the establishment of global.soc_uid_bin, there is no need to look
-> > for the serial number and reverse it.
+> > The binary representation was used to compare against,
 >=20
-> I don't believe reverting the byte order manually is something we were
-> supposed to be doing before.
+> What was compared against soc_uid_bin? Or is it still?
 
-It needed to be done in order for it to work. If it was supposed to done li=
-ke that I can't tell, but it is what was
-needed.
+It is still used to compare against, but now also exposed to userspace.
 
 >=20
-> > Also some SoC's will have 128-bit UID's, so the hint to 64 bit is not
-> > correct and should be removed.
-> >=20
-> > Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
-> > ---
-> > =C2=A0 arch/arm/mach-imx/Kconfig | 11 +++--------
-> > =C2=A0 1 file changed, 3 insertions(+), 8 deletions(-)
-> >=20
-> > diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-> > index 2e4d1ac80a..bfcb6ae402 100644
-> > --- a/arch/arm/mach-imx/Kconfig
-> > +++ b/arch/arm/mach-imx/Kconfig
-> > @@ -918,17 +918,12 @@ config HABV4_CSF_UNLOCK_UID
-> > =C2=A0=C2=A0	depends on HABV4 && HABV4_CSF_UNLOCK_FIELD_RETURN
-> > =C2=A0=C2=A0	string "CSF Unlock UID"
-> > =C2=A0=C2=A0	help
-> > -	=C2=A0 Device specific 64-bit UID required to unlock the field-return
-> > +	=C2=A0 Device specific UID required to unlock the field-return
-> > =C2=A0=C2=A0	=C2=A0 feature. This value must match the per device UNIQU=
-E_ID fuses.
-> > =C2=A0=20
-> > =C2=A0=C2=A0	=C2=A0 The below example shows the expected format. The UN=
-IQUE_ID is
-> > -	=C2=A0 printed during boot by barebox:
-> > -	=C2=A0=C2=A0=C2=A0 i.MX___ unique ID: 7766554433221100
-> > -	=C2=A0 or it can be queried by Linux via:
-> > -	=C2=A0=C2=A0=C2=A0 - cat /sys/devices/soc0/serial_number
-> > -	=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 7766554433221100
-> > -
-> > -	=C2=A0 So this value have to be set:
-> > +	=C2=A0 is stored in $global.soc_uid_bin, but must be split into bytes=
-.
+> tlv_bind_soc_uid?
 >=20
-> "The UNIQUE_ID is is stored"?
-
-Thanks, fixed.
-
+> > but never exposed to userspace to query, as the exposed variables
+> > could correlate with the value, but did not.
 >=20
-> > +	=C2=A0 The soc_uid_bin 0011223344556677 becomes:
-> > =C2=A0=C2=A0	=C2=A0=C2=A0=C2=A0 - 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0=
-x66, 0x77
+> The exposed string representation is encoded in a manufacturer-specific
+> manner, hence for use in scripting, soc_uid_bin should be accessible in
+> a generic representation.
 >=20
-> I never used this feature but is there any good reason why this should
-> consume a different format from what $global.soc_uid_bin returns?
+> > For example on i.MX8MP the byte order was reversed in comparing
+> > the return value of barebox_get_soc_uid_bin and $global.soc_uid.
+>=20
+> This was discussed with regard to i.MX8MP, where the byte order of
+> $global.soc_uid and linux' /sys/devices/soc0/serial_number is reversed
+> compared to barebox_get_soc_uid_bin.
+>=20
+> Regardless of whether the current value of barebox_get_soc_uid_bin is
+> correct, barebox_get_soc_uid_bin should be used for scripting.
 
-HAB_CSF_UNLOCK_UID does not like a single 64 bit value, but instead needs t=
-he byte representation.
-TLV on the other hand needs the single 64bi value. So either one needs to b=
-e converted, or you need to introduce another
-value soc_uid_hex_bytes, but at what point is it overkill?
+I can't follow you on this one. Scripting in my understanding means barebox=
+ commands on the commandline or in boot-
+scripts for example.
+barebox_get_soc_uid_bin is a C function and not available on the commandlin=
+e.
+
+Could you elaborate what you mean here?
 
 Fabian
 
 >=20
-> > =C2=A0=C2=A0	=C2=A0 Afterwards, the `hab -p -r` command can be used to =
-burn the fuse.
+> > Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
+> > ---
+> > Fabian Pflug (2):
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 common: misc: add soc_uid_bin to g=
+lobalvar
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 i.MX: HAB: update text for HABV4_C=
+SF_UNLOCK_UID
 > >=20
+> > =C2=A0 arch/arm/mach-imx/Kconfig | 11 +++--------
+> > =C2=A0 common/misc.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 8 ++++++--
+> > =C2=A0 2 files changed, 9 insertions(+), 10 deletions(-)
+> > ---
+> > base-commit: 1d386a53086d28a0c4eda138ae9408a418b97b7e
+> > change-id: 20260330-v2026-03-0-topic-soc_bin_id-d12a84d7b1b5
+> >=20
+> > Best regards,
 
 
