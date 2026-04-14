@@ -1,57 +1,75 @@
-Delivery-date: Tue, 14 Apr 2026 13:11:08 +0200
+Delivery-date: Tue, 14 Apr 2026 13:56:19 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCbfg-00C3Qa-2B
+	id 1wCcNP-00C3yr-20
 	for lore@lore.pengutronix.de;
-	Tue, 14 Apr 2026 13:11:08 +0200
+	Tue, 14 Apr 2026 13:56:19 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCbfg-0004zm-3A
-	for lore@pengutronix.de; Tue, 14 Apr 2026 13:11:08 +0200
+	id 1wCcNP-00026K-3O
+	for lore@pengutronix.de; Tue, 14 Apr 2026 13:56:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
-	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:To:From:
-	Subject:Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=OtvnuDW1xH9cQ9fd2qPk+EWB6UoC3k3eeB2n09QlRwM=; b=gmMairu+C60GXTQU4kKR9GxPPZ
-	PSVz7K6Y5QspY8YzB09GyqS4D4z3GIWZZdPl40mTZ5WntfBrLQ5jVgd6vjep0WyxEEBlFE/rTH4iC
-	drkxC+zeuvisU+SGYggp7urpa5L3PNXNQUOBnpBw7RmLq4usm9JBo1kZgANfEgHHbZcnKDHexkmzF
-	yPlihEytaRT2bSfY57XOUKfU29TVFIgLg4frir1F2WUGx+5GOGgHUoJZX0th1UFHVUO7H01Ft37Li
-	KcobAcJq7UyvmbjlVtgUtl4aA0deCAinTfX6cVi16gxotJiIAmRWC4DPxwJFHPxmfe++7RvG96Tv7
-	hGjx7KFw==;
+	bh=2omIYB61JjwPBeI3VpLoCUI314gzc4AUgJ8WdnqdK9c=; b=trl4cTRYP6TmninclvQ0dQ44Uf
+	ONLCJmRfz23ExwKCCbmECReI7jtr4yBLsniuCoQ0TYggbu/Q4rroerEaKX9m+zUPJDAkLSHcBc80l
+	7FZ6qG7gwGIvDrRfVq17xCRZT+e9ryZeuhXaL+T8hXOeeM1vcaMaWWRy38EEOqUwGKHOG79EYdKu+
+	aFeyrGoqsSo+npWOLuNNh2D9qyQ+cCnb3QjIC863MXvS6yAVK2H4qLSVrj3B+Xc6/aVH2T6Y3SDmM
+	P+yFDjgz2gCEaAXlANgjnHwHTYn0tABl2/GshUa+E4S3f+RJRBmsNIkvzZnYrHW0khaHFCvXLG617
+	zLaEkXKw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCbfH-0000000HDET-4AFi;
-	Tue, 14 Apr 2026 11:10:43 +0000
+	id 1wCcMv-0000000HGZx-33n7;
+	Tue, 14 Apr 2026 11:55:49 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCbfG-0000000HDE8-0QeL
+	id 1wCcMt-0000000HGZM-2Ym4
 	for barebox@lists.infradead.org;
-	Tue, 14 Apr 2026 11:10:43 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <f.pflug@pengutronix.de>)
-	id 1wCbfE-0004ut-EL; Tue, 14 Apr 2026 13:10:40 +0200
-Message-ID: <1bbc8d371d0aacf39039d4f3f2c38c657ba7915a.camel@pengutronix.de>
-From: Fabian Pflug <f.pflug@pengutronix.de>
-To: Jonas Rebmann <jre@pengutronix.de>, Sascha Hauer
- <s.hauer@pengutronix.de>,  BAREBOX <barebox@lists.infradead.org>
-Date: Tue, 14 Apr 2026 13:10:40 +0200
-In-Reply-To: <012c0d74-7a91-4294-9d7d-06e87ed57b02@pengutronix.de>
-References: <20260330-v2026-03-0-topic-soc_bin_id-v1-0-11292f75b196@pengutronix.de>
-	 <012c0d74-7a91-4294-9d7d-06e87ed57b02@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	Tue, 14 Apr 2026 11:55:48 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1wCcMr-0001zU-OB; Tue, 14 Apr 2026 13:55:45 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1wCcMr-005KjZ-00;
+	Tue, 14 Apr 2026 13:55:45 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1wCcMq-00000009Xck-3VcN;
+	Tue, 14 Apr 2026 13:55:44 +0200
+Date: Tue, 14 Apr 2026 13:55:44 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Renaud Barbier <Renaud.Barbier@ametek.com>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Barebox List <barebox@lists.infradead.org>
+Message-ID: <ad4rQA7JE8L2FRxP@pengutronix.de>
+References: <SJ0PR07MB976639CACF9AB10A471A2B96EC41A@SJ0PR07MB9766.namprd07.prod.outlook.com>
+ <62cdd7a2-f712-44e9-8f3f-785a7af0e659@pengutronix.de>
+ <SJ0PR07MB976610EF68958EB992C538E0EC41A@SJ0PR07MB9766.namprd07.prod.outlook.com>
+ <SJ0PR07MB9766248C197842B57E33C98BEC49A@SJ0PR07MB9766.namprd07.prod.outlook.com>
+ <SJ0PR07MB97666520BFA013C2CB794723EC53A@SJ0PR07MB9766.namprd07.prod.outlook.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SJ0PR07MB97666520BFA013C2CB794723EC53A@SJ0PR07MB9766.namprd07.prod.outlook.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260414_041042_164218_D3E455C1 
-X-CRM114-Status: GOOD (  19.04  )
+X-CRM114-CacheID: sfid-20260414_045547_670600_65FB0366 
+X-CRM114-Status: GOOD (  12.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,73 +87,33 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/2] Add additional globalvar for soc_uid
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: file system crash
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hey,
+Hi Renaud,
 
-On Mon, 2026-04-13 at 10:21 +0200, Jonas Rebmann wrote:
-> Hi Fabian,
->=20
-> On 2026-03-30 14:24, Fabian Pflug wrote:
-> > The binary representation was used to compare against,
->=20
-> What was compared against soc_uid_bin? Or is it still?
+On Tue, Mar 31, 2026 at 12:39:02PM +0000, Renaud Barbier wrote:
+> I think I found where the problem is 
+> 
+> ERROR: free i_link bff2f840 <- This is from destroy_inode in fs/fs.c
+> ERROR: ui->data = bff2f840 <- This is from ubifs_destroy_inode in fs/ubifs/super.c
 
-It is still used to compare against, but now also exposed to userspace.
+Is it really ui->data that has the same value or rather ui itself?
 
->=20
-> tlv_bind_soc_uid?
->=20
-> > but never exposed to userspace to query, as the exposed variables
-> > could correlate with the value, but did not.
->=20
-> The exposed string representation is encoded in a manufacturer-specific
-> manner, hence for use in scripting, soc_uid_bin should be accessible in
-> a generic representation.
->=20
-> > For example on i.MX8MP the byte order was reversed in comparing
-> > the return value of barebox_get_soc_uid_bin and $global.soc_uid.
->=20
-> This was discussed with regard to i.MX8MP, where the byte order of
-> $global.soc_uid and linux' /sys/devices/soc0/serial_number is reversed
-> compared to barebox_get_soc_uid_bin.
->=20
-> Regardless of whether the current value of barebox_get_soc_uid_bin is
-> correct, barebox_get_soc_uid_bin should be used for scripting.
+ui itself would make sense, because first member of struct ubifs_inode
+is a struct inode. ui->data OTOH should be something really different.
 
-I can't follow you on this one. Scripting in my understanding means barebox=
- commands on the commandline or in boot-
-scripts for example.
-barebox_get_soc_uid_bin is a C function and not available on the commandlin=
-e.
+Sascha
 
-Could you elaborate what you mean here?
-
-Fabian
-
->=20
-> > Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
-> > ---
-> > Fabian Pflug (2):
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 common: misc: add soc_uid_bin to g=
-lobalvar
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 i.MX: HAB: update text for HABV4_C=
-SF_UNLOCK_UID
-> >=20
-> > =C2=A0 arch/arm/mach-imx/Kconfig | 11 +++--------
-> > =C2=A0 common/misc.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 8 ++++++--
-> > =C2=A0 2 files changed, 9 insertions(+), 10 deletions(-)
-> > ---
-> > base-commit: 1d386a53086d28a0c4eda138ae9408a418b97b7e
-> > change-id: 20260330-v2026-03-0-topic-soc_bin_id-d12a84d7b1b5
-> >=20
-> > Best regards,
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
