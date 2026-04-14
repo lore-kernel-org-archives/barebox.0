@@ -1,67 +1,68 @@
-Delivery-date: Tue, 14 Apr 2026 16:27:06 +0200
+Delivery-date: Tue, 14 Apr 2026 16:27:10 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCejK-00C6Cu-1L
+	id 1wCejO-00C6DI-0V
 	for lore@lore.pengutronix.de;
-	Tue, 14 Apr 2026 16:27:06 +0200
+	Tue, 14 Apr 2026 16:27:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCejJ-0007TK-Rd
-	for lore@pengutronix.de; Tue, 14 Apr 2026 16:27:06 +0200
+	id 1wCejN-0007U2-KT
+	for lore@pengutronix.de; Tue, 14 Apr 2026 16:27:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=dLs5COF28C0bDKgH8S8KZPYXUyn94Un7FB9iGOOdEJU=; b=b2DT1qz5+qy54/lQcM1e5dnwNS
-	2M085U6qsBK5vkoh+JVfi7esHh/nk/JxBiRDek2UBPR3rFmCtHAgMBS0VTVyp2PDR+gi8o4oZtvRH
-	A9c5kfqjocICNy86WT5v/njq1+ZXO7ed0G4we9hnqX5BtH1rp6XehU1L+NiJVjxhxLff719ZejPMc
-	aQiOm7zc8wNVhlvMxZc4L02TpZscuqcIoWbMistLCXVXpDJA6Qg7F8pjZVrMD5/M2sW4gk8b9rVCX
-	pwyeWZm45VKXrBpDkaHzU0X726bNfrBjgC020j3vAA1vzwBOzOtpupVIGta20s9mkjvFRGw2La4NN
-	DaHBQN1g==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=n4/8Snbm6FZ8GZ8KOilkR9izp0Nt5s/qGadfkIAzRiU=; b=TntJ85DDMZsue3B3BKDRXMZAai
+	dRuBUQpgi79qlPZHFn8X9EaQrJsF+moeAd6NbVUCQFZxejqLDqIyLsEXCkNWRGoXHIoGoLKWo7ufL
+	xG7yW3wIp+6rUorxn1/afKs4UNeqg6P10lYVEbrFq608SiyFBXg4idqgurImJLEoI1vAr1EfXNNvt
+	Vau3os7e8EuIRDFqGe53I72c5knDjkXhYLxWNShVYwokx8i3Z64t7fidU40freEXjrMkSSVy/H6A1
+	1faF7xVT+W1kV9ZGztS+oKxlwWOrYFe2ewLyYlc914Hi/a5+SjSilpa1fBJr8E0QuoHa2U7+pJZYf
+	XazmWpIg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCeit-0000000HRxp-2Lbc;
-	Tue, 14 Apr 2026 14:26:39 +0000
+	id 1wCej1-0000000HRzw-3WHn;
+	Tue, 14 Apr 2026 14:26:47 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCeir-0000000HRxG-2M6g
+	id 1wCeiz-0000000HRyq-0Dnn
 	for barebox@lists.infradead.org;
-	Tue, 14 Apr 2026 14:26:38 +0000
+	Tue, 14 Apr 2026 14:26:46 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wCeip-0007LS-IP; Tue, 14 Apr 2026 16:26:35 +0200
+	id 1wCeip-0007LT-IP; Tue, 14 Apr 2026 16:26:35 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wCeip-005MCT-0j;
+	id 1wCeip-005MCU-0s;
 	Tue, 14 Apr 2026 16:26:35 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wCeip-000000037h5-0WwK;
+	id 1wCeip-000000037h5-0jL6;
 	Tue, 14 Apr 2026 16:26:35 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
 	Chali Anis <chalianis1@gmail.com>
-Date: Tue, 14 Apr 2026 16:26:29 +0200
-Message-ID: <20260414142634.744542-1-a.fatoum@pengutronix.de>
+Date: Tue, 14 Apr 2026 16:26:30 +0200
+Message-ID: <20260414142634.744542-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260414142634.744542-1-a.fatoum@pengutronix.de>
+References: <20260414142634.744542-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260414_072637_623243_645F3446 
-X-CRM114-Status: UNSURE (   9.65  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260414_072645_092833_47C6EF27 
+X-CRM114-Status: GOOD (  10.32  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,65 +84,56 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] efi: payload: image: exit if kernel image returned
+Subject: [PATCH 2/2] efi: payload: bootm: fix potential double-unload for image
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-EFI applications can exit and return to the EFI application that started
-them and barebox can handle that, except for the case that it was a
-EFI-stubbed kernel and barebox has already called shutdown_barebox().
-
-In that case, the safest way is to just propagate the exit code instead
-of attempting to execute code as if nothing happened.
-
-Starting EFI applications via bin format continues to work as before.
+efi_execute_image() already takes care to unload the image if it returns,
+so adapt the single caller that tries to unload the image again
+accordingly.
 
 Cc: Chali Anis <chalianis1@gmail.com>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- efi/payload/image.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ efi/payload/bootm.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/efi/payload/image.c b/efi/payload/image.c
-index 83094cda6d89..378709b6de95 100644
---- a/efi/payload/image.c
-+++ b/efi/payload/image.c
-@@ -104,7 +104,7 @@ int efi_execute_image(efi_handle_t handle,
+diff --git a/efi/payload/bootm.c b/efi/payload/bootm.c
+index aba643b2c59d..801c0202ae83 100644
+--- a/efi/payload/bootm.c
++++ b/efi/payload/bootm.c
+@@ -235,6 +235,7 @@ static int do_bootm_efi_stub(struct image_data *data)
  {
- 	efi_status_t efiret;
- 	const char *options;
--	bool is_driver;
-+	bool is_driver, is_kernel = false;
+ 	struct efi_loaded_image *loaded_image;
+ 	void *fdt = NULL, *initrd = NULL;
++	bool image_freed = false;
+ 	efi_handle_t handle;
+ 	enum filetype type;
+ 	int ret;
+@@ -257,6 +258,13 @@ static int do_bootm_efi_stub(struct image_data *data)
+ 		goto unload_ramdisk;
  
- 	is_driver = (loaded_image->image_code_type == EFI_BOOT_SERVICES_CODE) ||
- 		(loaded_image->image_code_type == EFI_RUNTIME_SERVICES_CODE);
-@@ -123,17 +123,24 @@ int efi_execute_image(efi_handle_t handle,
- 		efi_set_variable_usec("LoaderTimeExecUSec", &efi_systemd_vendor_guid,
- 				      ktime_to_us(ktime_get()));
- 
-+		is_kernel = true;
- 		shutdown_barebox();
- 	}
- 
- 	efi_pause_devices();
- 
- 	efiret = BS->start_image(handle, NULL, NULL);
--	if (EFI_ERROR(efiret))
--		pr_err("failed to StartImage: %s\n", efi_strerror(efiret));
- 
- 	efi_continue_devices();
- 
-+	if (is_kernel) {
-+		pr_emerg("Kernel image has unexpectedly returned\n");
-+		BS->exit(efi_parent_image, efiret, 0, NULL);
-+	}
+ 	ret = efi_execute_image(handle, loaded_image, type);
 +
-+	if (EFI_ERROR(efiret))
-+		pr_err("failed to StartImage: %s\n", efi_strerror(efiret));
++	/* efi_execute_image takes care to unload the image on error,
++	 * so we set image_freed and fall through to freeing ramdisk
++	 * and oftree.
++	 */
++	image_freed = true;
 +
- 	if (!is_driver)
- 		BS->unload_image(handle);
+ unload_ramdisk:
+ 	if (initrd) {
+ 		efi_initrd_unregister();
+@@ -265,7 +273,8 @@ static int do_bootm_efi_stub(struct image_data *data)
+ unload_oftree:
+ 	efi_unload_fdt(fdt);
+ unload_os:
+-	BS->unload_image(handle);
++	if (!image_freed)
++		BS->unload_image(handle);
  
+ 	return ret;
+ }
 -- 
 2.47.3
 
