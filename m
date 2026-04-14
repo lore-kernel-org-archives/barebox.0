@@ -1,66 +1,67 @@
-Delivery-date: Tue, 14 Apr 2026 16:00:19 +0200
+Delivery-date: Tue, 14 Apr 2026 16:27:06 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCeJP-00C5hf-1w
+	id 1wCejK-00C6Cu-1L
 	for lore@lore.pengutronix.de;
-	Tue, 14 Apr 2026 16:00:19 +0200
+	Tue, 14 Apr 2026 16:27:06 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCeJP-0002sq-1g
-	for lore@pengutronix.de; Tue, 14 Apr 2026 16:00:19 +0200
+	id 1wCejJ-0007TK-Rd
+	for lore@pengutronix.de; Tue, 14 Apr 2026 16:27:06 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=l/f7KBG0rllMeArF30bbwBTkqTutz4b0YCYvP+huM/A=; b=ZYFJyoOSpgx0Aen60makEaCzd3
-	SX5PHuMTtyPabqUGv5ApHUPa9N5RHd7xeqJgFIfnoO5918HjaNMjiEKMmZtqqu+Rm3uwwIX8A5FRw
-	gWlvq5IyfzVjQzdaTvQMuPDU9zFPAmGCc/cNybnoS1y0q8kiaMefVLETN4bbaVNOd4+b2F6/zsx17
-	IQd9gGVa4z6bkmni+T1u9AfnnIFDB+T8rhTpJrCpOPPA9gzecVYr2QuXoGiBYzkocmcVe7KE1k9za
-	AyYak4lAh/NszXVFKrqplTzZv23Wqef6RGVN+2EiwTBeoqVwzjdwrMvDlkjfS7foaQRpzZCpaTIdp
-	z4/aQDKg==;
+	bh=dLs5COF28C0bDKgH8S8KZPYXUyn94Un7FB9iGOOdEJU=; b=b2DT1qz5+qy54/lQcM1e5dnwNS
+	2M085U6qsBK5vkoh+JVfi7esHh/nk/JxBiRDek2UBPR3rFmCtHAgMBS0VTVyp2PDR+gi8o4oZtvRH
+	A9c5kfqjocICNy86WT5v/njq1+ZXO7ed0G4we9hnqX5BtH1rp6XehU1L+NiJVjxhxLff719ZejPMc
+	aQiOm7zc8wNVhlvMxZc4L02TpZscuqcIoWbMistLCXVXpDJA6Qg7F8pjZVrMD5/M2sW4gk8b9rVCX
+	pwyeWZm45VKXrBpDkaHzU0X726bNfrBjgC020j3vAA1vzwBOzOtpupVIGta20s9mkjvFRGw2La4NN
+	DaHBQN1g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCeIo-0000000HPj0-3618;
-	Tue, 14 Apr 2026 13:59:42 +0000
+	id 1wCeit-0000000HRxp-2Lbc;
+	Tue, 14 Apr 2026 14:26:39 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCeIl-0000000HPiV-46cz
+	id 1wCeir-0000000HRxG-2M6g
 	for barebox@lists.infradead.org;
-	Tue, 14 Apr 2026 13:59:41 +0000
+	Tue, 14 Apr 2026 14:26:38 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wCeIj-0002dt-Hm; Tue, 14 Apr 2026 15:59:37 +0200
+	id 1wCeip-0007LS-IP; Tue, 14 Apr 2026 16:26:35 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wCeIj-005Lrl-0i;
-	Tue, 14 Apr 2026 15:59:37 +0200
+	id 1wCeip-005MCT-0j;
+	Tue, 14 Apr 2026 16:26:35 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wCeIj-00000002zws-0Vpy;
-	Tue, 14 Apr 2026 15:59:37 +0200
+	id 1wCeip-000000037h5-0WwK;
+	Tue, 14 Apr 2026 16:26:35 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
 	Chali Anis <chalianis1@gmail.com>
-Date: Tue, 14 Apr 2026 15:59:35 +0200
-Message-ID: <20260414135936.714776-1-a.fatoum@pengutronix.de>
+Date: Tue, 14 Apr 2026 16:26:29 +0200
+Message-ID: <20260414142634.744542-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260414_065940_015280_CE423C20 
-X-CRM114-Status: GOOD (  11.94  )
+X-CRM114-CacheID: sfid-20260414_072637_623243_645F3446 
+X-CRM114-Status: UNSURE (   9.65  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,55 +83,65 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master] bootm: require EFI boot when running as payload
+Subject: [PATCH 1/2] efi: payload: image: exit if kernel image returned
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-An EFI-stubbed ARM64 Linux kernel can be optionally started as EFI
-application via its PE entry point or it can be directly executed with
-the normal boot protocol.
+EFI applications can exit and return to the EFI application that started
+them and barebox can handle that, except for the case that it was a
+EFI-stubbed kernel and barebox has already called shutdown_barebox().
 
-To support both in barebox, we have a global.bootm.efi parameter that
-allows choosing either:
+In that case, the safest way is to just propagate the exit code instead
+of attempting to execute code as if nothing happened.
 
-  - required:  only boot EFI executables via EFI
-  - available: attempt EFI boot for EFI executables if barebox support
-               is available
-  - disabled:  never attempt EFI boot
+Starting EFI applications via bin format continues to work as before.
 
-With barebox support here meaning CONFIG_EFI_LOADER being enabled.
-
-This fails to account for configurations that have only
-CONFIG_EFI_PAYLOAD and that are actually running as EFI payload.
-For those, we should always require EFI boot for EFI executables as
-stating a kernel from within an EFI environment without exiting boot
-services is not a good idea.
-
-Thus change the check to IS_ENABLED(CONFIG_EFI_LOADER) || efi_is_payload().
-
-IS_ENABLED(CONFIG_EFI_PAYLOAD) would be incorrect as we can enable EFI
-payload support, but start barebox directly, not via its own EFI stub.
-
-Fixes: 6119a5b54ed1 ("bootm: add global.bootm.efi toggle")
-Reported-by: Chali Anis <chalianis1@gmail.com>
+Cc: Chali Anis <chalianis1@gmail.com>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/bootm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ efi/payload/image.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/common/bootm.c b/common/bootm.c
-index d43079bb81da..82b0f0bd0563 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -845,7 +845,7 @@ bool bootm_efi_check_image(struct image_handler *handler,
- 	 * and fallback to normal boot otherwise.
- 	 */
- 	if (data->efi_boot == BOOTM_EFI_AVAILABLE) {
--		if (IS_ENABLED(CONFIG_EFI_LOADER))
-+		if (IS_ENABLED(CONFIG_EFI_LOADER) || efi_is_payload())
- 			data->efi_boot = BOOTM_EFI_REQUIRED;
- 		else
- 			data->efi_boot = BOOTM_EFI_DISABLED;
+diff --git a/efi/payload/image.c b/efi/payload/image.c
+index 83094cda6d89..378709b6de95 100644
+--- a/efi/payload/image.c
++++ b/efi/payload/image.c
+@@ -104,7 +104,7 @@ int efi_execute_image(efi_handle_t handle,
+ {
+ 	efi_status_t efiret;
+ 	const char *options;
+-	bool is_driver;
++	bool is_driver, is_kernel = false;
+ 
+ 	is_driver = (loaded_image->image_code_type == EFI_BOOT_SERVICES_CODE) ||
+ 		(loaded_image->image_code_type == EFI_RUNTIME_SERVICES_CODE);
+@@ -123,17 +123,24 @@ int efi_execute_image(efi_handle_t handle,
+ 		efi_set_variable_usec("LoaderTimeExecUSec", &efi_systemd_vendor_guid,
+ 				      ktime_to_us(ktime_get()));
+ 
++		is_kernel = true;
+ 		shutdown_barebox();
+ 	}
+ 
+ 	efi_pause_devices();
+ 
+ 	efiret = BS->start_image(handle, NULL, NULL);
+-	if (EFI_ERROR(efiret))
+-		pr_err("failed to StartImage: %s\n", efi_strerror(efiret));
+ 
+ 	efi_continue_devices();
+ 
++	if (is_kernel) {
++		pr_emerg("Kernel image has unexpectedly returned\n");
++		BS->exit(efi_parent_image, efiret, 0, NULL);
++	}
++
++	if (EFI_ERROR(efiret))
++		pr_err("failed to StartImage: %s\n", efi_strerror(efiret));
++
+ 	if (!is_driver)
+ 		BS->unload_image(handle);
+ 
 -- 
 2.47.3
 
