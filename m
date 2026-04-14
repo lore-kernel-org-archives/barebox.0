@@ -1,66 +1,57 @@
-Delivery-date: Tue, 14 Apr 2026 10:07:30 +0200
+Delivery-date: Tue, 14 Apr 2026 10:39:13 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCYny-00C0hw-1z
+	id 1wCZIf-00C15l-0S
 	for lore@lore.pengutronix.de;
-	Tue, 14 Apr 2026 10:07:30 +0200
+	Tue, 14 Apr 2026 10:39:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCYny-0003Qe-1p
-	for lore@pengutronix.de; Tue, 14 Apr 2026 10:07:30 +0200
+	id 1wCZIe-0007EP-Jj
+	for lore@pengutronix.de; Tue, 14 Apr 2026 10:39:13 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=jmLFJJJPg/a7Ln4DQeWwHnEaWka4uHOU/QY1WWLWozY=; b=KFr1yJ1a5htI/dE3MhndYR9JTW
-	l+r6+lDZMxdqH1g8mFHjcabi6qP+l9ET1fspBDEuzmxQJlvcNavrUlGyTjEg1CGgrVB4YiVikJGNa
-	HskCxMcAZaI1W01CnYJkiFzN3WaG4rsvLb1dE2KJlkn+ndpd0XoBOBhteP/mC5MhzGmzx2cjS6+su
-	c69rjQArYggl9XDhCMVMh7lj4b2JihC7mH1G2OwzrjcDV4z9tdkaVyRtQZ8DtngrRTnkY3/TTffVo
-	KDXXRogiUc4oZylKkuPXOM8+c/MULpYObpKl/LPMiRGKDl+H/PN9uoC2Cn28GKg8pXRZRa20sSca8
-	8P7oqCHQ==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=/iufCFWdT7ixYoNt10wlEn5O9ipg6t4j3bVMifj0QQ0=; b=OTxcXDEtqlJ/pAX1Qum85CEQLm
+	H4CTUJKfQ7vMUcFVlktS2y/8XdAknqGL58LHrnV1RozikZksWWGw7xmBpgIfqcFjUiDmldhJJi7kD
+	FpILmfK3GjdodY347LrjD2FWV7CW6snejYyEXoL4ujKEUhJER+R45NNxYWBkIIkM4OTVebgljbZNX
+	LNqJJXLYKutPkSNtDpdNs7UyVHFQ3yOUQcj3JgVY1Ah0S8xKUt1R6zKk9Ild7L1+ZzueV+gEcpAev
+	6xFpogEXjbZ0U9nsVCheO14UCAcF5LxyZiHNForxIsmbLtkGc8fHW7KxnCvPdvKx7NoxfU3c8Vbym
+	ivYlchew==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCYnU-0000000Gway-00Y8;
-	Tue, 14 Apr 2026 08:07:00 +0000
+	id 1wCZI8-0000000H0MD-49VL;
+	Tue, 14 Apr 2026 08:38:40 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCYnP-0000000GwXp-15lo
+	id 1wCZI6-0000000H0LJ-2dBR
 	for barebox@lists.infradead.org;
-	Tue, 14 Apr 2026 08:06:57 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
+	Tue, 14 Apr 2026 08:38:39 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wCYnN-0003FT-FL; Tue, 14 Apr 2026 10:06:53 +0200
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wCYnN-005J1Q-0o;
-	Tue, 14 Apr 2026 10:06:53 +0200
-Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wCYnN-00000001fRr-0cJZ;
-	Tue, 14 Apr 2026 10:06:53 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Tue, 14 Apr 2026 10:06:28 +0200
-Message-ID: <20260414080652.397582-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	id 1wCZI4-00077z-Un; Tue, 14 Apr 2026 10:38:36 +0200
+Message-ID: <8071f55f-4c93-44bc-8dba-d3c8c083c3b1@pengutronix.de>
+Date: Tue, 14 Apr 2026 10:38:36 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ Barebox List <barebox@lists.infradead.org>
+References: <20260413195124.2910057-1-s.hauer@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <20260413195124.2910057-1-s.hauer@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260414_010655_341943_A2D735A5 
-X-CRM114-Status: UNSURE (   8.85  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260414_013838_673223_AD889B5F 
+X-CRM114-Status: GOOD (  16.58  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,48 +73,53 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 1/3] ppc: define sync_caches_for_execution only for MPC85xx
+Subject: Re: [PATCH] usb: gadget: Use put_unaligned_le16() from
+ asm/unaligned.h
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-In preparation for adding a call to sync_caches_for_execution() into
-common code, make sure PowerPC configurations without an out-of-line
-definition fallback to the inline no-op definition.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
----
-v1 -> v2:
-  - new commit to fix CI breakage (Sascha)
----
- arch/powerpc/include/asm/cache.h | 4 ++++
- 1 file changed, 4 insertions(+)
+On 4/13/26 9:51 PM, Sascha Hauer wrote:
+> usbstring.c has its own put_unaligned_le16() function instead of using
+> the existing one from asm/unaligned.h. This was never a problem, but
+> since 87d3ae4bee ("filetype: fix unaligned access for x86_linux_bootimage")
+> the conflicting definition from asm/unaligned.h leaks in which results
+> in a failed build. Drop the duplicate function and explicitly include
+> the correct definition.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-diff --git a/arch/powerpc/include/asm/cache.h b/arch/powerpc/include/asm/cache.h
-index 2edf11de2ef8..29746fd1945f 100644
---- a/arch/powerpc/include/asm/cache.h
-+++ b/arch/powerpc/include/asm/cache.h
-@@ -35,8 +35,10 @@ extern void clean_dcache_range(unsigned long start, unsigned long stop);
- extern void invalidate_dcache_range(unsigned long start, unsigned long stop);
- extern void flush_dcache(void);
- extern void invalidate_icache(void);
-+#ifdef CONFIG_ARCH_MPC85XX
- #define sync_caches_for_execution sync_caches_for_execution
- extern void sync_caches_for_execution(void);
-+#endif
- #ifdef CFG_INIT_RAM_LOCK
- extern void unlock_ram_in_cache(void);
- #endif /* CFG_INIT_RAM_LOCK */
-@@ -88,4 +90,6 @@ extern void unlock_ram_in_cache(void);
- #define DC_LES		0x20000000	/* Caches are little endian mode */
- #endif /* CONFIG_8xx */
- 
-+#include <asm-generic/cache.h>
-+
- #endif
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+> ---
+>  drivers/usb/gadget/usbstring.c | 7 +------
+>  1 file changed, 1 insertion(+), 6 deletions(-)
+> 
+> diff --git a/drivers/usb/gadget/usbstring.c b/drivers/usb/gadget/usbstring.c
+> index 58eb28ad1a..209a3d01d8 100644
+> --- a/drivers/usb/gadget/usbstring.c
+> +++ b/drivers/usb/gadget/usbstring.c
+> @@ -8,12 +8,7 @@
+>  
+>  #include <linux/usb/ch9.h>
+>  #include <linux/usb/gadget.h>
+> -
+> -static inline void put_unaligned_le16(u16 val, u8 *p)
+> -{
+> -	*p++ = val;
+> -	*p++ = val >> 8;
+> -}
+> +#include <asm/unaligned.h>
+>  
+>  static int utf8_to_utf16le(const char *s, __le16 *cp, unsigned len)
+>  {
+
 -- 
-2.47.3
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
