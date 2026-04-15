@@ -1,65 +1,73 @@
-Delivery-date: Wed, 15 Apr 2026 10:14:27 +0200
+Delivery-date: Wed, 15 Apr 2026 10:30:32 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCvOF-00CLqO-1q
+	id 1wCvdo-00CLzk-0i
 	for lore@lore.pengutronix.de;
-	Wed, 15 Apr 2026 10:14:27 +0200
+	Wed, 15 Apr 2026 10:30:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCvOF-0003H6-1z
-	for lore@pengutronix.de; Wed, 15 Apr 2026 10:14:27 +0200
+	id 1wCvdn-000751-MA
+	for lore@pengutronix.de; Wed, 15 Apr 2026 10:30:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=yBUvULYTPeXXWIfQR32MfPwXzaoAW+wyC1HjeU2KgxU=; b=Hrcm+A78SKXgrw0IOnPEHseCmD
-	bVX9WZhG19A95NnsYZ/kPf4LaRkGMYqNEY77WUk+OITd3MWlVbiE0+6fzJXdQE2jLa8exGXEhYDC/
-	tGWwcKBUt3L4+wQIbHibSAsv3fWqZBwX/9IqxX8sRfuJbBVftY4MCT0trsC+jjJ5CCIXA3NkiusLy
-	fD5CtQPPVCeeHTbvd+ZGiXqvroriYQ0QYh0LMEy+oIPfXquAl5JCks/4vR9CO03udJpa5tjG5rkSq
-	N5fQLCftOuRHt8sDWLrgiA/G0Q2LhrBts7mVY3CL6VgjOa1EIHpgdDanfL/sSnT6e7NI1rwmfa9Da
-	x5xbZ3wA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=3pL3xjTy3xteYrPjRrWWPBQwbrihpuqQy6SYE6ZiszY=; b=AMuv8DfYB3hFHdDPg1dR0im18X
+	00sh9JqiVPVzOEnYxrVKbATn1CrKhM5J3Bin0IBHrMRGteHFjzzhhEy66HRorwJIZlPkgMu9a/dTe
+	/ZbGpzKPt9O6pH80Bn2kX1Rs2re//5prx8Q2yf7HufVSZ+7b/8H9Vdm8KC/uHw0m9KKkupvlSNeWl
+	KsIUl2toQg/EwNPKuVQpzP3H4nrIfHDx2WZdKUSywuNaEnxFbuRWIJyn3FjF/oLaMvnC7uvbqwPxe
+	2VyD4UCklqUHlCNFJnVFaQFC5FzW3rsHZZxW6noYmY6CoLIeycNi23H5IM7BC9grhI5oMaBYgjFgI
+	LIrkZhxQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCvNs-00000000mpK-15NG;
-	Wed, 15 Apr 2026 08:14:04 +0000
+	id 1wCvdK-00000000okK-25wq;
+	Wed, 15 Apr 2026 08:30:02 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCvNp-00000000moN-1p8R
+	id 1wCvdI-00000000ojO-21jQ
 	for barebox@lists.infradead.org;
-	Wed, 15 Apr 2026 08:14:02 +0000
+	Wed, 15 Apr 2026 08:30:01 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wCvNm-000357-Jv; Wed, 15 Apr 2026 10:13:58 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <m.tretter@pengutronix.de>)
+	id 1wCvdF-0006uY-IA; Wed, 15 Apr 2026 10:29:57 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wCvNm-005Ts9-1O;
-	Wed, 15 Apr 2026 10:13:58 +0200
-Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wCvNm-00000001tMW-1Gzs;
-	Wed, 15 Apr 2026 10:13:58 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 15 Apr 2026 10:13:57 +0200
-Message-ID: <20260415081357.450925-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	(envelope-from <m.tretter@pengutronix.de>)
+	id 1wCvdF-005Tvl-1C;
+	Wed, 15 Apr 2026 10:29:57 +0200
+Received: from mtr by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <m.tretter@pengutronix.de>)
+	id 1wCvdF-0000000BVUg-18yu;
+	Wed, 15 Apr 2026 10:29:57 +0200
+Date: Wed, 15 Apr 2026 10:29:57 +0200
+From: Michael Tretter <m.tretter@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>,
+	Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Message-ID: <ad9Mhb5l0x4SbXic@pengutronix.de>
+References: <20260409-socfpga-iossm-v1-v2-0-09effab91bc1@pengutronix.de>
+ <20260409-socfpga-iossm-v1-v2-8-09effab91bc1@pengutronix.de>
+ <ad8sU26WfEooMBj7@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ad8sU26WfEooMBj7@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260415_011401_477153_C739671B 
-X-CRM114-Status: UNSURE (   8.75  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260415_013000_519705_F2EC3702 
+X-CRM114-Status: GOOD (  16.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,38 +85,46 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] mci: add missing break
+Subject: Re: [PATCH v2 08/10] arm: socfgpa: iossm: extract initialization of
+ one interface
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-65077d2078 adds a new case to a switch/case which lacks a break, so it
-falls through and EXT_CSD_REV = 0 is detected as MMC_VERSION_4_1 instead
-of MMC_VERSION_4. Add the missing break.
+Hi Sascha,
 
-Fixes: 65077d2078 ("mci: treat unknown MMC version as greater than known versions")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mci/mci-core.c | 1 +
- 1 file changed, 1 insertion(+)
+On Wed, 15 Apr 2026 08:12:35 +0200, Sascha Hauer wrote:
+> This patch causes imtermediate compile breakage.
+> 
+> On Thu, Apr 09, 2026 at 03:52:48PM +0200, Michael Tretter wrote:
+> > +	pr_debug("%s: Start memory initialization BIST on full memory address",
+> > +		 __func__);
+> > +	mem_exp = 0x40;
+> > +
+> > +	ret = io96b_mb_req(io96b_csr_addr,
+> > +			   mb_ctrl->ip_type[interface],
+> > +			   mb_ctrl->ip_instance_id[interface],
+> > +			   CMD_TRIG_CONTROLLER_OP, BIST_MEM_INIT_START,
+> > +			   FIELD_PREP(GENMASK(5, 0), mem_exp),
+> 
+> 0x40 doesn't fit into GENMASK(5, 0).
+> 
+> This is detected here because 0x40 is a constant. In a following patch
+> you add some equations to mem_exp, so it's no longer constant for the
+> compiler and it compiles fine. Nevertheless the 0x40 is still present
+> with this series applied and either that or the mask seem wrong. Can
+> you have a look?
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index d3d7bd5e07..babb180ab1 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -1160,6 +1160,7 @@ static void mci_correct_version_from_ext_csd(struct mci *mci)
- 		switch (mci->ext_csd[EXT_CSD_REV]) {
- 		case 0:
- 			mci->version = MMC_VERSION_4;
-+			break;
- 		case 1:
- 			mci->version = MMC_VERSION_4_1;
- 			break;
--- 
-2.47.3
+The mask for mem_exp is correct. The 0x40 case for initializing the full
+memory should explicitly set bit 6 in the parameter instead of being a
+special value of mem_exp.
 
+Should I send a patch on top of the series or send a v3 with a fix for
+the patch that causes the intermediate compile breakage?
+
+Michael
 
 
