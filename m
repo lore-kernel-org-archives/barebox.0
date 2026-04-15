@@ -1,59 +1,72 @@
-Delivery-date: Wed, 15 Apr 2026 13:15:21 +0200
+Delivery-date: Wed, 15 Apr 2026 13:49:00 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCyDJ-00COj3-00
+	id 1wCyjs-00CP7m-0v
 	for lore@lore.pengutronix.de;
-	Wed, 15 Apr 2026 13:15:21 +0200
+	Wed, 15 Apr 2026 13:49:00 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCyDI-0000kk-8J
-	for lore@pengutronix.de; Wed, 15 Apr 2026 13:15:20 +0200
+	id 1wCyjr-0007DC-P6
+	for lore@pengutronix.de; Wed, 15 Apr 2026 13:49:00 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=rdaEMs14L8gVZdLqV0ZyQrNsBs8ndfpI8wmzN0lA1u8=; b=i5lTMS1SnzIxHxqYcVl2yxNQyp
-	18ExuB8vow/zBVwDFaKc9NJSs1PMm9K81M6+R4GEeZMMPwmrGcvScCjSfHr5RhWCKgAVdq+nLm5DW
-	PELVvJ8j6Tv9h2j98dKA731lrtN+2aDAjST0FZ/z/XdB/reUY/V6dtNv0LMAslxy7/MlU5Xw4DcVa
-	FLAi03WHs0r5QKCux2lY8xBQn3TfJGYYlOkwk/cWs8dlhGOlSUO0ggYIFTtqczAeYjQRBWrP2Nwnu
-	03ul7h3iFecBVCy+IDRomidMr4pMHEgTqz0uesXOdPIvEX35WFsk+4nq742W4D6PVL/GRGyWz1k2I
-	k9ebZhqQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=VUCS7iY7s5dNwKq2nSu2SBAgYFUA1qMszwpT4Wn4bBc=; b=O3JHOeLMmTmmQf0h/3fB3YTyLL
+	iVsAh6Ua84PD9j5WK0fGjQbWIyVVJ/SXEL/yHcDPrU7YGIWVfbCaFPzNNcCQQDcbESfqX7Qgtt+dP
+	OZ6j9rE+Q7RazEvv1mkxq+K16Ur0K6TDKHRkAcNLiPJR+LvCDnz4y4Et8W/RiZssgTSzbPTNwhGIJ
+	PNGAYnZHGSda6Zim5mfuYLWIQLpveMElOQwf2mUWf6l0k28tyLeyEMG2v8Vegczm/uCNTAVVCKBdz
+	EH+jurGKkWdOyEoeiYDDr4/RZllq3MZzqRWUk4XXEFst8NKrYRiCgOiDt3XGb2Nzi/dVT+xcFDt9t
+	KOvoRWMQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCyCx-000000011ht-22ks;
-	Wed, 15 Apr 2026 11:14:59 +0000
+	id 1wCyjN-000000013nt-2kMO;
+	Wed, 15 Apr 2026 11:48:29 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCyCv-000000011fQ-19a5
+	id 1wCyjL-000000013nV-3kGL
 	for barebox@lists.infradead.org;
-	Wed, 15 Apr 2026 11:14:58 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <jre@pengutronix.de>)
-	id 1wCyCt-0000br-Ro; Wed, 15 Apr 2026 13:14:55 +0200
-Message-ID: <cb5f9736-fb0b-49b2-87be-a802ace9a2a0@pengutronix.de>
-Date: Wed, 15 Apr 2026 13:14:55 +0200
+	Wed, 15 Apr 2026 11:48:29 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1wCyjK-00075H-1N; Wed, 15 Apr 2026 13:48:26 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1wCyjJ-005VJe-1z;
+	Wed, 15 Apr 2026 13:48:25 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1wCyjJ-0000000BYJD-27QF;
+	Wed, 15 Apr 2026 13:48:25 +0200
+Date: Wed, 15 Apr 2026 13:48:25 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Michael Tretter <m.tretter@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>,
+	Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Message-ID: <ad97CVPN2MPcnG4h@pengutronix.de>
+References: <ad9o5HBwJw0je5UL@pengutronix.de>
+ <20260415105629.3994364-1-m.tretter@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Fabian Pflug <f.pflug@pengutronix.de>,
- Sascha Hauer <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
-References: <20260415-v2026-03-0-topic-soc_bin_id-v2-0-81fab6ba5de0@pengutronix.de>
- <20260415-v2026-03-0-topic-soc_bin_id-v2-2-81fab6ba5de0@pengutronix.de>
-Content-Language: en-US
-From: Jonas Rebmann <jre@pengutronix.de>
-In-Reply-To: <20260415-v2026-03-0-topic-soc_bin_id-v2-2-81fab6ba5de0@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260415105629.3994364-1-m.tretter@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260415_041457_316848_A26B8277 
-X-CRM114-Status: UNSURE (   6.95  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260415_044827_953368_30018400 
+X-CRM114-Status: GOOD (  12.92  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,23 +84,29 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 2/2] i.MX: HAB: update text for HABV4_CSF_UNLOCK_UID
+Subject: Re: [PATCH] fixup! arm: socfgpa: iossm: extract initialization of
+ one interface
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 2026-04-15 13:10, Fabian Pflug wrote:
-> With the establishment of global.soc_uid_hex, there is no need to look
-> for the serial number and reverse it.
-> 
-> Also some SoC's will have 128-bit UID's, so the hint to 64-bit is not
-> correct and should be removed.
-> 
-> Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
+On Wed, Apr 15, 2026 at 12:56:29PM +0200, Michael Tretter wrote:
+> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+> ---
+>  arch/arm/mach-socfpga/iossm_mailbox.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
 
-Reviewed-by: Jonas Rebmann <jre@pengutronix.de>
+Thanks, integrated it into the series.
+
+Sascha
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
