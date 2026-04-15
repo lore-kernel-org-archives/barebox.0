@@ -1,48 +1,48 @@
-Delivery-date: Wed, 15 Apr 2026 13:11:01 +0200
+Delivery-date: Wed, 15 Apr 2026 13:11:02 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCy97-00CObh-30
+	id 1wCy98-00CObu-0T
 	for lore@lore.pengutronix.de;
-	Wed, 15 Apr 2026 13:11:01 +0200
+	Wed, 15 Apr 2026 13:11:02 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCy97-0008CG-Cx
-	for lore@pengutronix.de; Wed, 15 Apr 2026 13:11:01 +0200
+	id 1wCy97-0008CH-J6
+	for lore@pengutronix.de; Wed, 15 Apr 2026 13:11:02 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=h2JZ4lmQ2XAOuC+cGWqGa7wwuQaxQCDQcK0DSqeRXew=; b=iqG7LpxonIiOscKuVVmMts0s49
-	sE37ZmCy5PV7WYThcHtxx8gUI41KsI35J0blJHpMv9GYh37cDiHzLnGci93IRKZukhXpJlb6Q4Epj
-	eWc85J8OOwcfF3cxLlSgLwjXDdBM0pV53QJn73NSE4zKp2hbkUMFEByN+GX4G98/BiIOBpz3ETYqu
-	NxHkuS/E7bbI4W+U5UUotwzv05sEKYHWgeLNacwjE62fMerAfgb/5FeWb2AAHkCeqadVXUgSViKrD
-	rYZIf89HocEOk80iQE8JQc2hem/kC8Hnqzk4zQ71qUYz46izQoDXD6LyF48u4p03ZXDXqXEOkllJ6
-	NkP16RdA==;
+	bh=6yTApVHTf2UxcWbh9rHMI0FjNl9tbv+WgrwzNVuMTmM=; b=WDqqpRH9fJPvjSM4PDeZ+JuuUH
+	EXU0JXZdnkkUaAe40+FR2BBWvi1r1TDQOrawuODoimXYtvxSp3LxMckLj224nPSJ3HAm50lO5DjT8
+	CvvCInDIWd5Jd1pzHgDhfrSvhgQD6ayE88j78FbBk82p385OlXPC6JnoCRGcyB+/fCReezbPOA00A
+	P7qX170rqTRzKl7bDBTnBm+E6UxIcyMSOVz4cGsjgs7TrkdDCpTqTbT4CnUyOzkF8DRUmBhFly0Jv
+	e3anPeeNz2wEwnueqscldBSOvdF9HAGRWyV8tFpi63OlyZNxUkQtYw8h/Hbic1EPjEWOyUKgv4Q6z
+	im6A4xXg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCy8f-000000011GK-0IgU;
+	id 1wCy8f-000000011GW-2Zej;
 	Wed, 15 Apr 2026 11:10:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCy8c-000000011FK-1O1V
+	id 1wCy8c-000000011FJ-1MEH
 	for barebox@lists.infradead.org;
-	Wed, 15 Apr 2026 11:10:31 +0000
+	Wed, 15 Apr 2026 11:10:32 +0000
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <f.pflug@pengutronix.de>)
-	id 1wCy8Z-0007zH-DW; Wed, 15 Apr 2026 13:10:27 +0200
+	id 1wCy8Z-0007zH-CZ; Wed, 15 Apr 2026 13:10:27 +0200
 From: Fabian Pflug <f.pflug@pengutronix.de>
-Date: Wed, 15 Apr 2026 13:10:22 +0200
+Date: Wed, 15 Apr 2026 13:10:21 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260415-v2026-03-0-topic-soc_bin_id-v2-2-81fab6ba5de0@pengutronix.de>
+Message-Id: <20260415-v2026-03-0-topic-soc_bin_id-v2-1-81fab6ba5de0@pengutronix.de>
 References: <20260415-v2026-03-0-topic-soc_bin_id-v2-0-81fab6ba5de0@pengutronix.de>
 In-Reply-To: <20260415-v2026-03-0-topic-soc_bin_id-v2-0-81fab6ba5de0@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -50,8 +50,8 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
 Cc: Fabian Pflug <f.pflug@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260415_041030_375621_3BE07DA3 
-X-CRM114-Status: GOOD (  10.90  )
+X-CRM114-CacheID: sfid-20260415_041030_376008_EE3DB8E3 
+X-CRM114-Status: GOOD (  12.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,46 +73,63 @@ X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 2/2] i.MX: HAB: update text for HABV4_CSF_UNLOCK_UID
+Subject: [PATCH v2 1/2] common: misc: add soc_uid_hex to globalvar
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-With the establishment of global.soc_uid_hex, there is no need to look
-for the serial number and reverse it.
+uidstr and uidbuf could be the same, but don't have to be. This results
+in uncertainty on what exactly is the current UID used for
+machine_set_hashable and to compare against with TLV.
 
-Also some SoC's will have 128-bit UID's, so the hint to 64-bit is not
-correct and should be removed.
+Add an additional global var, that encodes SoC-UID registers in a
+manner uniform across SoCs/manufacturers.
+
+This can now be used to feed as data for bound-soc-uid into
+`bareboxtlv-generator.py` or as the value for
+`CONFIG_HABV4_CSF_UNLOCK_UID`
 
 Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 ---
- arch/arm/mach-imx/Kconfig | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ common/misc.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 2e4d1ac80a..cb77d0d5b6 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -918,17 +918,12 @@ config HABV4_CSF_UNLOCK_UID
- 	depends on HABV4 && HABV4_CSF_UNLOCK_FIELD_RETURN
- 	string "CSF Unlock UID"
- 	help
--	  Device specific 64-bit UID required to unlock the field-return
-+	  Device specific UID required to unlock the field-return
- 	  feature. This value must match the per device UNIQUE_ID fuses.
+diff --git a/common/misc.c b/common/misc.c
+index ecf9574f7a..be896706d6 100644
+--- a/common/misc.c
++++ b/common/misc.c
+@@ -268,6 +268,7 @@ const uuid_t *barebox_get_product_uuid(void)
+ BAREBOX_MAGICVAR(global.product.uuid, "SMBIOS-reported product UUID");
  
- 	  The below example shows the expected format. The UNIQUE_ID is
--	  printed during boot by barebox:
--	    i.MX___ unique ID: 7766554433221100
--	  or it can be queried by Linux via:
--	    - cat /sys/devices/soc0/serial_number
--	      7766554433221100
--
--	  So this value have to be set:
-+	  stored in $global.soc_uid_hex, but must be split into bytes.
-+	  The soc_uid_hex 0011223344556677 becomes:
- 	    - 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77
+ static char *soc_uid_str;
++static char *soc_uid_bin_str;
+ static void *soc_uid;
+ static size_t soc_uid_len;
  
- 	  Afterwards, the `hab -p -r` command can be used to burn the fuse.
+@@ -295,18 +296,22 @@ void barebox_set_soc_uid(const char *uidstr, const void *uidbuf, size_t len)
+ 	soc_uid = xmemdup(uidbuf, len);
+ 	soc_uid_len = len;
+ 
++	soc_uid_bin_str = xzalloc(len * 2 + 1);
++	bin2hex(soc_uid_bin_str, uidbuf, len);
++
+ 	if (uidstr) {
+ 		soc_uid_str = xstrdup(uidstr);
+ 	} else {
+-		soc_uid_str = xzalloc(len * 2 + 1);
+-		bin2hex(soc_uid_str, uidbuf, len);
++		soc_uid_str = soc_uid_bin_str;
+ 	}
+ 
+ 	machine_id_set_hashable(uidbuf, len);
+ 
+ 	globalvar_add_simple_string("soc_uid", &soc_uid_str);
++	globalvar_add_simple_string("soc_uid_hex", &soc_uid_bin_str);
+ }
+ BAREBOX_MAGICVAR(global.soc_uid, "SoC Unique ID");
++BAREBOX_MAGICVAR(global.soc_uid_hex, "SoC Unique ID (in hex)");
+ 
+ const char *barebox_get_soc_uid(void)
+ {
 
 -- 
 2.47.3
