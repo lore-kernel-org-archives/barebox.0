@@ -1,72 +1,68 @@
-Delivery-date: Wed, 15 Apr 2026 08:39:17 +0200
+Delivery-date: Wed, 15 Apr 2026 08:39:58 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCtu9-00CKKE-1e
+	id 1wCtuo-00CKLC-1c
 	for lore@lore.pengutronix.de;
-	Wed, 15 Apr 2026 08:39:17 +0200
+	Wed, 15 Apr 2026 08:39:58 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wCtu8-0007la-Um
-	for lore@pengutronix.de; Wed, 15 Apr 2026 08:39:17 +0200
+	id 1wCtun-0007xJ-Vu
+	for lore@pengutronix.de; Wed, 15 Apr 2026 08:39:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=sIvVoGqFnulT4T7QmcCFAJzt7BFi1SDuBGiDKMjGuPM=; b=jh0L4xWWGPhknelVOVqpa/3n9d
-	hnZqJCHX/1XTLe4I00a5msU4t4T1yww7nIXmNowtoCDzUsLdvJvBWNjorYuiKzhVtjVq4v5wdNVFJ
-	iUQtsinLRJuX1P0EXZhqO+Nl9jMVcNwQgcBjnnDiPgIuyFMuz3t2NfhZ3OCmZdM/Hl+cUe3ko4qaQ
-	HIQr9Jmuz9iX/scBc8Dz0uFzSXgv/4GAljsjwQjNd4EqyHfOHUNiko00mbPoCEi8N8KhJwe+elO3v
-	l6fB20gMEL33WsPrd3KZiEWjnakkWlXL1+eLADuIuPErWE+51sY0LPTKXw4vmehzFo7Oz837uC0Yc
-	DM3Ldkcw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=GLQofH79rssQqThj1ln75yRV0l/Qmbe8QKjR4wESw3s=; b=Qvj0vA5oza8vPTks1np2z8R49K
+	AHu7VOUVgCp/UvkGL31MJCo08ZnKExG7uHT0NYqlQV2joycXbr9ueO8bNmgx63UaV1R3RI8LHZLdC
+	qlxGlROrSs3jWU/OEFjbf5qEJKRt1OkeK6YsCBS4+JO2pOQHXAbtluU4UtRsv8L8ZfZl3+VTzqsvN
+	xueC+1VLT37mEtA8BOtojnr4xMsXI4yU38bCY5Shzs1N3HlEw2aI2GjlQXhR5YIAtF1TOutSoSZSx
+	C6ZKe9iOGbN7E5Bl87jEdA+6olJfCWsIHl94/q6f3dxbWl3BJ4xDyg3zLw9Dn2+ndfKgzjcXaSFxC
+	EqhE6sVw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCtto-00000000eln-1v1B;
-	Wed, 15 Apr 2026 06:38:56 +0000
+	id 1wCtuS-00000000eyn-0IMG;
+	Wed, 15 Apr 2026 06:39:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wCttl-00000000el2-3LL7
+	id 1wCtuQ-00000000ey6-033D
 	for barebox@lists.infradead.org;
-	Wed, 15 Apr 2026 06:38:55 +0000
+	Wed, 15 Apr 2026 06:39:35 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1wCttj-0007b8-Iw; Wed, 15 Apr 2026 08:38:51 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wCtuO-0007qm-BR; Wed, 15 Apr 2026 08:39:32 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1wCttj-005Szj-1G;
-	Wed, 15 Apr 2026 08:38:51 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1wCttj-0000000BU8I-1EeO;
-	Wed, 15 Apr 2026 08:38:51 +0200
-Date: Wed, 15 Apr 2026 08:38:51 +0200
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wCtuO-005Szn-0X;
+	Wed, 15 Apr 2026 08:39:32 +0200
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wCtuO-0000000Dq1P-0RkW;
+	Wed, 15 Apr 2026 08:39:32 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: anis chali <chalianis1@gmail.com>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-Message-ID: <ad8ye9r314LrcynU@pengutronix.de>
-References: <20260331031723.195128-1-chalianis1@gmail.com>
- <a7593c0f-07ae-476b-846e-3dbaf2ab75d7@pengutronix.de>
- <CAL+1fyCM9baNW9ziBQSxO0AtkmWehBBoYEV_O2SwY3WQ5VV4Ew@mail.gmail.com>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
+In-Reply-To: <20260413200330.1558038-1-a.fatoum@barebox.org>
+References: <20260413200330.1558038-1-a.fatoum@barebox.org>
+Message-Id: <177623517210.3298136.14214269041515291951.b4-ty@pengutronix.de>
+Date: Wed, 15 Apr 2026 08:39:32 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAL+1fyCM9baNW9ziBQSxO0AtkmWehBBoYEV_O2SwY3WQ5VV4Ew@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260414_233853_837087_8A6CD703 
-X-CRM114-Status: GOOD (  21.31  )
+X-CRM114-CacheID: sfid-20260414_233934_052552_437C2906 
+X-CRM114-Status: UNSURE (   6.95  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,52 +80,34 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] usb: dwc2: core: add no-csftrst-wait DT property
+Subject: Re: [PATCH] efi: gop: use screen_base directly instead of shadow
+ buffer
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
 
-On Mon, Apr 13, 2026 at 01:41:28PM -0400, anis chali wrote:
-> and I ended by removing it since it works for now without handling the versions.
+On Mon, 13 Apr 2026 22:03:26 +0200, Ahmad Fatoum wrote:
+> The EFI GOP protocol operates on the hardware framebuffer and calls
+> fb_damage() to notify the driver of updates. Using fb_get_screen_base()
+> would return the shadow buffer when enabled, causing GOP writes to go
+> into the shadow instead of the actual framebuffer.
 > 
-> > > -     ret = dwc2_wait_bit_clear(dwc2, GRSTCTL, GRSTCTL_CSFTRST, 10000);
-> > > -     if (ret) {
-> > > -             dwc2_warn(dwc2, "%s: Timeout! Waiting for Core Soft Reset\n",
-> > > +     /* Wait for at least 3 PHY Clocks */
-> > > +     udelay(1);
-> > > +
-> > > +     if (!of_property_read_bool(np, "no-csftrst-wait")) {
-> >
-> > barebox-specific Device Tree properties should be documented in
-> > Documentation/devicetree/bindings/.
-> Okay, ack.
+> Do as the simplefb fixup does and use the screen_base.
 > 
-> > Alternatively, you can check of_machine_is_compatible("brcm,bcm2711")
-> I choosed to add something in the device tree to not hard code a
-> specific machine in
-> dwc2 in that case we let the machine dts or users facing the same
-> issue to add the dts
-> property without even submitting patch, but if you prefer manage this
-> with checking the
-> machine compatible I can make the change???
+> [...]
 
-The downside with the dts approach is that we never realize that it's
-needed when that person doesn't submit a patch.
+Applied, thanks!
 
-I prefer a machine compatible check at least until a pattern evolved
-where this is needed.
+[1/1] efi: gop: use screen_base directly instead of shadow buffer
+      https://git.pengutronix.de/cgit/barebox/commit/?id=0a0f91d20cd6 (link may not be stable)
 
-Sascha
-
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
