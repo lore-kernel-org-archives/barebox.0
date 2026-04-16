@@ -1,48 +1,48 @@
-Delivery-date: Thu, 16 Apr 2026 17:26:35 +0200
+Delivery-date: Thu, 16 Apr 2026 17:26:37 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDObz-00CriV-0h
+	id 1wDOc1-00Crir-1l
 	for lore@lore.pengutronix.de;
-	Thu, 16 Apr 2026 17:26:35 +0200
+	Thu, 16 Apr 2026 17:26:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDOby-0008Gh-Md
-	for lore@pengutronix.de; Thu, 16 Apr 2026 17:26:35 +0200
+	id 1wDOc0-0008IX-Uy
+	for lore@pengutronix.de; Thu, 16 Apr 2026 17:26:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=8yp7KCB2YvjTX464ytkiOOPnqkds1TQd7HJS1Mv9sLM=; b=XWSXLXXzQo2Q1gZLmRsOY/mmMD
-	FJxJ6xqGwy29vEZCeqtDz/uXprC2xX03DdBWPFYhBPpV5WryiQMOdhutsEPZmOrV3Og7Lyw96iXfl
-	mEm2kOItxlIixw6JOR1q1Pn1S3NcP9U7NAs91dNKMSXhftbv30Zrk2GYTnE485L48QAHFEWJCHFaT
-	cGhDU5foyvrRtIx+BAxK6NK6SDGVEI3Q4zRV4v2owKZA4qDkjYFJ1271MeBrH+CsDjddQCtj4w9jp
-	dVCLAyIJ6ZrdkrLV+XVvycYT1POczR/K71n3iTK538xKjtbrRCSVGuwRhC+zpzFUuC/2AMUQwlH+V
-	+lcslIbw==;
+	bh=CQJdE4iIE8CAfonVpZnOk/EOxBNA92LMllFGcl34yGs=; b=wzGUNhgW2/2kCH1dxSaCJ4t4KK
+	zavCX2t8RWb3c+OkU3evQrDgxDO5t4P+ErGGVprGT4oc1urtHnSh0ldxI4nfsdyoy08cIuh0VuCld
+	zUJbwU3R+teGl3ofaR+ImML52NXsIHvTu0iqXuul3SxgjRN+IsFlGbXdwez68bNJL3s4wxPkDwOF9
+	6W+BlgTQ2nA9l1XNm5TmkOEBXwM5tY5VjVKgsa3lGefE8D0JukD5b4nTwCJ4lir17lIepyhpa+hN9
+	O0ktFQUvQotvwyRbbBtzuXxhRG99JQZPVt++Qf+WWcI6vcyXrqf8nC0zCuRH7BNM59Y91tox+Ar8P
+	hD6CxrbQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDObP-00000002cD4-1x8k;
-	Thu, 16 Apr 2026 15:25:59 +0000
+	id 1wDObO-00000002cCn-3rjr;
+	Thu, 16 Apr 2026 15:25:58 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDObM-00000002cAT-21kg
+	id 1wDObL-00000002cAK-1tvS
 	for barebox@lists.infradead.org;
-	Thu, 16 Apr 2026 15:25:58 +0000
+	Thu, 16 Apr 2026 15:25:57 +0000
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.tretter@pengutronix.de>)
-	id 1wDObI-0007uE-Vw; Thu, 16 Apr 2026 17:25:53 +0200
+	id 1wDObI-0007uE-Uy; Thu, 16 Apr 2026 17:25:52 +0200
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Thu, 16 Apr 2026 17:25:49 +0200
+Date: Thu, 16 Apr 2026 17:25:48 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260416-socfpga-agilex5-iossm-cleanup-v1-4-ca9aae003c84@pengutronix.de>
+Message-Id: <20260416-socfpga-agilex5-iossm-cleanup-v1-3-ca9aae003c84@pengutronix.de>
 References: <20260416-socfpga-agilex5-iossm-cleanup-v1-0-ca9aae003c84@pengutronix.de>
 In-Reply-To: <20260416-socfpga-agilex5-iossm-cleanup-v1-0-ca9aae003c84@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -51,8 +51,9 @@ Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>,
  Michael Tretter <m.tretter@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260416_082556_522657_F59C9BFB 
-X-CRM114-Status: GOOD (  10.10  )
+X-CRM114-CacheID: sfid-20260416_082555_494345_18DCDD7A 
+X-CRM114-Status: UNSURE (   9.74  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,57 +74,81 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH 4/6] arm: socfpga: iossm: remove multiple read of
- status_addr
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 3/6] arm: socfpga: iossm: remove duplicate read of response
+ status
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The value of status_addr is already stored in cal_status. Reading the
-register again is useless.
+The IOSSM_CMD_RESPONSE_STATUS doesn't change after the mailbox command
+has returned. Reading the register again isn't necessary.
 
-Remove the additional reads and use cal_status directly.
+While clearing the IOSSM_STATUS_COMMAND_RESPONSE_READY bit changes the
+response status, this bit may be set in the returned response.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
- arch/arm/mach-socfpga/iossm_mailbox.c | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ arch/arm/mach-socfpga/iossm_mailbox.c | 28 ++++++++--------------------
+ 1 file changed, 8 insertions(+), 20 deletions(-)
 
 diff --git a/arch/arm/mach-socfpga/iossm_mailbox.c b/arch/arm/mach-socfpga/iossm_mailbox.c
-index 24d1404be1a1..fbf46a08d273 100644
+index 7ec79dec4534..24d1404be1a1 100644
 --- a/arch/arm/mach-socfpga/iossm_mailbox.c
 +++ b/arch/arm/mach-socfpga/iossm_mailbox.c
-@@ -237,26 +237,21 @@ void io96b_mb_init(struct io96b_info *io96b_ctrl)
- static int io96b_cal_status(phys_addr_t addr)
+@@ -83,7 +83,7 @@ int io96b_mb_req(phys_addr_t io96b_csr_addr, u32 ip_type, u32 instance_id,
+ 		 struct io96b_mb_resp *resp)
  {
  	int ret;
--	u32 cal_success, cal_fail;
- 	u32 cal_status;
--	phys_addr_t status_addr = addr + IOSSM_STATUS_OFFSET;
+-	u32 cmd_req, cmd_resp;
++	u32 cmd_req;
  
- 	/* Ensure calibration completed */
--	ret = readl_poll_timeout(IOMEM(status_addr),
-+	ret = readl_poll_timeout(IOMEM(addr) + IOSSM_STATUS_OFFSET,
- 				 cal_status,
- 				 !(cal_status & IOSSM_STATUS_CAL_BUSY),
+ 	/* Initialized zeros for responses*/
+ 	memset(resp, 0x0, sizeof(*resp));
+@@ -125,17 +125,14 @@ int io96b_mb_req(phys_addr_t io96b_csr_addr, u32 ip_type, u32 instance_id,
+ 				 resp->cmd_resp_status,
+ 				 resp->cmd_resp_status & IOSSM_STATUS_COMMAND_RESPONSE_READY,
  				 10 * USEC_PER_SEC);
- 	if (ret) {
- 		pr_err("%s: SDRAM calibration IO96b instance 0x%llx timeout\n",
--		       __func__, status_addr);
-+		       __func__, addr);
- 		hang();
- 	}
+-	if (ret) {
+-		pr_err("%s: CMD_RESPONSE ERROR:\n", __func__);
+-		cmd_resp = readl(io96b_csr_addr + IOSSM_CMD_RESPONSE_STATUS_OFFSET);
+-		pr_err("%s: STATUS_GENERAL_ERROR: 0x%x\n", __func__, (cmd_resp >> 1) & 0xF);
+-		pr_err("%s: STATUS_CMD_RESPONSE_ERROR: 0x%x\n", __func__, (cmd_resp >> 5) & 0x7);
+-	}
++	if (ret)
++		pr_warn("%s: CMD_RESPONSE_STATUS ERROR: 0x%lx 0x%lx\n", __func__,
++			FIELD_GET(GENMASK(4, 1), resp->cmd_resp_status),
++			FIELD_GET(GENMASK(7, 5), resp->cmd_resp_status));
  
--	/* Calibration status */
--	cal_success = readl(status_addr) & IOSSM_STATUS_CAL_SUCCESS;
--	cal_fail = readl(status_addr) & IOSSM_STATUS_CAL_FAIL;
+-	/* read CMD_RESPONSE_STATUS*/
+-	resp->cmd_resp_status = readl(io96b_csr_addr + IOSSM_CMD_RESPONSE_STATUS_OFFSET);
+-	pr_debug("%s: CMD_RESPONSE_STATUS 0x%llx: 0x%x\n", __func__, io96b_csr_addr +
+-		IOSSM_CMD_RESPONSE_STATUS_OFFSET, resp->cmd_resp_status);
++	pr_debug("%s: CMD_RESPONSE_STATUS 0x%p: 0x%x\n", __func__,
++		 io96b_csr_addr + IOSSM_CMD_RESPONSE_STATUS_OFFSET,
++		 resp->cmd_resp_status);
+ 
+ 	/* read CMD_RESPONSE_DATA_* */
+ 	resp->cmd_resp_data[0] = readl(io96b_csr_addr + IOSSM_CMD_RESPONSE_DATA_0_OFFSET);
+@@ -151,19 +148,10 @@ int io96b_mb_req(phys_addr_t io96b_csr_addr, u32 ip_type, u32 instance_id,
+ 		 __func__, io96b_csr_addr + IOSSM_CMD_RESPONSE_DATA_2_OFFSET,
+ 		 resp->cmd_resp_data[2]);
+ 
+-	resp->cmd_resp_status = readl(io96b_csr_addr + IOSSM_CMD_RESPONSE_STATUS_OFFSET);
+-	pr_debug("%s: CMD_RESPONSE_STATUS 0x%llx: 0x%x\n", __func__,
+-		 io96b_csr_addr + IOSSM_CMD_RESPONSE_STATUS_OFFSET,
+-		 resp->cmd_resp_status);
 -
--	if (cal_success && !cal_fail)
-+	if ((cal_status & IOSSM_STATUS_CAL_SUCCESS) &&
-+	    !(cal_status & IOSSM_STATUS_CAL_FAIL))
- 		return 0;
- 	else
- 		return -EPERM;
+ 	/* write CMD_RESPONSE_READY = 0 */
+ 	clrbits_le32((u32 *)(uintptr_t)(io96b_csr_addr + IOSSM_CMD_RESPONSE_STATUS_OFFSET),
+ 		     IOSSM_STATUS_COMMAND_RESPONSE_READY);
+ 
+-	resp->cmd_resp_status = readl(io96b_csr_addr + IOSSM_CMD_RESPONSE_STATUS_OFFSET);
+-	pr_debug("%s: CMD_RESPONSE_READY 0x%llx: 0x%x\n", __func__, io96b_csr_addr +
+-		 IOSSM_CMD_RESPONSE_STATUS_OFFSET, resp->cmd_resp_status);
+-
+ 	return 0;
+ }
+ 
 
 -- 
 2.47.3
