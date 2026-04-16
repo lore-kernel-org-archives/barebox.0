@@ -1,16 +1,16 @@
-Delivery-date: Thu, 16 Apr 2026 11:49:01 +0200
+Delivery-date: Thu, 16 Apr 2026 11:49:02 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDJLJ-00Cm5G-2n
+	id 1wDJLK-00Cm5r-0J
 	for lore@lore.pengutronix.de;
-	Thu, 16 Apr 2026 11:49:01 +0200
+	Thu, 16 Apr 2026 11:49:02 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDJLI-0001K6-8r
+	id 1wDJLI-0001KC-AE
 	for lore@pengutronix.de; Thu, 16 Apr 2026 11:49:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,31 +18,31 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5q0IqfDa/tkwQgv4p+j1liiqUnmWZpHKP8rWqC1eq0Y=; b=nakt1+q1YiSMtajOYxNHEByVku
-	e4XpOGhtrAGqmHOgJz3MM+u3i/48sVZ0nZF56K9O2QqKxbqab4vp+E60FLzKg9xytYdOsLrIGtmUk
-	BuamphEcb5ITnXo+1rLKmAkvt0Fn1p2ifiDIOQqC+9azafev1iL7+MZpyTsvcjbNHP6DyVoT/rJyX
-	N/+90MSBx8AE+zqD+pip74/Bt2DtTNenFP30b4KVsx7+8gGgGb8kmfUqFuVOXGki0Q46tNICS9KZL
-	3gluM3r2xkx3Vxs4gOb8gIdwBZYuNiVrdhtKUWdoEK0Z/Jmt3xacWnDklcwNz7NwJueUye7dAriJu
-	Cf0R+P8w==;
+	bh=CgGnbwvqXiwSEVkQAqYzTn28RNMGa54DbrggLzAuGGI=; b=YwXp7AjXm2QX8D5BLKYlXAsnAe
+	t1FU44iOlP+BtIB79bfcrYZpbSVIiIV1in6C2UB28MV0cMwtG+g6uHplzLclmskWc/UihKodoxAmt
+	HRxQKAp5GMLQOWfg7B2B9yYzZMGmtZrmuHfy4QxRyLS3qkggxcD7l7lRjHqE4KY9DkCHtwBkYh/iH
+	gNmUp9570YbrcKveR+z1GzuYl4I7yPPayzXYlwW3vJ1cOuimBMS/EHf/IdL0eAFnef5UqjsthPimU
+	diLEXG2698W73+aVuv8PWTssrvPYnf7Hgw2iaSqDn7X4gsval9rzigmAkg5deyXnEMGSIqsmrQpIT
+	gT7S5Saw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDJKe-00000002GRD-0vbf;
-	Thu, 16 Apr 2026 09:48:20 +0000
+	id 1wDJKh-00000002GTB-38c0;
+	Thu, 16 Apr 2026 09:48:23 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDJKa-00000002GO8-3LWa
+	id 1wDJKa-00000002GOD-3cck
 	for barebox@lists.infradead.org;
-	Thu, 16 Apr 2026 09:48:19 +0000
+	Thu, 16 Apr 2026 09:48:20 +0000
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.tretter@pengutronix.de>)
-	id 1wDJKX-0000o5-32; Thu, 16 Apr 2026 11:48:13 +0200
+	id 1wDJKX-0000o5-91; Thu, 16 Apr 2026 11:48:13 +0200
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Thu, 16 Apr 2026 11:48:06 +0200
+Date: Thu, 16 Apr 2026 11:48:11 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260416-socfpga-agilex5-sdram-v1-2-07556aa7219f@pengutronix.de>
+Message-Id: <20260416-socfpga-agilex5-sdram-v1-7-07556aa7219f@pengutronix.de>
 References: <20260416-socfpga-agilex5-sdram-v1-0-07556aa7219f@pengutronix.de>
 In-Reply-To: <20260416-socfpga-agilex5-sdram-v1-0-07556aa7219f@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -51,9 +51,8 @@ Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>,
  Michael Tretter <m.tretter@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260416_024816_846318_A64D32CB 
-X-CRM114-Status: UNSURE (   9.70  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260416_024816_977273_ADBD9686 
+X-CRM114-Status: GOOD (  12.93  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,62 +74,65 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/9] arm: socfgpa: agilex5: remove unused memsize
+Subject: [PATCH 7/9] arm: socfpga: agilex5: read SDRAM limits from firewall
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The memsize parameter isn't used when loading the TF-A. Furthermore,
-using a fixed memory size may be wrong if inline ecc is enabled, because
-inline ecc reduces the amount of usable memory.
+The hard-coded membase and memsize are not flexible enough for the
+configurable SDRAM setup on Agilex 5.
 
-Remove the parameter to avoid confusion.
+The SZ_1M offset is the result of reserving some memory for the TF-A.
+The offset isn't correct anymore, if the reserved area for the TF-A is
+changed.
+
+The memory size may change, if the EMIF is configured with inline ECC,
+which reserves 1/8 of the memory for checksums and reduces the usable
+SDRAM size. Depending on the EMIF configuration, the same board may or
+may not use inline ECC.
+
+Since the PBL in EL3 configures the firewall to consider the reserved
+area for the TF-A and the reserved memory for ECC checksums, the PBL in
+EL1 may read back the configuration to determine the usable memory for
+barebox proper.
+
+Add sanity checks on the base address and size to ensure the firewall is
+actually configured.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
- arch/arm/boards/arrow-axe5-eagle/lowlevel.c | 2 +-
- arch/arm/mach-socfpga/atf.c                 | 2 +-
- include/mach/socfpga/generic.h              | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/boards/arrow-axe5-eagle/lowlevel.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm/boards/arrow-axe5-eagle/lowlevel.c b/arch/arm/boards/arrow-axe5-eagle/lowlevel.c
-index 6b158305fdb5..41c1b832a682 100644
+index 41c1b832a682..4817b3ec2d86 100644
 --- a/arch/arm/boards/arrow-axe5-eagle/lowlevel.c
 +++ b/arch/arm/boards/arrow-axe5-eagle/lowlevel.c
-@@ -63,7 +63,7 @@ static noinline void axe5_eagle_continue(void)
- 		socfpga_mailbox_s10_init();
- 		socfpga_mailbox_s10_qspi_open();
+@@ -21,6 +21,8 @@ extern char __dtb_z_socfpga_agilex5_axe5_eagle_start[];
+ static noinline void axe5_eagle_continue(void)
+ {
+ 	void *fdt;
++	phys_addr_t membase;
++	phys_size_t memsize;
  
--		agilex5_load_and_start_image_via_tfa(SZ_1G);
-+		agilex5_load_and_start_image_via_tfa();
- 	}
+ 	agilex5_clk_init();
+ 
+@@ -68,7 +70,15 @@ static noinline void axe5_eagle_continue(void)
  
  	fdt = __dtb_z_socfpga_agilex5_axe5_eagle_start;
-diff --git a/arch/arm/mach-socfpga/atf.c b/arch/arm/mach-socfpga/atf.c
-index 98460472227e..3ad19e33ac94 100644
---- a/arch/arm/mach-socfpga/atf.c
-+++ b/arch/arm/mach-socfpga/atf.c
-@@ -9,7 +9,7 @@
- #include <mach/socfpga/generic.h>
- #include <mach/socfpga/soc64-regs.h>
  
--void __noreturn agilex5_load_and_start_image_via_tfa(unsigned long memsize)
-+void __noreturn agilex5_load_and_start_image_via_tfa(void)
- {
- 	void *bl31 = (void *)AGILEX5_ATF_BL31_BASE_ADDR;
- 	void *bl33 = (void *)AGILEX5_ATF_BL33_BASE_ADDR;
-diff --git a/include/mach/socfpga/generic.h b/include/mach/socfpga/generic.h
-index 07add9ed40d6..06768e9ec0a0 100644
---- a/include/mach/socfpga/generic.h
-+++ b/include/mach/socfpga/generic.h
-@@ -100,7 +100,7 @@ static inline void arria10_watchdog_disable(void) {}
- #endif
+-	barebox_arm_entry(SOCFPGA_AGILEX5_DDR_BASE + SZ_1M, SZ_1G - SZ_1M, fdt);
++	membase = agilex5_mpfe_sdram_base();
++	memsize = agilex5_mpfe_sdram_size();
++
++	if (membase < SOCFPGA_AGILEX5_DDR_BASE || memsize == 0) {
++		pr_err("Invalid firewall configuration\n");
++		hang();
++	}
++
++	barebox_arm_entry(membase, memsize, fdt);
+ }
  
- int agilex5_clk_init(void);
--void __noreturn agilex5_load_and_start_image_via_tfa(unsigned long memsize);
-+void __noreturn agilex5_load_and_start_image_via_tfa(void);
- 
- static inline void __udelay(unsigned us)
- {
+ ENTRY_FUNCTION_WITHSTACK(start_socfpga_agilex5_axe5_eagle, AXE5_STACKTOP, r0, r1, r2)
 
 -- 
 2.47.3
