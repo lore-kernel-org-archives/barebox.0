@@ -1,59 +1,58 @@
-Delivery-date: Fri, 17 Apr 2026 12:18:03 +0200
+Delivery-date: Fri, 17 Apr 2026 12:22:10 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDgGx-00D9sc-1c
+	id 1wDgKw-00D9w0-1d
 	for lore@lore.pengutronix.de;
-	Fri, 17 Apr 2026 12:18:03 +0200
+	Fri, 17 Apr 2026 12:22:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDgGw-0000s0-Te
-	for lore@pengutronix.de; Fri, 17 Apr 2026 12:18:03 +0200
+	id 1wDgKv-0001zc-UB
+	for lore@pengutronix.de; Fri, 17 Apr 2026 12:22:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=PvjjzwvX9vdMM/pIBLKqUD1X99zWWmBJlDM+8Fm19aM=; b=gyaxHUSY85M+EhWH9FQ0/lSOWX
-	PqnBLluWSYw6vjImMalmBzn33b3cOJcLkwW5c7WG4VQgG1saeK8Prg55uEPlaMqrAYz+xh5IIMARl
-	09L6LZ0Y+qxebdsmb59rp2Ga3jylzcWTkPDpKnw2e0OrsVwCS+Xa8IlyitQRE28YS70y+0Kg4RdVW
-	7kMxlnVBmqCpo9IjYB+wNj45ZVoFT++ou3iOShEIAxg1mh9FB+pcT/JbSMgOICKq70aBj514jOhWU
-	TYBGscfs6ddf2ZIy1EnKK74v3gHDhKGaFY0v9c5mk7wc72afTAAnQgZM06qu9JnRPjEdOqx1jU0vW
-	Ewdq7PZg==;
+	bh=ZF+PmVJDstEHFGdOdL5lb7jDikxKewbdNpgFm2K7knU=; b=01OcfLr1UrVbFARtptXMfeRqPr
+	qIloEllZuZrLHwHWZu/wZ/jQZEZ16K9m3w8439PK8/NTIZQynfcknuK9rdWH/7XNsvTX/MH+A4Bm/
+	sVPjlANOOVzdfQ5+o6x4uOBAHsiPFHYZh91gMOLzW8H/iJ2L/5iUHfbznDig/mJdpv1sV95idiqGF
+	Sv1Oe2BXu0PKdqwAy6ukO7pD5wXYuG2oqlwvAPL8mdOwaDaQr60toCRcICq8NU9v8qkkWNe+4ouaP
+	0VA3woZGuYz3R9baVjhIecoo2ttRzqU5pbrADfEgYyXnh+k5E+SAEsFGdvXYcME0vIIhgG/IQF0nX
+	5SlawpKA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDgGY-00000003tdU-26x8;
-	Fri, 17 Apr 2026 10:17:38 +0000
+	id 1wDgKX-00000003trz-2vY9;
+	Fri, 17 Apr 2026 10:21:45 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDgGV-00000003tc0-3Kua
+	id 1wDgKU-00000003tre-3jYR
 	for barebox@lists.infradead.org;
-	Fri, 17 Apr 2026 10:17:37 +0000
+	Fri, 17 Apr 2026 10:21:44 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wDgGU-0000gC-Am; Fri, 17 Apr 2026 12:17:34 +0200
-Message-ID: <59b1bfad-4943-4525-93eb-181286d6040b@pengutronix.de>
-Date: Fri, 17 Apr 2026 12:17:33 +0200
+	id 1wDgKT-0001qB-9I; Fri, 17 Apr 2026 12:21:41 +0200
+Message-ID: <7ad46afe-923f-4dfb-a87e-7453d00f205a@pengutronix.de>
+Date: Fri, 17 Apr 2026 12:21:40 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Sascha Hauer <s.hauer@pengutronix.de>,
  BAREBOX <barebox@lists.infradead.org>
 Cc: "Claude Opus 4.6" <noreply@anthropic.com>
 References: <20260402-net-eth-do-udp-v1-0-af5d9fd6beec@pengutronix.de>
- <20260402-net-eth-do-udp-v1-10-af5d9fd6beec@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260402-net-eth-do-udp-v1-10-af5d9fd6beec@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <20260402-net-eth-do-udp-v1-0-af5d9fd6beec@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260417_031735_848761_34896746 
-X-CRM114-Status: GOOD (  15.38  )
+X-CRM114-CacheID: sfid-20260417_032142_942551_862651A7 
+X-CRM114-Status: GOOD (  15.51  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,61 +74,68 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 10/10] net: remove unused
- net_eth_to_udp{hdr,_payload,len}() helpers
+Subject: Re: [PATCH 00/10] net: prevent buffer overflows in UDP packets
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
+Hello Sascha,
 
 On 4/2/26 8:36 AM, Sascha Hauer wrote:
-> All callers have been converted to net_eth_to_udp() which validates
-> the packet length before accessing headers.  Remove the old helpers.
+> Our UDP handlers all use a UDP packets length without checking if it
+> fits into the incoming ethernet frame. Create a net_eth_to_udp() helper
+> which does the bounds checking and use it throughout the code.
+
+Thanks for the fixes!
+
+For the protocols, I'd probably have used a macro:
+
+	struct ntp_packet *ntp;
+
+	ntp = net_eth_to_udp_proto(pkt, len, struct ntp_packet, &udp);
+	if (!ntp)
+		return;
+
+But that's just personal taste.
+
+A number of places were passing frame length although they have advanced
+the base pointer. They all seem fixed here, but there's may be potential
+for breakage because of incorrect assumptions that no longer hold.
+
+I guess we will see.
+
+Thanks again,
+Ahmad
+
 > 
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
 > ---
->  include/net.h | 16 ----------------
->  1 file changed, 16 deletions(-)
+> Sascha Hauer (10):
+>       net: add net_eth_to_udp() helper for validated UDP extraction
+>       fs: tftp: use net_eth_to_udp() for packet parsing
+>       net: dhcp: use net_eth_to_udp() for packet parsing
+>       fs: nfs: use net_eth_to_udp() for packet parsing
+>       net: dns: use net_eth_to_udp() for packet parsing
+>       net: sntp: use net_eth_to_udp() for packet parsing
+>       net: netconsole: use net_eth_to_udp() for packet parsing
+>       net: fastboot: use net_eth_to_udp() for packet parsing
+>       net: fastboot: stop using net_eth_to_udp_payload() for PACKET_SIZE
+>       net: remove unused net_eth_to_udp{hdr,_payload,len}() helpers
 > 
-> diff --git a/include/net.h b/include/net.h
-> index bdf39bc531..4d443135c1 100644
-> --- a/include/net.h
-> +++ b/include/net.h
-> @@ -282,11 +282,6 @@ static inline struct iphdr *net_eth_to_iphdr(char *pkt)
->  	return (struct iphdr *)(pkt + ETHER_HDR_SIZE);
->  }
->  
-> -static inline struct udphdr *net_eth_to_udphdr(char *pkt)
-> -{
-> -	return (struct udphdr *)(net_eth_to_iphdr(pkt) + 1);
-> -}
-> -
->  static inline struct icmphdr *net_eth_to_icmphdr(char *pkt)
->  {
->  	return (struct icmphdr *)(net_eth_to_iphdr(pkt) + 1);
-> @@ -297,17 +292,6 @@ static inline char *net_eth_to_icmp_payload(char *pkt)
->  	return (char *)(net_eth_to_icmphdr(pkt) + 1);
->  }
->  
-> -static inline char *net_eth_to_udp_payload(char *pkt)
-> -{
-> -	return (char *)(net_eth_to_udphdr(pkt) + 1);
-> -}
-> -
-> -static inline int net_eth_to_udplen(char *pkt)
-> -{
-> -	struct udphdr *udp = net_eth_to_udphdr(pkt);
-> -	return ntohs(udp->uh_ulen) - 8;
-> -}
-> -
->  struct net_udp_pkt {
->  	struct udphdr *udp;
->  	void *payload;
+>  fs/nfs.c         | 11 +++++++----
+>  fs/tftp.c        |  9 +++++----
+>  include/net.h    | 21 +++++++--------------
+>  net/dhcp.c       | 16 +++++++++-------
+>  net/dns.c        |  9 ++++++---
+>  net/fastboot.c   | 25 ++++++++++++++++---------
+>  net/net.c        | 40 ++++++++++++++++++++++++++++++++++++++++
+>  net/netconsole.c |  7 +++++--
+>  net/sntp.c       | 14 +++++++++-----
+>  9 files changed, 104 insertions(+), 48 deletions(-)
+> ---
+> base-commit: 0933e8f2ebf0d91dfcf177a4e4292b02921a53f1
+> change-id: 20260402-net-eth-do-udp-327f4e65ddd5
 > 
+> Best regards,
 
 -- 
 Pengutronix e.K.                  |                             |
