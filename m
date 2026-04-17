@@ -1,67 +1,67 @@
-Delivery-date: Fri, 17 Apr 2026 12:44:23 +0200
+Delivery-date: Fri, 17 Apr 2026 12:44:53 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDggR-00DAJ8-0d
+	id 1wDggv-00DAJu-0y
 	for lore@lore.pengutronix.de;
-	Fri, 17 Apr 2026 12:44:23 +0200
+	Fri, 17 Apr 2026 12:44:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDggQ-0000Oe-M2
-	for lore@pengutronix.de; Fri, 17 Apr 2026 12:44:23 +0200
+	id 1wDggu-0000aU-P9
+	for lore@pengutronix.de; Fri, 17 Apr 2026 12:44:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=hII9XVIGK7Tx97JbBmRI5XAZqjSurfy0dHeMdABtGik=; b=scPNRWBPjooY0AuffdjbdR/XEy
-	UsEzR43h1Ztu2+PAV/HNQ7nnwA9IR+c5HxzRAmN3DA1FOoE002ZlQbczNV92DviKO4MqB0pbCltnK
-	gWY3IAg0yx8H1w6QL8ofycKo45u7vm221YktyV4OCE0GBDUDfRr8zGGtzBH+VHsQ0s4HTDdvt8qLw
-	EqD4mvkzsft6WljZlaD0QiLbVv7CAy1UbhSSdjb4hXKzlOyW0sLKe5n9ZSdU8jb/5FyeuQShmCAd/
-	0+cb+EuD/h0C7FKWRM/k6IgEyZLKLvW/Rk6xbm4lhkQUor8O4ky2sogJTQBDGX/FC3359Iu8XK9eF
-	FUb8cvGw==;
+	bh=REXgjM9sNg/4CtJD0obJtg+4FJ4JlVzgMo2SdTcykaw=; b=xcKVRJpohKsM3ACay/w1YxCRCu
+	ec9YYb3GwUkiYTwILqmpxh3pOR8ajZhV0ATPWHlEsNiic3mL3R1O4OHYa0ofDfk5j5+oCYAGGUB8p
+	3YPbw5Qo/LFzxEoNo0kXOPTq5J/sJxIH5WsY5olMWtcHF1AQ1onkgHy5q+Inv8HeWAFRvZVfta0cp
+	1edJdCRbSsoYdM7XFLQ0CgAD8QP6uGgIWPfwlA7zriEmm+3ax5zeDN9XD6DTIfLoegQQGOR2ehGlK
+	51sT1hoUwS1MiyNmRRnlb92WgB+7OkzokypYpWcjn9UKS4kyhyaYjWMRmWKqo1LL7VHcHUEwAgZ2O
+	oTlpBQDQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDgg2-00000003vJE-47Tn;
-	Fri, 17 Apr 2026 10:43:58 +0000
+	id 1wDggY-00000003vQN-3C6x;
+	Fri, 17 Apr 2026 10:44:30 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDgg0-00000003vIY-3OaO
+	id 1wDggX-00000003vPN-0weh
 	for barebox@lists.infradead.org;
-	Fri, 17 Apr 2026 10:43:58 +0000
+	Fri, 17 Apr 2026 10:44:30 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wDgfz-0000FM-7T; Fri, 17 Apr 2026 12:43:55 +0200
+	id 1wDggV-0000QL-Mq; Fri, 17 Apr 2026 12:44:27 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wDgfz-005pmW-08;
-	Fri, 17 Apr 2026 12:43:55 +0200
+	id 1wDggV-005pme-1d;
+	Fri, 17 Apr 2026 12:44:27 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wDgfy-00000000fAI-46wm;
-	Fri, 17 Apr 2026 12:43:54 +0200
+	id 1wDggV-00000000fEI-1sJV;
+	Fri, 17 Apr 2026 12:44:27 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260417085235.3689546-1-a.fatoum@pengutronix.de>
-References: <20260417085235.3689546-1-a.fatoum@pengutronix.de>
-Message-Id: <177642263497.158083.5247311821726828712.b4-ty@pengutronix.de>
-Date: Fri, 17 Apr 2026 12:43:54 +0200
+In-Reply-To: <20260417092657.3830781-1-a.fatoum@pengutronix.de>
+References: <20260417092657.3830781-1-a.fatoum@pengutronix.de>
+Message-Id: <177642266744.158329.4894126478221488807.b4-ty@pengutronix.de>
+Date: Fri, 17 Apr 2026 12:44:27 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260417_034356_852701_85728C3A 
-X-CRM114-Status: UNSURE (   4.61  )
+X-CRM114-CacheID: sfid-20260417_034429_265515_1D6A1B1A 
+X-CRM114-Status: UNSURE (   6.12  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -83,29 +83,27 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master 1/4] Documentation: migration-guide: fix
- TQMA8MPxL section
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v3] Documentation: migration-guides: mention possible
+ FIT compat break
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Fri, 17 Apr 2026 10:52:24 +0200, Ahmad Fatoum wrote:
-> This was erroneously a .md file, but we expect .rst files.
-> Rename the file and reformat the entry a bit.
+On Fri, 17 Apr 2026 11:26:26 +0200, Ahmad Fatoum wrote:
+> With manually written ITS, it's easy to omit signing some of the images.
+> This flew under the radar so far, but with v2026.03.0 (or v2025.09.3),
+> this will lead to verification failure.
 > 
+> The security advisory has been updated, but it's nonetheless worth an
+> addition to the migration guide.
 > 
+> [...]
 
 Applied, thanks!
 
-[1/4] Documentation: migration-guide: fix TQMA8MPxL section
-      https://git.pengutronix.de/cgit/barebox/commit/?id=c70327456540 (link may not be stable)
-[2/4] Documentation: migration-guide: reinstate HABv4-enablement
-      https://git.pengutronix.de/cgit/barebox/commit/?id=e390001c168d (link may not be stable)
-[3/4] Documentation: migration-guide: mention TF-A v2.14 compatibility
-      https://git.pengutronix.de/cgit/barebox/commit/?id=b35eae69b4d3 (link may not be stable)
-[4/4] Documentation: migration-guide: add note about ZynqMP OP-TEE
-      https://git.pengutronix.de/cgit/barebox/commit/?id=e6e6706f9353 (link may not be stable)
+[1/1] Documentation: migration-guides: mention possible FIT compat break
+      https://git.pengutronix.de/cgit/barebox/commit/?id=3160d162e2ab (link may not be stable)
 
 Best regards,
 -- 
