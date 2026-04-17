@@ -1,110 +1,65 @@
-Delivery-date: Fri, 17 Apr 2026 13:12:20 +0200
+Delivery-date: Fri, 17 Apr 2026 14:20:45 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDh7U-00DAu7-0o
+	id 1wDiBh-00DC6C-2d
 	for lore@lore.pengutronix.de;
-	Fri, 17 Apr 2026 13:12:20 +0200
+	Fri, 17 Apr 2026 14:20:45 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDh7T-0008Ub-N9
-	for lore@pengutronix.de; Fri, 17 Apr 2026 13:12:20 +0200
+	id 1wDiBh-00028U-8m
+	for lore@pengutronix.de; Fri, 17 Apr 2026 14:20:45 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
-	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=X8pQT49YZCNlrsDvgq9kqM+KHGg+lIRikEuX/AWc5LU=; b=biNrOG3J4H7tA2goBfFyjHzLAh
-	Du5+t/1J2Cp5a8hLIg6owfsSSC8Wloj9o4gFxNEHKXEqWOZ+fI4c5tPHBbVmOaTA4JcAs0tV0sKC8
-	RnxFKaed19Wyh9BLvLQLnw7pw86wGjNcGMaizHvKu+Q7+400ryYRnjP0/IE9P7JXQ0BspzUk3Wr+u
-	h7hx4UsS0UfyN0ELrQdnZKGOjH93TymWGZpHdmUpfSzVXXAwsVDT4QROEKBU732tSftq3BW3rdgn2
-	IDkz5FirxdCZcYrIF3IVLWiBtJS+PGjVl0zQyL/D3D1taWiKh6hfC1uDomIVYI5ShQwqlgVpB6deV
-	AYVJIpeQ==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=0PlBeCYHtbVmLPgmiiUiMbGGhi3Q/CdKibYcPvBmup0=; b=roaRK13gqjRyPfCXRiSz4BtMCN
+	+WhnbWhgPP4HpdsPKgaGUA/vLOqXyUabuoA47GoPNhXXZifuBZi2/tAfjfUirDzZkwM1VM7XK8pcX
+	yqz4ByZuPjM+woh7tt6CMBeDFPebwcwKMOzJMjjlP4fvOO4mYP9+hdd7pfIA9BLdQFR8PkCc2+79B
+	Ef2AwkzX+uqFH7VkvEcpN6lLgCQbC6G3CYVINuBCyO074H2WsQ8CLP11wL8VLqU9vlEV5hHKy03oH
+	/z8eUvLcu7ChDqznG3BIB4k+Uj+Ijx+t2soahmxeUabGjMiy0djcI8aEZoi110zyXr8nLgyIyc7zL
+	KeW9qxqQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDh75-00000003xbB-18Jn;
-	Fri, 17 Apr 2026 11:11:55 +0000
-Received: from mail-dl1-x1233.google.com ([2607:f8b0:4864:20::1233])
+	id 1wDiBA-0000000429X-1YW0;
+	Fri, 17 Apr 2026 12:20:12 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDh72-00000003xZN-3MOc
+	id 1wDiB7-0000000428j-0T5A
 	for barebox@lists.infradead.org;
-	Fri, 17 Apr 2026 11:11:54 +0000
-Received: by mail-dl1-x1233.google.com with SMTP id a92af1059eb24-12c637089ccso1315588c88.1
-        for <barebox@lists.infradead.org>; Fri, 17 Apr 2026 04:11:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1776424312; cv=none;
-        d=google.com; s=arc-20240605;
-        b=B7gfgMN0p0aT6Rz8MCpbBCiEBfbKCnRWRdyq3ma/xormG945urZ+SRGqLwgKc8KGn+
-         3OfvbyupIpiFpsb6VDJXll42SvbApPhtXoJ2w+wJ6wU6Lrs/YmKlo4HSMQv+cJrLQEbt
-         +pSiCeLG4oFy6p5rE8zb8qO0Xb09I01sIQ5yQyFWYBK4ro5dEfGq++Jhq0eOGO7G/evJ
-         BGW6gLiXvlkTRp9Ro2gA/ja1HxLABTveUQr1mt0YWWN2fIo8QC9HVKgPQiFOT8/n9eSC
-         RffA1tUuR18FUwbz3OktDLr/IWGBkBxF3LP2WlAyLNcZGr1jGBn1mUv6I74MIm47gusL
-         ftBg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=X8pQT49YZCNlrsDvgq9kqM+KHGg+lIRikEuX/AWc5LU=;
-        fh=QTl4aF0/iXkDY6Uf61Tk/V/7sh5GF70RwK/YHfa2l1k=;
-        b=Qsb8LE/iaqAhMvJnI6pwT/aGmSSa5vURtnkaMzbv2Z2MRKogHxMWEfgpzjlKdjGS5F
-         Zc1GP8bsZAJVwsX5A/wukTgmqXAcQS3I9OoHc0WqtzvYxQk8f19hao/QkAI8gr9ZPPAu
-         b/7j6C9dxaojoVosds9jS7rkbd11+R0jbvsdHw1mGjK2moA83FffCM5NjgPp9I4nCZ6M
-         gex1W9KCQJ2q4D23JRABabnscudVyFzxbJ+Twvadv7br12dutsVBxZs1BQSDOruKgBf4
-         UaDA4tQRLj2uD3EmistSYx+1Hq3uVr9vIkcIvvh+RCVmVburqsPeseyPOMXp1FrQsY4K
-         xvkA==;
-        darn=lists.infradead.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1776424312; x=1777029112; darn=lists.infradead.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X8pQT49YZCNlrsDvgq9kqM+KHGg+lIRikEuX/AWc5LU=;
-        b=VqFdJlUtx+lqWW4H1iO8+Ra0Uwtu+Jyh7gJg5byl/s5jD+/G2Le+STXxdgOL3qXYUj
-         /nayC7kFLqfk7oAPNXsRp9xMUTidAVrV9ib+JSP4rtMPrwqgmmFl55s+FDuQpUCXqYJv
-         Gy+IYFSoejgqvnwM0y2tXGWcoTPZ9NJvoRdV1M9tPx9lU2plYP0KOet01NI3CTVI8XoK
-         PS4OQ0vCDAxzgC/k6IM9ejexad93JMzzWxk/Sa+jk1vByYTXQc11dCUtHOOgoUlK4KG4
-         GsKTzTbV1s34+Zs7/wULmDiMRUaZW+joVXR3Cl/2KyLi78yP4boO7t0kjjUciwYqZrqP
-         J8Gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1776424312; x=1777029112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=X8pQT49YZCNlrsDvgq9kqM+KHGg+lIRikEuX/AWc5LU=;
-        b=B8+RQcrJ7VQzmXJGCPDzAdgrn/FYXIATlGljowrieMJ31LWOadT6jeA212H0S6TKkM
-         QGoaqvUVvhvkP4Ho0o4QJKcDqVE6tInSBQ6mW91LzQmA7XVM+5tBORb5oKmXeZDdeEG5
-         OZXTfsl6cSqVcVB+wB1aAD4CJs4SZxaSGeizgaQwZ1sj6wCtvBDCKkgs7i+5ILFl9PV3
-         uLXoR7ALzlne4nxpCr6ZE3c64EupjhppPyQfcERc1HZMJ2O6oJVdJ0zd0SjbZ14B+dVP
-         IgsR6IisNZUr8MJvOFh896sGFcuZbAqbKItbInvdpX4UFR4aKUR804ZbpI7mgp204+c0
-         40mw==
-X-Gm-Message-State: AOJu0YxUvzUlYbm11ng74k7f73yV0fU8PIZeTMy5kiNtG1bUAU/6Erb8
-	XdhzTTCVJPVJiWDo09cUeHbNaA2lOtN+CMMg/psxMaTvkT/ttX45y5Fh81wY2GbMIcnc1m6hMSJ
-	1v5XsTi87q61a7b5e0GhASIs0c9FYZgTe38zlUKo=
-X-Gm-Gg: AeBDiet6cr2j00pKlF2PiRa1UaGZECg8v9qgSanxhuEQ5l4XXiVez/qGubmUlOdhJIJ
-	umeEXbelhPq/aPuPOIOCSMBCSeLdZT7DsRjgBOmNLrO5SQgUslF1ab/LqYUy1C3MgNSgMrveOxg
-	y8uD4yctqFO3yyFPqkzGMo2xsC7PKNLMrZvUnoyWcLSS1QuuOxY9J54iVFx9M1YUE9mxNjHYoau
-	FNg5oTj0ggw8+ZTmxk0gPdTYApKH8fnXSRQhLdMaOaPeVwN1k6fVUM75m8PZD7ioRwPZTxXy9hg
-	OlEej7VMaKxw0wHq7Q8=
-X-Received: by 2002:a05:7022:e1f:b0:12c:22be:385b with SMTP id
- a92af1059eb24-12c73f66c73mr954276c88.4.1776424311938; Fri, 17 Apr 2026
- 04:11:51 -0700 (PDT)
+	Fri, 17 Apr 2026 12:20:10 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1wDiB5-0001wo-3N; Fri, 17 Apr 2026 14:20:07 +0200
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1wDiB4-005qVq-2x;
+	Fri, 17 Apr 2026 14:20:06 +0200
+Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1wDiB4-00000008WVH-3RWD;
+	Fri, 17 Apr 2026 14:20:06 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 17 Apr 2026 14:20:02 +0200
+Message-ID: <20260417122004.2030708-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-References: <20260416125512.3275056-1-eagle.alexander923@gmail.com> <aeHzAfUsNYQL3S4h@pengutronix.de>
-In-Reply-To: <aeHzAfUsNYQL3S4h@pengutronix.de>
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Fri, 17 Apr 2026 14:11:38 +0300
-X-Gm-Features: AQROBzA4liIVXcDg1FpxNWhWI5OSb_BxcHodbMWTLVEf8YRHFhszssAld-mYaGI
-Message-ID: <CAP1tNvQdF5Di3fbpRyiqBprNi08N9PJGnZjP9Ssq8tZ0-Emtmw@mail.gmail.com>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260417_041152_842056_3968310B 
-X-CRM114-Status: GOOD (  18.82  )
+X-CRM114-CacheID: sfid-20260417_052009_151997_33E7A6A4 
+X-CRM114-Status: GOOD (  10.66  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -122,50 +77,59 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] bootm: filter out "<NULL>" rootopts to avoid kernel
- cmdline noise
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: [PATCH] ARM: dts: stm32mp: stm32mp135-dk: disable button on PA13
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Is dev_get_param() return NULL or empty string if missing?
-Maybe we need to check (val && *val) ?
+After update to the v7.0-rc1 device trees, boot up on the board
+reports following error:
 
-=D0=BF=D1=82, 17 =D0=B0=D0=BF=D1=80. 2026=E2=80=AF=D0=B3. =D0=B2 11:44, Sas=
-cha Hauer <s.hauer@pengutronix.de>:
->
-> Hi Alexander,
->
-> On Thu, Apr 16, 2026 at 03:55:12PM +0300, Alexander Shiyan wrote:
-> > When rootopts is set to the literal string "<NULL>" (e.g., due to a
-> > missing or invalid value in cdev_get_linux_root_and_opts), the resultin=
-g
-> > kernel command line contains "root=3D/dev/... <NULL>", which is invalid
-> > and may cause boot failures or confusion.
-> >
-> > This patch checks for the "<NULL>" string in rootopts and replaces it
-> > with NULL before calling format_root_bootarg(), effectively omitting
-> > the erroneous token from the command line.
->
-> I would rather avoid setting it to "<NULL>" in the first place.
->
-> Does the patch I just sent help or is there another place where this
-> happens?
->
-> Sascha
->
-> --
-> Pengutronix e.K.                           |                             =
-|
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  =
-|
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    =
-|
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 =
-|
+  ERROR: gpiolib: _gpio_request: gpio-13 (led-red) status -16
+
+This is caused by the combination of following two upstream kernel commits:
+
+57012d79fefd ("ARM: dts: stm32: add UserPA13 button on stm32mp135f-dk")
+31f0d9a486a8 ("ARM: dts: stm32: Add red LED for stm32mp135f-dk board")
+
+Both reference the same &gpioa 13. Linux didn't seem to mind, but
+barebox fails the LED driver probe, because the GPIO had already been
+requested.
+
+Assuming it is correct that they share the same GPIO physically,
+Blinking the LED would register a button press, so it sounds not so
+useful to have both enabled by default.
+
+Thus disable the button in barebox.
+
+This has been reported upstream at [1].
+
+[1]: https://lore.kernel.org/all/382d28eb-557c-4cae-898c-8ed5c8cd7843@pengutronix.de/
+
+Fixes: fe223ba39321 ("dts: update to v7.0-rc1")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/dts/stm32mp135f-dk.dts | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/arch/arm/dts/stm32mp135f-dk.dts b/arch/arm/dts/stm32mp135f-dk.dts
+index bf45276c864f..2887d153bc2d 100644
+--- a/arch/arm/dts/stm32mp135f-dk.dts
++++ b/arch/arm/dts/stm32mp135f-dk.dts
+@@ -16,3 +16,8 @@ environment {
+ 		};
+ 	};
+ };
++
++&{/gpio-keys/button-user} {
++	/* The button shared the same GPIO as led-red */
++	barebox,status = "disabled";
++};
+-- 
+2.47.3
+
 
 
