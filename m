@@ -1,69 +1,64 @@
-Delivery-date: Fri, 17 Apr 2026 10:26:11 +0200
+Delivery-date: Fri, 17 Apr 2026 10:44:47 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDeWh-00D7Zd-19
+	id 1wDeoh-00D7vB-03
 	for lore@lore.pengutronix.de;
-	Fri, 17 Apr 2026 10:26:11 +0200
+	Fri, 17 Apr 2026 10:44:47 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDeWg-0006u4-P9
-	for lore@pengutronix.de; Fri, 17 Apr 2026 10:26:11 +0200
+	id 1wDeog-00046L-8N
+	for lore@pengutronix.de; Fri, 17 Apr 2026 10:44:46 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=OrF/e2L6Pi0HBSPlyrEDns2joC7xzJKgyhZJDyBSUSg=; b=GYuFb23axbyQmKW1VR7jzNaKNX
-	yqHTqMyWG1JDqTdelog6jFpt7MOBh0zJip+PC90o3xX8He/+Q19xcyDm6Adt4/BtbF6XyAMnzXTxd
-	bfIqMTVGzsfSTD7AFQ3ixH84fI6Wqy/AWNDfdOm/O+STpJyJ6l0Ou6K/L+FeUwb9yuQ/OeKhHVVzR
-	EuyWZRyBQytoGsVR7i7n0ICqmUUJ9s0sX0G8JolTF//efFcBOWCjc+WfSp3wFQ6athdfajdttqCnZ
-	gni14EyfVfMqFiIFBZ3OrwPw6uUpico43K6p6TvlmvbTB+a7qfVTWl7zrMnr+i6JllU0CT3obcRNz
-	FU5FL7YA==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=zVIL6o0g/IvxkHDf197YvTkU5B/nToZ7grQF+vffv6E=; b=RRKGqnn3Trcl5K
+	Mp0sPl/L/cQBXup7+IkzaCeeS+2LbpDbtxkqI8CwriPD9TOqk8q2ddY8O2ZCXLqnTzk9xqY25SCA+
+	uri4lbkEWi8gztACSwxhjJKKxmsAzZDx3GEhsVbjTU0vJCc/mLmt1wzAWF9Aus8bWMYpLcFgnLyaR
+	gzK1WKzh1d6PR2gTXHoeN7euDF9fnmamsbzbgkJHrTitWVsmUlbI/raUKJkVHbCoWfvgWl8SQqVGs
+	WMVMtW9j6duCLmKhjQ7XHC9lIkSWOGNRoze3BXzmrvg0F+pVNOF3383dn1nuTlLJgkPkj7LBb7+uG
+	J7GJXv8O2VaypkflUSWw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDeWE-00000003fjc-0Bi1;
-	Fri, 17 Apr 2026 08:25:42 +0000
+	id 1wDeoH-00000003hQW-1S3f;
+	Fri, 17 Apr 2026 08:44:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDeWB-00000003fjK-3GlN
+	id 1wDeoF-00000003hQ6-15e9
 	for barebox@lists.infradead.org;
-	Fri, 17 Apr 2026 08:25:41 +0000
+	Fri, 17 Apr 2026 08:44:20 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wDeWA-0006jX-58; Fri, 17 Apr 2026 10:25:38 +0200
+	id 1wDeoD-0003xy-Iz; Fri, 17 Apr 2026 10:44:17 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wDeW9-005olq-37;
-	Fri, 17 Apr 2026 10:25:37 +0200
+	id 1wDeoD-005os3-0p;
+	Fri, 17 Apr 2026 10:44:17 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wDeW9-00000000YnS-3nBJ;
-	Fri, 17 Apr 2026 10:25:37 +0200
+	id 1wDeoD-00000000ZfI-0cr9;
+	Fri, 17 Apr 2026 10:44:17 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>, 
- Michael Tretter <m.tretter@pengutronix.de>
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-In-Reply-To: <20260416-socfpga-agilex5-sdram-v1-0-07556aa7219f@pengutronix.de>
-References: <20260416-socfpga-agilex5-sdram-v1-0-07556aa7219f@pengutronix.de>
-Message-Id: <177641433789.133703.9329690482278940815.b4-ty@pengutronix.de>
-Date: Fri, 17 Apr 2026 10:25:37 +0200
+To: Barebox List <barebox@lists.infradead.org>
+Date: Fri, 17 Apr 2026 10:44:14 +0200
+Message-ID: <20260417084414.137087-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260417_012539_844957_BB2C305D 
-X-CRM114-Status: UNSURE (   9.83  )
+X-CRM114-CacheID: sfid-20260417_014419_298361_A5AEE988 
+X-CRM114-Status: UNSURE (   9.30  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -76,6 +71,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -85,50 +81,43 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/9] arm: socfpga: agilex5: rework low level code
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] fs: avoid setting root or rootopts to literal string "<NULL>"
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+linux.bootargs.root and linux.bootards.rootopts might be unspecified in
+which case dev_get_param() returns a literal "<NULL>" string. Avoid
+setting root and rootopts to that string.
 
-On Thu, 16 Apr 2026 11:48:04 +0200, Michael Tretter wrote:
-> The available SDRAM on an Agilex 5 system isn't fixed, but may change
-> based on the system configuration. If inline ECC is enabled, 1/8 of the
-> SDRAM is used for checksums. The memory reserved for the TF-A is also
-> not usable by barebox. Thus, using hard-coded memory limits is not
-> sufficient even on a board level.
-> 
-> Rework the Agilex 5 low level code to respect the memory configuration
-> by reading the available memory from the firewall configuration. The
-> rework also allows moving the entry code from board-specific code to SoC
-> specific code.
-> 
-> [...]
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ fs/fs.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-Applied, thanks!
-
-[1/9] arm: socfpga: agilex5: cleanup TF-A loading
-      https://git.pengutronix.de/cgit/barebox/commit/?id=0c29366bb423 (link may not be stable)
-[2/9] arm: socfgpa: agilex5: remove unused memsize
-      https://git.pengutronix.de/cgit/barebox/commit/?id=0585325d22e1 (link may not be stable)
-[3/9] arm: socfpga: agilex5: configure firewall with base and size
-      https://git.pengutronix.de/cgit/barebox/commit/?id=3c77c7702144 (link may not be stable)
-[4/9] arm: socfpga: agilex5: fix read of memory limit
-      https://git.pengutronix.de/cgit/barebox/commit/?id=6c793c193a3c (link may not be stable)
-[5/9] arm: socfpga: agilex5: fix SDRAM size calculation
-      https://git.pengutronix.de/cgit/barebox/commit/?id=f32b6ba416d6 (link may not be stable)
-[6/9] arm: socfpga: agilex5: remove unused declarations
-      https://git.pengutronix.de/cgit/barebox/commit/?id=65a993521e70 (link may not be stable)
-[7/9] arm: socfpga: agilex5: read SDRAM limits from firewall
-      https://git.pengutronix.de/cgit/barebox/commit/?id=db3c90dc335b (link may not be stable)
-[8/9] arm: socfpga: agilex5: add agilex5_barebox_entry
-      https://git.pengutronix.de/cgit/barebox/commit/?id=a14292c6b54c (link may not be stable)
-[9/9] arm: socfpga: agilex5: add explicit unreachable after TF-A load
-      https://git.pengutronix.de/cgit/barebox/commit/?id=57419d18bd2f (link may not be stable)
-
-Best regards,
+diff --git a/fs/fs.c b/fs/fs.c
+index 6a73a5baa2..0c53881a92 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -1251,8 +1251,14 @@ void fsdev_get_linux_root_options(struct fs_device *fsdev,
+ 				  const char **root, const char **rootopts)
+ {
+ 	if (fsdev) {
+-		*root = dev_get_param(&fsdev->dev, "linux.bootargs.root");
+-		*rootopts = dev_get_param(&fsdev->dev, "linux.bootargs.rootopts");
++		const char *s;
++
++		s = dev_get_param(&fsdev->dev, "linux.bootargs.root");
++		if (s)
++			*root = s;
++		s = dev_get_param(&fsdev->dev, "linux.bootargs.rootopts");
++		if (s)
++			*rootopts = s;
+ 	}
+ }
+ 
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.47.3
 
 
 
