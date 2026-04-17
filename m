@@ -1,69 +1,59 @@
-Delivery-date: Fri, 17 Apr 2026 11:08:34 +0200
+Delivery-date: Fri, 17 Apr 2026 11:11:48 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDfBi-00D8I1-0d
+	id 1wDfEq-00D8Ka-2q
 	for lore@lore.pengutronix.de;
-	Fri, 17 Apr 2026 11:08:34 +0200
+	Fri, 17 Apr 2026 11:11:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDfBh-0002ue-Lc
-	for lore@pengutronix.de; Fri, 17 Apr 2026 11:08:34 +0200
+	id 1wDfEq-0003uc-8G
+	for lore@pengutronix.de; Fri, 17 Apr 2026 11:11:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Q8dWka4KMWn5Q/lTLsnGqW4mdmKe5TBv1FYMHQ5Smvg=; b=gfEb3rqblzEWaNlfErsh4stbHj
-	Nl6Fwi06fuFLG6yj99RWWhY/PPM/Dpk6R9zNeRlfgWPc0N3i9lB/trTAMtRW+0CDSeF9IQj1QXn9b
-	CV1TBZJ37NuzP1pdsh+huFOQaDluW1/y4QNo3dIZzhIsbyVU02aV3L/GEfN/AxbPx8QaYJ5G+76Ka
-	/dcvo9n7rq5rIU9CoYmQ1vZw16Ws5eL+qqGPi57Me7RN5dYMU2JUG39dczWoCyRCbJRiD2A78vbJd
-	B5TwkUfkM2TXh7l8nUMaP6pRYQUpQ7UjqInIB5Fc3Ghb9LW3j1m2WSZvK/4bzP2wPfqXm8xrawb9a
-	aJO6VkPQ==;
+	bh=cFlfw+wdD+yT6Qbeg0sNoBHXPQTXgZ3liN9zZopAByY=; b=acV1uevvc7VdXTxK/AN8pfewjH
+	/om/FOJA4Zomvho9tsXPGJ3WWqbYYVLAbzcBUIot9IY+2lhpaw52fw0wJOGgGAmcActSXCNbT9+Zb
+	nFKKVnf0lLO7bLkg+x/+gU4lHoH5ZHVPlwoHYLiikKHmmo2zdc28feJH1o7v+54rURq+HZTcHxCck
+	eMaHS/RcaWWEi61ff0ufk7uF0+r+G93td0t0JERwMR9pQcILoeOmzDVl26trARIyz9b2ZC+trxQHt
+	6r7lkt4zz0ER00P6igyupFLuhS6UZ4WWW+m/UKg1nRlJPHGetio67yIqMnrTC3c/KKS2fuvmC5cG2
+	bk15ZDBA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDfBO-00000003jWF-1uMv;
-	Fri, 17 Apr 2026 09:08:14 +0000
+	id 1wDfEU-00000003jiU-21Ix;
+	Fri, 17 Apr 2026 09:11:26 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDfBK-00000003jVZ-2l8f
+	id 1wDfER-00000003ji8-11d7
 	for barebox@lists.infradead.org;
-	Fri, 17 Apr 2026 09:08:13 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wDfBJ-0002ji-6l; Fri, 17 Apr 2026 11:08:09 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wDfBJ-005pAh-03;
-	Fri, 17 Apr 2026 11:08:09 +0200
-Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wDfBI-00000000b1k-40wY;
-	Fri, 17 Apr 2026 11:08:08 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20260415081357.450925-1-s.hauer@pengutronix.de>
-References: <20260415081357.450925-1-s.hauer@pengutronix.de>
-Message-Id: <177641688895.142223.17690678133609025200.b4-ty@pengutronix.de>
-Date: Fri, 17 Apr 2026 11:08:08 +0200
+	Fri, 17 Apr 2026 09:11:25 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1wDfEP-0003lt-Lr; Fri, 17 Apr 2026 11:11:21 +0200
+Message-ID: <c24b43da-d418-491b-b84c-fab228d95f9b@pengutronix.de>
+Date: Fri, 17 Apr 2026 11:11:21 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ BAREBOX <barebox@lists.infradead.org>
+Cc: "Claude Opus 4.6 (1M context)" <noreply@anthropic.com>
+References: <20260402-net-nfs-buffer-overflows-v1-0-5dc46ef1da81@pengutronix.de>
+ <20260402-net-nfs-buffer-overflows-v1-1-5dc46ef1da81@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <20260402-net-nfs-buffer-overflows-v1-1-5dc46ef1da81@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260417_020810_703988_FD970338 
-X-CRM114-Status: UNSURE (   5.36  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260417_021123_974424_931317D7 
+X-CRM114-Status: GOOD (  20.47  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,26 +75,86 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] mci: add missing break
+Subject: Re: [PATCH 1/2] fs: nfs: fix stack and packet buffer overflows from
+ long NFS paths
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Wed, 15 Apr 2026 10:13:57 +0200, Sascha Hauer wrote:
-> 65077d2078 adds a new case to a switch/case which lacks a break, so it
-> falls through and EXT_CSD_REV = 0 is detected as MMC_VERSION_4_1 instead
-> of MMC_VERSION_4. Add the missing break.
+On 4/2/26 9:55 AM, Sascha Hauer wrote:
+> nfs_mount_req() and nfs_umount_req() copy the NFS mount path into a
+> stack-allocated uint32_t data[1024] buffer (4096 bytes) with only ~40
+> bytes of RPC header overhead. A mount path longer than ~4056 characters
+> overflows the stack array.
 > 
+> Additionally, rpc_req() copies the data array into the PKTSIZE (1536)
+> packet buffer with only 1494 bytes available for UDP payload. After the
+> 28-byte RPC call header, paths longer than ~1424 characters overflow
+> the packet buffer.
+> 
+> Fix by:
+> - Adding a path length check in nfs_mount_req() and nfs_umount_req()
+>   against the stack buffer capacity before constructing the request
+> - Adding a payload size check in rpc_req() before the memcpy to the
+>   packet buffer, protecting all RPC callers from overflows
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
+
+Acked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+I haven't checked if 11 * sizeof(uint32_t) are the correct cutoff, but
+looks good to me otherwise.
+
+> ---
+>  fs/nfs.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+> 
+> diff --git a/fs/nfs.c b/fs/nfs.c
+> index 0b40c56ff3..edc15e0ce6 100644
+> --- a/fs/nfs.c
+> +++ b/fs/nfs.c
+> @@ -534,6 +534,13 @@ static struct packet *rpc_req(struct nfs_priv *npriv, int rpc_prog,
+>  		pkt.vers = hton32(3);
+>  	}
+>  
+> +	if (sizeof(pkt) + datalen * sizeof(uint32_t) >
+> +	    PKTSIZE - ETHER_HDR_SIZE - sizeof(struct iphdr) - sizeof(struct udphdr)) {
+> +		dev_err(dev, "RPC request too large (%zu bytes)\n",
+> +			sizeof(pkt) + datalen * sizeof(uint32_t));
+> +		return ERR_PTR(-EMSGSIZE);
+> +	}
+> +
+>  	memcpy(payload, &pkt, sizeof(pkt));
+>  	memcpy(payload + sizeof(pkt), data, datalen * sizeof(uint32_t));
+>  
+> @@ -786,6 +793,11 @@ static int nfs_mount_req(struct nfs_priv *npriv)
+>  
+>  	pathlen = strlen(npriv->path);
+>  
+> +	if (pathlen > sizeof(data) - 11 * sizeof(uint32_t)) {
+> +		dev_err(dev, "path too long (%d bytes)\n", pathlen);
+> +		return -ENAMETOOLONG;
+> +	}
+> +
+>  	dev_dbg(dev, "%s: %s\n", __func__, npriv->path);
+>  
+>  	p = &(data[0]);
+> @@ -862,6 +874,8 @@ static void nfs_umount_req(struct nfs_priv *npriv)
+>  	struct packet *nfs_packet;
+>  
+>  	pathlen = strlen(npriv->path);
+> +	if (pathlen > sizeof(data) - 11 * sizeof(uint32_t))
+> +		return;
+>  
+>  	p = &(data[0]);
+>  	p = rpc_add_credentials(p);
 > 
 
-Applied, thanks!
-
-[1/1] mci: add missing break
-      https://git.pengutronix.de/cgit/barebox/commit/?id=41295e7cd5e1 (link may not be stable)
-
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
