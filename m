@@ -1,68 +1,68 @@
-Delivery-date: Fri, 17 Apr 2026 11:08:29 +0200
+Delivery-date: Fri, 17 Apr 2026 11:08:34 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDfBd-00D8Hg-1N
+	id 1wDfBi-00D8I1-0d
 	for lore@lore.pengutronix.de;
-	Fri, 17 Apr 2026 11:08:29 +0200
+	Fri, 17 Apr 2026 11:08:34 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDfBc-0002sT-St
-	for lore@pengutronix.de; Fri, 17 Apr 2026 11:08:29 +0200
+	id 1wDfBh-0002ue-Lc
+	for lore@pengutronix.de; Fri, 17 Apr 2026 11:08:34 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=zt7Su9IMS6d+KubfcR3frbeP2DTBSMngKhUGqQ9Dahg=; b=a8FE7i538WhSSEyWWZXScH9nB2
-	p5fHeY24rMCDcvfJdzlGwqx0SOt1d9PaMokB9Rq7JYsDnKYi2FIzbElxVKd7kC1ySf3V2a5bBrF/Z
-	G7359eMSn528DHF/Vw9JHK8jv0yt6GW2T7bUnO2atB6fvbS65xJZAk8EchsltPGX3Tc1NJALFUir+
-	DhEIHV3cl8b3XGXw0VDybuXmCK2c5Xf9nIpK9Kw0l5DwvszWsOfcTkXkhWhY+TZwnlmK4GjeuC2Ar
-	oyINAhPXTaSYovSXpKuskjQ0S610OYpwCbXm9ESCkbDWsiWGtU2+sN49YBJdxk1wno262smYiXZHH
-	hbf0dKgg==;
+	bh=Q8dWka4KMWn5Q/lTLsnGqW4mdmKe5TBv1FYMHQ5Smvg=; b=gfEb3rqblzEWaNlfErsh4stbHj
+	Nl6Fwi06fuFLG6yj99RWWhY/PPM/Dpk6R9zNeRlfgWPc0N3i9lB/trTAMtRW+0CDSeF9IQj1QXn9b
+	CV1TBZJ37NuzP1pdsh+huFOQaDluW1/y4QNo3dIZzhIsbyVU02aV3L/GEfN/AxbPx8QaYJ5G+76Ka
+	/dcvo9n7rq5rIU9CoYmQ1vZw16Ws5eL+qqGPi57Me7RN5dYMU2JUG39dczWoCyRCbJRiD2A78vbJd
+	B5TwkUfkM2TXh7l8nUMaP6pRYQUpQ7UjqInIB5Fc3Ghb9LW3j1m2WSZvK/4bzP2wPfqXm8xrawb9a
+	aJO6VkPQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDfB9-00000003jTn-0XuJ;
-	Fri, 17 Apr 2026 09:07:59 +0000
+	id 1wDfBO-00000003jWF-1uMv;
+	Fri, 17 Apr 2026 09:08:14 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDfB6-00000003jTQ-17qr
+	id 1wDfBK-00000003jVZ-2l8f
 	for barebox@lists.infradead.org;
-	Fri, 17 Apr 2026 09:07:58 +0000
+	Fri, 17 Apr 2026 09:08:13 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wDfB4-0002en-L6; Fri, 17 Apr 2026 11:07:54 +0200
+	id 1wDfBJ-0002ji-6l; Fri, 17 Apr 2026 11:08:09 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wDfB4-005pAd-1U;
-	Fri, 17 Apr 2026 11:07:54 +0200
+	id 1wDfBJ-005pAh-03;
+	Fri, 17 Apr 2026 11:08:09 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wDfB4-00000000axx-1eJv;
-	Fri, 17 Apr 2026 11:07:54 +0200
+	id 1wDfBI-00000000b1k-40wY;
+	Fri, 17 Apr 2026 11:08:08 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, 
- Steffen Trumtrar <s.trumtrar@pengutronix.de>
-In-Reply-To: <20260415-v2026-03-1-topic-arkona-at300-v2-0-e5ae4c029193@pengutronix.de>
-References: <20260415-v2026-03-1-topic-arkona-at300-v2-0-e5ae4c029193@pengutronix.de>
-Message-Id: <177641687438.142088.8362597134362482953.b4-ty@pengutronix.de>
-Date: Fri, 17 Apr 2026 11:07:54 +0200
+To: Barebox List <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20260415081357.450925-1-s.hauer@pengutronix.de>
+References: <20260415081357.450925-1-s.hauer@pengutronix.de>
+Message-Id: <177641688895.142223.17690678133609025200.b4-ty@pengutronix.de>
+Date: Fri, 17 Apr 2026 11:08:08 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260417_020756_336856_1DF8F437 
-X-CRM114-Status: UNSURE (   8.87  )
+X-CRM114-CacheID: sfid-20260417_020810_703988_FD970338 
+X-CRM114-Status: UNSURE (   5.36  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,27 +85,22 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 0/2] ARM: ls1046a: add support for Arkona AT300
+Subject: Re: [PATCH] mci: add missing break
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 15 Apr 2026 10:13:08 +0200, Steffen Trumtrar wrote:
-> This series adds support for a variant of the TQ tqmls1046a SoM.
-> The Arkona AT300 is based on the TQ SoM, with mainly different RAM and QSPI setup.
-> 
-> To help generating the RCW IO-muxing values, add a header and tool to
-> generate these values.
+On Wed, 15 Apr 2026 10:13:57 +0200, Sascha Hauer wrote:
+> 65077d2078 adds a new case to a switch/case which lacks a break, so it
+> falls through and EXT_CSD_REV = 0 is detected as MMC_VERSION_4_1 instead
+> of MMC_VERSION_4. Add the missing break.
 > 
 > 
-> [...]
 
 Applied, thanks!
 
-[1/2] scripts: ls1046a-rcwtool: add functions to generate RCW
-      https://git.pengutronix.de/cgit/barebox/commit/?id=507b06a0ada7 (link may not be stable)
-[2/2] ARM: tqmls1046a: Add Arkona AT300 support
-      https://git.pengutronix.de/cgit/barebox/commit/?id=4c189dce612f (link may not be stable)
+[1/1] mci: add missing break
+      https://git.pengutronix.de/cgit/barebox/commit/?id=41295e7cd5e1 (link may not be stable)
 
 Best regards,
 -- 
