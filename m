@@ -1,59 +1,66 @@
-Delivery-date: Fri, 17 Apr 2026 11:33:10 +0200
+Delivery-date: Fri, 17 Apr 2026 11:37:34 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDfZW-00D8tz-04
+	id 1wDfdm-00D8xe-2S
 	for lore@lore.pengutronix.de;
-	Fri, 17 Apr 2026 11:33:10 +0200
+	Fri, 17 Apr 2026 11:37:34 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDfZV-00025M-En
-	for lore@pengutronix.de; Fri, 17 Apr 2026 11:33:09 +0200
+	id 1wDfdm-0003WF-7k
+	for lore@pengutronix.de; Fri, 17 Apr 2026 11:37:34 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=sH9IgUUmxM4GeCVpFZW3rjxIZaFqiZ/s/VTqZmoiL/g=; b=J5I1LY0dvLt2FL3G3qTponPAdB
-	vzbYCfHLUyICpK0BGu8CzuyR2/dJ64TSEpGSsWRSDDJl8a6K2cDt6pYgroXiWpdQ3Bt0cyM/emeV3
-	7bxLm2IkCSqbEpzjLTrXcTBx2McxdP/O6SRPSFXUFWWFOfZOB4CQXUxsfi1+gD1OqkizayfA4nNTb
-	790BqAAc+61dUrz4FNIMGXAmOq7xbkjwNSC2C7LNAmX//oDchiPyaed9PxPepl6HO6jfVL/2EuAdj
-	4OyqleD7gjB3F2587NkvcsgABeCR/4fgq3XCXBnS6PHZaU3u045rZL3dRV8vRTkuBjIvrYifNt41z
-	78i8cqTw==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=U4sgyap79MCtS13TiKF5TqKKE9pecxiRpOYLRQOXOXw=; b=pGTMLrVV1691Xzqso818w6E+Jw
+	zgv2eQ/lB+vZy841hhu/DljqNCfBimXqNlqyDnRz1n4PDH9g1Qt9qiDBO9bJxkb2KzqV/r29/K18V
+	TWyU6lMOfsK7dbvn0GZbL0Px22Uu/LqjJ5KzC7xhxajtpdYSN1Co92HdxCf/zyCuTBfOQPYuBKLB4
+	nP/gb0w/99UYkqNFROTQJMX02MifqjkeyoDJ+lfRKhJlC811nwouTCL4ZUMoV1D6R9R3GZeKnoNrs
+	lir6L9wZOrAf7JmuKB0ttKW2tcam5+htn+55DOSU9/UsOLZ9/DomyQAQ3WaXLubPML3zKsx/v81U/
+	TTLLjTyg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDfZ7-00000003pwF-2YPE;
-	Fri, 17 Apr 2026 09:32:45 +0000
+	id 1wDfdQ-00000003qII-3v2v;
+	Fri, 17 Apr 2026 09:37:12 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDfZ5-00000003pvt-1Rnq
+	id 1wDfdO-00000003qHq-25Ii
 	for barebox@lists.infradead.org;
-	Fri, 17 Apr 2026 09:32:44 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Fri, 17 Apr 2026 09:37:11 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wDfZ3-0001ux-Q2; Fri, 17 Apr 2026 11:32:41 +0200
-Message-ID: <82b0da9a-1e6c-4f55-b96c-c208115c76c7@pengutronix.de>
-Date: Fri, 17 Apr 2026 11:32:41 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- BAREBOX <barebox@lists.infradead.org>
-Cc: "Claude Opus 4.6 (1M context)" <noreply@anthropic.com>
-References: <20260402-net-tftp-buffer-overflows-v1-0-0a18aa8ea19e@pengutronix.de>
- <20260402-net-tftp-buffer-overflows-v1-3-0a18aa8ea19e@pengutronix.de>
+	id 1wDfdM-0003Ji-PT; Fri, 17 Apr 2026 11:37:08 +0200
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1wDfdM-005pIv-1w;
+	Fri, 17 Apr 2026 11:37:08 +0200
+Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1wDfdM-0000000GCM9-27gA;
+	Fri, 17 Apr 2026 11:37:08 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20260402-net-tftp-buffer-overflows-v1-3-0a18aa8ea19e@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 17 Apr 2026 11:36:59 +0200
+Message-ID: <20260417093701.3860735-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260417_023243_390685_6F8651B4 
-X-CRM114-Status: GOOD (  18.33  )
+X-CRM114-CacheID: sfid-20260417_023710_542291_716960ED 
+X-CRM114-Status: UNSURE (   9.71  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,54 +82,38 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/4] fs: tftp: reject OACK with blocksize of zero
+Subject: [PATCH] kfifo: do not allocate a fifo smaller than 2 bytes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+Linux also refuses allocation of such FIFOs and if such argument indeed
+passes, it's most likely a bug, so exit early.
 
-On 4/2/26 9:21 AM, Sascha Hauer wrote:
-> tftp_parse_oack() validates that windowsize is non-zero but does not
-> check blocksize. A malicious TFTP server sending 'blksize\0000\0' in
-> the OACK sets priv->blocksize to 0, which causes:
-> 
->   - kfifo_alloc(0 * ...) allocating a zero-sized fifo
->   - tftp_write() entering an infinite loop on
->     'while (kfifo_len(fifo) >= 0)', spinning on kfifo_get with size 0
->   - tftp_put_data() rejecting all data packets as oversized
-> 
-> Add blocksize == 0 to the existing OACK validation check.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
+All users of kfifo_init in barebox currently pass a fixed larger
+power-of-two argument, except for TFTP, which calculates it dynamically,
+but this is fixed separately. This patch is thus just to future proof.
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ lib/kfifo.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-> ---
->  fs/tftp.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/tftp.c b/fs/tftp.c
-> index 03e9d552aa..6dd4829184 100644
-> --- a/fs/tftp.c
-> +++ b/fs/tftp.c
-> @@ -382,7 +382,8 @@ static int tftp_parse_oack(struct file_priv *priv, unsigned char *pkt, int len)
->  		s = val + strlen(val) + 1;
->  	}
->  
-> -	if (priv->blocksize > TFTP_MTU_SIZE ||
-> +	if (priv->blocksize == 0 ||
-> +	    priv->blocksize > TFTP_MTU_SIZE ||
->  	    priv->windowsize > TFTP_MAX_WINDOW_SIZE ||
->  	    priv->windowsize == 0) {
->  		pr_warn("tftp: invalid oack response\n");
-> 
-
+diff --git a/lib/kfifo.c b/lib/kfifo.c
+index fa22feb7e082..bf1ab138c6e6 100644
+--- a/lib/kfifo.c
++++ b/lib/kfifo.c
+@@ -50,6 +50,9 @@ struct kfifo *kfifo_alloc(unsigned int size)
+ 	unsigned char *buffer;
+ 	struct kfifo *fifo;
+ 
++	if (size < 2)
++		return NULL;
++
+ 	/*
+ 	 * round up to the next power of 2, since our 'let the indices
+ 	 * wrap' tachnique works only in this case.
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.47.3
 
 
 
