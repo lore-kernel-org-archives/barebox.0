@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDgAE-00D9gF-1R
+	id 1wDgAE-00D9gP-1t
 	for lore@lore.pengutronix.de;
 	Fri, 17 Apr 2026 12:11:06 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDgAD-00073N-SX
+	id 1wDgAE-00073P-0m
 	for lore@pengutronix.de; Fri, 17 Apr 2026 12:11:06 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,42 +18,42 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=oxoNElbr9QhV0QfSNhpk3FS334LZjvD5rfYMmf0Ppu4=; b=hBe5pisjTMmyN7paWnpbCgZTs5
-	AGcXpqGzUCPMvOjgMgwcjmr4wo4yBy4NLjeQ2FIF5JpTk47OtcbqQnMI0J6lZzKI2dxhVVCWpFBk3
-	kXe5eM+dj41qT2o6JnpCLYRRJm8FCnn9LhR+onCgoMDlJKN9mcUVEyu6RcU8Yz9X8QfcqAQEdrmWk
-	qWVof4Q1MR/n5t8bHBNWjP89jAgGA7yEsgilsUeKecVq4D4Fl5xQbJEIjtXl0bYyoipf7PJnIBwWW
-	A4tE8Upp8FmLscBbsyHK/qmSH5Ds3Ggci8Vofh/dzz3ZKiN2+f3zOS1qbW3bOZ0KXdt2xP3RwMA07
-	CMwzMltQ==;
+	bh=xOwkozw7PFzPdgiQ+kjn/jhsg2pk14rjK/ItYrustXY=; b=Jm2z3KWaTRbwA16PRfhRqBZOs9
+	XYFvGd+w0K8zjw9rOZOU00m8JMeY3NSp3aZXyPO3x+/xIFeByBN6I4tGgVociG8bFsSe5vUEI+L3v
+	9a7vn1jBp73PfyfoNK59x87AhoEQy1KEuvtR4xcpQCBHioCigj8txG2S/trL8FiVKz0+RGhmikYSW
+	CF1pAl/LXUHNOc3mej2Dkrp2zGYaugdfyuY65hmVcEjz1IJN45v1vjqUGQ06lz8ui4VEcP0F6hGbn
+	rdm14Ke4jHxQMPUhEutxfT0W7HilKL16GEwodvpxWZ7MIVfJHfvXdv+cgkbljxK4exRmnmqa9IWbX
+	UwYhdOXg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDg9k-00000003syC-1L7F;
-	Fri, 17 Apr 2026 10:10:36 +0000
+	id 1wDg9r-00000003t04-0SL8;
+	Fri, 17 Apr 2026 10:10:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDg9g-00000003sxq-3nWx
+	id 1wDg9o-00000003szE-3laP
 	for barebox@lists.infradead.org;
-	Fri, 17 Apr 2026 10:10:34 +0000
+	Fri, 17 Apr 2026 10:10:42 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wDg9f-0006r6-9K; Fri, 17 Apr 2026 12:10:31 +0200
-Message-ID: <7f0387e1-f98e-4dbf-be6b-1d97bb9d872d@pengutronix.de>
-Date: Fri, 17 Apr 2026 12:10:30 +0200
+	id 1wDg9n-0006sl-Fc; Fri, 17 Apr 2026 12:10:39 +0200
+Message-ID: <0e2b0199-2ec5-469c-b0ca-8cf7370a624f@pengutronix.de>
+Date: Fri, 17 Apr 2026 12:10:39 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Sascha Hauer <s.hauer@pengutronix.de>,
  BAREBOX <barebox@lists.infradead.org>
 Cc: "Claude Opus 4.6" <noreply@anthropic.com>
 References: <20260402-net-eth-do-udp-v1-0-af5d9fd6beec@pengutronix.de>
- <20260402-net-eth-do-udp-v1-4-af5d9fd6beec@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+ <20260402-net-eth-do-udp-v1-5-af5d9fd6beec@pengutronix.de>
 Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20260402-net-eth-do-udp-v1-4-af5d9fd6beec@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20260402-net-eth-do-udp-v1-5-af5d9fd6beec@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260417_031032_952009_91C46CF7 
-X-CRM114-Status: GOOD (  18.54  )
+X-CRM114-CacheID: sfid-20260417_031040_941988_B71E4848 
+X-CRM114-Status: GOOD (  15.79  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,17 +75,15 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 04/10] fs: nfs: use net_eth_to_udp() for packet parsing
+Subject: Re: [PATCH 05/10] net: dns: use net_eth_to_udp() for packet parsing
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+
+
 On 4/2/26 8:36 AM, Sascha Hauer wrote:
-> Replace net_eth_to_udp_payload() with the new consolidated
-> net_eth_to_udp() helper.
-> 
-> This also fixes a bug where the old code used the NIC-level frame
-> length (which includes ethernet, IP, and UDP headers) instead of the
-> UDP payload length when copying packet data.
+> Replace the separate net_eth_to_udp_payload() and net_eth_to_udplen()
+> calls with the new consolidated net_eth_to_udp() helper.
 > 
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
@@ -93,34 +91,29 @@ On 4/2/26 8:36 AM, Sascha Hauer wrote:
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
 > ---
->  fs/nfs.c | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
+>  net/dns.c | 9 ++++++---
+>  1 file changed, 6 insertions(+), 3 deletions(-)
 > 
-> diff --git a/fs/nfs.c b/fs/nfs.c
-> index 0b40c56ff3..39c92e4736 100644
-> --- a/fs/nfs.c
-> +++ b/fs/nfs.c
-> @@ -1193,13 +1193,16 @@ static int nfs_read_req(struct file_priv *priv, uint64_t offset,
+> diff --git a/net/dns.c b/net/dns.c
+> index 8fbd13cdc3..8616e353c1 100644
+> --- a/net/dns.c
+> +++ b/net/dns.c
+> @@ -206,9 +206,12 @@ static void dns_recv(struct header *header, unsigned len)
 >  
->  static void nfs_handler(void *ctx, char *p, unsigned len)
+>  static void dns_handler(void *ctx, char *packet, unsigned len)
 >  {
-> -	char *pkt = net_eth_to_udp_payload(p);
->  	struct nfs_priv *npriv = ctx;
+> -	(void)ctx;
+> -	dns_recv((struct header *)net_eth_to_udp_payload(packet),
+> -		net_eth_to_udplen(packet));
 > +	struct net_udp_pkt udp;
->  	struct packet *packet;
->  
-> -	packet = xmalloc(sizeof(*packet) + len);
-> -	memcpy(packet->data, pkt, len);
-> -	packet->len = len;
-> +	if (net_eth_to_udp(p, len, &udp))
+> +
+> +	if (net_eth_to_udp(packet, len, &udp))
 > +		return;
 > +
-> +	packet = xmalloc(sizeof(*packet) + udp.len);
-> +	memcpy(packet->data, udp.payload, udp.len);
-> +	packet->len = udp.len;
->  	packet->pos = 0;
+> +	dns_recv(udp.payload, udp.len);
+>  }
 >  
->  	list_add_tail(&packet->list, &npriv->packets);
+>  int resolv(const char *host, IPaddr_t *ip)
 > 
 
 -- 
