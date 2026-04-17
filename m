@@ -1,69 +1,67 @@
-Delivery-date: Fri, 17 Apr 2026 12:40:54 +0200
+Delivery-date: Fri, 17 Apr 2026 12:44:23 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDgd4-00DABX-1X
+	id 1wDggR-00DAJ8-0d
 	for lore@lore.pengutronix.de;
-	Fri, 17 Apr 2026 12:40:54 +0200
+	Fri, 17 Apr 2026 12:44:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wDgd3-0007iY-VM
-	for lore@pengutronix.de; Fri, 17 Apr 2026 12:40:54 +0200
+	id 1wDggQ-0000Oe-M2
+	for lore@pengutronix.de; Fri, 17 Apr 2026 12:44:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=LBaq+DpvZdZGD31TOUii6iK7bftewXJqIPUhDAYWnao=; b=VZwTMMFANny3i3sKw9h1RmjFnn
-	dom52SKqWhbfBB/YDX12oPvACVwW0bkZ4ohQwMnUgVGC/qugX7wSTRRwkWkCQdWZ0a2b+//TLIBO3
-	j6gF0gvL+yPM6hJx/ndiAMyg8YiU5qtxtRn6IT1nJ2JiQHLOdaK+MZsLL4sKVRkM5wOUD+8zkqxFZ
-	N3cFxuiuMpguMpzmZWSJwEub58pWeKnFzZYzLyrxnV8Ah9Ok/L0G+zRR3dbAKxuoWKFMZL7XLBbTe
-	Yj5V9k/SV82zu4Pn7WgM3juoTHdI8xfb+7IPVBGivqWBnZwWG/iONo4C1EOe7XG6uLX+gkCvOjvKC
-	BJrg2e2g==;
+	bh=hII9XVIGK7Tx97JbBmRI5XAZqjSurfy0dHeMdABtGik=; b=scPNRWBPjooY0AuffdjbdR/XEy
+	UsEzR43h1Ztu2+PAV/HNQ7nnwA9IR+c5HxzRAmN3DA1FOoE002ZlQbczNV92DviKO4MqB0pbCltnK
+	gWY3IAg0yx8H1w6QL8ofycKo45u7vm221YktyV4OCE0GBDUDfRr8zGGtzBH+VHsQ0s4HTDdvt8qLw
+	EqD4mvkzsft6WljZlaD0QiLbVv7CAy1UbhSSdjb4hXKzlOyW0sLKe5n9ZSdU8jb/5FyeuQShmCAd/
+	0+cb+EuD/h0C7FKWRM/k6IgEyZLKLvW/Rk6xbm4lhkQUor8O4ky2sogJTQBDGX/FC3359Iu8XK9eF
+	FUb8cvGw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDgcd-00000003uzM-0Bza;
-	Fri, 17 Apr 2026 10:40:27 +0000
+	id 1wDgg2-00000003vJE-47Tn;
+	Fri, 17 Apr 2026 10:43:58 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wDgcY-00000003uy0-48DD
+	id 1wDgg0-00000003vIY-3OaO
 	for barebox@lists.infradead.org;
-	Fri, 17 Apr 2026 10:40:25 +0000
+	Fri, 17 Apr 2026 10:43:58 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wDgcX-0007S5-Ee; Fri, 17 Apr 2026 12:40:21 +0200
+	id 1wDgfz-0000FM-7T; Fri, 17 Apr 2026 12:43:55 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wDgcX-005plr-0n;
-	Fri, 17 Apr 2026 12:40:21 +0200
+	id 1wDgfz-005pmW-08;
+	Fri, 17 Apr 2026 12:43:55 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wDgcX-00000000euC-0l6o;
-	Fri, 17 Apr 2026 12:40:21 +0200
+	id 1wDgfy-00000000fAI-46wm;
+	Fri, 17 Apr 2026 12:43:54 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "Claude Opus 4.6 (1M context)" <noreply@anthropic.com>
-In-Reply-To: <20260402-net-dhcp-buffer-overflows-v2-0-fe4ca7c4b718@pengutronix.de>
-References: <20260402-net-dhcp-buffer-overflows-v2-0-fe4ca7c4b718@pengutronix.de>
-Message-Id: <177642242117.157093.10709267569919664093.b4-ty@pengutronix.de>
-Date: Fri, 17 Apr 2026 12:40:21 +0200
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20260417085235.3689546-1-a.fatoum@pengutronix.de>
+References: <20260417085235.3689546-1-a.fatoum@pengutronix.de>
+Message-Id: <177642263497.158083.5247311821726828712.b4-ty@pengutronix.de>
+Date: Fri, 17 Apr 2026 12:43:54 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260417_034023_041398_41BD43D3 
-X-CRM114-Status: UNSURE (   5.29  )
+X-CRM114-CacheID: sfid-20260417_034356_852701_85728C3A 
+X-CRM114-Status: UNSURE (   4.61  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -86,25 +84,28 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 0/3] net: dhcp: fix buffer overflows
+Subject: Re: [PATCH master 1/4] Documentation: migration-guide: fix
+ TQMA8MPxL section
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Thu, 02 Apr 2026 08:59:56 +0200, Sascha Hauer wrote:
-> Fix buffer overflows on malicious incoming network packets or user data
-> in the dhcp code.
+On Fri, 17 Apr 2026 10:52:24 +0200, Ahmad Fatoum wrote:
+> This was erroneously a .md file, but we expect .rst files.
+> Rename the file and reformat the entry a bit.
 > 
 > 
 
 Applied, thanks!
 
-[1/3] net: dhcp: add bounds checking to DHCP option parsing
-      https://git.pengutronix.de/cgit/barebox/commit/?id=6199b241964b (link may not be stable)
-[2/3] net: dhcp: use xstrndup for bp_file to prevent read past field
-      https://git.pengutronix.de/cgit/barebox/commit/?id=77929b00dc11 (link may not be stable)
-[3/3] net: dhcp: cap DHCP option string length to 255 bytes
-      https://git.pengutronix.de/cgit/barebox/commit/?id=2626d503bdd6 (link may not be stable)
+[1/4] Documentation: migration-guide: fix TQMA8MPxL section
+      https://git.pengutronix.de/cgit/barebox/commit/?id=c70327456540 (link may not be stable)
+[2/4] Documentation: migration-guide: reinstate HABv4-enablement
+      https://git.pengutronix.de/cgit/barebox/commit/?id=e390001c168d (link may not be stable)
+[3/4] Documentation: migration-guide: mention TF-A v2.14 compatibility
+      https://git.pengutronix.de/cgit/barebox/commit/?id=b35eae69b4d3 (link may not be stable)
+[4/4] Documentation: migration-guide: add note about ZynqMP OP-TEE
+      https://git.pengutronix.de/cgit/barebox/commit/?id=e6e6706f9353 (link may not be stable)
 
 Best regards,
 -- 
