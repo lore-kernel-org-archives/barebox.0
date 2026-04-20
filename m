@@ -1,77 +1,74 @@
-Delivery-date: Mon, 20 Apr 2026 13:21:25 +0200
+Delivery-date: Mon, 20 Apr 2026 13:21:29 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wEmgv-00EKFY-0V
+	id 1wEmgz-00EKG9-0O
 	for lore@lore.pengutronix.de;
-	Mon, 20 Apr 2026 13:21:25 +0200
+	Mon, 20 Apr 2026 13:21:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wEmgu-00052e-LI
-	for lore@pengutronix.de; Mon, 20 Apr 2026 13:21:25 +0200
+	id 1wEmgy-00054a-I4
+	for lore@pengutronix.de; Mon, 20 Apr 2026 13:21:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=wX2a5lzJlMItPUN4qjPm/CYER6dlHPp9zMJBs73Sh4M=; b=f4L6r9BXLWSL+l
-	L1KDkyeN6xjcxzhaC5V8eL31PnNdFSO6Gkdq3oDSh4h6t1TDlXm6EXtqfkg2TqdcB6xQAgRsfRmyL
-	FB06MuZFSvR3PUUEtS2raQclefU1h1EznUts9oCTuQcfBCvQfyIkOiqq6GY64KkyDJW0G8MxfaHg3
-	rvxOiZlGux/OwmWCXFc5t58K8GMgRZ8P0aviHZQT189AHnsyMl7lhoDpeT9EdcwtvcLUQpidVfDik
-	/kXERPSaPqsxgJtluzRs4+rhENneDJZsdS/C8CkIFBRk0pJo+W7zyV/zkZ0lsG/Ffd7lr7L3T2b3/
-	RO9eBpYFS/GLbL1nFyjg==;
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
+	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=UR7zHPiDXEMKrg/4vgEdYdHBek+Gj/scXHhnvB0477Y=; b=FDybZVtwzFirzbs37X4MFK4022
+	TdEBCeNRHHgMdKLTNOLR3lvhHmbC5MBNMmXtWj5AaTc9o/tqNm3Ipv75PSY/agzfxIBA+rtZwL6p4
+	H3yRdZilL+A0Zv9VAW5eHVdZrUx460yub/qrjq4e8YxHbrzCSeN7wNaUrHtJc11tqOC/ymS5hxtBm
+	I3y5vh0cHoyZjU92K9mqG09ENM91NiHS6MnJk5kTX3fMIe1LEYYPmw+lUtjsRHsk11iTF9/y187Ak
+	107kQgshvygN04B0+d3iQpYWKuvavxaiPAd16t8uUo8qxkKVnf0GTs7WFA8tl3WpJElZ01y69TX1R
+	eHS0YxGw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wEmgV-00000006n0H-1QXg;
-	Mon, 20 Apr 2026 11:20:59 +0000
+	id 1wEmgc-00000006n1e-3Gk2;
+	Mon, 20 Apr 2026 11:21:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wEmgS-00000006mzn-2B9k
+	id 1wEmga-00000006n0o-15s0
 	for barebox@lists.infradead.org;
-	Mon, 20 Apr 2026 11:20:57 +0000
+	Mon, 20 Apr 2026 11:21:05 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wEmgQ-0004sC-SJ; Mon, 20 Apr 2026 13:20:54 +0200
+	id 1wEmgQ-0004sE-SK; Mon, 20 Apr 2026 13:20:54 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wEmgQ-006KIN-1S;
+	id 1wEmgQ-006KIO-1S;
 	Mon, 20 Apr 2026 13:20:54 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wEmgQ-00000003hYN-1VbV;
+	id 1wEmgQ-00000003hYN-1YMs;
 	Mon, 20 Apr 2026 13:20:54 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 20 Apr 2026 13:20:52 +0200
-Message-Id: <20260420-usb-dwc2-usb-c-stick-v1-0-c86f733f24f8@pengutronix.de>
+Date: Mon, 20 Apr 2026 13:20:54 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIABQM5mkC/x2MSQqAMAwAvyI5G6hVWvAr4kFj1CCoNG4g/t3S2
- 8xh5gXlIKxQZy8EvkRlW6MUeQY0d+vEKEN0sMY6U1mDp/Y43GQTEOohtCB3ZUG+dJX3BDHdA4/
- ypG3Tft8PLBbPPWYAAAA=
-X-Change-ID: 20260420-usb-dwc2-usb-c-stick-ea31c736477c
+Message-Id: <20260420-usb-dwc2-usb-c-stick-v1-2-c86f733f24f8@pengutronix.de>
+References: <20260420-usb-dwc2-usb-c-stick-v1-0-c86f733f24f8@pengutronix.de>
+In-Reply-To: <20260420-usb-dwc2-usb-c-stick-v1-0-c86f733f24f8@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1776684054; l=655;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1776684054; l=1506;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=krHNbj2Im3dfaKP2boKOdjRv9vl/0LSt6Wp629QBtwE=;
- b=bFery1PoFmQ1cMlPMg5lTpzKpqp2JbNKvG2kK1S2iN5GHKfOao3HB6myRAXL9mTnQf1C7vtQk
- l1QzuUTicLLCCTyEFIL0xc13sxLjhDVSYxhQlKCK2POI/aWcjAofygT
+ bh=v7Sn2H62U9kIj8/qRH4YQ4DeRrJrxdIIdp8odDf/zPM=;
+ b=BQacr5bEYRZ4hJgTjzpqX+Ltymcc9N8lsT8Y5knXmbNPyCA/3T557T+YAEAvtRh8+HlOH/7sQ
+ EgB97GndihnDLwqhUwJt1QG3X44vyeELMB/RXmbYuHoCEyuFqtTMUtP
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260420_042056_564266_50642009 
-X-CRM114-Status: UNSURE (   6.34  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260420_042104_306816_1A6A7B09 
+X-CRM114-Status: GOOD (  12.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -94,29 +91,50 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH 0/2] USB: dwc2: Fix handling NAK
+Subject: [PATCH 2/2] usb: dwc2: fix data toggle reset direction on
+ ClearFeature(ENDPOINT_HALT)
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-A NAK should return -EAGAIN to let the retry logic work. This showed up
-on a Samsung USB-C memory stick which otherwise was recognized, but
-couldn't be initialized.
+From: Sascha Hauer <sascha@saschahauer.de>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+dwc2_submit_control_msg() resets the data toggle after a successful
+ClearFeature(ENDPOINT_HALT) request. It passes usb_pipein(pipe) as the
+direction to dwc2_endpoint_reset(), but pipe is always the control-out
+pipe used to send the request, so usb_pipein() always returns 0 (OUT).
+
+As a result, clearing an IN endpoint halt resets the OUT toggle instead
+of the IN toggle, leaving the IN data toggle in an incorrect state for
+subsequent transfers.
+
+Fix by extracting the direction from the endpoint address in setup->index
+(wIndex), where bit 7 is the direction flag per USB 2.0 section 9.3.4.
+
+Fixes: 446bcf875395 ("usb: dwc2: host: Fix toggle reset")
+Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
+Signed-off-by: Sascha Hauer <sascha@saschahauer.de>
 ---
-Sascha Hauer (2):
-      usb: dwc2: handle NAK when CHHLTD does not fire
-      usb: dwc2: fix data toggle reset direction on ClearFeature(ENDPOINT_HALT)
+ drivers/usb/dwc2/host.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- drivers/usb/dwc2/host.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
----
-base-commit: 92d9725c3945aff9d157531be844fa256444165d
-change-id: 20260420-usb-dwc2-usb-c-stick-ea31c736477c
+diff --git a/drivers/usb/dwc2/host.c b/drivers/usb/dwc2/host.c
+index ddad51c882..2be2666574 100644
+--- a/drivers/usb/dwc2/host.c
++++ b/drivers/usb/dwc2/host.c
+@@ -401,8 +401,8 @@ static int dwc2_submit_control_msg(struct usb_device *udev,
+ 		 * ClearFeature(ENDPOINT_HALT) request always results
+ 		 * in the data toggle being reinitialized to DATA0.
+ 		 */
+-		int ep = le16_to_cpu(setup->index) & 0xf;
+-		dwc2_endpoint_reset(dwc2, usb_pipein(pipe), devnum, ep);
++		int ep_addr = le16_to_cpu(setup->index);
++		dwc2_endpoint_reset(dwc2, ep_addr >> 7, devnum, ep_addr & 0xf);
+ 	}
+ 
+ 	udev->act_len = act_len;
 
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.47.3
 
 
 
