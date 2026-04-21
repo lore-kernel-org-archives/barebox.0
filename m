@@ -1,57 +1,117 @@
-Delivery-date: Tue, 21 Apr 2026 12:30:10 +0200
+Delivery-date: Tue, 21 Apr 2026 15:49:53 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wF8Ms-00EgWC-2d
+	id 1wFBU9-00Ejq9-1t
 	for lore@lore.pengutronix.de;
-	Tue, 21 Apr 2026 12:30:10 +0200
+	Tue, 21 Apr 2026 15:49:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wF8Ms-0006jg-20
-	for lore@pengutronix.de; Tue, 21 Apr 2026 12:30:10 +0200
+	id 1wFBU8-0001gs-T1
+	for lore@pengutronix.de; Tue, 21 Apr 2026 15:49:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
+	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7euoq2W1tA3QQBr9Th51HIRlWDklLR9A1rgNS+9IZlE=; b=MUHskyyCV4d8HYzW1uPm9AsM9+
-	5JxC/rctuINJ1dl9BeOeTHCO66hXc3sOg1QEK+92JiaSqAFwV3zVw7Z18vq3M9f37An7jHLb+A0j9
-	AmCMBaTx9HbWG2hsFivLrUbms9DHerx2FRorxFDxQ2UJg8JHCTAuYnZ+cFCHY4g+odSjL8QXb7SPZ
-	cDK7z8eX/wNAhVFECM23ZNepvRLvQoNWFEUxIWyJSi4V3OPDLSUDdqp5gfVlE1EPqfacfKfESFfRi
-	qSWUiOKLKMeDcRpplXf58CuB9g/X0hVQjFUGHeng/1KbFDjeGGg5rVL1q//OhBq53YMvH5uZujSiM
-	ghi9QeuQ==;
+	bh=FlSOM+zy4M9xSWnkVhyT33wCvD1J1AmqtD+BWspyMpM=; b=zo/M1Chc1NrYNCxAhLsrKx4TnY
+	H/4xhJYlFa+YbClgUuTXqreu0GFXo+V++KdpHWkXtGz05ZkHqMxqe0C4/lrG+vrIATXsTkalIyR4g
+	dl21fxDQTvJZYBgOaPUdRdfn6JRpq+cZtNK6E9IKKmHB3iQcQlmdxZVLiqZbNEvXSqlfZQyWdxg3n
+	1naTkf4EvnQunvM9m/BwWgQFMllfdBH5CQFeq7JYGx6dMPR3Bx/I+siMHhSD87OZz7is8zVqvvvf7
+	ezziaBc3VYNHOWAlaZGQNYEee7e2cza/hivNp0Gv40CgGD1TVtu33qJVqpv/ZlWzQQZfmyJsfZvk6
+	sGWKDM3Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wF8MN-00000008REY-3lm8;
-	Tue, 21 Apr 2026 10:29:39 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1wFBTU-00000008gpf-1Laj;
+	Tue, 21 Apr 2026 13:49:12 +0000
+Received: from mail-dy1-x1334.google.com ([2607:f8b0:4864:20::1334])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wF8MK-00000008RBb-11jw
+	id 1wFBTR-00000008gpB-0a64
 	for barebox@lists.infradead.org;
-	Tue, 21 Apr 2026 10:29:38 +0000
-Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <f.pflug@pengutronix.de>)
-	id 1wF8MI-0006MC-Of; Tue, 21 Apr 2026 12:29:34 +0200
-From: Fabian Pflug <f.pflug@pengutronix.de>
-Date: Tue, 21 Apr 2026 12:29:35 +0200
+	Tue, 21 Apr 2026 13:49:10 +0000
+Received: by mail-dy1-x1334.google.com with SMTP id 5a478bee46e88-2dec803f9f0so2455813eec.0
+        for <barebox@lists.infradead.org>; Tue, 21 Apr 2026 06:49:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1776779348; cv=none;
+        d=google.com; s=arc-20240605;
+        b=AYmUX9XCrFTImdHYRGnKJePj2IGPoAtyJF+EmFVe56MI6pjVA2D17EYvh/KQpah2mg
+         cmP272UWrojA5yU6RyynPFJTLFxBfYLej67co3ud/OA1gXBggmWDQJT+7i54dgSXYx8O
+         rV0fH6S2QCjIsbCspygr5Ra5gzEHDOFvZ1pk7JJOLQOQqh3qdpUrEiRhbtV+doFTVpUW
+         U5TFWQ4yn2VT8hXohFDxx/FeLswXBJHGYZA3aXxTgnxPnkCYYoKGZLgHUcqxyv2xLcKL
+         sy6KzRPbPQWsqEbP6ev2G/0u/lJ3FGvDFS3eJ3ePk9RGc4/9cv8A+Kd4FvT6u5OPD3a4
+         /zXw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=FlSOM+zy4M9xSWnkVhyT33wCvD1J1AmqtD+BWspyMpM=;
+        fh=QXxF0yowHjQ/AtJcV83rBRZEr3WZeusZoVw9LhUoqsQ=;
+        b=fSK6mchwQiVRCtHrGghGJJoNcjJ9CCjSxPY42dECEucVBLkKfyyEOY2YAebZOJdtge
+         essxApjKKLFtW9MKyJystbUUqFhzc/otuT1fDzGQFZwqvvE4Jzv6Awt/JnVJrKaJgfJ3
+         1Fzt1EYquKQ/uAPPMx/SzOKtrLctaVYwIhvQKgcrvuam7JQlMbTNDWCffirdvH+h2UA0
+         xQbr3jXagdySzIk2+3ZK0khvlM7mS9ks1tUWhcLMIeQsm9lB0AOCbLb+YQWNHgYMdilO
+         NX3wbLZ9gvGS44Giz83Iz8x6Bkmfod6Bn71UTDR9V4Y//YqtQSq/N5ks+byQGwbZl0zO
+         Ht1A==;
+        darn=lists.infradead.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1776779348; x=1777384148; darn=lists.infradead.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FlSOM+zy4M9xSWnkVhyT33wCvD1J1AmqtD+BWspyMpM=;
+        b=aCM6Sy1fmpWJS9CqZ1BL7ZMFHiZZPewGX/5DFo+v9+gj7TV6XyWom5iT04kTDbBpss
+         BMzHOGv3tekv1YlAaSOp8cqslVzQ8h2S+N3LeE2NPCNdiWFO9jsJZGdELL9C6E4S46Jw
+         amskikQx2QP5vGWi+FUalxmJpQudIBiW4v2JLq8OtsKiAyyx5H94qvbo8OZUEelZwWi5
+         oVpRrgkoYS6Wi+vjqjHtHE+GJaC84Sy4sJ0pbu9F8pRSxSaLeD0W2dS/0Rf34m3b+dOe
+         ENcM2WBUOPxDc5ZrERF6QWHlo6PP/WwuZw8EnlvY5ik+wxBMYNX6wBcAzEbaMdZ9DW84
+         MTDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1776779348; x=1777384148;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=FlSOM+zy4M9xSWnkVhyT33wCvD1J1AmqtD+BWspyMpM=;
+        b=TNWCZ4ATzQk/rJrjXxtRIBL3zi3Du+LR4B2WXOCoolGRgg4CF2mgsqSH4SuwTltgXa
+         MF5J1PdgRlM0MbETST9jr03qWfJ714J3jOYFswtyi7yVLOgRT9ut438rACS8A9wcE3Wq
+         Vecs04pKkPRXLhdc2CBDb+zobuIYsMzQd1HNPBUz8x9TQS+Hi1E7d5T8TK1i39QE8yIK
+         Im6fE5BFt40E0RZgD0Rq+Z0HNHrlFSJ995RchTGCuKBZfZKvb7z98tPvz0my/usaTD+/
+         3lDz7yzh1oAaSIjKH72PuBX5N6vUV0n0eIe15tZRd0ELdz3LA2YjkZE30zvSWm6iwL64
+         oOJw==
+X-Forwarded-Encrypted: i=1; AFNElJ982CXxVEANfcsb/dBqOpedVEFeoW3iq07ZjPVeD4vy5FzTY+d3dd6zcg5mUY1TFa/psJx87/Cr@lists.infradead.org
+X-Gm-Message-State: AOJu0YzJ3gX9A6nVi2bbTc0Qxqs922DAxsf1aHkGFyyVXW0bS9JnsgGA
+	JdL+K7sQAUTm4lEmfIgXbc+W35DTIU5ZRtg9w9BvNy5Ka/8I9vVhWY75LTDJ7W8yvyK/8C8Yv8r
+	3GltuVQdrpNDcjb0DKYwBpyqq/cmGiU5e8HC9Lxk=
+X-Gm-Gg: AeBDietTvjaGEfQkurHeDTqwJuzVHfKcJbWIBEO1DyAVfUhMnAgRwI/uqTCHO6LKCOB
+	nhS1U4H+eLtZFAY8/dt3HilO39QUld/E10rxWMjUoDlJpw3hNBN1xnwKKDvBNbtbZ+l0EQ9wpvO
+	NZlcSX3bSJr4rRHtLn20m1jdGdppK2hWviByF5iNwQTQHesUJKdGiXUZvsskDKZiQI4uD6B4Ic8
+	qemoL21GXoyVtpAdK7QjKp59nABQe0ceQ4Zer3ngj8c/HKGDcGW7TcXdbfJumB0cSuoPs5ImYuP
+	nWwA3iyU2KibNd1dTlbJdDbDgR3/aAxvpchj7FYo8H8ZV3XcilQ5ne2K+j4ykbiBihg0XuM1CQw
+	hyhvNAwF9seMUBbEtnJ07OQqjZi0uHg==
+X-Received: by 2002:a05:7300:fb83:b0:2be:17b1:e49f with SMTP id
+ 5a478bee46e88-2e42c251424mr7974819eec.4.1776779348134; Tue, 21 Apr 2026
+ 06:49:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260421-v2026-02-0-topic-sconfig_console-v8-6-261cdfc6b0da@pengutronix.de>
-References: <20260421-v2026-02-0-topic-sconfig_console-v8-0-261cdfc6b0da@pengutronix.de>
-In-Reply-To: <20260421-v2026-02-0-topic-sconfig_console-v8-0-261cdfc6b0da@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Fabian Pflug <f.pflug@pengutronix.de>
-X-Mailer: b4 0.14.3
+References: <20260420-usb-dwc2-usb-c-stick-v1-0-c86f733f24f8@pengutronix.de>
+ <20260420-usb-dwc2-usb-c-stick-v1-1-c86f733f24f8@pengutronix.de>
+ <439e4d93-0b31-41a5-93a4-3e0456e60a7b@pengutronix.de> <aeYZgSySnesKe_L0@pengutronix.de>
+ <22ce3b8d-b01f-4566-895d-c175c33a7e26@pengutronix.de> <CAL+1fyAnh3D1p=yj8+Fgj8CsjE6R0Jsfc5XbwyZYKhK797QQ8w@mail.gmail.com>
+ <CAL+1fyCYo3ZATq8d3Tv5fy_OcGVo2J3q3853-LqxgLqXNEahiQ@mail.gmail.com> <aectQyiyowJc1DCH@pengutronix.de>
+In-Reply-To: <aectQyiyowJc1DCH@pengutronix.de>
+From: anis chali <chalianis1@gmail.com>
+Date: Tue, 21 Apr 2026 09:48:56 -0400
+X-Gm-Features: AQROBzBG-YYhMgaypm5gSyXqLMQH8N4IT0Fj9UAHFxL4ktx3vrCxm7T_wI9XGqM
+Message-ID: <CAL+1fyDxHcRg-V2pbQgZKrb5p+3p3Z_jL52yC3q=RDA4nYrLEg@mail.gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>, 
+	"Claude Sonnet 4.6" <noreply@anthropic.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260421_032936_341697_E668B200 
-X-CRM114-Status: GOOD (  23.38  )
+X-CRM114-CacheID: sfid-20260421_064909_216362_D48AAAAC 
+X-CRM114-Status: GOOD (  20.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,198 +129,55 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH v8 6/7] drivers: pinctrl: configure pinctrl based on policy
- name
+X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+	autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 1/2] usb: dwc2: handle NAK when CHHLTD does not fire
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Security policies can be used to have different functionality on the
-system. If systems have different functionality, they might have
-different pinctrl settings.
+Hi,
 
-One example could be the console input:
-When using security policies to disable console input on the default
-console, it might be more advantageous to also disable the RX pin hard
-in pinctrl, so that if there is a software error with the security
-policy implementation input does not reach to system and cannot be
-exploited.
+Le mar. 21 avr. 2026 =C3=A0 03:54, Sascha Hauer <s.hauer@pengutronix.de> a =
+=C3=A9crit :
+>
+> Hi,
+>
+> On Mon, Apr 20, 2026 at 10:28:58PM -0400, anis chali wrote:
+> > Hi.
+> >
+> > On Raspberry pi cm 4, with only the patch usb: dwc2: handle NAK when
+> > CHHLTD does not fire,
+> > the usb controller does not work and displays indefinitely the message
+> > below even if no usb storage plugged in
+> > ERROR: dwc2 fe980000.usb@7e980000.of: Timeout on bulk endpoint
+> > I did the test with the patch series and I get the same behaviour,
+> > console continuously displaying the timeout error.
+>
+> I just tried with only your patch applied and it doesn't work for me. It
+> seems there is some timing issue involved, because when I add debugging
+> output at the right places then it works.
 
-An example devicetree could look like this:
-/ {
-	chosen {
-		stdout-path = &uart3;
-	};
-};
+Do you have logs, to check whether I had the same ?
+I got the same behaviour when I added debugging messages.
+We maybe try a combination or add the retry.
 
-&uart3 {
-	pinctrl-names = "default", "barebox,policy-devel-default";
-	pinctrl-0 = <&pinctrl_uart3_tx_only>;
-	pinctrl-1 = <&pinctrl_uart3_interactive>;
-	status = "okay";
-};
+> I haven't gotten further so far.
+>
+> Sascha
+>
+> --
+> Pengutronix e.K.                           |                             =
+|
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  =
+|
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    =
+|
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 =
+|
 
-&iomuxc {
-	pinctrl_uart3_interactive: uart3ingrp {
-		fsl,pins = <MX8MP_IOMUXC_SD1_DATA6__UART3_DCE_TX	0x140>,
-			   <MX8MP_IOMUXC_SD1_DATA7__UART3_DCE_RX	0x140>;
-	};
-
-	pinctrl_uart3_tx_only: uart3txgrp {
-		fsl,pins = <MX8MP_IOMUXC_SD1_DATA6__UART3_DCE_TX	0x140>,
-			   <MX8MP_IOMUXC_SD1_DATA7__GPIO2_IO09		0x140>;
-	};
-};
-
-This would apply the devel pinmux on selecting the devel config and the
-default on every other security policy configuration.
-
-A Kconfig option to enable this feature has been chosen, because parsing
-pinctrl and mapping the names is a lot of string operations, that could
-increase boottime for a feature, that is maybe not needed for everyone.
-
-Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
----
- drivers/pinctrl/pinctrl.c | 73 +++++++++++++++++++++++++++++++++++++++++++++--
- security/Kconfig.policy   | 12 ++++++++
- 2 files changed, 83 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/pinctrl/pinctrl.c b/drivers/pinctrl/pinctrl.c
-index 01567aa5ae..eb4103c5fd 100644
---- a/drivers/pinctrl/pinctrl.c
-+++ b/drivers/pinctrl/pinctrl.c
-@@ -10,11 +10,22 @@
- #include <linux/overflow.h>
- #include <errno.h>
- #include <of.h>
-+#include <security/config.h>
-+#include <security/policy.h>
- 
- struct pinctrl {
- 	struct device_node consumer_np;
- };
- 
-+LIST_HEAD(pinctrl_devices_name_list);
-+
-+struct pinctrl_devices_name_info {
-+	struct device_node *node;
-+	const char *name;
-+	struct list_head list;
-+};
-+
-+
- static LIST_HEAD(pinctrl_consumer_list);
- 
- struct pinctrl_state {
-@@ -218,15 +229,48 @@ int pinctrl_select_state(struct pinctrl *pinctrl, struct pinctrl_state *state)
- 	return ret;
- }
- 
-+static void of_pinctrl_policy_update_or_add(struct device_node *np, const char *name)
-+{
-+	struct pinctrl_devices_name_info *dev;
-+
-+	list_for_each_entry(dev, &pinctrl_devices_name_list, list) {
-+		if (dev->node == np) {
-+			free_const(dev->name);
-+			dev->name = xstrdup_const(name);
-+			return;
-+		}
-+	}
-+	dev = xzalloc(sizeof(*dev));
-+	dev->node = np;
-+	dev->name = xstrdup_const(name);
-+	list_add(&dev->list, &pinctrl_devices_name_list);
-+}
-+
- int of_pinctrl_select_state(struct device_node *np, const char *name)
- {
- 	struct pinctrl *pinctrl = of_pinctrl_get(np);
--	struct pinctrl_state *state;
-+	struct pinctrl_state *state = NULL;
- 
- 	if (!of_find_property(np, "pinctrl-0", NULL))
- 		return 0;
- 
--	state = pinctrl_lookup_state(pinctrl, name);
-+	if (IS_ENABLED(CONFIG_SECURITY_POLICY_PINCTRL)) {
-+		const struct security_policy *active_policy = security_policy_get_active();
-+
-+		of_pinctrl_policy_update_or_add(np, name);
-+
-+		if (active_policy && active_policy->name && name) {
-+			char *policy_pinctrl;
-+
-+			policy_pinctrl = basprintf("barebox,policy-%s-%s",
-+						   active_policy->name,
-+						   name);
-+			state = pinctrl_lookup_state(pinctrl, policy_pinctrl);
-+			free(policy_pinctrl);
-+		}
-+	}
-+	if (IS_ERR_OR_NULL(state))
-+		state = pinctrl_lookup_state(pinctrl, name);
- 	if (IS_ERR(state))
- 		return PTR_ERR(state);
- 
-@@ -331,3 +375,28 @@ void of_pinctrl_unregister_consumer(struct device *dev)
- 	}
- }
- #endif
-+
-+static int pinctrl_change_policy(struct notifier_block *nb,
-+				  unsigned long _ignored,
-+				  void *_data)
-+{
-+	struct pinctrl_devices_name_info *dev;
-+
-+	list_for_each_entry(dev, &pinctrl_devices_name_list, list) {
-+		of_pinctrl_select_state(dev->node, dev->name);
-+	}
-+	return 0;
-+}
-+
-+static struct notifier_block pinctrl_policy_notifier = {
-+	.notifier_call = pinctrl_change_policy
-+};
-+
-+static int pinctrl_policy_init(void)
-+{
-+	if (!IS_ENABLED(CONFIG_SECURITY_POLICY_PINCTRL))
-+		return 0;
-+
-+	return notifier_chain_register(&sconfig_name_notifier, &pinctrl_policy_notifier);
-+}
-+pure_initcall(pinctrl_policy_init);
-diff --git a/security/Kconfig.policy b/security/Kconfig.policy
-index e778327b0d..2c8e8399a0 100644
---- a/security/Kconfig.policy
-+++ b/security/Kconfig.policy
-@@ -69,6 +69,18 @@ config SECURITY_POLICY_DEFAULT_PERMISSIVE
- 	  A security policy should always be selected, either early on by
- 	  board code or via CONFIG_SECURITY_POLICY_INIT.
- 
-+config SECURITY_POLICY_PINCTRL
-+	bool "Update pinctrl based on policy-name"
-+	help
-+	  When selecting a pinctrl with the name <pinctrlname>, if there exists
-+	  a pinctrl with the name barebox,policy-<policyname>-<pinctrlname>,
-+	  then this pinctrl will be used instead.
-+	  This could be used for example to disable the RX (and TX) Pin in
-+	  lockdown mode for the console or disable the usage of SPI.
-+
-+	  Enabling this option does increase the boottime.
-+	  If unsure, say N.
-+
- config SECURITY_POLICY_PATH
- 	string
- 	depends on SECURITY_POLICY
-
--- 
-2.47.3
-
+Anis C.
 
 
