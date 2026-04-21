@@ -1,78 +1,66 @@
-Delivery-date: Tue, 21 Apr 2026 09:55:30 +0200
+Delivery-date: Tue, 21 Apr 2026 10:46:42 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wF5xC-00Edp1-1v
+	id 1wF6kk-00EetE-2c
 	for lore@lore.pengutronix.de;
-	Tue, 21 Apr 2026 09:55:30 +0200
+	Tue, 21 Apr 2026 10:46:42 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wF5xC-0006Vi-2Y
-	for lore@pengutronix.de; Tue, 21 Apr 2026 09:55:30 +0200
+	id 1wF6kk-000644-9B
+	for lore@pengutronix.de; Tue, 21 Apr 2026 10:46:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=K7FRo65+PeOrEUtT04RpigXDfPTD8sCuMcvTnPHwJS4=; b=3miQGRQ59V8OmxsnNZeZRkgULn
-	9NPBx78SulmgTh2qOMpzG16bK/anq7F9igrhrvP9nTy0RRHWNN6jO4kEOxxUDnNwHdP3hrd7/AN/8
-	DC0Zqtx1AymCGeCcHALOiwdrZBkWQACdTwybM/Zx3IZWYIOgThbhOjf2gkkpYJ2hbMQdWRmA0BRSI
-	avtsOeklmXpWM3ZZ3F9h6fLRMfQFuu+IaqmHDKARaJmjA2g3SZ2aU3rPMlAG5EfAaqk63bB/WDqpv
-	2eSapF5ExRUV9fBQAOk6uFu9fSiOoszKPfOsEGoolN89/FwzcXsoxeQI03XmioA9RI/inFerfJDbo
-	Mp1FzrCA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=ls2VOB6g3eVwcV9XmMRXdv/9KPygPzrJPHFP7dapqkY=; b=Bb3dCcIJ2BHc7TCPNY53tCt8jj
+	1oaIze1LGNfF6IpSV6pANjM3q/Q2licRF9LkpMNb2F/2W2BrIvLW0vKWg6a4fD0k7vIl9F++zcY/f
+	1/1y9g/1M9lxQ/j2PavsXCzFvqapV3qoiDI3NXo21FNruAo8M/wAu0U9VtJ4yyLO7FttkoLaK9uZo
+	5mCvIyR8PnRLISnYHrIDWcy9l7AMcfug86/YjzcdWQk/XJsgOEURCw5G4jv8MXjkJqG81kvNWQbCw
+	OYt13mefyLzrsk0AYzg4OMxMNKGSCT6OyT4K7G7Q+wr68DsG+JDP+NSxlOAoaeb5FkRhXuKAotcFL
+	t3RtvOvA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wF5wZ-00000008DSk-2fOL;
-	Tue, 21 Apr 2026 07:54:51 +0000
+	id 1wF6kE-00000008Gon-2SJ9;
+	Tue, 21 Apr 2026 08:46:10 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wF5wW-00000008DSH-2NoB
+	id 1wF6kC-00000008GoI-0WRm
 	for barebox@lists.infradead.org;
-	Tue, 21 Apr 2026 07:54:50 +0000
+	Tue, 21 Apr 2026 08:46:09 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1wF5wS-0006M2-Cn; Tue, 21 Apr 2026 09:54:44 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1wF6kA-0005yD-7X; Tue, 21 Apr 2026 10:46:06 +0200
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1wF5wR-006T1J-2e;
-	Tue, 21 Apr 2026 09:54:43 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1wF5wR-00000006HWS-30J9;
-	Tue, 21 Apr 2026 09:54:43 +0200
-Date: Tue, 21 Apr 2026 09:54:43 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: anis chali <chalianis1@gmail.com>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1wF6k9-006TT9-34;
+	Tue, 21 Apr 2026 10:46:05 +0200
+Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1wF6k9-0000000950C-3ZSc;
+	Tue, 21 Apr 2026 10:46:05 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	BAREBOX <barebox@lists.infradead.org>,
-	"Claude Sonnet 4.6" <noreply@anthropic.com>
-Message-ID: <aectQyiyowJc1DCH@pengutronix.de>
-References: <20260420-usb-dwc2-usb-c-stick-v1-0-c86f733f24f8@pengutronix.de>
- <20260420-usb-dwc2-usb-c-stick-v1-1-c86f733f24f8@pengutronix.de>
- <439e4d93-0b31-41a5-93a4-3e0456e60a7b@pengutronix.de>
- <aeYZgSySnesKe_L0@pengutronix.de>
- <22ce3b8d-b01f-4566-895d-c175c33a7e26@pengutronix.de>
- <CAL+1fyAnh3D1p=yj8+Fgj8CsjE6R0Jsfc5XbwyZYKhK797QQ8w@mail.gmail.com>
- <CAL+1fyCYo3ZATq8d3Tv5fy_OcGVo2J3q3853-LqxgLqXNEahiQ@mail.gmail.com>
+	Jonas Rebmann <jre@pengutronix.de>
+Date: Tue, 21 Apr 2026 10:46:02 +0200
+Message-ID: <20260421084603.2161981-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAL+1fyCYo3ZATq8d3Tv5fy_OcGVo2J3q3853-LqxgLqXNEahiQ@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260421_005448_610508_F7DCC3AC 
-X-CRM114-Status: GOOD (  16.98  )
+X-CRM114-CacheID: sfid-20260421_014608_159565_583E7E7D 
+X-CRM114-Status: GOOD (  10.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,39 +78,40 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] usb: dwc2: handle NAK when CHHLTD does not fire
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] Documentation: user: use matrix.to instead of element.io link
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+Element is a client for the Matrix protocol and users may want to use a
+different client.
 
-On Mon, Apr 20, 2026 at 10:28:58PM -0400, anis chali wrote:
-> Hi.
-> 
-> On Raspberry pi cm 4, with only the patch usb: dwc2: handle NAK when
-> CHHLTD does not fire,
-> the usb controller does not work and displays indefinitely the message
-> below even if no usb storage plugged in
-> ERROR: dwc2 fe980000.usb@7e980000.of: Timeout on bulk endpoint
-> I did the test with the patch series and I get the same behaviour,
-> console continuously displaying the timeout error.
+Use the generic matrix.to link instead to point at our channel.
 
-I just tried with only your patch applied and it doesn't work for me. It
-seems there is some timing issue involved, because when I add debugging
-output at the right places then it works.
+Suggested-by: Jonas Rebmann <jre@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ Documentation/user/introduction.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I haven't gotten further so far.
-
-Sascha
-
+diff --git a/Documentation/user/introduction.rst b/Documentation/user/introduction.rst
+index 378cca45a0f9..e62d8787f776 100644
+--- a/Documentation/user/introduction.rst
++++ b/Documentation/user/introduction.rst
+@@ -32,7 +32,7 @@ Mails sent to the barebox mailing list are archived on
+ `lore.kernel.org <https://lore.kernel.org/barebox/>`_.
+ 
+ There's also an IRC channel, which is
+-`bridged to Matrix  <https://app.element.io/#/room/#barebox:matrix.org>`_:
++`bridged to Matrix  <https://matrix.to/#/#barebox:matrix.org>`_:
+ #barebox on Libera Chat.
+ 
+ .. _feedback:
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.47.3
+
 
 
