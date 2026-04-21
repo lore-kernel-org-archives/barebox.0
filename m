@@ -1,48 +1,48 @@
-Delivery-date: Tue, 21 Apr 2026 12:30:06 +0200
+Delivery-date: Tue, 21 Apr 2026 12:30:07 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wF8Mo-00EgU2-08
+	id 1wF8Mo-00EgUN-35
 	for lore@lore.pengutronix.de;
-	Tue, 21 Apr 2026 12:30:06 +0200
+	Tue, 21 Apr 2026 12:30:07 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wF8Mn-0006fi-B9
-	for lore@pengutronix.de; Tue, 21 Apr 2026 12:30:05 +0200
+	id 1wF8Mo-0006gk-1e
+	for lore@pengutronix.de; Tue, 21 Apr 2026 12:30:06 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=iNJNBWCVWMoPI0xwRE5rIwG+ILgsLfEW30AZP7EIysE=; b=nx9r3N89DnJKdwSnBREzugwYKO
-	yJdw7/IcH6MMuw/kM+EVVrBeadJo0u/IZeBrRMUr2LAXsO2rP0r32LWCfihzyomD7yv+5ypxyzM47
-	hLhWbz6ubPUxQ/seDWhFVp6ODQ1pCCu/CqHn5w2STS4tMW7av8bVEsd/E6YZo6fLhweNYB1frzpy6
-	j5I8ns3/pWH8SkXVA/CBf+VPHNCCjVwQ6tm2y5m2Ytknk1oQn1B+kUSRJwpuioTwmiR8sxUCOqv3f
-	TdEPgFXoho/MwC66awPru/iDZ413QFuVuD8n68xxRaXkB8mu7fulv3y0ZJc73QOeEYt09KrjWPtjl
-	9DTN6hFg==;
+	bh=WOSB5073df+s2r8Fv8SpMf34/DKNVUuHu+sBvD7HpAY=; b=LQvcK0fNiGJdKm+EkSq4PX4yNI
+	iIiQYslj/ZuubnnFYrlnkIPn3bgpeU8E5qkHGKJlhbCRC7l4jyoOr9UTqPC/cIFdLswF55SG8NFrh
+	Z/TYD7N7jBMF8IZgQ98FIu940nt6VRZiFFYZ4l7s2WEbG26YrBbmhvzzAYViDreKdVR6/NMKgF/RS
+	a5YZ6AikZPfgcZYpQImubdw9p/j0xVRTBpr2D91Xw/dJq+ap64oCa8j5kFOpc4f8TDzHIjFcDK3Gy
+	LIN/Q6Jyg0Z38wt9v1J8k0gi2rawhSBhNzoXweyK9voSXWRbh+dW9JQ7HwWP/a1RrXU9fDvHwY9K4
+	BUkPzP+w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wF8MO-00000008REl-20F9;
-	Tue, 21 Apr 2026 10:29:40 +0000
+	id 1wF8MP-00000008REx-0Uw8;
+	Tue, 21 Apr 2026 10:29:41 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wF8MK-00000008RBZ-11vh
+	id 1wF8MK-00000008RBW-12JR
 	for barebox@lists.infradead.org;
-	Tue, 21 Apr 2026 10:29:38 +0000
+	Tue, 21 Apr 2026 10:29:39 +0000
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <f.pflug@pengutronix.de>)
-	id 1wF8MI-0006MC-Mi; Tue, 21 Apr 2026 12:29:34 +0200
+	id 1wF8MI-0006MC-Je; Tue, 21 Apr 2026 12:29:34 +0200
 From: Fabian Pflug <f.pflug@pengutronix.de>
-Date: Tue, 21 Apr 2026 12:29:33 +0200
+Date: Tue, 21 Apr 2026 12:29:30 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260421-v2026-02-0-topic-sconfig_console-v8-4-261cdfc6b0da@pengutronix.de>
+Message-Id: <20260421-v2026-02-0-topic-sconfig_console-v8-1-261cdfc6b0da@pengutronix.de>
 References: <20260421-v2026-02-0-topic-sconfig_console-v8-0-261cdfc6b0da@pengutronix.de>
 In-Reply-To: <20260421-v2026-02-0-topic-sconfig_console-v8-0-261cdfc6b0da@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>, 
@@ -50,9 +50,8 @@ To: BAREBOX <barebox@lists.infradead.org>,
 Cc: Fabian Pflug <f.pflug@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260421_032936_450718_76EF4D70 
-X-CRM114-Status: UNSURE (   9.22  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260421_032936_398841_DD2D8A54 
+X-CRM114-Status: GOOD (  17.68  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,55 +73,140 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH v8 4/7] security: policy: add notifier chain for name
- change
+Subject: [PATCH v8 1/7] of: add of_property_write_string_array()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add an additional notifier chain, that gets called, whenever a security
-policy itself is changed, independent of the policies that have changed,
-which could be used to inform users about the currently selected policy
-name.
+Helper function to write an array of string into a property.
 
 Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 ---
- include/security/config.h | 1 +
- security/policy.c         | 3 +++
- 2 files changed, 4 insertions(+)
+ drivers/of/base.c             | 43 +++++++++++++++++++++++++++++++++++++++++++
+ include/of.h                  |  3 +++
+ test/self/of_manipulation.c   | 14 +++++++++++++-
+ test/self/of_manipulation.dts |  5 +++++
+ 4 files changed, 64 insertions(+), 1 deletion(-)
 
-diff --git a/include/security/config.h b/include/security/config.h
-index b37ef4272c..35a5e963f7 100644
---- a/include/security/config.h
-+++ b/include/security/config.h
-@@ -20,6 +20,7 @@ extern const char *sconfig_names[SCONFIG_NUM];
- int sconfig_lookup(const char *name);
- 
- extern struct notifier_head sconfig_notifier_list;
-+extern struct notifier_head sconfig_name_notifier;
- 
- bool is_allowed(const struct security_policy *policy, unsigned option);
- 
-diff --git a/security/policy.c b/security/policy.c
-index 2924bfeabc..e3c68aa992 100644
---- a/security/policy.c
-+++ b/security/policy.c
-@@ -47,6 +47,7 @@ static const struct security_policy *active_policy;
- 
- static LIST_HEAD(policy_list);
- NOTIFIER_HEAD(sconfig_notifier_list);
-+NOTIFIER_HEAD(sconfig_name_notifier);
- 
- static bool __is_allowed(const struct security_policy *policy, unsigned option)
- {
-@@ -102,6 +103,8 @@ int security_policy_activate(const struct security_policy *policy)
- 		notifier_call_chain(&sconfig_notifier_list, i, NULL);
- 	}
- 
-+	notifier_call_chain(&sconfig_name_notifier, 0, NULL);
-+
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 460b5e2f4b..376a2ac6a8 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1570,6 +1570,49 @@ int of_property_write_u64_array(struct device_node *np,
  	return 0;
  }
  
++/**
++ * of_property_write_string_array - Write strings to a property. If
++ * the property does not exist, it will be created and appended to the given
++ * device node.
++ *
++ * @np:		device node to which the property value is to be written.
++ * @propname:	name of the property to be written.
++ * @values:	pointer to array elements to write.
++ * @sz:		number of array elements to write.
++ *
++ * Search for a property in a device node and write a string to
++ * it. If the property does not exist, it will be created and appended to
++ * the device node. Returns 0 on success, -ENOMEM if the property or array
++ * of elements cannot be created, -EINVAL if no strings specified.
++ */
++int of_property_write_string_array(struct device_node *np,
++				   const char *propname, const char **values,
++				   size_t sz)
++{
++	char *buf = NULL, *next;
++	size_t len = 0;
++	int ret = 0, i;
++
++	for (i = 0; i < sz; i++)
++		len += strlen(values[i]) + 1;
++
++	if (!len)
++		return -EINVAL;
++
++	buf = malloc(len);
++	if (!buf)
++		return -ENOMEM;
++
++	next = buf;
++
++	for (i = 0; i < sz; i++)
++		next = stpcpy(next, values[i]) + 1;
++
++	ret = of_set_property(np, propname, buf, len, 1);
++	free(buf);
++	return ret;
++}
++
+ /**
+  * of_property_write_strings - Write strings to a property. If
+  * the property does not exist, it will be created and appended to the given
+diff --git a/include/of.h b/include/of.h
+index ba8d1e358d..34439ee763 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -310,6 +310,9 @@ extern int of_property_write_string(struct device_node *np, const char *propname
+ 				    const char *value);
+ extern int of_property_write_strings(struct device_node *np, const char *propname,
+ 				    ...) __attribute__((__sentinel__));
++int of_property_write_string_array(struct device_node *np,
++				   const char *propname, const char **values,
++				   size_t sz);
+ int of_property_sprintf(struct device_node *np, const char *propname, const char *fmt, ...)
+ 	__printf(3, 4);
+ 
+diff --git a/test/self/of_manipulation.c b/test/self/of_manipulation.c
+index 8d645b1137..faf948a17b 100644
+--- a/test/self/of_manipulation.c
++++ b/test/self/of_manipulation.c
+@@ -71,13 +71,19 @@ static void test_of_basics(struct device_node *root)
+ 
+ static void test_of_property_strings(struct device_node *root)
+ {
+-	struct device_node *np1, *np2, *np3, *np4;
++	struct device_node *np1, *np2, *np3, *np4, *np5;
+ 	char properties[] = "ayy\0bee\0sea";
++	static const char * const prop_array[] = {
++		"ayy",
++		"bee\0\0\0",
++		"sea\0",
++	};
+ 
+ 	np1 = of_new_node(root, "np1");
+ 	np2 = of_new_node(root, "np2");
+ 	np3 = of_new_node(root, "np3");
+ 	np4 = of_new_node(root, "np4");
++	np5 = of_new_node(root, "np5");
+ 
+ 	of_property_sprintf(np1, "property-single", "%c%c%c", 'a', 'y', 'y');
+ 
+@@ -108,6 +114,12 @@ static void test_of_property_strings(struct device_node *root)
+ 	of_prepend_property(np4, "property-multi", "ayy", 4);
+ 
+ 	assert_equal(np3, np4);
++
++	of_property_write_string_array(np5, "property-single", prop_array, 1);
++
++	of_property_write_string_array(np5, "property-multi", prop_array, 3);
++
++	assert_equal(np4, np5);
+ }
+ 
+ static void __init test_of_manipulation(void)
+diff --git a/test/self/of_manipulation.dts b/test/self/of_manipulation.dts
+index 2cc6773fa9..7a1fb1217d 100644
+--- a/test/self/of_manipulation.dts
++++ b/test/self/of_manipulation.dts
+@@ -34,4 +34,9 @@ np4 {
+ 		property-single = "ayy";
+ 		property-multi = "ayy", "bee", "sea";
+ 	};
++
++	np5 {
++		property-single = "ayy";
++		property-multi = "ayy", "bee", "sea";
++	};
+ };
 
 -- 
 2.47.3
