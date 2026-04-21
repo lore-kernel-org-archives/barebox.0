@@ -3,46 +3,46 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wF8Mo-00EgUN-35
+	id 1wF8Mp-00EgUZ-1G
 	for lore@lore.pengutronix.de;
 	Tue, 21 Apr 2026 12:30:07 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wF8Mo-0006gk-1e
-	for lore@pengutronix.de; Tue, 21 Apr 2026 12:30:06 +0200
+	id 1wF8Mo-0006h7-LZ
+	for lore@pengutronix.de; Tue, 21 Apr 2026 12:30:07 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=WOSB5073df+s2r8Fv8SpMf34/DKNVUuHu+sBvD7HpAY=; b=LQvcK0fNiGJdKm+EkSq4PX4yNI
-	iIiQYslj/ZuubnnFYrlnkIPn3bgpeU8E5qkHGKJlhbCRC7l4jyoOr9UTqPC/cIFdLswF55SG8NFrh
-	Z/TYD7N7jBMF8IZgQ98FIu940nt6VRZiFFYZ4l7s2WEbG26YrBbmhvzzAYViDreKdVR6/NMKgF/RS
-	a5YZ6AikZPfgcZYpQImubdw9p/j0xVRTBpr2D91Xw/dJq+ap64oCa8j5kFOpc4f8TDzHIjFcDK3Gy
-	LIN/Q6Jyg0Z38wt9v1J8k0gi2rawhSBhNzoXweyK9voSXWRbh+dW9JQ7HwWP/a1RrXU9fDvHwY9K4
-	BUkPzP+w==;
+	bh=cEpew/1BqNk65wPpftmN+7tSabXl8uxqhzapGL6+jgU=; b=QGWFLwHhYp3/aWGKDTJScJjLPY
+	eVZJfS+8aDJCXMfz5Pj/GGNHMOfBkyYkfoh17L9wvATrMkyfB0x61Glod9UucxQhEhIIakNwpOTv/
+	eNA74vS4ylZdcXr0990YcHqH+olje1cuuFzyCS1jtXPjE0JlziR2wSVr0wst7MMKm7el8+1mgH6cL
+	VWVYWq1AWDi2fy5ZB7ib97vBHoOH94liu8+QkqEEpi3nCUncRAGaaFYBmeC51/tYpjaqmm7Y0Gczf
+	r5ZVKHqXw6PRILILzQ3lFhC/o+j7feFvQ/xxU4AuO4QpAszF+Y8009Ywz+OQCY7lAWI2g3tSfgHhD
+	W92c1VJg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wF8MP-00000008REx-0Uw8;
-	Tue, 21 Apr 2026 10:29:41 +0000
+	id 1wF8MQ-00000008RGo-3sGX;
+	Tue, 21 Apr 2026 10:29:42 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wF8MK-00000008RBW-12JR
+	id 1wF8MK-00000008RBa-124t
 	for barebox@lists.infradead.org;
 	Tue, 21 Apr 2026 10:29:39 +0000
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <f.pflug@pengutronix.de>)
-	id 1wF8MI-0006MC-Je; Tue, 21 Apr 2026 12:29:34 +0200
+	id 1wF8MI-0006MC-Nb; Tue, 21 Apr 2026 12:29:34 +0200
 From: Fabian Pflug <f.pflug@pengutronix.de>
-Date: Tue, 21 Apr 2026 12:29:30 +0200
+Date: Tue, 21 Apr 2026 12:29:34 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260421-v2026-02-0-topic-sconfig_console-v8-1-261cdfc6b0da@pengutronix.de>
+Message-Id: <20260421-v2026-02-0-topic-sconfig_console-v8-5-261cdfc6b0da@pengutronix.de>
 References: <20260421-v2026-02-0-topic-sconfig_console-v8-0-261cdfc6b0da@pengutronix.de>
 In-Reply-To: <20260421-v2026-02-0-topic-sconfig_console-v8-0-261cdfc6b0da@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>, 
@@ -50,8 +50,8 @@ To: BAREBOX <barebox@lists.infradead.org>,
 Cc: Fabian Pflug <f.pflug@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260421_032936_398841_DD2D8A54 
-X-CRM114-Status: GOOD (  17.68  )
+X-CRM114-CacheID: sfid-20260421_032936_432576_7B64412B 
+X-CRM114-Status: GOOD (  13.19  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,141 +72,114 @@ X-Spam-Level:
 X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH v8 1/7] of: add of_property_write_string_array()
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH v8 5/7] common: bootm: add policy to commandline
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Helper function to write an array of string into a property.
+If security policies are used, then the variable bootm.provide_policy
+can be set to automatically append the currently selected security
+policy to the kernel commandline with the prefix
+barebox.security.policy=
+This allows the system to behave differently based on the selected
+security policy.
 
 Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 ---
- drivers/of/base.c             | 43 +++++++++++++++++++++++++++++++++++++++++++
- include/of.h                  |  3 +++
- test/self/of_manipulation.c   | 14 +++++++++++++-
- test/self/of_manipulation.dts |  5 +++++
- 4 files changed, 64 insertions(+), 1 deletion(-)
+ common/bootm.c  | 24 ++++++++++++++++++++++++
+ include/bootm.h |  5 +++++
+ 2 files changed, 29 insertions(+)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 460b5e2f4b..376a2ac6a8 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1570,6 +1570,49 @@ int of_property_write_u64_array(struct device_node *np,
- 	return 0;
- }
+diff --git a/common/bootm.c b/common/bootm.c
+index 371d86ae0b..703b55a38f 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -20,6 +20,7 @@
+ #include <magicvar.h>
+ #include <zero_page.h>
+ #include <security/config.h>
++#include <security/policy.h>
  
-+/**
-+ * of_property_write_string_array - Write strings to a property. If
-+ * the property does not exist, it will be created and appended to the given
-+ * device node.
-+ *
-+ * @np:		device node to which the property value is to be written.
-+ * @propname:	name of the property to be written.
-+ * @values:	pointer to array elements to write.
-+ * @sz:		number of array elements to write.
-+ *
-+ * Search for a property in a device node and write a string to
-+ * it. If the property does not exist, it will be created and appended to
-+ * the device node. Returns 0 on success, -ENOMEM if the property or array
-+ * of elements cannot be created, -EINVAL if no strings specified.
-+ */
-+int of_property_write_string_array(struct device_node *np,
-+				   const char *propname, const char **values,
-+				   size_t sz)
-+{
-+	char *buf = NULL, *next;
-+	size_t len = 0;
-+	int ret = 0, i;
-+
-+	for (i = 0; i < sz; i++)
-+		len += strlen(values[i]) + 1;
-+
-+	if (!len)
-+		return -EINVAL;
-+
-+	buf = malloc(len);
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	next = buf;
-+
-+	for (i = 0; i < sz; i++)
-+		next = stpcpy(next, values[i]) + 1;
-+
-+	ret = of_set_property(np, propname, buf, len, 1);
-+	free(buf);
-+	return ret;
-+}
-+
- /**
-  * of_property_write_strings - Write strings to a property. If
-  * the property does not exist, it will be created and appended to the given
-diff --git a/include/of.h b/include/of.h
-index ba8d1e358d..34439ee763 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -310,6 +310,9 @@ extern int of_property_write_string(struct device_node *np, const char *propname
- 				    const char *value);
- extern int of_property_write_strings(struct device_node *np, const char *propname,
- 				    ...) __attribute__((__sentinel__));
-+int of_property_write_string_array(struct device_node *np,
-+				   const char *propname, const char **values,
-+				   size_t sz);
- int of_property_sprintf(struct device_node *np, const char *propname, const char *fmt, ...)
- 	__printf(3, 4);
+ static LIST_HEAD(handler_list);
+ static struct sconfig_notifier_block sconfig_notifier;
+@@ -71,6 +72,7 @@ static int bootm_dryrun;
+ static int bootm_earlycon;
+ static int bootm_provide_machine_id;
+ static int bootm_provide_hostname;
++static int bootm_provide_policy;
+ static int bootm_verbosity;
+ static int bootm_efi_mode = BOOTM_EFI_AVAILABLE;
  
-diff --git a/test/self/of_manipulation.c b/test/self/of_manipulation.c
-index 8d645b1137..faf948a17b 100644
---- a/test/self/of_manipulation.c
-+++ b/test/self/of_manipulation.c
-@@ -71,13 +71,19 @@ static void test_of_basics(struct device_node *root)
+@@ -93,6 +95,7 @@ void bootm_data_init_defaults(struct bootm_data *data)
+ 	data->appendroot = bootm_appendroot;
+ 	data->provide_machine_id = bootm_provide_machine_id;
+ 	data->provide_hostname = bootm_provide_hostname;
++	data->provide_policy = bootm_provide_policy;
+ 	data->verbose = bootm_verbosity;
+ 	data->dryrun = bootm_dryrun;
+ 	data->efi_boot = bootm_efi_mode;
+@@ -114,6 +117,7 @@ void bootm_data_restore_defaults(const struct bootm_data *data)
+ 	bootm_appendroot = data->appendroot;
+ 	bootm_provide_machine_id = data->provide_machine_id;
+ 	bootm_provide_hostname = data->provide_hostname;
++	bootm_provide_policy = data->provide_policy;
+ 	bootm_verbosity = data->verbose;
+ 	bootm_dryrun = data->dryrun;
+ 	bootm_efi_mode = data->efi_boot;
+@@ -715,6 +719,21 @@ struct image_data *bootm_boot_prep(const struct bootm_data *bootm_data)
+ 		free(hostname_bootarg);
+ 	}
  
- static void test_of_property_strings(struct device_node *root)
- {
--	struct device_node *np1, *np2, *np3, *np4;
-+	struct device_node *np1, *np2, *np3, *np4, *np5;
- 	char properties[] = "ayy\0bee\0sea";
-+	static const char * const prop_array[] = {
-+		"ayy",
-+		"bee\0\0\0",
-+		"sea\0",
-+	};
- 
- 	np1 = of_new_node(root, "np1");
- 	np2 = of_new_node(root, "np2");
- 	np3 = of_new_node(root, "np3");
- 	np4 = of_new_node(root, "np4");
-+	np5 = of_new_node(root, "np5");
- 
- 	of_property_sprintf(np1, "property-single", "%c%c%c", 'a', 'y', 'y');
- 
-@@ -108,6 +114,12 @@ static void test_of_property_strings(struct device_node *root)
- 	of_prepend_property(np4, "property-multi", "ayy", 4);
- 
- 	assert_equal(np3, np4);
++	if (IS_ENABLED(CONFIG_SECURITY_POLICY) && bootm_data->provide_policy) {
++		char *policy_bootargs;
++		const struct security_policy *active_policy = security_policy_get_active();
 +
-+	of_property_write_string_array(np5, "property-single", prop_array, 1);
++		if (!active_policy) {
++			pr_err("Providing policy is enabled but no policy is selected\n");
++			ret = -EINVAL;
++			goto err_out;
++		}
 +
-+	of_property_write_string_array(np5, "property-multi", prop_array, 3);
++		policy_bootargs = basprintf("barebox.security.policy=%s", active_policy->name);
++		globalvar_add_simple("linux.bootargs.dyn.policy", policy_bootargs);
++		free(policy_bootargs);
++	}
 +
-+	assert_equal(np4, np5);
- }
- 
- static void __init test_of_manipulation(void)
-diff --git a/test/self/of_manipulation.dts b/test/self/of_manipulation.dts
-index 2cc6773fa9..7a1fb1217d 100644
---- a/test/self/of_manipulation.dts
-+++ b/test/self/of_manipulation.dts
-@@ -34,4 +34,9 @@ np4 {
- 		property-single = "ayy";
- 		property-multi = "ayy", "bee", "sea";
- 	};
-+
-+	np5 {
-+		property-single = "ayy";
-+		property-multi = "ayy", "bee", "sea";
-+	};
- };
+ 	return data;
+ err_out:
+ 	bootm_boot_cleanup(data);
+@@ -846,6 +865,8 @@ static int bootm_init(void)
+ 	globalvar_add_simple_bool("bootm.earlycon", &bootm_earlycon);
+ 	globalvar_add_simple_bool("bootm.provide_machine_id", &bootm_provide_machine_id);
+ 	globalvar_add_simple_bool("bootm.provide_hostname", &bootm_provide_hostname);
++	if (IS_ENABLED(CONFIG_SECURITY_POLICY))
++		globalvar_add_simple_bool("bootm.provide_policy", &bootm_provide_policy);
+ 	if (IS_ENABLED(CONFIG_BOOTM_INITRD)) {
+ 		globalvar_add_simple("bootm.initrd", NULL);
+ 		globalvar_add_simple("bootm.initrd.loadaddr", NULL);
+@@ -896,3 +917,6 @@ BAREBOX_MAGICVAR(global.bootm.root_dev, "bootm default root device (overrides de
+ BAREBOX_MAGICVAR(global.bootm.root_param, "bootm root parameter name (normally 'root' for root=/dev/...)");
+ BAREBOX_MAGICVAR(global.bootm.provide_machine_id, "If true, append systemd.machine_id=$global.machine_id to Kernel command line");
+ BAREBOX_MAGICVAR(global.bootm.provide_hostname, "If true, append systemd.hostname=$global.hostname to Kernel command line");
++#ifdef CONFIG_SECURITY_POLICY
++BAREBOX_MAGICVAR(global.bootm.provide_policy, "Add barebox.security.policy= option to Kernel");
++#endif
+diff --git a/include/bootm.h b/include/bootm.h
+index 85199fc702..1a556e1e95 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -47,6 +47,11 @@ struct bootm_data {
+ 	 * of global.hostname to Kernel.
+ 	 */
+ 	bool provide_hostname;
++	/*
++	 * provide_policy - if true, try to add barebox.security.policy= with
++	 * with value of currently selected policy
++	 */
++	bool provide_policy;
+ 	enum bootm_efi_mode efi_boot;
+ 	unsigned long initrd_address;
+ 	unsigned long os_address;
 
 -- 
 2.47.3
