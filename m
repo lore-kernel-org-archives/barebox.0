@@ -1,60 +1,57 @@
-Delivery-date: Wed, 22 Apr 2026 10:53:09 +0200
+Delivery-date: Wed, 22 Apr 2026 11:11:17 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wFTKX-00F2TN-0P
+	id 1wFTc5-00F2sG-02
 	for lore@lore.pengutronix.de;
-	Wed, 22 Apr 2026 10:53:09 +0200
+	Wed, 22 Apr 2026 11:11:17 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wFTKW-0003Yl-Dx
-	for lore@pengutronix.de; Wed, 22 Apr 2026 10:53:09 +0200
+	id 1wFTc3-0006LO-RV
+	for lore@pengutronix.de; Wed, 22 Apr 2026 11:11:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
-	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:Cc:To:From
-	:Subject:Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=WibRFaYPR54qmLIyqxo6iEKc9rYJ/aRG91UocS4Myg8=; b=a/hBP9TJ9ehb3D5PHm+9pz0yLm
-	FtYYRcHpz6qCWSam+XmffhFb9S1aK9Uaf0H+df9x7+dk4AloEZb6cxKtLtRIlRowY2+vvUg7dnwcv
-	YxrfoBnfCApKHn5hh2ZxDvvwSn4KssOL1dZMFJGmogTLLNbv56JI9xGywSM0b6odTsxa37aPo1484
-	Q5jvAd5fkg/yXMVYiy4IuK4HH/3U+Rfy31/0DN/VpMvrgYfxCoPfxXrbT/1Y7hhxZWu6I65r2JstP
-	DbJVmKajYr7T2tUoWdHvVshTVNH4F9GWajc4QFbli4ZcfQTdwcRp+kGRJTp2TwwxqJ0CJPB2EEj3X
-	X1do7/gg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=KLvbYhApGFKgAGfu4a0HjfVp1G3XUt47hKvxMso2vsU=; b=nHx1ZkjzuMSiGUN9I991ORL5Mx
+	o8glvXXuZwBXg5F4WzTK/n0yYTD5f2/YtjGChr0FaJPQkJ/4ybCfrZymzzZpMgpZskbefqrd5mzku
+	HdqtQSpCEM6r5shXkd8cwwaZwjA+sBth43qyj7MzVMUwGj+tavR+w2OFjzO66rw+lJTXONxLhBDOU
+	bt8ertPlo57C/TjNceESfcPu17ERXamCwYtF4iCgDvmzE9u6NI4f0GyDjNhNtVGMvP39YJhybBI0m
+	Dzau1Wlt4UORB8xsk0roO3LM4Llnm553D3txLTKv6uWKhc30Es9YR58hOMYojOsuXwSIbgeGb7jF3
+	NR1QA4bQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wFTK3-00000009nzV-19o5;
-	Wed, 22 Apr 2026 08:52:39 +0000
+	id 1wFTbO-00000009ot1-0l7p;
+	Wed, 22 Apr 2026 09:10:34 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wFTK0-00000009nyy-1vNg
+	id 1wFTbK-00000009osS-3sjc
 	for barebox@lists.infradead.org;
-	Wed, 22 Apr 2026 08:52:37 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	Wed, 22 Apr 2026 09:10:32 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <f.pflug@pengutronix.de>)
-	id 1wFTJy-0003R7-Rz; Wed, 22 Apr 2026 10:52:34 +0200
-Message-ID: <86d49148492685a515b669a05995b89570de6f79.camel@pengutronix.de>
-From: Fabian Pflug <f.pflug@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Jonas Rebmann <jre@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
-Date: Wed, 22 Apr 2026 10:52:34 +0200
-In-Reply-To: <aeiF3Z6yDuuy3IoD@pengutronix.de>
-References: <20260415-v2026-03-0-topic-soc_bin_id-v2-0-81fab6ba5de0@pengutronix.de>
-	 <20260415-v2026-03-0-topic-soc_bin_id-v2-1-81fab6ba5de0@pengutronix.de>
-	 <aeh_ExzusLb9PCX3@pengutronix.de>
-	 <479b96ec421925a887ad63f65a5c00478caac431.camel@pengutronix.de>
-	 <aeiF3Z6yDuuy3IoD@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1wFTbI-0006Cw-0V; Wed, 22 Apr 2026 11:10:28 +0200
+Message-ID: <d437f1d8-c079-4e17-ab67-f9090be6af9f@pengutronix.de>
+Date: Wed, 22 Apr 2026 11:10:27 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Alexander Shiyan <eagle.alexander923@gmail.com>,
+ barebox@lists.infradead.org
+References: <20260416134518.3282395-1-eagle.alexander923@gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <20260416134518.3282395-1-eagle.alexander923@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260422_015236_495140_4BE0A8A8 
-X-CRM114-Status: GOOD (  38.76  )
+X-CRM114-CacheID: sfid-20260422_021031_278779_EA0D0630 
+X-CRM114-Status: GOOD (  54.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,131 +69,471 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 1/2] common: misc: add soc_uid_hex to globalvar
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 1/2] Add support for extlinux.conf
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, 2026-04-22 at 10:25 +0200, Sascha Hauer wrote:
-> On Wed, Apr 22, 2026 at 10:14:11AM +0200, Fabian Pflug wrote:
-> > On Wed, 2026-04-22 at 09:56 +0200, Sascha Hauer wrote:
-> > > On Wed, Apr 15, 2026 at 01:10:21PM +0200, Fabian Pflug wrote:
-> > > > uidstr and uidbuf could be the same, but don't have to be. This res=
-ults
-> > > > in uncertainty on what exactly is the current UID used for
-> > > > machine_set_hashable and to compare against with TLV.
-> > > >=20
-> > > > Add an additional global var, that encodes SoC-UID registers in a
-> > > > manner uniform across SoCs/manufacturers.
-> > > >=20
-> > > > This can now be used to feed as data for bound-soc-uid into
-> > > > `bareboxtlv-generator.py` or as the value for
-> > > > `CONFIG_HABV4_CSF_UNLOCK_UID`
-> > > >=20
-> > > > Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
-> > > > ---
-> > > > =C2=A0common/misc.c | 9 +++++++--
-> > > > =C2=A01 file changed, 7 insertions(+), 2 deletions(-)
-> > > >=20
-> > > > diff --git a/common/misc.c b/common/misc.c
-> > > > index ecf9574f7a..be896706d6 100644
-> > > > --- a/common/misc.c
-> > > > +++ b/common/misc.c
-> > > > @@ -268,6 +268,7 @@ const uuid_t *barebox_get_product_uuid(void)
-> > > > =C2=A0BAREBOX_MAGICVAR(global.product.uuid, "SMBIOS-reported produc=
-t UUID");
-> > > > =C2=A0
-> > > > =C2=A0static char *soc_uid_str;
-> > > > +static char *soc_uid_bin_str;
-> > > > =C2=A0static void *soc_uid;
-> > > > =C2=A0static size_t soc_uid_len;
-> > > > =C2=A0
-> > > > @@ -295,18 +296,22 @@ void barebox_set_soc_uid(const char *uidstr, =
-const void *uidbuf, size_t len)
-> > > > =C2=A0	soc_uid =3D xmemdup(uidbuf, len);
-> > > > =C2=A0	soc_uid_len =3D len;
-> > > > =C2=A0
-> > > > +	soc_uid_bin_str =3D xzalloc(len * 2 + 1);
-> > > > +	bin2hex(soc_uid_bin_str, uidbuf, len);
-> > > > +
-> > > > =C2=A0	if (uidstr) {
-> > > > =C2=A0		soc_uid_str =3D xstrdup(uidstr);
-> > > > =C2=A0	} else {
-> > > > -		soc_uid_str =3D xzalloc(len * 2 + 1);
-> > > > -		bin2hex(soc_uid_str, uidbuf, len);
-> > > > +		soc_uid_str =3D soc_uid_bin_str;
-> > > > =C2=A0	}
-> > > > =C2=A0
-> > > > =C2=A0	machine_id_set_hashable(uidbuf, len);
-> > > > =C2=A0
-> > > > =C2=A0	globalvar_add_simple_string("soc_uid", &soc_uid_str);
-> > > > +	globalvar_add_simple_string("soc_uid_hex", &soc_uid_bin_str);
-> > >=20
-> > > barebox_set_soc_uid() takes two arguments, the raw SoC UID data and a
-> > > SoC specific string representation of that data. It's unfortunate tha=
-t
-> > > you need two different interpretations of the raw data on i.MX, one t=
-o
-> > > match the Linux /sys/ format and one to put into the CSF file.
-> > >=20
-> > > Anyway, just adding a second string representation not only for i.MX,
-> > > but also for all other SoCs is rather confusing. For the i.MX field
-> > > return case we could also add a hab command option or a i.MX specific
-> > > globalvar which is exactly described as "SoC UID in the format the CS=
-F
-> > > needs"
-> >=20
-> > Please don't get confused. This is an additional benefit for the CSF in=
- i.MX. The main focus here is to have a
-> > string
-> > representation, that can be used in TLV generation, with the script in=
-=20
-> > https://github.com/barebox/barebox/blob/master/scripts/bareboxtlv-gener=
-ator/bareboxtlv-generator.py
-> >=20
-> > The value=20
-> > 0x0024, bound-soc-uid, "Reject TLV if supplied binary data does not mat=
-ch UID SoC register"
-> > https://github.com/barebox/barebox/blob/v2026.04.0/common/tlv/barebox.c=
-#L200
-> >=20
-> > Needs this representation for all vendors, not just i.MX.
-> > And since the values for soc_bin and uidstr can differ greatly, it is v=
-ery soc specific on what value to use in the
-> > https://github.com/barebox/barebox/blob/master/scripts/bareboxtlv-gener=
-ator/data-example.yaml
-> >=20
-> > This patch tries to fix it, by giving a value, that can just be copied =
-to TLC data.yaml
->=20
-> Ok, I can much better buy TLV support as an argument.
->=20
-> Please add a
->=20
-> BAREBOX_MAGICVAR(global.soc_uid_hex,
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "byte array repres=
-entation of the raw SoC UID");
+Hi Alexander,
 
-There already is
+Thanks for your patch!
 
-BAREBOX_MAGICVAR(global.soc_uid_hex, "SoC Unique ID (in hex)");
+On 4/16/26 3:45 PM, Alexander Shiyan wrote:
+> This adds support for the extlinux.conf configuration format, commonly
+> used by Syslinux and many Linux distributions. The configuration file
+> is typically located at /boot/extlinux/extlinux.conf or
+> /extlinux/extlinux.conf and defines boot entries with kernel, initrd,
+> device tree, and command line options.
+> 
+> The implementation integrates with the existing boot entry framework:
+> - The extlinux scanner discovers entries on mounted filesystems
+> - Default label is turned into a boot entry
+> - The "root=" parameter is automatically stripped from the append line
+>   to allow barebox to inject the correct root device (via appendroot)
+> - Bootm is used to load and start the kernel
+> ---
+> barebox@Diasom DS-RK3568-SOM-EVB:/ global.boot.default=mmc1.2
+> barebox@Diasom DS-RK3568-SOM-EVB:/ boot
+> ext4 ext40: EXT2 rev 1, inode_size 256, descriptor size 64
+> Booting entry 'extlinux: linux'
+> extlinux: Booting extlinux label 'linux'
+> Adding "root=/dev/mmcblk1p3" to Kernel commandline
+> Loading ARM aarch64 Linux/EFI image '/mnt/mmc1.2/boot/extlinux/../vmlinuz'
+> Loaded initrd from GZIP compressed /mnt/mmc1.2/boot/extlinux/../initrd.img to 0x000000000d390000-0x000000000fb48ca6
+> commandline: mem=0xef600000 root=/dev/mmcblk1p3 console=ttyS2,1500000n8 ro systemd.unit=setup.target quiet splash  systemd.machine_id=181af2816b4c6b0aef77068e0ccc69ad
+> Loaded kernel to 0x0a400000, devicetree at 0x000000000fb49000
+> 
+> Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+> ---
+>  common/Kconfig    |  19 ++++
+>  common/Makefile   |   1 +
+>  common/extlinux.c | 271 ++++++++++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 291 insertions(+)
+>  create mode 100644 common/extlinux.c
+> 
+> diff --git a/common/Kconfig b/common/Kconfig
+> index cd002865f7..bbffbfe92c 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -726,6 +726,25 @@ config BLSPEC
+>  	  on a device and it allows the Operating System to install / update
+>  	  kernels.
+>  
+> +config EXTLINUX
+> +	bool
+> +	prompt "Support extlinux.conf"
+> +	depends on FLEXIBLE_BOOTARGS
+> +	depends on !SHELL_NONE
+> +	select BOOT
+> +	select BOOTM
+> +	select MMCBLKDEV_ROOTARG if MCI
+> +	help
+> +	  Enable this to let barebox parse extlinux.conf configuration files,
+> +	  commonly used by the Syslinux bootloader and many Linux distributions
+> +	  (e.g., on SD cards or USB drives).
+> +	  extlinux.conf is typically located at /boot/extlinux/extlinux.conf or
+> +	  /extlinux/extlinux.conf. It defines boot entries with kernel, initrd,
+> +	  device tree, and command line options.
+> +	  This option allows barebox to discover and boot operating systems
+> +	  that follow the extlinux configuration format, providing a simple
+> +	  and portable way to manage multiple boot options.
+> +
+>  config FLEXIBLE_BOOTARGS
+>  	bool
+>  	prompt "flexible Linux bootargs generation"
+> diff --git a/common/Makefile b/common/Makefile
+> index ac39ee4e3e..dda42c099a 100644
+> --- a/common/Makefile
+> +++ b/common/Makefile
+> @@ -9,6 +9,7 @@ obj-y				+= clock.o
+>  pbl-$(CONFIG_PBL_CLOCKSOURCE)	+= clock.o
+>  obj-y				+= console_common.o
+>  obj-$(CONFIG_OFDEVICE)		+= deep-probe.o
+> +obj-$(CONFIG_EXTLINUX)		+= extlinux.o
+>  obj-y				+= startup.o
+>  obj-y				+= misc.o
+>  obj-pbl-y			+= memsize.o
+> diff --git a/common/extlinux.c b/common/extlinux.c
+> new file mode 100644
+> index 0000000000..39d5191ecc
+> --- /dev/null
+> +++ b/common/extlinux.c
+> @@ -0,0 +1,271 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/* SPDX-FileCopyrightText: Alexander Shiyan <shc_work@mail.ru> */
+> +
+> +#define pr_fmt(fmt)     "extlinux: " fmt
+> +
+> +#include <boot.h>
+> +#include <bootm.h>
+> +#include <bootscan.h>
+> +#include <common.h>
+> +#include <environment.h>
+> +#include <fs.h>
+> +#include <globalvar.h>
+> +#include <libfile.h>
+> +#include <libgen.h>
+> +#include <malloc.h>
+> +#include <string.h>
+> +
+> +struct extlinux_entry {
+> +	struct bootentry entry;
+> +	char *rootpath;
+> +	char *label;
+> +	char *kernel;
+> +	char *initrd;
+> +	char *fdtdir;
+> +	char *fdt;
+> +	char *append;
+> +};
+> +
+> +static int extlinux_boot(struct bootentry *be, int verbose, int dryrun)
+> +{
+> +	struct extlinux_entry *e =
+> +		container_of(be, struct extlinux_entry, entry);
+> +	char *kernel_abs, *initrd_abs = NULL, *fdt_abs = NULL;
+> +	struct bootm_data data = {};
+> +	int ret;
+> +
+> +	bootm_data_init_defaults(&data);
+> +
+> +	data.dryrun = max_t(int, dryrun, data.dryrun);
+> +	data.verbose = max(verbose, data.verbose);
+> +	data.appendroot = true;
 
-And since it is a single value and not a byte array, I think byte array is =
-the wrong representation.
-Using a byte-array for TLV does not work with the TLV tooling. This expects=
- a single value.
+Not sure this is a good idea because of potential of clashing with
+extlinux appended command line options.
 
-It has to be converted to a byte array for CSF, as described in the helptex=
-t for HABV4_CSF_UNLOCK_UID
+> +
+> +	kernel_abs = basprintf("%s/%s", e->rootpath, e->kernel);
+> +	data.os_file = kernel_abs;
+> +
+> +	if (e->initrd) {
+> +		initrd_abs = basprintf("%s/%s", e->rootpath, e->initrd);
+> +		data.initrd_file = initrd_abs;
+> +	}
+> +
+> +	if (e->fdt) {
+> +		char *fdtdir = e->fdtdir ? : e->rootpath;
+> +
+> +		fdt_abs = basprintf("%s/%s", fdtdir, e->fdt);
+> +		data.oftree_file = fdt_abs;
+> +	}
+> +
+> +	if (e->append)
+> +		globalvar_add_simple("linux.bootargs.dyn.extlinux", e->append);
+> +
+> +	pr_info("Booting extlinux label '%s'\n", e->label);
+> +
+> +	ret = bootm_boot(&data);
 
-Different tooling, different representation.
+Please make use of new bootm_entry instead, so it can be used with devboot:
 
-Fabian
+https://github.com/barebox/barebox/blob/next/Documentation/user/devboot.rst
 
->=20
-> Sascha
+> +	if (ret)
+> +		pr_err("bootm failed: %s\n", strerror(-ret));
+> +
+> +	free(kernel_abs);
+> +	free(initrd_abs);
+> +	free(fdt_abs);
+> +
+> +	return ret;
+> +}
+> +
+> +static void extlinux_entry_free(struct bootentry *be)
+> +{
+> +	struct extlinux_entry *e =
+> +		container_of(be, struct extlinux_entry, entry);
+> +
+> +	free(e->rootpath);
+> +	free(e->label);
+> +	free(e->kernel);
+> +	free(e->initrd);
+> +	free(e->fdtdir);
+> +	free(e->fdt);
+> +	free(e->append);
+> +	free(e);
+> +}
+> +
+> +static char *remove_param(const char *params, const char *param)
+> +{
+> +	char *result, *dst;
+> +	const char *src;
+> +
+> +	result = xmalloc(strlen(params) + 1);
+> +
+> +	src = params;
+> +	dst = result;
+> +
+> +	while (*src) {
+> +		if (!strncasecmp(src, param, strlen(param))) {
+> +			while (*src && *src != ' ')
+> +				src++;
+> +
+> +			src = skip_spaces(src);
+> +
+> +			continue;
+> +		}
+> +
+> +		*dst++ = *src++;
+> +	}
+> +
+> +	*dst = '\0';
+> +
+> +	return result;
+> +}
+> +
+> +static struct extlinux_entry *parse_extlinux_conf(const char *abspath,
+> +						  const char *rootpath)
+> +{
+> +	char *buf, *bufptr, *line, *p, *default_label = NULL;
+> +	struct extlinux_entry *entry = NULL;
+> +
+> +	bufptr = read_file(abspath, NULL);
+> +	if (!bufptr)
+> +		return ERR_PTR(-errno);
+> +
+> +	for (p = bufptr; *p; p++)
+> +		if (*p == '\r')
+> +			*p = '\n';
+
+I think this can be dropped.
+
+> +
+> +	buf = bufptr;
+> +	while ((line = strsep(&buf, "\n")) != NULL) {
+
+And then you replace the set searched here with "\r\n"
+
+> +		char *key, *val;
+> +
+> +		line = skip_spaces(line);
+> +
+> +		if (*line == '#' || *line == '\0')
+> +			continue;
+> +
+
+Nitpick: I think below can be simplified to:
+
+> +		key = line;
+> +		val = strchr(line, ' ');
+> +		if (!val)
+> +			val = strchr(line, '\t');
+> +		if (val) {
+> +			*val++ = '\0';
+> +			val = skip_spaces(val);
+> +		} else
+> +			continue;
+
+key = strsep(&line, ' \t');
+val = strsep(&line, '\n');
+val = isempty(val) ? NULL : skip_spaces(val);
+
+
+
+> +
+> +		if (!default_label) {
+> +			if (!strcasecmp(key, "DEFAULT"))
+> +				default_label = xstrdup(val);
+> +
+> +			continue;
+> +		}
+> +
+> +		if (!strcasecmp(key, "LABEL")) {
+> +			if (!strcmp(val, default_label)) {
+
+defaut_label might not have been set here?
+
+You can use streq_ptr which includes NULL pointer checks.
+
+> +				entry = xzalloc(sizeof(*entry));
+> +				entry->label = xstrdup(val);
+> +				entry->rootpath = dirname(xstrdup(abspath));
+> +			} else if (entry)
+> +				break;
+
+Kernel coding style is keeping the { braces } for an else when the if
+has some.
+
+> +			continue;
+> +		}
+> +
+> +		/*
+> +		 * The same rootfs image may be launched from eMMC or SD card.
+> +		 * Remove any hardcoded root= parameter from "append" to avoid
+> +		 * conflicts, then let barebox automatically add the correct
+> +		 * root= (via appendroot) based on the boot device.
+> +		 */
+
+I understand the thought process, but this feels very invasive. What if
+the extlinux.conf files are on a different partition? I think that's not
+too uncommon for systems that have a ROM-code mandated FAT partition anyway.
+
+At the very least, make this dependent on a parameter being set, maybe
+just global.bootm.appendroot?
+
+> +		if (entry) {
+> +			if (!strcasecmp(key, "KERNEL"))
+> +				entry->kernel = xstrdup(val);
+> +			else if (!strcasecmp(key, "INITRD"))
+> +				entry->initrd = xstrdup(val);
+> +			else if (!strcasecmp(key, "FDTDIR"))
+> +				entry->fdtdir = xstrdup(val);
+> +			else if (!strcasecmp(key, "FDT"))
+> +				entry->fdt = xstrdup(val);
+> +			else if (!strcasecmp(key, "APPEND"))
+> +				entry->append = remove_param(val, "ROOT=");
+> +			else
+> +				pr_debug("Unhandled key: %s\n", key);
+
+I would make this a pr_warn or at least a pr_info, so new users have an
+easier time knowing why something doesn't work.
+
+> +		}
+> +	}
+> +
+> +	free(default_label);
+> +	free(bufptr);
+> +
+> +	if (!entry || !entry->kernel) {
+> +		if (entry)
+> +			extlinux_entry_free(&entry->entry);
+> +		return ERR_PTR(-EINVAL);
+> +	}
+> +
+> +	return entry;
+> +}
+> +
+> +static int extlinux_scan_file(struct bootscanner *scanner,
+> +			      struct bootentries *bootentries,
+> +			      const char *configname)
+> +{
+> +	struct extlinux_entry *e;
+> +	const char *rootpath;
+> +
+> +	if (!strends(configname, "extlinux.conf"))
+> +		return 0;
+> +
+> +	rootpath = get_mounted_path(configname);
+> +	if (IS_ERR(rootpath))
+> +		return PTR_ERR(rootpath);
+
+This means you don't support this file existing at a subdirectory of a
+mountpoint. That can be useful though if one is using ostree or if we
+include extlinux.conf files in the environment for testing.
+
+Please add an intermediate __extlinux_scan_file that takes rootpath, see
+how blspec does it.
+
+> +
+> +	e = parse_extlinux_conf(configname, rootpath);
+> +	if (IS_ERR(e))
+> +		return PTR_ERR(e);
+> +
+> +	e->entry.boot = extlinux_boot;
+> +	e->entry.release = extlinux_entry_free;
+> +	e->entry.path = xstrdup(configname);
+
+xstrdup_const
+
+> +	e->entry.title = basprintf("extlinux: %s", e->label);
+> +	e->entry.description = basprintf("extlinux entry \'%s\" on %s",
+> +					 e->label, rootpath);
+> +	e->entry.me.type = MENU_ENTRY_NORMAL;
+> +
+> +	bootentries_add_entry(bootentries, &e->entry);
+> +
+> +	return 1;
+> +}
+> +
+> +static int extlinux_scan_directory(struct bootscanner *scanner,
+> +				   struct bootentries *bootentries,
+> +				   const char *rootpath)
+> +{
+> +	char *path;
+> +	struct stat s;
+> +	int ret;
+> +
+> +	path = basprintf("%s/boot/extlinux/extlinux.conf", rootpath);
+
+You mention both /boot/extlinux/extlinux and /extlinux/extlinux
+as directory, but you only check one of them here.
+
+Should you not check the second one as well?
+
+> +	ret = stat(path, &s);
+> +	if (!ret && S_ISREG(s.st_mode))
+
+A extlinux.conf _directory_ is silently skipped by this. Intentional?
+
+> +		ret = extlinux_scan_file(scanner, bootentries, path);
+
+You should pass along rootpath here.
+
+> +
+> +	free(path);
+> +
+> +	return ret < 1 ? ret : 1;
+
+This can be simplified to return ret;
+
+> +}
+> +
+> +static struct bootscanner extlinux_scanner = {
+> +	.name = "extlinux",
+> +	.scan_file = extlinux_scan_file,
+> +	.scan_directory = extlinux_scan_directory,
+
+This implements
+
+boot -l /mnt/mmc0.1/boot/extlinux/extlinux.conf
+boot -l /mnt/mmc0.1/
+
+and leaves the rest to the core.
+I think that's fine, but can you check if the following work:
+
+boot -l mmc0
+boot -l /dev/mmc0
+boot -l mmc0.1
+boot -l /dev/mmc0.1
+
+> +};
+> +
+> +static int extlinux_generate(struct bootentries *bootentries, const char *name)
+> +{
+> +	return bootentry_scan_generate(&extlinux_scanner, bootentries, name);
+> +}
+> +
+> +static struct bootentry_provider extlinux_provider = {
+> +	.name = "extlinux",
+> +	.generate = extlinux_generate,
+
+You need to set a negative priority here, so existing bootloader spec
+support wins if both are available.
+
+I think .priority = -25 is ok, so it's in-between blspec and efiboomgr.
+
+> +};
+> +
+> +static int extlinux_init(void)
+> +{
+> +	return bootentry_register_provider(&extlinux_provider);
+> +}
+> +device_initcall(extlinux_init);
+
+
+Thanks,
+Ahmad
+
+-- 
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+
 
 
