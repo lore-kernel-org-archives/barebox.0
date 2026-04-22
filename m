@@ -1,69 +1,60 @@
-Delivery-date: Wed, 22 Apr 2026 10:29:32 +0200
+Delivery-date: Wed, 22 Apr 2026 10:53:09 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wFSxg-00F28Q-2w
+	id 1wFTKX-00F2TN-0P
 	for lore@lore.pengutronix.de;
-	Wed, 22 Apr 2026 10:29:32 +0200
+	Wed, 22 Apr 2026 10:53:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wFSxg-0008R1-Cj
-	for lore@pengutronix.de; Wed, 22 Apr 2026 10:29:32 +0200
+	id 1wFTKW-0003Yl-Dx
+	for lore@pengutronix.de; Wed, 22 Apr 2026 10:53:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qxHDADdP4e4r7ANmMsIasJ/1gJKKICxm1tRYUa+fUz0=; b=ANhRzysAsSuODlV+H27SUefd/g
-	kqYDxg2DZzca2PG0wC0fRsAjA19YsnrluNVsQW33p+lYbqOxYqMtcPrSZezUn4rSrgmRckrlLPXNs
-	Zp61Iu1Dxz3SfkTaDZ2+OLSWBeoYVn+/H+xdCBAp8Z7wlufbMZrHgv2k98oWlV6rto7QEoMPOtde8
-	WYn/ch8ngPgggxyUa6pXykmrD/w44eWzfIqyuZtXG1uoynmpQaVHUTcBTZtKlxxiWEck5jNxCKh9r
-	TzubzDeWlUn5jSG+h2gB05k0IWgNUhGDgmE8NopsWBB7a7ijh/KVlPD0ct+m/Aav3hdPoOTHEpm3V
-	iZO7azpw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
+	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:Cc:To:From
+	:Subject:Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=WibRFaYPR54qmLIyqxo6iEKc9rYJ/aRG91UocS4Myg8=; b=a/hBP9TJ9ehb3D5PHm+9pz0yLm
+	FtYYRcHpz6qCWSam+XmffhFb9S1aK9Uaf0H+df9x7+dk4AloEZb6cxKtLtRIlRowY2+vvUg7dnwcv
+	YxrfoBnfCApKHn5hh2ZxDvvwSn4KssOL1dZMFJGmogTLLNbv56JI9xGywSM0b6odTsxa37aPo1484
+	Q5jvAd5fkg/yXMVYiy4IuK4HH/3U+Rfy31/0DN/VpMvrgYfxCoPfxXrbT/1Y7hhxZWu6I65r2JstP
+	DbJVmKajYr7T2tUoWdHvVshTVNH4F9GWajc4QFbli4ZcfQTdwcRp+kGRJTp2TwwxqJ0CJPB2EEj3X
+	X1do7/gg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wFSxF-00000009mGb-1JeM;
-	Wed, 22 Apr 2026 08:29:05 +0000
+	id 1wFTK3-00000009nzV-19o5;
+	Wed, 22 Apr 2026 08:52:39 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wFSxD-00000009mGG-2AGA
+	id 1wFTK0-00000009nyy-1vNg
 	for barebox@lists.infradead.org;
-	Wed, 22 Apr 2026 08:29:04 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wFSxC-0008LP-2V; Wed, 22 Apr 2026 10:29:02 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wFSxB-006dX4-2s;
-	Wed, 22 Apr 2026 10:29:01 +0200
-Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wFSxB-0000000ANUv-3TEp;
-	Wed, 22 Apr 2026 10:29:01 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>, 
- Fabian Pfitzner <f.pfitzner@pengutronix.de>
-In-Reply-To: <20260420-fpf-imx8mp-frdm-v2-0-5107d1976d4e@pengutronix.de>
-References: <20260420-fpf-imx8mp-frdm-v2-0-5107d1976d4e@pengutronix.de>
-Message-Id: <177684654182.2473460.6684047246515110215.b4-ty@pengutronix.de>
-Date: Wed, 22 Apr 2026 10:29:01 +0200
+	Wed, 22 Apr 2026 08:52:37 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <f.pflug@pengutronix.de>)
+	id 1wFTJy-0003R7-Rz; Wed, 22 Apr 2026 10:52:34 +0200
+Message-ID: <86d49148492685a515b669a05995b89570de6f79.camel@pengutronix.de>
+From: Fabian Pflug <f.pflug@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Jonas Rebmann <jre@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
+Date: Wed, 22 Apr 2026 10:52:34 +0200
+In-Reply-To: <aeiF3Z6yDuuy3IoD@pengutronix.de>
+References: <20260415-v2026-03-0-topic-soc_bin_id-v2-0-81fab6ba5de0@pengutronix.de>
+	 <20260415-v2026-03-0-topic-soc_bin_id-v2-1-81fab6ba5de0@pengutronix.de>
+	 <aeh_ExzusLb9PCX3@pengutronix.de>
+	 <479b96ec421925a887ad63f65a5c00478caac431.camel@pengutronix.de>
+	 <aeiF3Z6yDuuy3IoD@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260422_012903_579942_C39C48C7 
-X-CRM114-Status: UNSURE (   7.91  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260422_015236_495140_4BE0A8A8 
+X-CRM114-Status: GOOD (  38.76  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,37 +72,131 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 0/2] add imx8mp-frdm board support
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v2 1/2] common: misc: add soc_uid_hex to globalvar
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+On Wed, 2026-04-22 at 10:25 +0200, Sascha Hauer wrote:
+> On Wed, Apr 22, 2026 at 10:14:11AM +0200, Fabian Pflug wrote:
+> > On Wed, 2026-04-22 at 09:56 +0200, Sascha Hauer wrote:
+> > > On Wed, Apr 15, 2026 at 01:10:21PM +0200, Fabian Pflug wrote:
+> > > > uidstr and uidbuf could be the same, but don't have to be. This res=
+ults
+> > > > in uncertainty on what exactly is the current UID used for
+> > > > machine_set_hashable and to compare against with TLV.
+> > > >=20
+> > > > Add an additional global var, that encodes SoC-UID registers in a
+> > > > manner uniform across SoCs/manufacturers.
+> > > >=20
+> > > > This can now be used to feed as data for bound-soc-uid into
+> > > > `bareboxtlv-generator.py` or as the value for
+> > > > `CONFIG_HABV4_CSF_UNLOCK_UID`
+> > > >=20
+> > > > Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
+> > > > ---
+> > > > =C2=A0common/misc.c | 9 +++++++--
+> > > > =C2=A01 file changed, 7 insertions(+), 2 deletions(-)
+> > > >=20
+> > > > diff --git a/common/misc.c b/common/misc.c
+> > > > index ecf9574f7a..be896706d6 100644
+> > > > --- a/common/misc.c
+> > > > +++ b/common/misc.c
+> > > > @@ -268,6 +268,7 @@ const uuid_t *barebox_get_product_uuid(void)
+> > > > =C2=A0BAREBOX_MAGICVAR(global.product.uuid, "SMBIOS-reported produc=
+t UUID");
+> > > > =C2=A0
+> > > > =C2=A0static char *soc_uid_str;
+> > > > +static char *soc_uid_bin_str;
+> > > > =C2=A0static void *soc_uid;
+> > > > =C2=A0static size_t soc_uid_len;
+> > > > =C2=A0
+> > > > @@ -295,18 +296,22 @@ void barebox_set_soc_uid(const char *uidstr, =
+const void *uidbuf, size_t len)
+> > > > =C2=A0	soc_uid =3D xmemdup(uidbuf, len);
+> > > > =C2=A0	soc_uid_len =3D len;
+> > > > =C2=A0
+> > > > +	soc_uid_bin_str =3D xzalloc(len * 2 + 1);
+> > > > +	bin2hex(soc_uid_bin_str, uidbuf, len);
+> > > > +
+> > > > =C2=A0	if (uidstr) {
+> > > > =C2=A0		soc_uid_str =3D xstrdup(uidstr);
+> > > > =C2=A0	} else {
+> > > > -		soc_uid_str =3D xzalloc(len * 2 + 1);
+> > > > -		bin2hex(soc_uid_str, uidbuf, len);
+> > > > +		soc_uid_str =3D soc_uid_bin_str;
+> > > > =C2=A0	}
+> > > > =C2=A0
+> > > > =C2=A0	machine_id_set_hashable(uidbuf, len);
+> > > > =C2=A0
+> > > > =C2=A0	globalvar_add_simple_string("soc_uid", &soc_uid_str);
+> > > > +	globalvar_add_simple_string("soc_uid_hex", &soc_uid_bin_str);
+> > >=20
+> > > barebox_set_soc_uid() takes two arguments, the raw SoC UID data and a
+> > > SoC specific string representation of that data. It's unfortunate tha=
+t
+> > > you need two different interpretations of the raw data on i.MX, one t=
+o
+> > > match the Linux /sys/ format and one to put into the CSF file.
+> > >=20
+> > > Anyway, just adding a second string representation not only for i.MX,
+> > > but also for all other SoCs is rather confusing. For the i.MX field
+> > > return case we could also add a hab command option or a i.MX specific
+> > > globalvar which is exactly described as "SoC UID in the format the CS=
+F
+> > > needs"
+> >=20
+> > Please don't get confused. This is an additional benefit for the CSF in=
+ i.MX. The main focus here is to have a
+> > string
+> > representation, that can be used in TLV generation, with the script in=
+=20
+> > https://github.com/barebox/barebox/blob/master/scripts/bareboxtlv-gener=
+ator/bareboxtlv-generator.py
+> >=20
+> > The value=20
+> > 0x0024, bound-soc-uid, "Reject TLV if supplied binary data does not mat=
+ch UID SoC register"
+> > https://github.com/barebox/barebox/blob/v2026.04.0/common/tlv/barebox.c=
+#L200
+> >=20
+> > Needs this representation for all vendors, not just i.MX.
+> > And since the values for soc_bin and uidstr can differ greatly, it is v=
+ery soc specific on what value to use in the
+> > https://github.com/barebox/barebox/blob/master/scripts/bareboxtlv-gener=
+ator/data-example.yaml
+> >=20
+> > This patch tries to fix it, by giving a value, that can just be copied =
+to TLC data.yaml
+>=20
+> Ok, I can much better buy TLV support as an argument.
+>=20
+> Please add a
+>=20
+> BAREBOX_MAGICVAR(global.soc_uid_hex,
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "byte array repres=
+entation of the raw SoC UID");
 
-On Mon, 20 Apr 2026 14:44:49 +0200, Fabian Pfitzner wrote:
-> The FRDM-i.MX8MP is an NXP development platform based on the i.MX8M Plus
-> SoC, featuring a quad Cortex-A53, Cortex-M7 co-processor, 4GB LPDDR4,
-> 32GB eMMC, Wi-Fi 6/Bluetooth 5.4/802.15.4 tri-radio, Ethernet, HDMI/MIPI
-> display interfaces, camera connectors, and standard expansion headers.
-> 
-> This patch stack integrates the board into Barebox.
-> The DT changes were taken from the upstream Linux kernel,
-> which are not yet contained in any release [1].
-> 
-> [...]
+There already is
 
-Applied, thanks!
+BAREBOX_MAGICVAR(global.soc_uid_hex, "SoC Unique ID (in hex)");
 
-[1/2] DONT MERGE: dts: backport NXP i.MX8MP FRDM board dts
-      https://git.pengutronix.de/cgit/barebox/commit/?id=9c53451bb0b5 (link may not be stable)
-[2/2] ARM: i.MX8MP: add imx8mp-frdm board
-      https://git.pengutronix.de/cgit/barebox/commit/?id=e67df4ee75fe (link may not be stable)
+And since it is a single value and not a byte array, I think byte array is =
+the wrong representation.
+Using a byte-array for TLV does not work with the TLV tooling. This expects=
+ a single value.
 
-Best regards,
--- 
-Sascha Hauer <s.hauer@pengutronix.de>
+It has to be converted to a byte array for CSF, as described in the helptex=
+t for HABV4_CSF_UNLOCK_UID
 
+Different tooling, different representation.
+
+Fabian
+
+>=20
+> Sascha
 
 
