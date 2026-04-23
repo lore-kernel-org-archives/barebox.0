@@ -1,60 +1,60 @@
-Delivery-date: Wed, 22 Apr 2026 17:57:03 +0200
+Delivery-date: Thu, 23 Apr 2026 08:58:51 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wFZwl-00F9ja-0d
+	id 1wFo1T-00FOws-1f
 	for lore@lore.pengutronix.de;
-	Wed, 22 Apr 2026 17:57:03 +0200
+	Thu, 23 Apr 2026 08:58:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wFZwk-0007sd-LM
-	for lore@pengutronix.de; Wed, 22 Apr 2026 17:57:03 +0200
+	id 1wFo1S-00042y-VY
+	for lore@pengutronix.de; Thu, 23 Apr 2026 08:58:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=J5Me/Gb+JvRwZ9SvFAe6j6J6qcAqodf7l796ms71ncE=; b=IAO/CR7GQP+mkVCI/xBuv8hs8C
-	XofW00WeOa9QbokFGbc2Cz/89IlNIrCFJVtNMNmkbbojd3NcfPZv5jvORh8SXxIS5kpMLZfwIsfyn
-	Nj4iK1VFgWqb7sjidyzmQmP16BoD6jrNT20FP+k+R0c2XxUKjQ9ivhU1fB1ZXqFUPyGFsxwMHUCeB
-	OlfGVz0SDyXoDqNa0WnXPIWx3PCIzipkTUpBwJH4Ugl7VY+zQ8xRAlMepa4ATEDMKSDtkNXZFFzdE
-	ZSphXNhC6EzjPR3NcIRVnJ9VKXEdT4dBq3cLOy9d1llYtpuVSi3sztBekxl595EE5PWgAisaGtISm
-	I/jvAmNw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=eMEo6NJ5/+nlLmTJVPyvQoFgiCOan1Ncg/k1iCMw+uY=; b=GgSlggYVXZvYH7
+	24q99jK8bw9ZkC9n1fZtpHZEY4fndCGREp1Jpeer5e4d6JxTQFvL6lcywl0MNUpsz4EiLtUTtv+v5
+	PDeUYe9v3ao9UzrP+FGqH385QRtPwfAeH3I7Q15CSVGYPanCFBkLVWsU4nycMZ0Uu+40zdIdRl0YN
+	n4lF/uG1TNi8Dn3dngxyU/87SfkiSLYChlV4pdt4SqURjPC5dJa8xhEy/IzGJMxbgKAwb58nB4OtG
+	EQ4ZiuS+2M8f70sO+wFyDdZX0vOkx70DIs2gXMX80G9hL4khp0m5bWAXYeILdQ3Naf0HZ2n8llh4y
+	GKS7/7smoKfcK7wwhp3w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wFZw6-0000000ASSz-1Gur;
-	Wed, 22 Apr 2026 15:56:22 +0000
+	id 1wFo0w-0000000B84Z-3NwQ;
+	Thu, 23 Apr 2026 06:58:18 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wFZw3-0000000ASSb-2cDx
+	id 1wFo0s-0000000B83M-1Tnr
 	for barebox@lists.infradead.org;
-	Wed, 22 Apr 2026 15:56:21 +0000
+	Thu, 23 Apr 2026 06:58:17 +0000
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.tretter@pengutronix.de>)
-	id 1wFZw0-0007ki-9M; Wed, 22 Apr 2026 17:56:16 +0200
+	id 1wFo0q-0003qQ-8O; Thu, 23 Apr 2026 08:58:12 +0200
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Wed, 22 Apr 2026 17:56:11 +0200
+Date: Thu, 23 Apr 2026 08:58:10 +0200
+Message-Id: <20260423-socfpga-agilex5-dwmac-binding-v1-0-19b4b0cddbee@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260422-socfpga-agilex5-dwmac-v1-1-648a33bd9ec2@pengutronix.de>
-X-B4-Tracking: v=1; b=H4sIAJrv6GkC/x3MSQqAMAxA0atI1gY0zl5FXIQ21oATLagg3t3i8
- i3+fyCIVwnQJw94OTXovkXkaQJm5s0Jqo0GyqjOSiIMu5kOx8hOF7krtNfKBjtbVtyYnApuIba
- Hl0nv/zuM7/sBkI73z2cAAAA=
-X-Change-ID: 20260422-socfpga-agilex5-dwmac-9d45a7c123a8
+X-B4-Tracking: v=1; b=H4sIAALD6WkC/x3MQQqAIBAAwK/Enlsoy4K+Eh1W3WyhLBQqiP6ed
+ JzLPJA4CicYigcin5JkDxl1WYBdKHhGcdmgKtVVrWow7XY+PCF5WfnW6K6NLBoJToLHXnfG1ER
+ GaQ35OCLPcv//OL3vBzhwoNZvAAAA
+X-Change-ID: 20260423-socfpga-agilex5-dwmac-binding-756bb1aab255
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
  Michael Tretter <m.tretter@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260422_085619_750061_08B113B1 
-X-CRM114-Status: UNSURE (   9.62  )
+X-CRM114-CacheID: sfid-20260422_235816_114577_AD627C60 
+X-CRM114-Status: UNSURE (   7.46  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -76,51 +76,32 @@ X-Spam-Level:
 X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: dts: socfpga: AXE5-Eagle: fix phy reset
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 0/2] ARM: socfpga: xgmac: switch to upstream device tree
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The snps,reset-gpio is a property of the Synopsys DesignWare MAC and
-belongs into the gmac node.
+The compatible used by the xgmac driver in barebox doesn't use the
+existing binding for the xgmac, but uses a custom compatible string.
+Therefore, the Ethernet nodes that are already defined by the imported
+Linux device tree are not used.
 
-The property is deprecated and shall be replaced by regular gpio reset
-at the phy. However, use the deprecated binding to be sure that the
-dwmac driver handles the reset for now.
+Update the driver to use the same compatible as Linux and remove the now
+obsolete downstream device tree nodes.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
- arch/arm/dts/socfpga_agilex5_axe5_eagle.dts | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Michael Tretter (2):
+      net: xgmac: switch to upstream compatible
+      ARM: socfpga: remove obsolete gmac device tree nodes
 
-diff --git a/arch/arm/dts/socfpga_agilex5_axe5_eagle.dts b/arch/arm/dts/socfpga_agilex5_axe5_eagle.dts
-index f67b974f2adc..732d6142dcb1 100644
---- a/arch/arm/dts/socfpga_agilex5_axe5_eagle.dts
-+++ b/arch/arm/dts/socfpga_agilex5_axe5_eagle.dts
-@@ -74,16 +74,16 @@ &gmac2 {
- 	status = "okay";
- 	phy-mode = "rgmii-id";
- 	phy-handle = <&emac2_phy0>;
--
- 	max-frame-size = <9000>;
-+	snps,reset-gpio = <&portb 10 GPIO_ACTIVE_LOW>;
-+	snps,reset-active-low;
-+	snps,reset-delays-us = <0 10000 10000>;
- 
- 	mdio0 {
- 		#address-cells = <1>;
- 		#size-cells = <0>;
- 		compatible = "snps,dwmac-mdio";
- 		emac2_phy0: ethernet-phy@1 {
--			snps,reset-gpio = <&portb 10 GPIO_ACTIVE_LOW>;
--			snps,reset-delays-us = <0 10000 10000>;
- 			reg = <0x1>;
- 			adi,rx-internal-delay-ps = <2000>;
- 			adi,tx-internal-delay-ps = <2000>;
-
+ arch/arm/dts/socfpga_agilex5.dtsi           | 51 -----------------------------
+ arch/arm/dts/socfpga_agilex5_axe5_eagle.dts |  1 -
+ drivers/net/designware_xgmac_socfpga.c      |  6 ++--
+ 3 files changed, 3 insertions(+), 55 deletions(-)
 ---
 base-commit: 7b492daea9347fd55bf29560c2ec494ca1040f95
-change-id: 20260422-socfpga-agilex5-dwmac-9d45a7c123a8
+change-id: 20260423-socfpga-agilex5-dwmac-binding-756bb1aab255
 
 Best regards,
 -- 
