@@ -1,109 +1,108 @@
-Delivery-date: Fri, 24 Apr 2026 10:20:44 +0200
+Delivery-date: Fri, 24 Apr 2026 10:47:28 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wGBmG-00FmlL-1q
+	id 1wGCC8-00Fn7M-1j
 	for lore@lore.pengutronix.de;
-	Fri, 24 Apr 2026 10:20:44 +0200
+	Fri, 24 Apr 2026 10:47:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wGBmD-0003d5-C1
-	for lore@pengutronix.de; Fri, 24 Apr 2026 10:20:44 +0200
+	id 1wGCC7-0002No-P2
+	for lore@pengutronix.de; Fri, 24 Apr 2026 10:47:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:Cc:To:Subject:
 	Message-ID:Date:From:In-Reply-To:References:MIME-Version:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=KvQC1eG55jmnE+72XmXqRIh+YwGoRMuFT89sa6MWeRs=; b=CoxidR/kIuihxYydB0Yo6S3tJN
-	/pHljbK5zqF/OlvVjG0lXw3cQVGbXMHsSQ8TBkzVcqYMckkgGZfajtJTDy1CkAAmgmdZYxzxZyCbS
-	OB5ZZV4fnNbxpE8pEMcogoKJZ4KDg7N+KZoTeoWCU/a4oztnX5PUQ78jb597TR3ZN2EyGykJJJKR7
-	/h1xzbeNeNXsrfLbO2HRvFjYpOE6oCzuouCZyedu2RpDnheFuF4R1e2c8d5Szbuge/CW8ip69Gm2a
-	yBixyRgrIBT/kF5H09w3R30bGk2OW+cE97trTF9s5Ct0Ih8bKZ9cimLTzTKuCRTC0XodcjIeOYq9/
-	LJJrvV6g==;
+	bh=VUIOe2NXdrPuHbs35rh9ASEuHcc+Z0ZVkHE0EeVxE54=; b=RglN9k0l6/MpQOJVqBida996ZU
+	Y3+MhqCB1/3R/LLgUlyf1dC2kI2joUIY+Dp3mn+6iIF/QnfriqAn2WCcDGXho3HNOO8dAhrNSIR9T
+	GdRUwt0IHuzfTvgwqlEp621Vxjqo7+SQgwE+m5Aobv/JI6WXhSY9G4C3RGnBEjJfbTGUfi0tjbXvN
+	eY6kt1RrVWnD10XEcluKeGrQjsM5gNpCmETfzAHUEuZAKi+zL0xgSMxW+Ehtm5tZkQbnYNFk5fTf9
+	QO9Nzxbq9E+svag845wDrhx97e1IutA77LcKJWcz/NJW/OhlSyz/lJlfiwLOw5IxaAeYjpvRzlplN
+	/tEHGGwA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wGBlT-0000000Cr65-1dHi;
-	Fri, 24 Apr 2026 08:19:55 +0000
-Received: from mail-dl1-x1230.google.com ([2607:f8b0:4864:20::1230])
+	id 1wGCBa-0000000CssM-0vG7;
+	Fri, 24 Apr 2026 08:46:54 +0000
+Received: from mail-dl1-x1236.google.com ([2607:f8b0:4864:20::1236])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wGBlP-0000000Cr5W-1GdS
+	id 1wGCBX-0000000Csrn-2Nmm
 	for barebox@lists.infradead.org;
-	Fri, 24 Apr 2026 08:19:54 +0000
-Received: by mail-dl1-x1230.google.com with SMTP id a92af1059eb24-12c7212836bso2695885c88.0
-        for <barebox@lists.infradead.org>; Fri, 24 Apr 2026 01:19:50 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777018790; cv=none;
+	Fri, 24 Apr 2026 08:46:52 +0000
+Received: by mail-dl1-x1236.google.com with SMTP id a92af1059eb24-12c637089ccso7548989c88.1
+        for <barebox@lists.infradead.org>; Fri, 24 Apr 2026 01:46:51 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777020410; cv=none;
         d=google.com; s=arc-20240605;
-        b=LkcPxOejtXXF4miazDe2DIyrUNEeO2zEt2p0X2aaUJhLHUMwPClzw6xoX51r127OGv
-         jVLeRCroO3jqfSQUcrHLtikmj0FZR61R1qPTSLibGLOTzBLj9PbgiWEcqlQPG2598Nlf
-         f7TKPrs75p+GrkYrPrNLLsD9YCNK6Z1ArOxaHEmdn2nI7yKr0K0UC2QV+1JLsk4OsyI/
-         vyTN5gaofqbgNf8rWR/j6CPzpGMj2gYCdVHP+7W9IOWb5fRucJ2mFnEj87fc+dz9LHvu
-         lFy0bXqxcKfRtP8cwvIwbEi/T7Nj/9DlkFtrYr8K3PB8TVSIJgjcEZaPRuvkUk4EC4cw
-         I1oQ==
+        b=Rs0aPPlrnrbHOmpmUYRK4+ci8G/tkJE/NGPL1MXM+vJErKRQvVc0D+mDwBx2DJv6Cc
+         2+0Hys+Tyv/W9sXv9Sca5j1D9dwFj+Em81KYNorM+tsSjcpkMQWFgwoROLfrH8aPkaJ6
+         dRm5TcizZLW5Q1eSwProcva+mExZZ+JFOnrnmBw6D7w8S2WU+GYQEbXGh+GAbBLTsn+R
+         wOQYR57QKYOMte6fIXcd1h5LRW7tFFk6KU8+aGQmH2vZ8AL+Kt+ct4F7yuUCvmH3Z2Q3
+         /w1hs3Qw3ck9PIV+fUj6M48CUbFhvl0pJeMrwz4agT2i3xvRMI3VXJFal9uXtf18cB2w
+         BTOA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:dkim-signature;
-        bh=KvQC1eG55jmnE+72XmXqRIh+YwGoRMuFT89sa6MWeRs=;
+        bh=VUIOe2NXdrPuHbs35rh9ASEuHcc+Z0ZVkHE0EeVxE54=;
         fh=7Yiba8wXx+vLUz4ud+g5VaEZLPel68E1Fvl1EGss/6I=;
-        b=dafwQXQYC9hKzNR+jo5FHTbvMb1ilDwu6IKZYmdn7wb7Et3bQSyMWcZ+KWfx/GLRXD
-         K1XAFsV0UnXmROiE1JhNrpuxBgH5W3MuPp5hQdvP/ANgK7Osr3EhieMUhCbVsLNpIYcg
-         kV+knrdG0ulmxrV3HQ0hj71rH6rvcjHzldR6wh6WNZbRroflZ+gxQzcFp1TYEwoqAVYu
-         y0ZE5wKCY7IoKmEciQJZvUJuKZVeeFYSSiP7OEh+L1G/IqGJoPMvT9h7QM/lIOW5T4b5
-         bO//0I+2Z3DtzP1iKORexCfaFSYSfeqPd4cwRSEYz3aoI+r10i3fcIG4R1hByCdNV3+p
-         UV5g==;
+        b=MHm8XDfp/UyHGZSXpObujPq34WTIP5eR8nC32RMJmzJ5P5peh489W6hbwwtFSM6qAn
+         6Gt1FX7g4CL4LGtwlK+ktzqWiFPjxDE9IW0ABIhI94kDPzDvBcaXJVY0kt5/yG23KBbx
+         ZQeYkQUrU/mYAEEK2ErBlxLiEJbd035ShQ/6t5tqUzHJCaJBJl8NEngqYwc743CMkz49
+         NkXN4j5Yq8p3MpNLlzJjtDJ+4dXutkjp162zF0RHLmec7WpYU1phfyRnGHXMjYsW8KjO
+         CSr12XSZutsGbc1LlpU+9AO7hTFaUCj2wMIVyIxTBwBSgmcC+mGQ06TYlT8JJ3Qrpc4p
+         lUiw==;
         darn=lists.infradead.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777018790; x=1777623590; darn=lists.infradead.org;
+        d=gmail.com; s=20251104; t=1777020410; x=1777625210; darn=lists.infradead.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=KvQC1eG55jmnE+72XmXqRIh+YwGoRMuFT89sa6MWeRs=;
-        b=UlFfIC/hVTAWSlCNB4tBCqBB7lKfccdgCLKEHD/6C5JyWk/vL7MbiVJHmdWP+53EaB
-         QupgUNYBI6xyR2iPlPKj69ZGu5la+9f+hglfpTnCVx+O05gyAU6BelekfNK+d/K7yiKJ
-         ZP/CKLAfYX5yA/ylSf3xahyzdaj02AWoBcF+bJ6y/GA+ue2cjI4jiCHC953eFjUY7NnA
-         BslutTJjoLArlwSz1K5rW90iIqeJaIa0gkvV28czVECpweWkL5HqQ9iyDKy/x0kE9HY2
-         C3PLcxecYA3szXaCm/3Yh6kQ66jJ4LiNpeeoLfvCnrs8PbpO7eUfQZCG9mqyo4jdIyxw
-         x5ZQ==
+        bh=VUIOe2NXdrPuHbs35rh9ASEuHcc+Z0ZVkHE0EeVxE54=;
+        b=rQ2LeDrsnOXdk5lGJuHyfZaHD+PzR1ylQc/USOnkN6SFTSk8Jr/OMiVdr5HiQGETdG
+         D1i1lLzrTXqEzMNqJJry7d+8klWzl9mHLkmCT/uy0TJFTdCFm/jh3OWJGTn8y8xekegX
+         UkqbRiDNIrhGIOiBB3X5nGj8PL+tXmGpqYVqO6wiRYGMwkX6jOOO0Oxqg8EglR6ouXz3
+         GRK0bjpH0UijPRWBeerFftwJobj2rVlXgrrKyYI8o/35QO39WIG1oVhAypw64PTxPLJB
+         I1fk14sv1yPwq2SJyAhUGWqQiWDWtD8ca4fxDG7mE+YLL5uCZk5VdO4bc6Dx2qU7JL0/
+         /KMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777018790; x=1777623590;
+        d=1e100.net; s=20251104; t=1777020410; x=1777625210;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KvQC1eG55jmnE+72XmXqRIh+YwGoRMuFT89sa6MWeRs=;
-        b=ARsC8c6gj6aL+tTmv3RY5KfOxTh4dWjYhvw027DD8xeluU6hTINlw5LFlDREfPplPb
-         /o+Y3gBdfLulIh4gH1xUIsbd3/iCGDNfFkDLb8A50w5qcW7uioReTVgKRrBPv0jg2cCd
-         4NpQvCNJYBMU7XIhd1JtdS9AXNurcKBV6ynIJGwq6At3dqmo249sVB77oVVO7lKMhy8c
-         Y7RQgxN8RDow0FiqyFSw55KeIv6Held2b0ugF0KpqC1y/+YdWN6HGujsItomw5QqYZG2
-         nQ2ak5x2ca8jlfUxlVAa63gNFgyfS389n6eS6E+1GWEgcarY+4HelS74oGO3UDKXim9v
-         5QlQ==
-X-Gm-Message-State: AOJu0YzwGfyI8mh5g5WI17dyKP10SYzHQj5b6UScAutkrqDwAcypX+2s
-	jl0nXZDR4+H0gVdzvx2t/V6yk/Z/XL+Blt/fEHpGniI2Qa4n38sxpE9pXBWM8AbR5NROeFJjhkv
-	afcpM68UFiTCHLs7MniYqop7H1aMMYzMkYhmw32U=
-X-Gm-Gg: AeBDietGhIZAHN83CudLqqbs7h/ia/EmTPusHw6QxaxkmEdURJJhFoHJlOfBdti8FmF
-	KPtL6lrk8+FxIRZDM5sFmah0BU6pjmUUNypdoJVIhf60dazzaGw2lyiDL4TixpJxuBwnww1KWnV
-	S1G3watCInyJQ7TWJT/LaN4F6lqJxIdwC5IgqwU8cTUwIwWNodY7qAy3Hnx49KvkRxAYY+uAgRe
-	JZVBMGLHauHlE/n9S7aCKlbyrJ1rUbbcHmZejLajUIHUMzeJcPRBTXkUG3Mj5gc3pKzjaPSW948
-	kP5yaWuK9GsXzRup
-X-Received: by 2002:a05:701b:2415:b0:12d:b26f:cafd with SMTP id
- a92af1059eb24-12db26fcc16mr5937935c88.5.1777018789899; Fri, 24 Apr 2026
- 01:19:49 -0700 (PDT)
+        bh=VUIOe2NXdrPuHbs35rh9ASEuHcc+Z0ZVkHE0EeVxE54=;
+        b=IBsv1JTgKuWPv8UEvgUE/FlZylHXPLiD+6jdWIstZB/jGClfSU7/DQHADmtwgwYog3
+         0hQLZW7LgyKcOJBqfkGQhfxdCz0TbuhQDJwLWrE+5sbhsgOuv5b8k5AIMpVFkhATmMxI
+         p/SKQ07HuQusXhsOdtEQtjPzjOMAxHYa5kw6lyZ2/WZ3767gmXqi5VWql7D1NswcM9ao
+         8fsGYKKx65mmp78ePhWmKdiI4Lt9MfksqNn7Yvc/PHkhq91N1ovtKOZYNmUMjDUE5zQP
+         tH7c/fgKcP/U//N/7S9/4R47/m5fmrMvTDANdoqhR9Zl17h77TlKQyDZ93zoMSKRZ3aR
+         n3Wg==
+X-Gm-Message-State: AOJu0Yy8uuftseIKd08/Y+kta/oocSchOim+c8CVddfVwmRrCSwmeVst
+	OVZewhAeChtr/ZhZzUuFVX2TfMZ07Q/pWhmGOYUEbznxQIW1BOxig2iWXSYCw2rNHIEKc0+hynD
+	GngN8j/xFuiTNW7kK5HFvXyfnckwu6zMFcr/LJPk=
+X-Gm-Gg: AeBDiesy8BjB+QV3RSG5lndPVk7FgWdxCjk0bS28ZbGuj+sOCyztkDRzJ0/sNcK6NTr
+	c2kh1jh/D0z0/u+aVFW+upP3wZs+2XYQ0Hg+vslcRUEwEFVmRkeHAl1Alt5IDVbP0lVZRpIUzY7
+	dkUXdBiZlrSdLT6rDYIKkdaJ1/T364ax3F4n1PiSjeCaCKo6SCs2/5owiO5/CT8SAM6C6/SVgtO
+	ymEvRvBFBwIP0xW9+YMwwic9bLOW7L4KRivhlQ6HJmWBi9iBNjphylEKxSWf6C71Rvj6UqIJi7y
+	alzYkZje5uwxfHdr
+X-Received: by 2002:a05:7022:ff45:b0:128:d2a5:709c with SMTP id
+ a92af1059eb24-12c73fb3381mr18312537c88.33.1777020410424; Fri, 24 Apr 2026
+ 01:46:50 -0700 (PDT)
 MIME-Version: 1.0
-References: <20260416134518.3282395-1-eagle.alexander923@gmail.com>
- <20260416134518.3282395-2-eagle.alexander923@gmail.com> <2a9c9062-621c-4d8d-bbb9-5f979a4da81d@pengutronix.de>
-In-Reply-To: <2a9c9062-621c-4d8d-bbb9-5f979a4da81d@pengutronix.de>
+References: <20260416134518.3282395-1-eagle.alexander923@gmail.com> <d437f1d8-c079-4e17-ab67-f9090be6af9f@pengutronix.de>
+In-Reply-To: <d437f1d8-c079-4e17-ab67-f9090be6af9f@pengutronix.de>
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Fri, 24 Apr 2026 11:19:38 +0300
-X-Gm-Features: AQROBzCylloThcSIyJQ5fecvW8kPFJ-qnBqacbRtx2s03TnTaTvUJn31o0NEWyA
-Message-ID: <CAP1tNvSv6EFTRVNAovG_PTTedM===Rw=qecGsTMJCysSO6hAbA@mail.gmail.com>
+Date: Fri, 24 Apr 2026 11:46:39 +0300
+X-Gm-Features: AQROBzCWVB9JWHG5yugLWNiOSRvztK-_IaxHT3eQCIz9SMiY6RTsSj-YWmfVfDw
+Message-ID: <CAP1tNvSfV1Yz0f9NDaN-e88KYFzPNkC16ZjTRPSyBd-hNKXMyg@mail.gmail.com>
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260424_011951_340502_B5FA61EB 
-X-CRM114-Status: GOOD (  14.63  )
+X-CRM114-CacheID: sfid-20260424_014651_610237_25C498E6 
+X-CRM114-Status: GOOD (  25.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -126,29 +125,121 @@ X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/2] Documentation: add extlinux.conf support description
+Subject: Re: [PATCH 1/2] Add support for extlinux.conf
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 Hello Ahmad.
 
+> Thanks for your patch!
+>
 > On 4/16/26 3:45 PM, Alexander Shiyan wrote:
-> > Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+> > This adds support for the extlinux.conf configuration format, commonly
+> > used by Syslinux and many Linux distributions. The configuration file
+> > is typically located at /boot/extlinux/extlinux.conf or
+> > /extlinux/extlinux.conf and defines boot entries with kernel, initrd,
+> > device tree, and command line options.
+...
+> > +static int extlinux_boot(struct bootentry *be, int verbose, int dryrun)
+> > +{
+> > +     struct extlinux_entry *e =
+> > +             container_of(be, struct extlinux_entry, entry);
+> > +     char *kernel_abs, *initrd_abs = NULL, *fdt_abs = NULL;
+> > +     struct bootm_data data = {};
+> > +     int ret;
+> > +
+> > +     bootm_data_init_defaults(&data);
+> > +
+> > +     data.dryrun = max_t(int, dryrun, data.dryrun);
+> > +     data.verbose = max(verbose, data.verbose);
+> > +     data.appendroot = true;
 >
-> Thanks for adding documentation.
->
-> I have been wanting to add bootloader spec support to openembedded-core
-> to barebox can be used to boot Beaglebone black images generated by it,
-> but with extlinux support in barebox that should work as well.
-> I will surely give this a try in the future.
->
-> Could I motivate you to add a self test that exercises the parser?
->
-> Doesn't have to be anything extensive, see test/self/blspec.c for an
-> example. It's basically adding a few configs into the barebox
-> environment, calling bootentry_create_from_name() on the directory and
-> then running some assertions.
+> Not sure this is a good idea because of potential of clashing with
+> extlinux appended command line options.
 
-I think this can be done later, so as not to bloat the patch series...
+globalvar_add_bool("extlinux.fix_root", NULL); ?
+
+...
+> > +     if (e->append)
+> > +             globalvar_add_simple("linux.bootargs.dyn.extlinux", e->append);
+> > +
+> > +     pr_info("Booting extlinux label '%s'\n", e->label);
+> > +
+> > +     ret = bootm_boot(&data);
+>
+> Please make use of new bootm_entry instead, so it can be used with devboot:
+>
+> https://github.com/barebox/barebox/blob/next/Documentation/user/devboot.rst
+
+I haven't figured out how to do this yet...
+
+...
+> > +static struct extlinux_entry *parse_extlinux_conf(const char *abspath,
+> > +                                               const char *rootpath)
+> > +{
+> > +     char *buf, *bufptr, *line, *p, *default_label = NULL;
+> > +     struct extlinux_entry *entry = NULL;
+> > +
+> > +     bufptr = read_file(abspath, NULL);
+> > +     if (!bufptr)
+> > +             return ERR_PTR(-errno);
+> > +
+> > +     for (p = bufptr; *p; p++)
+> > +             if (*p == '\r')
+> > +                     *p = '\n';
+>
+> I think this can be dropped.
+>
+> > +
+> > +     buf = bufptr;
+> > +     while ((line = strsep(&buf, "\n")) != NULL) {
+>
+> And then you replace the set searched here with "\r\n"
+
+The end of the line may be \n, \r, \n\r.
+We are simply converting it to a uniform format.
+
+> > +             char *key, *val;
+> > +
+> > +             line = skip_spaces(line);
+> > +
+> > +             if (*line == '#' || *line == '\0')
+> > +                     continue;
+> > +
+>
+> Nitpick: I think below can be simplified to:
+>
+> > +             key = line;
+> > +             val = strchr(line, ' ');
+> > +             if (!val)
+> > +                     val = strchr(line, '\t');
+> > +             if (val) {
+> > +                     *val++ = '\0';
+> > +                     val = skip_spaces(val);
+> > +             } else
+> > +                     continue;
+>
+> key = strsep(&line, ' \t');
+> val = strsep(&line, '\n');
+> val = isempty(val) ? NULL : skip_spaces(val);
+
+strsep inserts a null byte in place of the separator; this will
+corrupt the buffer,
+and consequently, we will not be able to find the val.
+
+> > +
+> > +             if (!default_label) {
+> > +                     if (!strcasecmp(key, "DEFAULT"))
+> > +                             default_label = xstrdup(val);
+> > +
+> > +                     continue;
+> > +             }
+> > +
+> > +             if (!strcasecmp(key, "LABEL")) {
+> > +                     if (!strcmp(val, default_label)) {
+>
+> defaut_label might not have been set here?
+
+No: if (!default_label) ... continue;
 
 
