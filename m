@@ -1,92 +1,89 @@
-Delivery-date: Tue, 28 Apr 2026 15:28:51 +0200
+Delivery-date: Tue, 28 Apr 2026 15:28:52 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wHiUd-00HKhA-0O
+	id 1wHiUe-00HKhY-2c
 	for lore@lore.pengutronix.de;
-	Tue, 28 Apr 2026 15:28:51 +0200
+	Tue, 28 Apr 2026 15:28:52 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wHiUc-00010l-Hp
-	for lore@pengutronix.de; Tue, 28 Apr 2026 15:28:51 +0200
+	id 1wHiUd-000117-Nt
+	for lore@pengutronix.de; Tue, 28 Apr 2026 15:28:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=STgVNWgpoigHcTbaG5mh9nN/dkCtjVSvfe37iFK42yc=; b=H0Km5FvInm9FaPuZRv8/3DOb+q
-	8pnEPKptCfZ/VUcXnXE0//6j+ETZYDg98dw/iZgBb7p2EvsRPy3OsCH3ggw3os1G40NgOPKovd15J
-	4jytOYupV0MPkYPAKgrZNcy9kZe14EFFcQe6UEcpRJScivq7xPR5MtmcGyVuXbpiFfP7znB09N5I4
-	NB3fibEextJemIegjVgKVtSpGVefwfhp1mJZhHuWLdHdqkaA+Acqpyyu8Za4wDUrZf8DX5FqXn9J8
-	IdCbvBB66/ddN2e3JXyfjofR+bpUtoEI8oSdXj1N0HVe8OGT2rdSwBW5EkiWsOhBuQ4M4t5xRiSWB
-	/YJPyGEA==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=GLERhuGLZiX812uGVjHYN2oHXfrJ88KO/GWb0jwnYwc=; b=ElylzsPcOFfwMeGNDeTWggEHmi
+	GPTZcOcMbZFMXhhAHYZVP+8cAPf6o0voy/v/n+VXuF8sEjZgnQ4RBOQo4qSUCNrdCcg106Q/JYiGK
+	Vx2JZsR8K2rkVpkqRjuAfqc5XeqcMeVJt0kNm8kK4NOhlI5Cigqy8m+yHoz2WZLdGmlnSU5wj7n7N
+	2d4pDk6ZP2jfgcEPam8B84R75r2WO99VC3tXIUF0eIgaZJhCAyZCDs71ichQxjiWlr0DyT3LCacmz
+	Q/at9QSIJQDaJ1Y87q+cqwctRvNNJWrsQwvJeaaa+wcKQxyG09Xv0WuUivepYwu7jYeE+ZH2Kg7cS
+	SJ6x/2Sw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wHiUF-00000001Xio-0fV7;
-	Tue, 28 Apr 2026 13:28:27 +0000
-Received: from mail-yx1-xb134.google.com ([2607:f8b0:4864:20::b134])
+	id 1wHiU9-00000001Xh7-3gab;
+	Tue, 28 Apr 2026 13:28:21 +0000
+Received: from mail-yx1-xb136.google.com ([2607:f8b0:4864:20::b136])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wHiUD-00000001Xi5-11jn
+	id 1wHiU7-00000001XgQ-3q8V
 	for barebox@lists.infradead.org;
-	Tue, 28 Apr 2026 13:28:26 +0000
-Received: by mail-yx1-xb134.google.com with SMTP id 956f58d0204a3-65318dafbcbso11535366d50.2
-        for <barebox@lists.infradead.org>; Tue, 28 Apr 2026 06:28:24 -0700 (PDT)
+	Tue, 28 Apr 2026 13:28:21 +0000
+Received: by mail-yx1-xb136.google.com with SMTP id 956f58d0204a3-65005a8840dso9702597d50.0
+        for <barebox@lists.infradead.org>; Tue, 28 Apr 2026 06:28:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777382904; x=1777987704; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=STgVNWgpoigHcTbaG5mh9nN/dkCtjVSvfe37iFK42yc=;
-        b=nSFJ4PtoE39ntztzBJeYmtGfxWxJcZEIB+69UyZPaFMJXwzEmn2aZ9aDXLhO+/wNgQ
-         XZ5V2RANC6fkr3Ae2+YYbZ0PCbrQUII0sV+4jjxL+nm7EbRB19NGy/Ky2/IL5FEA8QQk
-         4gvk7nulHWYJvhrJQ7toSYNN/sgijySVCvUyIc9qiCt0StQOi1iaehFSmlMKikcW8NUa
-         UINKYDu9qLovFQZerwlzfo5+4fl96KrnOp1/kIhXrsglooDW6NoDtf3UyCiuqgGuu9Qj
-         8374v6aa2zMu+IwIkmrkijFowSB96Xv70TbXecyh00zCns+9VDtqbFma9hAFStRHIXWn
-         S7jg==
+        d=gmail.com; s=20251104; t=1777382898; x=1777987698; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=GLERhuGLZiX812uGVjHYN2oHXfrJ88KO/GWb0jwnYwc=;
+        b=Q89gBO47AGe6nxSz4GrsLEPfgHH4CDW0QvFLSY5VwVOtFqo+O/0SJ37dWgsRSzq3H9
+         4OPhD5jis4TFaHLS3jcRDXMJpB70YXD81hB5dz1BY53iDNMA+ZlA1BC3u5ggZTzEvVKG
+         +IEJ15hseLjfh84/iXEf6zpTD3jXh4Mm+iq9t0fML7Rg7GEkdqJXLzGy970DgeCZZBVx
+         6V2x6bw3sSd56KzGf9JadAXeKDiKK7CIpSXE8BPiiS7HvlgFXBwjJqDjOi5TGjBlDG/+
+         53tMi+pst8nssaWzOGDmPUByXf47dXWWF6+IdSco1OOFKpavf8KAriKwMQjvtYR9Jq57
+         PPpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777382904; x=1777987704;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=STgVNWgpoigHcTbaG5mh9nN/dkCtjVSvfe37iFK42yc=;
-        b=XAvUhzHybXU5cGul0p08n41y97neFl2OKyqJIZcpFK/WL6H5Ynydqt//8HRSv9QBmP
-         EeRY5blQi3XJ8+ED5aM35mdIwkweibLjstBpK70XOtyZdQegkYbLYGyfE9+xF8BpxQIp
-         6OP0nPRPHwBja7jYslD7y9dgZIP6COXzsrW51vkeES9/n/rq3M1SjpES+NNSQDFzWeQV
-         2Oby9pgHDjZ/PeoJrr/5hG1KDD7iI/KfKgjeIyiiXR7M8ojd94Qi/XX6/BTh74T92XgS
-         jSzuECUshsf4Bamug6GmarepeALZlOxv0jkgN/+di53yQGwqwKy2PKJrdAOn68LkexNV
-         D7ug==
-X-Gm-Message-State: AOJu0YyX/PB8Nq43F5SLON+SlqIvYA561Gnpf9luwPoi8TtNCVOEnzPd
-	LSAHEdEm2Un3xKmDOt4Wqi+Y8d2fo7wNyyUazWymMM8sR6MpWHxYgZE+cXXYgGnF5xY=
-X-Gm-Gg: AeBDieuxJUsO++OeGfpDUj3zeJPZFU3Sz/sKYvHwQ+HAcSw9tFVF4hDZzWRQ9Lghy04
-	gHlSgRqu/za9GdVTPDzlKcfq1rt7z7c2cLZBDOEU6TOsFYak6QvnB9iAlIgI1Ipq154rKCfplF7
-	SP0/rMMR7D2q8puWcr1vg5lrmc0njeUNXp9Eumv+NQE4ri4LTXPQVZp81piWmi9n5xEyRUdnIra
-	zCxL1+ght4/p90K46t6lzNOvEqaK+oL6I71dXybvme+tw7+10NpzADeav8UuyHh9fUBFfQZ6PWq
-	duT9fi7JbiquqKapsdO0jnEXwv5EbG6k1w50oPuHxIyR/Q6XQb8L+gi00i8mWaO6zHTmtZW+i9m
-	XzwqQTJMe/aQFq/daINv51sgYKskYigfVrNL1Wf/y7V+xx5Zh+IIZ7ySm182Nq2a/MCNvfV6J9q
-	UwRiie3AaX7W5JApsaitl2NB1cWqoBOzg/v5Lbg/dPQVfuym+3eA==
-X-Received: by 2002:a05:690e:258a:b0:654:ea8a:f50 with SMTP id 956f58d0204a3-65beeeca5c1mr1994371d50.61.1777382903625;
-        Tue, 28 Apr 2026 06:28:23 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777382898; x=1777987698;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GLERhuGLZiX812uGVjHYN2oHXfrJ88KO/GWb0jwnYwc=;
+        b=gQVlenCzULN3TO8C5rSrQhk5iqep3MwDDdJzkPm+Fiq1XRAPpUpfq7GQHXtn0kFpjP
+         GEFKRoj0gbhdnBKcxK3ja9rR1GKlgU3TtYS1OdJrPAJt5QbyrpOof7u0bI+/VdXl1j5I
+         IkX0UhWNyJ1BtujwwP75cCbp+klEKNj8udUz/jjiXyuZacpX1hBZS3WGnm/zpIMaMTry
+         jKX+OZfNRDYizmbiaqJXmunWY1lpOE6k5JnnYZDqpSnNBAOQ4Z8wmIZp5MQcJF4NTofY
+         gjG8wd1I4Uwo1/Kw20G78FDx0gvcHNdPRgxSTq/qBQbK4VLyYfr2P5J3/aQsBPHXlK8S
+         ZzhQ==
+X-Gm-Message-State: AOJu0YxokCAPiRi9nesuriMa/BIJxhh4B76s4+potSoyPjyoL/KEbC29
+	nzXUhfrvZgi1M6oGinZ7ArVNLe+5NJvFkJ83z+Q0ZfrbRdvyGtvODVqYH+rRTffULoc=
+X-Gm-Gg: AeBDietK9nDzoabBiwGX9flmTuOtjEPVTKStTSDpdmWz23vkZ4AG72RdTgm5SxmsQem
+	QjDvZP4Ks5ZvBGYZUt75Mt+9IcIGRDzl8ppXgrNs7VQSprTta+XxhIzE2NgXtpdHUzvK7Fc7NnO
+	nkvYwAzaZ+NO/ExsX7NaWkpclij/CxkrwAtfkxTST/akMmUDp0+5JU3KifcyN+XPQDvLm9pLaUN
+	qOjG2W2f9dMmuCT52MBHtuG3vSuzB/vuw9N/MXINuS4QebNfCUb5mr5joCaPYFKoCOUYGbQn4R3
+	74hoCJPqFk90mZE0XYlksa6gBuhju/QnbFiU8rQccT3Bp61FWHRWC/4bt6OLB4EWoCbb0nn0IHV
+	6zKmgF3kOSFbQQrePXfAkb+d/leZMrDWj3gG3TZ8pdbip5VzpVe0ISr+2Y24VBUX1AKM7hTAJTz
+	m2Jo24VFA6+0fna4ImGjQdh86HWO4RyX6omsZHVvyBXCeMp0+lAA==
+X-Received: by 2002:a05:690e:4182:b0:651:cf23:6612 with SMTP id 956f58d0204a3-65beee43e1cmr2235475d50.34.1777382898114;
+        Tue, 28 Apr 2026 06:28:18 -0700 (PDT)
 Received: from gentoo.sknt.ru ([95.161.221.172])
-        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-65bee46362bsm1723352d50.15.2026.04.28.06.28.22
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-65bee46362bsm1723352d50.15.2026.04.28.06.28.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 06:28:23 -0700 (PDT)
+        Tue, 28 Apr 2026 06:28:17 -0700 (PDT)
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
 To: barebox@lists.infradead.org
 Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Tue, 28 Apr 2026 16:28:11 +0300
-Message-ID: <20260428132811.3691086-2-eagle.alexander923@gmail.com>
+Date: Tue, 28 Apr 2026 16:28:10 +0300
+Message-ID: <20260428132811.3691086-1-eagle.alexander923@gmail.com>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260428132811.3691086-1-eagle.alexander923@gmail.com>
-References: <20260428132811.3691086-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260428_062825_292677_BB8FA26B 
-X-CRM114-Status: GOOD (  10.54  )
+X-CRM114-CacheID: sfid-20260428_062819_973312_A8488A6A 
+X-CRM114-Status: GOOD (  28.43  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -109,68 +106,378 @@ X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 2/2] Documentation: add extlinux.conf support description
+Subject: [PATCH v2 1/2] Add support for extlinux.conf
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+This adds support for the extlinux.conf configuration format, commonly
+used by Syslinux and many Linux distributions. The configuration file
+is typically located at /boot/extlinux/extlinux.conf or
+/extlinux/extlinux.conf and defines boot entries with kernel, initrd,
+device tree, and command line options.
+
+The implementation integrates with the existing boot entry framework:
+- The extlinux scanner discovers entries on mounted filesystems.
+- The default LABEL is turned into a boot entry.
+- The "root=" parameter is stripped from the APPEND line only when
+  global.bootm.appendroot is set. This allows barebox to inject the
+  correct root device based on the actual boot device (e.g., when the
+  same rootfs image is used across different storage media).
+- Bootm is used to load and start the kernel.
+---
+barebox@Diasom DS-RK3568-SOM-EVB:/ global.bootm.appendroot=true
+barebox@Diasom DS-RK3568-SOM-EVB:/ global.boot.default=mmc1.2
+barebox@Diasom DS-RK3568-SOM-EVB:/ boot
+ext4 ext40: EXT2 rev 1, inode_size 256, descriptor size 64
+Booting entry 'extlinux: linux'
+extlinux: Booting extlinux label 'linux'
+Adding "root=/dev/mmcblk1p3" to Kernel commandline
+Loading ARM aarch64 Linux/EFI image '/mnt/mmc1.2/boot/extlinux/../vmlinuz'
+commandline: root=/dev/mmcblk1p3 console=ttyS2,1500000n8 ro systemd.unit=setup.target quiet splash systemd.machine_id=181af2816b4c6b0aef77068e0ccc69ad
+Loaded kernel to 0x0a400000, devicetree at 0x000000000fb49000
+
 Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 ---
- Documentation/user/booting-linux.rst | 42 ++++++++++++++++++++++++++++
- 1 file changed, 42 insertions(+)
+ common/Kconfig    |  19 +++
+ common/Makefile   |   1 +
+ common/extlinux.c | 286 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 306 insertions(+)
+ create mode 100644 common/extlinux.c
 
-diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
-index 3972777f30..a192efd453 100644
---- a/Documentation/user/booting-linux.rst
-+++ b/Documentation/user/booting-linux.rst
-@@ -309,6 +309,48 @@ Additional notes about keys in the bootloader spec entries:
-    different devices without having to specify a different ``root=`` option each
-    time.
+diff --git a/common/Kconfig b/common/Kconfig
+index fd422714d5..0e93686e4f 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -734,6 +734,25 @@ config BLSPEC
+ 	  on a device and it allows the Operating System to install / update
+ 	  kernels.
  
-+.. _extlinux_conf:
++config EXTLINUX
++	bool
++	prompt "Support extlinux.conf"
++	depends on FLEXIBLE_BOOTARGS
++	depends on !SHELL_NONE
++	select BOOT
++	select BOOTM
++	select MMCBLKDEV_ROOTARG if MCI
++	help
++	  Enable this to let barebox parse extlinux.conf configuration files,
++	  commonly used by the Syslinux bootloader and many Linux distributions
++	  (e.g., on SD cards or USB drives).
++	  extlinux.conf is typically located at /boot/extlinux/extlinux.conf or
++	  /extlinux/extlinux.conf. It defines boot entries with kernel, initrd,
++	  device tree, and command line options.
++	  This option allows barebox to discover and boot operating systems
++	  that follow the extlinux configuration format, providing a simple
++	  and portable way to manage multiple boot options.
 +
-+extlinux.conf Support
-+^^^^^^^^^^^^^^^^^^^^^
+ config FLEXIBLE_BOOTARGS
+ 	bool
+ 	prompt "flexible Linux bootargs generation"
+diff --git a/common/Makefile b/common/Makefile
+index 27c5dea168..cd929b2194 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -9,6 +9,7 @@ obj-y				+= clock.o
+ pbl-$(CONFIG_PBL_CLOCKSOURCE)	+= clock.o
+ obj-y				+= console_common.o
+ obj-$(CONFIG_OFDEVICE)		+= deep-probe.o
++obj-$(CONFIG_EXTLINUX)		+= extlinux.o
+ obj-y				+= startup.o
+ obj-y				+= misc.o
+ obj-pbl-y			+= memsize.o
+diff --git a/common/extlinux.c b/common/extlinux.c
+new file mode 100644
+index 0000000000..0e838e9889
+--- /dev/null
++++ b/common/extlinux.c
+@@ -0,0 +1,286 @@
++// SPDX-License-Identifier: GPL-2.0+
++/* SPDX-FileCopyrightText: Alexander Shiyan <shc_work@mail.ru> */
 +
-+In addition to the Boot Loader Specification, barebox also supports the
-+extlinux configuration format, commonly used by the Syslinux bootloader and
-+many Linux distributions. This format is often found on SD cards, USB drives,
-+or disk partitions prepared with tools like ``extlinux --install``.
++#define pr_fmt(fmt)     "extlinux: " fmt
 +
-+The configuration file is named ``extlinux.conf`` and can be located at:
-+* ``/boot/extlinux/extlinux.conf``
-+* ``/extlinux/extlinux.conf``
++#include <boot.h>
++#include <bootm.h>
++#include <bootscan.h>
++#include <common.h>
++#include <environment.h>
++#include <fs.h>
++#include <globalvar.h>
++#include <libfile.h>
++#include <libgen.h>
++#include <malloc.h>
++#include <string.h>
 +
-+The file uses a simple key-value syntax with sections labeled by ``LABEL``.
-+A typical example looks like:
++struct extlinux_entry {
++	struct bootentry entry;
++	char *rootpath;
++	char *label;
++	char *kernel;
++	char *initrd;
++	char *fdtdir;
++	char *fdt;
++	char *append;
++};
 +
-+.. code-block:: none
++static char *remove_param(const char *params, const char *param)
++{
++	char *result, *dst;
++	const char *src;
 +
-+  DEFAULT linux
-+  LABEL linux
-+    KERNEL /boot/vmlinuz
-+    INITRD /boot/initrd.img
-+    FDT /boot/board.dtb
-+    APPEND console=ttyS0,115200 root=PARTUUID=deadbeef-01
++	result = xmalloc(strlen(params) + 1);
 +
-+When booting an extlinux entry, barebox strips any ``root=`` parameter from the
-+``APPEND`` line **only if** the global variable ``global.bootm.appendroot`` is
-+set to true. After stripping, barebox injects the correct ``root=`` based on
-+the boot device (similar to the ``linux-appendroot`` feature in blspec). This
-+makes the same root filesystem image usable across different storage media.
++	src = params;
++	dst = result;
 +
-+To use extlinux support, enable ``CONFIG_EXTLINUX`` in your barebox
-+configuration. Entries are automatically discovered by the :ref:`command_boot`
-+command when scanning a device or mount point. For example:
++	while (*src) {
++		if (!strncasecmp(src, param, strlen(param))) {
++			while (*src && *src != ' ')
++				src++;
 +
-+.. code-block:: sh
++			src = skip_spaces(src);
 +
-+  global.bootm.appendroot=true
-+  global.boot.default=mmc1.2
-+  boot
++			continue;
++		}
 +
- .. _booting_linux_net:
- 
- Network boot
++		*dst++ = *src++;
++	}
++
++	*dst = '\0';
++
++	return result;
++}
++
++static int extlinux_boot(struct bootentry *be, int verbose, int dryrun)
++{
++	struct extlinux_entry *e =
++		container_of(be, struct extlinux_entry, entry);
++	char *kernel_abs, *initrd_abs = NULL, *fdt_abs = NULL;
++	struct bootm_data data = {};
++	int ret;
++
++	bootm_data_init_defaults(&data);
++
++	data.dryrun = max_t(int, dryrun, data.dryrun);
++	data.verbose = max(verbose, data.verbose);
++
++	kernel_abs = basprintf("%s/%s", e->rootpath, e->kernel);
++	data.os_file = kernel_abs;
++
++	if (e->initrd) {
++		initrd_abs = basprintf("%s/%s", e->rootpath, e->initrd);
++		data.initrd_file = initrd_abs;
++	}
++
++	if (e->fdt) {
++		char *fdtdir = e->fdtdir ? : e->rootpath;
++
++		fdt_abs = basprintf("%s/%s", fdtdir, e->fdt);
++		data.oftree_file = fdt_abs;
++	}
++
++	if (e->append) {
++		char *append;
++
++		/*
++		 * The same rootfs image may be launched from eMMC or SD card.
++		 * Remove any hardcoded root= parameter from "append" to avoid
++		 * conflicts, then let barebox automatically add the correct
++		 * root= (via global.bootm.appendroot) based on the boot device.
++		 */
++		if (data.appendroot)
++			append = remove_param(e->append, "ROOT=");
++		else
++			append = xstrdup(e->append);
++
++		globalvar_add_simple("linux.bootargs.dyn.extlinux", append);
++
++		free(append);
++	}
++
++	pr_info("Booting extlinux label '%s'\n", e->label);
++
++	ret = bootm_boot(&data);
++	if (ret)
++		pr_err("bootm failed: %s\n", strerror(-ret));
++
++	free(kernel_abs);
++	free(initrd_abs);
++	free(fdt_abs);
++
++	return ret;
++}
++
++static void extlinux_entry_free(struct bootentry *be)
++{
++	struct extlinux_entry *e =
++		container_of(be, struct extlinux_entry, entry);
++
++	free(e->rootpath);
++	free(e->label);
++	free(e->kernel);
++	free(e->initrd);
++	free(e->fdtdir);
++	free(e->fdt);
++	free(e->append);
++	free(e);
++}
++
++static struct extlinux_entry *parse_extlinux_conf(const char *abspath,
++						  const char *rootpath)
++{
++	char *buf, *bufptr, *line, *default_label = NULL;
++	struct extlinux_entry *entry = NULL;
++
++	bufptr = read_file(abspath, NULL);
++	if (!bufptr)
++		return ERR_PTR(-errno);
++
++	buf = bufptr;
++	while ((line = strsep(&buf, "\n\r")) != NULL) {
++		char *key, *val;
++
++		line = skip_spaces(line);
++
++		if (*line == '#' || *line == '\0')
++			continue;
++
++		key = strsep(&line, " \t");
++		val = isempty(line) ? NULL : skip_spaces(line);
++		if (!key || !val)
++			continue;
++
++		if (!default_label) {
++			if (!strcasecmp(key, "DEFAULT"))
++				default_label = xstrdup(val);
++
++			continue;
++		}
++
++		if (!strcasecmp(key, "LABEL")) {
++			if (!strcmp(val, default_label)) {
++				entry = xzalloc(sizeof(*entry));
++				entry->label = xstrdup(val);
++				entry->rootpath = dirname(xstrdup(abspath));
++			} else if (entry) {
++				break;
++			}
++			continue;
++		}
++
++		if (entry) {
++			if (!strcasecmp(key, "KERNEL"))
++				entry->kernel = xstrdup(val);
++			else if (!strcasecmp(key, "INITRD"))
++				entry->initrd = xstrdup(val);
++			else if (!strcasecmp(key, "FDTDIR"))
++				entry->fdtdir = xstrdup(val);
++			else if (!strcasecmp(key, "FDT"))
++				entry->fdt = xstrdup(val);
++			else if (!strcasecmp(key, "APPEND"))
++				entry->append = xstrdup(val);
++			else
++				pr_warn("Unhandled key: %s\n", key);
++		}
++	}
++
++	free(default_label);
++	free(bufptr);
++
++	if (!entry || !entry->kernel) {
++		if (entry)
++			extlinux_entry_free(&entry->entry);
++		return ERR_PTR(-EINVAL);
++	}
++
++	return entry;
++}
++
++static int _extlinux_scan_file(struct bootscanner *scanner,
++			       struct bootentries *bootentries,
++			       const char *configname,
++			       const char *rootpath)
++{
++	struct extlinux_entry *e;
++
++	if (!strends(configname, "extlinux.conf"))
++		return 0;
++
++	e = parse_extlinux_conf(configname, rootpath);
++	if (IS_ERR(e))
++		return PTR_ERR(e);
++
++	e->entry.boot = extlinux_boot;
++	e->entry.release = extlinux_entry_free;
++	e->entry.path = xstrdup_const(configname);
++	e->entry.title = basprintf("extlinux: %s", e->label);
++	e->entry.description = basprintf("extlinux entry \'%s\" on %s",
++					 e->label, rootpath);
++	e->entry.me.type = MENU_ENTRY_NORMAL;
++
++	bootentries_add_entry(bootentries, &e->entry);
++
++	return 1;
++}
++
++static int extlinux_scan_file(struct bootscanner *scanner,
++			      struct bootentries *bootentries,
++			      const char *configname)
++{
++	const char *rootpath = get_mounted_path(configname);
++	if (IS_ERR(rootpath))
++		return PTR_ERR(rootpath);
++
++	return _extlinux_scan_file(scanner, bootentries, configname, rootpath);
++}
++
++static int extlinux_scan_directory(struct bootscanner *scanner,
++				   struct bootentries *bootentries,
++				   const char *rootpath)
++{
++	char *path;
++	struct stat s;
++	int ret;
++
++	path = basprintf("%s/boot/extlinux/extlinux.conf", rootpath);
++	ret = stat(path, &s);
++	if (!ret && S_ISREG(s.st_mode))
++		ret = _extlinux_scan_file(scanner, bootentries, path, rootpath);
++	free(path);
++	if (ret > 0)
++		return ret;
++
++	path = basprintf("%s/extlinux/extlinux.conf", rootpath);
++	ret = stat(path, &s);
++	if (!ret && S_ISREG(s.st_mode))
++		ret = _extlinux_scan_file(scanner, bootentries, path, rootpath);
++	free(path);
++
++	return ret;
++}
++
++static struct bootscanner extlinux_scanner = {
++	.name = "extlinux",
++	.scan_file = extlinux_scan_file,
++	.scan_directory = extlinux_scan_directory,
++};
++
++static int extlinux_generate(struct bootentries *bootentries, const char *name)
++{
++	return bootentry_scan_generate(&extlinux_scanner, bootentries, name);
++}
++
++static struct bootentry_provider extlinux_provider = {
++	.name = "extlinux",
++	.generate = extlinux_generate,
++	.priority = -25,
++};
++
++static int extlinux_init(void)
++{
++	return bootentry_register_provider(&extlinux_provider);
++}
++device_initcall(extlinux_init);
 -- 
 2.52.0
 
