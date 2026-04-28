@@ -1,76 +1,92 @@
-Delivery-date: Tue, 28 Apr 2026 14:53:15 +0200
+Delivery-date: Tue, 28 Apr 2026 15:28:51 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wHhwB-00HK4q-0e
+	id 1wHiUd-00HKhA-0O
 	for lore@lore.pengutronix.de;
-	Tue, 28 Apr 2026 14:53:15 +0200
+	Tue, 28 Apr 2026 15:28:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wHhwA-0006GT-C7
-	for lore@pengutronix.de; Tue, 28 Apr 2026 14:53:15 +0200
+	id 1wHiUc-00010l-Hp
+	for lore@pengutronix.de; Tue, 28 Apr 2026 15:28:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=lKyw8nAEz/zxTjKVG+Hs1VukrqiHQGk0NovZzj4oh9U=; b=Ak4uEu77H3KAP1VTarptjnzGNV
-	qelgwtXYTQmTCJZGyQrp6dyyjCdobFOiElsvBDoV7A/sopu+Ux+k5wPk6H0HmB7ZN3qnEkabKlUxJ
-	JU4uGk4xl4uTnzjuG8V+beooiWsL2pVtNu9W0fhYYWYlJKoCX7p1++bsCSFr2Nxl5v1PnW+m73vh1
-	Mmpa2Mb+SpBpxJHzvBAmH9bkE6rhKFEZFuDkA6cDvEprKdz2QwPFLKl+mG4Eh3+ARK3CCoaXled+x
-	JOEtFFEGjrjm6R+ZcsPpyqm3DEWcbdYVSXvyixdpPlGP3lGat7QKOCy14LGM/sIEC+J2/tk83KC+2
-	+RnuGfsw==;
+	bh=STgVNWgpoigHcTbaG5mh9nN/dkCtjVSvfe37iFK42yc=; b=H0Km5FvInm9FaPuZRv8/3DOb+q
+	8pnEPKptCfZ/VUcXnXE0//6j+ETZYDg98dw/iZgBb7p2EvsRPy3OsCH3ggw3os1G40NgOPKovd15J
+	4jytOYupV0MPkYPAKgrZNcy9kZe14EFFcQe6UEcpRJScivq7xPR5MtmcGyVuXbpiFfP7znB09N5I4
+	NB3fibEextJemIegjVgKVtSpGVefwfhp1mJZhHuWLdHdqkaA+Acqpyyu8Za4wDUrZf8DX5FqXn9J8
+	IdCbvBB66/ddN2e3JXyfjofR+bpUtoEI8oSdXj1N0HVe8OGT2rdSwBW5EkiWsOhBuQ4M4t5xRiSWB
+	/YJPyGEA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wHhva-00000001TNM-44mT;
-	Tue, 28 Apr 2026 12:52:38 +0000
-Received: from cczrelay01.in2p3.fr ([134.158.66.151] helo=cczrelay03.in2p3.fr)
+	id 1wHiUF-00000001Xio-0fV7;
+	Tue, 28 Apr 2026 13:28:27 +0000
+Received: from mail-yx1-xb134.google.com ([2607:f8b0:4864:20::b134])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wHhvV-00000001TLx-2812
+	id 1wHiUD-00000001Xi5-11jn
 	for barebox@lists.infradead.org;
-	Tue, 28 Apr 2026 12:52:37 +0000
-Received: from [134.158.124.135] (clrelecpo09w.in2p3.fr [134.158.124.135])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by cczrelay03.in2p3.fr (Postfix) with ESMTPSA id DA24118027B3;
-	Tue, 28 Apr 2026 14:52:27 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 cczrelay03.in2p3.fr DA24118027B3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=in2p3.fr;
-	s=20260401; t=1777380747;
-	bh=lKyw8nAEz/zxTjKVG+Hs1VukrqiHQGk0NovZzj4oh9U=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=L/xQfIIeKpu6XCdU/va+rEGNxRdppQG458837INW4Bslu9pfOpb7QaPB2LBKS8GyD
-	 5vgFv/eSOzsYFJ0sX8AjVJoBRqiTxLN5aqh+6wu9rLNVpnjpJjbD9O0XVaG3RJt9F3
-	 YAgsAGmAMq4C/C/JpFjsG2Wuqxyoy5RIEQm7HBTIb1GpAuTQckFh0B9GzNyw5cfP3E
-	 54mll5m+Du0BKafPUbC0RKFk82c2qdbh7kLx7GvSqlMjLAUMoFk+6W77dPBJGzrvQn
-	 YxxbeNNksjFYs74B4Bg0EHAB+Xva6+X972396b75wy1U2SzYJvftvxLbGd6u1exf3N
-	 /zi6zoIIO9yVg==
-Message-ID: <6df3155d-7254-4777-bf87-644b7850e237@clermont.in2p3.fr>
-Date: Tue, 28 Apr 2026 14:51:59 +0200
+	Tue, 28 Apr 2026 13:28:26 +0000
+Received: by mail-yx1-xb134.google.com with SMTP id 956f58d0204a3-65318dafbcbso11535366d50.2
+        for <barebox@lists.infradead.org>; Tue, 28 Apr 2026 06:28:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1777382904; x=1777987704; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=STgVNWgpoigHcTbaG5mh9nN/dkCtjVSvfe37iFK42yc=;
+        b=nSFJ4PtoE39ntztzBJeYmtGfxWxJcZEIB+69UyZPaFMJXwzEmn2aZ9aDXLhO+/wNgQ
+         XZ5V2RANC6fkr3Ae2+YYbZ0PCbrQUII0sV+4jjxL+nm7EbRB19NGy/Ky2/IL5FEA8QQk
+         4gvk7nulHWYJvhrJQ7toSYNN/sgijySVCvUyIc9qiCt0StQOi1iaehFSmlMKikcW8NUa
+         UINKYDu9qLovFQZerwlzfo5+4fl96KrnOp1/kIhXrsglooDW6NoDtf3UyCiuqgGuu9Qj
+         8374v6aa2zMu+IwIkmrkijFowSB96Xv70TbXecyh00zCns+9VDtqbFma9hAFStRHIXWn
+         S7jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777382904; x=1777987704;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=STgVNWgpoigHcTbaG5mh9nN/dkCtjVSvfe37iFK42yc=;
+        b=XAvUhzHybXU5cGul0p08n41y97neFl2OKyqJIZcpFK/WL6H5Ynydqt//8HRSv9QBmP
+         EeRY5blQi3XJ8+ED5aM35mdIwkweibLjstBpK70XOtyZdQegkYbLYGyfE9+xF8BpxQIp
+         6OP0nPRPHwBja7jYslD7y9dgZIP6COXzsrW51vkeES9/n/rq3M1SjpES+NNSQDFzWeQV
+         2Oby9pgHDjZ/PeoJrr/5hG1KDD7iI/KfKgjeIyiiXR7M8ojd94Qi/XX6/BTh74T92XgS
+         jSzuECUshsf4Bamug6GmarepeALZlOxv0jkgN/+di53yQGwqwKy2PKJrdAOn68LkexNV
+         D7ug==
+X-Gm-Message-State: AOJu0YyX/PB8Nq43F5SLON+SlqIvYA561Gnpf9luwPoi8TtNCVOEnzPd
+	LSAHEdEm2Un3xKmDOt4Wqi+Y8d2fo7wNyyUazWymMM8sR6MpWHxYgZE+cXXYgGnF5xY=
+X-Gm-Gg: AeBDieuxJUsO++OeGfpDUj3zeJPZFU3Sz/sKYvHwQ+HAcSw9tFVF4hDZzWRQ9Lghy04
+	gHlSgRqu/za9GdVTPDzlKcfq1rt7z7c2cLZBDOEU6TOsFYak6QvnB9iAlIgI1Ipq154rKCfplF7
+	SP0/rMMR7D2q8puWcr1vg5lrmc0njeUNXp9Eumv+NQE4ri4LTXPQVZp81piWmi9n5xEyRUdnIra
+	zCxL1+ght4/p90K46t6lzNOvEqaK+oL6I71dXybvme+tw7+10NpzADeav8UuyHh9fUBFfQZ6PWq
+	duT9fi7JbiquqKapsdO0jnEXwv5EbG6k1w50oPuHxIyR/Q6XQb8L+gi00i8mWaO6zHTmtZW+i9m
+	XzwqQTJMe/aQFq/daINv51sgYKskYigfVrNL1Wf/y7V+xx5Zh+IIZ7ySm182Nq2a/MCNvfV6J9q
+	UwRiie3AaX7W5JApsaitl2NB1cWqoBOzg/v5Lbg/dPQVfuym+3eA==
+X-Received: by 2002:a05:690e:258a:b0:654:ea8a:f50 with SMTP id 956f58d0204a3-65beeeca5c1mr1994371d50.61.1777382903625;
+        Tue, 28 Apr 2026 06:28:23 -0700 (PDT)
+Received: from gentoo.sknt.ru ([95.161.221.172])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-65bee46362bsm1723352d50.15.2026.04.28.06.28.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Apr 2026 06:28:23 -0700 (PDT)
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+To: barebox@lists.infradead.org
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Tue, 28 Apr 2026 16:28:11 +0300
+Message-ID: <20260428132811.3691086-2-eagle.alexander923@gmail.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260428132811.3691086-1-eagle.alexander923@gmail.com>
+References: <20260428132811.3691086-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: David Picard <david.picard@clermont.in2p3.fr>
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: ML_Barebox <barebox@lists.infradead.org>, abbotti@mev.co.uk
-References: <aeaec45e-ef30-462b-a28f-53d2b82d6387@clermont.in2p3.fr>
- <87mrysizs9.fsf@pengutronix.de>
- <09c2d997-08e5-484a-a7ea-3204b304f3b8@clermont.in2p3.fr>
- <871pg0vh4t.fsf@pengutronix.de>
- <c952a0cc-1b0c-474e-8e5a-d40303825d5a@clermont.in2p3.fr>
- <87pl3ktwsq.fsf@pengutronix.de>
- <0d87b14c-4696-46e1-bf37-6bbfa0f24b8d@clermont.in2p3.fr>
-Content-Language: en-US
-In-Reply-To: <0d87b14c-4696-46e1-bf37-6bbfa0f24b8d@clermont.in2p3.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260428_055233_947447_3BF50FCC 
-X-CRM114-Status: GOOD (  35.02  )
+X-CRM114-CacheID: sfid-20260428_062825_292677_BB8FA26B 
+X-CRM114-Status: GOOD (  10.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,210 +104,75 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: ARM: socfpga: enclustra-sa2: issue with I2C1
+X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH v2 2/2] Documentation: add extlinux.conf support description
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+---
+ Documentation/user/booting-linux.rst | 42 ++++++++++++++++++++++++++++
+ 1 file changed, 42 insertions(+)
 
-I don't know exactly why and how, but after re-doing everything multiple 
-times, it finally worked!
-
-Anyway, I have a new version of the handoff files with I2C1 enabled on 2 
-HPS pins. Is it worth sharing with Barebox, or is it too specific?
-
-Next, I'll try to enable a SPI master. Same question.
-
-
-David
-
-
-
-Le 27/04/2026 à 14:36, David Picard a écrit :
-> Generate the handoff files manually: is it what the 
-> bsp-create-settings script from Intel's embedded shell does? I did run 
-> it.
->
-> I understand that socfpga_import_preloader mostly only reformats the 
-> files.
->
->
-> Le 27/04/2026 à 14:25, Steffen Trumtrar a écrit :
->> On 2026-04-27 at 14:13 +02, David Picard 
->> <david.picard@clermont.in2p3.fr> wrote:
->>
->>> Too bad you don't have an idea. Sorry for misspelling your name,
->>>
->>
->> no problem ;)
->>
->>>
->>> I'm not sure it's related, but I get errors with the 
->>> socfpga_import_preloader
->>> script only if I use the --embedded-sdk option. I couldn't figure 
->>> out what this
->>> option changes.
->>> https://paste.debian.net/hidden/fffbb190
->>>
->>
->> Hm, the script is obviously pretty hacked together and not very error 
->> proof.
->> With the embedded-sdk provided, it generates the handoff-files 
->> without the
->> option, the handoff files need to be generated manually.
->>
->> Maybe the Python script in the SDK changed since adding this option 
->> and doesn't
->> copy the files that are stat'ed.
->>
->>
->> Steffen
->>
->>> David
->>>
->>> Le 27/04/2026 à 12:20, Steffen Trumtrar a écrit :
->>> > On 2026-04-27 at 12:09 +02, David Picard 
->>> <david.picard@clermont.in2p3.fr>
->>> > wrote:
->>> >
->>> > Hi,
->>> >
->>> >> Hi Stephen, thanks for your reply,
->>> >>
->>> >> Pins SDA and SCL, GPIO51 and GPIO52 respectively, are specified 
->>> with the I/O
->>> >> standard 3.3V LVCMOS and a drive strength of 2mA, which is way 
->>> more than
->>> >> needed,
->>> >> given my 10K pull-up resistors (3.3 / 10K = 0.33mA). I know that 
->>> 10K is
->>> >> bigger
->>> >> than the usual 2.2K, but probably not big enough to prevent any 
->>> change on the
->>> >> SCL line. I just see a perfect flat line when I probe the bus.
->>> >>
->>> >
->>> > :(
->>> >
->>> >> I compared iocsr_config_cyclone5.c and pinmux_config.c in the
->>> >> terasic-de10-nano/
->>> >> and enclustra-sa2/ directories. There are a lot of differences. 
->>> But the lines
->>> >> that changed in enclustra-sa2/ when I tried to enable the I2C1 
->>> bus are now
->>> >> the
->>> >> same as in the terasic-de10-nano/ directory, which probably makes 
->>> sense.
->>> >>
->>> >
->>> > Makes sence, yes and was what I hoped for. But, doesn't seem to 
->>> change
->>> > anything.
->>> >
->>> >> Does Barebox have to decipher every bit in those cryptic files?
->>> >>
->>> >
->>> > barebox knows nothing about the meaning of the iocsr registers. 
->>> Those values a
->>> > just written to the hardware and can't be changed afterwards.
->>> > AFAIK there still is no linux driver that might read and decipher the
->>> > settings.
->>> >
->>> > Sadly, I don't have any more ideas at the top of my head why it 
->>> doesn't work.
->>> > Everything sounds correct.
->>> >
->>> >
->>> > Best regards,
->>> > Steffen
->>> >
->>> >>
->>> >> David
->>> >>
->>> >>
->>> >> Le 24/04/2026 à 09:27, Steffen Trumtrar a écrit :
->>> >> > On 2026-04-23 at 14:00 +02, David Picard 
->>> <david.picard@clermont.in2p3.fr>
->>> >> > wrote:
->>> >> >
->>> >> > Hi,
->>> >> >
->>> >> >> Hello,
->>> >> >>
->>> >> >> @Stephen and Ian: I Cc you since I spotted you authored 
->>> commits related to
->>> >> >> Intel
->>> >> >> SoC FPGA pin muxing.
->>> >> >>
->>> >> >
->>> >> > long time ago ;)
->>> >> >
->>> >> >> I'm trying to enable the I2C1 bus on a Cyclone V-base module, 
->>> mounted on a
->>> >> >> base
->>> >> >> board. The I2C1 lines connect to a 2.54mm header, on which I 
->>> attached a
->>> >> I²C
->>> >> >> device with pull-up resistors at address 0x40.
->>> >> >> 
->>> https://www.enclustra.com/en/products/system-on-chip-modules/mercury-sa2/
->>> >> I
->>> >> >> can't detect the I²C device, nor can I see any pulse on the 
->>> SCL line,
->>> >> which
->>> >> >> is
->>> >> >> constantly at +3.3V.
->>> >> >>
->>> >> >> I changed the pin muxing in Quartus, updated the handoff 
->>> files, changed
->>> >> the
->>> >> >> devicetree. The I2C1 bus is visible in Barebox and Linux. More 
->>> detail
->>> >> here:
->>> >> >>
->>> >> 
->>> https://community.altera.com/discussions/fpga-device/cyclone-v-hps-i2c1-issue-no-activity-on-bus/352583
->>> >> >
->>> >> > I remember, that iocsr was 'underdocumented' to say the least...
->>> >> >
->>> >> > Wasn't it possible to change drive strength and those settings 
->>> or was that
->>> >> > with Xilinx/Zynq?
->>> >> >
->>> >> >> As documented on the Barebox website, I generated the BSP 
->>> files with the
->>> >> >> Quartus
->>> >> >> script bsp-create-settings and copied the handoff files to the 
->>> Barebox
->>> >> build
->>> >> >> directory. After that, I could see that 
->>> iocsr_config_cyclone5.c and
->>> >> >> pinmux_config.c had changed.
->>> >> >>
->>> >> 
->>> https://www.barebox.org/doc/2025.05.0/boards/socfpga.html#updating-handoff-files
->>> >> >>
->>> >> 
->>> https://www.intel.com/content/www/us/en/docs/programmable/683187/20-1/bsp-create-settings.html
->>> >> >> If someone could give me some hint, that would be really great!
->>> >> >
->>> >> > I see, that the Terasic DE10 Nano uses i2c1. Maybe compare the 
->>> changed
->>> >> iocsr
->>> >> > with those?
->>> >> >
->>> >> >
->>> >> > Best regards,
->>> >> > Steffen
->>> >> >
->>> >
->>
->
->
+diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
+index 3972777f30..a192efd453 100644
+--- a/Documentation/user/booting-linux.rst
++++ b/Documentation/user/booting-linux.rst
+@@ -309,6 +309,48 @@ Additional notes about keys in the bootloader spec entries:
+    different devices without having to specify a different ``root=`` option each
+    time.
+ 
++.. _extlinux_conf:
++
++extlinux.conf Support
++^^^^^^^^^^^^^^^^^^^^^
++
++In addition to the Boot Loader Specification, barebox also supports the
++extlinux configuration format, commonly used by the Syslinux bootloader and
++many Linux distributions. This format is often found on SD cards, USB drives,
++or disk partitions prepared with tools like ``extlinux --install``.
++
++The configuration file is named ``extlinux.conf`` and can be located at:
++* ``/boot/extlinux/extlinux.conf``
++* ``/extlinux/extlinux.conf``
++
++The file uses a simple key-value syntax with sections labeled by ``LABEL``.
++A typical example looks like:
++
++.. code-block:: none
++
++  DEFAULT linux
++  LABEL linux
++    KERNEL /boot/vmlinuz
++    INITRD /boot/initrd.img
++    FDT /boot/board.dtb
++    APPEND console=ttyS0,115200 root=PARTUUID=deadbeef-01
++
++When booting an extlinux entry, barebox strips any ``root=`` parameter from the
++``APPEND`` line **only if** the global variable ``global.bootm.appendroot`` is
++set to true. After stripping, barebox injects the correct ``root=`` based on
++the boot device (similar to the ``linux-appendroot`` feature in blspec). This
++makes the same root filesystem image usable across different storage media.
++
++To use extlinux support, enable ``CONFIG_EXTLINUX`` in your barebox
++configuration. Entries are automatically discovered by the :ref:`command_boot`
++command when scanning a device or mount point. For example:
++
++.. code-block:: sh
++
++  global.bootm.appendroot=true
++  global.boot.default=mmc1.2
++  boot
++
+ .. _booting_linux_net:
+ 
+ Network boot
+-- 
+2.52.0
 
 
 
