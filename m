@@ -1,56 +1,55 @@
-Delivery-date: Fri, 01 May 2026 09:07:18 +0200
+Delivery-date: Fri, 01 May 2026 09:20:00 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wIhy2-000n4X-15
+	id 1wIiAK-000nGc-0X
 	for lore@lore.pengutronix.de;
-	Fri, 01 May 2026 09:07:18 +0200
+	Fri, 01 May 2026 09:20:00 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wIhy1-00028V-OB
-	for lore@pengutronix.de; Fri, 01 May 2026 09:07:18 +0200
+	id 1wIiAJ-0000b9-Ey
+	for lore@pengutronix.de; Fri, 01 May 2026 09:20:00 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=z45NSJ+FNmkHoxCAP+myAg/P8qy7ZY7mehgwJe6/Ur8=; b=aphGg12x0UTGbK0YUw825RzME9
-	0Yex58YoMWb6twzbz6nKlaoRXeiJJ/W3SeKAsVpDsFSDp2qPdEJqNE5+hvpr4KA1t2PsiKuTQuxdF
-	tV8vNIC3wpfJY0EcDeylrXAwV1X8UQhrneIT7iBUqWfk3Rptc8H0uZibgM2pNjyQr7Di7m0KS6OU0
-	fZp29vha8MonbyH/vRwObIiO7/WOQjztl36IkqFBzLGz4CrsXBvQEKS+dpORJuZvjn/K7Ui2zVZpW
-	Huk2nhHgQWx0u55syNkkWY3E5gAUa6/SEKpSP/c5UqNLqd5uL6YZmVWOCShHHWFjrO42J+a+A4Zw6
-	loD7FznQ==;
+	bh=jTPRwoKJ9Y08PLF/1t8DMx6FVRWTB4rCuQ+wpgDW00w=; b=pKyYPvClwipRFL7LskURnYSa+Y
+	sjBJ3AYs5/iZ1vlSxJEYeWYKh9p+7OvJWVAwGh1tTDaITv7cyoAwAHjUvXKgvhYW009pO4AkCBupL
+	9a2XFeNltz2edOVV/O2k7dCh4TX/5DNDv6P3oZyowOXOH0aKhADrI4K+y9nbLmCATC36m+LID5vGm
+	9PHNA0qsb6MuxgTc7bXINlhEVvZeKkP0H5tXRr/OsBxIQn7FWwpvnnRbwoQg3doRQsUEx066xFAuB
+	KvFM05/qXaA2FAAFtZkjUHwecrYpN/bMAiDU3QDWnSWqoFw3KFzrwRfNdS0nM0UhYw67ml55eIg/l
+	Xhai7CpA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wIhxY-00000006Rh5-00b1;
-	Fri, 01 May 2026 07:06:48 +0000
+	id 1wIi9x-00000006Ssm-2X1U;
+	Fri, 01 May 2026 07:19:37 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wIhxV-00000006Rdr-0D5y
+	id 1wIi9u-00000006SsG-2H34
 	for barebox@lists.infradead.org;
-	Fri, 01 May 2026 07:06:46 +0000
+	Fri, 01 May 2026 07:19:36 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1wIhxT-0001W8-GY; Fri, 01 May 2026 09:06:43 +0200
+	id 1wIi9s-0000Kw-UE
+	for barebox@lists.infradead.org; Fri, 01 May 2026 09:19:33 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Fri,  1 May 2026 08:53:58 +0200
-Message-ID: <20260501070625.952091-5-a.fatoum@barebox.org>
+Date: Fri,  1 May 2026 09:19:21 +0200
+Message-ID: <20260501071927.961370-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260501070625.952091-1-a.fatoum@barebox.org>
 References: <20260501070625.952091-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260501_000645_084299_96B65780 
-X-CRM114-Status: UNSURE (   9.99  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260501_001934_591110_44173660 
+X-CRM114-Status: GOOD (  17.90  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,98 +71,177 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 4/9] lib: term: factor out single cdev handling from term_getsize
+Subject: [PATCH 9/9] efi: reimplement query_console_serial using term_getsize
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The logic is easier to follow with the per-cdev code split off.
+query_console_serial() used printf() to send terminal size query
+escape sequences, which go to _all_ active consoles. This corrupted
+the fbconsole cursor position because fbconsole receives the
+ESC [999;999H sequence and moves its cursor to the bottom-right
+corner.
 
-No functional change intended.
+Replace the custom implementation with term_getsize() from lib/term.c,
+which calculates the minimum terminal size across all consoles,
+including the framebuffer console.
 
+Link: https://fosstodon.org/@otte_homan@theblower.au/116229733790452489
+Reported-by: @otte_homan@theblower.au
+Fixes: 65ac28276e5d ("efi: loader: protocol: add console support")
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- include/term.h |  5 +++++
- lib/term.c     | 42 +++++++++++++++++++++++++++---------------
- 2 files changed, 32 insertions(+), 15 deletions(-)
+ efi/loader/protocols/console.c | 119 +--------------------------------
+ 1 file changed, 2 insertions(+), 117 deletions(-)
 
-diff --git a/include/term.h b/include/term.h
-index e53fcffcfc28..4845aad6ec66 100644
---- a/include/term.h
-+++ b/include/term.h
-@@ -2,7 +2,12 @@
- #ifndef __TERM_H
- #define __TERM_H
+diff --git a/efi/loader/protocols/console.c b/efi/loader/protocols/console.c
+index 211e725cfd7b..113443db09d6 100644
+--- a/efi/loader/protocols/console.c
++++ b/efi/loader/protocols/console.c
+@@ -20,6 +20,7 @@
+ #include <efi/protocol/text.h>
+ #include <efi/error.h>
+ #include <efi/guid.h>
++#include <term.h>
  
-+struct console_device;
-+
- void term_setpos(int x, int y);
- int term_getsize(int *screenwidth, int *screenheight);
+ #ifdef DEBUG
+ #include <efi/loader/trace.h>
+@@ -83,76 +84,6 @@ static struct simple_text_output_mode efi_con_mode = {
+ 	.cursor_visible = 1,
+ };
  
-+int term_cdev_get_size(struct console_device *cdev,
-+		       int *screenwidth, int *screenheight);
-+
- #endif /* __LIBBB_H */
-diff --git a/lib/term.c b/lib/term.c
-index 96fdb0737d31..3949aeb45136 100644
---- a/lib/term.c
-+++ b/lib/term.c
-@@ -72,29 +72,41 @@ static int term_cdev_read_reply(struct console_device *cdev,
- 	return 0;
+-/**
+- * term_get_char() - read a character from the console
+- *
+- * Wait for up to 100 ms to read a character from the console.
+- *
+- * @c:		pointer to the buffer to receive the character
+- * Return:	0 on success, 1 otherwise
+- */
+-static int term_get_char(s32 *c)
+-{
+-	u64 timeout;
+-
+-	/* Wait up to 100 ms for a character */
+-	timeout = get_time_ns();
+-
+-	while (!tstc())
+-		if (is_timeout(timeout, 100 * MSECOND))
+-			return 1;
+-
+-	*c = getchar();
+-	return 0;
+-}
+-
+-/**
+- * term_read_reply() - receive and parse a reply from the terminal
+- *
+- * @n:		array of return values
+- * @num:	number of return values expected
+- * @end_char:	character indicating end of terminal message
+- * Return:	non-zero indicates error
+- */
+-static int term_read_reply(int *n, int num, char end_char)
+-{
+-	s32 c;
+-	int i = 0;
+-
+-	if (term_get_char(&c) || c != cESC)
+-		return -1;
+-
+-	if (term_get_char(&c) || c != '[')
+-		return -1;
+-
+-	n[0] = 0;
+-	while (1) {
+-		if (!term_get_char(&c)) {
+-			if (c == ';') {
+-				i++;
+-				if (i >= num)
+-					return -1;
+-				n[i] = 0;
+-				continue;
+-			} else if (c == end_char) {
+-				break;
+-			} else if (c > '9' || c < '0') {
+-				return -1;
+-			}
+-
+-			/* Read one more decimal position */
+-			n[i] *= 10;
+-			n[i] += c - '0';
+-		} else {
+-			return -1;
+-		}
+-	}
+-	if (i != num - 1)
+-		return -1;
+-
+-	return 0;
+-}
+-
+ /**
+  * efi_cout_output_string() - write Unicode string to console
+  *
+@@ -270,58 +201,12 @@ static bool cout_mode_matches(struct cout_mode *mode, int rows, int cols)
+ 	return (mode->rows == rows) && (mode->columns == cols);
  }
  
-+int term_cdev_get_size(struct console_device *cdev,
-+		       int *screenwidth, int *screenheight)
-+{
-+	const char esc[] = "\e7" "\e[r" "\e[999;999H" "\e[6n";
-+	int ret, params[2];
-+
-+	if (!(cdev->f_active & CONSOLE_STDIN))
-+		return -ENOENT;
-+	if (!(cdev->f_active & CONSOLE_STDOUT))
-+		return -ENOENT;
-+
-+	term_cdev_drain(cdev);
-+
-+	console_puts(cdev, esc);
-+
-+	ret = term_cdev_read_reply(cdev, params, 2, 'R');
-+	if (ret)
-+		return ret;
-+
-+	*screenheight = params[0];
-+	*screenwidth = params[1];
-+
-+	return 0;
-+}
-+
- int term_getsize(int *screenwidth, int *screenheight)
+-/**
+- * query_console_serial() - query serial console size
+- *
+- * When using a serial console or the net console we can only devise the
+- * terminal size by querying the terminal using ECMA-48 control sequences.
+- *
+- * @rows:	pointer to return number of rows
+- * @cols:	pointer to return number of columns
+- * Returns:	0 on success
+- */
+-static int query_console_serial(int *rows, int *cols)
+-{
+-	int ret = 0;
+-	int n[2];
+-
+-	/* Empty input buffer */
+-	while (tstc())
+-		getchar();
+-
+-	/*
+-	 * Not all terminals understand CSI [18t for querying the console size.
+-	 * We should adhere to escape sequences documented in the console_codes
+-	 * man page and the ECMA-48 standard.
+-	 *
+-	 * So here we follow a different approach. We position the cursor to the
+-	 * bottom right and query its position. Before leaving the function we
+-	 * restore the original cursor position.
+-	 */
+-	printf(ESC "7"		/* Save cursor position */
+-	       ESC "[r"		/* Set scrolling region to full window */
+-	       ESC "[999;999H"	/* Move to bottom right corner */
+-	       ESC "[6n");	/* Query cursor position */
+-
+-	/* Read {rows,cols} */
+-	if (term_read_reply(n, 2, 'R')) {
+-		ret = 1;
+-		goto out;
+-	}
+-
+-	*cols = n[1];
+-	*rows = n[0];
+-out:
+-	printf(ESC "8");	/* Restore cursor position */
+-	return ret;
+-}
+-
+ static void efi_setup_console_size(void)
  {
- 	int width = INT_MAX, height = INT_MAX;
- 	bool found = false;
--	const char esc[] = "\e7" "\e[r" "\e[999;999H" "\e[6n";
+ 	int rows = 25, cols = 80;
+ 	int ret = -ENODEV;
  
- 	for_each_console(cdev) {
--		int w, h, params[2];
-+		int w, h;
+-	ret = query_console_serial(&rows, &cols);
++	ret = term_getsize(&cols, &rows);
+ 	if (ret)
+ 		return;
  
--		if (!(cdev->f_active & CONSOLE_STDIN))
-+		if (term_cdev_get_size(cdev, &w, &h))
- 			continue;
--		if (!(cdev->f_active & CONSOLE_STDOUT))
--			continue;
--
--		term_cdev_drain(cdev);
--
--		console_puts(cdev, esc);
--
--		if (term_cdev_read_reply(cdev, params, 2, 'R'))
--			continue;
--
--		h = params[0];
--		w = params[1];
- 
- 		width = min(w, width);
- 		height = min(h, height);
 -- 
 2.47.3
 
