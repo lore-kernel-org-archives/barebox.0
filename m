@@ -1,53 +1,55 @@
-Delivery-date: Sun, 03 May 2026 10:33:32 +0200
+Delivery-date: Sun, 03 May 2026 10:45:16 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wJSGb-000Ttq-09
+	id 1wJSRx-000U5B-24
 	for lore@lore.pengutronix.de;
-	Sun, 03 May 2026 10:33:32 +0200
+	Sun, 03 May 2026 10:45:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wJSGZ-0003Dc-ML
-	for lore@pengutronix.de; Sun, 03 May 2026 10:33:32 +0200
+	id 1wJSRs-0004KZ-6A
+	for lore@pengutronix.de; Sun, 03 May 2026 10:45:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=c6omVzfVWq/2JMAIueErtqTbpfXP1fWpTy8kyGYWEUc=; b=kBoOeNaGkCKkHb3FDPRWrK0gtY
-	GC5yWFLC0R0a5SqrnpGnGTcHQODNNyDuAESeFHwN8dqTa54KKLidAqD2nBHcdT1723YdlSSm+W7K8
-	qRy3fVMcJYZzA2L6LJJ2+GbYRplXHMnk2QsIJsZl0zLWzopNhQJU2cnnqykEv7UEiyzjnVYK3Acbk
-	+a+954UW5KLcwut8u3vWxOaNm96UrGtWgw2+2W8GU5bXnkSZh/x6NDJUNbgZa433KlDtdRHaGmQ62
-	oZaKS+EDr/iVUpIj6WwHvDs9ax1umsrvq0vEolfzIaE2QL6/Hot7D/1KK2MfSvxVg921ilIscTEU8
-	FRiSqhDA==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=VzMO6ttA8rvsbflFkIwSEZuaDu25LsylZKARpztQHT0=; b=Uaa115kbtftD6d57Tv9sZhljYd
+	WmA5ETNGmC/ygyTMJA1Og6Nla8TNPW0giQNS/J557sNrTsb0nJ1LQKgG4eUVbBU1aOlnW26ZaLp+u
+	NVpmi7x5v9tUoDYugVBYAdDQzytiNTMTeVEQEZXvrnc0RVcyf4VIQF43RWJDcUQe92gpevDuBZkMO
+	BYSL9RLgQqLdJ96k/h+9WwzBCsyDaJew12vtVqhYVJ5+tkBwLgMQfLxcZRXZo52q4LR9wO5mcd9Ns
+	kkuGasK5mJjs9DwWV8uAh4GbEdC2s92Ou4T69MnK8m3MshRp2mnv9RNwc4Q8Z+i+vBgSIomV304gQ
+	RL9SEnLw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wJSGD-0000000AdaI-0Xgz;
-	Sun, 03 May 2026 08:33:09 +0000
+	id 1wJSRJ-0000000Aepq-3eSx;
+	Sun, 03 May 2026 08:44:37 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wJSGB-0000000AdZw-0KKv
+	id 1wJSRG-0000000Aelv-1jO3
 	for barebox@lists.infradead.org;
-	Sun, 03 May 2026 08:33:08 +0000
+	Sun, 03 May 2026 08:44:36 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1wJSG9-00038r-CV; Sun, 03 May 2026 10:33:05 +0200
+	id 1wJSRE-0003oP-Ng; Sun, 03 May 2026 10:44:32 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Sun,  3 May 2026 10:32:54 +0200
-Message-ID: <20260503083304.2765131-1-a.fatoum@barebox.org>
+Date: Sun,  3 May 2026 10:33:03 +0200
+Message-ID: <20260503084430.2765761-2-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260503084430.2765761-1-a.fatoum@barebox.org>
+References: <20260503084430.2765761-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260503_013307_143948_04F65BD6 
-X-CRM114-Status: GOOD (  11.44  )
+X-CRM114-CacheID: sfid-20260503_014434_517292_0E97A6A6 
+X-CRM114-Status: GOOD (  12.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,103 +67,99 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH] commands: splash: optimize background fill
+Subject: [PATCH 01/20] fbconsole: remove incomplete CSI_CNT state
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The background color is specified to the command as 0xttrrggbb,
-which is not necessarily the native color format of the framebuffer and
-thus gu_memset_pixel() will do color conversion.
+DEC private sequences use '?' as a parameter prefix byte (e.g.  ESC[?25h
+to show the cursor).
 
-Instead of redoing the color conversion for every line, let's just
-do it once in advance and then keep reusing it.
+The CSI state machine treats any non-digit, non-separator as a final
+byte and dispatches fbc_parse_csi(), but '?' is only a prefix with
+the real final byte ('h' or 'l') following later.
+
+fbc_parse_csi() handles this by recording '?' in csi_cmd and
+transitioning to CSI_CNT, which resumes CSI parameter accumulation
+for the digits and final byte that follow.
+
+This introduces a subtle bug: The character directly after the ? is not
+saved into the priv->csi buffer. This didn't matter so far, because we
+only handle h and l without regard to the number before it.
+
+By simplifying the code and removing that extra state, we also fix this
+bug by not having that incomplete CSI_CNT state in-between.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- commands/splash.c           |  9 +++++----
- include/gui/graphic_utils.h |  2 ++
- lib/gui/graphic_utils.c     | 17 ++++++++++-------
- 3 files changed, 17 insertions(+), 11 deletions(-)
+ drivers/video/fbconsole.c | 30 +++++++++---------------------
+ 1 file changed, 9 insertions(+), 21 deletions(-)
 
-diff --git a/commands/splash.c b/commands/splash.c
-index 74754392e264..dffe29f92328 100644
---- a/commands/splash.c
-+++ b/commands/splash.c
-@@ -63,10 +63,11 @@ static int do_splash(int argc, char *argv[])
- 	buf = gui_screen_render_buffer(sc);
+diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
+index 7946d013b24d..60e9783266b6 100644
+--- a/drivers/video/fbconsole.c
++++ b/drivers/video/fbconsole.c
+@@ -17,7 +17,6 @@ enum state_t {
+ 	LIT,				/* Literal input */
+ 	ESC,				/* Start of escape sequence */
+ 	CSI,				/* Reading arguments in "CSI Pn ;...*/
+-	CSI_CNT,
+ };
  
- 	if (do_bg) {
--		int y;
--		for (y = 0; y < sc->s.height; y++) {
--			gu_memset_pixel(sc->info, buf + sc->info->line_length * y,
--					bg_color, sc->s.width);
-+		u32 bg_color_native = gu_hex_to_pixel(sc->info, bg_color);
-+
-+		for (int y = 0; y < sc->s.height; y++) {
-+			gu_memset_pixel_native(sc->info, buf + sc->info->line_length * y,
-+					bg_color_native, sc->s.width);
+ enum fbconsole_rotation {
+@@ -555,10 +554,6 @@ static void fbc_parse_csi(struct fbc_priv *priv)
+ 	case 'm':
+ 		fbc_parse_colors(priv);
+ 		return;
+-	case '?': /* vt100: show/hide cursor */
+-		priv->csi_cmd = last;
+-		priv->state = CSI_CNT;
+-		return;
+ 	case 'h':
+ 		/* suffix for vt100 "[?25h" */
+ 		switch (priv->csi_cmd) {
+@@ -674,29 +669,22 @@ static void fbc_putc(struct console_device *cdev, char c)
  		}
- 	}
  
-diff --git a/include/gui/graphic_utils.h b/include/gui/graphic_utils.h
-index 279fdf91d33c..2128222628d4 100644
---- a/include/gui/graphic_utils.h
-+++ b/include/gui/graphic_utils.h
-@@ -19,6 +19,8 @@ void gu_set_pixel(struct fb_info *info, void *adr, u32 px);
- void gu_set_rgb_pixel(struct fb_info *info, void *adr, u8 r, u8 g, u8 b);
- void gu_set_rgba_pixel(struct fb_info *info, void *adr, u8 r, u8 g, u8 b, u8 a);
- void gu_memset_pixel(struct fb_info *info, void* buf, u32 color, size_t size);
-+void gu_memset_pixel_native(struct fb_info *info, void* buf, u32 color_native,
-+			    size_t size);
- struct screen *fb_create_screen(struct fb_info *info);
- struct screen *fb_open(const char *fbdev);
- void fb_close(struct screen *sc);
-diff --git a/lib/gui/graphic_utils.c b/lib/gui/graphic_utils.c
-index d9f90f3d2ea0..087eba382b93 100644
---- a/lib/gui/graphic_utils.c
-+++ b/lib/gui/graphic_utils.c
-@@ -78,27 +78,30 @@ static void memsetl(void *s, u32 c, size_t n)
- 		*tmp++ = c;
- }
- 
--void gu_memset_pixel(struct fb_info *info, void* buf, u32 color, size_t size)
-+void gu_memset_pixel_native(struct fb_info *info, void* buf, u32 color_native,
-+			    size_t size)
- {
--	u32 px;
- 	u8 *screen = buf;
- 
--	px = gu_hex_to_pixel(info, color);
+ 		switch (c) {
+-		case '0':
+-		case '1':
+-		case '2':
+-		case '3':
+-		case '4':
+-		case '5':
+-		case '6':
+-		case '7':
+-		case '8':
+-		case '9':
++		case '?':
++			/* DEC private sequences use '?' as a parameter prefix byte.
++			 * Record '?' in csi_cmd and continue CSI parameter
++			 * accumulation for digits and the final byte that follows.
++			 */
++			priv->csi_cmd = c;
++			break;
++		case '0' ... '9':
+ 		case ';':
+ 		case ':':
+ 			break;
+ 		default:
+ 			fbc_parse_csi(priv);
+-			if (priv->state != CSI_CNT)
+-				priv->state = LIT;
++			priv->state = LIT;
+ 		}
+ 		break;
+-	case CSI_CNT:
+-		priv->state = CSI;
+-		break;
 -
- 	switch (info->bits_per_pixel) {
- 	case 8:
--		memset(screen, (uint8_t)px, size);
-+		memset(screen, (uint8_t)color_native, size);
- 		break;
- 	case 16:
--		memsetw(screen, (uint16_t)px, size);
-+		memsetw(screen, (uint16_t)color_native, size);
- 		break;
- 	case 32:
- 	case 24:
--		memsetl(screen, px, size);
-+		memsetl(screen, color_native, size);
- 		break;
  	}
- }
+ 	priv->in_console = 0;
  
-+void gu_memset_pixel(struct fb_info *info, void* buf, u32 color, size_t size)
-+{
-+	gu_memset_pixel_native(info, buf, gu_hex_to_pixel(info, color), size);
-+}
-+
- static void get_rgb_pixel(struct fb_info *info, void *adr, u8 *r ,u8 *g, u8 *b)
- {
- 	u32 px;
 -- 
 2.47.3
 
