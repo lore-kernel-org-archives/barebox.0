@@ -1,53 +1,55 @@
-Delivery-date: Sun, 03 May 2026 10:24:56 +0200
+Delivery-date: Sun, 03 May 2026 10:31:45 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wJS8H-000Tmy-1N
+	id 1wJSEs-000Trc-1f
 	for lore@lore.pengutronix.de;
-	Sun, 03 May 2026 10:24:56 +0200
+	Sun, 03 May 2026 10:31:45 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wJS8G-0002Nk-4S
-	for lore@pengutronix.de; Sun, 03 May 2026 10:24:56 +0200
+	id 1wJSEr-0002yl-3b
+	for lore@pengutronix.de; Sun, 03 May 2026 10:31:45 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=zA3AbUot2jEZdKPkmgH2U1Rwcfjs3YpfRPXglpseaU8=; b=QeO48SnrTE7vua59yMd7luxJuB
-	YUuboqGo6KrIp6XExTryDlJeDGAJ8p1u54FjXWIxV4sfPmLj9bZ6fHA9uhYs0sxUrU6pxzbAmrlRh
-	LDWL0bskomI+3CbzhOyQsrKIrmo1M1e2z9chcf//eS3L3xqvtqRyUDBA2cnFRco41kMe2YWee752v
-	54FTfcEsCcw7D7+sFgiXhCdKc/vN9T26+EYL48OyohAN8+YjjjmskRreXMqlGmun4poaZDc/mq/la
-	+4T6ymTheg1+zPbl4aFvmtel4/4eV0Lgleopgt9jfyqm0oQbK68iGgJ5GeTlLhLJyfWvzDqCqP1Tf
-	UeEh5H4Q==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=4YaRcKnD8gIkHIfcWYn8e5lN9YyaNSzS7oeTEvhc7zE=; b=bOXRopKe/v4XV1Iv08csF69WQ+
+	0HUTDe1OSZd+6RDU/YAeAIKOhHl8lt+fmt22jhbgzf9kgNpoYyRZUmvatlfF07s0cbUfnfo8GRLRE
+	dMiBREtt6PHGNYQwEWYgqYCkW78T1mYQP5n96la5us9avZhbCXGntlsLziAZgGlDBOC0jgKmtt94v
+	UQTXn56sAAH1BUt0xjKWk4EUuxsF/zVIhAPdrklz/CuYbrBpzlAJqAFXZYk0IH5vpT/lOMDhvCGti
+	kRLWioR/dW++ynIZ0zUfoHxdwx3xHoRQrRZZNUTSb54dQauUBBVhFpTxFjxhcIIJEH4pqlFjB4TlO
+	3Au0CzKQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wJS7Z-0000000AcfR-3XNM;
-	Sun, 03 May 2026 08:24:13 +0000
+	id 1wJSEW-0000000AdKd-16le;
+	Sun, 03 May 2026 08:31:24 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wJS7W-0000000AceK-3YkS
+	id 1wJSET-0000000AdJJ-1a8p
 	for barebox@lists.infradead.org;
-	Sun, 03 May 2026 08:24:11 +0000
+	Sun, 03 May 2026 08:31:23 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1wJS7V-0002F5-8o; Sun, 03 May 2026 10:24:09 +0200
+	id 1wJSER-0002qu-Q0; Sun, 03 May 2026 10:31:19 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Sun,  3 May 2026 10:24:05 +0200
-Message-ID: <20260503082408.2757822-1-a.fatoum@barebox.org>
+Date: Sun,  3 May 2026 10:30:06 +0200
+Message-ID: <20260503083115.2763213-3-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260503083115.2763213-1-a.fatoum@barebox.org>
+References: <20260503083115.2763213-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260503_012410_887930_0C1AFB01 
-X-CRM114-Status: GOOD (  10.44  )
+X-CRM114-CacheID: sfid-20260503_013121_415744_9DC54830 
+X-CRM114-Status: GOOD (  11.60  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,68 +70,105 @@ X-Spam-Level:
 X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] efi: loader: gop: install device path to make GOP discoverable
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: [PATCH 3/3] test: py: implement --port-forward option
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The EFI GOP protocol handle was missing a device path, which meant
-barebox running as EFI payload couldn't discover it during handle
-enumeration. Use efi_install_multiple_protocol_interfaces() to install
-both the device path and GOP protocol together.
+Unsolicited host-to-guest UDP requires an explicit port forward.
+As we already have a -nic option, the easiest way is to have a
+barebox-specific option that's expanded to the correct QEMU
+incantations, so implement it.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- efi/loader/protocols/gop.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+ Documentation/boards/emulated.rst | 25 +++++++++++++++++++++++++
+ Documentation/user/networking.rst |  2 ++
+ conftest.py                       | 13 ++++++++++++-
+ 3 files changed, 39 insertions(+), 1 deletion(-)
 
-diff --git a/efi/loader/protocols/gop.c b/efi/loader/protocols/gop.c
-index 5bceb3f68f0f..9ada8a2da290 100644
---- a/efi/loader/protocols/gop.c
-+++ b/efi/loader/protocols/gop.c
-@@ -11,6 +11,7 @@
- #include <efi/guid.h>
- #include <efi/loader.h>
- #include <efi/error.h>
-+#include <efi/loader/devicepath.h>
- #include <efi/loader/object.h>
- #include <efi/loader/trace.h>
- #include <efi/protocol/gop.h>
-@@ -481,6 +482,8 @@ static char *fbdev = "/dev/fb0";
- static efi_status_t efi_gop_register(void *data)
- {
- 	struct efi_gop_obj *gopobj;
-+	struct efi_device_path *dp;
-+	efi_handle_t handle;
- 	u32 col, row;
- 	efi_status_t ret;
- 	struct fb_info *fbi;
-@@ -513,14 +516,20 @@ static efi_status_t efi_gop_register(void *data)
- 		return EFI_OUT_OF_RESOURCES;
- 	}
- 
--	/* Hook up to the device list */
-+	dp = efi_dp_from_cdev(&fbi->cdev, true);
-+	if (!dp)
-+		return EFI_OUT_OF_RESOURCES;
+diff --git a/Documentation/boards/emulated.rst b/Documentation/boards/emulated.rst
+index e3f7f78ab258..0d6dd85dc759 100644
+--- a/Documentation/boards/emulated.rst
++++ b/Documentation/boards/emulated.rst
+@@ -34,3 +34,28 @@ Emulated targets can be started interactively with ``pytest --interactive``::
+ The test suite can be run by omitting the ``--interactive``.
+ For more information, see the :ref:`labgrid` section in the
+ :ref:`contributing` guide.
 +
- 	efi_add_handle(&gopobj->header);
- 
--	/* Fill in object data */
--	ret = efi_add_protocol(&gopobj->header, &efi_gop_guid,
--			       &gopobj->ops);
-+	handle = &gopobj->header;
++Netconsole over QEMU user networking
++------------------------------------
 +
-+	ret = efi_install_multiple_protocol_interfaces(&handle,
-+			&efi_device_path_protocol_guid, dp,
-+			&efi_gop_guid, &gopobj->ops,
-+			NULL);
- 	if (ret != EFI_SUCCESS) {
--		pr_err("Failure adding GOP protocol\n");
-+		pr_err("Failure installing GOP protocol\n");
- 		return ret;
- 	}
- 	gopobj->ops.query_mode = gop_query_mode;
++barebox' UDP-based :ref:`network console <network_console>` can also
++be used in combination with QEMU. With user-mode networking (SLIRP),
++guest-to-host UDP works via NAT out of the box,
++but unsolicited host-to-guest UDP requires an explicit port forward::
++
++  pytest --lg-env test/arm/multi_v8_defconfig.yaml --interactive \
++    --env nv/dev.netconsole.ip=10.0.2.2                          \
++    --env nv/dev.netconsole.port=6666                            \
++    --env init/netconsole="ifup -a1; netconsole.active=ioe"      \
++    --port-forward=6666
++
++This will point netconsole at the SLIRP gateway (``10.0.2.2`` is the host
++as seen from the guest) and bring up the interface::
++
++  netconsole: netconsole initialized with 10.0.2.2:6666
++
++The ``i`` flag in ``netconsole.active`` is required for input; without it
++only output reaches the host. On the host, you can then interact with
++the netconsole via::
++
++  scripts/netconsole -s 127.0.0.1 127.0.0.2 6666
+diff --git a/Documentation/user/networking.rst b/Documentation/user/networking.rst
+index d1db2768ad20..99ab4d8a3fda 100644
+--- a/Documentation/user/networking.rst
++++ b/Documentation/user/networking.rst
+@@ -173,6 +173,8 @@ variables:
+   ``-o port=${global.nfs.port},mountport=${global.nfs.port}`` as argument
+   to the :ref:`mount command <command_mount>`.
+ 
++.. _network_console:
++
+ Network console
+ ---------------
+ 
+diff --git a/conftest.py b/conftest.py
+index 72d2df792e6d..6f76586e010b 100644
+--- a/conftest.py
++++ b/conftest.py
+@@ -144,6 +144,8 @@ def pytest_addoption(parser):
+                      help=('Pass all remaining options to QEMU as is'))
+     parser.addoption('--bootarg', action='append', dest='bootarg', default=[],
+                      help=('Pass boot arguments to barebox for debugging purposes'))
++    parser.addoption('--port-forward', metavar="PORT", action='append', dest='qemu_port', default=[],
++                     help=('Forward incoming TCP or UDP connections on specified PORT'))
+ 
+ 
+ @pytest.fixture(scope="session")
+@@ -258,12 +260,21 @@ def strategy(request, target, pytestconfig):  # noqa: max-complexity=30
+     for arg in pytestconfig.option.qemu_arg:
+         strategy.append_qemu_args(arg)
+ 
++    qemu_nic = "user,id=net0"
++
++    for port in pytestconfig.option.qemu_port:
++        qemu_nic += f",hostfwd=udp:127.0.0.2:{port}-:{port}"
++        qemu_nic += f",hostfwd=tcp:127.0.0.2:{port}-:{port}"
++
+     if "testfs" in features:
+         if not any(fs and fs[0] == "testfs" for fs in pytestconfig.option.qemu_fs):
+             testfs_path = os.path.join(os.environ["LG_BUILDDIR"], "testfs")
+             pytestconfig.option.qemu_fs.append(["testfs", testfs_path])
+             os.makedirs(testfs_path, exist_ok=True)
+-            strategy.append_qemu_args("-nic", f"user,id=net0,tftp={testfs_path}")
++            qemu_nic += f",tftp={testfs_path}"
++
++    if "qemu" in features:
++        strategy.append_qemu_args("-nic", qemu_nic)
+ 
+     for i, fs in enumerate(pytestconfig.option.qemu_fs):
+         if virtio:
 -- 
 2.47.3
 
