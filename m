@@ -1,55 +1,53 @@
-Delivery-date: Sun, 03 May 2026 10:31:48 +0200
+Delivery-date: Sun, 03 May 2026 10:33:32 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wJSEv-000TsL-1R
+	id 1wJSGb-000Ttq-09
 	for lore@lore.pengutronix.de;
-	Sun, 03 May 2026 10:31:48 +0200
+	Sun, 03 May 2026 10:33:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wJSEu-0002zh-5I
-	for lore@pengutronix.de; Sun, 03 May 2026 10:31:48 +0200
+	id 1wJSGZ-0003Dc-ML
+	for lore@pengutronix.de; Sun, 03 May 2026 10:33:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3Z6cspS00RuTufvDCZgT5PTWnFp0BfcpO7YD1A/TuFA=; b=UPT7aIL2zlaKJIM4ZIyMB/fMTl
-	y5uYh/q2QgWIH7t3nQFrq31YfOtvH9ORVp43XHJUFxHl6kgYwxi/C4C25XtwvZcaHLLbpY4CYxbyO
-	pkXnDVOFco4AW5xANoKUKzS9u/Rn7g1dXPHfOmuVmrL3WOmBoZnZgCyBkIw9TS4gBn1zSCrA6c2ve
-	TLtCbypBhiqt3qQ+m/xSAhnFDiXj5F6OKTSMKAzTwGsZma+qCc1LmLI5N1Tc66MtcGKJ7g547w8BF
-	U0HKntEv8u5T0gCP39/r8TQ0lU4MfVFJeQuFk/ano38WDsGFVyWmObWc8KTKWYS2MTmUBIIvH6vA0
-	BALfy2rg==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=c6omVzfVWq/2JMAIueErtqTbpfXP1fWpTy8kyGYWEUc=; b=kBoOeNaGkCKkHb3FDPRWrK0gtY
+	GC5yWFLC0R0a5SqrnpGnGTcHQODNNyDuAESeFHwN8dqTa54KKLidAqD2nBHcdT1723YdlSSm+W7K8
+	qRy3fVMcJYZzA2L6LJJ2+GbYRplXHMnk2QsIJsZl0zLWzopNhQJU2cnnqykEv7UEiyzjnVYK3Acbk
+	+a+954UW5KLcwut8u3vWxOaNm96UrGtWgw2+2W8GU5bXnkSZh/x6NDJUNbgZa433KlDtdRHaGmQ62
+	oZaKS+EDr/iVUpIj6WwHvDs9ax1umsrvq0vEolfzIaE2QL6/Hot7D/1KK2MfSvxVg921ilIscTEU8
+	FRiSqhDA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wJSEU-0000000AdKI-3yxJ;
-	Sun, 03 May 2026 08:31:22 +0000
+	id 1wJSGD-0000000AdaI-0Xgz;
+	Sun, 03 May 2026 08:33:09 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wJSES-0000000AdJI-46ZY
+	id 1wJSGB-0000000AdZw-0KKv
 	for barebox@lists.infradead.org;
-	Sun, 03 May 2026 08:31:22 +0000
+	Sun, 03 May 2026 08:33:08 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1wJSER-0002qu-E8; Sun, 03 May 2026 10:31:19 +0200
+	id 1wJSG9-00038r-CV; Sun, 03 May 2026 10:33:05 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Sun,  3 May 2026 10:30:05 +0200
-Message-ID: <20260503083115.2763213-2-a.fatoum@barebox.org>
+Date: Sun,  3 May 2026 10:32:54 +0200
+Message-ID: <20260503083304.2765131-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260503083115.2763213-1-a.fatoum@barebox.org>
-References: <20260503083115.2763213-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260503_013121_013702_A13C2BBB 
-X-CRM114-Status: GOOD (  11.52  )
+X-CRM114-CacheID: sfid-20260503_013307_143948_04F65BD6 
+X-CRM114-Status: GOOD (  11.44  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,91 +69,99 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH 2/3] netconsole: add support for binding to specific IP
+Subject: [PATCH] commands: splash: optimize background fill
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-If scripts/netconsole is already running when QEMU starts up, the host
-forwarding rule may break QEMU startup:
+The background color is specified to the command as 0xttrrggbb,
+which is not necessarily the native color format of the framebuffer and
+thus gu_memset_pixel() will do color conversion.
 
-  qemu-system-aarch64: -nic user,id=net0,hostfwd=udp:127.0.0.2:6666-:6666,\
-  tftp=/src/build/barebox/imx8/testfs:
-
-    Could not set up host forwarding rule 'udp:127.0.0.2:6666-:6666'
-
-This can be worked around by having QEMU bind to a different loopback
-address than what's netcat is going to use.
-
-Add a -s option to control this.
+Instead of redoing the color conversion for every line, let's just
+do it once in advance and then keep reusing it.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- scripts/netconsole | 33 ++++++++++++++++++++++++---------
- 1 file changed, 24 insertions(+), 9 deletions(-)
+ commands/splash.c           |  9 +++++----
+ include/gui/graphic_utils.h |  2 ++
+ lib/gui/graphic_utils.c     | 17 ++++++++++-------
+ 3 files changed, 17 insertions(+), 11 deletions(-)
 
-diff --git a/scripts/netconsole b/scripts/netconsole
-index 7ab81a3a9191..1945de7f9381 100755
---- a/scripts/netconsole
-+++ b/scripts/netconsole
-@@ -2,9 +2,14 @@
+diff --git a/commands/splash.c b/commands/splash.c
+index 74754392e264..dffe29f92328 100644
+--- a/commands/splash.c
++++ b/commands/splash.c
+@@ -63,10 +63,11 @@ static int do_splash(int argc, char *argv[])
+ 	buf = gui_screen_render_buffer(sc);
  
- usage() {
- 	(
--	echo "Usage: $0 <board IP> [board port]"
-+	echo "Usage: $0 [-sh] <board IP> [board port]"
- 	echo ""
- 	echo "If port is not specified, '6666' will be used"
-+	echo ""
-+	echo "Options:"
-+	echo "  -s SADDR   Bind to SADDR on host side"
-+	echo "  -h         Show this help text and exit"
+ 	if (do_bg) {
+-		int y;
+-		for (y = 0; y < sc->s.height; y++) {
+-			gu_memset_pixel(sc->info, buf + sc->info->line_length * y,
+-					bg_color, sc->s.width);
++		u32 bg_color_native = gu_hex_to_pixel(sc->info, bg_color);
 +
- 	[ -z "$*" ] && exit 0
- 	echo ""
- 	echo "ERROR: $*"
-@@ -13,16 +18,26 @@ usage() {
- 	exit $?
++		for (int y = 0; y < sc->s.height; y++) {
++			gu_memset_pixel_native(sc->info, buf + sc->info->line_length * y,
++					bg_color_native, sc->s.width);
+ 		}
+ 	}
+ 
+diff --git a/include/gui/graphic_utils.h b/include/gui/graphic_utils.h
+index 279fdf91d33c..2128222628d4 100644
+--- a/include/gui/graphic_utils.h
++++ b/include/gui/graphic_utils.h
+@@ -19,6 +19,8 @@ void gu_set_pixel(struct fb_info *info, void *adr, u32 px);
+ void gu_set_rgb_pixel(struct fb_info *info, void *adr, u8 r, u8 g, u8 b);
+ void gu_set_rgba_pixel(struct fb_info *info, void *adr, u8 r, u8 g, u8 b, u8 a);
+ void gu_memset_pixel(struct fb_info *info, void* buf, u32 color, size_t size);
++void gu_memset_pixel_native(struct fb_info *info, void* buf, u32 color_native,
++			    size_t size);
+ struct screen *fb_create_screen(struct fb_info *info);
+ struct screen *fb_open(const char *fbdev);
+ void fb_close(struct screen *sc);
+diff --git a/lib/gui/graphic_utils.c b/lib/gui/graphic_utils.c
+index d9f90f3d2ea0..087eba382b93 100644
+--- a/lib/gui/graphic_utils.c
++++ b/lib/gui/graphic_utils.c
+@@ -78,27 +78,30 @@ static void memsetl(void *s, u32 c, size_t n)
+ 		*tmp++ = c;
  }
  
--while [ -n "$1" ] ; do
--	case $1 in
--		-h|--help) usage;;
--		--)        break;;
--		-*)        usage "Invalid option $1";;
--		*)         break;;
-+if [ "$1" = "--help" ]; then
-+	usage
-+fi
-+
-+while getopts ":hs:" opt; do
-+	case "$opt" in
-+		h) usage ;;
-+		s) saddr="$OPTARG" ;;
-+		\?) usage "Invalid option -$OPTARG" ;;
-+		:)  usage "Option -$OPTARG requires an argument" ;;
- 	esac
--	shift
- done
+-void gu_memset_pixel(struct fb_info *info, void* buf, u32 color, size_t size)
++void gu_memset_pixel_native(struct fb_info *info, void* buf, u32 color_native,
++			    size_t size)
+ {
+-	u32 px;
+ 	u8 *screen = buf;
  
-+shift $((OPTIND - 1))
-+
-+# handle end-of-options marker
-+if [ "$1" = "--" ]; then
-+	shift
-+fi
-+
- ip=$1
- port=${2:-6666}
+-	px = gu_hex_to_pixel(info, color);
+-
+ 	switch (info->bits_per_pixel) {
+ 	case 8:
+-		memset(screen, (uint8_t)px, size);
++		memset(screen, (uint8_t)color_native, size);
+ 		break;
+ 	case 16:
+-		memsetw(screen, (uint16_t)px, size);
++		memsetw(screen, (uint16_t)color_native, size);
+ 		break;
+ 	case 32:
+ 	case 24:
+-		memsetl(screen, px, size);
++		memsetl(screen, color_native, size);
+ 		break;
+ 	}
+ }
  
-@@ -50,7 +65,7 @@ echo "NOTE: the interrupt signal (normally ^C) has been remapped to ^T"
- stty -icanon -echo intr ^T
- set -m
- (
--	while ${nc} -u -l -p ${port} < /dev/null ; do
-+	while ${nc} ${saddr:+-s "$saddr"} -u -l -p ${port} < /dev/null ; do
- 		:
- 	done
- ) &
++void gu_memset_pixel(struct fb_info *info, void* buf, u32 color, size_t size)
++{
++	gu_memset_pixel_native(info, buf, gu_hex_to_pixel(info, color), size);
++}
++
+ static void get_rgb_pixel(struct fb_info *info, void *adr, u8 *r ,u8 *g, u8 *b)
+ {
+ 	u32 px;
 -- 
 2.47.3
 
