@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wJSS7-000U8n-1z
+	id 1wJSS7-000U8o-28
 	for lore@lore.pengutronix.de;
 	Sun, 03 May 2026 10:45:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wJSS2-0004Wr-Ih
+	id 1wJSS4-0004YN-IF
 	for lore@pengutronix.de; Sun, 03 May 2026 10:45:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,38 +18,39 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=t/2cpIZ2sSZVoPiffyNX2gwFpJtdErZT8dzmlEhnp7o=; b=a612deODhn4rW50OQXMffhj/TN
-	6/CTJuDwQdQSfNPYqJr/cyLziCjKdGskuQ1DGZpP77l+Ai2wMVRfxZrrDI1iSrwLx0PAQ9j9Jbkij
-	LhV2gTf81v4IUzfcZ2VeO89wXrW3JAEr+GifzHiy6NfFSTI4pwXwkZwmKpTYYLixuByXA5yF9aC3u
-	SIyKV1RVMAgcTAkNCul9aNJYAYkSTNDSM/sxAo76XUnMiReD4YMGlGTk3L5nYU3IgP5sx8zkDbEeh
-	OTjlZq003Nx0hi/JAARtUzBnjOnmn69vR5nk1PSBWQzlKd4OKsIlMO6+GeIFwsoejRzjT2P9VXypd
-	w6tGX+BA==;
+	bh=TCj3T5XOHeWOwo0nfCIV4v/KANa9bmH+6YiPHvNytsQ=; b=tNOVWygKiKw2Ya2QlgYS/IR94j
+	guDnGcNbhbkgKhD8aeVn62A3QwXsrrnq1z38PFuHvRNOxxbPGXHb5LWV0eyhfhAMJRswZG1M+xccM
+	bL+cwqe8/XHcW8NM2xLt3fmqhbi/RieZgTuMjsNATR+L2Ew/qxfisc6XZG//b0nJzVRYU2i4z4eGT
+	LnWWHMW6X4LiU2LKM93BFfxlJowM38xvCLAhFEQ0asACrUTatMhBgne8pmqM2JyjmsukdOnoBZZUs
+	5WezTqGZ5L5YEPIk2Sx9w0mT4l6JLktqnPtvV4xoiwv/Cngnp/92G1uQV4Xvkj20+tre8mcCRMvRB
+	kitnrlZQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wJSRN-0000000Aeve-0vuQ;
-	Sun, 03 May 2026 08:44:41 +0000
+	id 1wJSRS-0000000Af6v-2tQQ;
+	Sun, 03 May 2026 08:44:46 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wJSRI-0000000AenR-3HKO
+	id 1wJSRM-0000000Aere-0gls
 	for barebox@lists.infradead.org;
-	Sun, 03 May 2026 08:44:37 +0000
+	Sun, 03 May 2026 08:44:41 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1wJSRH-0003oP-7F; Sun, 03 May 2026 10:44:35 +0200
+	id 1wJSRK-0003oP-HV; Sun, 03 May 2026 10:44:38 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Sun,  3 May 2026 10:33:09 +0200
-Message-ID: <20260503084430.2765761-8-a.fatoum@barebox.org>
+Date: Sun,  3 May 2026 10:33:17 +0200
+Message-ID: <20260503084430.2765761-16-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260503084430.2765761-1-a.fatoum@barebox.org>
 References: <20260503084430.2765761-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260503_014436_823075_F2711641 
-X-CRM114-Status: GOOD (  10.95  )
+X-CRM114-CacheID: sfid-20260503_014440_274033_8C790091 
+X-CRM114-Status: UNSURE (   9.69  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,126 +72,56 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 07/20] fbconsole: skip fb_flush when processing escape sequences
+Subject: [PATCH 15/20] fbconsole: support ESC[0J and ESC[1J partial screen clear
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-When processing escape sequences or multi-byte characters in future,
-calling fb_flush for every single character is unnecessary.
+The ESC[J handler always called cls() which clears the entire screen,
+regardless of the parameter. Per ECMA-48, the parameter selects the
+region to clear:
 
-Instead, just take note when the framebuffer is actually changed and
-do the fb_flush lazily.
+  - 0 (or omitted): from cursor to end of screen
+  - 1: from start of screen to cursor
+  - 2: entire screen
 
+Add a clear_chars() helper that clears a partial specified region by
+drawing spaces (respecting the current background color), and parse
+the ESC[J parameter to dispatch to the appropriate clearing mode.
+
+Link: https://terminalguide.namepad.de/seq/csi_cj-0/
+Link: https://terminalguide.namepad.de/seq/csi_cj-1/
+Link: https://terminalguide.namepad.de/seq/csi_cj-2/
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- drivers/video/fbconsole.c | 25 ++++++++++++++-----------
- 1 file changed, 14 insertions(+), 11 deletions(-)
+ drivers/video/fbconsole.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
-index c7314bb8cf0d..6e8b4e66630d 100644
+index c67e3817ca13..6cca3faa9615 100644
 --- a/drivers/video/fbconsole.c
 +++ b/drivers/video/fbconsole.c
-@@ -542,7 +542,7 @@ static void fbc_parse_colors(struct fbc_priv *priv)
- 	}
- }
- 
--static void fbc_parse_csi(struct fbc_priv *priv)
-+static bool fbc_parse_csi(struct fbc_priv *priv)
- {
- 	char *end;
- 	unsigned char last;
-@@ -553,7 +553,7 @@ static void fbc_parse_csi(struct fbc_priv *priv)
- 	switch (last) {
- 	case 'm':
- 		fbc_parse_colors(priv);
--		return;
-+		break;
- 	case 'h':
- 		/* suffix for vt100 "[?25h" */
- 		switch (priv->csi_cmd) {
-@@ -564,7 +564,7 @@ static void fbc_parse_csi(struct fbc_priv *priv)
- 			priv->flags &= ~HIDE_CURSOR;
- 			/* show cursor now */
- 			toggle_cursor_visibility(priv);
--			break;
-+			return true;
- 		}
- 		break;
- 	case 'l':
-@@ -574,14 +574,13 @@ static void fbc_parse_csi(struct fbc_priv *priv)
- 			/* hide cursor now */
- 			toggle_cursor_visibility(priv);
- 			priv->flags |= HIDE_CURSOR;
--
--			break;
-+			return true;
+@@ -641,7 +641,20 @@ static bool fbc_parse_csi(struct fbc_priv *priv)
  		}
  		break;
  	case 'J':
- 		cls(priv);
+-		cls(priv);
++		pos = simple_strtoul(priv->csi, &end, 10);
++		toggle_cursor_visibility(priv);
++		switch (pos) {
++		case 0: /* clear from cursor to end of screen */
++			clear_chars(priv, priv->cur.x, priv->cur.y,
++				    priv->cols - 1, priv->rows - 1);
++			break;
++		case 1: /* clear from start of screen to cursor */
++			clear_chars(priv, 0, 0, priv->cur.x, priv->cur.y);
++			break;
++		case 2: /* clear entire screen */
++			cls(priv);
++			break;
++		}
  		toggle_cursor_visibility(priv);
--		return;
-+		return true;
+ 		return true;
  	case 'H':
- 		toggle_cursor_visibility(priv);
- 
-@@ -592,7 +591,7 @@ static void fbc_parse_csi(struct fbc_priv *priv)
- 		priv->x = clamp(pos - 1, 0, (int) priv->cols - 1);
- 
- 		toggle_cursor_visibility(priv);
--		break;
-+		return true;
- 	case 'K':
- 		pos = simple_strtoul(priv->csi, &end, 10);
- 		toggle_cursor_visibility(priv);
-@@ -607,9 +606,10 @@ static void fbc_parse_csi(struct fbc_priv *priv)
- 			break;
- 		}
- 		toggle_cursor_visibility(priv);
--
--		break;
-+		return true;
- 	}
-+
-+	return false;
- }
- 
- static void fbc_putc(struct console_device *cdev, char c)
-@@ -617,6 +617,7 @@ static void fbc_putc(struct console_device *cdev, char c)
- 	struct fbc_priv *priv = container_of(cdev,
- 					struct fbc_priv, cdev);
- 	struct fb_info *fb = priv->fb;
-+	bool queue_flush = false;
- 
- 	if (priv->in_console)
- 		return;
-@@ -644,6 +645,7 @@ static void fbc_putc(struct console_device *cdev, char c)
- 			}
- 
- 			printchar(priv, cp);
-+			queue_flush = true;
- 			break;
- 		}
- 		}
-@@ -688,7 +690,7 @@ static void fbc_putc(struct console_device *cdev, char c)
- 		case ':':
- 			break;
- 		default:
--			fbc_parse_csi(priv);
-+			queue_flush = fbc_parse_csi(priv);
- 			priv->state = LIT;
- 			priv->csi_cmd = -1;
- 		}
-@@ -696,7 +698,8 @@ static void fbc_putc(struct console_device *cdev, char c)
- 	}
- 	priv->in_console = 0;
- 
--	fb_flush(fb);
-+	if (queue_flush)
-+		fb_flush(fb);
- }
- 
- static int setup_font(struct fbc_priv *priv)
 -- 
 2.47.3
 
