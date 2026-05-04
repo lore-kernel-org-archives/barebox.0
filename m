@@ -1,56 +1,67 @@
-Delivery-date: Sun, 03 May 2026 10:45:33 +0200
+Delivery-date: Mon, 04 May 2026 13:36:25 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wJSSE-000UCc-1t
+	id 1wJrb8-000sR3-1u
 	for lore@lore.pengutronix.de;
-	Sun, 03 May 2026 10:45:33 +0200
+	Mon, 04 May 2026 13:36:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wJSSB-0004gt-DE
-	for lore@pengutronix.de; Sun, 03 May 2026 10:45:33 +0200
+	id 1wJrb7-0006rl-53
+	for lore@pengutronix.de; Mon, 04 May 2026 13:36:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ziTpzGW2u2PSm8gCr5n0msm3Yk7iWcWvgQ0/wvjhGAk=; b=GpIAQxfTIPbNGMqqC1vKTAs45s
-	OBYxO+MaqYRw2qTTokDokX4mjHRG+LVqvVLeIfcCF83kdcyJWAMlxCwTQHEUF8b3I0a5SL/8p8/cB
-	THaHbx852J0K1ogZr4X1jl0pJl06Dg5vkzf9kUYtIhl1wQhkaC7H2TV5b2o4fAZjKgc492AAs5cND
-	91y161Xy2IGOE5GqcKMi6rIRpQ0/4qqRqWJErsyvoZMkDO6XXFErBGCGF+l/VTI3E6usQQDVX2gew
-	+ucTqo/TnozXgLUDm434QvjOhJFLIUiK9YBdoCcZTKJiaigmtEkHgQRxHaMTHyAfjmJFENRg6g26U
-	9Eryo+eQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=iGaHNPzF/0SbkFbyvZusn3ZGR4VJA1w1m/m5iaB5wbc=; b=SZ6F6dOyyjNjLGgcTUTWRl961A
+	VfnsMhqI5HKLIZzU56390hZ9j5VmmtvuTtnbE3QAzNYVALDajKb8BcrdyuHORxiF5ylFT/uVQwPhH
+	lMQZFkS2BcyzKOZ8k9aQNf/eRzioX3QD/fp7lUAY20a+0Irk8WCRKJKVcudObYiV5PR3vooKDlVaM
+	XOJHAvRtU6mvhPBeUrJIhnTgXIx7JEupwPMqVcUx+LJ11n5Q5F6WX1/tL1kDH4X0tQLGXtGxN+u4c
+	ixPs2EnHYIdDLkRqz1tsJ1kePLTY/dii2c4FGHQbBwC5aCI/fTfgNRLuHBNMyTNUjHX7CFIWR2BBt
+	SmJJ5rbA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wJSRR-0000000Af5L-44NT;
-	Sun, 03 May 2026 08:44:45 +0000
+	id 1wJraO-0000000D3kG-0pt4;
+	Mon, 04 May 2026 11:35:40 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wJSRL-0000000Aer4-3A3G
+	id 1wJraK-0000000D3j3-0flH
 	for barebox@lists.infradead.org;
-	Sun, 03 May 2026 08:44:41 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@barebox.org>)
-	id 1wJSRK-0003oP-3V; Sun, 03 May 2026 10:44:38 +0200
-From: Ahmad Fatoum <a.fatoum@barebox.org>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Sun,  3 May 2026 10:33:16 +0200
-Message-ID: <20260503084430.2765761-15-a.fatoum@barebox.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260503084430.2765761-1-a.fatoum@barebox.org>
-References: <20260503084430.2765761-1-a.fatoum@barebox.org>
+	Mon, 04 May 2026 11:35:38 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1wJraG-0006bq-Lo; Mon, 04 May 2026 13:35:32 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1wJraF-000P57-1t;
+	Mon, 04 May 2026 13:35:32 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1wJraF-0000000GbtC-3u3y;
+	Mon, 04 May 2026 13:35:31 +0200
+Date: Mon, 4 May 2026 13:35:31 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Message-ID: <rx3wbvvlr3x5iaaojqzqi34cpjrxbweo6y5ijkgiruqoq344ty@lpxohuiqqvwr>
+References: <20260428-env-autoprobe-v1-0-9cdedfa0752e@pengutronix.de>
+ <20260428-env-autoprobe-v1-3-9cdedfa0752e@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260428-env-autoprobe-v1-3-9cdedfa0752e@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260503_014439_822579_C5976B3D 
-X-CRM114-Status: UNSURE (   8.33  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260504_043536_235522_281027D5 
+X-CRM114-Status: GOOD (  34.31  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,41 +79,109 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 14/20] fbconsole: implement erase entire line CSI
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 3/3] environment: add explicit option to allow searching
+ for environment devices
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We already implement CSI 0 K and CSI 1 K to erase from cursor to line
-end and from line start to cursor, but were missing erasure of the
-entire line, so add that as well.
+Hi Sascha,
 
-Link: https://terminalguide.namepad.de/seq/csi_ck-2/
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
----
- drivers/video/fbconsole.c | 4 ++++
- 1 file changed, 4 insertions(+)
+On 26-04-28, Sascha Hauer wrote:
+> Add an explicit Kconfig option to allow searching the environment storage path
+> based on the barebox environment partition GUID.
+> 
+> So far this depended on CONFIG_INSECURE being set. First of all loading the
+> barebox environment from storage is always insecure as the barebox environment
+> doesn't have any security measures. The difference that comes with loading
+> the environment from an explicitly specified storage device and autoprobing
+> it from the available block devices is that with the former an attacker would
+> need access to the internal storage whereas with the latter barebox could
+> be tricked into loading an environment from an external SD card.
+> 
+> Whether or not this is acceptable depends on the case, so ask the user for it.
+> 
+> Real security can only be provided by not loading an environment from storage
+> at all, but that can be controlled at compile time by disabling CONFIG_ENV_HANDLING
+> or at runtime by security policies.
 
-diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
-index f586aabdae43..c67e3817ca13 100644
---- a/drivers/video/fbconsole.c
-+++ b/drivers/video/fbconsole.c
-@@ -689,6 +689,10 @@ static bool fbc_parse_csi(struct fbc_priv *priv)
- 			clear_chars(priv, 0, priv->cur.y,
- 				    priv->cur.x, priv->cur.y);
- 			break;
-+		case 2:
-+			clear_chars(priv, 0, priv->cur.y,
-+				    priv->cols - 1, priv->cur.y);
-+			break;
- 		}
- 		toggle_cursor_visibility(priv);
- 		return true;
+TBH I actually don't see why this option can't follow the
+CONFIG_INSECURE.
+
+Since ENV handling is enabled you do pull the HAS_INSECURE_DEFAULTS=y.
+As you written above env handling is always insecure as of now.
+
+So it seems that you want to get rid of the CONFIG_INSECURE=y in your
+setup. The only users of this CONFIG switch are global_env_autoprobe and
+lib/random.c. Therefore my question, that I don't see why we can't stick
+with the CONFIG_INSECURE switch.
+
+Regards,
+  Marco
+
+
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  common/Kconfig       | 14 ++++++++++++++
+>  common/environment.c |  2 +-
+>  2 files changed, 15 insertions(+), 1 deletion(-)
+> 
+> diff --git a/common/Kconfig b/common/Kconfig
+> index fd422714d5..f74f06b4ad 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -987,6 +987,20 @@ config ENV_HANDLING
+>  	  A safe use of the mutable environment may be possible if board code only
+>  	  mounts it after verifying a JSON Web Token that enables a debug mode.
+>  
+> +config ENV_HANDLING_AUTOPROBE
+> +	depends on ENV_HANDLING
+> +	bool "Autoprobe for environment devices"
+> +	default y
+> +	help
+> +	  There are two ways for specifying where the barebox environment is. The first one
+> +	  specifies the path explicitly in the device tree or board code. The other one is
+> +	  to automatically search it on block devices which is enabled with this option.
+> +	  Here a partition with the barebox environment GUID is searched. If this option
+> +	  is enabled and no environment is chosen by device tree or board code then a block
+> +	  device containing a partition with the barebox environment GUID is used for the
+> +	  environment. A block device barebox has booted from is preferred over other block
+> +	  devices.
+> +
+>  config DEFAULT_ENVIRONMENT
+>  	select CRC32
+>  	bool
+> diff --git a/common/environment.c b/common/environment.c
+> index f883a520c6..a3281feca2 100644
+> --- a/common/environment.c
+> +++ b/common/environment.c
+> @@ -53,7 +53,7 @@ struct action_data {
+>  
+>  #define TMPDIR "/.defaultenv"
+>  
+> -static int global_env_autoprobe = IS_ENABLED(CONFIG_INSECURE);
+> +static int global_env_autoprobe = IS_ENABLED(CONFIG_ENV_HANDLING_AUTOPROBE);
+>  static char *default_environment_path;
+>  
+>  void default_environment_path_set(const char *path)
+> 
+> -- 
+> 2.47.3
+> 
+> 
+> 
+
 -- 
-2.47.3
+#gernperDu 
+#CallMeByMyFirstName
 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
 
 
