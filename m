@@ -1,63 +1,58 @@
-Delivery-date: Thu, 07 May 2026 10:05:40 +0200
+Delivery-date: Thu, 07 May 2026 10:06:31 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wKtjo-001tP2-3A
+	id 1wKtkd-001tQ4-31
 	for lore@lore.pengutronix.de;
-	Thu, 07 May 2026 10:05:40 +0200
+	Thu, 07 May 2026 10:06:31 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wKtjj-0006oE-0h
-	for lore@pengutronix.de; Thu, 07 May 2026 10:05:40 +0200
+	id 1wKtkc-0007Kh-Hp
+	for lore@pengutronix.de; Thu, 07 May 2026 10:06:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:
-	Content-Transfer-Encoding:Content-Type:In-Reply-To:To:Subject:From:Reply-To:
-	MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
-	bh=Mw1UagiR9eDzwpVELdWslZYOJ6SRJk0Wi1Y9JPqubk4=; b=FsoLeR9jMHpMPT1cBCeIupRKJ1
-	FnU7Q4Qmdij5uGs/O5ph3EWNBdnMOTCpreh8bH2oXRRkbIWWKT1fiL4nVL6Dtu2v8ZOAJl/71++j4
-	K0re3itrGLUqcFI1jyec8/aSjz+w6seIN8W3/j/1kQVA5LUQMN+qSLkGlyVbYPR4lwnlrtGhOrD5Z
-	JFTr5RAsf2TZrTIy8FoyqYQQNvoM49/ZCf1Vfkhnu05pOhYShz3geQMeUHau+9wrT6z4dvH2A8OBc
-	daa6MIw0mqe9wvjNt3emD7I9u6QPrUU/A9J/9mNTvh2Z4q6uh1Swp/5IqqO5esUWOZS5CkgTowlLz
-	wVJ9I4aw==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=+sSZOS9auRdp1U7o8uMrkIr9FSBtJtye+BdQ7KPmN3I=; b=uocu1VBIomtSMipiBis4th1O8D
+	BjEtRjLdE3tAMG+DYYAc4JStcUXss4fSp/tRMn4ThPXH2WMFbmN69mbQjVlMo1gpyIbGiRiqN4eoQ
+	FHD12n38Sp1+7NatevqHS22KgK0WO+8w4Ii8BFGVfDgEruudB5Fi4baihB+86bNCGQSACPXOqJLJi
+	byd/ynrFEZDeFjkDOoNR0/OQtomEs7n21lqVJHEthVpRnpSJ5W8wO26BPjhmDw8rwgAhk2UWsLpk4
+	u9Md89m+afTDo9HS2gKmWdq7U3K0wh5yGTcpQnW1k1aWcxblwqk8bNbEhfgeJZmHTfnviyCo+QdOS
+	+XavJ2jw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wKthS-000000035hd-3K5m;
-	Thu, 07 May 2026 08:03:14 +0000
+	id 1wKtjS-00000003611-1Gw2;
+	Thu, 07 May 2026 08:05:18 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wKthP-000000035gg-0Jbc
+	id 1wKtjP-00000003605-3Iq9
 	for barebox@lists.infradead.org;
-	Thu, 07 May 2026 08:03:13 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1wKthL-0005Nv-Pj; Thu, 07 May 2026 10:03:07 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1wKthL-000soQ-0U;
-	Thu, 07 May 2026 10:03:07 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1wKthL-00000005iSp-239c;
-	Thu, 07 May 2026 10:03:07 +0200
-From: "Sascha Hauer" <s.hauer@pengutronix.de>
-To: "Ahmad Fatoum" <a.fatoum@pengutronix.de>
-In-Reply-To: 79ed02bc-045d-4e0b-a1a4-0158787cb39c@pengutronix.de
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 07 May 2026 08:03:07 +0000
-Message-Id: <E1wKthL-00000005iSp-239c@pty.whiteo.stw.pengutronix.de>
+	Thu, 07 May 2026 08:05:17 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1wKtjO-0006cb-A1; Thu, 07 May 2026 10:05:14 +0200
+Message-ID: <ef6babb6-3ba4-4917-99ee-4aab3f2d979d@pengutronix.de>
+Date: Thu, 7 May 2026 10:05:15 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ BAREBOX <barebox@lists.infradead.org>
+References: <20260507-rockchip-emmc-v1-0-5e8109e8059d@pengutronix.de>
+ <20260507-rockchip-emmc-v1-1-5e8109e8059d@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <20260507-rockchip-emmc-v1-1-5e8109e8059d@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260507_010311_118853_4184DDF1 
-X-CRM114-Status: GOOD (  17.13  )
+X-CRM114-CacheID: sfid-20260507_010515_830258_AB2945AB 
+X-CRM114-Status: GOOD (  18.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,50 +64,87 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: BAREBOX <barebox@lists.infradead.org>, "Claude Opus 4.7" <noreply@anthropic.com>, Sascha
- Hauer <sascha@saschahauer.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/6] mci: rockchip-dwcmshc: add HS200 support
+Subject: Re: [PATCH 1/6] mci: sdhci: rockchip: set hidspd before re-enabling
+ the clock
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 2026-05-07 09:47, Ahmad Fatoum wrote:
-> Hi,
->=20
-> On 5/7/26 9:02 AM, Sascha Hauer wrote:
-> > At least on RK3588 the dwcmshc core doesn't have an internal clock
-> > divider, we fully rely on the clock tree to configure the MMC clock.
-> > By default the clock comes from the 24MHz oscillator. For higher MMC
-> > clocks we have to reparent to a PLL clock, but if we do this once the
-> > 6bit divider iss not enough to scale down to the 400kHz MMC
-> > initialization clock. This means we must dynamically reparent the clock.
-> > This series adds support for finding the best divider/mux combination
-> > for composite clocks.
-> >=20
-> > This series also adds some fixes to the dwcmshc driver which used to
-> > timeout on writing sometimes.
->=20
-> \o/
->=20
-> How much faster was the reading now in your testing?
 
-I now reach 120MB/s compared to 20MB/s before.
 
-Sascha
+On 5/7/26 9:02 AM, Sascha Hauer wrote:
+> Linux changes the SDHCI_CTRL_HISPD bit while the clock is disabled. While
+> I haven't observed any failures because of this, do the same as Linux to be
+> on the safe side.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+> ---
+>  drivers/mci/rockchip-dwcmshc-sdhci.c | 19 +++++++++----------
+>  1 file changed, 9 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/mci/rockchip-dwcmshc-sdhci.c b/drivers/mci/rockchip-dwcmshc-sdhci.c
+> index 8e55190eb8..981f90af63 100644
+> --- a/drivers/mci/rockchip-dwcmshc-sdhci.c
+> +++ b/drivers/mci/rockchip-dwcmshc-sdhci.c
+> @@ -146,6 +146,15 @@ static void rk_sdhci_set_clock(struct rk_sdhci_host *host, unsigned int clock)
+>  
+>  	clk_set_rate(host->clks[CLK_CORE].clk, clock);
+>  
+> +	extra = sdhci_read8(&host->sdhci, SDHCI_HOST_CONTROL);
+> +
+> +	if (clock > 26000000)
+> +		extra |= SDHCI_CTRL_HISPD;
+> +	else
+> +		extra &= ~SDHCI_CTRL_HISPD;
+> +
+> +	sdhci_write8(&host->sdhci, SDHCI_HOST_CONTROL, extra);
+> +
+>  	sdhci_set_clock(&host->sdhci, clock, clk_get_rate(host->clks[CLK_CORE].clk));
+>  
+>  	/* Disable cmd conflict check */
+> @@ -212,7 +221,6 @@ static void rk_sdhci_set_clock(struct rk_sdhci_host *host, unsigned int clock)
+>  static void rk_sdhci_set_ios(struct mci_host *mci, struct mci_ios *ios)
+>  {
+>  	struct rk_sdhci_host *host = to_rk_sdhci_host(mci);
+> -	u16 val;
+>  
+>  	/* stop clock */
+>  	sdhci_write16(&host->sdhci, SDHCI_CLOCK_CONTROL, 0);
+> @@ -221,15 +229,6 @@ static void rk_sdhci_set_ios(struct mci_host *mci, struct mci_ios *ios)
+>  		rk_sdhci_set_clock(host, ios->clock);
+>  
+>  	sdhci_set_bus_width(&host->sdhci, ios->bus_width);
+> -
+> -	val = sdhci_read8(&host->sdhci, SDHCI_HOST_CONTROL);
+> -
+> -	if (ios->clock > 26000000)
+> -		val |= SDHCI_CTRL_HISPD;
+> -	else
+> -		val &= ~SDHCI_CTRL_HISPD;
+> -
+> -	sdhci_write8(&host->sdhci, SDHCI_HOST_CONTROL, val);
+>  }
+>  
+>  static void print_error(struct rk_sdhci_host *host, int cmdidx)
+> 
+
+-- 
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+
 
 
