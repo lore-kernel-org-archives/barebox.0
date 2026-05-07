@@ -1,58 +1,74 @@
-Delivery-date: Wed, 06 May 2026 11:11:33 +0200
+Delivery-date: Thu, 07 May 2026 09:04:38 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wKYI2-001XiX-0b
+	id 1wKsml-001sdD-0W
 	for lore@lore.pengutronix.de;
-	Wed, 06 May 2026 11:11:33 +0200
+	Thu, 07 May 2026 09:04:38 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wKYHx-00035h-47
-	for lore@pengutronix.de; Wed, 06 May 2026 11:11:33 +0200
+	id 1wKsme-0007NF-KU
+	for lore@pengutronix.de; Thu, 07 May 2026 09:04:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0rgict3UhtR4urYtc1dGY6wfupr+tOu/U7f20127iUw=; b=x+bsy+ntllY07u9+YSJeDTKVH7
-	v/8goHMgZV6TgKCo0I6IkGqQhSz2aNLLZmulUsKPORzbbczQeVAN/VLPAFXnOO/Qb8oGTUubQJqq+
-	px3PcDL3ps1ahRDUB8bZbB6h/wCX27Yh5nM7X6XVebFxrczD4gqiScOwLiubWcNyYsKJWLi/w90qZ
-	PjDQJeB7uetlxQKnOqNGczs9JaunrCEvHd8OjdRmhlcP0le+loCoCvXWoYW4ZrjKe9m5F3sgW1vBO
-	VcxkI/mXzQChDVAdG3W7d0UjUwidNSu3m0Tt2fvUx3e/ARXOas6Wbz/QvfHjBCr3BAj6qw7wiBzJJ
-	9qd3iyFw==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
+	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=VKZG+ty+XMLU/lc+gqxEvwE61MF9GlLfwwQi+77AcWA=; b=pkTY40J8qq/294nfZ8MWFjEDAZ
+	qP2xnrQq3bPq/igm3mBwnEJT38UFQGv51816NjOzQdrFdvSDq0z0IGjxzQ7hYydg0qVV4XBjXWzAS
+	+awrSgElzHDyv8sgkNRQHEP2JzcRN0N9pw6soaeeUdQ9N8Jd11FEZCJvpR6akkHr4JGLADT+S5hcl
+	10/I2Ft/BIVbKk85QVM5kwjNqePjR5UwYBnzUQXuvVQ1LP1nE26QNKZysTDc/pAJUEWTV5MfCKoc9
+	wUMXeNkAtpWx05lZkHYKX8j4t25xUVfQF9OO0G17si0cW08FXoQYXmgw5PkMd0F6JloqQj0ci/TxL
+	A2sdsyLw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wKYCx-00000000HtM-2dl5;
-	Wed, 06 May 2026 09:06:19 +0000
+	id 1wKsl9-00000002z2H-2GWX;
+	Thu, 07 May 2026 07:02:59 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wKYCv-00000000Hqi-3OBR
+	id 1wKsl8-00000002z0R-1ndM
 	for barebox@lists.infradead.org;
-	Wed, 06 May 2026 09:06:17 +0000
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.tretter@pengutronix.de>)
-	id 1wKYCs-0008RK-4b; Wed, 06 May 2026 11:06:14 +0200
-From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Wed, 06 May 2026 11:06:10 +0200
+	Thu, 07 May 2026 07:02:58 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wKskz-0006NQ-1a; Thu, 07 May 2026 09:02:49 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wKsky-000sMe-0Y;
+	Thu, 07 May 2026 09:02:48 +0200
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wKsky-0000000BYFq-2874;
+	Thu, 07 May 2026 09:02:48 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Thu, 07 May 2026 09:02:51 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260506-socfpga-agilex5-qspi-v1-4-94def85c1b80@pengutronix.de>
-References: <20260506-socfpga-agilex5-qspi-v1-0-94def85c1b80@pengutronix.de>
-In-Reply-To: <20260506-socfpga-agilex5-qspi-v1-0-94def85c1b80@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>, 
- BAREBOX <barebox@lists.infradead.org>
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
- Michael Tretter <m.tretter@pengutronix.de>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260507-rockchip-emmc-v1-5-5e8109e8059d@pengutronix.de>
+References: <20260507-rockchip-emmc-v1-0-5e8109e8059d@pengutronix.de>
+In-Reply-To: <20260507-rockchip-emmc-v1-0-5e8109e8059d@pengutronix.de>
+To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778137368; l=5612;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=FJDwpi3SIHB9gFkBI9aXsDLAEW7nrBY79cv5fWzqvwA=;
+ b=ruhCDIQ3ULi5uZ4+Hl0XDfJ5jhIYRlL7Fwk9JiOd5uZXfKwbzj0mhcxevegz+pA2aEtzYEH0l
+ 5u5OCzGaobyD3bq6fuvugiN5zbxfbSx+ATzJHhxCm0BTmo/PqJRlY35
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260506_020617_851724_BE8EF9B5 
-X-CRM114-Status: GOOD (  10.52  )
+X-CRM114-CacheID: sfid-20260507_000258_483532_57D6E835 
+X-CRM114-Status: GOOD (  22.61  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -64,74 +80,187 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Sascha Hauer <sascha@saschahauer.de>, "Claude Opus 4.7" <noreply@anthropic.com>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 4/6] arm: socfpga: mailbox_s10: keep clock rate in Hz
+Subject: [PATCH 5/6] clk: composite: pick best parent for round_rate /
+ set_rate
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The QSPI reference clock rate is retrieved in Hz from the firmware, but
-stored in kHz in a handover register.
+From: Sascha Hauer <sascha@saschahauer.de>
 
-Initially, the clock rated is stored as Hz in clk_khz, and later
-converted to kHz before printing and storing it. Initially the warning
-prints the clock rate in Hz, but prints kHz as unit. This is confusing.
+Currently our clk composite driver uses the set_rate hook to set the rate
+when available, otherwise it uses the mux to set the rate, but it never
+tries to find the best combination of both. This patch fills the gap.
+Doing this is necessary for example on Rockchip RK3588 where the clock
+is adjustable only external to the SDHC controller. The knobs are a
+6bit divider and a mux. The divider alone is not sufficient to scale a
+high frequency down to the necessary 400kHz init clock while the 24MHz
+clock is not high enough for faster speeds.
 
-Leave the clock rate in Hz, and convert it to kHz when used.
+Walk all parents and pick the one whose rate-clock gets closest to
+the requested rate, then reparent if needed before applying the
+divider.
 
-Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+For mux-only, rate-only and clocks with CLK_SET_RATE_NO_REPARENT the
+previous behaviour is preserved.
+
+Assisted-by: Claude Opus 4.7 <noreply@anthropic.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-socfpga/mailbox_s10.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/clk/clk-composite.c | 110 ++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 95 insertions(+), 15 deletions(-)
 
-diff --git a/arch/arm/mach-socfpga/mailbox_s10.c b/arch/arm/mach-socfpga/mailbox_s10.c
-index 4199c4fb913a..c6ea081165d4 100644
---- a/arch/arm/mach-socfpga/mailbox_s10.c
-+++ b/arch/arm/mach-socfpga/mailbox_s10.c
-@@ -300,7 +300,7 @@ int socfpga_mailbox_s10_qspi_open(void)
- 	u32 resp_buf[1] = {};
- 	u32 resp_buf_len = ARRAY_SIZE(resp_buf);
- 	u32 reg;
--	u32 clk_khz;
-+	u32 clk_rate;
- 	int try = 0;
+diff --git a/drivers/clk/clk-composite.c b/drivers/clk/clk-composite.c
+index e8f1fa7a72..a23e828f58 100644
+--- a/drivers/clk/clk-composite.c
++++ b/drivers/clk/clk-composite.c
+@@ -39,16 +39,91 @@ static unsigned long clk_composite_recalc_rate(struct clk_hw *hw,
+ 	return parent_rate;
+ }
  
- retry:
-@@ -331,20 +331,19 @@ int socfpga_mailbox_s10_qspi_open(void)
++/*
++ * Walk all parents of a (rate_hw + mux_hw) composite and pick the one
++ * whose rate-clock can get closest to the requested rate. Returns the
++ * chosen parent's index in *out_idx (or -1 to mean "stay on current parent"),
++ * the parent's rate in *parent_rate, and the achievable output rate as the
++ * function value.
++ * Falls back to round_rate on the current parent when reparenting
++ * isn't possible (no mux, or CLK_SET_RATE_NO_REPARENT).
++ */
++static long clk_composite_pick_parent(struct clk_hw *hw, unsigned long rate,
++				      int *out_idx, unsigned long *parent_rate)
++{
++	struct clk_composite *composite = to_clk_composite(hw);
++	struct clk_hw *rate_hw = composite->rate_hw;
++	struct clk_hw *mux_hw = composite->mux_hw;
++	unsigned long best_rate = 0, best_prate = 0, best_diff = ULONG_MAX;
++	int best_idx = -1;
++	int i;
++
++	if (!rate_hw || !rate_hw->clk.ops->round_rate)
++		return -ENOSYS;
++
++	if (!mux_hw || (hw->clk.flags & CLK_SET_RATE_NO_REPARENT)) {
++		unsigned long prate = *parent_rate;
++		long achievable;
++
++		achievable = rate_hw->clk.ops->round_rate(rate_hw, rate, &prate);
++		if (achievable < 0)
++			return achievable;
++
++		*out_idx = -1;
++		*parent_rate = prate;
++		return achievable;
++	}
++
++	for (i = 0; i < hw->clk.num_parents; i++) {
++		struct clk_hw *p_hw = clk_hw_get_parent_by_index(hw, i);
++		unsigned long prate, diff;
++		long achievable;
++
++		if (!p_hw)
++			continue;
++
++		prate = clk_hw_get_rate(p_hw);
++		achievable = rate_hw->clk.ops->round_rate(rate_hw, rate, &prate);
++		if (achievable < 0)
++			continue;
++
++		diff = (achievable >= rate) ? achievable - rate
++					    : rate - achievable;
++
++		if (diff < best_diff) {
++			best_idx = i;
++			best_prate = prate;
++			best_rate = achievable;
++			best_diff = diff;
++			if (!diff)
++				break;
++		}
++	}
++
++	if (best_idx < 0)
++		return -EINVAL;
++
++	*out_idx = best_idx;
++	*parent_rate = best_prate;
++	return best_rate;
++}
++
+ static long clk_composite_round_rate(struct clk_hw *hw, unsigned long rate,
+ 				  unsigned long *prate)
+ {
+ 	struct clk_composite *composite = to_clk_composite(hw);
+-	struct clk_hw *rate_hw = composite->rate_hw;
+ 	struct clk_hw *mux_hw = composite->mux_hw;
++	int idx;
++	long achievable;
+ 
+-	if (rate_hw)
+-		return rate_hw->clk.ops->round_rate(rate_hw, rate, prate);
++	achievable = clk_composite_pick_parent(hw, rate, &idx, prate);
++	if (achievable >= 0)
++		return achievable;
++
++	if (achievable != -ENOSYS)
++		return achievable;
+ 
++	/* No rate_hw — fall back to mux's round_rate if available. */
+ 	if (!(hw->clk.flags & CLK_SET_RATE_NO_REPARENT) &&
+ 	    mux_hw &&
+ 	    mux_hw->clk.ops->round_rate)
+@@ -63,24 +138,29 @@ static int clk_composite_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	struct clk_composite *composite = to_clk_composite(hw);
+ 	struct clk_hw *rate_hw = composite->rate_hw;
+ 	struct clk_hw *mux_hw = composite->mux_hw;
++	int idx = -1;
++	long achievable;
++
++	achievable = clk_composite_pick_parent(hw, rate, &idx, &parent_rate);
++	if (achievable >= 0) {
++		if (idx >= 0 && mux_hw && mux_hw->clk.ops->set_parent) {
++			int ret = mux_hw->clk.ops->set_parent(mux_hw, idx);
++			if (ret)
++				return ret;
++		}
++		return rate_hw->clk.ops->set_rate(rate_hw, rate, parent_rate);
++	}
++
++	if (achievable != -ENOSYS)
++		return achievable;
+ 
+ 	/*
+-	 * When the rate clock is present use that to set the rate,
+-	 * otherwise try the mux clock. We currently do not support
+-	 * to find the best rate using a combination of both.
++	 * No rate_hw. Fall back to letting the mux clk reparent itself,
++	 * preserving the existing enable-count handoff.
+ 	 */
+-	if (rate_hw)
+-		return rate_hw->clk.ops->set_rate(rate_hw, rate, parent_rate);
+-
+ 	if (!(hw->clk.flags & CLK_SET_RATE_NO_REPARENT) &&
+ 	    mux_hw &&
+ 	    mux_hw->clk.ops->set_rate) {
+-		/*
+-		 * We'll call set_rate on the mux clk which in turn results
+-		 * in reparenting the mux clk. Make sure the enable count
+-		 * (which is stored in the composite clk, not the mux clk)
+-		 * is transferred correctly.
+-		 */
+ 		mux_hw->clk.enable_count = hw->clk.enable_count;
+ 		return mux_hw->clk.ops->set_rate(mux_hw, rate, parent_rate);
  	}
- 
- 	/* Get the QSPI clock from SDM response and save for later use */
--	clk_khz = resp_buf[0];
--	if (clk_khz < 1000) {
--		pr_err("QSPI: Unexpected reference clock rate: %d kHz\n",
--		       clk_khz);
-+	clk_rate = resp_buf[0];
-+	if (clk_rate < 1000) {
-+		pr_err("QSPI: Unexpected reference clock rate: %d Hz\n",
-+		       clk_rate);
- 		return -EINVAL;
- 	}
- 
--	clk_khz /= 1000;
--	pr_info("QSPI: reference clock at %d kHz\n", clk_khz);
-+	pr_info("QSPI: reference clock at %d kHz\n", clk_rate / 1000);
- 
- 	reg = (readl(SOCFPGA_SYSMGR_ADDRESS + SYSMGR_SOC64_BOOT_SCRATCH_COLD0)) &
- 			~(SYSMGR_SCRATCH_REG_0_QSPI_REFCLK_MASK);
- 
--	writel((clk_khz & SYSMGR_SCRATCH_REG_0_QSPI_REFCLK_MASK) | reg,
-+	writel(((clk_rate / 1000) & SYSMGR_SCRATCH_REG_0_QSPI_REFCLK_MASK) | reg,
- 	       SOCFPGA_SYSMGR_ADDRESS + SYSMGR_SOC64_BOOT_SCRATCH_COLD0);
- 
- 	return 0;
 
 -- 
 2.47.3
