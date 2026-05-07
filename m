@@ -1,82 +1,65 @@
-Delivery-date: Thu, 07 May 2026 14:47:56 +0200
+Delivery-date: Thu, 07 May 2026 15:50:05 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wKy8z-001y1n-1b
+	id 1wKz78-001ywc-1w
 	for lore@lore.pengutronix.de;
-	Thu, 07 May 2026 14:47:56 +0200
+	Thu, 07 May 2026 15:50:05 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wKy8u-0007lJ-Ha
-	for lore@pengutronix.de; Thu, 07 May 2026 14:47:56 +0200
+	id 1wKz73-0000tY-NG
+	for lore@pengutronix.de; Thu, 07 May 2026 15:50:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=LWfb8Zx9DdVJImAe3WZOt2lpDS8A7qWM0Ixj1uFza48=; b=yRjp2RMyq0nCEPlvTh3p1qC+dx
-	i/joXCcg9SSIYAdDzXgAIztkNePhrI7ylMwh9nI2N2qL8Yn622RzNvGE8Lg3QDyN9BqclEUMo/4Lj
-	95ck4+JAPNv7InuKngLDtlZeOR+qjrddFayzRhZz7r0OxSOrI81y/XBatO3SmyNPqJns4OwAp6ssX
-	VdpBj091n/21e9v+KMIdv+4uGa2HqB35WWJAexbx0BqeuCZrXT6U5vTT9yyrDZ+FDVREmQoUSIvjr
-	KzVGgE8e44W9iSruby8HHL+Fxubl6NewqK3sEEUYSTmOfvlIODAwRL8An1DZg9271CJzrOD6+Zm6T
-	jvguiyFw==;
+	bh=TS3DHPBQsUBZhIreHABZslWN/fUep5I/Xngl9v1kIIU=; b=wli32GsoLK8RLunGAdWX5sHXhi
+	EZPj+B+ta1xSTYeBxh63nikOMs0lcXOH9R2jMfE+dRwj2z7mvMwo/aWwLXHQrbrJSrbLMNS/lu/yO
+	tgXbjleGUTAT6G0pMoBCrusmGEAF/1poDFGc3zKMAxzPGMDkMcEVUyKEcfuks0CY/ZrB2J17daSIR
+	TV9IvDSttd0F7lU9oUwZjnS24UVRvN54JvnmEpz2dfuevp63RZ7YpEtOqRXtCexF7m/J+yTM5fNce
+	NR13oVMdT37wMR30mfEY1fXPkpLKzZUeTG8jEnQk1Y4TMF4Aa7Hqx3ffi6okQn9DTSQvomHAjrVto
+	kH2LcQjg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wKw7v-00000003Vin-2Ylq;
-	Thu, 07 May 2026 10:38:43 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wKw7u-00000003Vhq-0p9n
-	for barebox@bombadil.infradead.org;
-	Thu, 07 May 2026 10:38:42 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:From:Sender:
-	Reply-To:Cc:Content-ID:Content-Description;
-	bh=LWfb8Zx9DdVJImAe3WZOt2lpDS8A7qWM0Ixj1uFza48=; b=cDlt0xqizdytRTRm4mdKBlF0Sk
-	XFJG2BSI37UKakBCQg07deArfYtywIfHUiwWBLW0Q0XwqzkmYRDB92lHIdo1YFbIzRX9RzFh0HLik
-	vGmTZUm5fExlXr8y0KvTjv50rocVDbdKd+2GWNiXVsKf5DyGCafh9stCxJ2waWO7ZRdte7azjUrDt
-	G3k29DBZO+UKRUgGoM/361Nu9tHXfyKYpQqlEjThTrJnUp+Uj1zJVK8DnSqpCBj93VBCx/kcNj1d9
-	peesZE/DNSq/fh5gFovF7cz5vkgsQNlOP6wdN9LuamnwZ7Uldb+0N3ZYD+Yub+hWe2B6AWjfkdR81
-	KbRbiFgg==;
+	id 1wKz5d-00000003xlK-17rV;
+	Thu, 07 May 2026 13:48:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wKw7o-00000003ENw-1MSe
+	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wKz5b-00000003xkI-1QXF
 	for barebox@lists.infradead.org;
-	Thu, 07 May 2026 10:38:39 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wKw7k-0000T7-Fh; Thu, 07 May 2026 12:38:32 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wKw7j-000uD4-2A;
-	Thu, 07 May 2026 12:38:32 +0200
-Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wKw7k-0000000BjIN-039k;
-	Thu, 07 May 2026 12:38:32 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20260503083304.2765131-1-a.fatoum@barebox.org>
-References: <20260503083304.2765131-1-a.fatoum@barebox.org>
-Message-Id: <177815031201.2795644.15900418553099408956.b4-ty@pengutronix.de>
-Date: Thu, 07 May 2026 12:38:32 +0200
+	Thu, 07 May 2026 13:48:32 +0000
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <jre@pengutronix.de>)
+	id 1wKz5Z-0008KD-N8; Thu, 07 May 2026 15:48:29 +0200
+From: Jonas Rebmann <jre@pengutronix.de>
+Date: Thu, 07 May 2026 15:48:23 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+Message-Id: <20260507-input_is_key_pressed-v2-1-3c43453a199d@pengutronix.de>
+References: <20260507-input_is_key_pressed-v2-0-3c43453a199d@pengutronix.de>
+In-Reply-To: <20260507-input_is_key_pressed-v2-0-3c43453a199d@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>
+Cc: Jonas Rebmann <jre@pengutronix.de>
+X-Mailer: b4 0.15-dev-18f8f
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1734; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=TrADSaCYnwLgU2rrM+wYDjTso+9QUfP6qkoxOjbDZb0=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsj8M0OnLDlkX+AK3jCLdx0TF4gd/CWhvGtH9OMlu89L9
+ 55z50tP6ihlYRDjYpAVU2SJVZNTEDL2v25WaRcLM4eVCWQIAxenAEwkiovhf6FvUE3T/shLIrHe
+ yUn3N/3YWLZGUrr0k22t0ruQ8vezfBkZZiz8F3B9820vQwVG/6u5Dm4bF2VkbohZfvFgYYbxirl
+ 3mAE=
+X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
+ fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260507_113837_071917_A6828339 
-X-CRM114-Status: UNSURE (   7.30  )
+X-CRM114-CacheID: sfid-20260507_064831_385036_FCC95906 
+X-CRM114-Status: UNSURE (   8.53  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -95,33 +78,72 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] commands: splash: optimize background fill
+Subject: [PATCH v2 1/2] input: add input_is_key_pressed() to read single
+ key
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+input_key_get_status() while being powerful and able to read all key
+states at once, is difficult to use correctly, as the single incorrect
+usage in upstream code shows.
 
-On Sun, 03 May 2026 10:32:54 +0200, Ahmad Fatoum wrote:
-> The background color is specified to the command as 0xttrrggbb,
-> which is not necessarily the native color format of the framebuffer and
-> thus gu_memset_pixel() will do color conversion.
-> 
-> Instead of redoing the color conversion for every line, let's just
-> do it once in advance and then keep reusing it.
-> 
-> [...]
+Reading multiple key states at once, for any meaningful number of keys
+combined (typically up to three) provides no advantage over checking the
+keys sequentially.
 
-Applied, thanks!
+Provide a simple input_is_key_pressed() function that checks a single
+keycode.
 
-[1/1] commands: splash: optimize background fill
-      https://git.pengutronix.de/cgit/barebox/commit/?id=2ebfe22faf64 (link may not be stable)
+Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+---
+ drivers/input/input.c | 14 ++++++++++++++
+ include/input/input.h |  1 +
+ 2 files changed, 15 insertions(+)
 
-Best regards,
+diff --git a/drivers/input/input.c b/drivers/input/input.c
+index e5509bf90d..5ee63d94d6 100644
+--- a/drivers/input/input.c
++++ b/drivers/input/input.c
+@@ -84,6 +84,20 @@ void input_key_get_status(unsigned long *keys, int bits)
+ 		bitmap_or(keys, keys, idev->keys, bits);
+ }
+ 
++bool input_is_key_pressed(int key)
++{
++	struct input_device *idev;
++
++	if (key > KEY_MAX)
++		return false;
++
++	list_for_each_entry(idev, &input_devices, list)
++		if (test_bit(key, idev->keys))
++			return true;
++
++	return false;
++}
++
+ struct input_console {
+ 	struct console_device console;
+ 	struct input_notifier notifier;
+diff --git a/include/input/input.h b/include/input/input.h
+index 9445d20e56..3e03eb9a65 100644
+--- a/include/input/input.h
++++ b/include/input/input.h
+@@ -24,6 +24,7 @@ int input_device_register(struct input_device *);
+ void input_device_unregister(struct input_device *);
+ 
+ void input_key_get_status(unsigned long *keys, int bits);
++bool input_is_key_pressed(int key);
+ 
+ struct input_notifier {
+ 	void (*notify)(struct input_notifier *in, struct input_event *event);
+
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.53.0.610.g30c4861dc6
 
 
 
