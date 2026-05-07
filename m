@@ -1,82 +1,82 @@
-Delivery-date: Thu, 07 May 2026 12:39:40 +0200
+Delivery-date: Thu, 07 May 2026 12:39:41 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wKw8q-001vvx-2a
+	id 1wKw8r-001vwH-2b
 	for lore@lore.pengutronix.de;
-	Thu, 07 May 2026 12:39:40 +0200
+	Thu, 07 May 2026 12:39:41 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wKw8o-0001F8-7h
-	for lore@pengutronix.de; Thu, 07 May 2026 12:39:39 +0200
+	id 1wKw8m-0001CR-2X
+	for lore@pengutronix.de; Thu, 07 May 2026 12:39:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Hh+BgDBQ4HSWyd/Yed4zx5feactthRJ7WIdX0ASiBCg=; b=iS2D9H+K60i5btPVgJtLKLK1L1
-	uaJGEn+IbNa2JMeKdba+siyBNoLUgq8v2eSTtF0RMuTD+cbA7io5L6+GnW0q56f5LO/Q2GrTmNjKt
-	7V/bZAWYdjQn3JuKG908b6iatv3o3HZ1L0I/BdoCLTId9BeBKhDENm2JKjdc9n7I67dEXsqgbXiY9
-	z8+JaljYu8ZEU/W7l2QZf+C6kenafTmeYyp4IZmETpWv8shQA6NphHEfRRJxJHsB9SPVqh+STZwCW
-	cvAzzKw4laGCV8rYxJMF1bvsSQT8NU9owvNT6D8iN7TTf6TvqkfRm0ytzkTLOz2zciP579cyECjPX
-	9keTP1gw==;
+	bh=M+PKaOkJ2Bb3jVcDQoK2i/8NR7aNnNLPYWYSFNFWz20=; b=wADRV6lmfhaczbw6VXipMNjFM2
+	GW7ZV8Yla4HaP7R6/xKPuTm1lnGdmMfVkvZvGyIGJVeZaRwXomYngxdDcwyKGvHM+zYTIRRABUfzr
+	2R5SHEYDGnLeVU7px7r2L8wn0TzZ/v9ADkn1OH9abMBCeccVP2PJ4dteTvCPcTylnRs9+HTCsNyIY
+	JvVKV5Z47gAgQSMODqglo3Y+T6hGjh3pw/AemM3CQyCZX/j763v+Jt2DKpkuGW0RxkNxtuwE/Alzd
+	gWdWYZNq7gd0rLFCOX1TTMPz0vfM/xjCd6y2UF0F/nVqEzeVcLJEhGN4edujtZ7HsLOSEPWNbrw+I
+	YaqHCbOQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wKw7w-00000003Vjc-3DVO;
-	Thu, 07 May 2026 10:38:44 +0000
+	id 1wKw7v-00000003ViY-1Zpj;
+	Thu, 07 May 2026 10:38:43 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wKw7u-00000003Vht-0umi
+	id 1wKw7t-00000003Vhn-2aVw
 	for barebox@bombadil.infradead.org;
-	Thu, 07 May 2026 10:38:42 +0000
+	Thu, 07 May 2026 10:38:41 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
 	:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:From:Sender:
 	Reply-To:Cc:Content-ID:Content-Description;
-	bh=Hh+BgDBQ4HSWyd/Yed4zx5feactthRJ7WIdX0ASiBCg=; b=gzqi5FFOYYZ555sOxuqOyz2Ui6
-	ETYlk9MQnv91A9zFq0SDUiQ3cxVQrq+ArR8NKVgOI6Ct+ENo572ZHRXT9SmkmteGwZ6NZwcJd8H9C
-	jfE+v2C9pYUapidQ80VyLsura4wl3ZSEHg7csmOrWY4BSf5XJwUEdX3XLYSlHiMcphclFiyRzGHC6
-	/qA8EMD3OCyLLY3+h/JHePAqnyMmovjkCVzNjTtDDLTSGI8p4zQhOV2S7ThbrUVqdOnq1JSd9bzrF
-	482mdIf3FcX/wHaLrGbwSYYVsbadAOefL96dxqz5n4DAS0Rporokl99nJFmkamaUE4Rt8R2dZNTwn
-	MS3qqcag==;
+	bh=M+PKaOkJ2Bb3jVcDQoK2i/8NR7aNnNLPYWYSFNFWz20=; b=e5v2BGQ5dpdgZRCQVSuQBL1vZz
+	K7rZKvBQ0yvXTCJLlK62C870s1vFdBDv9LgL2QOUd9kxnHou07cTtbZRVNHLCcpdBfeHHRaUuSnbq
+	OUoOAJf81jK+0iMiteM9GwAICnI02A0YEOm3spQggIP1RW4WVfIi9nlVvsLg00VdBPtsD4ncVVPf9
+	8WcO8+pWqta+uLibj9MbH0KbAIzxU1GNLl+hlYZmt0G8w0p2sZFLto1dkVl2o/lQxQlan26zLxFqL
+	HDl9rEhWNOVxNvxohpEdScz5ufd0CoT1+cwaS6nr9JqNkqX4Y+dqXmxTjz1LuA4iyZOP/QjF7Og6d
+	HdRfkTkQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wKw7o-00000003ENu-05h3
+	id 1wKw7n-00000003ENy-3S3u
 	for barebox@lists.infradead.org;
-	Thu, 07 May 2026 10:38:39 +0000
+	Thu, 07 May 2026 10:38:38 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wKw7k-0000T6-H9; Thu, 07 May 2026 12:38:32 +0200
+	id 1wKw7k-0000T5-DK; Thu, 07 May 2026 12:38:32 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wKw7j-000uD1-20;
+	id 1wKw7j-000uD0-1x;
 	Thu, 07 May 2026 12:38:32 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wKw7j-0000000BjIN-4AXN;
+	id 1wKw7j-0000000BjIN-48TZ;
 	Thu, 07 May 2026 12:38:31 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20260501090801.1041468-1-a.fatoum@barebox.org>
-References: <20260501090801.1041468-1-a.fatoum@barebox.org>
-Message-Id: <177815031199.2795644.5924323248653598469.b4-ty@pengutronix.de>
+In-Reply-To: <20260501085102.1029483-1-a.fatoum@barebox.org>
+References: <20260501085102.1029483-1-a.fatoum@barebox.org>
+Message-Id: <177815031198.2795644.17287100915858458598.b4-ty@pengutronix.de>
 Date: Thu, 07 May 2026 12:38:31 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260507_113836_490780_B176639E 
-X-CRM114-Status: UNSURE (   6.22  )
+X-CRM114-CacheID: sfid-20260507_113836_448683_E1AB6B18 
+X-CRM114-Status: UNSURE (   5.50  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -99,27 +99,27 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] serial: efi-stdio: implement DEC save/restore cursor
+Subject: Re: [PATCH] video: ramfb: support multiple resolutions via
+ mode_name parameter
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Fri, 01 May 2026 11:08:00 +0200, Ahmad Fatoum wrote:
-> term_getsize() employs the DEC save/restore cursor control sequences
-> (\e7 and \e8) in its determination of the terminal's size.
+On Fri, 01 May 2026 10:51:01 +0200, Ahmad Fatoum wrote:
+> Replace the single hardcoded 640x480 mode with a static mode list
+> covering common resolutions (640x480, 800x600, 1280x720, 1920x1080).
+> The default remains 640x480 (index 0).
 > 
-> efi_process_escape() did not handle them and instead expected that all
-> \e are directly followed by a [.
+> Users can now switch to e.g. 1080p before enabling the framebuffer:
 > 
-> Implement support for \e7 and \e8 and have the function silently skip
-> any other non-bracket \eX escape.
+>   fb0.mode_name=1920x1080
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] serial: efi-stdio: implement DEC save/restore cursor
-      https://git.pengutronix.de/cgit/barebox/commit/?id=75205ab32035 (link may not be stable)
+[1/1] video: ramfb: support multiple resolutions via mode_name parameter
+      https://git.pengutronix.de/cgit/barebox/commit/?id=7fb4694d6174 (link may not be stable)
 
 Best regards,
 -- 
