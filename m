@@ -1,65 +1,64 @@
-Delivery-date: Thu, 07 May 2026 15:50:12 +0200
+Delivery-date: Fri, 08 May 2026 13:00:53 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wKz7F-001yxP-0N
+	id 1wLIwv-002KXS-0Y
 	for lore@lore.pengutronix.de;
-	Thu, 07 May 2026 15:50:12 +0200
+	Fri, 08 May 2026 13:00:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wKz7A-0000xU-2D
-	for lore@pengutronix.de; Thu, 07 May 2026 15:50:12 +0200
+	id 1wLIwt-00016O-J7
+	for lore@pengutronix.de; Fri, 08 May 2026 13:00:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3xBzqSzaQ7A7wBvNQwHt5of/kXTtIwuq2TwpwK6dk6I=; b=tmWvy5rD3WdBQF1I3b5GiEwPAM
-	cJzsmOkzAXWXTR1dWLngx8fzk89WMq080bAi3xVryqa20bD6pbOInjRsIA9L7wCO6qVjmTY4ZcDOH
-	UePPlF2aOrsMIFfvt/axftxHoKzLFD/f7P2s5hBur1Nw46hYHWRyxjih3hCJCr0IYdh2b8xSGWEj9
-	I82YVGGGHDaDmEJH/G92YDf1y9/ykTB6Zl5i9H+95J+ZCahF6JTzwsxBSgh8y3LvaVViKj2e2JsjS
-	uEsVyLSJ0uK2r3C3lYDjI3jWUsfFFyZTGc+LZv5D9AOu6miI9Md4okBqyVhSnuF0R1lYiTTxQv7OS
-	OMKCXcjA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=uVRH8RIHgZZbfIxihNNbPs6ABjxptZfYLwV0n8jwU1w=; b=TLP61EXXmU/jmfYob5nkRyTYnC
+	rnuHh17WVJQjeJTV6waAZbpv2C684i451jKe7eNVglWe+JjsDXC83UYzmbObGdIV7251xg5pWemyG
+	7NK5oHmYX67mhy+Elzztl1oqkqUES33IrE6s0tV0pa8brtP4rGrQO22U2XhlVvA6FyUtDoXx3vznv
+	kw47R02vFu3nQa82+TTLMvDBbcLPjQ8Mnr5FCMRkEvY6oo7LodyO4YK4x4ljwyiVMc1kbX1eZ4Vmp
+	ocAl3hqSe6KkOZuSqR1fzP5xIp95BIr/U9JbR/eL5qkNq1vGauusVeiKFTxjzquVbHiH8DT+CZoU+
+	e90g12EQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wKz5e-00000003xld-1lF3;
-	Thu, 07 May 2026 13:48:34 +0000
+	id 1wLIvA-00000006Hrn-1BNy;
+	Fri, 08 May 2026 10:59:04 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wKz5b-00000003xkJ-1QXf
+	id 1wLIv7-00000006Hr4-1ImH
 	for barebox@lists.infradead.org;
-	Thu, 07 May 2026 13:48:33 +0000
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <jre@pengutronix.de>)
-	id 1wKz5Z-0008KD-O4; Thu, 07 May 2026 15:48:29 +0200
-From: Jonas Rebmann <jre@pengutronix.de>
-Date: Thu, 07 May 2026 15:48:24 +0200
+	Fri, 08 May 2026 10:59:03 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wLIv3-0008Fi-4Y; Fri, 08 May 2026 12:58:57 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wLIv2-0014YS-0m;
+	Fri, 08 May 2026 12:58:56 +0200
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wLIv2-0000000FpYQ-2EEK;
+	Fri, 08 May 2026 12:58:56 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Fri,  8 May 2026 12:58:55 +0200
+Message-ID: <20260508105855.3772602-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260507-input_is_key_pressed-v2-2-3c43453a199d@pengutronix.de>
-References: <20260507-input_is_key_pressed-v2-0-3c43453a199d@pengutronix.de>
-In-Reply-To: <20260507-input_is_key_pressed-v2-0-3c43453a199d@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>, 
- BAREBOX <barebox@lists.infradead.org>
-Cc: Jonas Rebmann <jre@pengutronix.de>
-X-Mailer: b4 0.15-dev-18f8f
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1913; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=EqCVo09mfsZmsCx8QRzOKSCYPaQ/wzr/yvn4iu/1BX4=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsj8M0P3niGLypbLhgtavp/2L1nRVhiW+vu7vf6S8x2xm
- nNtBFdu6ShlYRDjYpAVU2SJVZNTEDL2v25WaRcLM4eVCWQIAxenAEwkcDsjw/5ALx+7tq729y2/
- tMX0K5dvK9qVFfmjYWWjjvZ9Xb+rfgz/a98KuAlJtPJJOBrG76zOlOOJTm5LFr3+TVtvbvvVF29
- YAQ==
-X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
- fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260507_064831_384544_E0719649 
-X-CRM114-Status: GOOD (  10.54  )
+X-CRM114-CacheID: sfid-20260508_035901_350912_ADC23512 
+X-CRM114-Status: GOOD (  20.32  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,68 +76,126 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 2/2] ARM: boards: protonic-imx6: use
- input_is_key_pressed()
+Subject: [PATCH v2] environment: add explicit option to allow searching for environment devices
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-input_key_get_status() prepares a bitmap of the provided size. This
-means that a keycode provided here is not actually contained in the
-resulting bitmap and the test is guaranteed to fail at least if the
-provided keycode is a multiple of sizeof(long)*8.
+Add an explicit Kconfig option to allow searching the environment storage
+path based on the barebox environment partition GUID.
 
-input_key_get_status(keys, KEY_CYCLEWINDOWS + 1) would have been
-correct.
+So far this depended on CONFIG_INSECURE being set, but that's not the whole
+picture. Loading an unsigned environment is inherently insecure, allowing
+to find the partition by partition UUID just adds one point to the top:
+With it we potentially allow loading the environment from external storage
+devices like SD card slots that could be plugged without opening a device.
 
-The use of xzalloc to allocate the bitmap is also incorrect,
-bitmap_xzalloc(KEY_CYCLEWINDOWS + 1) would have been correct.
+So instead of implying that partition UUID is insecure, or no partition UUID
+is secure, just add a specific option to let the user decide on this option.
 
-As bitmaps are composed of longs, the underlying array is always sized a
-multiple of sizeof(long). Although the allocations are unaffected by
-this as they are a multiple of sizeof(long) too, xzalloc only zeroes the
-specified number of bytes resulting in a potentially nonzero bitmap.
+The new Kconfig option defaults to the setting of CONFIG_INSECURE. This makes
+sure that users which previously had CONFIG_INSECURE disabled the new option
+doesn't leak in unnoticed on a barebox update. Also it preserves the behaviour
+of in-tree defconfigs which all have CONFIG_INSECURE enabled.
 
-Avoid those troubles altogether and use input_is_key_pressed() instead.
+This also removes the globalvar global.env.autoprobe. It turned out that this
+option doesn't work: The content of that variable is evaluated before the
+default environment is loaded, so we never actually had a chance to set it
+from the environment.
 
-Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/protonic-imx6/board.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ .../migration-guides/migration-master.rst          |  7 +++++++
+ common/Kconfig                                     | 14 ++++++++++++++
+ common/environment.c                               | 14 +-------------
+ 3 files changed, 22 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm/boards/protonic-imx6/board.c b/arch/arm/boards/protonic-imx6/board.c
-index 3bb2632693..174ccf70bd 100644
---- a/arch/arm/boards/protonic-imx6/board.c
-+++ b/arch/arm/boards/protonic-imx6/board.c
-@@ -740,21 +740,15 @@ static int prt_imx6_init_kvg_yaco(struct prt_imx6_priv *priv)
+Changes since v1:
+- Change reasoning for the patch
+- remove non functional global.env.autoprobe
+- add note to migration guide
+
+diff --git a/Documentation/migration-guides/migration-master.rst b/Documentation/migration-guides/migration-master.rst
+index 026dbe8588..b5435f4e0c 100644
+--- a/Documentation/migration-guides/migration-master.rst
++++ b/Documentation/migration-guides/migration-master.rst
+@@ -1,2 +1,9 @@
+ :orphan:
  
- static int prt_imx6_init_prtvt7(struct prt_imx6_priv *priv)
- {
--	unsigned long *keys;
--
- 	of_devices_ensure_probed_by_compatible("gpio-keys");
++Removal of global.env.autoprobe
++===============================
++
++The global.env.autoprobe variable introduced with v2025.02.0 is removed and
++now replaced with CONFIG_ENV_HANDLING_AUTOPROBE. It has never worked. If you
++want to load a barebox environment based on its partition UUID enable
++CONFIG_ENV_HANDLING_AUTOPROBE.
+\ No newline at end of file
+diff --git a/common/Kconfig b/common/Kconfig
+index cd002865f7..6c190c6c5e 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -979,6 +979,20 @@ config ENV_HANDLING
+ 	  A safe use of the mutable environment may be possible if board code only
+ 	  mounts it after verifying a JSON Web Token that enables a debug mode.
  
- 	/*
- 	 * Prefer USB-boot and enable autoboot with timeout when CYCLE-F6 key
- 	 * combination is pressed.
- 	 */
--	keys = xzalloc((KEY_CYCLEWINDOWS / 8) + 1);
--	input_key_get_status(keys, KEY_CYCLEWINDOWS);
--
--	if (!(test_bit(KEY_CYCLEWINDOWS, keys) && test_bit(KEY_F6, keys)))
-+	if (!(input_is_key_pressed(KEY_CYCLEWINDOWS) && input_is_key_pressed(KEY_F6)))
- 		priv->no_usb_check = 1;
++config ENV_HANDLING_AUTOPROBE
++	depends on ENV_HANDLING
++	bool "Autoprobe for environment devices"
++	default CONFIG_INSECURE
++	help
++	  There are two ways for specifying where the barebox environment is. The first one
++	  specifies the path explicitly in the device tree or board code. The other one is
++	  to automatically search it on block devices which is enabled with this option.
++	  Here a partition with the barebox environment GUID is searched. If this option
++	  is enabled and no environment is chosen by device tree or board code then a block
++	  device containing a partition with the barebox environment GUID is used for the
++	  environment. A block device barebox has booted from is preferred over other block
++	  devices.
++
+ config DEFAULT_ENVIRONMENT
+ 	select CRC32
+ 	bool
+diff --git a/common/environment.c b/common/environment.c
+index ec14d0629a..9d3607a70e 100644
+--- a/common/environment.c
++++ b/common/environment.c
+@@ -53,7 +53,6 @@ struct action_data {
  
--	free(keys);
- 	return 0;
+ #define TMPDIR "/.defaultenv"
+ 
+-static int global_env_autoprobe = IS_ENABLED(CONFIG_INSECURE);
+ static char *default_environment_path;
+ 
+ void default_environment_path_set(const char *path)
+@@ -83,7 +82,7 @@ static struct cdev *default_environment_path_search(void)
+ 	struct cdev *env_cdev = NULL;
+ 	struct block_device *blk;
+ 
+-	if (!IS_ENABLED(CONFIG_BLOCK) || !global_env_autoprobe)
++	if (!IS_ENABLED(CONFIG_BLOCK) || !IS_ENABLED(CONFIG_ENV_HANDLING_AUTOPROBE))
+ 		return NULL;
+ 
+ 	boot_node = bootsource_of_node_get(NULL);
+@@ -544,14 +543,3 @@ int envfs_load(const char *filename, const char *dir, unsigned flags)
+ 
+ 	return ret;
  }
- 
-
+-
+-#ifdef __BAREBOX__
+-static int register_env_vars(void)
+-{
+-	globalvar_add_simple_bool("env.autoprobe", &global_env_autoprobe);
+-	return 0;
+-}
+-postcore_initcall(register_env_vars);
+-BAREBOX_MAGICVAR(global.env.autoprobe,
+-                 "Automatically probe known block devices for environment");
+-#endif
 -- 
-2.53.0.610.g30c4861dc6
+2.47.3
 
 
 
