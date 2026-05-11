@@ -1,58 +1,59 @@
-Delivery-date: Mon, 11 May 2026 16:08:20 +0200
+Delivery-date: Mon, 11 May 2026 17:55:38 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wMRIy-000ZtH-2Y
+	id 1wMSyo-000bLP-1e
 	for lore@lore.pengutronix.de;
-	Mon, 11 May 2026 16:08:20 +0200
+	Mon, 11 May 2026 17:55:38 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wMRIx-0002vT-Nz
-	for lore@pengutronix.de; Mon, 11 May 2026 16:08:20 +0200
+	id 1wMSyj-0001oj-Dc
+	for lore@pengutronix.de; Mon, 11 May 2026 17:55:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=YpSI6gjnCNb9tpUlyAfIWJHCaA7X+EL2aGB4PoN0Zm0=; b=KFinxBKqNEguHjxYh90WBiTSPd
-	ikQ/cbBuQxJx6wLVf/9i1lW3OK/U41qZugJnWhigiRMzZJH/ZFsAq5Oo/c0AotA491W3h/3VSqxod
-	A/FfRQKlV4jjE06zxbJ73PbDdD4aIqKl5rfSG+4jzz9+c8lqiQZLNsnjjbp1FXkc4ygSFe2dRBlVa
-	sCj6RcgYVqalHnXKNuQVz37V7ZPJPIBC3aZ2Q7YXaUo4Qna98ETAajtfatM6YFQTg1KJfNL/WnVwB
-	rJhaJ197D+XnR0DvQftnSDjsKXWqvnLFZ+RhUSl5Fu+ekqv9QKueRcuhYqjJLtDNYZn2rM4dL7eqH
-	dcEzjUXw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=x7ZKF2OwEZL6SJBziN2CwyrwQbnPF1PTda3yC4jInPg=; b=LhGcwx4lM4t2P9ipsSnMeaMvbH
+	Or1iy5V0K4AytjSS1FdcfQbQZSOvRgn2rOC1G1pDVQsNUqNoVbuOD5yMLdxhZelAhduOMmLOXQRPi
+	E5XWPZSLHI4+WnWQsz6JPCBtLOUoJnOdtxw9qtE6PhppK6sAFDQJJDFrx2OrtFUU9tzVqaVGZ7ptk
+	W+6uOBXKWWHwS0oVOnR2zZB3DjR1NpxEWam3J2DyuV9lv92vI4n2KgHsR0iWEDIQdL2Q0InXjWMTZ
+	sQjw2ipOqTAnQ/AR0/ULB2RR9822Rnceacy+xMq9NK60W9kvQgxbJrW45LF/I0vkE/9p8k2kQjeMb
+	UXf2eepA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wMRGu-0000000DrFe-29mY;
-	Mon, 11 May 2026 14:06:12 +0000
+	id 1wMSxG-0000000E7ED-3l9A;
+	Mon, 11 May 2026 15:54:02 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wMRGs-0000000DrET-1tLC
+	id 1wMSxD-0000000E7DP-0ueN
 	for barebox@lists.infradead.org;
-	Mon, 11 May 2026 14:06:11 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	Mon, 11 May 2026 15:54:01 +0000
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wMRGq-0002OT-Po; Mon, 11 May 2026 16:06:08 +0200
-Message-ID: <63256b58-0e5f-473d-826d-08b6182459f2@pengutronix.de>
-Date: Mon, 11 May 2026 16:06:08 +0200
+	(envelope-from <m.tretter@pengutronix.de>)
+	id 1wMSx9-0001Rd-QO; Mon, 11 May 2026 17:53:55 +0200
+From: Michael Tretter <m.tretter@pengutronix.de>
+Date: Mon, 11 May 2026 17:53:50 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>,
- "Claude Opus 4.7" <noreply@anthropic.com>
-References: <E1wMRCl-0000000FNV4-0iBY@pty.whiteo.stw.pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <E1wMRCl-0000000FNV4-0iBY@pty.whiteo.stw.pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260511-rockchip-secure-boot-doc-v1-1-b4339a0d007f@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAI37AWoC/x3M0QpFQBCA4VfRXJ8puyG8is7FGoNJGc0iJe9uc
+ /ld/P8NkU04QpvdYHxKFF0T3C8DmsM6McqQDD73VV46h6a00CwbRqbDGHvVHQclDFQ05IpQc+k
+ h5ZvxKNe37v7P8wLOoCmIagAAAA==
+X-Change-ID: 20260511-rockchip-secure-boot-doc-ac49c14a8e52
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>
+Cc: Michael Tretter <m.tretter@pengutronix.de>
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260511_070610_511704_64255107 
-X-CRM114-Status: GOOD (  18.56  )
+X-CRM114-CacheID: sfid-20260511_085359_324567_8BBF4030 
+X-CRM114-Status: GOOD (  22.68  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,70 +71,152 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 06/10] mci: rockchip-dwcmshc-sdhci: use ADMA2
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: [PATCH] Documentation: rk35xx: add secure boot documentation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+While barebox supports secure boot on rk3588, user documentation how to
+sign images and enable secure boot is still lacking.
 
+Add this documentation, now.
 
-On 5/11/26 4:01 PM, Sascha Hauer wrote:
-> On 2026-05-11 14:55, Ahmad Fatoum wrote:
->> Hello Sascha,
->>
->> On 5/11/26 2:08 PM, Sascha Hauer wrote:
->>> The SDMA engine doesn't seem to be fast enough to keep up with HS400
->>> support. In preparation to add HS400 support to the driver switch to
->>> ADMA when available.
->>>
->>> Assisted-by: Claude Opus 4.7 <noreply@anthropic.com>
->>> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
->>> ---
->>>  drivers/mci/rockchip-dwcmshc-sdhci.c | 5 +++++
->>>  1 file changed, 5 insertions(+)
->>>
->>> diff --git a/drivers/mci/rockchip-dwcmshc-sdhci.c b/drivers/mci/rockchip-dwcmshc-sdhci.c
->>> index 04ee528f07..23c887e906 100644
->>> --- a/drivers/mci/rockchip-dwcmshc-sdhci.c
->>> +++ b/drivers/mci/rockchip-dwcmshc-sdhci.c
->>> @@ -361,6 +361,11 @@ static int rk_sdhci_probe(struct device *dev)
->>>  
->>>  	sdhci_setup_host(&host->sdhci);
->>>  
->>> +	ret = sdhci_setup_adma(&host->sdhci);
->>> +	if (ret && ret != -ENOTSUPP)
->>> +		dev_warn(dev, "ADMA setup failed (%pe), falling back to SDMA\n",
->>> +			 ERR_PTR(ret));
->>
->> As transparent fallback is implemented, could this be folded into
->> sdhci_setup_host, so it's opt-out instead of opt-in?
-> 
-> I don't expect much advantage from ADMA for drivers that do not need it.
-> The advantage is that ADMA can do scatter gather DMA, but we don't make
-> use of it in barebox.
-> 
-> I'd rather leave it opt-in for now at least for a few rounds.
+While at it, add some documentation for the Rockchip image header, too,
+to explain how the signature guarantees the integrity and authenticity
+of the included barebox image.
 
-Fair enough.
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+---
+ Documentation/boards/rk35xx.rst | 108 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 108 insertions(+)
 
-> 
-> Sascha
-> 
-> --
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
+diff --git a/Documentation/boards/rk35xx.rst b/Documentation/boards/rk35xx.rst
+index fe74e10870eb..0fbc58a46332 100644
+--- a/Documentation/boards/rk35xx.rst
++++ b/Documentation/boards/rk35xx.rst
+@@ -151,3 +151,111 @@ For base functionality, it probably requires only porting the
+ Linux clk and pinctrl drivers as well as the boilerplate needed
+ for every SoC. Reach out to the :ref:`mailing list <feedback>`
+ if you have unsupported hardware.
++
++Rockchip Secure Boot
++--------------------
++
++Rockchip Secure Boot is a Rockchip feature to ensure the integrity and
++legitimacy of the firmware running on a device. The Bootrom verifies that the
++header of a loaded Rockchip image contains a public key that matches a sha265
++hash that is stored in the OTP fuses of the SoC and a signature that can be
++verified with this public key.
++
++This allows to verify that the image has been signed by the owner of the
++private key that was authorized when secure boot was activated on the board.
++
++The Rockchip header especially contains the public key as a Modulus, Exponent,
++and NP triple, and hashes over each code sector in this image. The signature
++comprises the entire rkimage header except for the signature itself. Thus the
++signature verifies that the hashes over the code sectors are trustworthy and,
++indirectly, the code sectors are trustworthy ::
++
++    0x0 +---------------------------------+      -
++        | Magic                           |      |
++   0x78 +---------------------------------+      |
++        | sector                          |--+   | Signed Area
++        | hash                            +  |   |
++  0x200 +---------------------------------+  |   |
++        | Modulus                         |  |   |
++        | Exponent                        |  |   |
++        | NP                              |  |   |
++  0x600 +---------------------------------+  |   -
++        | Signature                       |  |
++  0x800 +---------------------------------+  |
++        | ...                             |  |
++        +---------------------------------+  |
++        | Barebox Prebootloader (PBL)     |<-+
++        | Piggydata (Main Barebox Binary) |
++        +---------------------------------+
++
++The public key is not stored in the OTP due to size reasons, but instead a
++sha256 hash over the public key as contained in the rkimage is stored in the
++OTP. The Bootrom verifies that the hash in the OTP matches the hash of the
++public key.
++
++Signing Rockchip Images
++^^^^^^^^^^^^^^^^^^^^^^^
++
++The Bootrom allows to use RSA-2048 or RSA-4096 keys for verification.
++
++Generate an RSA key pair for image signing and verification::
++
++  $ openssl genrsa -f4 -out <key.pem> 4096
++
++Enable ``CONFIG_ARCH_ROCKCHIP_IMAGE_SIGNED`` and let
++``CONFIG_ARCH_ROCKCHIP_IMAGE_SIGN_KEY`` point to your generated PEM file.
++
++The Rockchip images generated by the barebox build are now signed with the
++configured key.
++
++The ``rk-otp.sh`` script prints the sha256 hash of a key in a PEM file or a key
++embedded into an rkimage. You may verify that the image is actually signed with
++your key by comparing the output of the following two commands::
++
++  $ scripts/rk-otp.sh <key.pem>
++  $ scripts/rk-otp.sh <rkimage>
++
++Secure Boot
++^^^^^^^^^^^
++
++The barebox ``rksecure`` command allows to burn a hash into the OTP and enable
++secure boot at runtime.
++
++Since the secure OTP are only accessible from the secure world, barebox cannot
++directly access the OTP area. In order to write or read the secure OTP from
++barebox, you need an OP-TEE with the rksecure PTA. See the OP-TEE documentation
++how to enable this PTA.
++
++.. note::
++
++   The OP-TEE rksecure PTA is only available in Upstream OP-TEE.
++   Rockchips Downstream OP-TEE blob does not support writing the OTP area and
++   enabling Secure Boot.
++
++Enable the ``rksecure`` command by enabling the following config variables::
++
++  CONFIG_CMD_RKSECURE
++  CONFIG_OPTEE_RKSECURE
++
++The Bootrom also boots signed images if secure boot is not enabled. Thus, you
++may boot the same image used with and without secure boot enabled devices.
++
++You may use the ``rksecure`` command to retrieve the current secure boot status
++and the burned hash from a device::
++
++  barebox$ rksecure -i
++
++To enable secure boot on a device, run the following command. ``<hash>`` is the
++hash returned by the ``rk-otp.sh`` script and ``<bits>`` needs to match the bit
++length of the RSA key that you use for image signing::
++
++  barebox$ rksecure -x <hash> -b <bits> -l
++
++.. warn::
++
++   Once you executed this command on a device, the Bootrom will
++   reject any image that has not been signed with the appropriate RSA key.
++
++You may check the secure boot status again with ``rksecure -i`` and try
++booting an unsigned or corrupted image to verify secure boot is actually
++enabled.
 
+---
+base-commit: 019d102038a64e6b6e8f445cbfd2d15e68d0ec3f
+change-id: 20260511-rockchip-secure-boot-doc-ac49c14a8e52
+
+Best regards,
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+Michael Tretter <m.tretter@pengutronix.de>
 
 
 
