@@ -1,74 +1,76 @@
-Delivery-date: Mon, 11 May 2026 14:10:02 +0200
+Delivery-date: Mon, 11 May 2026 14:10:08 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wMPSU-000XqV-27
+	id 1wMPSb-000Xqv-1B
 	for lore@lore.pengutronix.de;
-	Mon, 11 May 2026 14:10:02 +0200
+	Mon, 11 May 2026 14:10:08 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wMPSO-0007O3-8h
-	for lore@pengutronix.de; Mon, 11 May 2026 14:10:02 +0200
+	id 1wMPSU-0007S8-VS
+	for lore@pengutronix.de; Mon, 11 May 2026 14:10:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
-	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=zQ1OAkF0XCV+RTYJbKKoumlk6wJTMTNz+Cap8O3D54c=; b=ByBd5z7k1cCL+v4G5Fwlb5zs1H
-	JpYfVEebfn2GZ/kKKteCjHfco4NuwSnQ17eZi0XKVGdpvRrcpy/k11W5KvbTSm5GmTbToiN6tXBnc
-	sRPGvv6hxfofuFeZ/AX0l8CBLozdoUNnyil5YRLK61fYGpb/aWxX5xVKGQxQi+GXR1GF5Bypq0/WF
-	RfqDDSiUU76UAJiWpTWveoCUBb8q20ekJW/gCHoYobflwXepu4T3yVfjTt5Uh95uhLBwMfaRZLJAk
-	g0IeEX8a91WyxiUOL8Tf7gUPtoYvbwlSjBL/mcvqi5wFXgdSLOF52EnnLxSUkuc4H0IVm4EBR2dPd
-	5+SnHphw==;
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=FjktMeFI+capaBpEOl6oCYMDd4dohJQccDRlP1Dqn0A=; b=KWk9yYMV5BPErS
+	5poeKNb+/HF4gT0CnzyKJiyDYKSNgOKFoSah4Kagg9Xon5VjC37KvszdUu3YfbMv8Gc5uGpuLSqrc
+	Hq/wG8R21IHZKvZ6xZ/yyVAZuqZ1QekBiuv3K/tWXjVgAorssAjG/nauILIXnmIvFUw1OCNqu7wVa
+	VeE+D7X5fV/kkgeWkqeZ3ZbDiVFQ/aG2inc7K3BuD9oe2qO3mlt+2ku1aoN8+8/EyfvX5g6kmuWuR
+	+nHgfHGYgj6DcvZixVKD+UqtRbZG1iNJ9rWZZvp9ZusIkkrpBJO7rENf6ze8GObm8Cd41QD6cOlga
+	vOIA9KzTuwpOID1+73Qg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wMPQq-0000000DSxP-3YXC;
-	Mon, 11 May 2026 12:08:20 +0000
+	id 1wMPQj-0000000DSsw-2aaR;
+	Mon, 11 May 2026 12:08:13 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wMPQm-0000000DStg-1Cro
+	id 1wMPQf-0000000DSqe-02Xj
 	for barebox@lists.infradead.org;
-	Mon, 11 May 2026 12:08:18 +0000
+	Mon, 11 May 2026 12:08:11 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wMPQc-0006bD-Rm; Mon, 11 May 2026 14:08:06 +0200
+	id 1wMPQc-0006bF-Qe; Mon, 11 May 2026 14:08:06 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wMPQb-000FTO-2D;
+	id 1wMPQb-000FTL-2A;
 	Mon, 11 May 2026 14:08:06 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wMPQc-00000008pO6-17Ic;
+	id 1wMPQc-00000008pO6-10cY;
 	Mon, 11 May 2026 14:08:06 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 11 May 2026 14:08:01 +0200
+Date: Mon, 11 May 2026 14:07:55 +0200
+Message-Id: <20260511-rockchip-emmc-hs400-v1-0-515fb6d20e12@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260511-rockchip-emmc-hs400-v1-6-515fb6d20e12@pengutronix.de>
-References: <20260511-rockchip-emmc-hs400-v1-0-515fb6d20e12@pengutronix.de>
-In-Reply-To: <20260511-rockchip-emmc-hs400-v1-0-515fb6d20e12@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAJvGAWoC/x3MQQqAIBBA0avIrBtQK6OuEi3MphyiDIUIpLsnL
+ d/i/wyJIlOCQWSIdHPicBaoSoDz9twIeSkGLbWRrVIYg9ud5wvpOBz61EiJZFo919RZM/dQyiv
+ Sys9/Haf3/QBavztgZQAAAA==
+X-Change-ID: 20260511-rockchip-emmc-hs400-e652b3e7a6b9
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778501286; l=927;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778501286; l=1627;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=3ngdCfy72AC7bMEqCVOkQdfuV+szmxrwJXnfI1mufc4=;
- b=7A0bkTRX2ZkECSDDcIfRD0PYoh4HUoTKGM4YAw0IZb5fFwa9XVnJPGwz+eRe1+XV0fR+uucL4
- LnaVGSq5YUkCpmAUdz9fW4xLDofJC2Pz9Qd2oemlHRdQ49wecaY2GQb
+ bh=04dUiebsR9t82Gk4JpS1sFSK1N+9lpHc1nrb0OnMnqw=;
+ b=UrBCjcG3guyjp0w9Vxq/2PvYOUdxcS4xOU59y2IDwaNYIarM8b7PjYAQJgHQgd7znlgqQtTZk
+ 5D9hVyMB0K8AUfbkX4nWCa3Jt+0e3c80pPjRq0pdvr0Fdq/ep8AvnJv
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260511_050817_354635_3426B0D7 
-X-CRM114-Status: UNSURE (   9.76  )
+X-CRM114-CacheID: sfid-20260511_050809_051512_2D04FCA4 
+X-CRM114-Status: UNSURE (   6.80  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -92,39 +94,46 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 06/10] mci: rockchip-dwcmshc-sdhci: use ADMA2
+Subject: [PATCH 00/10] mci: rockchip-dwcmshc: add HS400(ES) support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The SDMA engine doesn't seem to be fast enough to keep up with HS400
-support. In preparation to add HS400 support to the driver switch to
-ADMA when available.
+Based on the previous series to add HS200 support for the Rockchip SDHCI
+controller this series now adds core support for HS400(ES) and also
+Rockchip support for HS400(ES). As expected the speed gain isn't that
+dramatic anymore, but it still goes up from 120MB/s to 170MB/s on reads.
+Write is at about 22MB/s.
 
-Assisted-by: Claude Opus 4.7 <noreply@anthropic.com>
+Tested on a Radxa Rock 5T.
+
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/rockchip-dwcmshc-sdhci.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Sascha Hauer (10):
+      mci: sdhci: define VDD_180 and shrink UHS_MASK to bits 0..2
+      mci: mmc_send_tuning: actually point data.dest at the buffer
+      mci: sdhci: add ADMA2 descriptor helpers
+      mci: add HS400 mode selection
+      mci: add HS400 Enhanced Strobe (HS400ES) selection
+      mci: rockchip-dwcmshc-sdhci: use ADMA2
+      mci: sdhci: rockchip: set TX-path source-select bit in DWCMSHC_EMMC_DLL_TXCLK
+      mci: sdhci: rockchip: distinguish IP revision 0 (rk3568) from 1 (rk3576/rk3588)
+      mci: sdhci: rockchip: support HS400
+      mci: sdhci: rockchip: support HS400 Enhanced Strobe
 
-diff --git a/drivers/mci/rockchip-dwcmshc-sdhci.c b/drivers/mci/rockchip-dwcmshc-sdhci.c
-index 04ee528f07..23c887e906 100644
---- a/drivers/mci/rockchip-dwcmshc-sdhci.c
-+++ b/drivers/mci/rockchip-dwcmshc-sdhci.c
-@@ -361,6 +361,11 @@ static int rk_sdhci_probe(struct device *dev)
- 
- 	sdhci_setup_host(&host->sdhci);
- 
-+	ret = sdhci_setup_adma(&host->sdhci);
-+	if (ret && ret != -ENOTSUPP)
-+		dev_warn(dev, "ADMA setup failed (%pe), falling back to SDMA\n",
-+			 ERR_PTR(ret));
-+
- 	dev->priv = host;
- 
- 	return mci_register(&host->mci);
+ drivers/mci/imx-esdhc-common.c       |   2 -
+ drivers/mci/mci-core.c               | 188 ++++++++++++++++++++++++++++++++++-
+ drivers/mci/rockchip-dwcmshc-sdhci.c |  99 ++++++++++++++++--
+ drivers/mci/sdhci.c                  | 154 +++++++++++++++++++++++++++-
+ drivers/mci/sdhci.h                  |  62 +++++++++++-
+ include/mci.h                        |   9 ++
+ 6 files changed, 499 insertions(+), 15 deletions(-)
+---
+base-commit: 4c7af34b16eb83fcab8aeb3444d6cbf184cadd39
+change-id: 20260511-rockchip-emmc-hs400-e652b3e7a6b9
 
+Best regards,
 -- 
-2.47.3
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
