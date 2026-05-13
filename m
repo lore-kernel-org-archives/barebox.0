@@ -1,64 +1,72 @@
-Delivery-date: Wed, 13 May 2026 15:40:29 +0200
+Delivery-date: Wed, 13 May 2026 15:57:17 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wN9p7-001Gs6-2r
+	id 1wNA5N-001H7b-2E
 	for lore@lore.pengutronix.de;
-	Wed, 13 May 2026 15:40:29 +0200
+	Wed, 13 May 2026 15:57:17 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wN9p4-0003Ks-2G
-	for lore@pengutronix.de; Wed, 13 May 2026 15:40:29 +0200
+	id 1wNA5J-0008Va-9N
+	for lore@pengutronix.de; Wed, 13 May 2026 15:57:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=MY3mxknCCSzblgBA+Rzsa0GjkJW06BVCMIRRugTUbv4=; b=aQiDTaWKZwewjG97XJS3dTCzbz
-	4qKQ11WoAHFAPxIFfmYNfeAktSI4EooGMb7iaIyL7Yz3WGJL+2D203TV0nM+CZsnzrP3Qbz3lT5/j
-	wD8Xaf4in5mcWDSNyvtmCqLyU1bsqfHgwOBspdXoHwReGIinbcLGLK1d/oGSfjTK54O73nIU85+qn
-	0y/d95j8sgxkm1LfvWXLbBAMay1aJ1T9iYqH9zN/R21M5j0ergvsnHQa1sWqOeIRUzkuqsbtH/75z
-	yw1L4wm6ffth9t7/Rfh3c+cArYeMYvG9ji5CQPmCzRtYmxlc4XCX7t7doThLkZ5P/7U6ewoSFadSo
-	KltiGNcw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=qiAwjV+WXnnVeJAeKWNxRpdyvFt268vXYOkl1xpe8U8=; b=WblmUuvObmucgdrdPGVUlbq3jy
+	vXJoBrG9NU/BRl36yLzqPbUjBbs73ti79teOWZQJxnJbqKYCsgFa2O30PMbvWFz192nHkjPy9R+3p
+	0ildhRdUNwYqkAroaZkdbD+pj4G/vpjJ/cVtVosWYoVCIgmvB7LrhYTyXG8EpD9Sov+SNlg6Csocs
+	e3019e+pynTEr9wTHvkpZ3q/G1CuiBiHhDN1AssfCwBBaXSMKRwu03lUqfVSsTMYZGfIDjPdTiiPS
+	ROYZTSc6JezFxyGvJ1fA4oqSjhof8MDFdIqQfHPbp1leLK6zT9DDTeEYbe/pXYuBGMkEJQefI6fq1
+	TKC1byhw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wN9no-00000002nGy-3jVw;
-	Wed, 13 May 2026 13:39:08 +0000
+	id 1wNA42-00000002q1l-35TZ;
+	Wed, 13 May 2026 13:55:54 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wN9nl-00000002nEV-1fA9
+	id 1wNA40-00000002q0O-2qhg
 	for barebox@lists.infradead.org;
-	Wed, 13 May 2026 13:39:06 +0000
+	Wed, 13 May 2026 13:55:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wN9ng-0002sK-Lt; Wed, 13 May 2026 15:39:00 +0200
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wNA3z-0007xt-2Y; Wed, 13 May 2026 15:55:51 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wN9ng-000bgN-1z;
-	Wed, 13 May 2026 15:39:00 +0200
-Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wN9ng-0000000GHXf-29jk;
-	Wed, 13 May 2026 15:39:00 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: str@pengutronix.de,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 13 May 2026 15:30:51 +0200
-Message-ID: <20260513133859.3877113-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wNA3z-000bi5-00;
+	Wed, 13 May 2026 15:55:51 +0200
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wNA3y-00000001CbW-3pyw;
+	Wed, 13 May 2026 15:55:50 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Wed, 13 May 2026 15:55:51 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260513-rockchip-fixes-v1-2-a4055849a014@pengutronix.de>
+References: <20260513-rockchip-fixes-v1-0-a4055849a014@pengutronix.de>
+In-Reply-To: <20260513-rockchip-fixes-v1-0-a4055849a014@pengutronix.de>
+To: BAREBOX <barebox@lists.infradead.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778680550; l=1300;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=gJQpIyMECbCtwA8DgK5cF8Rjt1/4SJK6xQ2uqdMhvF8=;
+ b=jqCxFth0v8tq9FKTFTfpH3WKocH22ZlXAsJt1xaqqTBexwVEvudnmYNAOBHcrS4E0KW7d3p97
+ xaqtRw7JC3DB+NmJEODMn0P2AHksL/nxj7qevmd9kPM1PmtI574pGR0
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260513_063905_646849_EAB3C222 
-X-CRM114-Status: GOOD (  10.70  )
+X-CRM114-CacheID: sfid-20260513_065552_725219_352A7817 
+X-CRM114-Status: GOOD (  11.38  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,44 +84,47 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master] mci: atmel_mci: fix mci_pbl breakage after mci_cmd::data change
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: [PATCH 2/3] ARM: rockchip: dmc: substract
+ ROCKCHIP_DRAM_TFA_CARVE_OUT from memory regions
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-To align with Linux, mci_cmd was extended by a data pointer and the
-send_cmd in barebox proper was adapted to drop the mci_data member.
+With 516447c05c rockchip_ram() gets the physical memory base/size
+instead of ROCKCHIP_DRAM_TFA_CARVE_OUT already honored. With this we
+not only have to add ROCKCHIP_DRAM_TFA_CARVE_OUT to membase, but also
+substract it from memsize. The latter was forgotten, add it now.
 
-The PBL drivers were not adapted and just ignore mci_data, except for
-the Atmel MCI driver, which now discards the actually populated data and
-passes cmd->data, which is always NULL.
-
-Correct the argument to fix BOOT.BIN boot up on the KSZ9477-EVB.
-A patch that switches pbl_mci as a whole to the new API will follow
-separately.
-
-Fixes: 28974435d085 ("mci: add data segment to mci_cmd")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Fixes: 516447c05c ("ARM: rockchip: separate physical DRAM start from usable start")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/atmel_mci_pbl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-rockchip/dmc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mci/atmel_mci_pbl.c b/drivers/mci/atmel_mci_pbl.c
-index ee8007fd0c4c..27727b27343c 100644
---- a/drivers/mci/atmel_mci_pbl.c
-+++ b/drivers/mci/atmel_mci_pbl.c
-@@ -12,7 +12,7 @@ static int pbl_atmci_common_request(struct pbl_mci *mci,
- 				    struct mci_cmd *cmd,
- 				    struct mci_data *data)
- {
--	return atmci_common_request(mci->priv, cmd, cmd->data);
-+	return atmci_common_request(mci->priv, cmd, data);
- }
+diff --git a/arch/arm/mach-rockchip/dmc.c b/arch/arm/mach-rockchip/dmc.c
+index 9218f794f9..0b977b4593 100644
+--- a/arch/arm/mach-rockchip/dmc.c
++++ b/arch/arm/mach-rockchip/dmc.c
+@@ -161,13 +161,13 @@ static size_t rockchip_ram(phys_addr_t membase, resource_size_t memsize,
+ 		 * doesn't need any gaps in the DRAM space.
+ 		 */
+ 		base[0] = membase + ROCKCHIP_DRAM_TFA_CARVE_OUT;
+-		size[0] = memsize;
++		size[0] = memsize - ROCKCHIP_DRAM_TFA_CARVE_OUT;
  
- static struct atmel_mci atmci_host;
+ 		return 1;
+ 	}
+ 
+ 	base[i] = membase + ROCKCHIP_DRAM_TFA_CARVE_OUT;
+-	size[i] = min_t(resource_size_t, RK3588_INT_REG_START, memsize) - membase;
++	size[i] = min_t(resource_size_t, RK3588_INT_REG_START, memsize) - membase - ROCKCHIP_DRAM_TFA_CARVE_OUT;
+ 	i++;
+ 
+ 	if (i < n && memsize > SZ_4G) {
+
 -- 
 2.47.3
 
