@@ -1,82 +1,82 @@
-Delivery-date: Wed, 13 May 2026 16:06:58 +0200
+Delivery-date: Wed, 13 May 2026 16:08:46 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wNAEk-001HSx-1X
+	id 1wNAGU-001HUP-0Q
 	for lore@lore.pengutronix.de;
-	Wed, 13 May 2026 16:06:58 +0200
+	Wed, 13 May 2026 16:08:46 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wNAEj-00046R-Td
-	for lore@pengutronix.de; Wed, 13 May 2026 16:06:58 +0200
+	id 1wNAGP-0004hm-Sx
+	for lore@pengutronix.de; Wed, 13 May 2026 16:08:46 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
 	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HLoZKYD+S4L7/cVsDjTfnxIdlN1x6PGSd7LCbzyeGys=; b=LuFSYIx/nQRczC9fZ+mamtrIic
-	gzKa8Vl9DXa7muKWzbZfitaPyKbH4G4MIAzw30vt/T4c/ukts2bGN6bEbn0lycTO1+v8ZL8yktLtb
-	Ayq2PppN241i6zcYrdGD0OnAK5M6km6x9oYMwRq2jWFgtr5GM5IzriuHatQrHlqJOGOVtNw+TLo5W
-	8gs9aBgPyVCkNjliJU88V3dPoV3or6Uo1uTjee9miDv/9rseF6bOmql3WqakCoI4/tHrWwQieaO+f
-	wFXPXcF4tyHfdTLXua5LBIS1L6YMMG3cBaToGJIRCyfavnl55cQijGV3L3uz2UaHC4Agw5veZQhQG
-	EnX/T+pw==;
+	bh=6YeN2trsT5VBLRKr0aTSZd69yACmLaCBytvmfpPpV70=; b=NICuM3mmuG18un7wW83ciD2Iyu
+	kBjyWMq8JTPDeazsp0ANy4n3umkEctXa8BggjB9ImnThJe7YqiyKCo1+Wh5RrcVJ4CWKqAU+oMj9O
+	Ba2+MOZQ2KiFpdY0pWpghmTD5XV+l3KIY+7QlHaseFlqYmhgv1xh2RS2jD0FMs5ft2Ei31vZEcHKu
+	jF75ZfhgCaKVNMQ+IUtiZ+orZfX7SWlqp+UndkpqnrKvYn4nj9QtX1UhZnL9nWMsRPsEcNaz0Z5QZ
+	zDOj3s3vZzdkiRrtnr+ZbfwhC7G7WiRjGduUUKPjwF02TmM/Tm9CiUDvLXiBnbvghkv9wMOY14jEK
+	NipQYl+Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wNADF-00000002s8M-21B9;
-	Wed, 13 May 2026 14:05:25 +0000
+	id 1wNAG5-00000002sYR-0Zxm;
+	Wed, 13 May 2026 14:08:21 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wNADE-00000002s80-3oPl
+	id 1wNAG3-00000002sY4-1p7H
 	for barebox@bombadil.infradead.org;
-	Wed, 13 May 2026 14:05:24 +0000
+	Wed, 13 May 2026 14:08:19 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
 	:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:To:From:
 	Sender:Reply-To:Content-ID:Content-Description;
-	bh=HLoZKYD+S4L7/cVsDjTfnxIdlN1x6PGSd7LCbzyeGys=; b=MFr2UOxZM18i5OIeOENgL8OAP6
-	EEE8N+jURfUjswr9BR6Ot3nGt3NfzfzlaMMZ7YJN7snsbVYLM8+cF9ib2Yp7AfmFj+HbijTeuB8ow
-	Nc20infu88QOHOe3kfDfq3j077Gru1YW/I4qzwamorslWU2pfIIGSCqmhilhqZFiZtzTn8vVfJ91S
-	DhUZ5+4t/QalzxiJC0hL6AiEyDLJ7OMbQp6KQP69VjtKu92cX4W3PqtHWW1XnBJ30aL9s9E3LYrGS
-	bY/YgNogyOuY3IkpDs9BWC+x7svvEW/+xPYOsAa7poCZCYSd8ED9XwCnauRlDvMDul+g+JvFMemOV
-	QZ/n9EMQ==;
+	bh=6YeN2trsT5VBLRKr0aTSZd69yACmLaCBytvmfpPpV70=; b=dGshmCOyqEKac6jTxsuo+wB2ZG
+	4pVYf9lqVN4xUInTNd33sX/IZg1ZgP9VYn7g6nrnUhK8NFAjQbsKwFozyXdYjwX//Fc7Xe+nlZ554
+	rLSUtB2sZ5YSAguIGkLIVxq5FHZKWVhM1xg+0zTt2PJUR5iL7tz+JgvmyZoV+Yc8hTdr6Bnr4ahhq
+	NwYBIhmbEx2r2DbLdYATJtuddD3LqXmx1+ezlISHt41ScXxvhjkQUNcC/dBDGAT9ejlElBUA0fYDX
+	iu8L1G7Ns0nqTW8pqvsL+yc+k6isV6pK4DDxMSNVHo5/AJz/70rMDMzXQ3FAoRvqcn83N0SVHpssF
+	vNQd69uQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wNADB-0000000074e-284t
+	id 1wNAG0-000000007b2-0qeN
 	for barebox@lists.infradead.org;
-	Wed, 13 May 2026 14:05:23 +0000
+	Wed, 13 May 2026 14:08:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wNADB-0003Z9-CM; Wed, 13 May 2026 16:05:21 +0200
+	id 1wNAFz-0004Wa-Ra; Wed, 13 May 2026 16:08:15 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wNADB-000bnm-13;
-	Wed, 13 May 2026 16:05:21 +0200
+	id 1wNAFz-000bo5-2b;
+	Wed, 13 May 2026 16:08:15 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wNADB-00000001DWn-17Vo;
-	Wed, 13 May 2026 16:05:21 +0200
+	id 1wNAFz-00000001Dbn-37Ic;
+	Wed, 13 May 2026 16:08:15 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>, 
  Michael Tretter <m.tretter@pengutronix.de>
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-In-Reply-To: <20260513-socfpga-kconfig-v1-0-6b935776f0ac@pengutronix.de>
-References: <20260513-socfpga-kconfig-v1-0-6b935776f0ac@pengutronix.de>
-Message-Id: <177868112126.290302.15387190465259725156.b4-ty@pengutronix.de>
-Date: Wed, 13 May 2026 16:05:21 +0200
+In-Reply-To: <20260513-socfpga-axe5-phy-reset-v1-1-170199f652c5@pengutronix.de>
+References: <20260513-socfpga-axe5-phy-reset-v1-1-170199f652c5@pengutronix.de>
+Message-Id: <177868129573.290605.10890502587416734143.b4-ty@pengutronix.de>
+Date: Wed, 13 May 2026 16:08:15 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260513_150521_955579_E578F149 
-X-CRM114-Status: UNSURE (   6.21  )
+X-CRM114-CacheID: sfid-20260513_150816_662070_733BADE7 
+X-CRM114-Status: UNSURE (   7.36  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -98,30 +98,26 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/3] arm: socfpga: cleanup Kconfig
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] arm: socfpga: axe5-eagle: move PHY reset to board code
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 13 May 2026 14:20:16 +0200, Michael Tretter wrote:
-> Reorganize the SoCFPGA configuration menu. Move the entire configuration
-> into a submenu, move the ARCH for all SoCs above the board options and
-> move special features that depend on the ARCH below the boards.
+On Wed, 13 May 2026 14:23:14 +0200, Michael Tretter wrote:
+> The AXE5 Eagle low level code configures the Ethernet pinmux and PHY
+> reset. This code is executed in EL3 and in EL1, and the PHY reset is
+> toggled and waited for twice.
 > 
-> Patch 1 fixes the formatting of the Kconfig file and replaces
-> spaces with tabs.
+> There is no reason to perform the pinmux and reset in the low level
+> code, but it actually belongs into the board code.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/3] arm: socfgpa: use tabs for indent in Kconfig
-      https://git.pengutronix.de/cgit/barebox/commit/?id=6852489ce376 (link may not be stable)
-[2/3] arm: socfpga: reorganize Kconfig menu
-      https://git.pengutronix.de/cgit/barebox/commit/?id=4bd5ed8785eb (link may not be stable)
-[3/3] arm: socfpga: regenerate defconfig files
-      https://git.pengutronix.de/cgit/barebox/commit/?id=759c82d32c53 (link may not be stable)
+[1/1] arm: socfpga: axe5-eagle: move PHY reset to board code
+      https://git.pengutronix.de/cgit/barebox/commit/?id=ee2d3715da01 (link may not be stable)
 
 Best regards,
 -- 
