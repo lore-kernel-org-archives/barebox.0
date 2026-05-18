@@ -1,61 +1,72 @@
-Delivery-date: Mon, 18 May 2026 15:07:42 +0200
+Delivery-date: Mon, 18 May 2026 15:14:22 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wOxh8-0018iL-1M
+	id 1wOxna-00193B-1m
 	for lore@lore.pengutronix.de;
-	Mon, 18 May 2026 15:07:42 +0200
+	Mon, 18 May 2026 15:14:22 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wOxh7-0001eZ-JU
-	for lore@pengutronix.de; Mon, 18 May 2026 15:07:42 +0200
+	id 1wOxnZ-0002nT-QN
+	for lore@pengutronix.de; Mon, 18 May 2026 15:14:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:
-	Content-Transfer-Encoding:Content-Type:In-Reply-To:To:Subject:From:Reply-To:
-	MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
-	bh=aqKoyBnfXztpBUofbUid24vyPd7LHZD+us5vmuZtd6A=; b=CaOdZ8cirQ9tgIEAhlZg4p7wmi
-	aZ/1WAeYzfoP0ToEVf43JNX+kBZ0yn3gvWH4KwHuTDjxYFmot8rcAHQviGYi+zXHDswC62EqU3Mrz
-	MukSpJCYPQ3yo28LY2wmEAF6JJ9NqVU3CZNhbtacCPlVN8w8nneD98aTJJ/UNT9JkwSHWpn1qx+OT
-	p6YP9DUiwwQtSSQB5ynNetxADHal4skP9W24zP5KdQXpujPmi1It4HghA1NNoRFZmsN4qBv/m9gVn
-	2SvuRgblx8TPKtUFQ4uGsAghx5cMzKsXi3IK5Vycslhqxp0bJGgrnKYjpVUr6HYwytDfiWbRmzFzK
-	46+o94Jw==;
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
+	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=HUo+A7iaerosNv7kqN90EQx4hVNeuCPq5rgi3bSSc9M=; b=Cn0IoBdGYZUXhG+a/OaCv9kVhf
+	azSyGtDtjV2pfqX887hYQSCgqWw7V3Q1/8WNIAitFDW2MjlRqDFisSlTVHm+vnsq32Cq0M0oOKU5c
+	CJGO/05HkbbeKQtBp9cE9Xe2Z7UPcXH9QXf8Z6dUUI24U48qOHiR2YGVZdatQuFhTPBZFvsSdqrI5
+	ZSjVxUU3Oyj7fpP4zHk1LmjnrJ0r7ArRpHjVYxWT1JtIxDJeUOqIJnscetp6yqubzHg0BIYXbVycX
+	10e0yKMz8WX56d+MJ7ePKAD25U530v8pzVH/u0dGfbSI7RBgtBnbPl7pshJBOIiTuteezPtfo6Up5
+	H6TfMsLg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wOxfh-0000000FklR-1HXo;
-	Mon, 18 May 2026 13:06:13 +0000
+	id 1wOxnK-0000000FmAm-05Sj;
+	Mon, 18 May 2026 13:14:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wOxfe-0000000FkkR-0avi
+	id 1wOxnI-0000000Fm9p-1zDh
 	for barebox@lists.infradead.org;
-	Mon, 18 May 2026 13:06:11 +0000
+	Mon, 18 May 2026 13:14:05 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1wOxfc-0001Nq-Ap; Mon, 18 May 2026 15:06:08 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wOxms-0002UV-Pa; Mon, 18 May 2026 15:13:38 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1wOxfb-000b9u-2A;
-	Mon, 18 May 2026 15:06:08 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1wOxfc-0000000EuG7-0XXj;
-	Mon, 18 May 2026 15:06:08 +0200
-From: "Sascha Hauer" <s.hauer@pengutronix.de>
-To: "Ahmad Fatoum" <a.fatoum@pengutronix.de>
-In-Reply-To: <4a67d330-a2a7-47f4-a43a-a2e444c47f55@pengutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 18 May 2026 13:06:08 +0000
-Message-Id: <E1wOxfc-0000000EuG7-0XXj@pty.whiteo.stw.pengutronix.de>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wOxmr-000bPL-1j;
+	Mon, 18 May 2026 15:13:38 +0200
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wOxmr-000000000ZS-45gf;
+	Mon, 18 May 2026 15:13:37 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 18 May 2026 15:13:43 +0200
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260518-rockchip-emmc-hs400-v2-8-789ce495f70b@pengutronix.de>
+References: <20260518-rockchip-emmc-hs400-v2-0-789ce495f70b@pengutronix.de>
+In-Reply-To: <20260518-rockchip-emmc-hs400-v2-0-789ce495f70b@pengutronix.de>
+To: BAREBOX <barebox@lists.infradead.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779110017; l=4329;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=Ov5cRg9OQiE75838aDUhGJfnoM9FstTNBDXVrRblGC0=;
+ b=BZUsLfVKQa/Ciprksv35W9KG0j1DZ8OqOzKjR1ueC5EG7Hvoi2a5V6K7JRDIOE/jQDp+yhHAo
+ PFlGnI2vwlEBqpM2Dj6WKkenpTTzjjHAbFhPRBdIT/8CvK5POX4HHqU
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260518_060610_184275_72E7B59A 
-X-CRM114-Status: GOOD (  33.69  )
+X-CRM114-CacheID: sfid-20260518_061404_547703_977A4F56 
+X-CRM114-Status: GOOD (  16.36  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,8 +78,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: BAREBOX <barebox@lists.infradead.org>, "Claude
- Opus 4.7" <noreply@anthropic.com>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -78,133 +88,144 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 05/10] mci: add HS400 Enhanced Strobe (HS400ES)
- selection
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: [PATCH v2 08/10] mci: sdhci: rockchip: distinguish IP revision 0
+ (rk3568) from 1 (rk3576/rk3588)
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 2026-05-18 11:54, Ahmad Fatoum wrote:
-> Hi,
->=20
-> On 5/11/26 2:08 PM, Sascha Hauer wrote:
-> > HS400ES bypasses HS200 tuning entirely: the eMMC drives a data strobe
-> > line which the controller samples on, so the read path doesn't need
-> > software-tuned phase. It still ends up in MMC_TIMING_MMC_HS400.
-> >=20
-> > Detection: a card advertises HS400ES via EXT_CSD_STROBE_SUPPORT[184],
-> > which sits outside DEVICE_TYPE; record it as a synthetic
-> > EXT_CSD_CARD_TYPE_HS400ES bit in mmc_avail_type when the host
-> > declares MMC_CAP2_HS400_ES (mmc-hs400-enhanced-strobe in DT) and the
-> > card has both STROBE_SUPPORT set and one of the HS400 voltage variants.
-> >=20
-> > Transition (mmc_select_hs400es):
-> >   1. Negotiate 8-bit bus in HS mode (HS400 needs 8-bit).
-> >   2. CMD6 EXT_CSD_HS_TIMING =3D HS, host to HS rate.
-> >   3. CMD6 EXT_CSD_BUS_WIDTH =3D 8-bit DDR | STROBE bit, so the card
-> >      starts driving the strobe line.
-> >   4. CMD6 EXT_CSD_HS_TIMING =3D HS400, host to HS400 timing at
-> >      hs200_max_dtr (200 MHz, DDR-sampled =3D> 400 MT/s).
-> >   5. Call host->ops.hs400_enhanced_strobe so the controller enables
-> >      enhanced strobe sampling.
-> >=20
-> > mmc_select_timing prefers HS400ES over HS200 + HS400; on any failure
-> > it clears the flag and falls back to HS200. mci_startup_mmc returns
-> > early when mmc_select_timing already landed us in HS400 (HS400ES has
-> > no follow-up tuning step).
-> >=20
-> > mci_ops gains an optional hs400_enhanced_strobe hook for the
-> > controller's enhanced-strobe enable.
-> >=20
-> > Assisted-by: Claude Opus 4.7 <noreply@anthropic.com>
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  drivers/mci/mci-core.c | 108 +++++++++++++++++++++++++++++++++++++++++=
-+++++++-
-> >  include/mci.h          |   4 ++
-> >  2 files changed, 111 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> > index 58b28ec653..0cfddb8d43 100644
-> > --- a/drivers/mci/mci-core.c
-> > +++ b/drivers/mci/mci-core.c
-> > @@ -1798,6 +1798,16 @@ static void mmc_select_max_dtr(struct mci *mci)
-> >  		avail_type |=3D EXT_CSD_CARD_TYPE_HS400_1_2V;
-> >  	}
-> > =20
-> > +	/*
-> > +	 * HS400ES capability is reported in EXT_CSD_STROBE_SUPPORT (byte 184=
-),
-> > +	 * not in DEVICE_TYPE. Combine with one of the HS400 voltage variants;
-> > +	 * which voltage is used follows the same negotiation as HS400.
-> > +	 */
-> > +	if ((caps2 & MMC_CAP2_HS400_ES) &&
-> > +	    mci->ext_csd[EXT_CSD_STROBE_SUPPORT] &&
->=20
-> Please add to mci_print_caps()
+The dwcmshc IP comes in two revisions with subtly different DLL needs.
+Upstream Linux (sdhci-of-dwcmshc.c) tracks this via a per-SoC
+revision field; mirror that here so HS400 works robustly on rk3588
+and we can add rk3576 with the right behaviour.
 
-ok.
+Revision 0 (rk3566, rk3568):
+  - DLL_RXCLK source-select needs DLL_RXCLK_NO_INVERTER.
+  - HS400 uses the default 0x10 TX clock tap and leaves
+    DECMSHC_EMMC_DLL_CMDOUT untouched.
 
->=20
-> Also, please extend mci_timing_tostr() to return "HS400ES" for enhanced
-> strobe.
+Revision 1 (rk3576, rk3588, ...):
+  - DLL_RXCLK source-select must be 0 (inverted), not NO_INVERTER.
+  - HS400 needs a 90-degree TX clock tap together with a matching
+    CMDOUT tap programmed into DECMSHC_EMMC_DLL_CMDOUT (with
+    DLL_CMDOUT_SRC_CLK_NEG | DLL_CMDOUT_EN_SRC_CLK_NEG |
+    DWCMSHC_EMMC_DLL_DLYENA | DLL_CMDOUT_TAPNUM_90_DEGREES |
+    DLL_CMDOUT_TAPNUM_FROM_SW).
 
-There is no separate mode for HS400ES, it is still MMC_TIMING_MMC_HS400,
-that's why it's decoded separately by the caller.
+Assisted-by: Claude Opus 4.7
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mci/rockchip-dwcmshc-sdhci.c | 60 +++++++++++++++++++++++++++++++-----
+ 1 file changed, 52 insertions(+), 8 deletions(-)
 
-> > +
-> > +	/* Step 4: 8-bit DDR with strobe enabled */
-> > +	val =3D EXT_CSD_DDR_BUS_WIDTH_8 | EXT_CSD_BUS_WIDTH_STROBE;
-> > +	err =3D mci_switch(mci, EXT_CSD_BUS_WIDTH, val);
-> > +	if (err) {
-> > +		dev_err(&mci->dev, "switch to DDR8 with strobe failed: %d\n", err);
-> > +		return err;
-> > +	}
-> > +> +	/* Step 5: switch card to HS400 */
-> > +	val =3D EXT_CSD_TIMING_HS400 | (host->drive_strength << EXT_CSD_DRV_S=
-TR_SHIFT);
->=20
-> The drive_strength is initialized by mmc_select_driver_type() and it
-> seems no one will have called it for HS400ES?
+diff --git a/drivers/mci/rockchip-dwcmshc-sdhci.c b/drivers/mci/rockchip-dwcmshc-sdhci.c
+index fa2d9964a5..4b2ee03e9a 100644
+--- a/drivers/mci/rockchip-dwcmshc-sdhci.c
++++ b/drivers/mci/rockchip-dwcmshc-sdhci.c
+@@ -78,10 +78,23 @@ enum {
+ 	CLK_MAX,
+ };
+ 
++struct rk_sdhci_soc_data {
++	u8 revision;
++};
++
++static const struct rk_sdhci_soc_data rk_sdhci_rk3568_data = {
++	.revision = 0,
++};
++
++static const struct rk_sdhci_soc_data rk_sdhci_rk35xx_data = {
++	.revision = 1,
++};
++
+ struct rk_sdhci_host {
+ 	struct mci_host		mci;
+ 	struct sdhci		sdhci;
+ 	struct clk_bulk_data	clks[CLK_MAX];
++	const struct rk_sdhci_soc_data *soc;
+ };
+ 
+ 
+@@ -132,9 +145,14 @@ static void rk_sdhci_set_clock(struct rk_sdhci_host *host, unsigned int clock)
+ 
+ 	host->mci.ios.clock = 0;
+ 
+-	/* DO NOT TOUCH THIS SETTING */
+-	extra = DWCMSHC_EMMC_DLL_DLYENA |
+-		DLL_RXCLK_NO_INVERTER << DWCMSHC_EMMC_DLL_RXCLK_SRCSEL;
++	/*
++	 * Revision 0 IPs (rk3568) need DLL_RXCLK_NO_INVERTER; revision 1
++	 * (rk3576, rk3588 and later) must leave the source-select field at
++	 * 0 (inverted).
++	 */
++	extra = DWCMSHC_EMMC_DLL_DLYENA;
++	if (host->soc->revision == 0)
++		extra |= DLL_RXCLK_NO_INVERTER << DWCMSHC_EMMC_DLL_RXCLK_SRCSEL;
+ 	sdhci_write32(&host->sdhci, DWCMSHC_EMMC_DLL_RXCLK, extra);
+ 
+ 	if (clock == 0)
+@@ -210,6 +228,23 @@ static void rk_sdhci_set_clock(struct rk_sdhci_host *host, unsigned int clock)
+ 		0x3 << 19;  /* post-change delay */
+ 	sdhci_write32(&host->sdhci, DWCMSHC_EMMC_ATCTRL, extra);
+ 
++	/*
++	 * On revision 1 IPs, HS400 needs a 90-degree TX clock tap together
++	 * with a matching CMDOUT-tap programmed via DECMSHC_EMMC_DLL_CMDOUT.
++	 * Revision 0 keeps the default 0x10 TX tap and leaves CMDOUT alone.
++	 */
++	if (host->soc->revision == 1 &&
++	    host->mci.ios.timing == MMC_TIMING_MMC_HS400) {
++		txclk_tapnum = DLL_TXCLK_TAPNUM_90_DEGREES;
++
++		extra = DLL_CMDOUT_SRC_CLK_NEG |
++			DLL_CMDOUT_EN_SRC_CLK_NEG |
++			DWCMSHC_EMMC_DLL_DLYENA |
++			DLL_CMDOUT_TAPNUM_90_DEGREES |
++			DLL_CMDOUT_TAPNUM_FROM_SW;
++		sdhci_write32(&host->sdhci, DECMSHC_EMMC_DLL_CMDOUT, extra);
++	}
++
+ 	extra = DWCMSHC_EMMC_DLL_DLYENA |
+ 		DLL_TXCLK_TAPNUM_FROM_SW |
+ 		DLL_RXCLK_NO_INVERTER << DWCMSHC_EMMC_DLL_RXCLK_SRCSEL |
+@@ -327,6 +362,10 @@ static int rk_sdhci_probe(struct device *dev)
+ 
+ 	mci = &host->mci;
+ 
++	host->soc = device_get_match_data(dev);
++	if (!host->soc)
++		return -ENODEV;
++
+ 	iores = dev_request_mem_resource(dev, 0);
+ 	if (IS_ERR(iores))
+ 		return PTR_ERR(iores);
+@@ -374,12 +413,17 @@ static int rk_sdhci_probe(struct device *dev)
+ 
+ static __maybe_unused struct of_device_id rk_sdhci_compatible[] = {
+ 	{
+-		.compatible = "rockchip,rk3562-dwcmshc"
+-	},
+-	{
+-		.compatible = "rockchip,rk3568-dwcmshc"
++		.compatible = "rockchip,rk3562-dwcmshc",
++		.data = &rk_sdhci_rk3568_data,
++	}, {
++		.compatible = "rockchip,rk3568-dwcmshc",
++		.data = &rk_sdhci_rk3568_data,
++	}, {
++		.compatible = "rockchip,rk3576-dwcmshc",
++		.data = &rk_sdhci_rk35xx_data,
+ 	}, {
+-		.compatible = "rockchip,rk3588-dwcmshc"
++		.compatible = "rockchip,rk3588-dwcmshc",
++		.data = &rk_sdhci_rk35xx_data,
+ 	}, {
+ 		/* sentinel */
+ 	}
 
-Ok, will add it at the same place the kernel has it.
+-- 
+2.47.3
 
->=20
-> > +	err =3D mci_switch(mci, EXT_CSD_HS_TIMING, val);
-> > +	if (err) {
-> > +		dev_err(&mci->dev, "switch to HS400 for HS400ES failed: %d\n", err);
-> > +		return err;
-> > +	}
-> > +
-> > +	/* Step 6: host to HS400 timing and final clock */
-> > +	mci_set_timing(mci, MMC_TIMING_MMC_HS400);
-> > +	mmc_set_bus_speed(mci);
-> > +
-> > +	err =3D mci_switch_status(mci, true);
-> > +	if (err)
-> > +		return err;
->=20
-> Should this not be _after_ the enhanced strobe setting, so we are able
-> to propagate an error on issues?
-
-Ok.
-
-> > @@ -2698,7 +2803,8 @@ static void mci_info(struct device *dev)
-> >  		bw =3D 1;
-> >
-> >  	printf("  current buswidth: %d\n", bw);
-> > -	printf("  current timing: %s\n", mci_timing_tostr(host->ios.timing));
-> > +	printf("  current timing: %s%s\n", mci_timing_tostr(host->ios.timing),
-> > +	       host->ios.enhanced_strobe ? " (Enhanced Strobe)" : "");
->=20
-> I would just append an ES suffix.
-
-Ok.
-
---
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
