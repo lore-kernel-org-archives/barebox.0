@@ -1,64 +1,67 @@
-Delivery-date: Mon, 18 May 2026 09:26:15 +0200
+Delivery-date: Mon, 18 May 2026 09:59:18 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wOsMh-0012qd-0G
+	id 1wOssg-0013gO-0T
 	for lore@lore.pengutronix.de;
-	Mon, 18 May 2026 09:26:15 +0200
+	Mon, 18 May 2026 09:59:18 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wOsMg-0006vd-C2
-	for lore@pengutronix.de; Mon, 18 May 2026 09:26:14 +0200
+	id 1wOssf-00057Q-Da
+	for lore@pengutronix.de; Mon, 18 May 2026 09:59:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=cmz4rEa2GRIgZcZ9Ul+I5b6Ue39utJ+3f4nvDOzPySA=; b=hXTfrYYEQHqdLj0Ty1oAu57t2B
-	4/gjtd0uYOq/iFP/HRLqp7gyz7Kv0FK+c++X+opVcdQoRf7Np2KMVc3WkqP5H1mUls2P2kSQ9c5Xw
-	I/cezVwIbPXqNw1X0nmBMwyTbbAVTp/qbUlAAfkuwLmAC/plKAbxEz2mWdWSR6UPqSgG8CHEnB+CR
-	4K8pmyxddm6qy6S/5lRjyYREEOwG+dj9bHFbI4VpmQ4Jh6X6dTv3DrzbGDpfZ9yRczEDcgk3GSPFV
-	jehwVCYo253Ooz6AHQ2wFUTjrMcZRgBbZ47RLXGly0VZg8KfTywd1Tl9vxGyUPtAwLG/4RcIuFU1P
-	fZZdpTnQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=vCWQ+lEFF7IphCNaC5JfJsubd31YNw2tRbun+clXv78=; b=ky7W9sP3bS43Jx2HvITR85dODc
+	I/Q9Wzo+Boao5bEJj88vo/oU1LMfsQf3DPy20qmGwTfLSb+YX3r3YECDVEIfEILqmzFLWWFD6rTl/
+	BKuuU4AgFNfG6RBCIpXxIXWprtmQS/pxp2hVcHDBC892VcR82HqTVKtgU+Rr3GqC0Eiu5RBEw31IC
+	NN+IZigexat53V8Bb8eUUhThoepjV/KT11ByYEEuVE6r+139gyXngKflhHE+fbRg+tax+mMhRkPIf
+	2Lkqqu7/GW5abJ1M/PYTFw7mpOip1QHZEneeTr8D66FDszDfijIKOUPj4yf1plLpQmZ35zGrMtGCI
+	GXPcAakQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wOsEV-0000000EYRV-2rHK;
-	Mon, 18 May 2026 07:17:47 +0000
+	id 1wOsq0-0000000EgPl-3Uon;
+	Mon, 18 May 2026 07:56:32 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wOsES-0000000EYQv-2hzl
+	id 1wOspv-0000000EgMK-1lDH
 	for barebox@lists.infradead.org;
-	Mon, 18 May 2026 07:17:47 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	Mon, 18 May 2026 07:56:29 +0000
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wOsEP-00060w-4v; Mon, 18 May 2026 09:17:41 +0200
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wOsEO-000YHI-1i;
-	Mon, 18 May 2026 09:17:41 +0200
-Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wOsEP-000000005zF-008V;
-	Mon, 18 May 2026 09:17:41 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon, 18 May 2026 09:17:28 +0200
-Message-ID: <20260518071740.23003-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	(envelope-from <jre@pengutronix.de>)
+	id 1wOsps-0003WR-Dh; Mon, 18 May 2026 09:56:24 +0200
+From: Jonas Rebmann <jre@pengutronix.de>
+Date: Mon, 18 May 2026 09:56:14 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260518-barebox-port-ecc-v1-2-25509bd37030@pengutronix.de>
+References: <20260518-barebox-port-ecc-v1-0-25509bd37030@pengutronix.de>
+In-Reply-To: <20260518-barebox-port-ecc-v1-0-25509bd37030@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ "open list:BAREBOX" <barebox@lists.infradead.org>
+Cc: Lukas Wunner <lukas@wunner.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>, 
+ Jonas Rebmann <jre@pengutronix.de>, Stefan Berger <stefanb@linux.ibm.com>, 
+ Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>, 
+ Herbert Xu <herbert@gondor.apana.org.au>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2016; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=ITid57dSDhlJUQeIRE/pVY1Iqp45rBuKh4EGwpBEpgc=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjiOqY6Q3dj9deNJrnOGwR/Hz0Rva3HY/Gc2Kh3JmKq0
+ 3g0D2070lHKwiDGxSArpsgSqyanIGTsf92s0i4WZg4rE8gQBi5OAZgI7ylGhh+pcVe4GEruc6Wf
+ eef5/YhPwP1NnLveF0gxeIQY394az87IMFVslSP3gfnvxO6vzSuSmV3iZixVPp1BZu+x3+ddm4p
+ VOQE=
+X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
+ fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260518_001744_686920_E5E1C2CA 
-X-CRM114-Status: UNSURE (   8.20  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260518_005627_462581_1E6E57CA 
+X-CRM114-Status: GOOD (  11.35  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,75 +79,59 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master] ci: pytest: bump Debian installer image to 13.5
+Subject: [PATCH 2/4] crypto: ecc - Fix off-by-one missing to clear most
+ significant digit
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Ahmad Fatoum <a.fatoum@barebox.org>
+From: Stefan Berger <stefanb@linux.ibm.com>
 
-Debian 13.5 has been released on 16th of May and the old images are no
-longer available, thus bump the version we use in our boot tests.
+Fix an off-by-one error where the most significant digit was not
+initialized leading to signature verification failures by the testmgr.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+Example: If a curve requires ndigits (=9) and diff (=2) indicates that
+2 digits need to be set to zero then start with digit 'ndigits - diff' (=7)
+and clear 'diff' digits starting from there, so 7 and 8.
+
+Reported-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
+Closes: https://lore.kernel.org/linux-crypto/619bc2de-b18a-4939-a652-9ca886bf6349@linux.ibm.com/T/#m045d8812409ce233c17fcdb8b88b6629c671f9f4
+Fixes: 2fd2a82ccbfc ("crypto: ecdsa - Use ecc_digits_from_bytes to create hash digits array")
+Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+(cherry picked from linux commit 1dcf865d3bf5bff45e93cb2410911b3428dacb78)
+Reported-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
- .github/workflows/test-labgrid-pytest.yml  | 2 +-
- scripts/fetch-os.sh                        | 2 +-
- test/arm/multi_v8_efiloader_defconfig.yaml | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ crypto/ecc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/.github/workflows/test-labgrid-pytest.yml b/.github/workflows/test-labgrid-pytest.yml
-index 94b314230874..b1feb432a869 100644
---- a/.github/workflows/test-labgrid-pytest.yml
-+++ b/.github/workflows/test-labgrid-pytest.yml
-@@ -35,7 +35,7 @@ jobs:
-           - ARCH: arm
-             lgenv: test/arm/multi_v8_efiloader_defconfig.yaml
-             defconfig: multi_v8_efiloader_defconfig
--            osimg: debian-13.4.0-arm64-netinst.iso
-+            osimg: debian-13.5.0-arm64-netinst.iso
+diff --git a/crypto/ecc.c b/crypto/ecc.c
+index 77068ebfbd..01003d8a38 100644
+--- a/crypto/ecc.c
++++ b/crypto/ecc.c
+@@ -1,4 +1,4 @@
+-// SPDX-Comment: Origin-URL: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/crypto/ecc.c?id=c6ab5c915da460c0397960af3c308386c3f3247b
++// SPDX-Comment: Origin-URL: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/crypto/ecc.c?id=1dcf865d3bf5bff45e93cb2410911b3428dacb78
+ /*
+  * Copyright (c) 2013, 2014 Kenneth MacKay. All rights reserved.
+  * Copyright (c) 2019 Vitaly Chikunov <vt@altlinux.org>
+@@ -66,7 +66,7 @@ void ecc_digits_from_bytes(const u8 *in, unsigned int nbytes,
+ 	/* diff > 0: not enough input bytes: set most significant digits to 0 */
+ 	if (diff > 0) {
+ 		ndigits -= diff;
+-		memset(&out[ndigits - 1], 0, diff * sizeof(u64));
++		memset(&out[ndigits], 0, diff * sizeof(u64));
+ 	}
  
-           - ARCH: mips
-             lgenv: test/mips/qemu-malta_defconfig.yaml
-diff --git a/scripts/fetch-os.sh b/scripts/fetch-os.sh
-index 126b50f758e8..7e507509e691 100755
---- a/scripts/fetch-os.sh
-+++ b/scripts/fetch-os.sh
-@@ -8,7 +8,7 @@ fi
- set -euo pipefail
- 
- declare -A images=(
--	["debian-13.4.0-arm64-netinst.iso"]="https://cloud.debian.org/images/release/current/arm64/iso-cd/debian-13.4.0-arm64-netinst.iso"
-+	["debian-13.5.0-arm64-netinst.iso"]="https://cloud.debian.org/images/release/current/arm64/iso-cd/debian-13.5.0-arm64-netinst.iso"
- )
- 
- found=0
-diff --git a/test/arm/multi_v8_efiloader_defconfig.yaml b/test/arm/multi_v8_efiloader_defconfig.yaml
-index 86d6a4c391d0..ef77d1707f74 100644
---- a/test/arm/multi_v8_efiloader_defconfig.yaml
-+++ b/test/arm/multi_v8_efiloader_defconfig.yaml
-@@ -9,7 +9,7 @@ targets:
-         kernel: barebox-dt-2nd.img
-         display: qemu-default
-         extra_args: >
--          -drive if=virtio,snapshot=on,file=debian-13.4.0-arm64-netinst.iso
-+          -drive if=virtio,snapshot=on,file=debian-13.5.0-arm64-netinst.iso
-           -device virtio-rng
-       BareboxDriver:
-         prompt: 'barebox@[^:]+:[^ ]+ '
-@@ -35,6 +35,6 @@ targets:
- 
- images:
-   barebox-dt-2nd.img: !template "$LG_BUILDDIR/images/barebox-dt-2nd.img"
--  debian_iso: !template "../../debian-13.4.0-arm64-netinst.iso"
-+  debian_iso: !template "../../debian-13.5.0-arm64-netinst.iso"
- imports:
-   -  ../strategy.py
+ 	if (o) {
+
 -- 
-2.47.3
+2.54.0.129.g3edf2eeba9
 
 
 
