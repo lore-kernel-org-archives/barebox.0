@@ -1,72 +1,76 @@
-Delivery-date: Mon, 18 May 2026 15:14:22 +0200
+Delivery-date: Mon, 18 May 2026 15:14:29 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wOxna-00193B-1m
+	id 1wOxnh-00193X-1a
 	for lore@lore.pengutronix.de;
-	Mon, 18 May 2026 15:14:22 +0200
+	Mon, 18 May 2026 15:14:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wOxnZ-0002nT-QN
-	for lore@pengutronix.de; Mon, 18 May 2026 15:14:22 +0200
+	id 1wOxng-0002pM-Sh
+	for lore@pengutronix.de; Mon, 18 May 2026 15:14:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
-	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HUo+A7iaerosNv7kqN90EQx4hVNeuCPq5rgi3bSSc9M=; b=Cn0IoBdGYZUXhG+a/OaCv9kVhf
-	azSyGtDtjV2pfqX887hYQSCgqWw7V3Q1/8WNIAitFDW2MjlRqDFisSlTVHm+vnsq32Cq0M0oOKU5c
-	CJGO/05HkbbeKQtBp9cE9Xe2Z7UPcXH9QXf8Z6dUUI24U48qOHiR2YGVZdatQuFhTPBZFvsSdqrI5
-	ZSjVxUU3Oyj7fpP4zHk1LmjnrJ0r7ArRpHjVYxWT1JtIxDJeUOqIJnscetp6yqubzHg0BIYXbVycX
-	10e0yKMz8WX56d+MJ7ePKAD25U530v8pzVH/u0dGfbSI7RBgtBnbPl7pshJBOIiTuteezPtfo6Up5
-	H6TfMsLg==;
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=VWAsJZEnQXvXJaBZIU+VbTRzplnxVIjLRkf+M1/5FOQ=; b=Z8D9kGwrpTpIgq
+	DyOH63JYwF1723myU/sf3yOm+3kKnpVQ/kUwLWBYpT9hJ80ofSFjQITKoTaypNAWaWtNkJh85hjRX
+	1+CimdUp057cuCsF/GaGeU1zbrdtPOFJKGZvfc6FNR4+tk7hf8GP5wqwKJlamrMYQD9Cgz/a2qtGY
+	7OuxWLxtfWWYmCadhcu4VA1ptbkSthKmoUNFcBTGtPMFe00b+VNaQmTY3ke8SbwIL5iJc7F7qVXcr
+	SIn36T22BDgLXKgBRCVqH0pYjNGs76TRmt0rPJDNTGyPN37aZ4INC1kjqRUmGnRscai/1d4zZYGe0
+	kJbtRqbR6nUlzHxRTwjQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wOxnK-0000000FmAm-05Sj;
-	Mon, 18 May 2026 13:14:06 +0000
+	id 1wOxn6-0000000Fm3G-2eMt;
+	Mon, 18 May 2026 13:13:52 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wOxnI-0000000Fm9p-1zDh
+	id 1wOxn2-0000000FlxX-1u6q
 	for barebox@lists.infradead.org;
-	Mon, 18 May 2026 13:14:05 +0000
+	Mon, 18 May 2026 13:13:51 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wOxms-0002UV-Pa; Mon, 18 May 2026 15:13:38 +0200
+	id 1wOxms-0002UU-PY; Mon, 18 May 2026 15:13:38 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wOxmr-000bPL-1j;
+	id 1wOxmr-000bPE-1j;
 	Mon, 18 May 2026 15:13:38 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wOxmr-000000000ZS-45gf;
+	id 1wOxmr-000000000ZS-3vxP;
 	Mon, 18 May 2026 15:13:37 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 18 May 2026 15:13:43 +0200
+Date: Mon, 18 May 2026 15:13:35 +0200
+Message-Id: <20260518-rockchip-emmc-hs400-v2-0-789ce495f70b@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260518-rockchip-emmc-hs400-v2-8-789ce495f70b@pengutronix.de>
-References: <20260518-rockchip-emmc-hs400-v2-0-789ce495f70b@pengutronix.de>
-In-Reply-To: <20260518-rockchip-emmc-hs400-v2-0-789ce495f70b@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAH8QC2oC/32NQQ6CMBBFr0Jm7Zi22hpdcQ/DAspAJ4a2aZFgC
+ He3cgCX7yX//Q0yJaYMj2qDRAtnDr6AOlVgXetHQu4LgxLKCC0lpmBf1nFEmiaLLl+FQDJadRe
+ 6taa7Q1nGRAOvR/XZFHac55A+x8kif/Z/b5EoUEs9dKZXgqSqI/nxPafgeT33BM2+7190T4kyu
+ wAAAA==
+X-Change-ID: 20260511-rockchip-emmc-hs400-e652b3e7a6b9
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779110017; l=4329;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779110017; l=1791;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=Ov5cRg9OQiE75838aDUhGJfnoM9FstTNBDXVrRblGC0=;
- b=BZUsLfVKQa/Ciprksv35W9KG0j1DZ8OqOzKjR1ueC5EG7Hvoi2a5V6K7JRDIOE/jQDp+yhHAo
- PFlGnI2vwlEBqpM2Dj6WKkenpTTzjjHAbFhPRBdIT/8CvK5POX4HHqU
+ bh=KbTPS7+7OvePDhFfRf/+Cf+6dUeLYdGXMfgcnXl5Lbg=;
+ b=w2vv6oZ/Tswo7CAPcnbBl9FLr9Y9Co0L0eHqcGzMvshZMP5nPJTXqcLgs6OE79WEKGSxs7t2V
+ ZuVv3slmQEmCSvsPu6WWRQ8MEcXUkpUuhKLkalD/ga+fLpOkH6A/3SF
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260518_061404_547703_977A4F56 
-X-CRM114-Status: GOOD (  16.36  )
+X-CRM114-CacheID: sfid-20260518_061348_503096_2AF3F767 
+X-CRM114-Status: UNSURE (   7.85  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,144 +92,52 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH v2 08/10] mci: sdhci: rockchip: distinguish IP revision 0
- (rk3568) from 1 (rk3576/rk3588)
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH v2 00/10] mci: rockchip-dwcmshc: add HS400(ES) support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The dwcmshc IP comes in two revisions with subtly different DLL needs.
-Upstream Linux (sdhci-of-dwcmshc.c) tracks this via a per-SoC
-revision field; mirror that here so HS400 works robustly on rk3588
-and we can add rk3576 with the right behaviour.
+Based on the previous series to add HS200 support for the Rockchip SDHCI
+controller this series now adds core support for HS400(ES) and also
+Rockchip support for HS400(ES). As expected the speed gain isn't that
+dramatic anymore, but it still goes up from 120MB/s to 170MB/s on reads.
+Write is at about 22MB/s.
 
-Revision 0 (rk3566, rk3568):
-  - DLL_RXCLK source-select needs DLL_RXCLK_NO_INVERTER.
-  - HS400 uses the default 0x10 TX clock tap and leaves
-    DECMSHC_EMMC_DLL_CMDOUT untouched.
+Tested on a Radxa Rock 5T.
 
-Revision 1 (rk3576, rk3588, ...):
-  - DLL_RXCLK source-select must be 0 (inverted), not NO_INVERTER.
-  - HS400 needs a 90-degree TX clock tap together with a matching
-    CMDOUT tap programmed into DECMSHC_EMMC_DLL_CMDOUT (with
-    DLL_CMDOUT_SRC_CLK_NEG | DLL_CMDOUT_EN_SRC_CLK_NEG |
-    DWCMSHC_EMMC_DLL_DLYENA | DLL_CMDOUT_TAPNUM_90_DEGREES |
-    DLL_CMDOUT_TAPNUM_FROM_SW).
-
-Assisted-by: Claude Opus 4.7
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/rockchip-dwcmshc-sdhci.c | 60 +++++++++++++++++++++++++++++++-----
- 1 file changed, 52 insertions(+), 8 deletions(-)
+Changes in v2:
+- Integrate Review feedback from Ahmad
+- Link to v1: https://lore.barebox.org/20260511-rockchip-emmc-hs400-v1-0-515fb6d20e12@pengutronix.de
 
-diff --git a/drivers/mci/rockchip-dwcmshc-sdhci.c b/drivers/mci/rockchip-dwcmshc-sdhci.c
-index fa2d9964a5..4b2ee03e9a 100644
---- a/drivers/mci/rockchip-dwcmshc-sdhci.c
-+++ b/drivers/mci/rockchip-dwcmshc-sdhci.c
-@@ -78,10 +78,23 @@ enum {
- 	CLK_MAX,
- };
- 
-+struct rk_sdhci_soc_data {
-+	u8 revision;
-+};
-+
-+static const struct rk_sdhci_soc_data rk_sdhci_rk3568_data = {
-+	.revision = 0,
-+};
-+
-+static const struct rk_sdhci_soc_data rk_sdhci_rk35xx_data = {
-+	.revision = 1,
-+};
-+
- struct rk_sdhci_host {
- 	struct mci_host		mci;
- 	struct sdhci		sdhci;
- 	struct clk_bulk_data	clks[CLK_MAX];
-+	const struct rk_sdhci_soc_data *soc;
- };
- 
- 
-@@ -132,9 +145,14 @@ static void rk_sdhci_set_clock(struct rk_sdhci_host *host, unsigned int clock)
- 
- 	host->mci.ios.clock = 0;
- 
--	/* DO NOT TOUCH THIS SETTING */
--	extra = DWCMSHC_EMMC_DLL_DLYENA |
--		DLL_RXCLK_NO_INVERTER << DWCMSHC_EMMC_DLL_RXCLK_SRCSEL;
-+	/*
-+	 * Revision 0 IPs (rk3568) need DLL_RXCLK_NO_INVERTER; revision 1
-+	 * (rk3576, rk3588 and later) must leave the source-select field at
-+	 * 0 (inverted).
-+	 */
-+	extra = DWCMSHC_EMMC_DLL_DLYENA;
-+	if (host->soc->revision == 0)
-+		extra |= DLL_RXCLK_NO_INVERTER << DWCMSHC_EMMC_DLL_RXCLK_SRCSEL;
- 	sdhci_write32(&host->sdhci, DWCMSHC_EMMC_DLL_RXCLK, extra);
- 
- 	if (clock == 0)
-@@ -210,6 +228,23 @@ static void rk_sdhci_set_clock(struct rk_sdhci_host *host, unsigned int clock)
- 		0x3 << 19;  /* post-change delay */
- 	sdhci_write32(&host->sdhci, DWCMSHC_EMMC_ATCTRL, extra);
- 
-+	/*
-+	 * On revision 1 IPs, HS400 needs a 90-degree TX clock tap together
-+	 * with a matching CMDOUT-tap programmed via DECMSHC_EMMC_DLL_CMDOUT.
-+	 * Revision 0 keeps the default 0x10 TX tap and leaves CMDOUT alone.
-+	 */
-+	if (host->soc->revision == 1 &&
-+	    host->mci.ios.timing == MMC_TIMING_MMC_HS400) {
-+		txclk_tapnum = DLL_TXCLK_TAPNUM_90_DEGREES;
-+
-+		extra = DLL_CMDOUT_SRC_CLK_NEG |
-+			DLL_CMDOUT_EN_SRC_CLK_NEG |
-+			DWCMSHC_EMMC_DLL_DLYENA |
-+			DLL_CMDOUT_TAPNUM_90_DEGREES |
-+			DLL_CMDOUT_TAPNUM_FROM_SW;
-+		sdhci_write32(&host->sdhci, DECMSHC_EMMC_DLL_CMDOUT, extra);
-+	}
-+
- 	extra = DWCMSHC_EMMC_DLL_DLYENA |
- 		DLL_TXCLK_TAPNUM_FROM_SW |
- 		DLL_RXCLK_NO_INVERTER << DWCMSHC_EMMC_DLL_RXCLK_SRCSEL |
-@@ -327,6 +362,10 @@ static int rk_sdhci_probe(struct device *dev)
- 
- 	mci = &host->mci;
- 
-+	host->soc = device_get_match_data(dev);
-+	if (!host->soc)
-+		return -ENODEV;
-+
- 	iores = dev_request_mem_resource(dev, 0);
- 	if (IS_ERR(iores))
- 		return PTR_ERR(iores);
-@@ -374,12 +413,17 @@ static int rk_sdhci_probe(struct device *dev)
- 
- static __maybe_unused struct of_device_id rk_sdhci_compatible[] = {
- 	{
--		.compatible = "rockchip,rk3562-dwcmshc"
--	},
--	{
--		.compatible = "rockchip,rk3568-dwcmshc"
-+		.compatible = "rockchip,rk3562-dwcmshc",
-+		.data = &rk_sdhci_rk3568_data,
-+	}, {
-+		.compatible = "rockchip,rk3568-dwcmshc",
-+		.data = &rk_sdhci_rk3568_data,
-+	}, {
-+		.compatible = "rockchip,rk3576-dwcmshc",
-+		.data = &rk_sdhci_rk35xx_data,
- 	}, {
--		.compatible = "rockchip,rk3588-dwcmshc"
-+		.compatible = "rockchip,rk3588-dwcmshc",
-+		.data = &rk_sdhci_rk35xx_data,
- 	}, {
- 		/* sentinel */
- 	}
+---
+Sascha Hauer (10):
+      mci: sdhci: define VDD_180 and shrink UHS_MASK to bits 0..2
+      mci: mmc_send_tuning: actually point data.dest at the buffer
+      mci: sdhci: add ADMA2 descriptor helpers
+      mci: add HS400 mode selection
+      mci: add HS400 Enhanced Strobe (HS400ES) selection
+      mci: rockchip-dwcmshc-sdhci: use ADMA2
+      mci: sdhci: rockchip: set TX-path source-select bit in DWCMSHC_EMMC_DLL_TXCLK
+      mci: sdhci: rockchip: distinguish IP revision 0 (rk3568) from 1 (rk3576/rk3588)
+      mci: sdhci: rockchip: support HS400
+      mci: sdhci: rockchip: support HS400 Enhanced Strobe
 
+ drivers/mci/imx-esdhc-common.c       |   2 -
+ drivers/mci/mci-core.c               | 197 ++++++++++++++++++++++++++++++++++-
+ drivers/mci/rockchip-dwcmshc-sdhci.c |  99 ++++++++++++++++--
+ drivers/mci/sdhci.c                  | 157 +++++++++++++++++++++++++++-
+ drivers/mci/sdhci.h                  |  62 ++++++++++-
+ include/mci.h                        |   9 ++
+ 6 files changed, 509 insertions(+), 17 deletions(-)
+---
+base-commit: 4c7af34b16eb83fcab8aeb3444d6cbf184cadd39
+change-id: 20260511-rockchip-emmc-hs400-e652b3e7a6b9
+
+Best regards,
 -- 
-2.47.3
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
