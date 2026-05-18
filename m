@@ -1,71 +1,70 @@
-Delivery-date: Mon, 18 May 2026 10:02:33 +0200
+Delivery-date: Mon, 18 May 2026 10:54:16 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wOsvp-0013kN-1C
+	id 1wOtjr-0014bf-38
 	for lore@lore.pengutronix.de;
-	Mon, 18 May 2026 10:02:33 +0200
+	Mon, 18 May 2026 10:54:15 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wOsvo-0006Qk-Mk
-	for lore@pengutronix.de; Mon, 18 May 2026 10:02:33 +0200
+	id 1wOtjr-0008Qn-94
+	for lore@pengutronix.de; Mon, 18 May 2026 10:54:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=eqdZf8zS/bSdiHNMnSdsnCgeA3s6z0anTqQOydgWPk0=; b=BZczdclK7Y82Z8
-	O3/L425HVypa/1O547TSqIXcS2t8jKqN/XkJa2ac7gx2U9rOkO38FuGbpwyrGorRDhfv3qDDGSyr/
-	2uu2k+Se18Uz+2J2YlfmHM0wIEkp5GbphErSP9YJCRHDKdeijXGiEr0taEBVnQGfULS7tjgShnEMB
-	53mKMrPIEiefBCs+8vrbq/+8i04UMgA9iVi4OlLulCOvx3CL5pOlKLBw9n3w6u3crwomgQCpIvciK
-	u+/ZltKV+7/ctk/1ZeszfnW8CgcMSiRZm1CV81dEQa27Q2wIOyMm02FH14p79Tnk8I65AdaeEmAx5
-	Y2ql3iq4ggt1VUD0ANSw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=U5E2pjnGFt9KQgLstGP4cNsmvxVl2NsaqpKtPKux7ag=; b=L1k1Hd1N5B5FadaK9+E6YsUssY
+	uw/bd/vQCLgam/PgXYCb0EWovdkKN93YJxRqsHUM1cRwgRl+bRO1orXLzG1rV0JKnD2Py96Vftv57
+	e3P3vWLEbPYV3Y9P2J0zi0gsump/SKn08fydsoZuqhHM8HktYERUbB/EC8uzHvu/Zz6qwC1olbzp/
+	+Nfb0mN5czjeriPRbYoINE4OoVAtdqYlJGOe2mLPoD5N/GqDidLMPDpZ0UUZkuNkO5+J181Hvxc+B
+	d7nj0hEd08bcuo1BFMXAxLak7vlMb93EI0K2KByYVxlXJThrn6YQnR/2SzYwLf7QZPKNLxRWpldCj
+	u9oDHFUA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wOsqD-0000000EgTq-3hbu;
-	Mon, 18 May 2026 07:56:45 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1wOtj8-0000000Etu8-3yQq;
+	Mon, 18 May 2026 08:53:30 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wOsq2-0000000EgQk-3Key
+	id 1wOtj8-0000000EttV-0DlI
+	for barebox@bombadil.infradead.org;
+	Mon, 18 May 2026 08:53:30 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+	:In-Reply-To:From:References:To:Subject:MIME-Version:Date:Message-ID:Sender:
+	Reply-To:Cc:Content-ID:Content-Description;
+	bh=U5E2pjnGFt9KQgLstGP4cNsmvxVl2NsaqpKtPKux7ag=; b=qJYP2Ck9x/xi+ilOHvtBPwtqo7
+	95pnEPzGVxvxp5XnWJxokxY83p1AiMkAp3e3iTml1xKU1X00MG3oFOfENaVWUEZ6N14c5kbEPI1WU
+	AXrxo/MYoVf40WeqO97Q1azx4ubUM2KGR0fgI+zT8Nrs3kmCBt1da6nkpUNl8Uer5/Nlgvlw5pbL1
+	Wx8Ng9m/Use7flJLe6bnOng9/Y44sDtnKvs3pORbkFV1IpWM2DVOL77m44CAAF2ZEbzT1MaHNJl9j
+	uoULOUqvSGMuTetXKJ0zVtDB6tTAU0i0r+SCJNSTpb8/0/5Ti9xaU9WY2UTWiKl6r7WHcLDZoL9Kw
+	t9rLHMEw==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wOtj4-0000000AT9h-2mYt
 	for barebox@lists.infradead.org;
-	Mon, 18 May 2026 07:56:39 +0000
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	Mon, 18 May 2026 08:53:29 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <jre@pengutronix.de>)
-	id 1wOsps-0003WR-6y; Mon, 18 May 2026 09:56:24 +0200
-From: Jonas Rebmann <jre@pengutronix.de>
-Date: Mon, 18 May 2026 09:56:12 +0200
-Message-Id: <20260518-barebox-port-ecc-v1-0-25509bd37030@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1wOtj4-0008FF-Hp; Mon, 18 May 2026 10:53:26 +0200
+Message-ID: <32dbf417-df9b-4084-914a-37216e2ea64f@pengutronix.de>
+Date: Mon, 18 May 2026 10:53:26 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+To: Mark Diener <markdiener10@gmail.com>, barebox@lists.infradead.org
+References: <CAC3g_BFiUrH19_yab4Bn+jNAH9akcupYAvvbzbZh++SiDap4Ng@mail.gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <CAC3g_BFiUrH19_yab4Bn+jNAH9akcupYAvvbzbZh++SiDap4Ng@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIABzGCmoC/x3MMQqAMAxA0atIZgNtoUW9ijhojJrFSioilN7d4
- viG/zMkVuEEQ5NB+ZEk8aywbQN0zOfOKGs1OOOC8dbjMisv8cUr6o1MhHYN7Dz1wXQENbuUN3n
- /5TiV8gFc32llYgAAAA==
-X-Change-ID: 20260515-barebox-port-ecc-1d6e25c9608c
-To: Sascha Hauer <s.hauer@pengutronix.de>, 
- "open list:BAREBOX" <barebox@lists.infradead.org>
-Cc: Lukas Wunner <lukas@wunner.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>, 
- Jonas Rebmann <jre@pengutronix.de>, Stefan Berger <stefanb@linux.ibm.com>, 
- Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>, 
- Herbert Xu <herbert@gondor.apana.org.au>, 
- Thorsten Blum <thorsten.blum@linux.dev>
-X-Mailer: b4 0.16-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1869; i=jre@pengutronix.de;
- h=from:subject:message-id; bh=u7iXKaPCsgZmGuZPaXNMw5Hj4y3PBrH4t3hC2A/upC4=;
- b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsjiOqai/k7SIubjReOWW/IbRWV7JL/HVJz48f7esewal
- tDkFXf2dJSyMIhxMciKKbLEqskpCBn7XzertIuFmcPKBDKEgYtTACayXovhn2JxqPyyxUskff4J
- Jtov/urIWs9w+bOv+wLLxjc9UYV7vjIyNFeuDw095vFUtfL1LzvbRZOevJhifWXdHcnS40Hz196
- UZAEA
-X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
- fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260518_005636_164509_7FB604D1 
-X-CRM114-Status: UNSURE (   8.61  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260518_095327_137218_5BBAFF37 
+X-CRM114-Status: GOOD (  18.00  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,62 +82,81 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 0/4] crypto: Port ecc.c fixes from kernel
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: ENV
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We've been working on processes for porting fixes from copied code in
-winter and introduced Origin-URL references [1] during those
-discussions.
+Hello Mark,
 
-Now thanks to Lukas we're reminded to put this to practice.
+On 5/14/26 11:53 PM, Mark Diener wrote:
+> Is there better resources to detail how to properly understand the
+> details behind /env/  (its creation and components)?
 
-This series is a proposal on future standard practice of porting such
-patches: Update the Origin-URL in every ported patch, mention the origin
-project in the "cherry picked from" line. Handle like a backport for all
-other regards.
+What are you missing in the official documentation?
 
-Note that the most recent ported patch is linux commit c66e0a273f22
-("crypto: ecc - Streamline alloc_point and remove
-{alloc,free}_digits_space") but Origin-URL is pointing at commit
-d6ea871d73ab ("crypto: ecc - Use crypto_stdrng_get_bytes()"), which I
-intentionally skipped when porting as not applicable to barebox (we have
-a different random bytes API). This is so that the file is now
-recognizable as up to date until further updates on linux master.
+> I cannot get the barebox.efi to actually execute the /env/bin/init script.
 
-To establish these processes, we should soon underscore them with some
-tooling like Ahmad did in [1].
+Scripts in /env/bin are added to PATH, so you can execute them by just
+their name (instead of their full path), but they are not automatically
+executed.
 
-[1] https://lore.kernel.org/barebox/20251218151807.691382-1-a.fatoum@pengutronix.de/
+If you want a script to be executed automatically at init time, add it
+into /env/init/.
 
-Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
----
-Jonas Rebmann (1):
-      crypto: ecc: Add Origin-URL to document kernel revision
+> bareboxenv seems like a utility that would be involved.
 
-Lukas Wunner (1):
-      crypto: ecdsa - Harden against integer overflows in DIV_ROUND_UP()
+If you want to modify the script from Linux, yes. bareboxenv is also
+used by barebox itself during the build process and can be used to bake
+a built-in environment into barebox.
 
-Stefan Berger (1):
-      crypto: ecc - Fix off-by-one missing to clear most significant digit
+That's the preferred way of shipping the default environment.
 
-Thorsten Blum (1):
-      crypto: ecc - Streamline alloc_point and remove {alloc,free}_digits_space
+What do you want to do in your init script?
 
- crypto/ecc.c         | 32 ++++++++++++--------------------
- include/linux/math.h | 12 ++++++++++++
- 2 files changed, 24 insertions(+), 20 deletions(-)
----
-base-commit: c7bdd78be7cc9449a49a429a342c83f8085b1475
-change-id: 20260515-barebox-port-ecc-1d6e25c9608c
+> Also, when I bootm my bzImage, it hangs up and seems to lose track of
+> mounting the storage so it just stops processing.
 
-Best regards,
---  
-Jonas Rebmann <jre@pengutronix.de>
+Hanging as in seeing a
+
+  Kernel panic - not syncing: Attempted to kill init
+
+?
+
+If so, you must have barebox add a root= option to inform the kernel
+where it can find its rootfs.
+
+You can try it out manually using:
+
+global linux.bootargs.myroot="root=<insert your root device or PARTUUID,
+..etc. here>"
+
+> My barebox.efi is launching, but tripping on properly have the
+> /env/bin/init directory established
+
+/env/bin/init is an optional init script you can provide. I just Cc'd
+you on changes to the docs that make this clearer.
+
+Putting your init scripts in /env/init/ is what you are likely after.
+
+Cheers,
+Ahmad
+
+> 
+> Any comments appreciated,
+> 
+> Marco
+> 
+> 
+
+-- 
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
