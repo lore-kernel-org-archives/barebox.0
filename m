@@ -1,72 +1,72 @@
-Delivery-date: Mon, 18 May 2026 16:55:30 +0200
+Delivery-date: Mon, 18 May 2026 17:02:19 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wOzNS-001AXO-2x
+	id 1wOzU3-001Ac9-2u
 	for lore@lore.pengutronix.de;
-	Mon, 18 May 2026 16:55:30 +0200
+	Mon, 18 May 2026 17:02:19 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wOzNS-00073U-Ak
-	for lore@pengutronix.de; Mon, 18 May 2026 16:55:30 +0200
+	id 1wOzU3-0007zv-89
+	for lore@pengutronix.de; Mon, 18 May 2026 17:02:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=LM4pjpmw0yNfTApn5ysCVvOqhi4PkWqXeaJt4YmDQrA=; b=tj1q20a9mCX+LAJ4xHXYQ4OdGU
-	9DcvDlOeTs91yNAex6k3ZdVguJreiICrIkjubq6DDeEToExXoZuNOmhnNbRgn6pXnsVQ/21G7PSp/
-	ipxuAzuKAMjGwkwoREQ1e90AHBHLXv379XLuinS6IMQJuerADvLl8HJHJhcUATTt1ES4rB2fPjTzb
-	WrjGSvT5087V5JDJ9yLDUQlxuejt+TzQP8jkF7UhoFUcbfPq4X5Y3riprI8lumunKZBZuQ4rQo8Qs
-	gnhFmrhCLg7XX/Cjl9w0k0tor0tKroMh8xG8N1cNeOo2qXMrK+vbHqyaMcPNyjgz9h18BG98uDZeo
-	xBr75QuQ==;
+	bh=fBqZWfYCfEOdJPHUKYL7RAVspYC+Agm33PJlPcx6Zr4=; b=DrZcO5EIDe/oUU8Gmt5EH62H0O
+	qK65rsHFNZhZ7XE3pDwV/ZFhWXGhimRBmJ5Lithv0K+pobVqYb4WQSLg6Rpw9dauvuMz7SqWwaayU
+	0dJNS+X2AqLw1G7CEq2lIn9vxsafubb/PZCU9TFXxOF0Uk9No/PBpOAXlF3sJvxV+MLi8+hv52X7h
+	fdS4TQMUO0BW/LnQhhSrHYvCr/dcBmRnkqF+TkCiAbBR2WoXtnlpLehflMIyj6Ob7x1pV+h8QVqwt
+	TtlQgJmRdFE+FcpLI17EUFEA3JAE4Ow7UDiUFyUwdeQ0572t/fUcnsQuxpo5qSJwdBdZm5kXJNc/b
+	0AS2hzyA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wOy5Z-0000000FpFr-33OS;
-	Mon, 18 May 2026 13:32:57 +0000
+	id 1wOxya-0000000FoIi-38ac;
+	Mon, 18 May 2026 13:25:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wOy5X-0000000FpF5-1H36
+	id 1wOxyY-0000000FoHu-0ezR
 	for barebox@lists.infradead.org;
-	Mon, 18 May 2026 13:32:56 +0000
+	Mon, 18 May 2026 13:25:43 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wOy5V-00059N-8E; Mon, 18 May 2026 15:32:53 +0200
+	id 1wOxyB-0004OZ-Ik; Mon, 18 May 2026 15:25:19 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wOy5U-000bSk-23;
-	Mon, 18 May 2026 15:32:53 +0200
+	id 1wOxyA-000bRO-0f;
+	Mon, 18 May 2026 15:25:18 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wOxmr-000000000ZS-46uW;
-	Mon, 18 May 2026 15:13:37 +0200
+	id 1wOxyA-00000000ATr-2yJU;
+	Mon, 18 May 2026 15:25:18 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 18 May 2026 15:13:45 +0200
+To: "open list:BAREBOX" <barebox@lists.infradead.org>, 
+ Jonas Rebmann <jre@pengutronix.de>
+Cc: Lukas Wunner <lukas@wunner.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>, 
+ Stefan Berger <stefanb@linux.ibm.com>, 
+ Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>, 
+ Herbert Xu <herbert@gondor.apana.org.au>, 
+ Thorsten Blum <thorsten.blum@linux.dev>
+In-Reply-To: <20260518-barebox-port-ecc-v1-0-25509bd37030@pengutronix.de>
+References: <20260518-barebox-port-ecc-v1-0-25509bd37030@pengutronix.de>
+Message-Id: <177911071870.40250.12691861088319980742.b4-ty@pengutronix.de>
+Date: Mon, 18 May 2026 15:25:18 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260518-rockchip-emmc-hs400-v2-10-789ce495f70b@pengutronix.de>
-References: <20260518-rockchip-emmc-hs400-v2-0-789ce495f70b@pengutronix.de>
-In-Reply-To: <20260518-rockchip-emmc-hs400-v2-0-789ce495f70b@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779110017; l=1761;
- i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=4iXc9qwscSqh9FXc6atMyxr+/dkTO3qK+Ju1vq08D1U=;
- b=bDuWm3/Yjz78uhzt4/ML3f7iwNmTPsyDc6kGMrN3/oip2Qaerjmv7vq9tUG3+dNcfYgU23OnB
- EDPoZMp344kBH79vyoDgITHzxjsfslo2U50AU2OtdqXLoHuMGBB7gfV
-X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
- pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260518_063255_356913_B54BE2B0 
-X-CRM114-Status: GOOD (  10.15  )
+X-CRM114-CacheID: sfid-20260518_062542_199352_EBEEB97A 
+X-CRM114-Status: UNSURE (   9.18  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,62 +88,39 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 10/10] mci: sdhci: rockchip: support HS400 Enhanced
- Strobe
+Subject: Re: [PATCH 0/4] crypto: Port ecc.c fixes from kernel
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Implement the hs400_enhanced_strobe op so the dwcmshc controller
-samples on the eMMC strobe instead of the source clock when in
-HS400ES. The bit lives at EMMC_CONTROL[8] (DWCMSHC_ENHANCED_STROBE)
-in the same vendor area register that already holds CARD_IS_EMMC.
 
-Assisted-by: Claude Opus 4.7
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mci/rockchip-dwcmshc-sdhci.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+On Mon, 18 May 2026 09:56:12 +0200, Jonas Rebmann wrote:
+> We've been working on processes for porting fixes from copied code in
+> winter and introduced Origin-URL references [1] during those
+> discussions.
+> 
+> Now thanks to Lukas we're reminded to put this to practice.
+> 
+> This series is a proposal on future standard practice of porting such
+> patches: Update the Origin-URL in every ported patch, mention the origin
+> project in the "cherry picked from" line. Handle like a backport for all
+> other regards.
+> 
+> [...]
 
-diff --git a/drivers/mci/rockchip-dwcmshc-sdhci.c b/drivers/mci/rockchip-dwcmshc-sdhci.c
-index 2b55456f05..408b1e544a 100644
---- a/drivers/mci/rockchip-dwcmshc-sdhci.c
-+++ b/drivers/mci/rockchip-dwcmshc-sdhci.c
-@@ -19,6 +19,7 @@
- #define DWCMSHC_HOST_CTRL3		0x508
- #define DWCMSHC_EMMC_CONTROL		0x52c
- #define  DWCMSHC_CARD_IS_EMMC		BIT(0)
-+#define  DWCMSHC_ENHANCED_STROBE	BIT(8)
- #define DWCMSHC_EMMC_ATCTRL		0x540
- 
- /* Rockchip specific Registers */
-@@ -363,12 +364,24 @@ static int rk_sdhci_execute_tuning(struct mci_host *mci, u32 opcode)
- 	return sdhci_execute_tuning(&host->sdhci, opcode);
- }
- 
-+static void rk_sdhci_hs400_enhanced_strobe(struct mci_host *mci,
-+					   struct mci_ios *ios)
-+{
-+	struct rk_sdhci_host *host = to_rk_sdhci_host(mci);
-+	u32 val;
-+
-+	val = sdhci_read32(&host->sdhci, DWCMSHC_EMMC_CONTROL);
-+	val |= DWCMSHC_ENHANCED_STROBE;
-+	sdhci_write32(&host->sdhci, DWCMSHC_EMMC_CONTROL, val);
-+}
-+
- static const struct mci_ops rk_sdhci_ops = {
- 	.send_cmd = rk_sdhci_send_cmd,
- 	.set_ios = rk_sdhci_set_ios,
- 	.init = rk_sdhci_init,
- 	.card_present = rk_sdhci_card_present,
- 	.execute_tuning = rk_sdhci_execute_tuning,
-+	.hs400_enhanced_strobe = rk_sdhci_hs400_enhanced_strobe,
- };
- 
- static int rk_sdhci_probe(struct device *dev)
+Applied, thanks!
 
+[1/4] crypto: ecc: Add Origin-URL to document kernel revision
+      https://git.pengutronix.de/cgit/barebox/commit/?id=cb711fca7828 (link may not be stable)
+[2/4] crypto: ecc - Fix off-by-one missing to clear most significant digit
+      https://git.pengutronix.de/cgit/barebox/commit/?id=08d9eaa925de (link may not be stable)
+[3/4] crypto: ecdsa - Harden against integer overflows in DIV_ROUND_UP()
+      https://git.pengutronix.de/cgit/barebox/commit/?id=c9f258b1e9c7 (link may not be stable)
+[4/4] crypto: ecc - Streamline alloc_point and remove {alloc,free}_digits_space
+      https://git.pengutronix.de/cgit/barebox/commit/?id=4f64ef254546 (link may not be stable)
+
+Best regards,
 -- 
-2.47.3
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
