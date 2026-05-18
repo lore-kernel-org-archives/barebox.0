@@ -1,61 +1,82 @@
-Delivery-date: Mon, 18 May 2026 12:39:42 +0200
+Delivery-date: Mon, 18 May 2026 12:43:42 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wOvNu-0016OA-08
+	id 1wOvRm-0016VJ-1z
 	for lore@lore.pengutronix.de;
-	Mon, 18 May 2026 12:39:42 +0200
+	Mon, 18 May 2026 12:43:42 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wOvNt-0006yD-Cg
-	for lore@pengutronix.de; Mon, 18 May 2026 12:39:41 +0200
+	id 1wOvRm-0007UB-0p
+	for lore@pengutronix.de; Mon, 18 May 2026 12:43:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:
-	Content-Transfer-Encoding:Content-Type:In-Reply-To:To:Subject:From:Reply-To:
-	MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
-	bh=2m7IzlHbH1yAz+OhvsRTuwniXnojeWrDZyEMdlf6DNk=; b=zArnaaztmAf/AATrOSRwBNRIxQ
-	eRuy4ej/OHCYpKIinW0A7hsxaDeu+OjTPW/3KMnf22SSQn0g5LXS39CYUqBNqrwCVEXqZzn2mrnWA
-	syJ5QKuH2lo5+t4iHtm1p4SCWs3MVYaU+VMV0Nko8PsU0MH6EF9Tpf8LQnXePC/CuX7/IAwjOvXSj
-	ns6A8TnQA2XUb6GdlqPuBl8JncPgB8gXzmW9WQlPY5uDkDG5AjDCmLCX2k3jrd2I68/IY8De+Fm0j
-	SXYa3EQfWluI4jrHvJ1Mo+h7ocwAJhZwYnEad3OY6vcecEZs3AO0AHK1s0K31kTw6wvJRym0npF4F
-	yF/gCjHw==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=7IeU2c/QXsJLPr+9ygy275WqR60+oFMhZ6774qN/0gs=; b=ZRiWUlESCr8v7GSV+gy13IYdZ2
+	1fNNZs2j75mS6+qUR896dRhXowSOHS1xBvB/itgGoTW7jwJCITh1nkj6xIohvopEGnZBvP6PXH9p1
+	h0XgEYMqZESt8be3H58KNte8UPe5obvODAYsVpmLSNwe6Hl+vaTcFdHqgTqEyLrKPe3cnf6vGp3YE
+	sEMScREEq48SaVwRo7MaMGAoixeWDku7t8S7oQ2srwvhCN2F9kE77IFhRpxIpS8RBg35kJrzbf6oP
+	xs1+BsFHectTKedbUWNLtf+/PCAIILSYy5I1saOOvh91NWi5b2t9b6pv0tO1br8IX5dVJjrDS0K65
+	xeMeaLQg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wOvMd-0000000FH4C-13W4;
-	Mon, 18 May 2026 10:38:23 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1wOvQe-0000000FHle-1KIj;
+	Mon, 18 May 2026 10:42:32 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wOvMa-0000000FH2l-1Uof
+	id 1wOvQc-0000000FHlQ-41TC
+	for barebox@bombadil.infradead.org;
+	Mon, 18 May 2026 10:42:31 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+	:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:To:From:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=7IeU2c/QXsJLPr+9ygy275WqR60+oFMhZ6774qN/0gs=; b=o/Ux8tcTjdgVP0q3DnHwW8+SSx
+	Fu/tCkA4ATvLdquXV6gR8kJJYZYt2g4XpY46BeGOqV5ns9JcUHh61mClbwOUvjfXCSgQg4HsszhYI
+	7ULO/cBUcHUpj5wwsk+1vVMc5oCDpEKZ0Fjm5ckF9oaizbrOol1d03HVsRBz8ToTKzWGaX2lb6Jd2
+	vgS45BBsjsVccWmkk1m0lYamlbPUL+PoDTOP2vWMwvkvIbnQfwntpzGvBeABwy0Sm6ukgiPXIxsxR
+	1XSBcxJOtgCz1sbSiBk0PzRUDPwVYNbLpGzdjuDWu+bEQ5kA29hM1Mjw44FdO575TxUpEeCdA3V3d
+	1Oq+RR7g==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wOvQX-0000000AnkC-3QQc
 	for barebox@lists.infradead.org;
-	Mon, 18 May 2026 10:38:22 +0000
+	Mon, 18 May 2026 10:42:29 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1wOvMX-0006pG-8L; Mon, 18 May 2026 12:38:17 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wOvQW-0007J7-Hh; Mon, 18 May 2026 12:42:24 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1wOvMW-000Zs7-23;
-	Mon, 18 May 2026 12:38:17 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1wOvMX-0000000EsYJ-0RpE;
-	Mon, 18 May 2026 12:38:17 +0200
-From: "Sascha Hauer" <s.hauer@pengutronix.de>
-To: "Ahmad Fatoum" <a.fatoum@pengutronix.de>
-In-Reply-To: <3d28313c-9695-416f-8d86-66ac050624b7@pengutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 18 May 2026 10:38:17 +0000
-Message-Id: <E1wOvMX-0000000EsYJ-0RpE@pty.whiteo.stw.pengutronix.de>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wOvQV-000Zso-2v;
+	Mon, 18 May 2026 12:42:24 +0200
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wOvQW-0000000GwEh-1jf5;
+	Mon, 18 May 2026 12:42:24 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Mark Diener <markdiener10@gmail.com>
+In-Reply-To: <20260518085134.139464-1-a.fatoum@pengutronix.de>
+References: <20260518085134.139464-1-a.fatoum@pengutronix.de>
+Message-Id: <177910094440.4037080.2490289282900018074.b4-ty@pengutronix.de>
+Date: Mon, 18 May 2026 12:42:24 +0200
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260518_033820_392523_025008D9 
-X-CRM114-Status: GOOD (  16.19  )
+X-CRM114-CacheID: sfid-20260518_114227_163816_BC7103FE 
+X-CRM114-Status: UNSURE (   8.51  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,7 +88,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: BAREBOX <barebox@lists.infradead.org>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -78,64 +98,32 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/3] ARM: k3: k3-r5_defconfig: limit image size to
- maximum available space
+Subject: Re: [PATCH 1/2] startup: point out that /env/bin/init is legacy
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 2026-05-18 11:37, Ahmad Fatoum wrote:
-> Hello,
->=20
-> On 5/18/26 11:26 AM, Sascha Hauer wrote:
-> > On the AM62x we have 0x3e000 bytes available for SBL usage. The upper
->=20
-> What's a SBL?
 
-Secondary Boot Loader I guess. TI speak
+On Mon, 18 May 2026 10:51:31 +0200, Ahmad Fatoum wrote:
+> It's 7 years ago that commit 90df2a955e3c ("defaultenv: Convert init script
+> to C") changed the default to having the init in C instead of
+> /env/bin/init.
+> 
+> The latter is still supported, but not a good idea for new platforms, so
+> make it clearer by calling it "legacy" in barebox console output and in
+> the docs.
+> 
+> [...]
 
-Sascha
+Applied, thanks!
 
->=20
-> > 0x1000 bytes are used by the DMDATA, so set maximum image size to
-> > 0x3d000.
->=20
-> Cheers,
-> Ahmad
->=20
-> >=20
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  arch/arm/configs/k3-r5_defconfig | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >=20
-> > diff --git a/arch/arm/configs/k3-r5_defconfig b/arch/arm/configs/k3-r5_=
-defconfig
-> > index ece3d00947..6d8391c55e 100644
-> > --- a/arch/arm/configs/k3-r5_defconfig
-> > +++ b/arch/arm/configs/k3-r5_defconfig
-> > @@ -8,7 +8,7 @@ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=3Dy
-> >  CONFIG_NAME=3D"k3-r5_defconfig"
-> >  CONFIG_ENVIRONMENT_VARIABLES=3Dy
-> >  CONFIG_IMAGE_COMPRESSION_XZKERN=3Dy
-> > -CONFIG_BAREBOX_MAX_IMAGE_SIZE=3D0x10000000
-> > +CONFIG_BAREBOX_MAX_IMAGE_SIZE=3D0x3d000
-> >  CONFIG_MALLOC_SIZE=3D0x0
-> >  CONFIG_MALLOC_TLSF=3Dy
-> >  CONFIG_KALLSYMS=3Dy
-> >=20
->=20
-> --=20
-> Pengutronix e.K.                  |                             |
-> Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
->=20
->=20
+[1/2] startup: point out that /env/bin/init is legacy
+      https://git.pengutronix.de/cgit/barebox/commit/?id=cf2f67645ad2 (link may not be stable)
+[2/2] doc: user: barebox: update typical barebox startup log
+      https://git.pengutronix.de/cgit/barebox/commit/?id=f30ef429a8cb (link may not be stable)
 
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best regards,
+-- 
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
