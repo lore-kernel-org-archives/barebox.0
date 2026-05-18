@@ -1,66 +1,63 @@
-Delivery-date: Fri, 15 May 2026 11:29:51 +0200
+Delivery-date: Mon, 18 May 2026 09:26:15 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wNorf-001x7p-1d
+	id 1wOsMh-0012qd-0G
 	for lore@lore.pengutronix.de;
-	Fri, 15 May 2026 11:29:51 +0200
+	Mon, 18 May 2026 09:26:15 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wNore-00040K-8m
-	for lore@pengutronix.de; Fri, 15 May 2026 11:29:51 +0200
+	id 1wOsMg-0006vd-C2
+	for lore@pengutronix.de; Mon, 18 May 2026 09:26:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ZtTHsrY0ysgLM/kY6Mj2s1fWtrvST4+85MdqsbqNSA0=; b=YG6wZ0lOg569VDJ+zA/fy7k4lt
-	UE3hu+oOO0ixn3OMeaU8Pguw524Qm3dZFvWgh1FzLJCRiiNDniHENa6zyDtbsBVTWdhnFi44xbHLM
-	+tMcaq2A7iz9APEReP5ttn/Nl7VNGyW0TrbDFvPQYs5jl7OpQBwUijLM8AMVQlb9iNcKvyW42b2CK
-	tEo+Z/gQtyVCJHJmrcibEojkMtI/SF4CF6mnKDnvGqjo/uxmjjdO2Lv/q0kUDMKYtwvLUOqeMJ1xm
-	EFIcfJylTm/w0fRqeV/kTA1DeplKjZ5imFNGkCqeNb1GnXFeRdsLUSPPmdNPoNji1OO+nwc4KI+9c
-	Z1KlxPUA==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=cmz4rEa2GRIgZcZ9Ul+I5b6Ue39utJ+3f4nvDOzPySA=; b=hXTfrYYEQHqdLj0Ty1oAu57t2B
+	4/gjtd0uYOq/iFP/HRLqp7gyz7Kv0FK+c++X+opVcdQoRf7Np2KMVc3WkqP5H1mUls2P2kSQ9c5Xw
+	I/cezVwIbPXqNw1X0nmBMwyTbbAVTp/qbUlAAfkuwLmAC/plKAbxEz2mWdWSR6UPqSgG8CHEnB+CR
+	4K8pmyxddm6qy6S/5lRjyYREEOwG+dj9bHFbI4VpmQ4Jh6X6dTv3DrzbGDpfZ9yRczEDcgk3GSPFV
+	jehwVCYo253Ooz6AHQ2wFUTjrMcZRgBbZ47RLXGly0VZg8KfTywd1Tl9vxGyUPtAwLG/4RcIuFU1P
+	fZZdpTnQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wNoqI-00000007tBj-0LRW;
-	Fri, 15 May 2026 09:28:26 +0000
+	id 1wOsEV-0000000EYRV-2rHK;
+	Mon, 18 May 2026 07:17:47 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wNoqF-00000007t9m-1pKx
+	id 1wOsES-0000000EYQv-2hzl
 	for barebox@lists.infradead.org;
-	Fri, 15 May 2026 09:28:25 +0000
+	Mon, 18 May 2026 07:17:47 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wNoqD-0003Om-6B; Fri, 15 May 2026 11:28:21 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1wOsEP-00060w-4v; Mon, 18 May 2026 09:17:41 +0200
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wNoqD-000u1s-0O;
-	Fri, 15 May 2026 11:28:21 +0200
-Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wNoqD-0000000AVz2-0IK3;
-	Fri, 15 May 2026 11:28:21 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20260513-rockchip-fixes-v1-0-a4055849a014@pengutronix.de>
-References: <20260513-rockchip-fixes-v1-0-a4055849a014@pengutronix.de>
-Message-Id: <177883730106.2505901.8416760765270770244.b4-ty@pengutronix.de>
-Date: Fri, 15 May 2026 11:28:21 +0200
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1wOsEO-000YHI-1i;
+	Mon, 18 May 2026 09:17:41 +0200
+Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1wOsEP-000000005zF-008V;
+	Mon, 18 May 2026 09:17:41 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Mon, 18 May 2026 09:17:28 +0200
+Message-ID: <20260518071740.23003-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260515_022823_481275_0CC4AD28 
-X-CRM114-Status: UNSURE (   6.55  )
+X-CRM114-CacheID: sfid-20260518_001744_686920_E5E1C2CA 
+X-CRM114-Status: UNSURE (   8.20  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -79,35 +76,75 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/3] ARM: Rockchip: regression fixes
+Subject: [PATCH master] ci: pytest: bump Debian installer image to 13.5
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-On Wed, 13 May 2026 15:55:49 +0200, Sascha Hauer wrote:
-> This series brings the Radxa Rock3A up again after several regressions
-> introduced after the last release. While I observed on Rock3A only,
-> none of the fixes is specific to this board, so others are likely
-> affected as well.
-> 
-> 
+Debian 13.5 has been released on 16th of May and the old images are no
+longer available, thus bump the version we use in our boot tests.
 
-Applied, thanks!
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+---
+ .github/workflows/test-labgrid-pytest.yml  | 2 +-
+ scripts/fetch-os.sh                        | 2 +-
+ test/arm/multi_v8_efiloader_defconfig.yaml | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-[1/3] ARM: rockchip: atf: only set OP-TEE address when starting it
-      https://git.pengutronix.de/cgit/barebox/commit/?id=614b5d1ead4a (link may not be stable)
-[2/3] ARM: rockchip: dmc: substract ROCKCHIP_DRAM_TFA_CARVE_OUT from memory regions
-      https://git.pengutronix.de/cgit/barebox/commit/?id=dd691689bc9c (link may not be stable)
-[3/3] ARM: rockchip: atf: pass correct memsize to mmu_early_enable()
-      https://git.pengutronix.de/cgit/barebox/commit/?id=a0ef3a1b5cb6 (link may not be stable)
-
-Best regards,
+diff --git a/.github/workflows/test-labgrid-pytest.yml b/.github/workflows/test-labgrid-pytest.yml
+index 94b314230874..b1feb432a869 100644
+--- a/.github/workflows/test-labgrid-pytest.yml
++++ b/.github/workflows/test-labgrid-pytest.yml
+@@ -35,7 +35,7 @@ jobs:
+           - ARCH: arm
+             lgenv: test/arm/multi_v8_efiloader_defconfig.yaml
+             defconfig: multi_v8_efiloader_defconfig
+-            osimg: debian-13.4.0-arm64-netinst.iso
++            osimg: debian-13.5.0-arm64-netinst.iso
+ 
+           - ARCH: mips
+             lgenv: test/mips/qemu-malta_defconfig.yaml
+diff --git a/scripts/fetch-os.sh b/scripts/fetch-os.sh
+index 126b50f758e8..7e507509e691 100755
+--- a/scripts/fetch-os.sh
++++ b/scripts/fetch-os.sh
+@@ -8,7 +8,7 @@ fi
+ set -euo pipefail
+ 
+ declare -A images=(
+-	["debian-13.4.0-arm64-netinst.iso"]="https://cloud.debian.org/images/release/current/arm64/iso-cd/debian-13.4.0-arm64-netinst.iso"
++	["debian-13.5.0-arm64-netinst.iso"]="https://cloud.debian.org/images/release/current/arm64/iso-cd/debian-13.5.0-arm64-netinst.iso"
+ )
+ 
+ found=0
+diff --git a/test/arm/multi_v8_efiloader_defconfig.yaml b/test/arm/multi_v8_efiloader_defconfig.yaml
+index 86d6a4c391d0..ef77d1707f74 100644
+--- a/test/arm/multi_v8_efiloader_defconfig.yaml
++++ b/test/arm/multi_v8_efiloader_defconfig.yaml
+@@ -9,7 +9,7 @@ targets:
+         kernel: barebox-dt-2nd.img
+         display: qemu-default
+         extra_args: >
+-          -drive if=virtio,snapshot=on,file=debian-13.4.0-arm64-netinst.iso
++          -drive if=virtio,snapshot=on,file=debian-13.5.0-arm64-netinst.iso
+           -device virtio-rng
+       BareboxDriver:
+         prompt: 'barebox@[^:]+:[^ ]+ '
+@@ -35,6 +35,6 @@ targets:
+ 
+ images:
+   barebox-dt-2nd.img: !template "$LG_BUILDDIR/images/barebox-dt-2nd.img"
+-  debian_iso: !template "../../debian-13.4.0-arm64-netinst.iso"
++  debian_iso: !template "../../debian-13.5.0-arm64-netinst.iso"
+ imports:
+   -  ../strategy.py
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.47.3
 
 
 
