@@ -1,61 +1,61 @@
-Delivery-date: Mon, 18 May 2026 20:16:52 +0200
+Delivery-date: Mon, 18 May 2026 20:25:51 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wP2WK-001Dz1-2o
+	id 1wP2f1-001E4z-12
 	for lore@lore.pengutronix.de;
-	Mon, 18 May 2026 20:16:52 +0200
+	Mon, 18 May 2026 20:25:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wP2WI-0002NS-NZ
-	for lore@pengutronix.de; Mon, 18 May 2026 20:16:52 +0200
+	id 1wP2f0-0003CE-My
+	for lore@pengutronix.de; Mon, 18 May 2026 20:25:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:
 	Content-Transfer-Encoding:Content-Type:In-Reply-To:To:Subject:From:Reply-To:
 	MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
-	bh=xvpZ/I7ezCqsHdwHPmAlokVXeUOjjj3Az/KrGdhfWrA=; b=3WZ0tj1FR0860ovuJQX4D//dwP
-	3xb1M6BuUSajGPiJtOoQgJLlwHjIPdYyyYZsMCAqQ8wZZ2czZIcYsWAI4cNxzgUzNZOEtaGFb8Wz6
-	bHYY7+Rd9tLj5cS2koMZXDkzlVG/mEp5mmkSB0EEjKIJ3V47f86Wstami+4QnQbsbfOV8we1g5uNz
-	fmzHy7rOBZIk32UUIK5y/aBOiYcks1Fi28U/r8dCmrUkxDL5cYgVROVreAP6g1E3MYnIUpYk4e5PD
-	ZMuCEEFHiyVQzvPXeWWW/1awcX54N5RoK/pRv/pEhgDJXNHPlQ3WCcgE51uEy4yx00IPHBlLNo48X
-	cVUj0eCw==;
+	bh=FF40WsXYjm8z15qJPIrvMDxhKDsY7STCtgsUU0rEfcU=; b=2SJLANtHH/hT0xmytrRHGY3eDL
+	slwtWgDfJc5jjMY1BPPBrjVQwBpOwXwqqmWNzJj2R1T5kgGRjoiEK1nhsrWpoP7VWsSxb5YTTA7YU
+	JEQ3mwd2aQVKeSa5KZtVnxO5JA4CzuGE+SlOkOtpb5UPsYA++kmXvimbkJX/WC8jCc+D6F3O9ocdD
+	PWvbevKHRZ/k9zypdpx4U50oURNw2iXorFObWWuKY09coGFh41zD1g9cD1QCnq/C1jCOT3NPubh5C
+	M1zNPGDwR4x5FLI6drIC/OP8iuLARwn1YKKOa4V8zUQJmdazwhsbeoj479CbxDS7jk+mAQFjKYc/H
+	6TMgmR3A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wP2V5-0000000GXNj-2sjI;
-	Mon, 18 May 2026 18:15:35 +0000
+	id 1wP2dw-0000000GYRq-0Hz9;
+	Mon, 18 May 2026 18:24:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wP2V2-0000000GXN7-3Jg6
+	id 1wP2dt-0000000GYR3-0Gkl
 	for barebox@lists.infradead.org;
-	Mon, 18 May 2026 18:15:34 +0000
+	Mon, 18 May 2026 18:24:42 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1wP2V0-0002F6-UT; Mon, 18 May 2026 20:15:30 +0200
+	id 1wP2dr-00033V-AJ; Mon, 18 May 2026 20:24:39 +0200
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1wP2V0-000dWi-12;
-	Mon, 18 May 2026 20:15:30 +0200
+	id 1wP2dq-000dXH-2F;
+	Mon, 18 May 2026 20:24:39 +0200
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1wP2V0-0000000ExjF-3JeU;
-	Mon, 18 May 2026 20:15:30 +0200
+	id 1wP2dr-0000000Exmj-0iVY;
+	Mon, 18 May 2026 20:24:39 +0200
 From: "Sascha Hauer" <s.hauer@pengutronix.de>
 To: "Ahmad Fatoum" <a.fatoum@pengutronix.de>
-In-Reply-To: <384b2a48-8750-4a69-8f2c-663fcc0f5d18@pengutronix.de>
+In-Reply-To: <da2a16d6-324c-4649-aa55-ef3afc6678db@pengutronix.de>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 18 May 2026 18:15:30 +0000
-Message-Id: <E1wP2V0-0000000ExjF-3JeU@pty.whiteo.stw.pengutronix.de>
+Date: Mon, 18 May 2026 18:24:38 +0000
+Message-Id: <E1wP2dr-0000000Exmj-0iVY@pty.whiteo.stw.pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260518_111532_832619_A9E45CE9 
-X-CRM114-Status: GOOD (  25.49  )
+X-CRM114-CacheID: sfid-20260518_112441_103832_6CCDB8C1 
+X-CRM114-Status: GOOD (  22.69  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,148 +78,47 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] pbl: cleanup early malloc
+Subject: Re: [PATCH 2/2] ARM: rockchip: initialize PBL malloc
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 2026-05-18 18:14, Ahmad Fatoum wrote:
+On 2026-05-18 18:20, Ahmad Fatoum wrote:
+> Hello,
+>=20
 > On 5/18/26 5:32 PM, Sascha Hauer wrote:
-> > All architectures using PBL define the same variables free_mem_ptr and
-> > free_mem_end_ptr and initialize them. create a helper for that in
-> > pbl/malloc.c and rename simple_*() to pbl_*().
+> > Rockchip uses compressed firmware binaries. Depending on the compression
+> > algorithm we might use early malloc space for decompressing. Initialize
+> > the PBL malloc space to the memory end to make pbl_malloc() work. This
+> > memory area will be overwritten later in barebox_pbl_start(), but it's
+> > ok as the memory is only needed during decompression of the firmware
+> > files.
 > >=20
 > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 >=20
 > Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->=20
-> with issues below addressed
+> Tested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 >=20
 > > ---
-> >  arch/arm/cpu/uncompress.c              |  6 +---
-> >  arch/mips/boot/uncompress.c            |  6 +---
-> >  arch/riscv/boot/uncompress.c           |  6 +---
-> >  arch/riscv/include/asm/barebox-riscv.h |  6 ----
-> >  include/linux/decompress/mm.h          | 44 ++++----------------------
-> >  include/mach/bcm283x/debug_ll.h        | 10 ------
-> >  include/pbl.h                          |  7 ++--
-> >  pbl/Makefile                           |  1 +
-> >  pbl/malloc.c                           | 43 +++++++++++++++++++++++++
-> >  9 files changed, 57 insertions(+), 72 deletions(-)
-> >  create mode 100644 pbl/malloc.c
+> >  arch/arm/mach-rockchip/atf.c | 1 +
+> >  1 file changed, 1 insertion(+)
 > >=20
-> > diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
-> > index 38f7dbc113..c7802226e6 100644
-> > --- a/arch/arm/cpu/uncompress.c
-> > +++ b/arch/arm/cpu/uncompress.c
-> > @@ -27,9 +27,6 @@
+> > diff --git a/arch/arm/mach-rockchip/atf.c b/arch/arm/mach-rockchip/atf.c
+> > index 3e2e18ac29..03e03c9122 100644
+> > --- a/arch/arm/mach-rockchip/atf.c
+> > +++ b/arch/arm/mach-rockchip/atf.c
+> > @@ -173,6 +173,7 @@ static void rockchip_atf_load_bl31(void *fdt)
+> >  	unsigned long bl31_ep;
 > > =20
-> >  #include "entry.h"
-> > =20
-> > -unsigned long free_mem_ptr;
-> > -unsigned long free_mem_end_ptr;
-> > -
-> >  extern unsigned char input_data[];
-> >  extern unsigned char input_data_end[];
-> > =20
-> > @@ -78,8 +75,7 @@ void __noreturn barebox_pbl_start(unsigned long memba=
-se, unsigned long memsize,
-> > =20
-> >  	handoff_data =3D (void *)barebox_base + uncompressed_len + MAX_BSS_SI=
-ZE;
-> > =20
-> > -	free_mem_ptr =3D barebox_base - ARM_MEM_EARLY_MALLOC_SIZE;
-> > -	free_mem_end_ptr =3D barebox_base;
-> > +	pbl_malloc_init(barebox_base - ARM_MEM_EARLY_MALLOC_SIZE, ARM_MEM_EAR=
-LY_MALLOC_SIZE);
-> > =20
-> >  #ifdef DEBUG
-> >  	print_pbl_mem_layout(membase, endmem, barebox_base);
-> > diff --git a/arch/mips/boot/uncompress.c b/arch/mips/boot/uncompress.c
-> > index 0630d03c6b..b58b23ea6b 100644
-> > --- a/arch/mips/boot/uncompress.c
-> > +++ b/arch/mips/boot/uncompress.c
-> > @@ -16,9 +16,6 @@
-> >  extern void *input_data;
-> >  extern void *input_data_end;
-> > =20
-> > -unsigned long free_mem_ptr;
-> > -unsigned long free_mem_end_ptr;
-> > -
-> >  void barebox_pbl_start(void *fdt, void *fdt_end, unsigned long ram_siz=
-e);
-> > =20
-> >  void __section(.text_entry) barebox_pbl_start(void *fdt, void *fdt_end,
-> > @@ -34,8 +31,7 @@ void __section(.text_entry) barebox_pbl_start(void *f=
-dt, void *fdt_end,
-> >  	memset(__bss_start, 0, __bss_stop - __bss_start);
-> > =20
-> >  	/* set 128 KiB at the end of the MALLOC_BASE for early malloc */
-> > -	free_mem_ptr =3D TEXT_BASE - SZ_128K;
-> > -	free_mem_end_ptr =3D free_mem_ptr + SZ_128K;
-> > +	pbl_malloc_init(barebox_base - TEXT_BASE - SZ_128K, SZ_128K);
-> > =20
-> >  	piggy_len =3D (unsigned long)&input_data_end - (unsigned long)&input_=
-data;
-> > =20
-> > diff --git a/arch/riscv/boot/uncompress.c b/arch/riscv/boot/uncompress.c
-> > index e51f1b0121..df60b14ed8 100644
-> > --- a/arch/riscv/boot/uncompress.c
-> > +++ b/arch/riscv/boot/uncompress.c
-> > @@ -23,9 +23,6 @@
-> > =20
-> >  #include "entry.h"
-> > =20
-> > -unsigned long free_mem_ptr;
-> > -unsigned long free_mem_end_ptr;
-> > -
-> >  void __noreturn barebox_pbl_start(unsigned long membase, unsigned long=
- memsize,
-> >  				  void *fdt)
-> >  {
-> > @@ -63,8 +60,7 @@ void __noreturn barebox_pbl_start(unsigned long memba=
-se, unsigned long memsize,
-> > =20
-> >  	pr_debug("memory at 0x%08lx, size 0x%08lx\n", membase, memsize);
-> > =20
-> > -	free_mem_ptr =3D riscv_mem_early_malloc(membase, endmem);
-> > -	free_mem_end_ptr =3D riscv_mem_early_malloc_end(membase, endmem);
-> > +	pbl_malloc_init(riscv_mem_early_malloc(), SZ_128K);
+> >  	mmu_early_enable(membase[0], memsize[0]);
+> > +	pbl_malloc_init(membase[0] + memsize[0] - SZ_128K, SZ_128K);
 >=20
-> This is a bit dangerous as it now hardcodes SZ_128K at two places and
-> one could be missed when trying to extend the region.
->=20
-> Could you #define RISCV_MEM_EARLY_MALLOC_SIZE SZ_128K in the same patch?
+> It would be cool if we could use the same malloc area that would be used
+> in barebox_pbl_start(), but I guess that's not possible, because it's
+> unfortunately based on the barebox proper load address, which is now
+> known here. Let's hope this won't clash with any future use..
 
-All architectures use 128KiB and if we have to change it chances are
-good that we have to change it for all architectures, so I'll add a
-common define for this instead.
-
->=20
->=20
-> > diff --git a/include/mach/bcm283x/debug_ll.h b/include/mach/bcm283x/deb=
-ug_ll.h
-> > index 8bbff4fd9a..68542fd6a3 100644
-> > --- a/include/mach/bcm283x/debug_ll.h
-> > +++ b/include/mach/bcm283x/debug_ll.h
-> > @@ -42,16 +42,6 @@ static inline void debug_ll_init(void)
-> > =20
-> >  #elif defined CONFIG_DEBUG_RPI3_MINI_UART
-> > =20
-> > -static inline uint8_t debug_ll_read_reg(void __iomem *base, int reg)
-> > -{
-> > -	return readb(base + (reg << 2));
-> > -}
-> > -
-> > -static inline void debug_ll_write_reg(void __iomem *base, int reg, uin=
-t8_t val)
-> > -{
-> > -	writeb(val, base + (reg << 2));
-> > -}
-> > -
->=20
-> Unrelated change?
-
-Yes, dropped.
+Yes, that's the problem. I am not exactly happy with this solution
+either, but haven't found anything better.
 
 Sascha
 
