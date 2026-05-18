@@ -1,73 +1,87 @@
-Delivery-date: Mon, 18 May 2026 10:59:47 +0200
+Delivery-date: Mon, 18 May 2026 11:27:59 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wOtpD-0014gN-2L
+	id 1wOuGV-0015Ex-1F
 	for lore@lore.pengutronix.de;
-	Mon, 18 May 2026 10:59:47 +0200
+	Mon, 18 May 2026 11:27:59 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wOtpD-000128-1L
-	for lore@pengutronix.de; Mon, 18 May 2026 10:59:47 +0200
+	id 1wOuGU-0005b6-OM
+	for lore@pengutronix.de; Mon, 18 May 2026 11:27:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=jOpmg85q8PPbbngDNebcy+Fsy5v3xsCY8xxovhV5Tj8=; b=aX0wV8JW8Sdz/ldBypqhGFh1tl
-	KbD3uE3gy0iH3B4++T8lS7DBxQya4S8GQbn+/PnbW2FXEyCbu45K5T/gMjvjTdxQuxHW2+5z/rw3t
-	0o6746FPKtTAA0IsBZ3jP4wiCQY4EtRkduRs464zQmFOJjJZ6NIZdfYxeGiIxUyyupL9pEYPL9i/k
-	kUqaxP3UcH1qRsmFeW8Y0cpG0nAyZ6GQ3TmEQjo4D8JEUvRc06qV/hTrYe5LITW6BLg4QR8um+7qm
-	ko2euB4Zyi6q+MQoulnClzXlnhjks3+/oD6hexvUhZ3rukbnxiuKSYX0Su1ArQPz+n0BGmu27t1U0
-	uh6m8pvw==;
+	bh=L3J+uaLfrYbiux+XPy3G+QvT5nT2QDAl46bfe2SZxOo=; b=k77u7qC95eft1Dcak9ddOSZl7n
+	UY9KE/uXwbH71EmnuUK5vytDoffgk7cXPjAh7OFa2c4tVLABGsbpUph5s+VndqlgunYxQjjRY3PHr
+	UYEkBMRDOS0YZibN0W0zLNrdaJGTCcHGOpC4VOjSEzuipp8wkno80xxNVfWredm+dSvuVVCAtSPnL
+	kD8g/OUnMTGmwJAOF1kI0RWq4/anCV9YXGCTKOfNj/UbzOeFQYOC968ZrHLMQ3+5bq9TUCVH2Vlnx
+	NS037q0pvmO4XgW0ycKOj2ENnLtf0lSLId4fkfsc9udk8NeDjW1FVHoU64F2hZbt1PgPKPXkjt63C
+	/JnvV5WQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wOtoY-0000000Ev0P-2Fea;
-	Mon, 18 May 2026 08:59:06 +0000
+	id 1wOuFO-0000000F0ds-0i81;
+	Mon, 18 May 2026 09:26:50 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wOtoX-0000000Euzj-0NSl
+	id 1wOuFI-0000000F0cp-16uW
 	for barebox@bombadil.infradead.org;
-	Mon, 18 May 2026 08:59:05 +0000
+	Mon, 18 May 2026 09:26:44 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=jOpmg85q8PPbbngDNebcy+Fsy5v3xsCY8xxovhV5Tj8=; b=MqrIoWFDKNIQp96KfCF1tjnQVs
-	+tRmDQ145+RHU+Nc9JFY4pKMDywePCrYg8RrDcAXli2Pzzvih63S1vA2dgO9o4IEU7vW5xloNMfs+
-	moInGcKkpp0W5IX7F09LVP5HIKHltrhzy06G7+7CpjVJdXvvmB4Nk/3ZXbJUDZiAKe9hhfEVyBTQV
-	GH3ugbLwpiNuw+Iw/B+sRlTsVr6qXi6KGj8fXosxL/X5yTMo+2zDgld0IthafgKaMPCKiR9P+Gj7E
-	Buqf+rcI+HTHSAxDEoH5TWiNCG1benoPg/yQ/x41a+Ma8xpaBCrda4jqbxaJf4in2IqtvSPebkfcf
-	oSHpFM9g==;
+	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Sender:Reply-To:Content-ID:Content-Description;
+	bh=L3J+uaLfrYbiux+XPy3G+QvT5nT2QDAl46bfe2SZxOo=; b=IHmwT07NgIiuHwdeV7VV1LvzyL
+	sS+L1bpFov0/+AYqqKqs5S+mngLSQNWYCJkS7HFpkMxSYwp49keupSwIJquWjRsZXCepS+b3yXbyR
+	b3EZkOwwKTtc8wACEIcU7lD+Olr/2FTqUsmmQq6O3LZOcbDnob3jPQ+xAicJKqCOFMX25JISBXLvp
+	+F8mUPpk6A9oKA4sQtk4nWXM3igrV7rkXtLMEYTRX9hTtiU4ufV/ZoI/58QhCk7Uku4IB2zzrA/UK
+	g4fi92Kur/HB16QyXs4Lpa9432R+8zFu+i/9epsIRt3gvdQTjqk99kGrCqu4hD6UXLrEOHNLGgYDs
+	M4Yf+xvw==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wOtoR-0000000AU4l-2kJM
+	id 1wOuFE-0000000AZNF-217u
 	for barebox@lists.infradead.org;
-	Mon, 18 May 2026 08:59:02 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	Mon, 18 May 2026 09:26:42 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wOtoR-0000se-7a; Mon, 18 May 2026 10:58:59 +0200
-Message-ID: <33a15b15-bf59-4bf9-894b-eb4b08cde081@pengutronix.de>
-Date: Mon, 18 May 2026 10:58:58 +0200
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wOuFD-0005KN-L4; Mon, 18 May 2026 11:26:39 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wOuFD-000ZJl-03;
+	Mon, 18 May 2026 11:26:39 +0200
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wOuFD-0000000CUMc-24Wp;
+	Mon, 18 May 2026 11:26:39 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 18 May 2026 11:26:38 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- BAREBOX <barebox@lists.infradead.org>
-Cc: "Claude Opus 4.7" <noreply@anthropic.com>
-References: <20260511-rockchip-emmc-hs400-v1-0-515fb6d20e12@pengutronix.de>
- <20260511-rockchip-emmc-hs400-v1-1-515fb6d20e12@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260511-rockchip-emmc-hs400-v1-1-515fb6d20e12@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260518-k3-am62x-image-size-fixes-v1-1-ab723d79922d@pengutronix.de>
+References: <20260518-k3-am62x-image-size-fixes-v1-0-ab723d79922d@pengutronix.de>
+In-Reply-To: <20260518-k3-am62x-image-size-fixes-v1-0-ab723d79922d@pengutronix.de>
+To: BAREBOX <barebox@lists.infradead.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779096399; l=1147;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=wPcK2AodmndSyBz1OlzevGeeBqvrxhtEtzFpGS38R2s=;
+ b=k9z0ZvP2l4xYM39Mt+VzUGfHlxjGt1iZ732HpxIto33j+kd6zDX3oN1b7d1KuL44NGNiix+rM
+ nvhfGPmKYPMCOABwKmr3OBsXyGZ8ktZ7JSz+11b23T4bbSqbod1QbHC
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260518_095900_307657_810373B1 
-X-CRM114-Status: GOOD (  19.26  )
+X-CRM114-CacheID: sfid-20260518_102641_075605_99F1A28E 
+X-CRM114-Status: GOOD (  10.00  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,81 +99,52 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 01/10] mci: sdhci: define VDD_180 and shrink UHS_MASK to
- bits 0..2
+Subject: [PATCH 1/3] ARM: k3: am62x: move stack to end of SRAM
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Our available SRAM ends at 0x43c3e000. Move the initial stack the to not
+waste 0x1000 bytes of scarce SRAM.
 
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/am625-sk/entry-r5.S   | 2 +-
+ arch/arm/boards/beagleplay/entry-r5.S | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-On 5/11/26 2:07 PM, Sascha Hauer wrote:
-> Per SDHCI 3.0+, HOST_CONTROL2's UHS Mode Select is bits 0..2 (3 bits)
-> and bit 3 is the 1.8 V Signaling Enable. The current SDHCI_CTRL_UHS_MASK
-> of GENMASK(3, 0) is one bit too wide and clears 1.8 V signaling every
-> time sdhci_set_uhs_signaling() runs.
-> 
-> Shrink the mask to GENMASK(2, 0) and add SDHCI_CTRL_VDD_180 = BIT(3) so
-> controllers that need to drive 1.8 V on I/O for HS200/HS400/UHS modes
-> can OR the bit in without it being clobbered on the next set_clock().
-> 
-> No functional change for controllers where VDD_180 was unused (most
-> in-tree drivers do not touch it; voltage switching there is either
-> fixed by board wiring or handled by an external regulator).
-> 
-> Assisted-by: Claude Opus 4.7 <noreply@anthropic.com>
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-> ---
->  drivers/mci/imx-esdhc-common.c | 2 --
->  drivers/mci/sdhci.h            | 3 ++-
->  2 files changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/mci/imx-esdhc-common.c b/drivers/mci/imx-esdhc-common.c
-> index 050621d7fb..eb6a71915f 100644
-> --- a/drivers/mci/imx-esdhc-common.c
-> +++ b/drivers/mci/imx-esdhc-common.c
-> @@ -12,8 +12,6 @@
->  
->  #define	ESDHC_CTRL_D3CD			0x08
->  
-> -#define  SDHCI_CTRL_VDD_180         0x0008
-> -
->  #define ESDHC_MIX_CTRL			0x48
->  #define  ESDHC_MIX_CTRL_DDREN		(1 << 3)
->  #define  ESDHC_MIX_CTRL_AC23EN		(1 << 7)
-> diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
-> index 8d21febd7a..a04eb5b7ed 100644
-> --- a/drivers/mci/sdhci.h
-> +++ b/drivers/mci/sdhci.h
-> @@ -132,13 +132,14 @@
->  #define SDHCI_SIGNAL_ENABLE					0x38
->  #define SDHCI_ACMD12_ERR__HOST_CONTROL2				0x3C
->  #define SDHCI_HOST_CONTROL2					0x3E
-> -#define  SDHCI_CTRL_UHS_MASK			GENMASK(3, 0)
-> +#define  SDHCI_CTRL_UHS_MASK			GENMASK(2, 0)
->  #define   SDHCI_CTRL_UHS_SDR12			0x0
->  #define   SDHCI_CTRL_UHS_SDR25			0x1
->  #define   SDHCI_CTRL_UHS_SDR50			0x2
->  #define   SDHCI_CTRL_UHS_SDR104			0x3
->  #define   SDHCI_CTRL_UHS_DDR50			0x4
->  #define   SDHCI_CTRL_HS400			0x5 /* Non-standard */
-> +#define  SDHCI_CTRL_VDD_180			BIT(3)
->  #define  SDHCI_CTRL_DRV_TYPE_MASK		GENMASK(5, 4)
->  #define   SDHCI_CTRL_DRV_TYPE_B			0x0000
->  #define   SDHCI_CTRL_DRV_TYPE_A			0x0010
-> 
+diff --git a/arch/arm/boards/am625-sk/entry-r5.S b/arch/arm/boards/am625-sk/entry-r5.S
+index e724e5550c..c0ece084a0 100644
+--- a/arch/arm/boards/am625-sk/entry-r5.S
++++ b/arch/arm/boards/am625-sk/entry-r5.S
+@@ -3,7 +3,7 @@
+ 
+ #define SRAM_BASE 0x43c00000
+ 
+-#define STACK_TOP SRAM_BASE + 0x3d000
++#define STACK_TOP SRAM_BASE + 0x3e000
+ 
+ .arm
+ .section .text_head_entry_start_am625_sk_r5;
+diff --git a/arch/arm/boards/beagleplay/entry-r5.S b/arch/arm/boards/beagleplay/entry-r5.S
+index 712f0f4b8c..8f961651eb 100644
+--- a/arch/arm/boards/beagleplay/entry-r5.S
++++ b/arch/arm/boards/beagleplay/entry-r5.S
+@@ -3,7 +3,7 @@
+ 
+ #define SRAM_BASE 0x43c00000
+ 
+-#define STACK_TOP SRAM_BASE + 0x3d000
++#define STACK_TOP SRAM_BASE + 0x3e000
+ 
+ .arm
+ .section .text_head_entry_start_beagleplay_r5;
 
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.47.3
 
 
 
