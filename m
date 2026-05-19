@@ -1,63 +1,67 @@
-Delivery-date: Tue, 19 May 2026 07:56:16 +0200
+Delivery-date: Tue, 19 May 2026 08:17:03 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wPDRA-001OgX-1O
+	id 1wPDlH-001P8m-2J
 	for lore@lore.pengutronix.de;
-	Tue, 19 May 2026 07:56:16 +0200
+	Tue, 19 May 2026 08:17:03 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wPDR9-0000WF-OR
-	for lore@pengutronix.de; Tue, 19 May 2026 07:56:16 +0200
+	id 1wPDlH-0003SO-5P
+	for lore@pengutronix.de; Tue, 19 May 2026 08:17:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=cidvrkddiobJpjW77DQCl41pzU7AsCVq1EeFBk9vaA0=; b=xA70ERodV7oHNdrVa69H1aS2Wj
-	GOI9E3z28/dwCc0ylF7zCwh5WGKEGH+dKSekpoBbTO9vb1pAh7LctAJphz8rLoRjgvd8BRfyOtIFn
-	QaL0oLb1MoUV9TkIPRPTvR1rahr5wRYop8BDzJpEYsuBfzVlUlqrW5VTwLl5AMKyzzqyyKdYSbGNb
-	OjwYD3YvgUC27YJMbCTVjZis6ZY5Az0Abk16/Fti/ZernsMAN5XGH3FsgAZRtctaXvHml3rRtMLXE
-	Wsyt27Gi+fN1AYdCP3rD8d2dDUrX9cgxyfit0nwnR7VB3hKnGQ7fYsS7UwKYWFFVbSvA8w7M9DCp9
-	Gy9ukKmQ==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=/AUDrRLvAWBU/7BC9+yS3K1jjnrv4bZJxdPWkmY2wn0=; b=qqAMuS8mkelnqzzfxIEYFC8itd
+	mZURflYK4R7vVG+v2El0m9zFUafWL9fYzLl1DjXkk+I+bZwlE9xv7fRGGTaTA4A5Zcq9q3L9rqToa
+	sXY5Zvbt089mfFc38xl1SMp6Hok5ViilvWwQCxUSJJ+G9+2f755i+x3udsmaFgFU0hhfbn8TE91b2
+	FNk94OBGz95tmVMUiJI/RgrrRGQODmfUn9OBevBMZDISGErXTKgs99UpQRWYVui3uCpvj9Z6Jxv4J
+	i9vTjLIP9StcP1SQ2uUcR1zobv3yUKjqytlcekn5aZNbwbmj0MZ4vx/5NLL9GO5vKvNrzgovgtmEq
+	gtEmrTwQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPDPz-00000000Fpd-3E1a;
-	Tue, 19 May 2026 05:55:03 +0000
+	id 1wPDkB-00000000IMo-3M1I;
+	Tue, 19 May 2026 06:15:55 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPDPw-00000000FoQ-1WTD
+	id 1wPDk8-00000000IMB-44UY
 	for barebox@lists.infradead.org;
-	Tue, 19 May 2026 05:55:01 +0000
+	Tue, 19 May 2026 06:15:54 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wPDPu-0000O2-AM; Tue, 19 May 2026 07:54:58 +0200
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wPDk7-0003BW-Ck; Tue, 19 May 2026 08:15:51 +0200
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wPDPt-000iBY-2G;
-	Tue, 19 May 2026 07:54:58 +0200
-Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wPDPu-0000000HGvm-0iWj;
-	Tue, 19 May 2026 07:54:58 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 19 May 2026 07:53:40 +0200
-Message-ID: <20260519055440.4116589-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wPDk6-000iT6-2V;
+	Tue, 19 May 2026 08:15:51 +0200
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wPDk7-00000002BiP-1Cjm;
+	Tue, 19 May 2026 08:15:51 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20260518183250.240134-1-s.hauer@pengutronix.de>
+References: <20260518183250.240134-1-s.hauer@pengutronix.de>
+Message-Id: <177917135128.521619.13903502459551535734.b4-ty@pengutronix.de>
+Date: Tue, 19 May 2026 08:15:51 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260518_225500_401597_BF6E9E82 
-X-CRM114-Status: GOOD (  11.09  )
+X-CRM114-CacheID: sfid-20260518_231553_015011_409A0213 
+X-CRM114-Status: UNSURE (   5.56  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,101 +79,33 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH] serial: ns16550: fall back to using uart8250/ttyS as Linux console names
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v2 1/3] PBL: add common define for early malloc size
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Most Linux drivers use the same names, so make them the default and only
-list differing ones in the different ns16550_drvdata.
 
-This also ensures, we don't end up with <NULL> formatted into the kernel
-command-line by mistake.
+On Mon, 18 May 2026 20:32:48 +0200, Sascha Hauer wrote:
+> Current all architectures using early malloc in the PBL use a pool size
+> of 128KiB. Add a common define for it.
+> 
+> 
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-Unlike [1], which is for the next release, this one is meant for next to
-avoid such issues in future altogether.
+Applied, thanks!
 
-[1]: https://lore.barebox.org/barebox/20260519053350.4061870-1-a.fatoum@pengutronix.de/T/#u
----
- drivers/serial/serial_ns16550.c | 19 ++++++-------------
- 1 file changed, 6 insertions(+), 13 deletions(-)
+[1/3] PBL: add common define for early malloc size
+      https://git.pengutronix.de/cgit/barebox/commit/?id=8350666275f7 (link may not be stable)
+[2/3] pbl: cleanup early malloc
+      https://git.pengutronix.de/cgit/barebox/commit/?id=82157ec02732 (link may not be stable)
+[3/3] ARM: rockchip: initialize PBL malloc
+      https://git.pengutronix.de/cgit/barebox/commit/?id=76b1f31275fe (link may not be stable)
 
-diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-index 31e7c006d004..72bf8e464759 100644
---- a/drivers/serial/serial_ns16550.c
-+++ b/drivers/serial/serial_ns16550.c
-@@ -390,21 +390,15 @@ static void ns16550_probe_dt(struct device *dev, struct ns16550_priv *priv)
- 
- static struct ns16550_drvdata ns16450_drvdata = {
- 	.init_port = ns16450_serial_init_port,
--	.linux_console_name = "ttyS",
--	.linux_earlycon_name = "uart8250",
- };
- 
- static struct ns16550_drvdata ns16550_drvdata = {
- 	.init_port = ns16550_serial_init_port,
--	.linux_console_name = "ttyS",
--	.linux_earlycon_name = "uart8250",
- };
- 
- static __maybe_unused struct ns16550_drvdata omap_drvdata = {
- 	.init_port = ns16550_omap_init_port,
--#ifdef CONFIG_DRIVER_SERIAL_NS16550_OMAP_TTYS
--	.linux_console_name = "ttyS",
--#else
-+#ifndef CONFIG_DRIVER_SERIAL_NS16550_OMAP_TTYS
- 	.linux_console_name = "ttyO",
- #endif
- 	.linux_earlycon_name = "omap8250",
-@@ -412,20 +406,16 @@ static __maybe_unused struct ns16550_drvdata omap_drvdata = {
- 
- static __maybe_unused struct ns16550_drvdata omap_clk48m_drvdata = {
- 	.init_port = ns16550_omap_init_port,
--	.linux_console_name = "ttyS",
--	.linux_earlycon_name = "uart8250",
- 	.clk_default = 48000000,
- };
- 
- static __maybe_unused struct ns16550_drvdata jz_drvdata = {
- 	.init_port = ns16550_jz_init_port,
--	.linux_console_name = "ttyS",
- 	.linux_earlycon_name = "jz4740_uart",
- };
- 
- static __maybe_unused struct ns16550_drvdata rpi_drvdata = {
- 	.init_port = rpi_init_port,
--	.linux_console_name = "ttyS",
- 	.linux_earlycon_name = "bcm2835aux",
- };
- 
-@@ -510,6 +500,7 @@ static int ns16550_probe(struct device *dev)
- 	struct NS16550_plat *plat = (struct NS16550_plat *)dev->platform_data;
- 	const struct ns16550_drvdata *devtype;
- 	struct resource *iores;
-+	const char *linux_earlycon_name;
- 	int ret;
- 
- 	devtype = device_get_match_data(dev) ?: &ns16550_drvdata;
-@@ -550,8 +541,10 @@ static int ns16550_probe(struct device *dev)
- 	cdev->getc = ns16550_getc;
- 	cdev->setbrg = priv->plat.clock ? ns16550_setbaudrate : NULL;
- 	cdev->flush = ns16550_flush;
--	cdev->linux_console_name = devtype->linux_console_name;
--	cdev->linux_earlycon_name = basprintf("%s,%s", devtype->linux_earlycon_name,
-+	cdev->linux_console_name = devtype->linux_console_name ?: "ttyS";
-+	linux_earlycon_name = devtype->linux_earlycon_name ?: "uart8250";
-+
-+	cdev->linux_earlycon_name = basprintf("%s,%s", linux_earlycon_name,
- 					      priv->access_type);
- 	cdev->phys_base = !strcmp(priv->access_type, "io") ?
- 		IOMEM((ulong)priv->iobase) : priv->mmiobase;
+Best regards,
 -- 
-2.47.3
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
