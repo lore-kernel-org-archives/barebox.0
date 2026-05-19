@@ -1,66 +1,62 @@
-Delivery-date: Tue, 19 May 2026 10:00:25 +0200
+Delivery-date: Tue, 19 May 2026 14:52:01 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wPFNI-001QXl-3B
+	id 1wPJvV-001UzB-2D
 	for lore@lore.pengutronix.de;
-	Tue, 19 May 2026 10:00:24 +0200
+	Tue, 19 May 2026 14:52:01 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wPFNH-0007KR-Th
-	for lore@pengutronix.de; Tue, 19 May 2026 10:00:24 +0200
+	id 1wPJvV-0000c2-2O
+	for lore@pengutronix.de; Tue, 19 May 2026 14:52:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=CvopvCizAVxYiQvOWl5pX6xxs6x5/d6BYswBwLOyNKA=; b=snf7E7INF45iDAVvxOH0BKGzER
-	EFIo+l8UUIIjJ7mV5CFbJHuilrpjGcpA/4TKSga6qjYOjq7v8KhQB9knKpk23clVDwowA4s2UPM4+
-	tJPJSeyEQharLcYy2Z+gYqcykXZPoqJpKmXmv+bjaS/Vv28uzdD44jqkdLEuBRMGnIAqA3rfkL1y+
-	GRxbLjeZZ62Oecr7mRQSsH/7456MKOz2sijjaQ1CUBOJHQXn/963WGoOaxPK6NwbWMKE9yvyW894B
-	UhN+n/+odyyRiK3akqMnGa1U2oNc23987BIFb9cmX25Gj+NK88dRuy+d1U99VtSAroCSEoE0nU3R3
-	EE9wGbkg==;
+	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=anpYFCzJPJH2wiBqR8QD648EfVu/Pe7m2z/HIYFRDI0=; b=raMTT54OQucikzZ26qAJ3h17ML
+	yDtiB+jPNPdaUDoRLq1dUnZHPgsFTIOsP3pq604IEwFQ21hFIW3UkzrOGPTuvb/BTumlLG7N54Fs4
+	4rybTf1kEQzLRJ+ZuT+ffIYHZEM/ysISzD7+CrD4yvwpSoxrWsWdG9KNUgWrXd+30pjECtNcdj0mj
+	H16ntEFGNVB9SvWGxc3m2hZB/+vgwVcYxVXrL59P0i3oOk3mh/GezCrgnuNjKdiwhijVmlgsxz4s/
+	p2wsWUMO+5ViU72geTWosmuGx9BvLrhcpnlR1MtIojsOc+NmCyiFgpQUJE2jnBXujvn8o1DhLHIwn
+	Z0NyzlUA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPFLr-00000000aSr-0XKO;
-	Tue, 19 May 2026 07:58:55 +0000
+	id 1wPJoe-00000001WO4-2Mhq;
+	Tue, 19 May 2026 12:44:56 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPFLo-00000000aSH-1wPY
+	id 1wPJoa-00000001WLv-2vYZ
 	for barebox@lists.infradead.org;
-	Tue, 19 May 2026 07:58:53 +0000
+	Tue, 19 May 2026 12:44:54 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wPFLm-00075h-CI; Tue, 19 May 2026 09:58:50 +0200
+	id 1wPJoY-0008Jr-JD; Tue, 19 May 2026 14:44:50 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wPFLl-000j3J-2S;
-	Tue, 19 May 2026 09:58:50 +0200
+	id 1wPJoX-000lWx-38;
+	Tue, 19 May 2026 14:44:50 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wPFLm-00000002OhL-17kD;
-	Tue, 19 May 2026 09:58:50 +0200
+	id 1wPJoY-0000000FFpp-1mGV;
+	Tue, 19 May 2026 14:44:50 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260519062104.4125168-1-a.fatoum@pengutronix.de>
-References: <20260519062104.4125168-1-a.fatoum@pengutronix.de>
-Message-Id: <177917753026.571587.14716458253784460964.b4-ty@pengutronix.de>
-Date: Tue, 19 May 2026 09:58:50 +0200
+To: Barebox List <barebox@lists.infradead.org>
+Date: Tue, 19 May 2026 14:44:47 +0200
+Message-ID: <20260519124448.3635366-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260519_005852_502415_D2459ABA 
-X-CRM114-Status: UNSURE (   8.10  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260519_054452_732559_395BAE93 
+X-CRM114-Status: GOOD (  10.82  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,31 +78,38 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] arch: enable RELR relocation packing support by
- default
+Subject: [PATCH 1/2] fs: ubifs: zero initialize allocated inode
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+UBIFS uses kmem_cache_alloc() to allocate an ubifs_inode. The memory
+returned from kmem_cache_alloc() is not zeroed. ubifs_alloc_inode()
+zeroes all fields in the ubifs_inode except the embedded struct inode.
+In Linux this is done in the kmem_cache constructor function which calls
+inode_init_once(). In barebox we have the constructor function as well,
+but we don't have an equivalent of inode_init_once(), so the constructor
+is empty.  zero the inode in the constructor instead so that barebox
+gets a zeroed inode.
 
-On Tue, 19 May 2026 08:21:02 +0200, Ahmad Fatoum wrote:
-> RELR support has been disabled at the last minute prior to the
-> v2026.04.0 release, because that appeared to fix a not yet understood
-> boot hang on the Rock 3A.
-> 
-> The boot hang appears to have been fixed properly by commit
-> 3ef8ba6540ef ("ARM: fix wrong calculation of barebox base"), so re-enable
-> RELR again to benefit from the code size savings.
-> 
-> [...]
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ fs/ubifs/super.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Applied, thanks!
-
-[1/1] arch: enable RELR relocation packing support by default
-      https://git.pengutronix.de/cgit/barebox/commit/?id=1cc414614c94 (link may not be stable)
-
-Best regards,
+diff --git a/fs/ubifs/super.c b/fs/ubifs/super.c
+index 45037b42ea..4022270d4c 100644
+--- a/fs/ubifs/super.c
++++ b/fs/ubifs/super.c
+@@ -1128,6 +1128,7 @@ static void kill_ubifs_super(struct super_block *s)
+  */
+ static void inode_slab_ctor(void *obj)
+ {
++	memset(obj, 0, sizeof(struct inode));
+ }
+ 
+ static int __init ubifs_init(void)
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.47.3
 
 
 
