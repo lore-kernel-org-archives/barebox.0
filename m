@@ -1,56 +1,59 @@
-Delivery-date: Wed, 20 May 2026 10:34:28 +0200
+Delivery-date: Wed, 20 May 2026 10:34:43 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wPcNo-001nu0-0G
+	id 1wPcO3-001nuc-34
 	for lore@lore.pengutronix.de;
-	Wed, 20 May 2026 10:34:28 +0200
+	Wed, 20 May 2026 10:34:43 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wPcNn-000387-BN
-	for lore@pengutronix.de; Wed, 20 May 2026 10:34:27 +0200
+	id 1wPcO3-0003B5-6O
+	for lore@pengutronix.de; Wed, 20 May 2026 10:34:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ox97iwuQicPtCi3xbYmXyQ89iknPcLp2bijCrvbYwro=; b=XthgckvXFzADqmjR9DUPQGiYks
-	qV/Wf2ubQv6lO4KP582iyIACwWsa645m6B9pf4OCLg8sNuAoq1EdtANAcifHneBgm8cfRvsIEyKUk
-	G2BAjRhm6QPHoT4HcXzO6YRfzwHuFkz7MV1S517oIcQ+ZMRt9mOL8/ZDswFiBYlKYr7Q0c06Qa0Ur
-	x5WW1xV5JP+mjf4lz+zZWxCn+7FraLbGBbtj/ewXytNje1VHEbzpDoEOhtjs5X5BCTF2Dd/yby5s+
-	UVmhmbQw3XENHz2EJaRV5z6d/CXLd3wCO9sBa2BN21Q009+GaEX1UlMYOIeN2M9X3lXn4ycsfGH2C
-	Wt+SqLMQ==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=RWkw5QpHCS6Hh/fN8/A3QtCxpyRU6D6taqbyuLEL+KE=; b=QjVMaidprKrnE4
+	wyb1Iav6J4TXgmRym7Lipo7vW3Nfqi5TKORYo60UP6cBuh1eXuaTqC1Frz7Zm3Y5SuJY7EXiadDrs
+	jwQeQTvzOFBYFuB9Tlb2UeEk+H5y4hq/kZf4oZGwspBYNq1NexhKrBc8cxohWa8uhBQ3zVtGPmKKs
+	VoJD+ytfAhANm4c0Yda3CadkW5Y0SFrR5sTIexib9ypddRSBQXrJ/CjQmzSIxuefRMlla5fHppcxg
+	NKIe0yHn5WFUs+14gz/1c3y9vF0W1HDizXZBydiDGlFYeUM1+RIj5Zxqrz+aVs/TGtf5njkKDPdf1
+	z1GbY8+hSRgXmLo3rwEg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPcMd-00000003y1U-3vTS;
+	id 1wPcMd-00000003y1K-3E0R;
 	Wed, 20 May 2026 08:33:15 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPcMa-00000003xyX-3oXq
+	id 1wPcMa-00000003xyU-3nR0
 	for barebox@lists.infradead.org;
-	Wed, 20 May 2026 08:33:15 +0000
+	Wed, 20 May 2026 08:33:14 +0000
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <f.pfitzner@pengutronix.de>)
-	id 1wPcMY-0002uz-6t; Wed, 20 May 2026 10:33:10 +0200
+	id 1wPcMY-0002uz-4s; Wed, 20 May 2026 10:33:10 +0200
 From: Fabian Pfitzner <f.pfitzner@pengutronix.de>
-Date: Wed, 20 May 2026 10:33:00 +0200
+Date: Wed, 20 May 2026 10:32:58 +0200
+Message-Id: <20260520-fpf-bootsource-instance-index-v1-0-29942f0e8f2f@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260520-fpf-bootsource-instance-index-v1-2-29942f0e8f2f@pengutronix.de>
-References: <20260520-fpf-bootsource-instance-index-v1-0-29942f0e8f2f@pengutronix.de>
-In-Reply-To: <20260520-fpf-bootsource-instance-index-v1-0-29942f0e8f2f@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIALpxDWoC/x2MywqAIBAAfyX2nKBGz1+JDj7W2ouGWxFE/550m
+ 2FgHmDMhAxT9UDGi5hSLKLqCtxm4oqCfHHQUneyVYMIexA2pYPTmV2pkQ8Tf/B4C9Nbq+TQjNo
+ 0UB57xkD3/5+X9/0Ad2MpBW8AAAA=
+X-Change-ID: 20260518-fpf-bootsource-instance-index-a7bb108392a3
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Fabian Pfitzner <f.pfitzner@pengutronix.de>
 X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260520_013312_952739_C5C723F2 
-X-CRM114-Status: GOOD (  15.27  )
+X-CRM114-CacheID: sfid-20260520_013312_953395_7D7F795F 
+X-CRM114-Status: UNSURE (   8.71  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,100 +75,46 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] arch: arm: imx: detect secondary boot
+Subject: [PATCH 0/2] Implement recovery boot detection for SPI flash
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Integrate support to detect secondary boot on imx machines.
-Copy the logic for detection from the uboot-imx project[1].
+As of now, there is only the boot rom log on i.MX processors that give us
+information on whether we have booted from the primary or recovery image.
 
-The information will be stored in the `bootsource_instance_index`
-variable.
+Extract this information into a Barebox variable in order to pass this
+information to user space. This is useful for tools such as RAUC, that
+rely on that information when updating the bootloader atomically.
 
-[1] https://github.com/nxp-imx/uboot-imx/blob/99518e6b6f20cb6a2bf19115e355db9f58100af8/arch/arm/mach-imx/imx8m/soc.c#L792
+The variable is called `bootsource_instance_index`.
+The intention behind the name is, that for an instance we can have
+multiple boot images, where the primary is depicted as zero, and the
+recovery/secondary is depicted as a 1.
+
+There is no implementation on how to pass this information to user
+space. This could be implemented by a boot script that interprets
+the content of that variable into a human readable format.
+
+Successfully tested on the congatec-qmx8p.
 
 Signed-off-by: Fabian Pfitzner <f.pfitzner@pengutronix.de>
 ---
- arch/arm/mach-imx/boot.c | 52 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 52 insertions(+)
+Fabian Pfitzner (2):
+      bootsource: add bootsource instance index variable
+      arch: arm: imx: detect secondary boot
 
-diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index 3fea22d05f3bfdf2fe9caa6767e1c7c5ea3ced00..a35a1acc2e71231236d3dd5008523f6c66912000 100644
---- a/arch/arm/mach-imx/boot.c
-+++ b/arch/arm/mach-imx/boot.c
-@@ -26,6 +26,8 @@
- 
- #include <soc/fsl/fsl_udc.h>
- 
-+int imx8m_detect_secondary_image_boot(void);
-+
- static void
- imx_boot_save_loc(void (*get_boot_source)(enum bootsource *, int *))
- {
-@@ -35,6 +37,10 @@ imx_boot_save_loc(void (*get_boot_source)(enum bootsource *, int *))
- 	get_boot_source(&src, &instance);
- 
- 	bootsource_set(src, instance);
-+
-+	int index = imx8m_detect_secondary_image_boot();
-+
-+	bootsource_set_instance_index(index);
- }
- 
- 
-@@ -756,3 +762,49 @@ void imx8mn_get_boot_source(enum bootsource *src, int *instance)
- 
- void imx8mn_boot_save_loc(void)
- 	__alias(imx8mp_boot_save_loc);
-+
-+int imx8m_detect_secondary_image_boot(void)
-+{
-+	u32 *rom_log_addr = (u32 *)0x9e0;
-+	u32 *rom_log;
-+	u8 event_id;
-+	int i, boot_secondary = 0;
-+
-+	/* If the ROM event log pointer is not valid. */
-+	if (*rom_log_addr < 0x900000 || *rom_log_addr >= 0xb00000 ||
-+	    *rom_log_addr & 0x3)
-+		return -EINVAL;
-+
-+	/* Parse the ROM event ID version 2 log */
-+	rom_log = (u32 *)(uintptr_t)(*rom_log_addr);
-+	for (i = 0; i < 128; i++) {
-+		event_id = rom_log[i] >> 24;
-+		switch (event_id) {
-+		case 0x00: /* End of list */
-+			return boot_secondary;
-+		/* Log entries with 1 parameter, skip 1 */
-+		case 0x80: /* Start to perform the device initialization */
-+		case 0x81: /* The boot device initialization completes */
-+		case 0x82: /* Starts to execute boot device driver pre-config */
-+		case 0x8f: /* The boot device initialization fails */
-+		case 0x90: /* Start to read data from boot device */
-+		case 0x91: /* Reading data from boot device completes */
-+		case 0x9f: /* Reading data from boot device fails */
-+			i += 1;
-+			continue;
-+		/* Log entries with 2 parameters, skip 2 */
-+		case 0xa0: /* Image authentication result */
-+		case 0xc0: /* Jump to the boot image soon */
-+			i += 2;
-+			continue;
-+		/* Boot from the secondary boot image */
-+		case 0x51:
-+			boot_secondary = 1;
-+			continue;
-+		default:
-+			continue;
-+		}
-+	}
-+
-+	return boot_secondary;
-+}
+ Documentation/user/variables.rst |  1 +
+ arch/arm/mach-imx/boot.c         | 52 ++++++++++++++++++++++++++++++++++++++++
+ common/bootsource.c              | 20 ++++++++++++++++
+ include/bootsource.h             | 11 +++++++++
+ 4 files changed, 84 insertions(+)
+---
+base-commit: 1806d0f4835a1217a298f82fa2fc88b2694380f2
+change-id: 20260518-fpf-bootsource-instance-index-a7bb108392a3
 
+Best regards,
 -- 
-2.47.3
+Fabian Pfitzner <f.pfitzner@pengutronix.de>
 
 
 
