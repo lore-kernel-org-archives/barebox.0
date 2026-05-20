@@ -1,61 +1,56 @@
-Delivery-date: Wed, 20 May 2026 08:22:16 +0200
+Delivery-date: Wed, 20 May 2026 10:34:28 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wPaJs-001lyr-2d
+	id 1wPcNo-001nu0-0G
 	for lore@lore.pengutronix.de;
-	Wed, 20 May 2026 08:22:16 +0200
+	Wed, 20 May 2026 10:34:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wPaJs-00022d-7V
-	for lore@pengutronix.de; Wed, 20 May 2026 08:22:16 +0200
+	id 1wPcNn-000387-BN
+	for lore@pengutronix.de; Wed, 20 May 2026 10:34:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:
-	Content-Transfer-Encoding:Content-Type:In-Reply-To:To:Subject:From:Reply-To:
-	MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
-	bh=AGnb14jloxYKToC6oa+Hd+JdYDH9VK3QEgfV+bzOP38=; b=144aRsbG9xPf9RT/x4m6MZZnnl
-	y0rllv+ceE4TP0eqGFkSv+D5LPgugB8DRXF+vqpGhKoZUClA5pscT95ATeUTpTm8IpacHKvdKHH8J
-	LEcq5G8Ld1HWba0miN3SgPgvvH4FDHHZvjKyvtS9j9zZzLgy3H/cUWNWonA+VyI5Bf7SpHUE7vNbY
-	IEMtOXaJBBiBeOH63eYw3H88JXQp0gLtkFswUiqhOjMwLVExKM+U9QIao5J5CrYlN3+h4TR/4orIw
-	s09KkCoM7L9sBcCfOYlHWxMYgpMxz/7aqF9j2f+mIqi7MT1KaQvmFEQzJtjJn0cFw+XrVlxlpiQgE
-	qbk0CVpg==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=ox97iwuQicPtCi3xbYmXyQ89iknPcLp2bijCrvbYwro=; b=XthgckvXFzADqmjR9DUPQGiYks
+	qV/Wf2ubQv6lO4KP582iyIACwWsa645m6B9pf4OCLg8sNuAoq1EdtANAcifHneBgm8cfRvsIEyKUk
+	G2BAjRhm6QPHoT4HcXzO6YRfzwHuFkz7MV1S517oIcQ+ZMRt9mOL8/ZDswFiBYlKYr7Q0c06Qa0Ur
+	x5WW1xV5JP+mjf4lz+zZWxCn+7FraLbGBbtj/ewXytNje1VHEbzpDoEOhtjs5X5BCTF2Dd/yby5s+
+	UVmhmbQw3XENHz2EJaRV5z6d/CXLd3wCO9sBa2BN21Q009+GaEX1UlMYOIeN2M9X3lXn4ycsfGH2C
+	Wt+SqLMQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPaJX-00000003e64-2KCE;
-	Wed, 20 May 2026 06:21:55 +0000
+	id 1wPcMd-00000003y1U-3vTS;
+	Wed, 20 May 2026 08:33:15 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPaJU-00000003e4s-1TfK
+	id 1wPcMa-00000003xyX-3oXq
 	for barebox@lists.infradead.org;
-	Wed, 20 May 2026 06:21:53 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	Wed, 20 May 2026 08:33:15 +0000
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1wPaJS-000207-Pd; Wed, 20 May 2026 08:21:50 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1wPaJS-000t6J-0Y;
-	Wed, 20 May 2026 08:21:50 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1wPaJS-00000001yEr-2gmZ;
-	Wed, 20 May 2026 08:21:50 +0200
-From: "Sascha Hauer" <s.hauer@pengutronix.de>
-To: "Alexander Shiyan" <eagle.alexander923@gmail.com>
-In-Reply-To: <CAP1tNvQNpjt4e2AhwTPoMKM0E9gra__3feFdczhvVWTc6e_4CA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
+	(envelope-from <f.pfitzner@pengutronix.de>)
+	id 1wPcMY-0002uz-6t; Wed, 20 May 2026 10:33:10 +0200
+From: Fabian Pfitzner <f.pfitzner@pengutronix.de>
+Date: Wed, 20 May 2026 10:33:00 +0200
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Date: Wed, 20 May 2026 06:21:50 +0000
-Message-Id: <E1wPaJS-00000001yEr-2gmZ@pty.whiteo.stw.pengutronix.de>
+Message-Id: <20260520-fpf-bootsource-instance-index-v1-2-29942f0e8f2f@pengutronix.de>
+References: <20260520-fpf-bootsource-instance-index-v1-0-29942f0e8f2f@pengutronix.de>
+In-Reply-To: <20260520-fpf-bootsource-instance-index-v1-0-29942f0e8f2f@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>
+Cc: Fabian Pfitzner <f.pfitzner@pengutronix.de>
+X-Mailer: b4 0.14.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260519_232152_400634_631422FF 
-X-CRM114-Status: GOOD (  16.47  )
+X-CRM114-CacheID: sfid-20260520_013312_952739_C5C723F2 
+X-CRM114-Status: GOOD (  15.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,52 +62,110 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: barebox@lists.infradead.org
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: v2026.05.0
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 2/2] arch: arm: imx: detect secondary boot
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Alexander,
+Integrate support to detect secondary boot on imx machines.
+Copy the logic for detection from the uboot-imx project[1].
 
-On 2026-05-20 08:15, Alexander Shiyan wrote:
-> Hello Sascha.
-> 
-> The first launch of the new release has failed.
-> On the RK3568 platform, BL31 does not start. The size of the final
-> binary has decreased from 1.5 MB
-> to 930 KB - possibly due to the announced compression, but it seems to
-> me that this is too
-> large a reduction...
-> Are there any additional settings/calls required for custom boards in
-> the new release?
+The information will be stored in the `bootsource_instance_index`
+variable.
 
-No board level adjustments required. I just re-tested the relase on a
-Rock-3a board using rockchip_v8_defconfig. It works here.
+[1] https://github.com/nxp-imx/uboot-imx/blob/99518e6b6f20cb6a2bf19115e355db9f58100af8/arch/arm/mach-imx/imx8m/soc.c#L792
 
-The size reduction depends on the size of your firmware binaries. You
-could look at the firmware/*.z files and compare with the original files
-to see if that explains the size reduction. The TF-A and OP-TEE files
-that I use only have around 700KiB in total, so a size reduction of
-600KiB would be unreasonable in my case.
+Signed-off-by: Fabian Pfitzner <f.pfitzner@pengutronix.de>
+---
+ arch/arm/mach-imx/boot.c | 52 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 52 insertions(+)
 
-Do you have any console output to share?
+diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
+index 3fea22d05f3bfdf2fe9caa6767e1c7c5ea3ced00..a35a1acc2e71231236d3dd5008523f6c66912000 100644
+--- a/arch/arm/mach-imx/boot.c
++++ b/arch/arm/mach-imx/boot.c
+@@ -26,6 +26,8 @@
+ 
+ #include <soc/fsl/fsl_udc.h>
+ 
++int imx8m_detect_secondary_image_boot(void);
++
+ static void
+ imx_boot_save_loc(void (*get_boot_source)(enum bootsource *, int *))
+ {
+@@ -35,6 +37,10 @@ imx_boot_save_loc(void (*get_boot_source)(enum bootsource *, int *))
+ 	get_boot_source(&src, &instance);
+ 
+ 	bootsource_set(src, instance);
++
++	int index = imx8m_detect_secondary_image_boot();
++
++	bootsource_set_instance_index(index);
+ }
+ 
+ 
+@@ -756,3 +762,49 @@ void imx8mn_get_boot_source(enum bootsource *src, int *instance)
+ 
+ void imx8mn_boot_save_loc(void)
+ 	__alias(imx8mp_boot_save_loc);
++
++int imx8m_detect_secondary_image_boot(void)
++{
++	u32 *rom_log_addr = (u32 *)0x9e0;
++	u32 *rom_log;
++	u8 event_id;
++	int i, boot_secondary = 0;
++
++	/* If the ROM event log pointer is not valid. */
++	if (*rom_log_addr < 0x900000 || *rom_log_addr >= 0xb00000 ||
++	    *rom_log_addr & 0x3)
++		return -EINVAL;
++
++	/* Parse the ROM event ID version 2 log */
++	rom_log = (u32 *)(uintptr_t)(*rom_log_addr);
++	for (i = 0; i < 128; i++) {
++		event_id = rom_log[i] >> 24;
++		switch (event_id) {
++		case 0x00: /* End of list */
++			return boot_secondary;
++		/* Log entries with 1 parameter, skip 1 */
++		case 0x80: /* Start to perform the device initialization */
++		case 0x81: /* The boot device initialization completes */
++		case 0x82: /* Starts to execute boot device driver pre-config */
++		case 0x8f: /* The boot device initialization fails */
++		case 0x90: /* Start to read data from boot device */
++		case 0x91: /* Reading data from boot device completes */
++		case 0x9f: /* Reading data from boot device fails */
++			i += 1;
++			continue;
++		/* Log entries with 2 parameters, skip 2 */
++		case 0xa0: /* Image authentication result */
++		case 0xc0: /* Jump to the boot image soon */
++			i += 2;
++			continue;
++		/* Boot from the secondary boot image */
++		case 0x51:
++			boot_secondary = 1;
++			continue;
++		default:
++			continue;
++		}
++	}
++
++	return boot_secondary;
++}
 
-Sascha
+-- 
+2.47.3
 
---
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
