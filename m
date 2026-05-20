@@ -1,110 +1,110 @@
-Delivery-date: Wed, 20 May 2026 13:18:34 +0200
+Delivery-date: Wed, 20 May 2026 14:13:19 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wPewc-001qSk-2F
+	id 1wPfnb-001rKk-2F
 	for lore@lore.pengutronix.de;
-	Wed, 20 May 2026 13:18:34 +0200
+	Wed, 20 May 2026 14:13:19 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wPewc-0000B7-3j
-	for lore@pengutronix.de; Wed, 20 May 2026 13:18:34 +0200
+	id 1wPfna-0000c0-Uz
+	for lore@pengutronix.de; Wed, 20 May 2026 14:13:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
 	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3Hj4vhWNkqm581+eeuCZSesQRU+fKIWbJ4FG+5WaB28=; b=g1JjVFFmKkYq1/3/Sp10EJ8oLG
-	GCXSS9ULWFvSoNKBJ+h3r4ff4lXHx2ApRE/TvFMtg20XU5F2LQ5S4daw+D0f0VR56EdnfAY7ect41
-	ucbE5pJAvLHhn4g0OfQNmQx1XkJPg+/QWqPGBiZVG8SSWU1Ha3qnhLHfx1W1Z+aIsz9GpTm8/bdIs
-	8R6/ZWa2cK5Bm83vYi9hn8g3Lay/9PQaCKb703IVjZEeKc1QlrUmEOprEdVSu88UTtPbt+X+LyJju
-	OzM2OMiICS8aKOegH8lgG2rS9RNsKP/l1ocUSslzj5uFoamzn0LLiEBhLvEanTJuAMoY5jKYvWPkt
-	p86xBGQQ==;
+	bh=eCqejs9SaGfLE0uSwePRzrvqHhUW9/cE843GD5UYRRc=; b=iu8XrtTK9O/JjG9Edsdbtl75c5
+	OgTNPjuK9hTPxYoRGCrGNIxW6p71wFlptwT+zlt1To8OSvbsu44kWQ0xhV8vLNLvLnihigPLa7+RZ
+	NhCFwC6w4n2S7IRhV91++iiBuktxXu4IBRarw1hEryJRUX2jP48LBh4qhhSyCY+V3WaXDH4kbtodQ
+	32uxCCd9wlzSQSiHo0vYer56vm35620LKU/iG+XwBFBU99NS/zBCoJNOPZKqHzvuM9pAWCoSeainb
+	zrdRkWHPnKdXHJ4S81AOhInqUzPNWwqt1rqiyd+wQmO/i1bLpfpLTNGLqeUAlEPIQG7SCFR6INnVK
+	kUrtaeHA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPevJ-00000004QaI-2Rgb;
-	Wed, 20 May 2026 11:17:13 +0000
-Received: from mail-dl1-x1236.google.com ([2607:f8b0:4864:20::1236])
+	id 1wPfmK-00000004WsN-0zgP;
+	Wed, 20 May 2026 12:12:00 +0000
+Received: from mail-dl1-x122a.google.com ([2607:f8b0:4864:20::122a])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPevG-00000004QZw-31Cu
+	id 1wPfmI-00000004Wrr-0Nso
 	for barebox@lists.infradead.org;
-	Wed, 20 May 2026 11:17:12 +0000
-Received: by mail-dl1-x1236.google.com with SMTP id a92af1059eb24-134fe980658so6158377c88.1
-        for <barebox@lists.infradead.org>; Wed, 20 May 2026 04:17:10 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779275830; cv=none;
+	Wed, 20 May 2026 12:11:59 +0000
+Received: by mail-dl1-x122a.google.com with SMTP id a92af1059eb24-12c8f9846c8so5567586c88.0
+        for <barebox@lists.infradead.org>; Wed, 20 May 2026 05:11:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779279117; cv=none;
         d=google.com; s=arc-20240605;
-        b=W4p4i1rhzPKwveiIIVeVkiYxwGtv1L+0baWsIDEcxNinYeCCS4HO78xVQqZW+hb7+q
-         7/oa9TfXafrjwT7VxqR5V633TFeqPh1jKkd7WLDoZw4qph2VjpBp8y2zVY/YXgwC6wKA
-         5zVDpeA3mP8iw7CfKZJ8ZHtMvjWy2FuLy1c78JNitvYJ4FDnq36dOhYnwKNntsPxs5J0
-         yE3WjOkCNq3wEcdLGvEb8FDZIHrI1uf7JVt6uIO/D3BNy4/FK9DfzZ4VAjTTkprIbe7L
-         7eno8lJKu7266y1/SsJtdbrZv639Kn8cKEE9RRXWg6caqsoE4SnBDkZMQUUgVWgdDSSo
-         4Mmw==
+        b=P/KGNcX9q4f0N847qkBAXM7prMTDtwfRSN7h9SOLDrEvf/P+lfZLbfm4fTNwH8glw2
+         K+A6czU5GtKZt/i2VU/LwN5iqQGTTG+Gben25wnCLS7Red2kNVbGp/DG5dFeCSvZM1+3
+         aDmGHlgPl0jYXgoLnDg6RGNz1cDoKquMn6DGkP2lkJuwZrEyKP+OGerZyuKd2dDagQL7
+         15A693IeS3FVAijqbhEkIkGm54nTKod81YToCZc0iUPfgtxhfYp1h5aeSlDWmJeWm2En
+         rCg7puD8Ywv9DqlA3Zx2G2zax021dNqMFvPiIfl/AxhCpN9pea9qsktEg9ryi5YDSEHJ
+         sFCQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=3Hj4vhWNkqm581+eeuCZSesQRU+fKIWbJ4FG+5WaB28=;
+        bh=eCqejs9SaGfLE0uSwePRzrvqHhUW9/cE843GD5UYRRc=;
         fh=QTl4aF0/iXkDY6Uf61Tk/V/7sh5GF70RwK/YHfa2l1k=;
-        b=T6uGiHOVW/hSxKALbuOlZwf4/wGYLXGU6wzIQQag5XTcB6RFJfNcUEQ6eKwHKzwJtv
-         fGKzUdoQTnmG74mqI1hjXR2FPtDss+244o5Pl99vyboePI5vlNszK/oG35qjhiWthg7P
-         1GemzVEzJpqKqeYr2VzJa6okWadpYvlLNUXuyRlaak5SAth7bu1Tg06vw+srgO0bplJM
-         lEEJqkE3cP/KwrweujszwqaTguHjPmlMZJwRkdMSIUCDK6n5xmaUYPehd7tkdS6SfpH9
-         HMwx0AdMHaLWMIU9xXrK8UO4dtPwWxHQw0TWztmi7zn9ZlSsT0sCAZR7PCX0ESSVsIef
-         4QkQ==;
+        b=NWpqVM2c/yzvABn8zfCyRlkfbtiODWq7Nd78tznicCzwne9DbUs4TC+FeYgIGyMDHj
+         DzXrTDwuQo/Hsw3C8E84To7GTVViFE21Q6sb7WUwgpaHIw3ErZPjg9c+14y7Ugouve1r
+         z+OsX4BCV208gTNmZKJkjzJWuacqfo5eDciSLw/tP3Ef8ie1HSfwqyhlEoFVY3bakjfA
+         Cfb7B52qJRsdnxu/uKwCeGdw8+N3eRE+MjK+F1rQFGCn5maW9EFTxdaJ7M7OSSjcHbk+
+         FxYVBvxUtEHSp5/0NtJpYV81DgdS744IcXK6qysbaA9fKmrG9P+RMvAOv2F/6GRLBYpK
+         3JjA==;
         darn=lists.infradead.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779275830; x=1779880630; darn=lists.infradead.org;
+        d=gmail.com; s=20251104; t=1779279117; x=1779883917; darn=lists.infradead.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3Hj4vhWNkqm581+eeuCZSesQRU+fKIWbJ4FG+5WaB28=;
-        b=Z7jKO0b6LYAGi+bds2l6tUbTHMjdbqh9NmWZ5PlI2+tkdbEUgSx679e+WwdXOytuvs
-         DaSLu8No3gHwRfw3w+peNbjyrzvKKC4vVxAbeMYsBWpuCt3+nu3OsCzY5ufkpPrdaA0z
-         5v3CbfTtulicOMvyHWPNpkj2X3bHXBFL4XSpj1EUoMbu3JDPBpKeCazpu2hV4i6bLhdr
-         FHJYrYWYA0uTvcd1K1zW6e4bwKswYvqoi0qOVjyzKDobq+XP2fmF5NfUnTqSorrekayn
-         9GzhYF2Ve9TL72vwHAnd8JYuO9fGAcJlYbaAZ1UmycjSaxxUoZ1fqeueT1VzVkuWQTTQ
-         m8BQ==
+        bh=eCqejs9SaGfLE0uSwePRzrvqHhUW9/cE843GD5UYRRc=;
+        b=UsTD1L2oQ2p66ayPbVZnYr8aO0JdiG68431a9HqET6fBNl+83a0g914AjRVH2eEyl3
+         km8WJDXc0WXau3wHoJE6nG5xwDcCAtS/wWg4Bhicf9X/TdtoDYYhHn+TNRpFaQJqCMrT
+         +Q5aq/QM6hL2eryevOjBGmCZAjD01MGIVQ8Qs0NMSpJAGpnFESdV8/1sklEN9vGU8JsJ
+         c5a9gTs9/TyTE100kHF8/2GNmCVrCoIQMnkyh3j+ye8xViXP9lDw7NyPVwSUjw61YB5h
+         t8torHo7sbMQebM1PX6HIM+Z8UHomV0t4lNa6C3T8GfU9Qh0K9fh0Vi/7R2vlRIwAdsB
+         /jjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779275830; x=1779880630;
+        d=1e100.net; s=20251104; t=1779279117; x=1779883917;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=3Hj4vhWNkqm581+eeuCZSesQRU+fKIWbJ4FG+5WaB28=;
-        b=jfppaDjAR6+spIq7em5bUHVwU4esyrnjoWwH9eTTBURf6CgGZx4+SZ23DoW747n8hX
-         h5D/CHrMVxecKlBUbKPF7BcJQQm05njaTRlKd/wgr/cSAH7OSpUL+kM91JZALPcmDter
-         KewKIBn1o+94t+aV91zmogc8uQYFgHpVJVaphYpDQ3fwXZYfQAIDAUHh8Mxxj/4QRPBQ
-         8pejTuuXRENTkHpdnil1WcOU/G/VK/vSLooMjozvEBTNscVl3SzZkQ9JerZdoXE1NRjX
-         1xR3z3FDWMAddaRo54FemhoWoS7i0j0B4ZRHm1PQpPfvIqm35IzmmWqb/xglXxZe4jjb
-         hH4A==
-X-Gm-Message-State: AOJu0YyKxlo/ACeaZkI1YyOGDUnHDH1XfuhbEgPmH4qQPeHYJLKbk+Yv
-	daYESg3wPIXka5L+frdSW0RZxMwbldJWTmqYqQsfCHkSoLLRjZ2hCQirbyxzs9IZ75RrCbnaKZ5
-	v0HxkJP4Rhv1rPZSChl8j0DsWSY61ic1Xmy4vxeKk5g==
-X-Gm-Gg: Acq92OGZU2RYsmtJgj8ayTmtFSKulBShSDpTlrWQsc7SX73O1lceovwM0T/d/XQOU2y
-	AdKuhEMwSNxX+QoCZuXr9J904hWdXE/r63U+v2CLJaXY/rt2GULPjDqcbb9SZwNfNtPMwbCG65J
-	nIQXPVNYfoMS0Jzxst4Ws+m/cOIyTMtS3RYJVPgE1xio1yBPg8xco1QYRlgvHq+hm3L6jFI+TyV
-	9U5mJLAuzjkMzBvKgkajeh8o2Rqp/DWanOkEqlTIehj9hxIKHTcjESFsL5dNONQDccgS2PIRAPo
-	mzXBvVIr
-X-Received: by 2002:a05:7022:6987:b0:135:262f:f6d5 with SMTP id
- a92af1059eb24-135262ff71cmr9847657c88.40.1779275829628; Wed, 20 May 2026
- 04:17:09 -0700 (PDT)
+        bh=eCqejs9SaGfLE0uSwePRzrvqHhUW9/cE843GD5UYRRc=;
+        b=c0RlEPVhfBs+Ygsm8mgiafc11vNQfGWmhE53dZCeonhRkmGc9djg/HHazaD/fwSvhx
+         b2SMeRvjqUTTk2rSWX3dYnSpsbUj2x8UxwVDOQ90PhwlilPVY9T3epbfDOsBqy9prjHS
+         yDEBnE6qJ9pNI/D+jJPdREsAmzEv0TaD5Z1dFNRCTFdxQW+A6SoRG0/FnND980sDqxp9
+         Z/DQoMTln7eCwxeTMZmwIZALOoFjWng0VB2r8CDh/bODwj0qBUVEOlBt6AecX7x+rBYY
+         ucPz8trfCSNQfq869e2n1Y+WBvOJYvwfeUr0EBtxoD5s5tDVvUYoVrhnx3k8WLNcUeA2
+         hu8A==
+X-Gm-Message-State: AOJu0YzUotFtxFyzynBTDCBG2P/0Zmiq1t3SbJckIN9yZ5zJ8Bpe1QLm
+	MiZmqfYjHtNrqHACago/Ma7oAm4OZ3EivyW9VjjQ+EF2L/UtY/hcTEErsK08sAlgGPjEPeWW/d/
+	khhiFTP0GmshEyJSwfDmkqxNPhw45t2g=
+X-Gm-Gg: Acq92OHlXtN6kAOH2DNNpXvBUJ+ew/ZQ9Suet3EMC9u9aHg/hedPoU7gvhXH2pGmMLc
+	nuAS+TOrMYpw2RjlzyyhedeTvdnWc6Qq0ZcvjqShPiWdwiw3pbOOyINoMrKScJqQPjFB288IAq+
+	CsxSxyBqg3B3vZLR3e7/8p/aIQohgs0BpG6j2uvXlxeAjZHVJoq1Hcc/LTqcrjHVFKXrSblMvT5
+	pqCfzlHZB8YswibUP11RRHy7OlDDiu//EOwX184DojZLVxvHM50M2lllvDldNruvOn3CDKNrmzK
+	R11RpUWi
+X-Received: by 2002:a05:7022:4381:b0:12c:3d30:37ba with SMTP id
+ a92af1059eb24-135047445d6mr10141839c88.25.1779279117002; Wed, 20 May 2026
+ 05:11:57 -0700 (PDT)
 MIME-Version: 1.0
 References: <CAP1tNvQNpjt4e2AhwTPoMKM0E9gra__3feFdczhvVWTc6e_4CA@mail.gmail.com>
  <E1wPaJS-00000001yEr-2gmZ@pty.whiteo.stw.pengutronix.de>
 In-Reply-To: <E1wPaJS-00000001yEr-2gmZ@pty.whiteo.stw.pengutronix.de>
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Wed, 20 May 2026 14:16:58 +0300
-X-Gm-Features: AVHnY4KUd9fuLcRfP3VSSmru51Y1CsmgU8LlgpRHk36WlLmF2vpx3g9fEblsI8A
-Message-ID: <CAP1tNvRtsajFJ25x6JGw4dvDB-EGAdABYFrg1sFpYMYZ7XCJtQ@mail.gmail.com>
+Date: Wed, 20 May 2026 15:11:44 +0300
+X-Gm-Features: AVHnY4JO5nDaot3hwpRxXsXf2gXTizuMhqPT11iGSj_HTkfzjJ68fGiud8uosR0
+Message-ID: <CAP1tNvQh2dCn9_+dwiOzRgCeNFT6AC9n4rJNC39AB2tNYC_W-w@mail.gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260520_041710_764113_EB0DEDD8 
-X-CRM114-Status: GOOD (  22.85  )
+X-CRM114-CacheID: sfid-20260520_051158_135593_ED9F01B2 
+X-CRM114-Status: GOOD (  22.22  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -131,27 +131,23 @@ Subject: Re: v2026.05.0
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Sascha.
+Here is output with lowlevel debug:
+DDR 03ea844c5d typ 24/09/03-10:42:57,fwver: v1.23
+In
+...
+out
+>rockchip-dmc: rockchip_sdram_size(reg2=3D1000ea01, reg3=3D30000031)
+rockchip-dmc: rank 2 cs0_col 10 cs1_col 10 bk 3 cs0_row 17 cs1_row 17
+bw 2 row_3_4 0
+rockchip-dmc: rk3568_ram_sizes() =3D 8589934592
+mmu: enabling MMU, ttb @ 0xedf80000
+mmu: __arch_remap_range: 0x00000000+0x8000000000 type UNCACHED
+mmu: __arch_remap_range: 0x8000000000+0x8000000000 type UNCACHED
+mmu: __arch_remap_range: 0x00a00000+0xef600000 type RWX
+mmu: __arch_remap_range: 0xee000000+0x2000000 type FAULT
+mmu: __arch_remap_range: 0x00b00000+0x60000 type RWX
 
-There is only output from sdram-init binary, then silence.
-
-shc@gentoo /home/ARM64/barebox/firmware $ ls -1hs rk3568*
-396K rk3568-bl31.bin
-4.0K rk3568-bl31.bin.gen.S
-460K rk3568-bl31.bin.gen.pbl.o
-4.0K rk3568-bl31.bin.sha.bin
-64K rk3568-bl31.bin.z
-456K rk3568-bl32.bin
-4.0K rk3568-bl32.bin.gen.S
-624K rk3568-bl32.bin.gen.pbl.o
-4.0K rk3568-bl32.bin.sha.bin
-168K rk3568-bl32.bin.z
-
-Can you compare them with your files?
-I understand the versions may differ, but the size should be roughly the sa=
-me.
-
-Thanks!
+Everything looks good, but it hangs at this step.
 
 =D1=81=D1=80, 20 =D0=BC=D0=B0=D1=8F 2026=E2=80=AF=D0=B3. =D0=B2 09:21, Sasc=
 ha Hauer <s.hauer@pengutronix.de>:
