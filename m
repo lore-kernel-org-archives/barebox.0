@@ -1,61 +1,61 @@
-Delivery-date: Wed, 20 May 2026 14:41:54 +0200
+Delivery-date: Wed, 20 May 2026 15:18:28 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wPgFG-001rce-09
+	id 1wPgoe-001sIl-1U
 	for lore@lore.pengutronix.de;
-	Wed, 20 May 2026 14:41:54 +0200
+	Wed, 20 May 2026 15:18:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wPgFF-0004xE-Fh
-	for lore@pengutronix.de; Wed, 20 May 2026 14:41:53 +0200
+	id 1wPgod-0001Lx-Re
+	for lore@pengutronix.de; Wed, 20 May 2026 15:18:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:
 	Content-Transfer-Encoding:Content-Type:In-Reply-To:To:Subject:From:Reply-To:
 	MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
-	bh=t+S3Mqnkpo3p9m8WBJXfnz4uvkGh8JIM+8xDma4zcZU=; b=AUmp4I5ulSMv/5Bdabw5CbRS8H
-	Kvz9tcGIp3hB3r7nOv8EKjpAf/anm7aoOdwdq+CutgzfU5kVpR2miujnt7aJXb0H+q4VK6iQHYAIQ
-	usvYH6U1Ltl5Z6kSgVAANCMFTC6/wPXtJ03W4sl0Qu/+3wLRbCklZq3Obr+VPIDfeo/hapzUSeHzV
-	Bn9F9UgSP1Gc3UTzyaY5OKbRNfgJgmtiREXSqfc6sJ1c37xJYsIvaVxywuFDezrlTUerSeCXHeMiT
-	08PW+KjWpKkAqRlfv80G0RIv79XlHOst+oPZ352K0BJN8ZWVr2hwjGwurDQAGnAUEqobUIGO49OBG
-	13v0dpXg==;
+	bh=zZ+jOYfox0d380iwmIpx4c4Ub0FTcD/42VvFk4GsOow=; b=uMw3JSOadUTK8PDTDQ/9Xo/eSL
+	thGTvfS/KQrBkTc06tzAhaX0ECvYFFfqtSzBleWj9rGMT2Qcr2WvSLP3nyTaVQG539Rj5BCv6DBty
+	k4pvbr9FzntIod08HLZxynl/zR4Q3bL0SnxMzeMS2vCZ6w22XbP6vcVvPOqs9RO0zojRB9GswjLye
+	7TnItp4gxCeNI5ZZK/SLMYcahF9ZXVPrazO+ngMT+byXnH14ZYna/RYih94MI96a6TWIx5VZDIW6i
+	/1qYshHl4RZXVKiMRLfEdvmZ4OGt0MV0LA32mQ6QxruG8MFQCvyubOebA1j04v2jsSUUQBZKLGOpp
+	HIDKMFfA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPgEA-00000004agA-1iCf;
-	Wed, 20 May 2026 12:40:46 +0000
+	id 1wPgnW-00000004erT-1wOR;
+	Wed, 20 May 2026 13:17:18 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPgE7-00000004afB-3TSq
+	id 1wPgnU-00000004eqp-0zNR
 	for barebox@lists.infradead.org;
-	Wed, 20 May 2026 12:40:45 +0000
+	Wed, 20 May 2026 13:17:17 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1wPgE5-0004l6-Nb; Wed, 20 May 2026 14:40:41 +0200
+	id 1wPgnR-0001Bu-Ur; Wed, 20 May 2026 15:17:13 +0200
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1wPgE4-000vwL-38;
-	Wed, 20 May 2026 14:40:41 +0200
+	id 1wPgnR-000wGN-14;
+	Wed, 20 May 2026 15:17:13 +0200
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1wPgE5-000000025dp-1sxa;
-	Wed, 20 May 2026 14:40:41 +0200
+	id 1wPgnR-0000000264u-3MOI;
+	Wed, 20 May 2026 15:17:13 +0200
 From: "Sascha Hauer" <s.hauer@pengutronix.de>
 To: "Alexander Shiyan" <eagle.alexander923@gmail.com>
-In-Reply-To: <CAP1tNvRtsajFJ25x6JGw4dvDB-EGAdABYFrg1sFpYMYZ7XCJtQ@mail.gmail.com>
+In-Reply-To: <CAP1tNvQh2dCn9_+dwiOzRgCeNFT6AC9n4rJNC39AB2tNYC_W-w@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Date: Wed, 20 May 2026 12:40:40 +0000
-Message-Id: <E1wPgE5-000000025dp-1sxa@pty.whiteo.stw.pengutronix.de>
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 20 May 2026 13:17:13 +0000
+Message-Id: <E1wPgnR-0000000264u-3MOI@pty.whiteo.stw.pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260520_054043_872257_501357A0 
-X-CRM114-Status: UNSURE (   8.68  )
+X-CRM114-CacheID: sfid-20260520_061716_354988_64B0F5B1 
+X-CRM114-Status: UNSURE (   9.56  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -78,35 +78,52 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.2
+	autolearn=unavailable autolearn_force=no version=3.4.2
 Subject: Re: v2026.05.0
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 2026-05-20 14:16, Alexander Shiyan wrote:
-> Hello Sascha.
-> 
-> There is only output from sdram-init binary, then silence.
-> 
-> shc@gentoo /home/ARM64/barebox/firmware $ ls -1hs rk3568*
-> 396K rk3568-bl31.bin
-> 4.0K rk3568-bl31.bin.gen.S
-> 460K rk3568-bl31.bin.gen.pbl.o
-> 4.0K rk3568-bl31.bin.sha.bin
-> 64K rk3568-bl31.bin.z
-> 456K rk3568-bl32.bin
-> 4.0K rk3568-bl32.bin.gen.S
-> 624K rk3568-bl32.bin.gen.pbl.o
-> 4.0K rk3568-bl32.bin.sha.bin
-> 168K rk3568-bl32.bin.z
+On 2026-05-20 15:11, Alexander Shiyan wrote:
+> Here is output with lowlevel debug:
+> DDR 03ea844c5d typ 24/09/03-10:42:57,fwver: v1.23
+> In
+> ...
+> out
+> >rockchip-dmc: rockchip_sdram_size(reg2=3D1000ea01, reg3=3D30000031)
+> rockchip-dmc: rank 2 cs0_col 10 cs1_col 10 bk 3 cs0_row 17 cs1_row 17
+> bw 2 row_3_4 0
+> rockchip-dmc: rk3568_ram_sizes() =3D 8589934592
+> mmu: enabling MMU, ttb @ 0xedf80000
+> mmu: __arch_remap_range: 0x00000000+0x8000000000 type UNCACHED
+> mmu: __arch_remap_range: 0x8000000000+0x8000000000 type UNCACHED
+> mmu: __arch_remap_range: 0x00a00000+0xef600000 type RWX
+> mmu: __arch_remap_range: 0xee000000+0x2000000 type FAULT
+> mmu: __arch_remap_range: 0x00b00000+0x60000 type RWX
 
-396k + 456k - (64k + 168k) = 620k
+Damn. I introduced this:
 
-So the size reduction you see seems fine.
+        pbl_malloc_init(membase[0] + memsize[0] - PBL_MALLOC_SIZE, PBL_MALL=
+OC_SIZE);
+
+This exactly ends up in the area marked as FAULT above (reserved for
+OP-TEE).
+
+Try this:
+
+        pbl_malloc_init(membase[0] + memsize[0] - OPTEE_SIZE - PBL_MALLOC_S=
+IZE,
+                        PBL_MALLOC_SIZE);
+
+You have XZ as image compression, right?
+
+The rockchip_v8_defconfig uses LZ4 which doesn't need any dynamic memory
+for decompression. I tested with XZ as well, but the configuration I
+used for this test doesn't have OP-TEE enabled, so the faulting area was
+not there.
 
 Sascha
 
--- 
+--
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
