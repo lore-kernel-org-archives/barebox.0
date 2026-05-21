@@ -1,57 +1,56 @@
-Delivery-date: Thu, 21 May 2026 11:28:57 +0200
+Delivery-date: Thu, 21 May 2026 12:12:25 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wPzi5-002BcB-0Q
+	id 1wQ0O9-002Ca3-1h
 	for lore@lore.pengutronix.de;
-	Thu, 21 May 2026 11:28:57 +0200
+	Thu, 21 May 2026 12:12:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wPzi4-0004EC-Hi
-	for lore@pengutronix.de; Thu, 21 May 2026 11:28:57 +0200
+	id 1wQ0O8-0003rK-UC
+	for lore@pengutronix.de; Thu, 21 May 2026 12:12:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=/DdaGPRq+15vKwhQqIxHkpQjirlCENRqE3hkXPBs3yI=; b=5EzTYU6ZmpcHLsJRPA5J+1TP8T
-	1oY1F+3kkmX1++03J2z/YvrDC1tcgYEsAlV/5ijPDByNyxjx5CApUNKlb2J8Plrm3U91kdfgy2X6+
-	Kr+9OFnU3d14MDWRuO+3fWAx/zz4di83FHCxmZU26QDFT0LWJTixgjN7B10A52LF0+PTJlv/so/YF
-	8tYicnYojuZigwkJzoKsqjPLa7d/SW9NlNgzfWqv3zAYzTL6658YL1GLc6QhzjmKNlSogN7AGNdWe
-	TRVzrM42jcUtfFzf9KRE4efZkCjrPXO7+WYmxsUCDoTlHS/auXRqAAnPdWj47SGahqTMJrGxpcfZ+
-	In95cOMA==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=J0EIBpF4HQ8bq7p3P2vuX53EwS9n0ZIOqx7sa/g3bf4=; b=3RhRl0wWmccT+q2+OiHSp0Q5mu
+	/HZcIKmF9VyXCdzxdJ23oR6zGR07gY7jxBtPU2JioJom1TuDAWjXRbVpZ/yUb/4yglDvJ/8yEJnrf
+	JJRVFqPuyUjRLpxgtzHy65OnqaI8YqAJ60CR9YRw9EdFOTNXbGDCdnUAHNJKb73oj2CAx0GH41VGs
+	d5DQ5ylisjWRIWtHaJ5ApSVFKFf05RmeuUNsVB/7gtmFszUI+dDExFFklXRni4C+wj6iwF5OoUsf1
+	SbM4MkfegukR+lUDLOScgfTDBhAcN5u0TpZpdgFA/0huNT0zuIGi45neEhQDwIWMKHBiKBuLEXIGJ
+	ch5snopA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPzh2-00000007J2B-1MeK;
-	Thu, 21 May 2026 09:27:52 +0000
+	id 1wPyYg-0000000761c-0h5o;
+	Thu, 21 May 2026 08:15:10 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPzgz-00000007J1T-1emT
+	id 1wPyYd-0000000760l-2qW5
 	for barebox@lists.infradead.org;
-	Thu, 21 May 2026 09:27:50 +0000
+	Thu, 21 May 2026 08:15:09 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wPzgx-00044L-Qr; Thu, 21 May 2026 11:27:47 +0200
-Message-ID: <ea3676f3-b120-483b-af13-c51de628cbaa@pengutronix.de>
-Date: Thu, 21 May 2026 11:27:47 +0200
+	id 1wPyYc-0007dz-74; Thu, 21 May 2026 10:15:06 +0200
+Message-ID: <4bb90ae2-125e-40d3-9bc4-b685e16fbecd@pengutronix.de>
+Date: Thu, 21 May 2026 10:15:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Sascha Hauer <s.hauer@pengutronix.de>,
  Barebox List <barebox@lists.infradead.org>
-Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-References: <20260521091727.3229229-1-s.hauer@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+References: <20260521080608.3204583-1-s.hauer@pengutronix.de>
 Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20260521091727.3229229-1-s.hauer@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20260521080608.3204583-1-s.hauer@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260521_022749_437697_FA80002E 
-X-CRM114-Status: GOOD (  20.67  )
+X-CRM114-CacheID: sfid-20260521_011507_744811_21870A49 
+X-CRM114-Status: GOOD (  18.68  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,52 +72,50 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: rockchip: atf: move PBL malloc space away from
- OP-TEE memory
+Subject: Re: [PATCH] ARM: ARM64: linker: Do not put first function at
+ __image_start
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 Hello Sascha,
 
-On 5/21/26 11:17 AM, Sascha Hauer wrote:
-> We recently introduced initializing the PBL early memory pool which
-> might be needed for decompressing the BL31/BL32 firmware files. We
-> used the end of the first DRAM region for the pool and with this we
-> ended up exactly in the default OP-TEE memory region which is mapped
-> as faulting. Move the pool directly beneath the OP-TEE memory.
+On 5/21/26 10:06 AM, Sascha Hauer wrote:
+> The very first function in the barebox binary starts at __image_start
+> aka _stext, so resolving its name with %pS results in "__image_start"
+> instead of the function name. This can be confusing, so add a small
+> offset to the first function so that its name resolves properly.
 > 
-> Fixes: 76b1f31275 ("ARM: rockchip: initialize PBL malloc")
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  arch/arm/mach-rockchip/atf.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/mach-rockchip/atf.c b/arch/arm/mach-rockchip/atf.c
-> index 14797a1e06..96a891847b 100644
-> --- a/arch/arm/mach-rockchip/atf.c
-> +++ b/arch/arm/mach-rockchip/atf.c
-> @@ -173,7 +173,8 @@ static void rockchip_atf_load_bl31(void *fdt)
->  	unsigned long bl31_ep;
->  
->  	mmu_early_enable(membase[0], memsize[0]);
-> -	pbl_malloc_init(membase[0] + memsize[0] - PBL_MALLOC_SIZE, PBL_MALLOC_SIZE);
-> +	pbl_malloc_init(membase[0] + memsize[0] - OPTEE_SIZE - PBL_MALLOC_SIZE,
-> +			PBL_MALLOC_SIZE);
 
-This would overlap the scratch area and possibly corrupt things there,
-wouldn't it?
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-I think this may need to move again...
+This patch confused me a bit at first, so I would suggest adding
+following clarification to the commit message:
 
-Is it not possible to read input_data/input_data_end here and determine
-barebox_base and reuse the same memory area that barebox_pbl_start()
-would use when TF-A returns?
+"""
+This is safe to do for barebox proper, because it's always an ELF on
+ARM64 and thus there is no special significance to code at the start of
+the text segment.
+"""
 
 Thanks,
 Ahmad
 
->  
->  	bl31_ep = load_elf64_image_phdr(&bl31);
+> ---
+>  arch/arm/lib64/barebox.lds.S | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/arm/lib64/barebox.lds.S b/arch/arm/lib64/barebox.lds.S
+> index bd76a0ca96..1dddd6d1a9 100644
+> --- a/arch/arm/lib64/barebox.lds.S
+> +++ b/arch/arm/lib64/barebox.lds.S
+> @@ -26,6 +26,7 @@ SECTIONS
+>  	.text      :
+>  	{
+>  		_stext = .;
+> +		. += 16;
+>  		*(.text*)
+>  	} :text
 >  
 
 -- 
