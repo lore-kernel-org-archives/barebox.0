@@ -1,61 +1,61 @@
-Delivery-date: Thu, 21 May 2026 14:04:09 +0200
+Delivery-date: Thu, 21 May 2026 14:28:33 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wQ28H-002E9L-1B
+	id 1wQ2Vt-002Eeu-2y
 	for lore@lore.pengutronix.de;
-	Thu, 21 May 2026 14:04:09 +0200
+	Thu, 21 May 2026 14:28:33 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wQ28G-0003G3-L5
-	for lore@pengutronix.de; Thu, 21 May 2026 14:04:09 +0200
+	id 1wQ2Vt-0006rv-7e
+	for lore@pengutronix.de; Thu, 21 May 2026 14:28:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:
 	Content-Transfer-Encoding:Content-Type:In-Reply-To:To:Subject:From:Reply-To:
 	MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
-	bh=g1fZx9d0xjvshDTVYMGn91S+17G58bmstZe42dqsq+I=; b=OMSEJR6Z/pTWrs4rzPYpkHynsa
-	RfDcQLk4DyO9jciYAznk2LGmJgisdhvPBI4zn0yT1A8E1qz7nDw5kP+BlBLUMVwHM0nAQw5VuQ2o6
-	AgxabpaDbrFF+MGHRw/Oq1/Bzp0MLWXNeuYUhDkjJwLXU7JbfnydqsY4152pxyc1nU4bMpl/y/0Rm
-	vczH5EtYPaL6aougCzpTPg8zC0GuuSH0XZslc+1yrr+o+PiQJuKSXCZeL/U0ux+gaJiG6t/R9r+cU
-	Jk145aRVPp8OdAG/Hku+B7tLmidDpwVKcFPUbovfL7lk8Dyf0h0IMl31ZVCnzG86DLptdU2/C5PIW
-	tIZfuj2Q==;
+	bh=DXyJ+b3ifsvMon11tTzKQv/aG5C83cTXRIvVWBXU08k=; b=UPkceJQ4tqnWntF9JL+4grfiER
+	mDQZpfWX6dhH9Alw8lYlhwOFh7Z+9cUJQ747970CEV6gzE/I5YXjxkznJQoIey+B6C5eKcu0QkPq4
+	6Eea3WtuzKDVusNyMzp2IfVfgZgWvfsJpAg3LjyQ+e2Y+8yhJeQsZjZ/fuxjz5KeoLkLqfah09xuF
+	/s6R0l+DaeMlduoZDf9GJdWqEhDx3nUUr5zzI4K5x6icCZhShDdezBmbQW0eX9VGWVnkkGuCvznX4
+	2K8DtDN2AfpXCcIDh8Q9Ea04tcevQIz/HrQS0SMjisiyGnobOfKEDTPflsPqYVuOCe4uwAt/V/7Am
+	7/mjuaCQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wQ26V-00000007fqB-0YXZ;
-	Thu, 21 May 2026 12:02:19 +0000
+	id 1wQ2Ue-00000007j5K-3Eyh;
+	Thu, 21 May 2026 12:27:16 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wQ26R-00000007fok-1uLq
+	id 1wQ2Uc-00000007j4U-3RLB
 	for barebox@lists.infradead.org;
-	Thu, 21 May 2026 12:02:18 +0000
+	Thu, 21 May 2026 12:27:16 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1wQ26P-0002aJ-KA; Thu, 21 May 2026 14:02:13 +0200
+	id 1wQ2Ub-0006e1-65; Thu, 21 May 2026 14:27:13 +0200
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1wQ26P-00165H-00;
-	Thu, 21 May 2026 14:02:13 +0200
+	id 1wQ2Ua-0016Np-1p;
+	Thu, 21 May 2026 14:27:13 +0200
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1wQ26P-00000004V38-1zAy;
-	Thu, 21 May 2026 14:02:13 +0200
+	id 1wQ2Ub-00000004VNh-09rq;
+	Thu, 21 May 2026 14:27:13 +0200
 From: "Sascha Hauer" <s.hauer@pengutronix.de>
 To: "Fabian Pfitzner" <f.pfitzner@pengutronix.de>
-In-Reply-To: <20260520-fpf-bootsource-instance-index-v1-1-29942f0e8f2f@pengutronix.de>
+In-Reply-To: <20260520-fpf-bootsource-instance-index-v1-2-29942f0e8f2f@pengutronix.de>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 21 May 2026 12:02:13 +0000
-Message-Id: <E1wQ26P-00000004V38-1zAy@pty.whiteo.stw.pengutronix.de>
+Date: Thu, 21 May 2026 12:27:12 +0000
+Message-Id: <E1wQ2Ub-00000004VNh-09rq@pty.whiteo.stw.pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260521_050215_490676_BCE3FF1B 
-X-CRM114-Status: GOOD (  19.92  )
+X-CRM114-CacheID: sfid-20260521_052714_861248_A1413A73 
+X-CRM114-Status: GOOD (  21.86  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,76 +79,92 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] bootsource: add bootsource instance index variable
+Subject: Re: [PATCH 2/2] arch: arm: imx: detect secondary boot
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 2026-05-20 10:32, Fabian Pfitzner wrote:
-> The bootsource instance index variable shows us,
-> from which image on the instance we have booted from.
-> This is a useful information, when there a multiple boot images contained
-> on one flash (e. g. primary and recovery).
+On 2026-05-20 10:33, Fabian Pfitzner wrote:
+> Integrate support to detect secondary boot on imx machines.
+> Copy the logic for detection from the uboot-imx project[1].
 >=20
-> Add a C interface to set and get the bootsource instance:
+> The information will be stored in the `bootsource_instance_index`
+> variable.
 >=20
->     int bootsource_get_instance_index(void);
->     void bootsource_set_instance_index(int index);
->=20
-> Also export the shell variable "bootsource_instance_index".
+> [1] https://github.com/nxp-imx/uboot-imx/blob/99518e6b6f20cb6a2bf19115e35=
+5db9f58100af8/arch/arm/mach-imx/imx8m/soc.c#L792
 >=20
 > Signed-off-by: Fabian Pfitzner <f.pfitzner@pengutronix.de>
 > ---
->  Documentation/user/variables.rst |  1 +
->  common/bootsource.c              | 20 ++++++++++++++++++++
->  include/bootsource.h             | 11 +++++++++++
->  3 files changed, 32 insertions(+)
+>  arch/arm/mach-imx/boot.c | 52 ++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  1 file changed, 52 insertions(+)
 >=20
-> diff --git a/Documentation/user/variables.rst b/Documentation/user/variab=
-les.rst
-> index 61808f1d72de29477b02b53ad11ecf530b4ebc80..c8b34679068cff4356fec3069=
-42b85561187652f 100644
-> --- a/Documentation/user/variables.rst
-> +++ b/Documentation/user/variables.rst
-> @@ -112,6 +112,7 @@ of all active variables with special meaning along wi=
-th a short description:
->    bootargs                         Linux Kernel parameters
->    bootsource                       The source barebox has been booted fr=
-om
->    bootsource_instance              The instance of the source barebox ha=
-s been booted from
-> +  bootsource_instance_index        Tells us whether we have booted from =
-primary(0) or secondary(1)
->    global.boot.default              default boot order
->    ...
+> diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
+> index 3fea22d05f3bfdf2fe9caa6767e1c7c5ea3ced00..a35a1acc2e71231236d3dd500=
+8523f6c66912000 100644
+> --- a/arch/arm/mach-imx/boot.c
+> +++ b/arch/arm/mach-imx/boot.c
+> @@ -26,6 +26,8 @@
 > =20
-> diff --git a/common/bootsource.c b/common/bootsource.c
-> index f608019bb758f820eea19213c75b389df6b4158c..53549d4171ff33bfcdd743626=
-1cd8f4d3598099a 100644
-> --- a/common/bootsource.c
-> +++ b/common/bootsource.c
-> @@ -33,6 +33,7 @@ static const char *bootsource_str[BOOTSOURCE_MAX] =3D {
+>  #include <soc/fsl/fsl_udc.h>
 > =20
->  static enum bootsource bootsource =3D BOOTSOURCE_UNKNOWN;
->  static int bootsource_instance =3D BOOTSOURCE_INSTANCE_UNKNOWN;
-> +static int bootsource_instance_index =3D BOOTSOURCE_INSTANCE_INDEX_UNKNO=
-WN;
-> =20
->  const char *bootsource_to_string(enum bootsource src)
+> +int imx8m_detect_secondary_image_boot(void);
+
+It should be either static without forward declaration or exported with
+the declaration in a header file.
+
+> +
+>  static void
+>  imx_boot_save_loc(void (*get_boot_source)(enum bootsource *, int *))
 >  {
-> @@ -226,6 +227,17 @@ int bootsource_set(enum bootsource src, int instance)
->  	return alias_id;
+> @@ -35,6 +37,10 @@ imx_boot_save_loc(void (*get_boot_source)(enum bootsou=
+rce *, int *))
+>  	get_boot_source(&src, &instance);
+> =20
+>  	bootsource_set(src, instance);
+> +
+> +	int index =3D imx8m_detect_secondary_image_boot();
+
+You assume you are running on i.MX8M here which is not necessarily the
+case.
+
+> +
+> +	bootsource_set_instance_index(index);
 >  }
 > =20
-> +void bootsource_set_instance_index(int index)
+> =20
+> @@ -756,3 +762,49 @@ void imx8mn_get_boot_source(enum bootsource *src, in=
+t *instance)
+> =20
+>  void imx8mn_boot_save_loc(void)
+>  	__alias(imx8mp_boot_save_loc);
+> +
+> +int imx8m_detect_secondary_image_boot(void)
 > +{
-> +	if (index < 0 || index > 1)
-> +		pr_err("Invalid index: %d, expected either 0 or 1", index);
+> +	u32 *rom_log_addr =3D (u32 *)0x9e0;
+> +	u32 *rom_log;
+> +	u8 event_id;
+> +	int i, boot_secondary =3D 0;
 > +
-> +	char str[1];
-> +
-> +	sprintf(str, "%d", index);
+> +	/* If the ROM event log pointer is not valid. */
+> +	if (*rom_log_addr < 0x900000 || *rom_log_addr >=3D 0xb00000 ||
+> +	    *rom_log_addr & 0x3)
+> +		return -EINVAL;
 
-The string is too small. You need another byte for the '\0'
+We have imx8m_get_bootrom_log() which handles different cases like we
+are in PBL/EL3 or in barebox proper. Why not use it here?
+
+I wonder how this works at all because you are derefencing the ROM which
+is inside the faulting zero page. I would assume barebox crashes here
+when this is called from barebox proper.
+
+> +
+> +	/* Parse the ROM event ID version 2 log */
+> +	rom_log =3D (u32 *)(uintptr_t)(*rom_log_addr);
+> +	for (i =3D 0; i < 128; i++) {
+> +		event_id =3D rom_log[i] >> 24;
+
+We already have defines for this, see arch/arm/mach-imx/bootrom-cmd.c
 
 Sascha
 
