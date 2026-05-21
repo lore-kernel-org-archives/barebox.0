@@ -3,70 +3,70 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wPyur-002Aj2-0E
+	id 1wPyur-002AjC-0X
 	for lore@lore.pengutronix.de;
 	Thu, 21 May 2026 10:38:05 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wPyuq-0003RL-DN
-	for lore@pengutronix.de; Thu, 21 May 2026 10:38:04 +0200
+	id 1wPyuq-0003RM-Fv
+	for lore@pengutronix.de; Thu, 21 May 2026 10:38:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=pT/qLRBkCw4OjPSKrICRH90Cf5bb1yXiWAxcJXgsyTo=; b=4FXZa0Q+faKoZUya+FBTKqaFMM
-	9EiTmZ44NyqYy1Nm8NsovhF060NYQTj4QQzbtjx5qtXHEFKaOsnF90LEJrpRkVpVZ9v3LAAkHgjid
-	iH2QrWeyp0/M2VHDGR6Mj6DovzWdLC7N9UiwBYJJKR7aYb13SIctzTmvHpWowBAj/6M+FLTk0+cwe
-	/F1cUx1pCPStq2JtIz85zwjya0dL1wwrySfWhe3QeBxbnKrvItYj2nvWx+JoKG0sbY30Tcs6ScbRy
-	AK+Qpd2rFoNLOTe+Jycr1qDnNNy4I4dDFkj8NapczTWvlSywWCEVXPE5CABFTJ3982g9KykrSVWY5
-	PZO0D33w==;
+	bh=7R9MJxprmYUKV6QSCKuzxggcQv1RSg8s7eq7AJYLQ+Y=; b=sGFK3YmPEOqO9kdR80M+7nn3QX
+	AD2SVsiLkyrgpXZ7Vzltu2GyG3L/VUMjHCKeeZ03556/uvuTKrZUvl6umx0vU01rrW1sNtyBL7lq9
+	SXvUzrdBk7DG8Iu9Kf+Og8SyoSVc1mOEjISaNJuEtqKHsoSGJdvmi45z7DZjXxYwvj7GvveiHO6Me
+	qiHYrLoWur40GXcD43yTPRaujo6WgX9iSpIR6dDH2tRZ+eR7F7Mmx/hSjBOcifwVNluk+smdc926J
+	h8uBnOWcKGfYz6NibxrT5+HYk/6Tn95BW1oXBnkoOJdZRmfH0WLR5yzb9QGa50GqStsIFGUI6+/xJ
+	cv0laeNQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPytp-00000007Ar5-25mG;
+	id 1wPytp-00000007Aqz-1nLN;
 	Thu, 21 May 2026 08:37:01 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPytm-00000007Aok-21Hf
+	id 1wPytm-00000007Aol-21Ih
 	for barebox@lists.infradead.org;
-	Thu, 21 May 2026 08:37:00 +0000
+	Thu, 21 May 2026 08:36:59 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wPytk-0002Ma-ER; Thu, 21 May 2026 10:36:56 +0200
+	id 1wPytk-0002MZ-EH; Thu, 21 May 2026 10:36:56 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wPytj-0014d3-2W;
+	id 1wPytj-0014d1-2Y;
 	Thu, 21 May 2026 10:36:56 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wPytk-0000000DTPV-19M2;
+	id 1wPytk-0000000DTPV-17WK;
 	Thu, 21 May 2026 10:36:56 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Thu, 21 May 2026 10:36:57 +0200
+Date: Thu, 21 May 2026 10:36:55 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260521-pci-of-dynamic-v1-3-951f1878e378@pengutronix.de>
+Message-Id: <20260521-pci-of-dynamic-v1-1-951f1878e378@pengutronix.de>
 References: <20260521-pci-of-dynamic-v1-0-951f1878e378@pengutronix.de>
 In-Reply-To: <20260521-pci-of-dynamic-v1-0-951f1878e378@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779352616; l=1663;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779352616; l=1605;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=ttlaTCPFiJoLmqfeUMz9jg54MMq2hnjH62wZFgzUHmQ=;
- b=1vRjPSFUjl5zcM6UETlq6lS10nlIkNfxOo+85GYvS1ItzENbeNj74iyL4NkWgcuDtOXfh+mEI
- YJbtwcjbEJHAknSk+zxc67aYUPM4AACPEFNYpqyiCaHGIcU351vygVx
+ bh=gxFxK3GzXLSwK1ZQH+eU0Z49EI35io3QWhaGou8lJz4=;
+ b=65xKi419Xw8fMLJP+xMbnwOVjAJ86O3/Bc5k5FTRDebmhyjPsktHskAXpHE7J8y7Z+TS3Whd6
+ cIhmAxo4nYoBWQyNGh3c8fymPmV21sia4EqpTVt/CroaTMXA01KOSAf
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260521_013658_530746_231D1C3E 
-X-CRM114-Status: GOOD (  13.22  )
+X-CRM114-CacheID: sfid-20260521_013658_531091_8B9ADFE6 
+X-CRM114-Status: GOOD (  10.95  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,60 +88,49 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/4] pci: add pci_is_bridge() helper
+Subject: [PATCH 1/4] of: fall back to parent-prefixed encoding when address
+ translation fails
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Mirror the Linux helper of the same name so callers don't have to
-open-code the header-type compare.
+of_get_reproducible_name() formatted the result of of_translate_address()
+as [0x%llx] without checking for OF_BAD_ADDR ((u64)-1). For any node
+whose reg can't be translated through the parent's ranges - notably PCI
+child nodes whose reg[0] encodes a config-space address (space=0), which
+host bridges don't list in ranges - this produced [0xffffffffffffffff]
+for every such node, collapsing distinct nodes onto the same name and
+making of_find_node_by_reproducible_name() return the wrong sibling.
 
-Replace the open-coded site in pci_ea_init().
+Fall through to the existing parent-prefixed {offset} branch when
+translation fails, so untranslatable siblings get disambiguated by
+their parent chain.
 
 Assisted-by: Claude Opus 4.7
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/pci/pci.c   |  2 +-
- include/linux/pci.h | 14 ++++++++++++++
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ drivers/of/base.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 8d18889109..fc00ec2249 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -334,7 +334,7 @@ static void pci_ea_init(struct pci_dev *dev)
- 	offset = ea + PCI_EA_FIRST_ENT;
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 5297894f60..1244664827 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -3368,7 +3368,14 @@ char *of_get_reproducible_name(struct device_node *node)
  
- 	/* Skip DWORD 2 for type 1 functions */
--	if (dev->hdr_type == PCI_HEADER_TYPE_BRIDGE)
-+	if (pci_is_bridge(dev))
- 		offset += 4;
+ 	if (node->parent && of_get_property(node->parent, "ranges", NULL)) {
+ 		addr = of_translate_address(node, reg);
+-		return basprintf("[0x%llx]", addr);
++		if (addr != OF_BAD_ADDR)
++			return basprintf("[0x%llx]", addr);
++		/*
++		 * Untranslatable - e.g. a PCI config-space address whose
++		 * tag (space=0) doesn't appear in the parent's ranges.
++		 * Fall through to the parent-prefixed encoding so distinct
++		 * untranslatable nodes don't all collide on OF_BAD_ADDR.
++		 */
+ 	}
  
- 	/* parse each EA entry */
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index f6511e0095..a2dbaf6ec2 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -123,6 +123,20 @@ struct pci_dev {
- };
- #define	to_pci_dev(d) container_of(d, struct pci_dev, dev)
- 
-+/**
-+ * pci_is_bridge - check if the PCI device is a bridge
-+ * @dev: PCI device
-+ *
-+ * Return true if the PCI device is a bridge of PCI-to-PCI type. Masks the
-+ * multi-function flag so a multi-function bridge is still recognised.
-+ */
-+static inline bool pci_is_bridge(struct pci_dev *dev)
-+{
-+	u8 type = dev->hdr_type & PCI_HEADER_TYPE_MASK;
-+
-+	return type == PCI_HEADER_TYPE_BRIDGE;
-+}
-+
- #define pci_resource_start(dev, bar)	((dev)->resource[(bar)].start)
- #define pci_resource_end(dev, bar)	((dev)->resource[(bar)].end)
- #define pci_resource_flags(dev, bar)	((dev)->resource[(bar)].flags)
+ 	na = of_n_addr_cells(node);
 
 -- 
 2.47.3
