@@ -1,64 +1,67 @@
-Delivery-date: Fri, 22 May 2026 15:59:23 +0200
+Delivery-date: Mon, 25 May 2026 13:48:12 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wQQPL-002cq3-0c
+	id 1wRTn1-003e4A-21
 	for lore@lore.pengutronix.de;
-	Fri, 22 May 2026 15:59:23 +0200
+	Mon, 25 May 2026 13:48:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wQQPK-0005uz-HF
-	for lore@pengutronix.de; Fri, 22 May 2026 15:59:23 +0200
+	id 1wRTn0-0000uK-Rc
+	for lore@pengutronix.de; Mon, 25 May 2026 13:48:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=p+UlpADd3I2NQuliS8K88gTwTKgNF0Sfe0W2Tqer4EE=; b=DHVhE3dj3soR8/1L4kuEQTCXUl
-	+4SwJAyyWhKB7lNo3XVdIGopub0Yhmtm0Cp6LScU3u0qxHZpqpwJbAh2/dsn27zR56rXtTsHHMt/3
-	eAuhifbWPebQ2cejeXffKpz7uz2SwulQM3Gluv2wqVvPHdcwPtUAVbIeLKpuM+Ro1S3hRh/XukFaB
-	tgCAUGGsvD0BQontQSzNSrVNb24LSUuLDBQvc/TCCPdmqvGnD0J2EEBennkRN5glNW6UDrEMlZ6oh
-	W2yVG+xi3lAx82dUhle6tuY1/8xM2kRBsZQIyLdvpPx0V+mwf3SjVuEzZfztqUQLu+NeK+ExkHtdy
-	aHdS7gvQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=qIqLlHnz+Z2fKyqhGsfIuSuIqgBuWn06nhAByMeHnl4=; b=ECxwPyF2RMTTrF1jMJdd9crX3A
+	e/MlBo4Pt7rO3KVkhLBK2dtVM9bLqNGXTqz32RNon0tm3USVzEWV3oZj6oud6175eBiNDDdcM0aIR
+	BqMvGzDtaB8S1YImfDhsm0apgiYuwGvtUo188l0NlBnsZnx6OI+Mn89/bZ71gkOb1Aw6ELLaNQca6
+	Bm5XJL/ZCsSGlZTdSlLWwdDKZV5vDNbuo3oa6rq0LRksLic0+81l7xJvxbxUYtDd5vB0c9ToF4MZw
+	ECF9FoCIp0HlJ5OZT5KE6VkUQsTbNFttOO7lQswwkTyYaeGri+X4LqbaYLU9P4cjYz2L/3EH4i42e
+	T+ggtRKA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wQQEY-0000000B2l9-3XaC;
-	Fri, 22 May 2026 13:48:14 +0000
+	id 1wRTlY-0000000H7rY-2jJ9;
+	Mon, 25 May 2026 11:46:40 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wQQEW-0000000B2kV-0PS9
+	id 1wRTlW-0000000H7qR-13by
 	for barebox@lists.infradead.org;
-	Fri, 22 May 2026 13:48:13 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	Mon, 25 May 2026 11:46:39 +0000
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wQQES-0004DU-Vw; Fri, 22 May 2026 15:48:09 +0200
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wQQES-001HDz-1A;
-	Fri, 22 May 2026 15:48:08 +0200
-Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wQQES-0000000CXL2-3SdR;
-	Fri, 22 May 2026 15:48:08 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: str@pengutronix.de,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 22 May 2026 15:48:00 +0200
-Message-ID: <20260522134803.2988021-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	(envelope-from <jre@pengutronix.de>)
+	id 1wRTlS-0000il-R6; Mon, 25 May 2026 13:46:34 +0200
+From: Jonas Rebmann <jre@pengutronix.de>
+Date: Mon, 25 May 2026 13:45:58 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260525-short_nvmem_write-v1-1-ff741d6ff1d5@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAHU2FGoC/yXMTQqEMAxA4atI1hZs0Tp4FRFRJ44RrJLUHxDvb
+ keX3+K9EwSZUKCITmDcSGh2ATqOoBsa90NF32AwibFJZjIlw8y+dtuEU70zeVQf2xit097meQq
+ hWxh7Op5nWb2WtR2x8/8RXNcN7WhUz3UAAAA=
+X-Change-ID: 20260525-short_nvmem_write-86a2114f6774
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ "open list:BAREBOX" <barebox@lists.infradead.org>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, 
+ Jonas Rebmann <jre@pengutronix.de>
+X-Mailer: b4 0.16-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2249; i=jre@pengutronix.de;
+ h=from:subject:message-id; bh=nijIYq3tyWCKx6RkJ7qa6eMK2SkWPHoD3WaJm48YsxY=;
+ b=owGbwMvMwCV2ZcYT3onnbjcwnlZLYsgSMZu1JJKfoeXW6uNvvVamPTz1Sqd668e5ns0Jv5wzF
+ lQ6Zh/T7ChlYRDjYpAVU2SJVZNTEDL2v25WaRcLM4eVCWQIAxenAEzkqzXD/+zlSze8bOta+sKk
+ MyRlkajMxN+3/Kfv79q32Hlj56UV208y/DOeafj/2AXv7wxvokrtM4oeCUaxyf7PKku33Jhzzej
+ NUW4A
+X-Developer-Key: i=jre@pengutronix.de; a=openpgp;
+ fpr=0B7B750D5D3CD21B3B130DE8B61515E135CD49B5
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260522_064812_135849_EBDE3994 
-X-CRM114-Status: GOOD (  10.59  )
+X-CRM114-CacheID: sfid-20260525_044638_294155_EE4747FE 
+X-CRM114-Status: GOOD (  11.97  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,89 +79,90 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: i.MX: prevent use of imx_cpu_type in PBL
+Subject: [PATCH] nvmem: core: Allow sub-register width nvmem_regmap_write()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Functions like cpu_is_mx6q internally call cpu_is_mx6() first,
-which can be evaluated at compile-time if only i.MX6 boards are enabled.
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-This allowed calling cpu_is_mx6q in PBL entry points as long as barebox was
-compiled for only a single SoC.
+The previous implementation of nvmem_regmap_write() required the
+supplied value to be a multiple of the register size defined by the
+driver ("expect users to observe alignment").
 
-Since the multi-arch/multi-platform support was added however,
-cpu_is_mx6 became a runtime check that's never true in PBL, leading all
-cpu_is_mx* in 32-boards to silently fail at runtime.
+This is however not respected by nvmem cell functions
+nvmem_cell_prepare_write_buffer()/__nvmem_cell_entry_write() which
+prepare the value buffer based on the "bits" supplied in the devicetree,
+resulting in EINVAL errors if an nvmem cell with "bits" spanning less
+bytes than val_bytes = DIV_ROUND_UP(config->val_bits, 8) of the nvmem
+driver.
 
-We have no in-tree boards that are affected by this, so until some
-out-of-tree user is bothered enough to fix is, acknowledge that this no
-longer works and turn the silent breakage into a loud compile-time error
-whenever anything ends up referencing __imx_cpu_type.
+To resolve this, accept buffers shorter than val_bytes, and place them
+correctly with regard to endianness.
 
-Fixes: 1826809f122e ("ARM: i.MX: fix cpu_is_imx on CONFIG_ARM_MULTIARCH configurations")
-Fixes: 60a3fd36fa1e ("arm: mach-imx: set cpu type in pbl")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Not-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Jonas Rebmann <jre@pengutronix.de>
 ---
- arch/arm/mach-imx/Makefile |  4 ++--
- include/mach/imx/generic.h | 11 +++++++++++
- 2 files changed, 13 insertions(+), 2 deletions(-)
+Ahmad and me pair-programmed this on friday. Ahmad, can we have your
+SoB?
+---
+ drivers/nvmem/regmap.c | 29 ++++++++++++++++++++++-------
+ 1 file changed, 22 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index a7d60068b954..5c26af577504 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -20,7 +20,7 @@ obj-$(CONFIG_ARCH_VF610) += vf610.o
- obj-pbl-$(CONFIG_ARCH_IMX8M) += imx8m.o
- obj-pbl-$(CONFIG_ARCH_IMX_SCRATCHMEM) += scratch.o
- obj-$(CONFIG_ARCH_IMX9) += imx9.o imx-v3-image.o
--lwl-$(CONFIG_ARCH_IMX_ATF) += atf.o
-+lwl-$(CONFIG_ARCH_IMX_ATF) += atf.o imx.o
- obj-pbl-$(CONFIG_ARCH_IMX_TZASC) += tzasc.o
- obj-pbl-$(CONFIG_ARCH_IMX_ROMAPI) += romapi.o
- obj-$(CONFIG_IMX_IIM)	+= iim.o
-@@ -28,7 +28,7 @@ obj-$(CONFIG_NAND_IMX) += nand.o
- lwl-$(CONFIG_ARCH_IMX_EXTERNAL_BOOT_NAND) += external-nand-boot.o
- obj-y += imx.o
- obj-$(CONFIG_CMD_BOOTROM) += bootrom-cmd.o
--obj-pbl-y += esdctl.o boot.o imx.o
-+obj-pbl-y += esdctl.o boot.o
- obj-$(CONFIG_BAREBOX_UPDATE) += imx-bbu-internal.o
- obj-$(CONFIG_BAREBOX_UPDATE_IMX_EXTERNAL_NAND) += imx-bbu-external-nand.o
- pbl-$(CONFIG_USB_GADGET_DRIVER_ARC_PBL) += imx-udc.o
-diff --git a/include/mach/imx/generic.h b/include/mach/imx/generic.h
-index 5f81aa65a745..0b06c00ac46d 100644
---- a/include/mach/imx/generic.h
-+++ b/include/mach/imx/generic.h
-@@ -86,12 +86,23 @@ static inline bool imx8mp_keep_compatible_soc_uid(void)
- /* range e.g. GPIO_1_5 is gpio 5 under linux */
- #define IMX_GPIO_NR(bank, nr)		(((bank) - 1) * 32 + (nr))
- 
-+#if IN_PROPER || defined(CONFIG_ARCH_IMX_ATF)
- extern unsigned int __imx_cpu_type;
- 
- static __always_inline void imx_set_cpu_type(unsigned int cpu_type)
+diff --git a/drivers/nvmem/regmap.c b/drivers/nvmem/regmap.c
+index 98e57909eb..22e667af17 100644
+--- a/drivers/nvmem/regmap.c
++++ b/drivers/nvmem/regmap.c
+@@ -12,16 +12,31 @@
+ static int nvmem_regmap_write(void *ctx, unsigned offset, const void *val, size_t bytes)
  {
- 	__imx_cpu_type = cpu_type;
- }
-+#else
-+/*
-+ * If you need this in your PBL entry point, consider using functions
-+ * that only query the hardware directly like __cpu_mx6_is_*().
-+ */
-+extern int __imx_cpu_type(void) __compiletime_error("This API is not available in PBL");
-+
-+#define __imx_cpu_type __imx_cpu_type()
-+#endif
-+
+ 	struct regmap *map = ctx;
++	unsigned int tmp;
  
- #ifdef CONFIG_ARCH_IMX1
- # ifdef imx_cpu_type
--- 
-2.47.3
+-	/*
+-	 * eFuse writes going through this function may be irreversible,
+-	 * so expect users to observe alignment.
+-	 */
+-	if (bytes % regmap_get_val_bytes(map))
++	if (bytes > regmap_get_val_bytes(map)) {
++		if (bytes % regmap_get_val_bytes(map))
++			return -EINVAL;
++
++		return regmap_bulk_write(map, offset, val,
++					 bytes / regmap_get_val_bytes(map));
++	}
++
++	switch (bytes) {
++	case 1:
++		tmp = *(u8 *)val;
++		break;
++	case 2:
++		tmp = *(u16 *)val;
++		break;
++	case 4:
++		tmp = *(u32 *)val;
++		break;
++	default:
+ 		return -EINVAL;
++	}
+ 
+-	return regmap_bulk_write(map, offset, val,
+-				 bytes / regmap_get_val_bytes(map));
++	return regmap_write(map, offset, tmp);
+ }
+ 
+ static int nvmem_regmap_read(void *ctx, unsigned offset, void *buf, size_t bytes)
+
+---
+base-commit: f5956c772dc00837bad36fc66df8a53aae86558d
+change-id: 20260525-short_nvmem_write-86a2114f6774
+
+Best regards,
+--  
+Jonas Rebmann <jre@pengutronix.de>
 
 
 
