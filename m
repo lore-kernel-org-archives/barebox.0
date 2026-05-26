@@ -1,66 +1,62 @@
-Delivery-date: Tue, 26 May 2026 08:27:44 +0200
+Delivery-date: Tue, 26 May 2026 08:36:52 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wRlGS-003uYl-2g
+	id 1wRlPI-003uea-30
 	for lore@lore.pengutronix.de;
-	Tue, 26 May 2026 08:27:44 +0200
+	Tue, 26 May 2026 08:36:52 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wRlGS-00021v-9D
-	for lore@pengutronix.de; Tue, 26 May 2026 08:27:44 +0200
+	id 1wRlPI-0002oS-AR
+	for lore@pengutronix.de; Tue, 26 May 2026 08:36:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=O1ArFHSKs+qv23SkphUvnSoPBrG+lVz/oOSu0dZ66ek=; b=celCdAO+NdJvONAmdYikGesJAn
-	zJBgoubXVJjJziWAZzKm59F31ZquUut1yyEKeFHz7Y09MK8Ol7ruFR9mBOqYkx4wirCRRAdIOsl7t
-	43QhEb/7cTNzHbWkuQ0RuQ0rD926v4H2AqyHiejxO/yIr90Fn0P+B3/u7Eu4oIGPbUEi6te8QeG8o
-	kAAukZujDOzXrHSpkflAdcCSGzBrbioBQS3pgzODbyCA5se1Ao0HjHP45Du4omXHCBRPKr8h1tuJk
-	FZPlZ8aK+MEiBo+4fd8ZpuIxi9Xyf6OKWsmRT2Kcu7rDqiw5MZkGSmsRgUd8lOxjxf7pm0nBHuU9l
-	7EjApUXw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:
+	Content-Transfer-Encoding:Content-Type:In-Reply-To:Cc:To:Subject:From:
+	Reply-To:MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
+	bh=SL9ocjo/I01jUF8aPKlG+3eFl4kFAKu+1cLYIinE2a4=; b=yBlCGeGFVKdT+c1b5REDJknUb0
+	6a6JSZYCXKq/5izigHfbX3QIlN74Xk8dpLwg7XgQJPhUKcjjIKnZOB4s+pF4/eoe0K4VffUZsjOYx
+	9Ny6ueimAAdQc8REkTeor0npMXCWPcMhMtT22xuaYA6oGosW8iCMhITMREz7TBBFpRfc2TOXAlbBJ
+	hvFZtcl1vGUlR3DohupYvhJv9mXdZpu0gQo0PgrVWGfJuRvD6jjwcsOLuvt887tFyLY69run9nrFB
+	atZ9ma2D6UwhiDdnQFJyHjUDXs7B2RYIb6lfzN+MZAABL758PWnPrBKid7SVNrCrAaxXeeakJhEhF
+	skfY+TpA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wRlFT-00000001A5u-18Tw;
-	Tue, 26 May 2026 06:26:43 +0000
+	id 1wRlOE-00000001B5p-2C1G;
+	Tue, 26 May 2026 06:35:46 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wRlFP-00000001A4L-0XLf
+	id 1wRlOA-00000001B4f-43Ff
 	for barebox@lists.infradead.org;
-	Tue, 26 May 2026 06:26:41 +0000
+	Tue, 26 May 2026 06:35:45 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wRlF7-0001ql-KQ; Tue, 26 May 2026 08:26:21 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1wRlO9-0002gs-8d; Tue, 26 May 2026 08:35:41 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wRlF6-001s4H-1a;
-	Tue, 26 May 2026 08:26:21 +0200
-Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wRlF6-0000000GXT4-48Ne;
-	Tue, 26 May 2026 08:26:20 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260520060906.1869692-1-a.fatoum@pengutronix.de>
-References: <20260520060906.1869692-1-a.fatoum@pengutronix.de>
-Message-Id: <177977678097.3941817.10146537428390812619.b4-ty@pengutronix.de>
-Date: Tue, 26 May 2026 08:26:20 +0200
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+	(envelope-from <sha@pengutronix.de>)
+	id 1wRlO8-001s9r-25;
+	Tue, 26 May 2026 08:35:41 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1wRlO9-0000000GFFg-0VaP;
+	Tue, 26 May 2026 08:35:41 +0200
+From: "Sascha Hauer" <s.hauer@pengutronix.de>
+To: "Ahmad Fatoum" <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, str@pengutronix.de, "Ahmad Fatoum" <a.fatoum@pengutronix.de>
+In-Reply-To: <20260522134803.2988021-1-a.fatoum@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 26 May 2026 06:35:41 +0000
+Message-Id: <E1wRlO9-0000000GFFg-0VaP@pty.whiteo.stw.pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260525_232639_172271_4DD6EA04 
-X-CRM114-Status: UNSURE (   7.57  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260525_233543_003353_3FA010BF 
+X-CRM114-Status: GOOD (  12.57  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,30 +78,51 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] serial: ns16550: fall back to using uart8250/ttyS as
- Linux console names
+Subject: Re: [PATCH] ARM: i.MX: prevent use of imx_cpu_type in PBL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+On 2026-05-22 15:48, Ahmad Fatoum wrote:
+> Functions like cpu_is_mx6q internally call cpu_is_mx6() first,
+> which can be evaluated at compile-time if only i.MX6 boards are enabled.
+>=20
+> This allowed calling cpu_is_mx6q in PBL entry points as long as barebox w=
+as
+> compiled for only a single SoC.
+>=20
+> Since the multi-arch/multi-platform support was added however,
+> cpu_is_mx6 became a runtime check that's never true in PBL, leading all
+> cpu_is_mx* in 32-boards to silently fail at runtime.
+>=20
+> We have no in-tree boards that are affected by this, so until some
+> out-of-tree user is bothered enough to fix is, acknowledge that this no
+> longer works and turn the silent breakage into a loud compile-time error
+> whenever anything ends up referencing __imx_cpu_type.
 
-On Wed, 20 May 2026 08:09:05 +0200, Ahmad Fatoum wrote:
-> Most Linux drivers use the same names, so make them the default and only
-> list differing ones in the different ns16550_drvdata.
-> 
-> This also ensures, we don't end up with <NULL> formatted into the kernel
-> command-line by mistake.
-> 
-> 
-> [...]
+imx_set_cpu_type() has users in PBL:
 
-Applied, thanks!
+arch/arm/mach-imx/atf.c:280:    imx_set_cpu_type(IMX_CPU_IMX8MM);
+arch/arm/mach-imx/atf.c:343:    imx_set_cpu_type(IMX_CPU_IMX8MP);
+arch/arm/mach-imx/atf.c:406:    imx_set_cpu_type(IMX_CPU_IMX8MN);
+arch/arm/mach-imx/atf.c:463:    imx_set_cpu_type(IMX_CPU_IMX8MQ);
+arch/arm/mach-imx/atf.c:492:    imx_set_cpu_type(IMX_CPU_IMX93);
 
-[1/1] serial: ns16550: fall back to using uart8250/ttyS as Linux console names
-      https://git.pengutronix.de/cgit/barebox/commit/?id=688df18c2723 (link may not be stable)
+Also several consumers rely on it in PBL:
 
-Best regards,
--- 
-Sascha Hauer <s.hauer@pengutronix.de>
+arch/arm/mach-imx/tzasc.c:358:  if (cpu_is_mx8mm() || cpu_is_mx8mn() || cpu=
+_is_mx8mp())
+arch/arm/mach-imx/tzasc.c:365:  if (cpu_is_mx8mn() || cpu_is_mx8mp())
+arch/arm/mach-imx/atf.c:90:     if (cpu_is_mx8mn())
+arch/arm/mach-imx/atf.c:143:    if (cpu_is_mx8mn())
+arch/arm/mach-imx/atf.c:198:    if (!IS_ENABLED(CONFIG_ARCH_IMX_ATF_PASS_BL=
+_PARAMS) || cpu_is_mx8mq()) {
 
+Sascha
+
+--
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
