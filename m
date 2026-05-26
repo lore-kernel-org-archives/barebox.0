@@ -1,54 +1,62 @@
-Delivery-date: Tue, 26 May 2026 08:02:30 +0200
+Delivery-date: Tue, 26 May 2026 08:18:37 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wRks2-003u2z-2y
+	id 1wRl7d-003uSa-29
 	for lore@lore.pengutronix.de;
-	Tue, 26 May 2026 08:02:30 +0200
+	Tue, 26 May 2026 08:18:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wRks2-0007zq-8D
-	for lore@pengutronix.de; Tue, 26 May 2026 08:02:30 +0200
+	id 1wRl7c-0001Jp-VB
+	for lore@pengutronix.de; Tue, 26 May 2026 08:18:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=Mab/IlmnK73P14oJp84tzHPc2N/kMsF8Y+zy+1/LAFg=; b=GuXNE/XYHds12joioW0U1k8Zkl
-	oZ4GcfAlo4d5Q+zcnCRNUN7l0qKt36J6OJbyH4mgzr7Ur7hr6QpoW5UXSZqp3GgdSp558lBNpKQ3r
-	XNarSSKsMBQYfoKZ/xbI9bhzNMYPVQzdajDMQV8GJc3A4NbMUC/K/e4FN96C+swUtz0SJLxrQuOa2
-	gzAPzI4PqbLC2NIhsuFsstTdIw0qRy0G8av0q2TfOPTQJZ+EsvLKXlNrJM0cvbXIYWs1QX7TWnYIX
-	uy/2ANFuW1ZadYE3EWqi0j85d5hgDsVlLXoA/nXq7+vH8rFbK64XP9zK65237wjnLk5jlSwOkONbD
-	99IzsqZg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:
+	Content-Transfer-Encoding:Content-Type:In-Reply-To:Cc:To:Subject:From:
+	Reply-To:MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
+	bh=d40zaBqnyK64KF8mOOuIv8sVH/DF0fsVsM98G1tZjac=; b=J0edAuGsVQFuHR6cmbuN5PWABX
+	jOgiKBlqOySV99yfCLrR4hqZB2eM1Xs5LUo9NQHePuXp5U0PLVDaLUS0z80ufxxnkITVf0mK03FwI
+	nhmzTj+BLdiaz2YFhh4X9IyqshZGim/hJpq4eTomDjtM3/ecGbE4HxV+txikTbK9NqUVA5xI7QTo8
+	gNSN36c2+rWoFpXzkvSsX/AM+AK5yTTMXvtmzVRDBGxitRz4FVbcXIZcgH8AkNRVHtFdYOHYIfLB9
+	gi68R2MTsDC/MZaDNNhWXSFctqaKwMh24pjjjnkUijUouHGhv83HuF+1zfMAGtA0M0QWnrW/5zmkB
+	TsRX0NMQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wRkqf-000000017RY-3B94;
-	Tue, 26 May 2026 06:01:05 +0000
+	id 1wRl6V-00000001975-1G7u;
+	Tue, 26 May 2026 06:17:27 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wRkqb-000000017QB-2gtb
+	id 1wRl6S-0000000196b-0bKy
 	for barebox@lists.infradead.org;
-	Tue, 26 May 2026 06:01:03 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
+	Tue, 26 May 2026 06:17:25 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@barebox.org>)
-	id 1wRkqY-0007VP-FN; Tue, 26 May 2026 08:00:58 +0200
-From: Ahmad Fatoum <a.fatoum@barebox.org>
-To: barebox@lists.infradead.org
-Cc: jre@pengutronix.de,
-	Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Tue, 26 May 2026 08:00:15 +0200
-Message-ID: <20260526060041.1726523-1-a.fatoum@barebox.org>
-X-Mailer: git-send-email 2.47.3
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	(envelope-from <sha@pengutronix.de>)
+	id 1wRl6P-0001BW-DU; Tue, 26 May 2026 08:17:21 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1wRl6O-001s3G-2Z;
+	Tue, 26 May 2026 08:17:21 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1wRl6P-0000000GF1E-191b;
+	Tue, 26 May 2026 08:17:21 +0200
+From: "Sascha Hauer" <s.hauer@pengutronix.de>
+To: "Ahmad Fatoum" <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, "Ahmad Fatoum" <a.fatoum@pengutronix.de>
+In-Reply-To: <20260522105852.2681680-4-a.fatoum@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 26 May 2026 06:17:21 +0000
+Message-Id: <E1wRl6P-0000000GF1E-191b@pty.whiteo.stw.pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260525_230101_752101_39DCD4B0 
-X-CRM114-Status: UNSURE (   8.08  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260525_231724_231334_B2A213E5 
+X-CRM114-Status: GOOD (  20.62  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -66,86 +74,84 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] regmap: enforce register alignment to regmap::reg_stride
+Subject: Re: [PATCH master 3/6] arch: introduce CONFIG_MALLOC_OFFSET
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We currently enforce this only for regmap_bulk_read/write, but really
-it's applicable to all regmap read/write operations.
+On 2026-05-22 12:53, Ahmad Fatoum wrote:
+> +config MALLOC_OFFSET
+> +	hex
+> +	default 0
+> +	prompt "relative malloc base offset (optional)"
+> +	depends on ARCH_HAS_MALLOC_OFFSET
+> +	help
+> +	  Most boards should just leave this at the default zero and barebox
+> +	  will dynamically determine the start of its eventual malloc area.
+> +	  The currently employed heuristic is:
+> +
+> +	    - if the prebootloader reports 2GiB of initial memory or more,
+> +	      start the malloc area at offset 1GiB from initial memory end.
+> +
+> +	    - otherwise, start the malloc area at middle of initial memory
+> +
+> +	  The malloc area is used for dynamic allocations by barebox, e.g.
+> +	  to uncompress a kernel. The placement of final boot artifacts happens
+> +	  outside of the malloc area and is not restricted to the initial
+> +	  memory reported by the prebootloader.
+> +
+> +	  As this heuristic may not be suitable for devices with tight memory
+> +	  constraints, setting a non-zero value here allows customizing the
+> +	  offset used to start the malloc area.
+> +
+> +	  The MALLOC_OFFSET is calculated from end of initial memory to start
+> +	  of the malloc area
 
-Linux already enforces this everywhere, so follow suit in barebox.
+I read the term offset as something added to the start of something, not
+substracted from an end of something.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
----
- drivers/base/regmap/regmap.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+Maybe MALLOC_OFFSET should be exactly that: The offset between start of
+DRAM and start of the malloc area. On a memory constrained hardware with
+different DRAM sizes that's also likely the value you want to keep
+constant as its given by your Kernel/initrd image size.
 
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index e4b20c07809d..f41e9d94944e 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -69,6 +69,9 @@ static int _regmap_bus_reg_read(void *context, unsigned int reg,
- {
- 	struct regmap *map = context;
- 
-+	if (!IS_ALIGNED(reg, map->reg_stride))
-+		return -EINVAL;
-+
- 	return map->bus->reg_read(map->bus_context, reg, val);
- }
- 
-@@ -78,6 +81,9 @@ static int _regmap_bus_reg_write(void *context, unsigned int reg,
- {
- 	struct regmap *map = context;
- 
-+	if (!IS_ALIGNED(reg, map->reg_stride))
-+		return -EINVAL;
-+
- 	return map->bus->reg_write(map->bus_context, reg, val);
- }
- 
-@@ -86,6 +92,8 @@ static int _regmap_bus_reg_seal(void *context, unsigned int reg,
- {
- 	struct regmap *map = context;
- 
-+	if (!IS_ALIGNED(reg, map->reg_stride))
-+		return -EINVAL;
- 	if (!map->bus->reg_seal)
- 		return -EOPNOTSUPP;
- 
-@@ -182,6 +190,8 @@ struct device *regmap_get_device(struct regmap *map)
-  */
- int regmap_write(struct regmap *map, unsigned int reg, unsigned int val)
- {
-+	if (!IS_ALIGNED(reg, map->reg_stride))
-+		return -EINVAL;
- 	return map->reg_write(map, reg, val);
- }
- 
-@@ -196,6 +206,8 @@ int regmap_write(struct regmap *map, unsigned int reg, unsigned int val)
-  */
- int regmap_read(struct regmap *map, unsigned int reg, unsigned int *val)
- {
-+	if (!IS_ALIGNED(reg, map->reg_stride))
-+		return -EINVAL;
- 	return map->reg_read(map, reg, val);
- }
- 
-@@ -213,6 +225,8 @@ int regmap_read(struct regmap *map, unsigned int reg, unsigned int *val)
-  */
- int regmap_seal(struct regmap *map, unsigned int reg, unsigned int flags)
- {
-+	if (!IS_ALIGNED(reg, map->reg_stride))
-+		return -EINVAL;
- 	return map->reg_seal(map, reg, flags);
- }
- 
--- 
-2.47.3
+Other than that maybe the term we should talk about here is the area
+that we use for barebox internal use and the area that's left for
+placing the OS. Whether or not we start the malloc area at that boundary
+isn't the point.
 
+Something like BAREBOX_MEMORY_OFFSET:
+
+config BAREBOX_MEMORY_OFFSET
+        hex "barebox runtime memory offset"
+        default 0x0
+        help
+          Offset from the start of DRAM at which the barebox runtime
+          region begins. DRAM below this offset is reserved as the OS
+          load region, used for staging the kernel, initrd and device
+          tree before boot. barebox itself =E2=80=94 the relocated binary, =
+BSS,
+          stack and malloc arena =E2=80=94 lives at and above this offset a=
+nd
+          will not allocate into the OS load region.
+
+          Set this large enough to hold the biggest OS image you expect
+          to boot, plus initrd and DTB.
+
+          A value of 0 selects the default split, which divides DRAM
+          into two equal halves: the lower half for the OS load region
+          and the upper half for the barebox runtime region. This is
+          suitable for most boards with modern DRAM sizes.
+
+Sascha
+
+--=20
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
