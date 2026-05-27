@@ -1,65 +1,67 @@
-Delivery-date: Wed, 27 May 2026 14:18:27 +0200
+Delivery-date: Wed, 27 May 2026 14:18:36 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wSDDP-004Ny3-1Y
+	id 1wSDDY-004Nyg-1i
 	for lore@lore.pengutronix.de;
-	Wed, 27 May 2026 14:18:27 +0200
+	Wed, 27 May 2026 14:18:36 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wSDDO-0001gR-Ss
-	for lore@pengutronix.de; Wed, 27 May 2026 14:18:27 +0200
+	id 1wSDDX-0001jf-Qp
+	for lore@pengutronix.de; Wed, 27 May 2026 14:18:36 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=K65f8k4FCSYAO7VhgyDrJx7n8yX3L9fgo0oGEbnVGbk=; b=iJ7UWss8zxh6sU2H2y/A2tfI9f
-	bGATe1FGDSUopb6k8XDzWOm6maKOUjq/Wxfgs4nLk5r5z5LHj8Tgv5MkE8EYhLOron9n0dwIQIQrO
-	841nmCzaTxq1ZVzV86SJVkZMR8AmUMb/uEgKYEHtW9atDGR8W8zfhnbhRlhMA4bUFYHJEUBlAIgL1
-	74l5Vt8/pIuMZhUsYqA8G5lwQlgvDI2a1sNrV2nzJq2DjgogiSH7UM9UR+ggJeR+zTH0ObBTlIO6g
-	EPOBSVwKhav2f3fW/dQh402Mxzy3QCvDhkQ4mBb/5Gj7qxEpODuy7QVeVbqnLWaxczcCTUc3Jvr9y
-	2uA+VHjA==;
+	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=/no1Kbg+68BZHK0FMA+WClzAAbYDLPEyjqdqXO+NGtA=; b=V3NozMy2jv/V+91RZLLnKhJtkH
+	XEGeoIEiS4bY0sLRzhRP3mppiBa6nNi6oTPi+9cWvImFsoILijQzLVjr0eXJ9wsK8i4RcvAwt0m6B
+	20Iak4HvnsmKPH690xh5zFyx+ADFFcWltUU4ESYMxytp3Ow2UNT1/bHBjbf4f0kYgJmyBmVQX2kiu
+	8Tr+aMY5WGguM8Px1Y7FKI+DIwYWXWJhglRU9Z4Bxe1NBYZ86BjhbUToUoz2S4lpdgFS/7316iIia
+	02i3C9NgECktLQYjGR8noC9Wssts+q4At2KDxW2nq6enE9kphTyKvSVd2j/zf61MB4IOC2Y40OWyF
+	9LThRYTA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wSDC4-000000044Bp-3PnU;
-	Wed, 27 May 2026 12:17:04 +0000
+	id 1wSDCL-000000044J3-0eyR;
+	Wed, 27 May 2026 12:17:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wSDC2-000000044AZ-2fxS
+	id 1wSDCI-000000044H0-2gf0
 	for barebox@lists.infradead.org;
-	Wed, 27 May 2026 12:17:04 +0000
+	Wed, 27 May 2026 12:17:19 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wSDBt-0001FN-1a; Wed, 27 May 2026 14:16:53 +0200
+	id 1wSDBt-0001FS-1h; Wed, 27 May 2026 14:16:53 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wSDBs-0026eJ-0e;
-	Wed, 27 May 2026 14:16:52 +0200
+	id 1wSDBs-0026eW-1N;
+	Wed, 27 May 2026 14:16:53 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wSDBs-0000000E7Uj-2poi;
+	id 1wSDBs-0000000E7Uj-3mFi;
 	Wed, 27 May 2026 14:16:52 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: eagle.alexander923@gmail.com,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 27 May 2026 14:15:19 +0200
-Message-ID: <20260527121649.3365172-1-a.fatoum@pengutronix.de>
+Date: Wed, 27 May 2026 14:15:24 +0200
+Message-ID: <20260527121649.3365172-6-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260527121649.3365172-1-a.fatoum@pengutronix.de>
+References: <20260527121649.3365172-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260527_051702_688709_B6362525 
-X-CRM114-Status: UNSURE (   9.10  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260527_051718_683898_2D8A78AC 
+X-CRM114-Status: GOOD (  13.52  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,54 +83,101 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master v2 0/5] ARM64: unify pbl and proper malloc area start
+Subject: [PATCH master v2 5/5] ARM64: place PBL malloc area at start of barebox proper malloc area
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The current location used to place the very early PBL malloc area on
-Rockchip overlaps the OP-TEE region. This series changes ARM64 to
-make the start of the barebox proper malloc area easier to calculate and
-uses that also for the PBL memory region.
+The early PBL malloc area used by the Rockchip code overlaps the region
+used for OP-TEE. Moving it a bit lower would overlap the region occupied
+by the scratch area.
 
-v1: https://lore.barebox.org/barebox/20260522105852.2681680-1-a.fatoum@pengutronix.de/
+With the switch to CONFIG_BAREBOX_MEMORY_OFFSET, we can compute the start
+of the malloc area in barebox proper without knowing how big barebox will
+eventually be, so make use of that and always place the PBL malloc area
+exactly at the start of the eventual barebox proper memory area.
 
-v1 -> v2:
-  - restrict to ARM64 only
-  - make the offset from start of RAM instead of end (Sascha)
+The memory will automatically be reclaimed when the TLSF allocator is
+instantiated and we will be sure not to overwrite anything by allocating
+in PBL.
 
-Ahmad Fatoum (5):
-  arch: introduce new CONFIG_ARCH_HAS_MALLOC_SIZE
-  arch: introduce CONFIG_BAREBOX_MEMORY_OFFSET
-  ARM64: switch to CONFIG_BAREBOX_MEMORY_OFFSET
-  ARM64: configs: drop CONFIG_MALLOC_SIZE=0x0 as it's now the default
-  ARM64: place PBL malloc area at start of barebox proper malloc area
+Reported-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+Fixes: 76b1f31275fe ("ARM: rockchip: initialize PBL malloc")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/cpu/common.c              |  5 +++++
+ arch/arm/cpu/uncompress.c          |  4 ++++
+ arch/arm/include/asm/barebox-arm.h | 10 ++++++----
+ arch/arm/mach-rockchip/atf.c       |  2 +-
+ 4 files changed, 16 insertions(+), 5 deletions(-)
 
- arch/Kconfig                               | 19 ++++++++++
- arch/arm/Kconfig                           |  2 +
- arch/arm/configs/efi_v8_defconfig          |  1 -
- arch/arm/configs/imx_v8_defconfig          |  1 -
- arch/arm/configs/layerscape_defconfig      |  1 -
- arch/arm/configs/multi_v8_defconfig        |  1 -
- arch/arm/configs/rockchip_v8_defconfig     |  1 -
- arch/arm/configs/rpi_v8a_defconfig         |  3 +-
- arch/arm/configs/socfpga-agilex5_defconfig |  1 -
- arch/arm/configs/zynqmp_defconfig          |  1 -
- arch/arm/cpu/common.c                      |  5 +++
- arch/arm/cpu/start.c                       | 10 +++++
- arch/arm/cpu/uncompress.c                  |  4 ++
- arch/arm/include/asm/barebox-arm.h         | 10 +++--
- arch/arm/mach-rockchip/atf.c               |  2 +-
- arch/mips/Kconfig                          |  1 +
- arch/openrisc/Kconfig                      |  1 +
- arch/powerpc/Kconfig                       |  1 +
- arch/riscv/Kconfig                         |  1 +
- arch/sandbox/Kconfig                       |  1 +
- common/Kconfig                             | 43 +++++++++++++++++++++-
- common/memory.c                            |  7 ++++
- include/asm-generic/memory_layout.h        | 24 ++++++++++++
- include/linux/pagemap.h                    |  1 +
- 24 files changed, 126 insertions(+), 16 deletions(-)
-
+diff --git a/arch/arm/cpu/common.c b/arch/arm/cpu/common.c
+index 6b82ee8b810c..adb5d6a02bc8 100644
+--- a/arch/arm/cpu/common.c
++++ b/arch/arm/cpu/common.c
+@@ -114,8 +114,13 @@ void print_pbl_mem_layout(ulong membase, ulong endmem, ulong barebox_base)
+ #endif
+ 	printf("arm_mem_barebox_image = 0x%08lx+0x%08lx\n",
+ 	       barebox_base, arm_mem_barebox_image_end(endmem) - barebox_base);
++#ifdef CONFIG_ARM64
++	printf("pbl_malloc area       = 0x%08lx+0x%08x\n",
++	       barebox_malloc_base(membase, endmem - membase), PBL_MALLOC_SIZE);
++#else
+ 	printf("arm_mem_early_malloc  = 0x%08lx+0x%08x\n",
+ 	       barebox_base - PBL_MALLOC_SIZE, PBL_MALLOC_SIZE);
++#endif
+ 	printf("membase               = 0x%08lx+0x%08lx\n",
+ 	       membase, endmem - membase);
+ }
+diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
+index 61bcba6e8549..55bbe0019cc4 100644
+--- a/arch/arm/cpu/uncompress.c
++++ b/arch/arm/cpu/uncompress.c
+@@ -75,7 +75,11 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+ 
+ 	handoff_data = (void *)barebox_base + ALIGN(uncompressed_len, 8) + MAX_BSS_SIZE;
+ 
++#ifdef CONFIG_ARM64
++	pbl_malloc_init(barebox_malloc_base(membase, memsize), PBL_MALLOC_SIZE);
++#else
+ 	pbl_malloc_init(barebox_base - PBL_MALLOC_SIZE, PBL_MALLOC_SIZE);
++#endif
+ 
+ #ifdef DEBUG
+ 	print_pbl_mem_layout(membase, endmem, barebox_base);
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index 38cceba010ed..f75cddc77243 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -95,10 +95,12 @@ void *barebox_arm_boot_dtb(void);
+  *                       + BSS) rounded to SZ_1M
+  *                                   ↓
+  *  ---------------------- arm_mem_barebox_image() ---------------------
+- *                                   ↑
+- *                                SZ_128K
+- *                                   ↓
+- *  ------------------------ arm_mem_early_malloc ----------------------
++ *     ARM32      ↑                  |                ↕         ARM64
++ *         PBL_MALLOC_SIZE           |------- pbl_malloc area end ------
++ *                ↓                  |                ↑
++ *  --- arm_mem_early_malloc --------|         PBL_MALLOC_SIZE
++ *                                   |                ↓
++ *                                   ----- pbl_malloc area start -------
+  */
+ void print_pbl_mem_layout(ulong membase, ulong endmem, ulong barebox_base);
+ 
+diff --git a/arch/arm/mach-rockchip/atf.c b/arch/arm/mach-rockchip/atf.c
+index 14797a1e0601..f9dbc8b20c5a 100644
+--- a/arch/arm/mach-rockchip/atf.c
++++ b/arch/arm/mach-rockchip/atf.c
+@@ -173,7 +173,7 @@ static void rockchip_atf_load_bl31(void *fdt)
+ 	unsigned long bl31_ep;
+ 
+ 	mmu_early_enable(membase[0], memsize[0]);
+-	pbl_malloc_init(membase[0] + memsize[0] - PBL_MALLOC_SIZE, PBL_MALLOC_SIZE);
++	pbl_malloc_init(membase[0], memsize[0]);
+ 
+ 	bl31_ep = load_elf64_image_phdr(&bl31);
+ 
 -- 
 2.47.3
 
