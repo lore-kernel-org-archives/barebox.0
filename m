@@ -1,74 +1,72 @@
-Delivery-date: Wed, 27 May 2026 12:56:47 +0200
+Delivery-date: Wed, 27 May 2026 12:56:58 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wSBwN-004MaX-1P
+	id 1wSBwY-004Maw-1e
 	for lore@lore.pengutronix.de;
-	Wed, 27 May 2026 12:56:47 +0200
+	Wed, 27 May 2026 12:56:58 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wSBwM-0000RL-P3
-	for lore@pengutronix.de; Wed, 27 May 2026 12:56:47 +0200
+	id 1wSBwX-0000T2-E4
+	for lore@pengutronix.de; Wed, 27 May 2026 12:56:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:Content-Transfer-Encoding
-	:Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Cc:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=GJF9LrzpPIAHR64pCA/TlOEgQNFDyQm50+6v9jSdU6M=; b=XsLAND1zIAiVmmSEZXT64rKXwb
-	VqC1YG5cYV9MXoMJQlaiL30n44iNwrGvxobWEeIbhyKqJwlY4VbjJsdM884kQMU29s5Oj6aADKhQK
-	is9xArifyKhJP9XM4nnZUMCAzQXXQWxLeD1XAo5efqvdieuxLRPhlnFD9CkFvsYx27XMT1RAXeYFG
-	nb9J1wg0P53xNFIT8/ObIXZmf9Q2bV/xbexh6zU37ro8NErXAFnGoGtL1LRwf/2d76pufSRhK4jyM
-	dCExXxRsxvr/0H/9mL9gKM7BUsVcZ27EArW+mDXKrjFTYkhX4pqOcc6/vB9vqNQcfiYzxYZo1PNjS
-	AwWBVyPg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=3ML5yZOxeQ/u9aIgAvL/etItVh/m7FJ6h6zq+/j2tJs=; b=PiHk9xxkN1XPFYUnE0VKAOcaZu
+	+C+DKgnUABNCi0VEs5PkF6m22qbIK6q0rOBEYUe3oMZaaRAxCyj4DdaJvnjAuNBFn7UcOp4yOi1uY
+	UOFBB/fi0OPksccDdbjYBOCoAc+8G0gwfQbgtZOMsTkxfIhAT0c44lyhGTQ/lWcuBJqrRr7UrglYG
+	TQPUzgkwcRiOKji3c19pbJKaJFyDzye/l5M36dp77AR66Va+e9ZFH9BRN3J3Q38l5lKyiCu5EdRv3
+	b01vbQbYnLu+NevR7tJxNRcUBum3W4r2jwUe0N6G4ZARuX4MvYurARpbjbPqXkT8PIDGeQQYKb7sq
+	kpIPpkvw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wSBuS-00000003yHf-3ztY;
-	Wed, 27 May 2026 10:54:48 +0000
+	id 1wSBuU-00000003yIl-1W21;
+	Wed, 27 May 2026 10:54:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wSBuP-00000003yFY-1wwb
+	id 1wSBuP-00000003yFX-1yHC
 	for barebox@lists.infradead.org;
-	Wed, 27 May 2026 10:54:47 +0000
+	Wed, 27 May 2026 10:54:48 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wSBuN-0008SX-3H; Wed, 27 May 2026 12:54:43 +0200
+	id 1wSBuN-0008SU-37; Wed, 27 May 2026 12:54:43 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wSBuM-0025vB-1Q;
+	id 1wSBuM-0025vD-1Q;
 	Wed, 27 May 2026 12:54:43 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wSBuM-0000000EvQF-3fcl;
+	id 1wSBuM-0000000EvQF-3oyx;
 	Wed, 27 May 2026 12:54:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 27 May 2026 12:54:40 +0200
-Message-Id: <20260527-public-keys-v1-0-c87a1cc61d1b@pengutronix.de>
+Date: Wed, 27 May 2026 12:54:44 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAHDNFmoC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDUyMj3YLSpJzMZN3s1Mpi3aREMwPLZDPTZENDEyWgjoKi1LTMCrBp0bG
- 1tQALXsAhXQAAAA==
-X-Change-ID: 20260522-public-keys-ba609c65c114
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260527-public-keys-v1-4-c87a1cc61d1b@pengutronix.de>
+References: <20260527-public-keys-v1-0-c87a1cc61d1b@pengutronix.de>
+In-Reply-To: <20260527-public-keys-v1-0-c87a1cc61d1b@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779879282; l=2532;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779879282; l=7373;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=RbZ4un828uU8SvdXneHknltack6s+WoHXaVVl3P5ZBE=;
- b=helnMcxH7x9EiQpMsfXzoq5WMTcs3anl9DH2lU0RGdiHDLSAXvNk1kBZsHsA0LKKeD8zhrc8z
- oAcob1pvyYbDmZ3GdkOZ6rL+el/QpzAXYFIZcqo41TpF8R6TYRD4Pl4
+ bh=Ae/ztzL42Gzze2mF7PISKEPx3rO0EvjveKVi7qg2SO8=;
+ b=kbuOqcuC5SEihmgL/tDbD3Tojp9Ozd+qMagMOLuSfiKGjrIT3dkYIHBj0+ylQ0L0xed7+F+0N
+ hA40Hallq46APDg9gMaPwKeI/x7/vLsDUUVSZwoi6cgac1qoyWtsgqS
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260527_035445_512549_AF1DA378 
-X-CRM114-Status: GOOD (  10.01  )
+X-CRM114-CacheID: sfid-20260527_035445_656686_8FA67893 
+X-CRM114-Status: GOOD (  16.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,67 +88,183 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 0/4] public keys: rework keyrings as nested containers
+Subject: [PATCH 4/4] public keys: allow keys to be members of multiple
+ keyrings
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-So far a public key had a char *keyring meaning that a key can only be
-part of a single keyring. This series overcomes this, with it keys can
-be contained in multiple keyrings and keyrings can be part of other
-keyrings. To get there a new struct keyring_link is introduced which
-is instanciated per link and links a key/keyring to a keyring. The
-keys command is updated to reflect that, so an example output could
-be:
+The same signing identity can be valid in more than one context — e.g.
+the development PEM is used both as a FIT image signer and as a TLV
+signer. Until now keytoc forced one keyring per key, so the Kconfig
+default listed the snakeoil PEM twice (once per target keyring) and
+emitted two full copies of the modulus / rr / hash / public_key struct
+into rodata.
 
-RING: fit
-    KEY:    9160ff3ab26e1842d1fbfaca48befce2664f57245048856e779531bb260cbc20	TYPE: ECDSA	HINT:
-    RING:   snakeoil
-    RING:   fit-devel
-RING: tlv-generic
-    RING:   snakeoil
-RING: snakeoil
-    KEY:    4f48c67c9a28be596931de5b137f8207f15a505d1b7a742731014dbcd4c799d9	TYPE: ECDSA	HINT: ecdsa-devel
-    KEY:    7fbcb3b2ddfab044ef874550c7cbd1b357afeed55fb6f48be9c22b2cbef72856	TYPE: RSA	HINT: rsa-devel
-RING: fit-devel
-    KEY:    7fbcb3b2ddfab044ef874550c7cbd1b357afeed55fb6f48be9c22b2cbef72856	TYPE: RSA	HINT:
-RING: tlv-feature
-    KEY:    54b7b9c040cd81dd1e495832b8a2724a8f48e75f90fcd982631695669a805dd0	TYPE: RSA	HINT:
-RING: tlv-base
-    KEY:    2f908960b1d74b3a8d0076376870020f8d6504ebb7a1c68c1c383ac8140690e5	TYPE: RSA	HINT:
+Let the keyring= option in a keyspec appear more than once. Each
+occurrence appends to a list; the emitted key data (struct public_key,
+rsa/ecdsa_public_key, hash) is unchanged and singular, and one
+struct public_key_record is emitted per keyring all pointing back at
+the same key. Symbol/section names are uniquified with a per-key
+record index (key_N_record_M).
 
-The FIT image authentication code still uses the "fit" keyring as
-before, but now we can link new keys to the keyring during runtime as
-needed. Furthermore a key can be used for multiple purposes without
-duplicating it.
+For the development-key default, collapse the two CRYPTO_PUBLIC_KEYS
+entries into one (keyring=fit,keyring=tlv-generic,fit-hint=...). With
+4096-bit RSA this avoids re-emitting ~1 KB per shared identity into
+rodata.
 
-As a nice side effect the keys themselves become readonly and the
-compiled in keys can be moved to the RO data segment.
+While here, have the keys command print a keyring header so the now
+N-records-per-key output is readable.
 
+Assisted-by: Claude Opus 4.7
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
-Sascha Hauer (4):
-      public keys: make error message more informative
-      public keys: make key_name_hint optional
-      public keys: rework keyrings as nested containers
-      public keys: allow keys to be members of multiple keyrings
+ crypto/Makefile  |  6 ++----
+ scripts/keytoc.c | 61 ++++++++++++++++++++++++++++++++++++++++----------------
+ 2 files changed, 46 insertions(+), 21 deletions(-)
 
- commands/keys.c                   |  21 +++-
- common/image-fit.c                |  15 ++-
- common/tlv/parser.c               |  13 ++-
- crypto/Makefile                   |   6 +-
- crypto/public-keys.c              | 221 ++++++++++++++++++++++++++++++++++----
- crypto/rsa.c                      |   3 +-
- include/asm-generic/barebox.lds.h |  11 ++
- include/crypto/public_key.h       |  87 ++++++++++++---
- scripts/keytoc.c                  |  79 +++++++++-----
- 9 files changed, 381 insertions(+), 75 deletions(-)
----
-base-commit: 19ce0bdebf4856cfe6d0610a6e4d8d917d658ec3
-change-id: 20260522-public-keys-ba609c65c114
+diff --git a/crypto/Makefile b/crypto/Makefile
+index 17043316c4..0c4a900504 100644
+--- a/crypto/Makefile
++++ b/crypto/Makefile
+@@ -33,12 +33,10 @@ CONFIG_CRYPTO_PUBLIC_KEYS := $(foreach d,$(CONFIG_CRYPTO_PUBLIC_KEYS),"$(d)")
+ 
+ ifdef CONFIG_CRYPTO_BUILTIN_DEVELOPMENT_KEYS
+ ifdef CONFIG_CRYPTO_RSA
+-CONFIG_CRYPTO_PUBLIC_KEYS += keyring=fit,fit-hint=rsa-devel:$(srctree)/crypto/snakeoil-4096-development.pem
+-CONFIG_CRYPTO_PUBLIC_KEYS += keyring=tlv-generic:$(srctree)/crypto/snakeoil-4096-development.pem
++CONFIG_CRYPTO_PUBLIC_KEYS += keyring=fit,keyring=tlv-generic,fit-hint=rsa-devel:$(srctree)/crypto/snakeoil-4096-development.pem
+ endif
+ ifdef CONFIG_CRYPTO_ECDSA
+-CONFIG_CRYPTO_PUBLIC_KEYS += keyring=fit,fit-hint=ecdsa-devel:$(srctree)/crypto/snakeoil-ecdsa-development.pem
+-CONFIG_CRYPTO_PUBLIC_KEYS += keyring=tlv-generic:$(srctree)/crypto/snakeoil-ecdsa-development.pem
++CONFIG_CRYPTO_PUBLIC_KEYS += keyring=fit,keyring=tlv-generic,fit-hint=ecdsa-devel:$(srctree)/crypto/snakeoil-ecdsa-development.pem
+ endif
+ endif
+ 
+diff --git a/scripts/keytoc.c b/scripts/keytoc.c
+index 7e910422a7..e78d010481 100644
+--- a/scripts/keytoc.c
++++ b/scripts/keytoc.c
+@@ -34,7 +34,8 @@
+ struct keyinfo {
+ 	char *spec;
+ 	char *name_hint;
+-	char *keyring;
++	char **keyrings;
++	int nr_keyrings;
+ 	char *path;
+ 	char *name_c;
+ };
+@@ -564,6 +565,8 @@ static int gen_key_ecdsa(EVP_PKEY *key, struct keyinfo *info)
+ 		fprintf(outfilep, "\t.y = %s_y,\n", info->name_c);
+ 		fprintf(outfilep, "};\n");
+ 		if (!standalone) {
++			int i;
++
+ 			fprintf(outfilep, "\nstatic const struct public_key %s_public_key = {\n", info->name_c);
+ 			fprintf(outfilep, "\t.type = PUBLIC_KEY_TYPE_ECDSA,\n");
+ 			if (info->name_hint)
+@@ -572,11 +575,14 @@ static int gen_key_ecdsa(EVP_PKEY *key, struct keyinfo *info)
+ 			fprintf(outfilep, "\t.hashlen = %u,\n", SHA256_DIGEST_LENGTH);
+ 			fprintf(outfilep, "\t.ecdsa = &%s,\n", info->name_c);
+ 			fprintf(outfilep, "};\n");
+-			fprintf(outfilep, "\n");
+-			fprintf(outfilep, "static const struct public_key_record __%s_public_key __ll_elem(.public_keys.rodata.%s) = {\n", info->name_c, info->name_c);
+-			fprintf(outfilep, "\t.keyring = \"%s\",\n", info->keyring);
+-			fprintf(outfilep, "\t.key = &%s_public_key,\n", info->name_c);
+-			fprintf(outfilep, "};\n");
++			for (i = 0; i < info->nr_keyrings; i++) {
++				fprintf(outfilep, "\n");
++				fprintf(outfilep, "static const struct public_key_record __%s_record_%d __ll_elem(.public_keys.rodata.%s_record_%d) = {\n",
++					info->name_c, i, info->name_c, i);
++				fprintf(outfilep, "\t.keyring = \"%s\",\n", info->keyrings[i]);
++				fprintf(outfilep, "\t.key = &%s_public_key,\n", info->name_c);
++				fprintf(outfilep, "};\n");
++			}
+ 		}
+ 	}
+ 
+@@ -674,6 +680,8 @@ static int gen_key_rsa(EVP_PKEY *key, struct keyinfo *info)
+ 		fprintf(outfilep, "};\n");
+ 
+ 		if (!standalone) {
++			int i;
++
+ 			fprintf(outfilep, "\nstatic const struct public_key %s_public_key = {\n", info->name_c);
+ 			fprintf(outfilep, "\t.type = PUBLIC_KEY_TYPE_RSA,\n");
+ 			if (info->name_hint)
+@@ -682,11 +690,14 @@ static int gen_key_rsa(EVP_PKEY *key, struct keyinfo *info)
+ 			fprintf(outfilep, "\t.hashlen = %u,\n", SHA256_DIGEST_LENGTH);
+ 			fprintf(outfilep, "\t.rsa = &%s,\n", info->name_c);
+ 			fprintf(outfilep, "};\n");
+-			fprintf(outfilep, "\n");
+-			fprintf(outfilep, "static const struct public_key_record __%s_public_key __ll_elem(.public_keys.rodata.%s) = {\n", info->name_c, info->name_c);
+-			fprintf(outfilep, "\t.keyring = \"%s\",\n", info->keyring);
+-			fprintf(outfilep, "\t.key = &%s_public_key,\n", info->name_c);
+-			fprintf(outfilep, "};\n");
++			for (i = 0; i < info->nr_keyrings; i++) {
++				fprintf(outfilep, "\n");
++				fprintf(outfilep, "static const struct public_key_record __%s_record_%d __ll_elem(.public_keys.rodata.%s_record_%d) = {\n",
++					info->name_c, i, info->name_c, i);
++				fprintf(outfilep, "\t.keyring = \"%s\",\n", info->keyrings[i]);
++				fprintf(outfilep, "\t.key = &%s_public_key,\n", info->name_c);
++				fprintf(outfilep, "};\n");
++			}
+ 		}
+ 	}
+ 
+@@ -775,9 +786,21 @@ static bool parse_info(char *p, struct keyinfo *out)
+ 			v = strdup(v);
+ 			if (!v)
+ 				enomem_exit(__func__);
+-			if (strcmp(k, "keyring") == 0)
+-				out->keyring = strdup(v);
+-			else if (strcmp(k, "fit-hint") == 0)
++			if (strcmp(k, "keyring") == 0) {
++				int i;
++				for (i = 0; i < out->nr_keyrings; i++) {
++					if (strcmp(out->keyrings[i], v) == 0) {
++						fprintf(stderr,
++							"duplicate keyring=%s in keyspec\n", v);
++						return false;
++					}
++				}
++				out->keyrings = realloc(out->keyrings,
++							(out->nr_keyrings + 1) * sizeof(char *));
++				if (!out->keyrings)
++					enomem_exit(__func__);
++				out->keyrings[out->nr_keyrings++] = strdup(v);
++			} else if (strcmp(k, "fit-hint") == 0)
+ 				out->name_hint = strdup(v);
+ 			else
+ 				return false;
+@@ -862,7 +885,7 @@ int main(int argc, char *argv[])
+ 	}
+ 
+ 	if (optind == argc) {
+-		fprintf(stderr, "Usage: %s [-ods] keyring=<keyring>[,fit-hint=<hint>]:<crt> ...\n", argv[0]);
++		fprintf(stderr, "Usage: %s [-ods] keyring=<keyring>[,keyring=<keyring>...][,fit-hint=<hint>]:<crt> ...\n", argv[0]);
+ 		fprintf(stderr, "\t-o FILE\twrite output into FILE instead of stdout\n");
+ 		fprintf(stderr, "\t-d\tgenerate device tree snippet instead of C code\n");
+ 		fprintf(stderr, "\t-s\tgenerate standalone key outside FIT image keyring\n");
+@@ -926,8 +949,12 @@ int main(int argc, char *argv[])
+ 		if (asprintf(&info->name_c, "key_%i", keys_idx + 1) < 0)
+ 			enomem_exit("asprintf");
+ 
+-		if (!info->keyring) {
+-			info->keyring = strdup("fit");
++		if (info->nr_keyrings == 0) {
++			info->keyrings = malloc(sizeof(char *));
++			if (!info->keyrings)
++				enomem_exit(__func__);
++			info->keyrings[0] = strdup("fit");
++			info->nr_keyrings = 1;
+ 			fprintf(stderr, "Warning: No keyring provided in keyspec, defaulting to keyring=fit for %s\n", info->path);
+ 		}
+ 	}
 
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.47.3
 
 
 
