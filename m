@@ -3,13 +3,13 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wSYa0-004iXZ-1F
+	id 1wSYa0-004iXk-2P
 	for lore@lore.pengutronix.de;
 	Thu, 28 May 2026 13:07:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wSYZy-0003aE-4l
+	id 1wSYa0-0003aa-0g
 	for lore@pengutronix.de; Thu, 28 May 2026 13:07:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,50 +17,51 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=zUTZef7MT2svMQhA7yzpPfBUVB2PxyuEPbpEZtSbRLA=; b=ePQBZbLGamXm38cKHoGb7e/c1z
-	KdL6yltthSBzwub05WRtnm884SNPQfrVORhnP7Du9ZrgmLImWpqRREON1d/F+OxRkKAqqo6Hi7K4D
-	HyE2C9IyA0QtqfJ2NjI3FDHHULoy/6PoGAHKR1ozaX1U9ZIpwYxnIePghx/OI00REjf/K9BTCyOWO
-	3EpPISScc8vblHS13T1bFiQLO3sjqNwwtJ0kBFqhrRpmZAEAdW2ovGw9xuah/CSQA21csTe/WdQJL
-	sb1QH/D5t6bVfsUC0e2FeAsT3/bgoBLLnnIm6rXW+nq18Wi67dTrJV+UM9BTmmNDTrNvVwjS2rNCu
-	J3RfZ7xg==;
+	bh=Pt82AQ7Af3YWz13A5GjR7gryTpA8o9QpSrBr3et2z58=; b=KjRhR+DPUdQqxTDPeuZwJYhFbe
+	r/yKMqKemXxfIYlCwM5HgRtueJife30/zB0zAkr/5VOMctFOxUOFfFqSHMt7yiVNhNpuQjGl6flHY
+	pAwJoTefJrsfcvPPSrif6wmZUWPKNZ2kXHKCZl8V3+c1wZyh/DGCbGQC+WrdcJvnC9Fv6If8kyYZt
+	fXP8eknl9iTVIJ7X4n3or/o6Tr3/UCbSwogrCAW50xSy0vvel+kN8ZVqRKEj3EiFV4RVgoa1l8lGe
+	t/D3PxsiXkLlv5TyT21B0dTBTd24ZhMAsXIfE0y1N1MZOJrMW8EXy/orIl0Iq0aHY9FjglmJoAvQ6
+	n1jV6yLw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wSYX2-00000005dDu-1nBR;
+	id 1wSYX2-00000005dE4-25mt;
 	Thu, 28 May 2026 11:04:08 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wSYWz-00000005dC2-2ioN
+	id 1wSYWz-00000005dC4-2j1Q
 	for barebox@lists.infradead.org;
-	Thu, 28 May 2026 11:04:06 +0000
+	Thu, 28 May 2026 11:04:07 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wSYWx-0002xo-TZ; Thu, 28 May 2026 13:04:03 +0200
+	id 1wSYWx-0002xw-UY; Thu, 28 May 2026 13:04:03 +0200
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wSYWx-002G8w-0t;
+	id 1wSYWx-002G8z-11;
 	Thu, 28 May 2026 13:04:03 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wSYWx-0000000GSHZ-38he;
+	id 1wSYWx-0000000GSHZ-3K68;
 	Thu, 28 May 2026 13:04:03 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Alexander Shiyan <eagle.alexander923@gmail.com>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 28 May 2026 13:02:17 +0200
-Message-ID: <20260528110401.3920904-4-a.fatoum@pengutronix.de>
+Date: Thu, 28 May 2026 13:02:18 +0200
+Message-ID: <20260528110401.3920904-5-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260528110401.3920904-1-a.fatoum@pengutronix.de>
 References: <20260528110401.3920904-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260528_040405_708624_3C41E233 
-X-CRM114-Status: GOOD (  12.34  )
+X-CRM114-CacheID: sfid-20260528_040405_717106_B889040A 
+X-CRM114-Status: UNSURE (   8.10  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,82 +83,134 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master v3 3/5] ARM64: switch to CONFIG_BAREBOX_MEMORY_OFFSET
+Subject: [PATCH master v3 4/5] ARM64: configs: drop CONFIG_MALLOC_SIZE=0x0 as it's now the default
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-In preparation for using the barebox proper malloc area in PBL too,
-switch over ARM64 to CONFIG_BAREBOX_MEMORY_OFFSET as this allows
-calculating the malloc area start without needing to know the eventual
-size of barebox proper itself.
+CONFIG_MALLOC_SIZE=0x0 is not the default value, although it's the most
+commonly used. We couldn't turn around and change this now without
+breakage.
 
-The switch for ARM32 is more involved, so that's omitted for now without
-a comment explaining why. Once we have migrated the xload code to not
-use the malloc area for second stage placement and weeded out the
-bugs[1], we should be good to go[1].
+CONFIG_BAREBOX_MEMORY_OFFSET=0x0 behaves the same as CONFIG_MALLOC_SIZE=0x0
+and is the default, so we can drop CONFIG_MALLOC_SIZE=0x0 now.
 
-[1]: On a Beagle Bone Black, despite first stage being moved out of
-malloc area, I get a data abort before barebox_pbl_start...
+No functional change.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/Kconfig     |  3 ++-
- arch/arm/cpu/start.c | 10 ++++++++++
- 2 files changed, 12 insertions(+), 1 deletion(-)
+ arch/arm/configs/efi_v8_defconfig          | 1 -
+ arch/arm/configs/imx_v8_defconfig          | 1 -
+ arch/arm/configs/layerscape_defconfig      | 1 -
+ arch/arm/configs/multi_v8_defconfig        | 1 -
+ arch/arm/configs/rockchip_v8_defconfig     | 1 -
+ arch/arm/configs/rpi_v8a_defconfig         | 3 +--
+ arch/arm/configs/socfpga-agilex5_defconfig | 1 -
+ arch/arm/configs/zynqmp_defconfig          | 1 -
+ 8 files changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 53bddd55e179..c7a883338b0b 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -20,7 +20,6 @@ config ARM
- 	select ARCH_HAS_DMA_WRITE_COMBINE
- 	select HAVE_EFI_LOADER if MMU # for payload unaligned accesses
- 	select PBL_IMAGE_ELF
--	select ARCH_HAS_MALLOC_SIZE
- 	default y
- 
- config ARCH_LINUX_NAME
-@@ -34,10 +33,12 @@ config ARCH_MKIMAGE_NAME
- 
- config ARM32
- 	def_bool CPU_32
-+	select ARCH_HAS_MALLOC_SIZE
- 
- config ARM64
- 	def_bool CPU_64
- 	select ARCH_HAS_RELR
-+	select ARCH_HAS_BAREBOX_MEMORY_OFFSET
- 
- config ARCH_TEXT_BASE
- 	hex
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index bbcf465be4db..6a9941275c12 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -156,6 +156,15 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
- 		armv7r_mpu_init_coherent(malloc_end, REGION_8MB);
- 	}
- 
-+#ifdef CONFIG_ARM64
-+	malloc_start = barebox_malloc_base(membase, memsize);
-+#else
-+	/* TODO: migrate ARM32 to barebox_malloc_base(), once legacy xload
-+	 * code has been migrated to loadables; On boards like the beaglebone,
-+	 * a separate first stage barebox loads the second stage into RAM
-+	 * and executes it from there, so reusing the malloc area in second
-+	 * stage PBL will mangle the second stage code.
-+	 */
- 	/*
- 	 * Maximum malloc space is the Kconfig value if given
- 	 * or 1GB.
-@@ -169,6 +178,7 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
- 		if (malloc_end - malloc_start > SZ_1G)
- 			malloc_start = malloc_end - SZ_1G;
- 	}
-+#endif
- 
- 	pr_debug("initializing malloc pool at 0x%08lx (size 0x%08lx)\n",
- 			malloc_start, malloc_end - malloc_start);
+diff --git a/arch/arm/configs/efi_v8_defconfig b/arch/arm/configs/efi_v8_defconfig
+index 5f946dd51d4a..51eaad78a11e 100644
+--- a/arch/arm/configs/efi_v8_defconfig
++++ b/arch/arm/configs/efi_v8_defconfig
+@@ -3,7 +3,6 @@ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_ARM_PSCI_CLIENT=y
+ CONFIG_NAME="efi_v8_defconfig"
+ CONFIG_MMU=y
+-CONFIG_MALLOC_SIZE=0x0
+ CONFIG_KALLSYMS=y
+ CONFIG_PROMPT="barebox> "
+ CONFIG_PROMPT_HUSH_PS2="y"
+diff --git a/arch/arm/configs/imx_v8_defconfig b/arch/arm/configs/imx_v8_defconfig
+index cbdb3a65c745..c8dd3e227929 100644
+--- a/arch/arm/configs/imx_v8_defconfig
++++ b/arch/arm/configs/imx_v8_defconfig
+@@ -23,7 +23,6 @@ CONFIG_64BIT=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_NAME="imx_v8_defconfig"
+ CONFIG_MMU=y
+-CONFIG_MALLOC_SIZE=0x0
+ CONFIG_KALLSYMS=y
+ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_AUTO_COMPLETE=y
+diff --git a/arch/arm/configs/layerscape_defconfig b/arch/arm/configs/layerscape_defconfig
+index 272dff90d7c8..7d2a2e2322a2 100644
+--- a/arch/arm/configs/layerscape_defconfig
++++ b/arch/arm/configs/layerscape_defconfig
+@@ -6,7 +6,6 @@ CONFIG_64BIT=y
+ CONFIG_ARM_PSCI_CLIENT=y
+ CONFIG_NAME="layerscape_defconfig"
+ CONFIG_MMU=y
+-CONFIG_MALLOC_SIZE=0x0
+ CONFIG_KALLSYMS=y
+ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+diff --git a/arch/arm/configs/multi_v8_defconfig b/arch/arm/configs/multi_v8_defconfig
+index 233aebbe2d95..e62dbc96fd03 100644
+--- a/arch/arm/configs/multi_v8_defconfig
++++ b/arch/arm/configs/multi_v8_defconfig
+@@ -52,7 +52,6 @@ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_ARM_PSCI_CLIENT=y
+ CONFIG_NAME="multi_v8_defconfig"
+ CONFIG_MMU=y
+-CONFIG_MALLOC_SIZE=0x0
+ CONFIG_KALLSYMS=y
+ CONFIG_PROMPT="barebox> "
+ CONFIG_HUSH_FANCY_PROMPT=y
+diff --git a/arch/arm/configs/rockchip_v8_defconfig b/arch/arm/configs/rockchip_v8_defconfig
+index e0df655ea046..ef2951d133d6 100644
+--- a/arch/arm/configs/rockchip_v8_defconfig
++++ b/arch/arm/configs/rockchip_v8_defconfig
+@@ -16,7 +16,6 @@ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_ARM_PSCI_CLIENT=y
+ CONFIG_NAME="rockchip_v8_defconfig"
+ CONFIG_MMU=y
+-CONFIG_MALLOC_SIZE=0x0
+ CONFIG_MALLOC_TLSF=y
+ CONFIG_KALLSYMS=y
+ CONFIG_PROMPT="barebox> "
+diff --git a/arch/arm/configs/rpi_v8a_defconfig b/arch/arm/configs/rpi_v8a_defconfig
+index 6c85209546e4..c29fe30701e8 100644
+--- a/arch/arm/configs/rpi_v8a_defconfig
++++ b/arch/arm/configs/rpi_v8a_defconfig
+@@ -6,7 +6,6 @@ CONFIG_64BIT=y
+ CONFIG_IMAGE_COMPRESSION_NONE=y
+ CONFIG_NAME="rpi_v8a_defconfig"
+ CONFIG_MMU=y
+-CONFIG_MALLOC_SIZE=0x0
+ CONFIG_MALLOC_TLSF=y
+ CONFIG_KALLSYMS=y
+ CONFIG_PROMPT="R-Pi> "
+@@ -111,4 +110,4 @@ CONFIG_FS_NFS=y
+ CONFIG_FS_FAT=y
+ CONFIG_FS_FAT_WRITE=y
+ CONFIG_FS_FAT_LFN=y
+-CONFIG_ZLIB=y
+\ No newline at end of file
++CONFIG_ZLIB=y
+diff --git a/arch/arm/configs/socfpga-agilex5_defconfig b/arch/arm/configs/socfpga-agilex5_defconfig
+index 5711cb89ed27..cad8eeb862fe 100644
+--- a/arch/arm/configs/socfpga-agilex5_defconfig
++++ b/arch/arm/configs/socfpga-agilex5_defconfig
+@@ -3,7 +3,6 @@ CONFIG_64BIT=y
+ CONFIG_MACH_SOCFPGA_ARROW_AXE5_EAGLE=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_MMU=y
+-CONFIG_MALLOC_SIZE=0x0
+ CONFIG_PROMPT="barebox> "
+ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+diff --git a/arch/arm/configs/zynqmp_defconfig b/arch/arm/configs/zynqmp_defconfig
+index 5a71536ba69e..39c1b42619cc 100644
+--- a/arch/arm/configs/zynqmp_defconfig
++++ b/arch/arm/configs/zynqmp_defconfig
+@@ -6,7 +6,6 @@ CONFIG_64BIT=y
+ CONFIG_ARM_PSCI_CLIENT=y
+ CONFIG_NAME="zynqmp_defconfig"
+ CONFIG_MMU=y
+-CONFIG_MALLOC_SIZE=0x0
+ CONFIG_MALLOC_TLSF=y
+ CONFIG_KALLSYMS=y
+ CONFIG_HUSH_FANCY_PROMPT=y
 -- 
 2.47.3
 
