@@ -3,63 +3,63 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wSYQH-004iCg-1D
+	id 1wSYQH-004iCr-2b
 	for lore@lore.pengutronix.de;
 	Thu, 28 May 2026 12:57:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wSYQG-00025O-OG
+	id 1wSYQG-00025L-Do
 	for lore@pengutronix.de; Thu, 28 May 2026 12:57:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=g5ws2t2Oh2zup6JqFxJ/Q5bnyd9eQyi47PdMChkmS3I=; b=GRh0m6VKy8FSRJnJZxGEfN7lok
-	6b4a8L0aC37J9nZWFM1EAHWIfb1vNLocGEe69NoGpfBW/fi10Z0IuSt6iaoMi+grozW3DC0Sk8MwA
-	3h2LWr+tIxGJ99+sJDOmqL4bAzXSTuLzsFOVJosCyfLrtZMWQNPamPOr/dgyrKX5PMKP86kWI1jbO
-	l2tk3e6dbN6R+EuqnQrB4y0iVOAj06LuqSwelXy7mIIbGVuchjHSa7ef05h1R0ZT9q2eQ8MDG/W07
-	ZQg07iFqZEjTWh5ABO2xwaQGva8vqnv9J2Ph4ZUoTulNga6j7A/KXskqe+Lb8HV94RPtuQfhWAQq+
-	PrvySFTQ==;
+	bh=VGE9pITeu+TxDuEKyFEt/BxuoINx5UWJo5QIDTGzQi0=; b=06uAQYU/jD6OkocZ+iK25v/39O
+	WDUfYEM4BWczDi+NlFa9+tghqEOaaFbNGLprI0IelCvD2p7FMIAARgex39H27RVCW2WSVjjvIaJc4
+	rWz3Ye2flJvTsh9Luf79YPNUMeX3OKMus3JbceC9zrZBjCzyN7X9XRYS2OGM76QlhYHL/Yi2s2hj0
+	QhVNa3lYVyC7z5dtywADWT9MZRPWIUH8sC3M//xenuydS5jO+8f0/2Z4+cgy6jtRcLA8T+8zUBFLB
+	xT+BGOszmW7Kt9pkeEH/AbBawOpiHRFD4KilLA93L0pd8ICwLOv5fmvx5EeIR+LBzQr/LX2u8mweM
+	IjOFAT8g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wSYP7-00000005cOA-0Sby;
-	Thu, 28 May 2026 10:55:57 +0000
+	id 1wSYP0-00000005cMp-0aD3;
+	Thu, 28 May 2026 10:55:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wSYP3-00000005cN2-0S9s
+	id 1wSYOx-00000005cLE-0H1L
 	for barebox@lists.infradead.org;
-	Thu, 28 May 2026 10:55:54 +0000
+	Thu, 28 May 2026 10:55:48 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wSYP0-0001sZ-Ts; Thu, 28 May 2026 12:55:50 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1wSYOt-0001rN-HB; Thu, 28 May 2026 12:55:43 +0200
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wSYP0-002G6z-0z;
-	Thu, 28 May 2026 12:55:50 +0200
-Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wSYP0-00000009HYs-3MU5;
-	Thu, 28 May 2026 12:55:50 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260527084939.3113225-1-a.fatoum@pengutronix.de>
-References: <20260527084939.3113225-1-a.fatoum@pengutronix.de>
-Message-Id: <177996575078.2212439.13334560727060360642.b4-ty@pengutronix.de>
-Date: Thu, 28 May 2026 12:55:50 +0200
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1wSYOs-002G6t-2w;
+	Thu, 28 May 2026 12:55:43 +0200
+Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1wSYOt-0000000GMKr-1cP5;
+	Thu, 28 May 2026 12:55:43 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 28 May 2026 12:55:34 +0200
+Message-ID: <20260528105541.3899027-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260527121649.3365172-6-a.fatoum@pengutronix.de>
+References: <20260527121649.3365172-6-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260528_035553_159598_129D0944 
-X-CRM114-Status: UNSURE (   5.95  )
+X-CRM114-CacheID: sfid-20260528_035547_107184_6A54978B 
+X-CRM114-Status: UNSURE (   9.02  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -78,34 +78,40 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master] mci: sdhci: suppress register dump on expected
- time out
+Subject: [PATCH master v2] fixup! ARM64: place PBL malloc area at start of barebox proper malloc area
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+ARM64: rockchip: atf: place PBL malloc area within barebox proper malloc area
 
-On Wed, 27 May 2026 10:49:38 +0200, Ahmad Fatoum wrote:
-> A time out is the usual way a non-existent SD-Card is detected if there
-> is no card detect.
-> 
-> Emitting a whole register dump in that case is just confusing, so
-> suppress register dumps on timeout during card probe.
-> 
-> 
-> [...]
+We should restrict pbl_malloc_init to PBL_MALLOC_SIZE as memsize[0] as a
+whole also contains non-malloc area parts like barebox proper location,
+the stack and the OP-TEE region if any.
 
-Applied, thanks!
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/mach-rockchip/atf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[1/1] mci: sdhci: suppress register dump on expected time out
-      https://git.pengutronix.de/cgit/barebox/commit/?id=f45ae9495f7a (link may not be stable)
-
-Best regards,
+diff --git a/arch/arm/mach-rockchip/atf.c b/arch/arm/mach-rockchip/atf.c
+index f9dbc8b20c5a..8e10d6af445d 100644
+--- a/arch/arm/mach-rockchip/atf.c
++++ b/arch/arm/mach-rockchip/atf.c
+@@ -173,7 +173,7 @@ static void rockchip_atf_load_bl31(void *fdt)
+ 	unsigned long bl31_ep;
+ 
+ 	mmu_early_enable(membase[0], memsize[0]);
+-	pbl_malloc_init(membase[0], memsize[0]);
++	pbl_malloc_init(membase[0], PBL_MALLOC_SIZE);
+ 
+ 	bl31_ep = load_elf64_image_phdr(&bl31);
+ 
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.47.3
 
 
 
