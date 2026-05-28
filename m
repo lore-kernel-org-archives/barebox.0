@@ -1,66 +1,66 @@
-Delivery-date: Thu, 28 May 2026 13:10:09 +0200
+Delivery-date: Thu, 28 May 2026 13:10:13 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wSYcr-004iaK-0I
+	id 1wSYcv-004iai-03
 	for lore@lore.pengutronix.de;
-	Thu, 28 May 2026 13:10:09 +0200
+	Thu, 28 May 2026 13:10:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wSYcq-00049T-Gm
-	for lore@pengutronix.de; Thu, 28 May 2026 13:10:09 +0200
+	id 1wSYcu-0004AZ-DH
+	for lore@pengutronix.de; Thu, 28 May 2026 13:10:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
 	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ZSq20OMCCuKZajxppsWLPt+2RbcKNymMpY+HeBxlppI=; b=bm/x+jAv0EqzhzEUn4Sc34XWBD
-	FKYCnmFNuqGnkLGZxxH7ElQzI0rlk72yEOYK4CTItbaJE1+/r4V/hpPMMenbPJ9N4qCJY6Obafq67
-	gHH4dy43JUpv67zjC+ljWIJmqr0CFodI4XtNxg/Gz4tu2BQbsS7UWyKcsmcxjyDR/J2n/xk7QjD1+
-	zqpEHMuuY8T0n+D+ddnBUyedAAFNUxLccFSX6qdMgrQ0FYSqQ3PgjPEsjWyOQcucEQ21wlyvWR2JS
-	+84KEzDaEqaLS9Gl2PIzwdKiu1fTKwl96pQq6bBFaTTo+1JRmjmFi7m1o9fM/icrnXTj/BpT2d0cn
-	3q88G8YA==;
+	bh=X1f4Mx7/qeA6k9+skefWUEsYhkaDyOWAakAjoCVxbg0=; b=RieCx+Lj8qIb05m0J8rEAZB7uR
+	45g3WHKH1l61zPPzgDLF5zS0jIsJfRwXzqsOdOhN5AHRzHCk1TzQCv6R8XU5ksCHRF5nUlNIlAQrK
+	IjibOLyFwZvdJbwcqJKIqp33UTyCkeEhZxP2CwbBHovsVwyCpscPE3HSiXnd8jVJ0aAYNas2ZqS09
+	w9DmczegMOZnUryi8Ms2lNzSkgNpng/gf3KJWg4ydFjYXbXQYtErwlLY25/ebGHZ03mLIyqKNLJmi
+	u9MXRrOlXlcM87wSGseTVpXtXwma5tRChkULeGO0h+JtVTvPS+hXER0cQCb/p99bk0LvexD2QPHVO
+	V8RV+6hg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wSYbr-00000005dpF-2o4T;
-	Thu, 28 May 2026 11:09:07 +0000
+	id 1wSYbz-00000005dr4-3aI8;
+	Thu, 28 May 2026 11:09:15 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wSYbp-00000005dol-0X0X
+	id 1wSYbw-00000005dqD-3SvC
 	for barebox@lists.infradead.org;
-	Thu, 28 May 2026 11:09:06 +0000
+	Thu, 28 May 2026 11:09:14 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wSYbn-0003ql-Br; Thu, 28 May 2026 13:09:03 +0200
+	id 1wSYbn-0003qm-C6; Thu, 28 May 2026 13:09:03 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wSYbm-002GDr-2L;
+	id 1wSYbm-002GDs-2O;
 	Thu, 28 May 2026 13:09:03 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wSYbn-00000009Odv-0qV1;
+	id 1wSYbn-00000009Odv-0vGg;
 	Thu, 28 May 2026 13:09:03 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: eagle.alexander923@gmail.com
-In-Reply-To: <20260527121649.3365172-1-a.fatoum@pengutronix.de>
-References: <20260527121649.3365172-1-a.fatoum@pengutronix.de>
-Message-Id: <177996654319.2238789.13971715460657857248.b4-ty@pengutronix.de>
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
+In-Reply-To: <20260528110401.3920904-1-a.fatoum@pengutronix.de>
+References: <20260528110401.3920904-1-a.fatoum@pengutronix.de>
+Message-Id: <177996654321.2238789.12106917984836007276.b4-ty@pengutronix.de>
 Date: Thu, 28 May 2026 13:09:03 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260528_040905_191625_FF261BCD 
-X-CRM114-Status: UNSURE (   6.82  )
+X-CRM114-CacheID: sfid-20260528_040912_872673_1DCA138C 
+X-CRM114-Status: UNSURE (   6.45  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -83,18 +83,19 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master v2 0/5] ARM64: unify pbl and proper malloc area
+Subject: Re: [PATCH master v3 0/5] ARM64: unify pbl and proper malloc area
  start
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 27 May 2026 14:15:19 +0200, Ahmad Fatoum wrote:
+On Thu, 28 May 2026 13:02:14 +0200, Ahmad Fatoum wrote:
 > The current location used to place the very early PBL malloc area on
 > Rockchip overlaps the OP-TEE region. This series changes ARM64 to
 > make the start of the barebox proper malloc area easier to calculate and
 > uses that also for the PBL memory region.
 > 
+> v2: https://lore.barebox.org/barebox/20260527121649.3365172-1-a.fatoum@pengutronix.de/
 > v1: https://lore.barebox.org/barebox/20260522105852.2681680-1-a.fatoum@pengutronix.de/
 > 
 > [...]
