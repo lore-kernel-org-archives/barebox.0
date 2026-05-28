@@ -1,64 +1,63 @@
-Delivery-date: Thu, 28 May 2026 15:08:08 +0200
+Delivery-date: Thu, 28 May 2026 15:22:09 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wSaT2-004kFH-2l
+	id 1wSaga-004ke2-3B
 	for lore@lore.pengutronix.de;
-	Thu, 28 May 2026 15:08:08 +0200
+	Thu, 28 May 2026 15:22:08 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wSaT2-0000r0-5T
-	for lore@pengutronix.de; Thu, 28 May 2026 15:08:08 +0200
+	id 1wSaga-0002eH-9V
+	for lore@pengutronix.de; Thu, 28 May 2026 15:22:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:
-	Content-Transfer-Encoding:Content-Type:To:Subject:From:Reply-To:Cc:
-	MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=BxW4sTDkyMDdEMyBXxpE4ExCI5QQGxjCebWxaAWv3nE=; b=nxQIwp8aFewjGQ
-	99dEB16YJAy7HdLi4uCZVTwyF4/B9Fdm8IpzABnZwPtEYnw+447lsxGOsarPzSWR0K9PZZBf7iOSA
-	iAIPV14k21wE1V8nr9dbV6mUyvHgtiiGPcze8Z9T+5xPqwS+dgN2C4jrl7/yH5ugkPlkRSyOJUbk1
-	ZUzL2wSr7IqB22JNI5JmRQI3/CXhGd9uqjjREjB019LULty+6yb1SAmBi7rqrqdV75FwGYWjS3Dga
-	4ARMDH4pxIi1EElJ6Ewgrx1AB6pcB9L/bW9hNObsIgpKEOtox7BmqdN4L9fqVMWfxSLRVsubEoc+e
-	Zn8ssPhzp4V1B+4G8flg==;
+	Content-Transfer-Encoding:Content-Type:In-Reply-To:Cc:To:Subject:From:
+	Reply-To:MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
+	bh=hTEWk8FKaNsFmIB8UWSr9YLe5+Sph95bCgwxzbKVmMM=; b=Iy9FrNnTCunoEuhS3U6RMbgRHo
+	24kZu7urs9cjCVEE7hhnveooKI1nj6H6l4wYw5WvwYmdJ0MWCAHeopNfFSKCMQhPmKZDTc6DEH/IW
+	UfR0nKmYRJH3eCxIfILQ5h019kWOWBr0ziLrBUuvsWD3W45hRZvhw5I7mIX2Y2iZv7ztftI4Q1FVX
+	FIkAhOnWzpKOxPjswU/ekIGLrWQ8Bm/s5r1NPIVlf2LS2p+vOmQkUWLbaBioPHKWDj2x/bueNNG/j
+	4Y8HysDl8iY5nhxYpd2wzMNSAtRk63mQLfxj9TuSMoOmlozAh92X2gXVB1X5RPb5VVTEVLhVZg3XV
+	NzL94ejA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wSaRO-00000005lMb-1fS0;
-	Thu, 28 May 2026 13:06:26 +0000
+	id 1wSa85-00000005jfu-2PVm;
+	Thu, 28 May 2026 12:46:29 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wSaRL-00000005lMD-0RFP
+	id 1wSa83-00000005jf9-0FHA
 	for barebox@lists.infradead.org;
-	Thu, 28 May 2026 13:06:24 +0000
+	Thu, 28 May 2026 12:46:28 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1wSaRJ-0000g8-Gw
-	for barebox@lists.infradead.org; Thu, 28 May 2026 15:06:21 +0200
+	id 1wSa80-0006oc-3m; Thu, 28 May 2026 14:46:24 +0200
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1wSaRI-002HOb-2t
-	for barebox@lists.infradead.org;
-	Thu, 28 May 2026 15:06:21 +0200
+	id 1wSa7z-002H69-0a;
+	Thu, 28 May 2026 14:46:23 +0200
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1wSaRJ-00000003f8m-1YAX
-	for barebox@lists.infradead.org;
-	Thu, 28 May 2026 15:06:21 +0200
+	id 1wSa7z-00000003egS-2bxT;
+	Thu, 28 May 2026 14:46:23 +0200
 From: "Sascha Hauer" <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org
+To: "Alexander Shiyan" <eagle.alexander923@gmail.com>
+Cc: barebox@lists.infradead.org, "Miaoqian Lin" <linmq006@gmail.com>, "Heiko
+ Stuebner" <heiko@sntech.de>, "Alexander Shiyan" <eagle.alexander923@gmail.com>
+In-Reply-To: <20260528121532.1242489-1-eagle.alexander923@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 28 May 2026 13:06:21 +0000
-Message-Id: <E1wSaRJ-00000003f8m-1YAX@pty.whiteo.stw.pengutronix.de>
+Date: Thu, 28 May 2026 12:46:23 +0000
+Message-Id: <E1wSa7z-00000003egS-2bxT@pty.whiteo.stw.pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260528_060623_169337_4347A162 
-X-CRM114-Status: UNSURE (   7.18  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260528_054627_338549_08666E2F 
+X-CRM114-Status: GOOD (  19.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,73 +79,60 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: v2026.04.1
+Subject: Re: [PATCH] clk: rockchip: Fix error pointer check after
+ rockchip_clk_register_gate_link()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi All,
+Hi Alexander,
 
-Here comes barebox-2026.04.1. See below for the fixes that went into
-this release.
+On 2026-05-28 15:15, Alexander Shiyan wrote:
+> From: Miaoqian Lin <linmq006@gmail.com>
+>=20
+> Replace NULL check with IS_ERR_OR_NULL() check after calling
+> rockchip_clk_register_gate_link() since this function
+> returns error pointers (ERR_PTR).
+>=20
+> Fixes: c62fa612cfa6 ("clk: rockchip: implement linked gate clock support")
+> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+> Link: https://patch.msgid.link/20250805030358.3665878-1-linmq006@gmail.com
+> Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+> Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+> ---
+>  drivers/clk/rockchip/clk.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Have Fun!
- Sascha
+Applied, thanks.
+
+BTW better quote the whole Linux commit message including the tags and
+make yourself the author of the patch. The original Linux commit authors
+and reviewers are likely not interested in that the patch is merged in
+barebox. Also when the original patch carries a reviewed-by: tag this
+is only valid in the Linux context, not in barebox.
+
+Sascha
 
 
-----------------------------------------------------------------
-Ahmad Fatoum (12):
-      state: suppress state overwrite warning for barebox DT
-      efi: payload: image: exit if kernel image returned
-      efi: payload: bootm: fix potential double-unload for image
-      efi: gop: use screen_base directly instead of shadow buffer
-      kfifo: do not allocate a fifo smaller than 2 bytes
-      ARM: dts: stm32mp: stm32mp135-dk: disable button on PA13
-      efi: payload: handle NULL return from loadable_view for ramdisk
-      fs: fix memory leak in automount_add()
-      ci: pytest: bump Debian installer image to 13.5
-      serial: ns16550: add missing Linux console names
-      of: base: handle of_set_root_node(NULL) correctly
-      ARM: uncompress: keep handoff data aligned
-
-Anees Rehman (1):
-      ARM: i.MX7: DDR size detection off-by-one in row_max
-
-Chali Anis (1):
-      usb: dwc2: host: initialize sub to fix maybe-uninitialized warning
-
-Fabian Pflug (1):
-      arm: i.mx: fix error in field return configuration
-
-Jonas Rebmann (2):
-      crypto: keytoc: Allow fields to start with underscore
-      crypto: ecc: Add Origin-URL to document kernel revision
-
-Lukas Wunner (1):
-      crypto: ecdsa - Harden against integer overflows in DIV_ROUND_UP()
-
-Sascha Hauer (15):
-      ARM: radxa-rock5t: Disable pcie3x2
-      optee: Explicitly ignore OPTEE_RPC_CMD_RPMB_*
-      pmdomain: rockchip: inform about missing subdomain support when in use
-      ARM: rockchip: atf: add missing newline in message
-      optee: skip registration of already known TEE bus devices
-      v2026.04.0: Move migration guide to correct place
-      fs: set linux.bootargs.rootopts only when existing
-      ARM: fix wrong calculation of barebox base
-      riscv: fix wrong calculation of barebox base
-      ARM: k3: am62x: move stack to end of SRAM
-      ARM: k3: am62x: make more space for r5 barebox binary
-      ARM: k3: k3-r5_defconfig: limit image size to maximum available space
-      fs: jffs2: zero initialize allocated inode
-      fs: ubifs: zero initialize allocated inode
-      Release v2026.04.1
-
-Stefan Berger (1):
-      crypto: ecc - Fix off-by-one missing to clear most significant digit
-
-Thorsten Blum (1):
-      crypto: ecc - Streamline alloc_point and remove {alloc,free}_digits_s=
-pace
+>=20
+> diff --git a/drivers/clk/rockchip/clk.c b/drivers/clk/rockchip/clk.c
+> index 987c3bc518..d01574c60b 100644
+> --- a/drivers/clk/rockchip/clk.c
+> +++ b/drivers/clk/rockchip/clk.c
+> @@ -566,7 +566,7 @@ void rockchip_clk_register_late_branches(struct devic=
+e *dev,
+>  			break;
+>  		}
+> =20
+> -		if (!pdev)
+> +		if (IS_ERR_OR_NULL(pdev))
+>  			dev_err(dev, "failed to register device for clock %s\n", list->name);
+>  	}
+>  }
+> --=20
+> 2.52.0
+>=20
+>=20
+>=20
 
 --=20
 Pengutronix e.K.                           |                             |
