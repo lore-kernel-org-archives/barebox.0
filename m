@@ -1,109 +1,88 @@
-Delivery-date: Thu, 28 May 2026 18:42:16 +0200
+Delivery-date: Fri, 29 May 2026 07:15:32 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wSdoG-004sNj-0D
+	id 1wSpZD-0004zj-1W
 	for lore@lore.pengutronix.de;
-	Thu, 28 May 2026 18:42:16 +0200
+	Fri, 29 May 2026 07:15:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wSdoF-0001ev-4u
-	for lore@pengutronix.de; Thu, 28 May 2026 18:42:15 +0200
+	id 1wSpZC-0001Gd-Aq
+	for lore@pengutronix.de; Fri, 29 May 2026 07:15:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
-	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=UdmNBZ8bphOaaz3s9RTiQldT2H1disueAnWfOkFIn2o=; b=f+VLp8pGPD+U0WKKjWXyDQ6mTV
-	FIs3rcOoO2okdq0VWJUfdq5AJkBE9qFXof9ZSFfX0IdUMFUAcPOA8lqPT1gUwmQFnpGkBfV8ibJXZ
-	H9HxmUGCKzb+KoRH1FkfW93/PuvFd+Jj2XWKAroy7+hTAHBG5/umaw9POpLyitOKvlz+HRYY0nmeo
-	hDhSGJUrNX2dC0OmKFOM9C5Hk/r62KbisT9lWE8Qa/sTT+gWchGunTv4MAjQCVhHTARkjYdE/Hwiw
-	r+OcxudIgEv1YuBk2d8Qx5Axd6y37oxVCQi98ThSwfi2F5nvEB+AqyctfvVY9nRx8y2dsK2cXR+l/
-	wYq0sjTQ==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=Wcqtm97CG08L0X5pMr2Kp/IFZbqvoFF/iAholclwLCA=; b=MA6pmiQD+woh3meaSxZPZF4Y5+
+	WkCNgPr0qmBmNjqKu/hXl0cES+VngD3ll0+70CA8JaqvguLKMvAeYHG1v7vePaKxTkgV13X08I3bE
+	WZYHwOxzS8m3SD2qB6sC2KN5y+dLTOwThYs8DiUXLOMIZfQGv3gk5f/Iz6HY1ZKaeJ7LWpea4XVoJ
+	ezmq7uXiGZdsZU8B8XvznCy+dRDTwPfG13sW5Jy/RZU+wrDx4jWkhD/Jc7zfnky+Ny/ZfYp9vW9US
+	nCjr6QkJ88MUJfT+Nn7zQW1zUYgnIH3bINvlLBpGe+w5SyXBCawpaJ8w5ZXzjXWOYtH6+jYPA6y1D
+	wQZOMMqg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wSdhk-000000060pN-2UN0;
-	Thu, 28 May 2026 16:35:32 +0000
-Received: from mail-dl1-x1231.google.com ([2607:f8b0:4864:20::1231])
+	id 1wSpXk-00000006ku6-0oXf;
+	Fri, 29 May 2026 05:14:00 +0000
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wSdhi-000000060p0-0B7T
+	id 1wSpXh-00000006ktj-2P9k
 	for barebox@lists.infradead.org;
-	Thu, 28 May 2026 16:35:31 +0000
-Received: by mail-dl1-x1231.google.com with SMTP id a92af1059eb24-1363e78746eso9185307c88.1
-        for <barebox@lists.infradead.org>; Thu, 28 May 2026 09:35:29 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779986129; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Hc2YXvtLCpxIjNiWG6nHafrTVrKb6wDc7vbg1qupZjlstyKmaoarnS5QHpeuGQ49sZ
-         gM10AobxhtfK5bfWKvGe8UMoX2t0CSAs+T6DNiXq1Y0syIh0I+aiYVuqeKsA/D9dnO6E
-         ZgnoENuThA+8VEYKR0Xe+OPlwT+AKdXNewt+22kNjqOdiIT5y6f99xvE+i1zqjfYGqbN
-         VO6OLmsNWVQ9/8GiU4b1mpc+QYqxafc3jM+elkaz7qh50SfJDtrgT05p6RgSl4DZ4/Eo
-         wqbZJYVDTrEdFzgueSGD1Rn0VUWGLTIiDq0pRPTOFOczIzydlgwQkrUwWkUwYhXozOEO
-         QV+g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=UdmNBZ8bphOaaz3s9RTiQldT2H1disueAnWfOkFIn2o=;
-        fh=7Yiba8wXx+vLUz4ud+g5VaEZLPel68E1Fvl1EGss/6I=;
-        b=LbCUfaG0KC25ZKEWbBbpqCT7pNoAZhrJesboVLnAjCw3T1LaLj99EE9lShSJr3bwJv
-         g3joFPtYFPYyNxiulU0pAiCkNWNmgefdb3xyjzxUG9vgZQoivkIS8nNVtvfbRx9arVod
-         OEJif2gp7wLnlRPjRyKCjZC3XPGfMATGXOg9U6sNXqSJZtW1rA8hCz2NdAxjnbi2VL9L
-         ZUUU/4TRgRP0LDeSVOgsUae0jhT3HIze9xAzGu6TxsLBwAcfxbhPiYI+KXX15FSlruFG
-         T5bL6pdNp211Slv8krcF0JnAUFMbomK+boQQQlkTfyqn5/k8FL3zN1beGpTT8bJW+EaB
-         FgLg==;
-        darn=lists.infradead.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	Fri, 29 May 2026 05:13:59 +0000
+Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-5aa21fa024cso11970498e87.2
+        for <barebox@lists.infradead.org>; Thu, 28 May 2026 22:13:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779986129; x=1780590929; darn=lists.infradead.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UdmNBZ8bphOaaz3s9RTiQldT2H1disueAnWfOkFIn2o=;
-        b=EOCiYeK2YuV7nncl2kWsrTBoVQ2Rz0yRdRbsuKO6EwBYZsBUXZ0pU9sT60/fiWOmeZ
-         Sa0UHZfU/wJpA/cgyiE5QNnvNhtRQzZh3vW3buAzca/M+7MCUn491mlxblnKiDG2FT/b
-         yRaLKmPXDeHtpuTlAEF8GrxNrrlShwBYzRTvul3oaCl1eZsO8NoKMenB/2QcpZp2Kh+j
-         pKsqvy+tInAkyHBUoimih1nkg5/uy1gLkqcerk2Em/gsZV9Ahh6p6c/Toz5SP0omnulx
-         B4Vbuqk/icsDFawkuoo12Nb8lqMvq7Rq7davaYgOG5ghDQWHc4Jy2YlfSQ+cwGaDYObs
-         WHsA==
+        d=gmail.com; s=20251104; t=1780031635; x=1780636435; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Wcqtm97CG08L0X5pMr2Kp/IFZbqvoFF/iAholclwLCA=;
+        b=k4YT12ckAHIKB7HivCUdKDoLUTyZQavEsQK+RdIICWM/4F46SkKQz3/iQ03j7lqcdu
+         y1qnkuyqeIrrLlhjTqP2BblNW4I4U/X7zFJrqlHliqD6ObB+cnNOi9jTiXpsO5axQkrL
+         jm40hq+S5U7ORXRaw4kKa5JRkTr6MQCvqf7hNGhJZ+tJi7vk7IKbAeVp967bO18k7rmW
+         yg8pZYXTrDhLl1KMETesuIy+EHwYzJ4Y/ksHdbeYIqso4Ss+2Xbqs7/bc4x53jE8PgAV
+         Us3OLMgtWBHxTGV5IfmJGRQBqB4cZYEyeK3AX0UUi4UpsP2HadK2GKwwvYWlSn04Ej21
+         HadA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779986129; x=1780590929;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=UdmNBZ8bphOaaz3s9RTiQldT2H1disueAnWfOkFIn2o=;
-        b=JPXtOtNZBL5vZ3QQVO3pzln69e4TPvCS/YvgnR75ToiyCTop4tsWr7LZL8Qppu92tu
-         1+OiaLbUo7CO8i7sKoixjAAQpqs68NjXyypz1Z7Zn8zC4/stGcf0G0PZTuCLnk1fbOQs
-         bdppO1pohFt4kEgfNh9xF2JrrEPO/8eS9TzffTLmlsgzuQjpf+cZxcLue7Gz99xjLhQU
-         bFbWEU9NJRooTm7EgwOJN+fq/p9P8oxB1jeQv9ewYEPfR0iLms8ALFgHVmzfPM8U1B9A
-         ZTDc7Odh4wEKgdZRMlAOEYwSi0mqiF/q5pKzZWlMpFQg0qfF3ETIxpJLpW/e9Zrdhhb0
-         Kgbw==
-X-Gm-Message-State: AOJu0Yxw4yYGZ0JiZcXSjkeUbE5T5Od7Q4EUXiXPamBnJvQrQwl0hic0
-	SE+MELH8lFBQywQ6CvLj3qvz9U83fIvXvY9WnSPWDvHNw9zL1Ogq41tvZrc5Wp3E6qxPGJabIrR
-	jzIkYtqAXDqF7zMbsjK2zMt7YKbc7pGM=
-X-Gm-Gg: Acq92OGpj7fpL0mHeKKAnObHTrO0dX09TiuNSUe/MdRIaOmW3LYlQvZ83P0jUjKyBAn
-	QFFtLufLC+JXBsjL4Ize25m01dgo3j3NWLpSxE+kRm/f2l5bkkL+T5Lcviyfi6Lcxzu98GHDDNx
-	OmiGmC1QBVWaUuxo9oyMX2MzXHlioxq+y/F7Yqa6HhCdWIE9M8ZHX4xvYFPALR4YvVYU/ESM35x
-	NASp7br7Ldb4CtNHHZ7RTswLADNBeIgJz1fecCfLPGXWE4zkZhi/nqRhkFo4p75SDfazV2vbIbD
-	m/1UFRl2eOEsUZ+tlHs=
-X-Received: by 2002:a05:7022:393:b0:136:60e7:53b with SMTP id
- a92af1059eb24-13660e7064dmr8766823c88.1.1779986128645; Thu, 28 May 2026
- 09:35:28 -0700 (PDT)
-MIME-Version: 1.0
-References: <20260528110401.3920904-1-a.fatoum@pengutronix.de> <20260528110401.3920904-6-a.fatoum@pengutronix.de>
-In-Reply-To: <20260528110401.3920904-6-a.fatoum@pengutronix.de>
+        d=1e100.net; s=20251104; t=1780031635; x=1780636435;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Wcqtm97CG08L0X5pMr2Kp/IFZbqvoFF/iAholclwLCA=;
+        b=sszzKbT8CKm/NpbBLgoIFn/LHEeJE+DpY5L5iXFAjWiaPr3NYuQ4kHuazspY4xRWbt
+         aVGR4HKc1f0AQjwUEH9nIU5ePUatJ+XrDqTyd6dRv6GfnD8BMfZju3laebiap1Z5pNoL
+         murioL90CzyibsEJKX21ETEkggAljjyzpTuibIySWANXzbbdLCtTvzG6JgTd/3YtxDWj
+         RMu0nv3enySTlT9O4haUMnafKyU5V77p4BdgECWhA1IS4Vndr+z6Fe2pf/WBIrZQnJDj
+         z2J0cEx2xw0fezpcLHiN1SBNKMCu9Y17t85KHIEf+gYuxWGAWwgzJcndGg63xre2VKOM
+         a1+w==
+X-Gm-Message-State: AOJu0Yw/oSqVatYKQh1+mFqyYPKPs019+jFrbzaRL7MPqi+2m0CBIknx
+	/92/fou+2K4RKMAOdwgXbGN5HxDh8kn5mrUPJsDck1eJm6C8RiJnBfWCm9vyvp2FKJk=
+X-Gm-Gg: Acq92OHdllMF4xuWqhzEtBNi727vfrrgacSZxlbvEQP6VafMpL3HwX8b+qjkavXnybL
+	3ADoKwKc/Ei7+97+N6tB5KmmXtI/34r1GXXvywC9+NvpAnEBrbEfoz8TtbcSYGgASasZeuyo+Np
+	/OM06FcD5lDuc8ffmCq9YUgaEjbzFyvHRagmT9jHmoO+QFldX/usF+d0KeRZu/fq/TSiWMh2Mub
+	roHNYUN3r0uA/SorqU+waSx6MZPEb1pATzLEjO9Dk1bfPVN1krGLQhkThSrTvTZlYWqyNqRc4cW
+	BZZnvbKp9GL28y0nnZ8jhZnuisd7DKkIdyFq84AEsSHwSBi5KCdcFJJgnjzrpjGVMEz0jDj3xpz
+	qMlxYBaH3hQwcS3MiiKY8dURB520Cp50LyqL8t/c2GSqt54X86lwGGQKIi9g9CY8jASMHcqEcBS
+	PUyKplW1GZJZwSzVip4gjmB4828l6oloqzAjQRH8r36O+ykWsfFA==
+X-Received: by 2002:a05:651c:212a:b0:393:9773:9d8d with SMTP id 38308e7fff4ca-396536bda4dmr3018231fa.10.1780031634951;
+        Thu, 28 May 2026 22:13:54 -0700 (PDT)
+Received: from gentoo.sknt.ru ([95.161.221.172])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-39659c90b95sm263451fa.11.2026.05.28.22.13.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 22:13:52 -0700 (PDT)
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Thu, 28 May 2026 19:35:16 +0300
-X-Gm-Features: AVHnY4KJ_YUw0hEgbOMEJA2uT9_yD1Wex_ZCH02vi51OXmIV_rdj387EpLa8L3c
-Message-ID: <CAP1tNvR-0gepFsjE6d=2yXLAnwi0EtiofQfDy=PWEDycE5OUCA@mail.gmail.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: barebox@lists.infradead.org
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Fri, 29 May 2026 08:13:46 +0300
+Message-ID: <20260529051347.1373331-1-eagle.alexander923@gmail.com>
+X-Mailer: git-send-email 2.52.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260528_093530_104256_F792EF79 
-X-CRM114-Status: GOOD (  19.89  )
+X-CRM114-CacheID: sfid-20260528_221357_663818_F1F92956 
+X-CRM114-Status: GOOD (  24.93  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -121,125 +100,338 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master v3 5/5] ARM64: place PBL malloc area at start of
- barebox proper malloc area
+Subject: [PATCH v3 1/2] Add support for extlinux.conf
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Tested-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+This adds support for the extlinux.conf configuration format, commonly
+used by Syslinux and many Linux distributions. The configuration file
+is typically located at /boot/extlinux/extlinux.conf or
+/extlinux/extlinux.conf and defines boot entries with kernel, initrd,
+device tree, and command line options.
 
-=D1=87=D1=82, 28 =D0=BC=D0=B0=D1=8F 2026=E2=80=AF=D0=B3. =D0=B2 14:04, Ahma=
-d Fatoum <a.fatoum@pengutronix.de>:
->
-> The early PBL malloc area used by the Rockchip code overlaps the region
-> used for OP-TEE. Moving it a bit lower would overlap the region occupied
-> by the scratch area.
->
-> With the switch to CONFIG_BAREBOX_MEMORY_OFFSET, we can compute the start
-> of the malloc area in barebox proper without knowing how big barebox will
-> eventually be, so make use of that and always place the PBL malloc area
-> exactly at the start of the eventual barebox proper memory area.
->
-> The memory will automatically be reclaimed when the TLSF allocator is
-> instantiated and we will be sure not to overwrite anything by allocating
-> in PBL.
->
-> Reported-by: Alexander Shiyan <eagle.alexander923@gmail.com>
-> Fixes: 76b1f31275fe ("ARM: rockchip: initialize PBL malloc")
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  arch/arm/cpu/common.c              |  5 +++++
->  arch/arm/cpu/uncompress.c          |  4 ++++
->  arch/arm/include/asm/barebox-arm.h | 10 ++++++----
->  arch/arm/mach-rockchip/atf.c       |  2 +-
->  4 files changed, 16 insertions(+), 5 deletions(-)
->
-> diff --git a/arch/arm/cpu/common.c b/arch/arm/cpu/common.c
-> index 6b82ee8b810c..adb5d6a02bc8 100644
-> --- a/arch/arm/cpu/common.c
-> +++ b/arch/arm/cpu/common.c
-> @@ -114,8 +114,13 @@ void print_pbl_mem_layout(ulong membase, ulong endme=
-m, ulong barebox_base)
->  #endif
->         printf("arm_mem_barebox_image =3D 0x%08lx+0x%08lx\n",
->                barebox_base, arm_mem_barebox_image_end(endmem) - barebox_=
-base);
-> +#ifdef CONFIG_ARM64
-> +       printf("pbl_malloc area       =3D 0x%08lx+0x%08x\n",
-> +              barebox_malloc_base(membase, endmem - membase), PBL_MALLOC=
-_SIZE);
-> +#else
->         printf("arm_mem_early_malloc  =3D 0x%08lx+0x%08x\n",
->                barebox_base - PBL_MALLOC_SIZE, PBL_MALLOC_SIZE);
-> +#endif
->         printf("membase               =3D 0x%08lx+0x%08lx\n",
->                membase, endmem - membase);
->  }
-> diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
-> index 61bcba6e8549..55bbe0019cc4 100644
-> --- a/arch/arm/cpu/uncompress.c
-> +++ b/arch/arm/cpu/uncompress.c
-> @@ -75,7 +75,11 @@ void __noreturn barebox_pbl_start(unsigned long membas=
-e, unsigned long memsize,
->
->         handoff_data =3D (void *)barebox_base + ALIGN(uncompressed_len, 8=
-) + MAX_BSS_SIZE;
->
-> +#ifdef CONFIG_ARM64
-> +       pbl_malloc_init(barebox_malloc_base(membase, memsize), PBL_MALLOC=
-_SIZE);
-> +#else
->         pbl_malloc_init(barebox_base - PBL_MALLOC_SIZE, PBL_MALLOC_SIZE);
-> +#endif
->
->  #ifdef DEBUG
->         print_pbl_mem_layout(membase, endmem, barebox_base);
-> diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/ba=
-rebox-arm.h
-> index 38cceba010ed..f75cddc77243 100644
-> --- a/arch/arm/include/asm/barebox-arm.h
-> +++ b/arch/arm/include/asm/barebox-arm.h
-> @@ -95,10 +95,12 @@ void *barebox_arm_boot_dtb(void);
->   *                       + BSS) rounded to SZ_1M
->   *                                   =E2=86=93
->   *  ---------------------- arm_mem_barebox_image() ---------------------
-> - *                                   =E2=86=91
-> - *                                SZ_128K
-> - *                                   =E2=86=93
-> - *  ------------------------ arm_mem_early_malloc ----------------------
-> + *     ARM32      =E2=86=91                  |                =E2=86=95 =
-        ARM64
-> + *         PBL_MALLOC_SIZE           |------- pbl_malloc area end ------
-> + *                =E2=86=93                  |                =E2=86=91
-> + *  --- arm_mem_early_malloc --------|         PBL_MALLOC_SIZE
-> + *                                   |                =E2=86=93
-> + *                                   ----- pbl_malloc area start -------
->   */
->  void print_pbl_mem_layout(ulong membase, ulong endmem, ulong barebox_bas=
-e);
->
-> diff --git a/arch/arm/mach-rockchip/atf.c b/arch/arm/mach-rockchip/atf.c
-> index 14797a1e0601..74b8cdc2f499 100644
-> --- a/arch/arm/mach-rockchip/atf.c
-> +++ b/arch/arm/mach-rockchip/atf.c
-> @@ -173,7 +173,7 @@ static void rockchip_atf_load_bl31(void *fdt)
->         unsigned long bl31_ep;
->
->         mmu_early_enable(membase[0], memsize[0]);
-> -       pbl_malloc_init(membase[0] + memsize[0] - PBL_MALLOC_SIZE, PBL_MA=
-LLOC_SIZE);
-> +       pbl_malloc_init(barebox_malloc_base(membase[0], memsize[0]), PBL_=
-MALLOC_SIZE);
->
->         bl31_ep =3D load_elf64_image_phdr(&bl31);
->
-> --
-> 2.47.3
->
+The implementation integrates with the existing boot entry framework:
+- The extlinux scanner discovers entries on mounted filesystems.
+- The default LABEL is turned into a boot entry.
+- Bootm is used to load and start the kernel.
+---
+barebox@Diasom DS-RK3568-SOM-EVB:/ global.bootm.appendroot=true
+barebox@Diasom DS-RK3568-SOM-EVB:/ global.boot.default=mmc1.2
+barebox@Diasom DS-RK3568-SOM-EVB:/ boot
+ext4 ext40: EXT2 rev 1, inode_size 256, descriptor size 64
+Booting entry 'extlinux: linux'
+extlinux: Booting extlinux label 'linux'
+Adding "root=/dev/mmcblk1p3" to Kernel commandline
+Loading ARM aarch64 Linux/EFI image '/mnt/mmc1.2/boot/extlinux/../vmlinuz'
+commandline: root=/dev/mmcblk1p3 console=ttyS2,1500000n8 ro systemd.unit=setup.target quiet splash systemd.machine_id=181af2816b4c6b0aef77068e0ccc69ad
+Loaded kernel to 0x0a400000, devicetree at 0x000000000fb49000
+
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+---
+ common/Kconfig    |  19 ++++
+ common/Makefile   |   1 +
+ common/extlinux.c | 243 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 263 insertions(+)
+ create mode 100644 common/extlinux.c
+
+diff --git a/common/Kconfig b/common/Kconfig
+index 047dd5390b..6f1eabdf8b 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -776,6 +776,25 @@ config BLSPEC
+ 	  on a device and it allows the Operating System to install / update
+ 	  kernels.
+ 
++config EXTLINUX
++	bool
++	prompt "Support extlinux.conf"
++	depends on FLEXIBLE_BOOTARGS
++	depends on !SHELL_NONE
++	select BOOT
++	select BOOTM
++	select MMCBLKDEV_ROOTARG if MCI
++	help
++	  Enable this to let barebox parse extlinux.conf configuration files,
++	  commonly used by the Syslinux bootloader and many Linux distributions
++	  (e.g., on SD cards or USB drives).
++	  extlinux.conf is typically located at /boot/extlinux/extlinux.conf or
++	  /extlinux/extlinux.conf. It defines boot entries with kernel, initrd,
++	  device tree, and command line options.
++	  This option allows barebox to discover and boot operating systems
++	  that follow the extlinux configuration format, providing a simple
++	  and portable way to manage multiple boot options.
++
+ config FLEXIBLE_BOOTARGS
+ 	bool
+ 	prompt "flexible Linux bootargs generation"
+diff --git a/common/Makefile b/common/Makefile
+index 21b6cecb3b..6b97edc2c3 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -9,6 +9,7 @@ obj-y				+= clock.o
+ pbl-$(CONFIG_PBL_CLOCKSOURCE)	+= clock.o
+ obj-y				+= console_common.o
+ obj-$(CONFIG_OFDEVICE)		+= deep-probe.o
++obj-$(CONFIG_EXTLINUX)		+= extlinux.o
+ obj-y				+= startup.o
+ obj-y				+= misc.o
+ obj-pbl-y			+= memsize.o
+diff --git a/common/extlinux.c b/common/extlinux.c
+new file mode 100644
+index 0000000000..6ad01cc652
+--- /dev/null
++++ b/common/extlinux.c
+@@ -0,0 +1,243 @@
++// SPDX-License-Identifier: GPL-2.0+
++/* SPDX-FileCopyrightText: Alexander Shiyan <shc_work@mail.ru> */
++
++#define pr_fmt(fmt)     "extlinux: " fmt
++
++#include <boot.h>
++#include <bootm.h>
++#include <bootscan.h>
++#include <common.h>
++#include <environment.h>
++#include <fs.h>
++#include <globalvar.h>
++#include <libfile.h>
++#include <libgen.h>
++#include <string.h>
++
++struct extlinux_entry {
++	struct bootentry entry;
++	char *rootpath;
++	char *label;
++	char *kernel;
++	char *initrd;
++	char *fdtdir;
++	char *fdt;
++	char *append;
++};
++
++static int extlinux_boot(struct bootentry *entry, int verbose, int dryrun)
++{
++	struct extlinux_entry *e =
++		container_of(entry, struct extlinux_entry, entry);
++	char *kernel_abs, *initrd_abs = NULL, *fdt_abs = NULL;
++	struct bootm_data data = {};
++	int ret;
++
++	bootm_data_init_defaults(&data);
++
++	data.dryrun = max_t(int, dryrun, data.dryrun);
++	data.verbose = max(verbose, data.verbose);
++
++	kernel_abs = basprintf("%s/%s", e->rootpath, e->kernel);
++	data.os_file = kernel_abs;
++
++	if (e->initrd) {
++		initrd_abs = basprintf("%s/%s", e->rootpath, e->initrd);
++		data.initrd_file = initrd_abs;
++	}
++
++	if (e->fdt) {
++		char *fdtdir = e->fdtdir ? : e->rootpath;
++
++		fdt_abs = basprintf("%s/%s", fdtdir, e->fdt);
++		data.oftree_file = fdt_abs;
++	}
++
++	if (e->append)
++		globalvar_add_simple("linux.bootargs.dyn.bootentries",
++				     e->append);
++
++	pr_info("Booting extlinux label '%s'\n", e->label);
++
++	ret = bootm_entry(entry, &data);
++	if (ret)
++		pr_err("bootm failed: %pe\n", ERR_PTR(ret));
++
++	free(kernel_abs);
++	free(initrd_abs);
++	free(fdt_abs);
++
++	return ret;
++}
++
++static void extlinux_entry_free(struct bootentry *entry)
++{
++	struct extlinux_entry *e =
++		container_of(entry, struct extlinux_entry, entry);
++
++	free(e->rootpath);
++	free(e->label);
++	free(e->kernel);
++	free(e->initrd);
++	free(e->fdtdir);
++	free(e->fdt);
++	free(e->append);
++	free(e);
++}
++
++static struct extlinux_entry *parse_extlinux_conf(const char *abspath,
++						  const char *rootpath)
++{
++	char *buf, *bufptr, *line, *default_label = NULL;
++	struct extlinux_entry *entry = NULL;
++
++	bufptr = read_file(abspath, NULL);
++	if (!bufptr)
++		return ERR_PTR(-errno);
++
++	buf = bufptr;
++	while ((line = strsep(&buf, "\n\r")) != NULL) {
++		char *key, *val;
++
++		line = skip_spaces(line);
++
++		if (*line == '#' || *line == '\0')
++			continue;
++
++		key = strsep(&line, " \t");
++		val = isempty(line) ? NULL : skip_spaces(line);
++		if (!key || !val)
++			continue;
++
++		if (!default_label) {
++			if (!strcasecmp(key, "DEFAULT"))
++				default_label = xstrdup(val);
++
++			continue;
++		}
++
++		if (!strcasecmp(key, "LABEL")) {
++			if (!strcmp(val, default_label)) {
++				entry = xzalloc(sizeof(*entry));
++				entry->label = xstrdup(val);
++				entry->rootpath = dirname(xstrdup(abspath));
++			} else if (entry) {
++				break;
++			}
++			continue;
++		}
++
++		if (entry) {
++			if (!strcasecmp(key, "KERNEL"))
++				entry->kernel = xstrdup(val);
++			else if (!strcasecmp(key, "INITRD"))
++				entry->initrd = xstrdup(val);
++			else if (!strcasecmp(key, "FDTDIR"))
++				entry->fdtdir = xstrdup(val);
++			else if (!strcasecmp(key, "FDT"))
++				entry->fdt = xstrdup(val);
++			else if (!strcasecmp(key, "APPEND"))
++				entry->append = xstrdup(val);
++			else
++				pr_warn("Unhandled key: %s\n", key);
++		}
++	}
++
++	free(default_label);
++	free(bufptr);
++
++	if (!entry || !entry->kernel) {
++		if (entry)
++			extlinux_entry_free(&entry->entry);
++		return ERR_PTR(-EINVAL);
++	}
++
++	return entry;
++}
++
++static int _extlinux_scan_file(struct bootscanner *scanner,
++			       struct bootentries *bootentries,
++			       const char *configname,
++			       const char *rootpath)
++{
++	struct extlinux_entry *e;
++
++	if (!strends(configname, "extlinux.conf"))
++		return 0;
++
++	e = parse_extlinux_conf(configname, rootpath);
++	if (IS_ERR(e))
++		return PTR_ERR(e);
++
++	e->entry.boot = extlinux_boot;
++	e->entry.release = extlinux_entry_free;
++	e->entry.path = xstrdup_const(configname);
++	e->entry.title = basprintf("extlinux: %s", e->label);
++	e->entry.description = basprintf("extlinux entry \'%s\" on %s",
++					 e->label, rootpath);
++	e->entry.me.type = MENU_ENTRY_NORMAL;
++
++	bootentries_add_entry(bootentries, &e->entry);
++
++	return 1;
++}
++
++static int extlinux_scan_file(struct bootscanner *scanner,
++			      struct bootentries *bootentries,
++			      const char *configname)
++{
++	const char *rootpath = get_mounted_path(configname);
++
++	if (IS_ERR(rootpath))
++		return PTR_ERR(rootpath);
++
++	return _extlinux_scan_file(scanner, bootentries, configname, rootpath);
++}
++
++static int extlinux_scan_directory(struct bootscanner *scanner,
++				   struct bootentries *bootentries,
++				   const char *rootpath)
++{
++	char *path;
++	struct stat s;
++	int ret;
++
++	path = basprintf("%s/boot/extlinux/extlinux.conf", rootpath);
++	ret = stat(path, &s);
++	if (!ret && S_ISREG(s.st_mode))
++		ret = _extlinux_scan_file(scanner, bootentries, path, rootpath);
++	free(path);
++	if (ret > 0)
++		return ret;
++
++	path = basprintf("%s/extlinux/extlinux.conf", rootpath);
++	ret = stat(path, &s);
++	if (!ret && S_ISREG(s.st_mode))
++		ret = _extlinux_scan_file(scanner, bootentries, path, rootpath);
++	free(path);
++
++	return ret;
++}
++
++static struct bootscanner extlinux_scanner = {
++	.name = "extlinux",
++	.scan_file = extlinux_scan_file,
++	.scan_directory = extlinux_scan_directory,
++};
++
++static int extlinux_generate(struct bootentries *bootentries, const char *name)
++{
++	return bootentry_scan_generate(&extlinux_scanner, bootentries, name);
++}
++
++static struct bootentry_provider extlinux_provider = {
++	.name = "extlinux",
++	.generate = extlinux_generate,
++	.priority = -25,
++};
++
++static int extlinux_init(void)
++{
++	return bootentry_register_provider(&extlinux_provider);
++}
++device_initcall(extlinux_init);
+-- 
+2.52.0
+
 
 
