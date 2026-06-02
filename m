@@ -1,72 +1,72 @@
-Delivery-date: Tue, 02 Jun 2026 11:30:41 +0200
+Delivery-date: Tue, 02 Jun 2026 11:31:05 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wULSL-001XOG-2u
+	id 1wULSj-001XP0-0A
 	for lore@lore.pengutronix.de;
-	Tue, 02 Jun 2026 11:30:41 +0200
+	Tue, 02 Jun 2026 11:31:05 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wULSL-0000MY-9o
-	for lore@pengutronix.de; Tue, 02 Jun 2026 11:30:41 +0200
+	id 1wULSi-0000Ra-EL
+	for lore@pengutronix.de; Tue, 02 Jun 2026 11:31:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=9xe9kP/JEKojHACDLzV2iDo7U07edQ5fsX1k1Yo27C0=; b=0UVIIW5pB8DQ6IQHeyBvgY9fSc
-	O4sR40l4Zm3WiN+6WBGIvsYShh+Jgzzm37Ugte1bfU+x3ltjX++isEm0XHtZgv1HUQVTe3PIBPkkH
-	LK3BlAiDvdkBUTXo4LoWHygBgamm/p/Nie5zHkx5wN+VqpVnMKZDGDAcGMwFSmMiWEopaK6ITyj+t
-	xC7wRMJ/o4DkITFdpaIs0LuFsEq+EiaxC5Dzf1o4y1bNiMXE/71C/ZTykUu4RsDN1ySywPPqFPkZz
-	1LtiIg4tmmZ1McPp3jtCvO4kHn7Iao+UFLCObxfZzP/eIKw7rYQCgTB3igdKhQdDvyDzA3f12lzL9
-	TWr3nJ8Q==;
+	bh=Pf0Cvma+gF4CqsZPP45mGAVwBsXIHrYvuQsXlFaWB7g=; b=pcWy1D36Kw2qQwDkNpykR7C/em
+	qFI0tvQ7rLwebvLt/fQJXZM1qC5IDfelyGVs2LYf52eZheeJJa5ywX6OzfPHmKrMQ44klZ2bvNT2s
+	OnGTFA+4TfZYpN4zF1G40UfV5FfsQSUP1NNQ8Lw8/9vcXI1Vj0QfW4zu2xFjuvzxAFbUVpMeEidKC
+	OdKS9Ee3/OhBPjwibW/eOWvxEM9t3EwPtxfayxN6yjwKoIyIl2ZYlXa/h8SPnQ3ZeiQeSGruAK+xe
+	Z25BAiFxYtnfz2ascPFWNy8q6kcPqIFEgBxYu4gDmeTsVdgvrtDtwAZ7wQSt22hZigowogZtcBiin
+	0u5nrLeg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wULR8-0000000CfNN-3K7i;
+	id 1wULR8-0000000CfNT-3tTA;
 	Tue, 02 Jun 2026 09:29:26 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wULR5-0000000CfLK-2RPt
+	id 1wULR5-0000000CfLI-27YK
 	for barebox@lists.infradead.org;
-	Tue, 02 Jun 2026 09:29:25 +0000
+	Tue, 02 Jun 2026 09:29:26 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wULR3-00008b-Lp; Tue, 02 Jun 2026 11:29:21 +0200
+	id 1wULR3-00008a-Lq; Tue, 02 Jun 2026 11:29:21 +0200
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wULR3-000j0e-1k;
+	id 1wULR3-000j0d-1h;
 	Tue, 02 Jun 2026 11:29:21 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wULR3-00000006Lq0-1s2l;
+	id 1wULR3-00000006Lq0-1r9W;
 	Tue, 02 Jun 2026 11:29:21 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 02 Jun 2026 11:29:22 +0200
+Date: Tue, 02 Jun 2026 11:29:21 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260602-usb-dwc2-usb-c-stick-v2-3-0e02782c7e32@pengutronix.de>
+Message-Id: <20260602-usb-dwc2-usb-c-stick-v2-2-0e02782c7e32@pengutronix.de>
 References: <20260602-usb-dwc2-usb-c-stick-v2-0-0e02782c7e32@pengutronix.de>
 In-Reply-To: <20260602-usb-dwc2-usb-c-stick-v2-0-0e02782c7e32@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1780392561; l=1479;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1780392561; l=2098;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=ar/AZuTsljsXg4Qh+peedi/ipDoqMrEz//03gi3KOrk=;
- b=V7P1QKJILvWDyR6MxtQiqEn2/ys0r4OpjCjFq58msALWhmZs3ZeZgzdRy8yO66YIJ6bMGQRVg
- vRus+dnrVx6BPPeyztGve9t9c1690nZalFpbo1Z1x5Q9XnzgaVe1JM3
+ bh=+KRCRG29uxuhEiZ7R+TbUN6zbiZJuxNnWFJJZ5cq52E=;
+ b=XxfqZfzb/4DUC67qRFT5781U7FkqektUWPIEZajux8dHE8qpFBsqB2fnd/OOTKtpREeo8BZzH
+ J8WLBBnk7TvBxF1E9UHC0x1ZQRDKhBBqwQ8SbotMTMADgIkgMV7hsMl
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260602_022923_645972_425B1CE6 
-X-CRM114-Status: GOOD (  12.17  )
+X-CRM114-CacheID: sfid-20260602_022923_562747_3A34A06E 
+X-CRM114-Status: GOOD (  11.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,47 +89,57 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 3/3] usb: dwc2: fix data toggle reset direction on
- ClearFeature(ENDPOINT_HALT)
+Subject: [PATCH v2 2/3] usb: dwc2: handle NAK when CHHLTD does not fire
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Sascha Hauer <sascha@saschahauer.de>
 
-dwc2_submit_control_msg() resets the data toggle after a successful
-ClearFeature(ENDPOINT_HALT) request. It passes usb_pipein(pipe) as the
-direction to dwc2_endpoint_reset(), but pipe is always the control-out
-pipe used to send the request, so usb_pipein() always returns 0 (OUT).
+Some DWC2 configurations do not assert CHHLTD when a NAK is received;
+the hardware keeps the channel active and only sets the NAK bit in HCINT.
+wait_for_chhltd() polls for CHHLTD with a 10ms timeout; when CHHLTD never
+fires the timeout expires and -ETIMEDOUT is returned without inspecting
+HCINT. This causes the caller to treat the NAK as a hard error instead of
+a retryable condition.
 
-As a result, clearing an IN endpoint halt resets the OUT toggle instead
-of the IN toggle, leaving the IN data toggle in an incorrect state for
-subsequent transfers.
+The symptom is that devices which NAK bulk or control transfers during
+initialisation (e.g. some Samsung USB-C flash drives that NAK while their
+firmware starts up) fail immediately rather than being retried via the
+5-second NAK-retry loop in dwc2_submit_bulk_msg() or the do/while loops
+in dwc2_submit_control_msg().
 
-Fix by extracting the direction from the endpoint address in setup->index
-(wIndex), where bit 7 is the direction flag per USB 2.0 section 9.3.4.
+Fix by reading HCINT before aborting the channel when the CHHLTD timeout
+fires. If the NAK or FRMOVRUN bit is set, abort the channel, wait for the
+abort to complete, and return -EAGAIN so that the existing retry logic can
+handle the NAK. Log a diagnostic message if the channel abort itself times
+out, which would indicate a real hardware problem.
 
-Fixes: 446bcf875395 ("usb: dwc2: host: Fix toggle reset")
 Assisted-by: Claude Sonnet 4.6
 Signed-off-by: Sascha Hauer <sascha@saschahauer.de>
 ---
- drivers/usb/dwc2/host.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/dwc2/host.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/usb/dwc2/host.c b/drivers/usb/dwc2/host.c
-index a779cade59..5ee0593fe7 100644
+index eede21c692..a779cade59 100644
 --- a/drivers/usb/dwc2/host.c
 +++ b/drivers/usb/dwc2/host.c
-@@ -401,8 +401,8 @@ static int dwc2_submit_control_msg(struct usb_device *udev,
- 		 * ClearFeature(ENDPOINT_HALT) request always results
- 		 * in the data toggle being reinitialized to DATA0.
- 		 */
--		int ep = le16_to_cpu(setup->index) & 0xf;
--		dwc2_endpoint_reset(dwc2, usb_pipein(pipe), devnum, ep);
-+		int ep_addr = le16_to_cpu(setup->index);
-+		dwc2_endpoint_reset(dwc2, ep_addr >> 7, devnum, ep_addr & 0xf);
+@@ -134,9 +134,14 @@ static int wait_for_chhltd(struct dwc2 *dwc2, u8 hc, uint32_t *sub, u8 *tgl)
+ 
+ 	ret = dwc2_wait_bit_set(dwc2, HCINT(hc), HCINTMSK_CHHLTD, 10000);
+ 	if (ret) {
++		hcint = dwc2_readl(dwc2, HCINT(hc));
+ 		hcchar = dwc2_readl(dwc2, HCCHAR(hc));
+ 		dwc2_writel(dwc2, hcchar | HCCHAR_CHDIS, HCCHAR(hc));
+-		dwc2_wait_bit_set(dwc2, HCINT(hc), HCINTMSK_CHHLTD, 10000);
++		if (dwc2_wait_bit_set(dwc2, HCINT(hc), HCINTMSK_CHHLTD, 10000))
++			dwc2_err(dwc2, "%s: channel abort timed out: HCINT=%08x HCCHAR=%08x\n",
++				 __func__, hcint, hcchar);
++		if (hcint & (HCINTMSK_NAK | HCINTMSK_FRMOVRUN))
++			return -EAGAIN;
+ 		return ret;
  	}
  
- 	udev->act_len = act_len;
 
 -- 
 2.47.3
