@@ -1,58 +1,58 @@
-Delivery-date: Tue, 02 Jun 2026 09:05:48 +0200
+Delivery-date: Tue, 02 Jun 2026 09:15:28 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wUJC8-001Uzp-03
+	id 1wUJLU-001VLr-2w
 	for lore@lore.pengutronix.de;
-	Tue, 02 Jun 2026 09:05:48 +0200
+	Tue, 02 Jun 2026 09:15:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wUJC7-0007x7-CE
-	for lore@pengutronix.de; Tue, 02 Jun 2026 09:05:47 +0200
+	id 1wUJLT-0000WL-FQ
+	for lore@pengutronix.de; Tue, 02 Jun 2026 09:15:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=jJgGqsS7eK8fSziYDooGNItXt6GzlcnACbvmAgnrAN0=; b=UvS1JIfn6SmhRAo29VFKCG2+aW
-	pWmd85095+PCShsuqDP++WosrdHdnkM62qPqD35W+HCyMMLuDzLqTkZliWTjbL2j95WEJIlJb5Cn3
-	QqF7GFATA84POboQEHtVpKgA2Ogex13xI01eODYX5N68DH6LFFrh8m1JYbqlC6GLsuTPeUA/hKdc6
-	vunPMPGqOeg4vTfRzp0uXzRd+xujS72+9IoVDYFqtWbcLDUA7CVU+u9tnrHgZmzUbpntDroAzSbuB
-	K/1awisXBD166n+4FsPX6iJF9733ejIaL/JyBL93NZ7KLxwbkeaP1I6W5xqGWVNOpef/lOicfs67i
-	lFg5dnpg==;
+	bh=3UFvABqyRLHyq+Ki8TSWr+HXfh5hJVjWnX/lBljbVo0=; b=g7IJB7Js26xD9AuspI+bMRsa5h
+	ggNZ7U96uQRX3yMxe+N1P+9o6cVRwtMhSj0BeGWlckeN3oqqpzVCoKNQ7e7/46eWS97jNihGhjiKJ
+	jPRTW0GYCU16cFJ+mgOv+urH2SHJzcjFggAnfcalPnjPGnZQlLF1EQ0TeCfTWufB1NlHrYcZvLfyF
+	oUUeriR1i5xeaokuOdo5K/8+g6a87J8eJnONxtEaVaLzVebvmraL6cLYPgsqugrwGiRPmgBgb2lgb
+	C8sdOAe3/ygdsbHUUihL/3UMMzAHp36BQmO1BuaQ8YkNoOqb3g47+xnDT3sMmqS9VVfZtL4DF/ory
+	fCtmVYeg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wUJAy-0000000CQMo-0Q3U;
-	Tue, 02 Jun 2026 07:04:36 +0000
+	id 1wUJIR-0000000CQhe-0f4t;
+	Tue, 02 Jun 2026 07:12:19 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wUJAv-0000000CQMF-1bfz
+	id 1wUJIO-0000000CQhE-1mO2
 	for barebox@lists.infradead.org;
-	Tue, 02 Jun 2026 07:04:34 +0000
+	Tue, 02 Jun 2026 07:12:17 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wUJAt-0007pZ-Iy; Tue, 02 Jun 2026 09:04:31 +0200
-Message-ID: <9b1495fe-24db-440b-bee7-be86a00e8fb4@pengutronix.de>
-Date: Tue, 2 Jun 2026 09:04:31 +0200
+	id 1wUJIM-0000EO-Ql; Tue, 02 Jun 2026 09:12:14 +0200
+Message-ID: <661438a9-3b64-488f-9544-c0f41899ec02@pengutronix.de>
+Date: Tue, 2 Jun 2026 09:12:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 To: Johannes Schneider <johannes.schneider@leica-geosystems.com>,
  barebox@lists.infradead.org
 Cc: thomas.haemmerle@leica-geosystems.com
 References: <20260602040953.1060278-1-johannes.schneider@leica-geosystems.com>
- <20260602040953.1060278-2-johannes.schneider@leica-geosystems.com>
+ <20260602040953.1060278-6-johannes.schneider@leica-geosystems.com>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20260602040953.1060278-2-johannes.schneider@leica-geosystems.com>
+In-Reply-To: <20260602040953.1060278-6-johannes.schneider@leica-geosystems.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260602_000433_487286_65FC3C2D 
-X-CRM114-Status: GOOD (  16.28  )
+X-CRM114-CacheID: sfid-20260602_001216_535616_7F46A1E8 
+X-CRM114-Status: GOOD (  17.63  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,46 +73,53 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/6] clk: imx8mp: add 700 MHz rate entry for VIDEO_PLL1
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 5/6] video: add generic panel-lvds driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
+
+Hello,
 
 On 6/2/26 6:09 AM, Johannes Schneider wrote:
 > From: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
 > 
-> The LVDS serializer requires link_freq = pixel_clock × 7.  For a 25 MHz
-> pixel clock the link frequency is 175 MHz.  VIDEO_PLL1 must be set to
-> 700 MHz so the divider chain (VIDEO_PLL1 / 4 = 175 MHz) produces an
-> exact match; without it clk_set_rate() rounds down to 650 MHz, yielding
-> only 162.5 MHz and causing the LVDS transmitter to output ~743 pixels
-> per line instead of 800 — visible as a black strip on the right edge.
+> Barebox has no driver for "panel-lvds" compatible DT nodes, which are used by
+> all i.MX8M board display pipelines to describe LVDS panels with a panel-timing
+> subnode. Without this driver the VPL chain in fsl-ldb terminates before it can
+> query video modes, and the LCDIF2 framebuffer driver cannot determine the active
+> display resolution, so no framebuffer is allocated and no splash is shown.
 > 
-> PLL parameters: Fin=24 MHz, P=3, S=2, K=0 → 24 × 350 / (3 × 4) = 700 MHz.
-> 
-> Assisted-by: Claude:claude-sonnet-4-6
-> Signed-of-by: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
+> The driver reads one video mode from the panel-timing subnode, enables
+> an optional power-supply regulator and enable GPIO on VPL_ENABLE, and
+> controls an optional backlight device.  Closely follows the Linux
+> drivers/gpu/drm/panel/panel-lvds.c behavior.
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+We have a driver though for simple-panel. I lean towards extending the
+simple-panel driver with the panel-lvds compatible and adding any
+feature it might miss there.
 
-> ---
->  drivers/clk/imx/clk-pll14xx.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.c
-> index 6716a6f555..db7e744e87 100644
-> --- a/drivers/clk/imx/clk-pll14xx.c
-> +++ b/drivers/clk/imx/clk-pll14xx.c
-> @@ -61,6 +61,7 @@ static const struct imx_pll14xx_rate_table imx_pll1416x_tbl[] = {
->  };
->  
->  static const struct imx_pll14xx_rate_table imx_pll1443x_tbl[] = {
-> +	PLL_1443X_RATE(700000000U, 350, 3, 2, 0),
->  	PLL_1443X_RATE(650000000U, 325, 3, 2, 0),
->  	PLL_1443X_RATE(594000000U, 198, 2, 2, 0),
->  	PLL_1443X_RATE(393216000U, 262, 2, 3, 9437),
-> 
-> base-commit: 81fbe2e8d0d445032498a0bfecf9fd270f00985a
+AFAICS, there is nothing really lvds specific here. I know Linux has
+separate simple-panel drivers, but the barebox simple panel driver is
+different: It has no hardcoded panel types, but only parses the DT,
+exactly like what you do here.
+
+> +static int panel_lvds_enable(struct panel_lvds *panel)
+> +{
+> +	int ret;
+> +
+> +	if (panel->power) {
+> +		ret = regulator_enable(panel->power);
+
+regulator_enable(NULL) returns 0, so no need to check here.
+
+> +	panel->enable_gpio = of_get_named_gpio_flags(dev->of_node, "enable-gpios",
+> +						     0, &panel->enable_gpio_flags);
+
+Please use the gpiod_ family of functions for new code.
+
+
+Cheers,
+Ahmad
 
 -- 
 Pengutronix e.K.                  |                             |
