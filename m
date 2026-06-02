@@ -1,57 +1,57 @@
-Delivery-date: Tue, 02 Jun 2026 09:59:21 +0200
+Delivery-date: Tue, 02 Jun 2026 10:12:54 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wUK1x-001Vt3-1D
+	id 1wUKF4-001WHB-27
 	for lore@lore.pengutronix.de;
-	Tue, 02 Jun 2026 09:59:21 +0200
+	Tue, 02 Jun 2026 10:12:54 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wUK1w-0005Z3-N7
-	for lore@pengutronix.de; Tue, 02 Jun 2026 09:59:21 +0200
+	id 1wUKF3-0008TW-U3
+	for lore@pengutronix.de; Tue, 02 Jun 2026 10:12:54 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Q/r7E8oUDRZw7o53/TE2R4pcucxSYHceUKzN2Ml71xc=; b=ZLdOi3uByHahSVJlHzkIn4NCXX
-	7HG0zWkux/Gzkj87Tqxc31F/EnbZyNhUDoO/U9oFlSR2TcfrLgL6fDqhBZrYy+bzWzWLzeQ+LMHMh
-	0OhTnw+SPU1oOorOjFbiSk76OLbChJU5wwkSIgmBWR2ZL48fPkle6a9oS9HGMdivlT1I4m1x0zLI0
-	l5Cb1wNEGqrV/zB9iJZezrcGB+jRi3tfssrAQ461tfLPlAtZy/5wqjF3H1raVdutILiQKtkxQFFNA
-	Rtaqktcy0KXcKtz5G/n0BaqPeqx7RH/KEq3tWeyyNIwDOSUsoGHonwG7l6bfgpw0LvPjfNZmIQxHe
-	9ra0y+uw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
+	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:Cc:To:From
+	:Subject:Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=vHxO8F77ch/2lG0cBvX8+1tM/55zcqs1ermrooWjGoA=; b=ZC4gzqOdpqM0W0l1KRCBBhZxlL
+	8ZcVmutU3KMDZGOSNwSJrX5i5sQydqYwy6PmPC9c5QGXff6wf/b2nC8GqV+Go/DlEzr7Dax3IL+5m
+	g8U728sc0wRh+aQEeEiU8991QQcj1txo7cJxBgNLsPbx/bG0MlYJUfyqYYbbpLQxyn8H5js2FI6UK
+	qEzcHlR7ixI3cdl+Wc6XzhvIErPHD2H1Np+ooVkSUxco4RswpoD2R6IRHJQoJHAQJkgtIY34m0psb
+	vDzqYstz9faI+Iz398s29b3+fcv1ROPEx4dOUl4rkKX18MebpfDlHcxFTYbJX3d72AaBWy8YwIgTl
+	wq9MK82A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wUK0p-0000000CWGE-0EaF;
-	Tue, 02 Jun 2026 07:58:11 +0000
+	id 1wUKEe-0000000CXm8-1eqt;
+	Tue, 02 Jun 2026 08:12:28 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wUK0m-0000000CWFn-0Um0
+	id 1wUKEb-0000000CXlh-3qGl
 	for barebox@lists.infradead.org;
-	Tue, 02 Jun 2026 07:58:09 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	Tue, 02 Jun 2026 08:12:27 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wUK0k-0005Mx-Cq; Tue, 02 Jun 2026 09:58:06 +0200
-Message-ID: <667bad55-4666-4ced-be21-3cd38b0ba5df@pengutronix.de>
-Date: Tue, 2 Jun 2026 09:58:05 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Johannes Schneider <johannes.schneider@leica-geosystems.com>,
- barebox@lists.infradead.org
+	(envelope-from <l.stach@pengutronix.de>)
+	id 1wUKEZ-0008Q7-De; Tue, 02 Jun 2026 10:12:23 +0200
+Message-ID: <54467182b9e4f15a1ac068533e73aaac5f21bf46.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+To: Johannes Schneider <johannes.schneider@leica-geosystems.com>, 
+	barebox@lists.infradead.org
 Cc: thomas.haemmerle@leica-geosystems.com
-References: <20260602022409.316585-1-johannes.schneider@leica-geosystems.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <20260602022409.316585-1-johannes.schneider@leica-geosystems.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Tue, 02 Jun 2026 10:12:23 +0200
+In-Reply-To: <20260602040953.1060278-7-johannes.schneider@leica-geosystems.com>
+References: <20260602040953.1060278-1-johannes.schneider@leica-geosystems.com>
+	 <20260602040953.1060278-7-johannes.schneider@leica-geosystems.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.1 (3.60.1-1.fc44) 
+MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260602_005808_157844_5729CD4F 
-X-CRM114-Status: GOOD (  18.24  )
+X-CRM114-CacheID: sfid-20260602_011226_011061_0E424093 
+X-CRM114-Status: GOOD (  22.35  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,90 +69,85 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] lib: gui: png_pico: fix use-after-free and double-free in
- png_open
+Subject: Re: [PATCH 6/6] video: imx-lcdif: drain write-combine buffer before
+ LCDIF DMA reads pixels
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello,
-
-Thanks for the fix.
-
-On 6/2/26 4:24 AM, Johannes Schneider wrote:
+Am Dienstag, dem 02.06.2026 um 04:09 +0000 schrieb Johannes Schneider:
 > From: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
-> 
-> png_alloc_free_all() frees all picopng-internal allocations, including
-> the image->data buffer.  The previous code stored a pointer to this
-> buffer in img->data and called png_alloc_free_all() — leaving img->data
-> as a dangling pointer.  The subsequent png_close()'s free(img->data)
-> then performed a double-free on already-freed memory, causing a crash or
-> heap corruption when displaying the boot logo.
-> 
-> Fix by copying the decoded pixel data into a fresh malloc buffer before
-> calling png_alloc_free_all().  png_close() correctly frees this copy.
-
-Never ceases to amaze how long memory corruption can go unnoticed..
-
-> -	pr_debug("png: %d x %d data@0x%p\n", img->width, img->height, img->data);
+>=20
+> The LCDIF framebuffer is allocated as Normal Non-Cacheable (write-combine=
+)
+> memory.  After the splash command calls gu_screen_blit(), which copies th=
+e
+> decoded PNG via memcpy() from a cached shadow buffer into the hardware
+> framebuffer, writes may still reside in the CPU write buffer and not yet
+> be visible to the LCDIF DMA engine.  On hardware this manifests as
+> partial or corrupted rendering =E2=80=94 the bottom portion of the splash=
+ image
+> renders black or shows garbage.
+>=20
+> Implement fb_damage() to execute a DSB SY barrier after each blit,
+> ensuring all pending write-combine writes are committed to DRAM before
+> the LCDIF reads the pixel data.
+>=20
+> Assisted-by: Claude:claude-sonnet-4-6
+> Signed-of-by: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
+> ---
+>  drivers/video/imx-lcdif.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+>=20
+> diff --git a/drivers/video/imx-lcdif.c b/drivers/video/imx-lcdif.c
+> index ae5976c771..8d9b40be0f 100644
+> --- a/drivers/video/imx-lcdif.c
+> +++ b/drivers/video/imx-lcdif.c
+> @@ -20,6 +20,7 @@
+>  #include <of_graph.h>
+>  #include <video/media-bus-format.h>
+>  #include <video/vpl.h>
+> +#include <asm/system.h>
+> =20
+>  /* LCDIF V8 register map */
+>  #define LCDC_V8_CTRL			0x00
+> @@ -262,9 +263,21 @@ static void lcdif_fb_disable(struct fb_info *info)
+>  	clk_disable_unprepare(priv->clk_axi);
+>  }
+> =20
+> +static void lcdif_fb_damage(struct fb_info *info, struct fb_rect *rect)
+> +{
 > +	/*
-> +	 * Copy decoded pixels to a stable buffer before png_alloc_free_all()
-> +	 * frees the picopng internal allocations (including image->data).
-> +	 * Without this copy, img->data would be a dangling pointer and
-> +	 * png_close()'s free(img->data) would be a double-free.
+> +	 * The hardware framebuffer is Normal Non-Cacheable (write-combine).
+> +	 * Writes from the shadow-buffer memcpy may sit in the CPU write buffer
+> +	 * and not yet be visible to the LCDIF DMA engine. Execute DSB SY to
+> +	 * drain the write buffer to DRAM before the LCDIF reads the pixels.
 > +	 */
-> +	imgsize = png_info->width * png_info->height * 4;
-> +	imgcopy = malloc(imgsize);
-> +	if (!imgcopy) {
-> +		ret = -ENOMEM;
-> +		goto err;
-> +	}
-> +	memcpy(imgcopy, png_info->image->data, imgsize);
->  
->  	png_alloc_free_all();
->  
-> +	img->data = imgcopy;
+> +	dsb();
+
+This will probably work in practice, but it doesn't exactly do what the
+comment above states. A dsb does not drain the write combine buffers,
+it just makes sure that they are drained before the next instruction is
+executed.
+So if the fb_damage is the last thing that gets executed, this will not
+ensure that the writes will actually become visible to external agents.
+
+A more robust way to drain the write combine buffers is to execute a
+readback of a memory location within the WC region.
+
+Regards,
+Lucas
+> +}
 > +
-> +	pr_debug("png: %d x %d data@0x%p\n", img->width, img->height, img->data);
-> +
-
-I would prefer avoiding the memory copy here. My suggestion would be adding
-(untested):
-
-void *png_alloc_detach(void *addr)
-{
-        for (png_alloc_node_t *node = png_alloc_tail; node; node = node->prev) {
-                if (node->addr == addr) {
-                        png_alloc_remove_node(node);
-                        return addr;
-                }
-        }
-
-        return NULL;
-}
-
-and then a single line change in png_open:
-
--	img->data = png_info->image->data
-+	img->data = png_alloc_detach(png_info->image->data);
-
-What do you think?
-
-Cheers,
-Ahmad
-
->  	return img;
->  err:
->  	png_alloc_free_all();
-
--- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-
+>  static struct fb_ops lcdif_fb_ops =3D {
+>  	.fb_enable  =3D lcdif_fb_enable,
+>  	.fb_disable =3D lcdif_fb_disable,
+> +	.fb_damage  =3D lcdif_fb_damage,
+>  };
+> =20
+>  static int lcdif_probe(struct device *dev)
 
 
