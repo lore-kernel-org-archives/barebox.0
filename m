@@ -1,117 +1,109 @@
-Delivery-date: Thu, 04 Jun 2026 10:03:49 +0200
+Delivery-date: Thu, 04 Jun 2026 10:58:21 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wV33N-002D7x-0c
+	id 1wV3u9-002DlH-24
 	for lore@lore.pengutronix.de;
-	Thu, 04 Jun 2026 10:03:49 +0200
+	Thu, 04 Jun 2026 10:58:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wV33M-000229-EE
-	for lore@pengutronix.de; Thu, 04 Jun 2026 10:03:49 +0200
+	id 1wV3u8-0001W7-Hy
+	for lore@pengutronix.de; Thu, 04 Jun 2026 10:58:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
-	:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=oF+QOa1aGsNTzyUN8TND126dsFtIMRA/lIdiZQVzZL4=; b=wh6/wITxTwVqKvnDWatGm611SO
-	xviXzvwJ+PcOwG4nHYRe2xUzlVF74MfLGINrwL+25Mou+YwWolP2k8amqfEtbBSiLqkpYA5qqDjqI
-	+mN+Cj+ll8+BwLgIAUBD7IqTjkWZKdll5K5ToMyiPan9sc9TCM76lTZhpyiZTXHKRZv4tDyeH6sjj
-	DzOn36ceOWJKLm95l8zVzAJoheeVhW129Wi9PybK1kUiXBXI92bLHUJ6W1LxOASC6ik9iqDy5mywL
-	gh2HwhRNonBThsnbQs3dan9ImHh6TmgKxID6TM7QlF/wpnz4HvBzMWUJ/kWsqKs5M9uAAi3DuqF34
-	d3TLL3gg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
+	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=NvbIstBsCjt85qcUvZg5aHLaTYL+DcHd2gU7BIV0jrg=; b=UJ6gGiZUUKGpe7lzgaLofO2rPp
+	9uc6xcSg/QrUkOvGuRDsyoX32ugIICQm2mvSC5fqacu4Ym6UJ31Lk6UtD3DNAZjH5VvZugKMyWE5Y
+	J/Hg1cChjbw+PAr6Kg6wMCUC+9Wgo8IiEnlSEKLle3G2Z2VC2wSicKEMRcnJlx35JWD6W6EFc+Quo
+	avEXqdlzwKgTT129lbL21OmMkM9Wpv35hQUj1BhLOCOb2MCgNWSxzIV+Sged8sD9DVX5jtCYudMm7
+	kbQdHkI+ZufdSl3Jn+gx9ZTAJSHaS03PXWBjMlGN92NwdEff1zzlMoYvU/2aIPXFklENrIlePtPid
+	BHblW18A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wV1uG-0000000GF8a-34zA;
-	Thu, 04 Jun 2026 06:50:20 +0000
-Received: from mail-northeuropeazlp170120005.outbound.protection.outlook.com ([2a01:111:f403:c200::5] helo=DUZPR83CU001.outbound.protection.outlook.com)
+	id 1wV3sy-0000000GRhd-21JN;
+	Thu, 04 Jun 2026 08:57:08 +0000
+Received: from mail-dl1-x1230.google.com ([2607:f8b0:4864:20::1230])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wV1uC-0000000GF4E-3dCi
+	id 1wV3sv-0000000GRh6-3KlT
 	for barebox@lists.infradead.org;
-	Thu, 04 Jun 2026 06:50:18 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HuICm/VWYaf9gvhtrZg2KySnciV08GCuF2e8fx/ERqHJsH2FKBHioHKqAUIgKXEPz1Z1nZPmQvgk5YU4PI9SePIgc57gPKCkWD/Ty/E+yS4u3OT2KY+XHF4eNL/6/rDF72hhODip1PBzwhDIcKFviF6Gv5AWFHvEqlEOnOaD+YJV1YqqhOzk7Xce00nGy2v4UNYYIYUHNWwUgskuOPCY1KX2AnFB2HJCYiSf8xIVvNLHZFjQSu+UrOkUUJALp68vBfBks32J0pERB2h4N9A0c9uZcXEd5KxzbvGjB96dmemCOV+K2EDX0Iy6TLWWXWfcrg38FWyJoH6irwOzRNabkg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oF+QOa1aGsNTzyUN8TND126dsFtIMRA/lIdiZQVzZL4=;
- b=ksAzVuZ+9Zpxh2fMezheo23wghcuyh6q4nAk6gq8F+z228rU/KB/oltdadT/a3SX52NalXBHPSHx0N5cJL5exOJD8pyZXqx5wRFo/hJh1WTLlmeJ65FJ6tfgYvd0H97hZjM91h7eTlscQyZraHuDSFo1iYl5CVuHdhlknM3HstjxqXyuIkoSaVltKTqA9lSi4BZCgktXGq8JLfHBx/05nJXXLkZ12Ktg8Qtke7yUdg6r97fcs6JC9oIZHqXim35ldUgIeMIuWz9IuvlDs1f456fMZSCFWoviUDHqUeNhVs6S6lzVIzDk+bW+Kj5SEB9i+5HYPxe4kKVpTideUZYbbw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 193.8.40.99) smtp.rcpttodomain=lists.infradead.org
- smtp.mailfrom=leica-geosystems.com; dmarc=pass (p=reject sp=reject pct=100)
- action=none header.from=leica-geosystems.com; dkim=none (message not signed);
- arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oF+QOa1aGsNTzyUN8TND126dsFtIMRA/lIdiZQVzZL4=;
- b=qENSiEo8xu9FgAhpRFaVrAoJWSFEBQjNDavoAtVGengrSwQjB7lwjqNiMmLqiQ/0SXpn/KX+fGPfH8tbPSTrKHhtU5FGag7oBNooSoJPe4wnYRrlQjntCXMP2JBwdvCKFPAIvWbxZAX6lRkYgkquOGgOkOQ1d6Qhq52J1eN5rMM=
-Received: from CWLP265CA0463.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1d4::15)
- by DB9PR06MB7387.eurprd06.prod.outlook.com (2603:10a6:10:259::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Thu, 4 Jun 2026
- 06:50:12 +0000
-Received: from AMS0EPF00000199.eurprd05.prod.outlook.com
- (2603:10a6:400:1d4:cafe::45) by CWLP265CA0463.outlook.office365.com
- (2603:10a6:400:1d4::15) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.7 via Frontend Transport; Thu, 4
- Jun 2026 06:50:12 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 193.8.40.99)
- smtp.mailfrom=leica-geosystems.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=leica-geosystems.com;
-Received-SPF: Pass (protection.outlook.com: domain of leica-geosystems.com
- designates 193.8.40.99 as permitted sender) receiver=protection.outlook.com;
- client-ip=193.8.40.99; helo=hexagon.com; pr=C
-Received: from hexagon.com (193.8.40.99) by
- AMS0EPF00000199.mail.protection.outlook.com (10.167.16.245) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.92.5 via Frontend Transport; Thu, 4 Jun 2026 06:50:12 +0000
-Received: from aherlnxbspsrv01.lgs-net.com ([10.61.228.61]) by hexagon.com with Microsoft SMTPSVC(10.0.17763.1697);
-	 Thu, 4 Jun 2026 08:50:11 +0200
-From: Johannes Schneider <johannes.schneider@leica-geosystems.com>
-To: barebox@lists.infradead.org,
-	a.fatoum@pengutronix.de,
-	mgr@kernel.org,
-	l.stach@pengutronix.de
-Cc: thomas.haemmerle@leica-geosystems.com,
-	Johannes Schneider <johannes.schneider@leica-geosystems.com>
-Date: Thu,  4 Jun 2026 06:50:02 +0000
-Message-ID: <20260604065006.2933142-8-johannes.schneider@leica-geosystems.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260604065006.2933142-1-johannes.schneider@leica-geosystems.com>
-References: <20260604065006.2933142-1-johannes.schneider@leica-geosystems.com>
+	Thu, 04 Jun 2026 08:57:07 +0000
+Received: by mail-dl1-x1230.google.com with SMTP id a92af1059eb24-137bd9ed2b1so1042943c88.1
+        for <barebox@lists.infradead.org>; Thu, 04 Jun 2026 01:57:05 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1780563425; cv=none;
+        d=google.com; s=arc-20240605;
+        b=f0Ci70+85jdUovvh1HPPFk0dul1NSjNu6zqnhRZ8gTJKnxaFRwVld+e6fMusfFRryi
+         adbczqv2XRCucoMhmFEuOAO98+rWQYQG1wEOUu1hvB53ixeJVrfpamiRfOhjdhe6n0Nz
+         WLvQXO+OiEypPQpoPVn5IRwZPpauTSmuraBD64AtyhWY4PmAT+Hv2+bCkMaY19hp/jP/
+         dzDmMC6iuaYNaHdWoyOcphJGB0QZpih/wpNSDwA/n62kGeW3s2DTRGoewSUX5vxlc+ae
+         FK108C7Z5+VW00MXorVtX66PjNnsnrd0jwVkFhySccBdd24vduVN3rgAPwlbyDkTr5Tr
+         JdFg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=NvbIstBsCjt85qcUvZg5aHLaTYL+DcHd2gU7BIV0jrg=;
+        fh=QTl4aF0/iXkDY6Uf61Tk/V/7sh5GF70RwK/YHfa2l1k=;
+        b=BEY3I7m5xPPLIVCNBqrCbHWxaHXu+FNMb0jGXSWaRbcsvVb7+mr6IV3fcIDGpBRphk
+         CN9CfAmd5ZlqKrbeNi0wq0V5Y3pbDsaII//vWsQ3Eyn0+Xwkzlw/eWDBUohL5DDreOEq
+         SAnXgvyn7CVSvLrZGveYKYA0OsNAWtu3WFEEyuS97WvmExdoPp/JO5qxx9LloFaeBFW5
+         BP3WL54U2hX3WWatpBEYg9bR8KcrQp5tOqga8BZ/ayBbCdVclOHe5gJ+7ESKfDdapVvm
+         ep6nIpP0yRtZoPRTHyTizMQ3klrrOzkuClaqojcAvB9Sa3Pd1EChf1xb0DSkYdXs6rWO
+         TkbA==;
+        darn=lists.infradead.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780563425; x=1781168225; darn=lists.infradead.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NvbIstBsCjt85qcUvZg5aHLaTYL+DcHd2gU7BIV0jrg=;
+        b=E7m686LFqpZeaouRcKQkmXvmHyLWpxLvrZXIW1mEiyVQkITRS4wOUtOs8gTSJXbugA
+         ld1OwcGcebDtMw9zwKkqkREuau1PVuwmvivhbiBixBit6zXFZQUxWQWTnuwnzt7nc2NT
+         /y17vGQ024KcDoznShZDdd1GOzTOWZ1Y/qSxPgKu+WYSTl6V6ih7IRf5i0nzFH1HTWjR
+         l1Y5TeKTerEhC60unS+vYLd0i7bjhbuyMpWQ0K1qrpakxaV7JnHHC/KZ/4CUOSsCMPSo
+         f5FWVKKQ+yU2Xni3zpFwi8fxpAd4SsodRNC6hHVkL6h0LsIlsc5SBJ2uB9fRucynjkMv
+         2tWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780563425; x=1781168225;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=NvbIstBsCjt85qcUvZg5aHLaTYL+DcHd2gU7BIV0jrg=;
+        b=ior4AkkzDnaSrW8KuX0MiW8fVPTWGETHl9/yUFBCHEuYa98bxlyGTpBO/DyDHqsKvM
+         robeadMNWx3N8gq+5n0LwnHSeuOl96YDLN0iv2TXEg/T109drZ3kU763xSUgUhZTtS4B
+         N4mPv5GSvpt2F9NRh+MfgXderMuytYb6avywIy9izVCiSDv9j8i462yc7eFf5iH9jeG/
+         zHbGaAyE8zO6K8SYw37y2uiaez0lh1d1p607G5OxEC/oFBAae020pp7H+ZnVwdLhNjOZ
+         Zf2cs4ZqyYjCdPpPi8vv0s9nWsiIAcCqGvy6djw/GN9unwSaH03W98IIrB4SEkGb31bG
+         7YfA==
+X-Gm-Message-State: AOJu0YxUN7h+mqLNoqBwTL9QLE10CR1XFeGvzb8Fk++FW934DmaNCKgt
+	QWcSwXz/TnxiQ53VVjIWKBxDAPixlB73kXKhrAaCU3pwf7n9THFulw/zzYNdjs6hYoc6D40WvYJ
+	Jli7eQz6dTY3mQIPdbbNaWUx3STC1AIPL42j4
+X-Gm-Gg: Acq92OGc5jBNn1KchD5TXWyjH3CLpmB8wOjgFmrXKp5j+Ge6a8B+xvAGHnPOttI3Vrd
+	3hvNN3O5Nfq6DtoJ4ObrfAU28iNwLA8jN8abX6JQqizvOPhd4S2XI96gKVbW3cd6DXigd8AbvZB
+	QP8HGF9gK0pDNm70E24AH1bJLCHBuuZCy6QvToOe5N35MvTZTJRFJD45FsJ8R4UV1fBloQnX1/6
+	NQP8pcjNxpVgz1GPiqtFh3WXrYy1cMnmw1fJyZXxqO093jmSW7CsfsMQ0XKLq56LGcd2JbIDQth
+	5uZzQwJV7nJ5e71R
+X-Received: by 2002:a05:7022:4393:b0:137:f875:c1de with SMTP id
+ a92af1059eb24-137f875c3d9mr2906974c88.22.1780563424450; Thu, 04 Jun 2026
+ 01:57:04 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 04 Jun 2026 06:50:11.0140 (UTC) FILETIME=[63807040:01DCF3EE]
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMS0EPF00000199:EE_|DB9PR06MB7387:EE_
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: a275e5e0-dfe9-440c-32f6-08dec20586ea
-X-SET-LOWER-SCL-SCANNER: YES
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|36860700016|82310400026|376014|22082099003|18002099003|5023799004|56012099006|11063799006;
-X-Microsoft-Antispam-Message-Info: 1uFQNj5k6s4O5bwGQFdH/J2Hzz8Vd4OiMK7vChWQ0vQB0TPnUL9a+AmxQjamtxL8zhsJ1xXweCbeDrGV+6AisCS/1lUISbkJ/CmMQP7XX8P5MxoheNY8MZdrSy62kwAMAVTWRmwBqMeDmS70ZUv6M2FgT7GFY7Cnd5hL1npisAKeaZW/Cs1jGs/QaOOG6RNi55WCra/TKq794HamoDPdmRIUNADKniHX86/quaeVH6Fu1BhtZPvHR/FBL7QqVbXpwIhoMSrsByqI/ptadCm+GuqSIHduilmrXO5aJN+9C+DQQAkW6BhEMoY5UQBYv72PilUVHFOuPBc0GmTwhSmvVCtx/jLNtB810/X9xA7nuFPLkAZYLV+hG9lBXS21/c+13lfoel/fzUFlV0X3DXF0Tt/SV1tIB48zCKfOkJFdlcE9KWeG5k9pndMFn4C4vb9Eu5BPGfI/I4bBP7rS/mQK8A3PgagcxYo9//bi5A5uobMTGqm4Qrci96wg1bPcJk0L37xUeVUegWDtqnxWtMFfT+nCeQ8El0xyhWYpXAjG7UwPMpPMfOvmguxJHxtrNGko7kYayYp4lSc8+DuKGl/RTSkuj9eo63ycwiZWkKVQijWViNjMNCqxFYxl2FO8gD4qG9h+DKNcWoaWKw6m1adJ3kqn70CcRHZ0+au5D6IP3qSvldsShNfetMn4J6dkpZ82fVo4/Ovtu6eSqyhjsQmAm5qAUkhYNIn2J45s5Ovbeus=
-X-Forefront-Antispam-Report: CIP:193.8.40.99;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:hexagon.com;PTR:ahersrvdom51.leica-geosystems.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700016)(82310400026)(376014)(22082099003)(18002099003)(5023799004)(56012099006)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: CXGTiykmjnI7vvZVhOw2L5P4vPaRGXUTlDJw27CB5Lxfjv+BVSFeZDTECNCvDempxp/zQDmdjwgsA22F7hW3Hcn4ShKR1pPN7yV5jpeBpLkUgRBbN+n4MZopgOuAPn+kPVsNbJ12mpbH8Uy+Ju4pf9Ie/21Pi0TbXJdllZDw7XjPqERC7ELOJFqU+Kb0O+kIPP0vgv/TugOqT6G2tWFu8lU9hihCUzyoPSXGhrhsAkJxC+YISIpNWEp6x3yoAKdqU1R5XwnFpfTkH8Wjrau1kIY1yyWeceipjW9HOZ0C7iSXZqpWixpz3cUb/zcKm6g1FDsDN0416LbQmf6ZsVQpDR/NP+REL9d7u+pBy8Q/O92OiwQ8ORnJ7jgKiGGC6jOLRDE0+ifzrQU4F7nqzf9ktkt0lyn2Tc8KnMklmfv0EeyEzRtLDd/Fv4jm7UXkQ+rG
-X-OriginatorOrg: leica-geosystems.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 06:50:12.6952
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a275e5e0-dfe9-440c-32f6-08dec20586ea
-X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.99];Helo=[hexagon.com]
-X-MS-Exchange-CrossTenant-AuthSource: AMS0EPF00000199.eurprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR06MB7387
+References: <20260529051347.1373331-1-eagle.alexander923@gmail.com> <E1wV1Vo-00000003qL5-1qY3@pty.whiteo.stw.pengutronix.de>
+In-Reply-To: <E1wV1Vo-00000003qL5-1qY3@pty.whiteo.stw.pengutronix.de>
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Thu, 4 Jun 2026 11:56:52 +0300
+X-Gm-Features: AVHnY4LAuLMAcHM_BI-akwp7t7wHHWfeIBAfgOEdksZihmISHF5l7jfQfGMzRQk
+Message-ID: <CAP1tNvRJvOqD4p74F5EHhaiwrh8-qXN_1X_byM6zfg1uNXSWtg@mail.gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260603_235016_955936_CE18B6ED 
-X-CRM114-Status: GOOD (  10.37  )
+X-CRM114-CacheID: sfid-20260604_015705_844279_C9E40ABE 
+X-CRM114-Status: GOOD (  40.57  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -129,50 +121,266 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 07/11] video: lcdif: default to RGB888_1X24 on VPL_GET_BUS_FORMAT failure
+X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FORGED_GMAIL_RCVD,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v3 1/2] Add support for extlinux.conf
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-VPL_GET_BUS_FORMAT walks downstream through the bridge to the panel.
-Today neither fsl-ldb (which forwards the call) nor simple-panel
-(which reads a "bus-format" DT property) succeeds for DTs that follow
-the Linux panel-lvds binding -- that binding describes the LVDS data
-mapping in "data-mapping", not as a discrete bus-format integer.
+Hello Sascha.
 
-The driver currently aborts enable on the -EINVAL, leaving /dev/fb0
-registered but nothing scanning out.  Default to RGB888_1X24 instead
--- the parallel format LCDIFv3 hands to every RGB888 bridge regardless
-of what the panel ultimately drives onto the wire.
+This change is possible, but then the question arises of how to specify
+the default boot entry.
+I'd probably prefer to simply specify in the description that we only use
+the DEFAULT entry.
 
-Signed-off-by: Johannes Schneider <johannes.schneider@leica-geosystems.com>
----
- drivers/video/lcdif_kms.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+Thanks!
 
-diff --git a/drivers/video/lcdif_kms.c b/drivers/video/lcdif_kms.c
-index a113f3e681..5487d1298c 100644
---- a/drivers/video/lcdif_kms.c
-+++ b/drivers/video/lcdif_kms.c
-@@ -364,8 +364,11 @@ static void lcdif_enable_fb_controller(struct fb_info *info)
- 
- 	ret = vpl_ioctl(&lcdif->vpl, lcdif->id, VPL_GET_BUS_FORMAT, &vcstate.bus_format);
- 	if (ret < 0) {
--		dev_err(lcdif->dev, "Cannot determine bus format\n");
--		return;
-+		/* default for panel-lvds DTs lacking bus-format / bridges not answering */
-+		dev_warn(lcdif->dev,
-+			 "VPL_GET_BUS_FORMAT failed (%pe), defaulting to RGB888_1X24\n",
-+			 ERR_PTR(ret));
-+		vcstate.bus_format = MEDIA_BUS_FMT_RGB888_1X24;
- 	}
- 
- 	ret = vpl_ioctl(&lcdif->vpl, lcdif->id, VPL_GET_DISPLAY_INFO, &display_info);
--- 
-2.43.0
-
+=D1=87=D1=82, 4 =D0=B8=D1=8E=D0=BD. 2026=E2=80=AF=D0=B3. =D0=B2 09:25, Sasc=
+ha Hauer <s.hauer@pengutronix.de>:
+>
+> Hi Alexander,
+>
+> On 2026-05-29 08:13, Alexander Shiyan wrote:
+> > This adds support for the extlinux.conf configuration format, commonly
+> > used by Syslinux and many Linux distributions. The configuration file
+> > is typically located at /boot/extlinux/extlinux.conf or
+> > /extlinux/extlinux.conf and defines boot entries with kernel, initrd,
+> > device tree, and command line options.
+> >
+> > The implementation integrates with the existing boot entry framework:
+> > - The extlinux scanner discovers entries on mounted filesystems.
+> > - The default LABEL is turned into a boot entry.
+> > - Bootm is used to load and start the kernel.
+> > ---
+> > barebox@Diasom DS-RK3568-SOM-EVB:/ global.bootm.appendroot=3Dtrue
+> > barebox@Diasom DS-RK3568-SOM-EVB:/ global.boot.default=3Dmmc1.2
+> > barebox@Diasom DS-RK3568-SOM-EVB:/ boot
+> > ext4 ext40: EXT2 rev 1, inode_size 256, descriptor size 64
+> > Booting entry 'extlinux: linux'
+> > extlinux: Booting extlinux label 'linux'
+> > Adding "root=3D/dev/mmcblk1p3" to Kernel commandline
+> > Loading ARM aarch64 Linux/EFI image '/mnt/mmc1.2/boot/extlinux/../vmlin=
+uz'
+> > commandline: root=3D/dev/mmcblk1p3 console=3DttyS2,1500000n8 ro systemd=
+.unit=3Dsetup.target quiet splash systemd.machine_id=3D181af2816b4c6b0aef77=
+068e0ccc69ad
+> > Loaded kernel to 0x0a400000, devicetree at 0x000000000fb49000
+> >
+> > Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+> > ---
+> >  common/Kconfig    |  19 ++++
+> >  common/Makefile   |   1 +
+> >  common/extlinux.c | 243 ++++++++++++++++++++++++++++++++++++++++++++++
+> >  3 files changed, 263 insertions(+)
+> >  create mode 100644 common/extlinux.c
+> >
+> > diff --git a/common/Kconfig b/common/Kconfig
+> > index 047dd5390b..6f1eabdf8b 100644
+> > --- a/common/Kconfig
+> > +++ b/common/Kconfig
+> > @@ -776,6 +776,25 @@ config BLSPEC
+> >         on a device and it allows the Operating System to install / upd=
+ate
+> >         kernels.
+> >
+> > +config EXTLINUX
+> > +     bool
+> > +     prompt "Support extlinux.conf"
+> > +     depends on FLEXIBLE_BOOTARGS
+> > +     depends on !SHELL_NONE
+> > +     select BOOT
+> > +     select BOOTM
+> > +     select MMCBLKDEV_ROOTARG if MCI
+> > +     help
+> > +       Enable this to let barebox parse extlinux.conf configuration fi=
+les,
+> > +       commonly used by the Syslinux bootloader and many Linux distrib=
+utions
+> > +       (e.g., on SD cards or USB drives).
+> > +       extlinux.conf is typically located at /boot/extlinux/extlinux.c=
+onf or
+> > +       /extlinux/extlinux.conf. It defines boot entries with kernel, i=
+nitrd,
+> > +       device tree, and command line options.
+> > +       This option allows barebox to discover and boot operating syste=
+ms
+> > +       that follow the extlinux configuration format, providing a simp=
+le
+> > +       and portable way to manage multiple boot options.
+> > +
+> >  config FLEXIBLE_BOOTARGS
+> >       bool
+> >       prompt "flexible Linux bootargs generation"
+> > diff --git a/common/Makefile b/common/Makefile
+> > index 21b6cecb3b..6b97edc2c3 100644
+> > --- a/common/Makefile
+> > +++ b/common/Makefile
+> > @@ -9,6 +9,7 @@ obj-y                         +=3D clock.o
+> >  pbl-$(CONFIG_PBL_CLOCKSOURCE)        +=3D clock.o
+> >  obj-y                                +=3D console_common.o
+> >  obj-$(CONFIG_OFDEVICE)               +=3D deep-probe.o
+> > +obj-$(CONFIG_EXTLINUX)               +=3D extlinux.o
+> >  obj-y                                +=3D startup.o
+> >  obj-y                                +=3D misc.o
+> >  obj-pbl-y                    +=3D memsize.o
+> > diff --git a/common/extlinux.c b/common/extlinux.c
+> > new file mode 100644
+> > index 0000000000..6ad01cc652
+> > --- /dev/null
+> > +++ b/common/extlinux.c
+> > @@ -0,0 +1,243 @@
+> > +// SPDX-License-Identifier: GPL-2.0+
+> > +/* SPDX-FileCopyrightText: Alexander Shiyan <shc_work@mail.ru> */
+> > +
+> > +#define pr_fmt(fmt)     "extlinux: " fmt
+> > +
+> > +#include <boot.h>
+> > +#include <bootm.h>
+> > +#include <bootscan.h>
+> > +#include <common.h>
+> > +#include <environment.h>
+> > +#include <fs.h>
+> > +#include <globalvar.h>
+> > +#include <libfile.h>
+> > +#include <libgen.h>
+> > +#include <string.h>
+> > +
+> > +struct extlinux_entry {
+> > +     struct bootentry entry;
+> > +     char *rootpath;
+> > +     char *label;
+> > +     char *kernel;
+> > +     char *initrd;
+> > +     char *fdtdir;
+> > +     char *fdt;
+> > +     char *append;
+> > +};
+> > +
+> > +static int extlinux_boot(struct bootentry *entry, int verbose, int dry=
+run)
+> > +{
+> > +     struct extlinux_entry *e =3D
+> > +             container_of(entry, struct extlinux_entry, entry);
+> > +     char *kernel_abs, *initrd_abs =3D NULL, *fdt_abs =3D NULL;
+> > +     struct bootm_data data =3D {};
+> > +     int ret;
+> > +
+> > +     bootm_data_init_defaults(&data);
+> > +
+> > +     data.dryrun =3D max_t(int, dryrun, data.dryrun);
+> > +     data.verbose =3D max(verbose, data.verbose);
+> > +
+> > +     kernel_abs =3D basprintf("%s/%s", e->rootpath, e->kernel);
+> > +     data.os_file =3D kernel_abs;
+> > +
+> > +     if (e->initrd) {
+> > +             initrd_abs =3D basprintf("%s/%s", e->rootpath, e->initrd)=
+;
+> > +             data.initrd_file =3D initrd_abs;
+> > +     }
+> > +
+> > +     if (e->fdt) {
+> > +             char *fdtdir =3D e->fdtdir ? : e->rootpath;
+> > +
+> > +             fdt_abs =3D basprintf("%s/%s", fdtdir, e->fdt);
+> > +             data.oftree_file =3D fdt_abs;
+> > +     }
+> > +
+> > +     if (e->append)
+> > +             globalvar_add_simple("linux.bootargs.dyn.bootentries",
+> > +                                  e->append);
+> > +
+> > +     pr_info("Booting extlinux label '%s'\n", e->label);
+> > +
+> > +     ret =3D bootm_entry(entry, &data);
+> > +     if (ret)
+> > +             pr_err("bootm failed: %pe\n", ERR_PTR(ret));
+> > +
+> > +     free(kernel_abs);
+> > +     free(initrd_abs);
+> > +     free(fdt_abs);
+> > +
+> > +     return ret;
+> > +}
+> > +
+> > +static void extlinux_entry_free(struct bootentry *entry)
+> > +{
+> > +     struct extlinux_entry *e =3D
+> > +             container_of(entry, struct extlinux_entry, entry);
+> > +
+> > +     free(e->rootpath);
+> > +     free(e->label);
+> > +     free(e->kernel);
+> > +     free(e->initrd);
+> > +     free(e->fdtdir);
+> > +     free(e->fdt);
+> > +     free(e->append);
+> > +     free(e);
+> > +}
+> > +
+> > +static struct extlinux_entry *parse_extlinux_conf(const char *abspath,
+> > +                                               const char *rootpath)
+> > +{
+> > +     char *buf, *bufptr, *line, *default_label =3D NULL;
+> > +     struct extlinux_entry *entry =3D NULL;
+> > +
+> > +     bufptr =3D read_file(abspath, NULL);
+> > +     if (!bufptr)
+> > +             return ERR_PTR(-errno);
+> > +
+> > +     buf =3D bufptr;
+> > +     while ((line =3D strsep(&buf, "\n\r")) !=3D NULL) {
+> > +             char *key, *val;
+> > +
+> > +             line =3D skip_spaces(line);
+> > +
+> > +             if (*line =3D=3D '#' || *line =3D=3D '\0')
+> > +                     continue;
+> > +
+> > +             key =3D strsep(&line, " \t");
+> > +             val =3D isempty(line) ? NULL : skip_spaces(line);
+> > +             if (!key || !val)
+> > +                     continue;
+> > +
+> > +             if (!default_label) {
+> > +                     if (!strcasecmp(key, "DEFAULT"))
+> > +                             default_label =3D xstrdup(val);
+> > +
+> > +                     continue;
+> > +             }
+> > +
+> > +             if (!strcasecmp(key, "LABEL")) {
+> > +                     if (!strcmp(val, default_label)) {
+> > +                             entry =3D xzalloc(sizeof(*entry));
+> > +                             entry->label =3D xstrdup(val);
+> > +                             entry->rootpath =3D dirname(xstrdup(abspa=
+th));
+> > +                     } else if (entry) {
+> > +                             break;
+> > +                     }
+>
+> The extlinux format supports multiple entries, but you return here after
+> the first entry parsed. We should either document that we only support a
+> single entry or implement multiple entries.
+>
+> Unless I am overlooking something it should be quite straight forward to
+> implement multiple entries, just move the call to bootentries_add_entry()
+> into this loop.
+>
+> Sascha
+>
+> --
+> Pengutronix e.K.                           |                             =
+|
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  =
+|
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    =
+|
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 =
+|
 
 
