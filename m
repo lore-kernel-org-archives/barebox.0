@@ -1,15 +1,15 @@
-Delivery-date: Thu, 04 Jun 2026 08:50:56 +0200
+Delivery-date: Thu, 04 Jun 2026 08:50:57 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wV1uq-002Btw-27
+	id 1wV1uq-002BuF-38
 	for lore@lore.pengutronix.de;
 	Thu, 04 Jun 2026 08:50:56 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wV1up-0007me-Jc
+	id 1wV1up-0007mq-O2
 	for lore@pengutronix.de; Thu, 04 Jun 2026 08:50:56 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,28 +17,28 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
 	:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=QQw3WwyqQVCqty50IpSNgL40ligLN5BpIDPvnG+3IIA=; b=h9wvuTN/Q0l9elVXIjkzx+L6WS
-	FVK69SwlumoMkbZJmP4WXbrhybtcnh8TImJ1XywhyJnTfhVWkFisJLf0srkPy7id1UYxL5ftQP+GD
-	IIB+KH/UINfHWcwJAVUAFNmC9oijHLFQDm+fih3i2rCVIsfcLVIalQBdnIF3pWfn0d+Xr4hC9iVG8
-	3y7A7wXAAHK8KOQAE5FdQcWOyH7x9iQ60kAzunKChmxxkE2iRI7gOXM8hpxbfHoC6OWa99aXscIac
-	Elpv/4VojEjU6v9obqklUGuW3+/sGEPNqEdU6SkpTv5C/gMCWQwG7J/4QVoJSNcHMSCjshSyAqNRQ
-	HItjjtBw==;
+	bh=xufaCptIVDwdHCu3LRe53n8qA9WPkKdSJStUn+Fw9nk=; b=DGUDFObKc0zsNnSPSW+equ/cbN
+	nh3Trh2/rsQdiqOvOt8Hl4w8iMCvwildRcFgFgXTmiIwV6JItEMw0tMYtns2+5c9PT8HOYefL6vy6
+	nQH+dndieBKTHmZWyoZCLc9RyIK9u1UdYt3WUvupAn3xXlrtbQCQ5FSMVHEzbENy/fHvMvWnEskZ/
+	hV/Pykp2Wqr5BP244cIj/dIglm8fBSxw7aJONebKKLpMfE2tZsFNizkp3kIGam2jlJl/HuhXPnpQP
+	Y9h2PztAKO3AFtVIX1zibBWSubICNcDvJ0F1rM2riMPEZg4JH3djzjCt57vQorWylhj7gVdfHTt9/
+	0u0wx2Jw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wV1uL-0000000GFEg-0KNz;
-	Thu, 04 Jun 2026 06:50:25 +0000
-Received: from mail-northeuropeazlp170120005.outbound.protection.outlook.com ([2a01:111:f403:c200::5] helo=DUZPR83CU001.outbound.protection.outlook.com)
+	id 1wV1uE-0000000GF6z-3mdJ;
+	Thu, 04 Jun 2026 06:50:18 +0000
+Received: from mail-norwayeastazon11013052.outbound.protection.outlook.com ([40.107.159.52] helo=OSPPR02CU001.outbound.protection.outlook.com)
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wV1uG-0000000GF7T-17cL
+	id 1wV1uC-0000000GF4B-0aaR
 	for barebox@lists.infradead.org;
-	Thu, 04 Jun 2026 06:50:21 +0000
+	Thu, 04 Jun 2026 06:50:17 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I4X6pqVWhtuPQ2oN4uOnzOzisiwjKj7CK6gfdT/lPrUDXba1rRTfMwFUZBLi1y6msekN3M++vG4JbzRj0xHab7hqxfbnNiv6Uaf3OX9RNeL+TufTi7q9ZgoMDmd1wnZZz0FUN6+SXpWwKkwXKVflM8+qopRT4TuZwgd0JRManA55T7e3EEdqzFsMXEKOI8+dzCFR8eS3wXpGhPcDLACnAHy8YTnvRNNwYm5QZ9sot9LXCGe7/pgNdwJTMfKSmGnxlvyjpIdGaCfZSeEq+1GM90DnglOpmyvYbq0bJQD/fRKis9rvsuHcUU6gi9CCkMvRV7RbCNS7vZwdFJuQxa0/SA==
+ b=My+Xa2R9b6iKgqh7v5srEZO5niA3jFN50GLDWXV1zBzsNSbzeQTN/SR8InGUtN/aY6Uob5gLzeguBp6Z94wDhAiKfUE7pT74rUydGAVEW7JrzS1bWJ0NDqF4U4X/o1zG7MPEIcLJ7l1tSyXijaXPVH0vjQGgE+WQzdmOvJ2m0jG0llio15HLYA2EaUksP89dC/8vklzrgS2fr9/Ju97Ca+4DmCQWoPuUoNyWHo266b/ZHW3wyxsM62ZavrILQ4WEPTUi0GuCxdWftUz7Ns/1IajqTQ+Ef10skIeWO5dLnIkdLjlDIl7N6xGjFjFGlKovYNkXmuBsQ7TEGiN6rTGzVQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QQw3WwyqQVCqty50IpSNgL40ligLN5BpIDPvnG+3IIA=;
- b=I0Jp7F+fSNGYL9KbA6BQCAYWEdyv07/2g0LXBfylvhy18KQkOXHTNyR46V1dFGpFucyVAVcoTmOTGvkp/Hj288TuQpWJU/NT6CJ0kaPf1CLHFD5tZ6dL9zDC9MNLvlCdi64yKfb+fqIuJBPEAXKfxxyouHfcaRPETjuNFhbfgvkgYDU9U1oqp9PNzsi+oqjgcrH0NzTP5HS1kKvpjXfIKSCnxISfyGy//zWXt9lXbPD0qCoMWL4auIK/j/HXYXsV4VaHfzD0ybdADADhyFHD2qPsIIIHYMzMorXtKt3fiTaH2zZYDBnHSl1IVgqV7mFt/xBLEs6V5NSyFPJEaDiynQ==
+ bh=xufaCptIVDwdHCu3LRe53n8qA9WPkKdSJStUn+Fw9nk=;
+ b=tjaAY1qRpYLoNVJxoWwZsL35pWZ5jU+N+K49/pR8kdbf4xokiclahH7edNGsQkfV7sd53KFBCB6BEbwl27/DN8yq7L9GYAEepz+4vcDM+/zihNlYxMYoHSujbL13fVioZ1DKQVhH74IvykFsKpcZYSI/Jfu2IuvYoy8ruvhXezqw6jT98mgr6uMFhUCX9QoE1Sbo+SeLe4vqSxucnGxI50GXUgYif+0yydeAKCsgVcMKqTkrUGW6q/goIGPSVhhWHtiyAG5YlNYHxv6EH+RD9uvLGR6rtDik6mWBtI+/nQ+/CJmCj2I97miJZ4tGbyJC3eKqMXbrV/QtDV35S2TMUg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  193.8.40.99) smtp.rcpttodomain=lists.infradead.org
  smtp.mailfrom=leica-geosystems.com; dmarc=pass (p=reject sp=reject pct=100)
@@ -47,18 +47,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QQw3WwyqQVCqty50IpSNgL40ligLN5BpIDPvnG+3IIA=;
- b=km9GqAVqLs4chzTV8yi/rlEEEc+DOPtnWQzhBzKnI9Ws9rd1kieA2KypNXRt773CsryOCgApAVcQUoLtuxW1d79T4KnnAd+TQg7Kik9pItecOE8ruse4RFt7u8lMW1SFYaTYCegki665YGiSjZ7tVtSCJ2YyuEvbsVgyL8nfEYQ=
-Received: from CWLP265CA0464.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1d4::19)
- by FR8PR06MB10694.eurprd06.prod.outlook.com (2603:10a6:d10:1b5::18) with
+ bh=xufaCptIVDwdHCu3LRe53n8qA9WPkKdSJStUn+Fw9nk=;
+ b=rrYekOJIP/cU951F6L6PqY3h/S5aTpFA9A8yoWq2UhIKSWzIbQJiGC8frj2U47YWgECVUdMIVX/COxVrXMDBl+7TagR64R1mD8INyJF7oZ9AARsz+CSm6O/QHmhRQkMoe8GV7zWLvloSVHbd5j5LMqWOZ5AV2zqXUnbrqXhPd3o=
+Received: from CWLP265CA0468.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1d4::21)
+ by PA2PR06MB9083.eurprd06.prod.outlook.com (2603:10a6:102:40b::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Thu, 4 Jun 2026
- 06:50:15 +0000
+ 06:50:11 +0000
 Received: from AMS0EPF00000199.eurprd05.prod.outlook.com
- (2603:10a6:400:1d4:cafe::b4) by CWLP265CA0464.outlook.office365.com
- (2603:10a6:400:1d4::19) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10a6:400:1d4:cafe::f9) by CWLP265CA0468.outlook.office365.com
+ (2603:10a6:400:1d4::21) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.8 via Frontend Transport; Thu, 4
- Jun 2026 06:50:14 +0000
+ Jun 2026 06:50:11 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 193.8.40.99)
  smtp.mailfrom=leica-geosystems.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=leica-geosystems.com;
@@ -68,50 +68,49 @@ Received-SPF: Pass (protection.outlook.com: domain of leica-geosystems.com
 Received: from hexagon.com (193.8.40.99) by
  AMS0EPF00000199.mail.protection.outlook.com (10.167.16.245) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.92.5 via Frontend Transport; Thu, 4 Jun 2026 06:50:14 +0000
+ 15.21.92.5 via Frontend Transport; Thu, 4 Jun 2026 06:50:11 +0000
 Received: from aherlnxbspsrv01.lgs-net.com ([10.61.228.61]) by hexagon.com with Microsoft SMTPSVC(10.0.17763.1697);
-	 Thu, 4 Jun 2026 08:50:12 +0200
+	 Thu, 4 Jun 2026 08:50:09 +0200
 From: Johannes Schneider <johannes.schneider@leica-geosystems.com>
 To: barebox@lists.infradead.org,
 	a.fatoum@pengutronix.de,
 	mgr@kernel.org,
 	l.stach@pengutronix.de
-Cc: thomas.haemmerle@leica-geosystems.com,
-	Johannes Schneider <johannes.schneider@leica-geosystems.com>
-Date: Thu,  4 Jun 2026 06:50:06 +0000
-Message-ID: <20260604065006.2933142-12-johannes.schneider@leica-geosystems.com>
+Cc: thomas.haemmerle@leica-geosystems.com
+Date: Thu,  4 Jun 2026 06:49:59 +0000
+Message-ID: <20260604065006.2933142-5-johannes.schneider@leica-geosystems.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260604065006.2933142-1-johannes.schneider@leica-geosystems.com>
 References: <20260604065006.2933142-1-johannes.schneider@leica-geosystems.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 04 Jun 2026 06:50:12.0718 (UTC) FILETIME=[647138E0:01DCF3EE]
+X-OriginalArrivalTime: 04 Jun 2026 06:50:09.0921 (UTC) FILETIME=[62C66F10:01DCF3EE]
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMS0EPF00000199:EE_|FR8PR06MB10694:EE_
+X-MS-TrafficTypeDiagnostic: AMS0EPF00000199:EE_|PA2PR06MB9083:EE_
 Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: f927f3bf-90b4-4889-f66f-08dec2058820
+X-MS-Office365-Filtering-Correlation-Id: 1be99a8e-bb71-462a-99ff-08dec20585f3
 X-SET-LOWER-SCL-SCANNER: YES
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|36860700016|82310400026|1800799024|376014|11063799006|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: BLo3sJR94LG0MetEFiglt8H7nAZ135Ln75LAPxRW+0R2uPlCiL9rsuccc5Z6gW8vmxEEBObbllVBBSt2NKs2/7Lxq+SmhZ5m4KMffPoRJ5/J94X+qL9YkhP3ZoRXzGWxXFZc/mYN9sfOtJNFXH82dFjq+hBxLyQBk4sq2TuJ8GMluCQ+LrtsMa46IIKHWrvDq16+e4z1eMWOG7QOYVmCLxpmMb315/rkvqOpeI4zxBwJR3CH076SJshlHS0Q0ALY3aD0bZVg3jQT+oGT+aPft/KDROp7WdQAhIk4x69LhiBHVmfDYkCJLX73mZRAGrQ1g8SVn1voosF6Ydl871aVs9nIPPoRGt6UM+t3C8vO2NQykqWIZNwWltN8ubNJPgopsIoK+HebJ9aSorctLj6mGksqydVO2enCXYQhvlwuMsG3vb2gt/6NeYaNslL7zA2pg1j1IYBOEn8CAV8y9AdyGtlgkUHH8tvtlGAB6tUsuajqc7yeINP3y52B257pE3XyYqL5t/TgBFHlYxJ9TeN/sfZmhuyilUbT+5h4ZFyYdowSqCBB1xqtAgPsGqJyfNb0rMxkCfsKVUOViTHiC1cp6gbmzyvVHhpaioPcsQ7v1H1T0j/5c87SJqMai7GpXUlDlnY5ZwCpS3MwBrL/7XcomJjhVEz4W0VB1ec3YERsT5BZzzI6WXV6ij7zmQc3eBdZDXItx1fI145nwUa3sCnQaIYmyWM0EpVNvxklAOzjEjM=
-X-Forefront-Antispam-Report: CIP:193.8.40.99;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:hexagon.com;PTR:ahersrvdom51.leica-geosystems.com;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(1800799024)(376014)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|36860700016|1800799024|376014|82310400026|22082099003|18002099003|6133799003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info: vgcYwunGcMqbcSulEMS3ogt3YC+NfXhinwSp4luaGNT94g2ENc6QDkyEjq9rscK/zRdUTVSj8E1XayrubiuqCVs2+TuxtEpXqOadMZlScZBHRjhf+4/171xfBjDU6f5y7ANyeRMJmj+Xj6Sz62ffFWWHO1sW6ET510zCQedpEomlALJYz+v3DNWFUL+fK4VSLyfGus92vPGlyPzk1hxzr5PAHxuk/N2+BIg+gDkn+jEZbo3Q8mIcdugg5gh6rendpWWgXXXPNxOndTgVPN7nRu4C4wasj1OL6hLz51zNcxQBeqQxSjXCrFLKcbfdKqZcfp+7ZKZEsxvR3m85wGg6svR1L00d+8mYjKcVGzpQyYW2cBP/p3T0NQmHQ+bz36A7BfGsP5jvf1Y3jtu6FZR2JW2BL+mM7IiDUcd7FmG5wUzQj+Jk1vTGKay3R3jmIWev8qDCCnjQ7tQVW181Fq3MYOIoXAKtx/YAUfz4KFIi0tYMUOzDDaL/7DFlNhTz37J6k84ZR7MF/SihzWe/qJ3u8LLxIRBVqjYLrVb0ug8p4H1QXDeLuwFj5XCoOYuqhkitGnrctwLlBI6g2CA4Ej0CvtzpYSq0gQCW/eUKj12d8JaJhZHma5T7f6ZMjqMBfKKjWO8q5L0/7B7Aubi3zazXoeaJJRt79dwYLwpnt7Mb8qy1Y8Wm4O79W87h/tnbHYbug0NvWZ1IMS9fycK7k/n8x2ruZtF9vFMBpzl/RnJ4EqQ=
+X-Forefront-Antispam-Report: CIP:193.8.40.99;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:hexagon.com;PTR:ahersrvdom51.leica-geosystems.com;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(376014)(82310400026)(22082099003)(18002099003)(6133799003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: TyShTYLFM90NoIIiiPCJ/wdgznk0zHq60D9W4QAK0FU+Fdl6oRUrxpx/x2yeUFFDNa9MChqh+1kpgFrx5ksOYJctAtgEBIM0s1Otajo9ccBkH2HCj2s5RcBX5XxzOaym/XtYPZBO48Ezo8QbIOJmU82xl4bRTl95o0+ykYZIRlWoVT64vDi5I+fSpVwR2qdfW3F6alElIXOBYGsfA72VpmaNjZ7Ula3LimyUN9t9epzfPVQpBQyqA841yphLdMXXuoY9HyPk0TNFwfl0EvBKm15G4SpHloXrzcbB8mJhGj9qs8yHy3JhL1N29smN8EYc3OvkxPNyWjbMcrWzORUmHfbUaFLjYRGfETM4qLQdQJNGsmx61ES1nQvx3nZKmBQF6hlN1fS2duEiG9sLZobkzui75Ls+H2zOP5hmIfZMDJ7JT+hNwlMjkA5PX4Zc5YJu
+X-MS-Exchange-AntiSpam-MessageData-0: NFt53nao+uIKX8YfKS2yR1czzCL2w3PfRhe6+X5bUagMsyzx7+iRc5K8tPWWjkVAtIGC72uGbu3Gq/vcAxFVAbQ9LZH3T4pLrKZszVGRbBow+QEfhxuwWU8jPRlgA6LaFOm0TNZ0iTyQ1dH0eAp4LOV0z79J+wNwIZQloowHK5gP14YG+Uc4hSA9kSMkhUSFlXseqSNkltQHpL7Fqs+1TdxNzJ9nLdAshVl8EXQXWwbNcjlFCFrqNvInIH2m8M91VmEJHbKSu9nP0+NUnaVl+ABpKOLK+kcUE54CxI5aGaZLfOasnjknBgDEuh2EF9zw/ae06ydntp9n26QxCk/lA8HhWvC3mnF2DYV4ld1+vwbsFp6zm56z5QH5t/kyohr8MBtW9hCggjqBVl+xP30GPh9s3ngWsi9kw9o7CMCjXLDPZEGgDAGxjYZqeMmz4vIc
 X-OriginatorOrg: leica-geosystems.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 06:50:14.7315
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 06:50:11.0791
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f927f3bf-90b4-4889-f66f-08dec2058820
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1be99a8e-bb71-462a-99ff-08dec20585f3
 X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.99];Helo=[hexagon.com]
 X-MS-Exchange-CrossTenant-AuthSource: AMS0EPF00000199.eurprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR8PR06MB10694
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR06MB9083
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260603_235020_434168_83F25D63 
-X-CRM114-Status: GOOD (  10.72  )
+X-CRM114-CacheID: sfid-20260603_235016_183764_A7990327 
+X-CRM114-Status: GOOD (  13.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -133,47 +132,93 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 11/11] video: simple-panel: lazily resolve backlight without failing
+Subject: [PATCH v2 04/11] video: backlight-pwm: make power-supply and enable-gpio optional
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-simple_panel_enable() returned -ENODEV when of_backlight_find() came
-back NULL at the moment of VPL_ENABLE.  With deep-probe, or simply
-when the panel binds before its pwm-backlight, the first call sees
-NULL -- and we'd then skip the regulator and enable-GPIO assertion
-entirely, leaving the panel dark even though scanout was already
-running into it.
+From: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
 
-Try the lookup on each enable, but if it isn't there yet just skip
-the brightness_default() call and proceed with the rest of the panel
-power-up.  Board code that drives the backlight separately still
-works; the panel re-resolves on the next VPL_ENABLE.
+Boards often omit power-supply (rail is always-on) or use enable-gpios
+without a discrete supply.  The driver returned -ENODEV when either was
+missing, blocking display init.
 
-Signed-off-by: Johannes Schneider <johannes.schneider@leica-geosystems.com>
+Switch to regulator_get_optional() so a missing power-supply property
+surfaces as -ENODEV (instead of a silent NULL the IS_ERR check never
+catches), and handle that case by leaving ->power = NULL.
+regulator_enable() / regulator_disable() are already NULL-safe, no
+extra guards needed at the call sites.
+
+While here, fix the GPIO descriptor name: gpiod_get_optional() appends
+"-gpios" itself, so the previous "enable-gpios" looked for a non-existent
+"enable-gpios-gpios" property and never resolved the enable GPIO.  Use
+"enable" with GPIOD_ASIS so the boot-time pin state is preserved.
+
+Use dev_errp_probe() for the PWM lookup so the underlying error and
+deferred-probe path are propagated correctly; drop an unused 'ret' in
+of_backlight_find().
+
+Fixes: 4c7238df6866 ("video: backlight-pwm: switch to gpiod functions")
+Signed-off-by: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
 ---
- drivers/video/simple-panel.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ drivers/video/backlight-pwm.c | 16 ++++++++--------
+ drivers/video/backlight.c     |  2 +-
+ 3 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/video/simple-panel.c b/drivers/video/simple-panel.c
-index 66d519425a..8ffb6db6f6 100644
---- a/drivers/video/simple-panel.c
-+++ b/drivers/video/simple-panel.c
-@@ -36,13 +36,9 @@ static int simple_panel_enable(struct simple_panel *panel)
+diff --git a/drivers/video/backlight-pwm.c b/drivers/video/backlight-pwm.c
+index d3c81114e0..14fad55637 100644
+--- a/drivers/video/backlight-pwm.c
++++ b/drivers/video/backlight-pwm.c
+@@ -148,7 +148,7 @@ static int pwm_backlight_parse_dt(struct device *dev,
+ 		pwm_backlight->backlight.brightness_max = pwm_backlight->scale;
+ 	}
  
- 	dev_dbg(panel->dev, "enabling\n");
+-	pwm_backlight->enable_gpio = gpiod_get_optional(dev, "enable-gpios", 0);
++	pwm_backlight->enable_gpio = gpiod_get_optional(dev, "enable", GPIOD_ASIS);
  
--	if (panel->backlight_node && !panel->backlight) {
-+	/* resolve lazily; backlight may probe after us */
-+	if (panel->backlight_node && !panel->backlight)
- 		panel->backlight = of_backlight_find(panel->backlight_node);
--		if (!panel->backlight) {
--			dev_err(panel->dev, "Cannot find backlight\n");
--			return -ENODEV;
--		}
+ 	return 0;
+ }
+@@ -160,10 +160,8 @@ static int backlight_pwm_of_probe(struct device *dev)
+ 	struct pwm_device *pwm;
+ 
+ 	pwm = of_pwm_request(dev->of_node, NULL);
+-	if (IS_ERR(pwm)) {
+-		dev_err(dev, "Cannot find PWM device\n");
+-		return PTR_ERR(pwm);
 -	}
++	if (IS_ERR(pwm))
++		return dev_errp_probe(dev, pwm, "Cannot find PWM device\n");
  
- 	regulator_enable(panel->power);
+ 	pwm_backlight = xzalloc(sizeof(*pwm_backlight));
+ 	pwm_backlight->pwm = pwm;
+@@ -173,10 +171,12 @@ static int backlight_pwm_of_probe(struct device *dev)
+ 	if (ret)
+ 		return ret;
  
+-	pwm_backlight->power = regulator_get(dev, "power");
++	pwm_backlight->power = regulator_get_optional(dev, "power");
+ 	if (IS_ERR(pwm_backlight->power)) {
+-		dev_err(dev, "Cannot find regulator\n");
+-		return PTR_ERR(pwm_backlight->power);
++		if (PTR_ERR(pwm_backlight->power) != -ENODEV)
++			return dev_errp_probe(dev, pwm_backlight->power,
++					      "power supply\n");
++		pwm_backlight->power = NULL;
+ 	}
+ 
+ 	pwm_backlight->backlight.slew_time_ms = 100;
+diff --git a/drivers/video/backlight.c b/drivers/video/backlight.c
+index 6d8146ee5a..066742fe28 100644
+--- a/drivers/video/backlight.c
++++ b/drivers/video/backlight.c
+@@ -95,7 +95,7 @@ struct backlight_device *of_backlight_find(struct device_node *node)
+ {
+ 	struct backlight_device *bl;
+ 
+-	of_device_ensure_probed(node);
++	(void)of_device_ensure_probed(node);
+ 
+ 	class_for_each_container_of_device(&backlight_class, bl, dev)
+ 		if (bl->node == node)
 -- 
 2.43.0
 
