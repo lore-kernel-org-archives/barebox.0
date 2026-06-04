@@ -3,13 +3,13 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wV1uq-002Bti-1Q
+	id 1wV1uq-002Btw-27
 	for lore@lore.pengutronix.de;
 	Thu, 04 Jun 2026 08:50:56 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wV1uo-0007mG-Ff
+	id 1wV1up-0007me-Jc
 	for lore@pengutronix.de; Thu, 04 Jun 2026 08:50:56 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,28 +17,28 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
 	:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ofkohQmu+SGUOZoaorM/fcAgsZoIyS43u9+Zbu71UH0=; b=NmlEULzDgRQ2eDTOmdGRTwgyL2
-	hABCURAkUG6nqU+awBdmItXxN63q2/8sYGU1oPY2ERVW/iz0wIntw6IRnR91kNES8QuE3mrgtSpgX
-	q7DTyqkcFW11OSk+RQX6ZQIE4F1QP/wdwHo5SK5nlp4iYIE1PYgeYSKyeraa+O0xRpmZ8APTsFH9i
-	GGnxpSeo5pTQ/iJjRcj+bZ6rddAfw5gty4RrjrdMRkq+NwJqa1PJs+Y0rr/w85VEpdpPuPXUgf4fP
-	59Tl99TG2WAVn4XtwpydvfR2g+yeguVk5lnk/REE55TLO+P9EGyG9YlL9L37nCdUe5ntjLPuHVwz3
-	z1Hhx0cw==;
+	bh=QQw3WwyqQVCqty50IpSNgL40ligLN5BpIDPvnG+3IIA=; b=h9wvuTN/Q0l9elVXIjkzx+L6WS
+	FVK69SwlumoMkbZJmP4WXbrhybtcnh8TImJ1XywhyJnTfhVWkFisJLf0srkPy7id1UYxL5ftQP+GD
+	IIB+KH/UINfHWcwJAVUAFNmC9oijHLFQDm+fih3i2rCVIsfcLVIalQBdnIF3pWfn0d+Xr4hC9iVG8
+	3y7A7wXAAHK8KOQAE5FdQcWOyH7x9iQ60kAzunKChmxxkE2iRI7gOXM8hpxbfHoC6OWa99aXscIac
+	Elpv/4VojEjU6v9obqklUGuW3+/sGEPNqEdU6SkpTv5C/gMCWQwG7J/4QVoJSNcHMSCjshSyAqNRQ
+	HItjjtBw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wV1uG-0000000GF8O-0nZD;
-	Thu, 04 Jun 2026 06:50:20 +0000
-Received: from mail-northeuropeazlp170110003.outbound.protection.outlook.com ([2a01:111:f403:c200::3] helo=DU2PR03CU002.outbound.protection.outlook.com)
+	id 1wV1uL-0000000GFEg-0KNz;
+	Thu, 04 Jun 2026 06:50:25 +0000
+Received: from mail-northeuropeazlp170120005.outbound.protection.outlook.com ([2a01:111:f403:c200::5] helo=DUZPR83CU001.outbound.protection.outlook.com)
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wV1uC-0000000GF4D-2EXo
+	id 1wV1uG-0000000GF7T-17cL
 	for barebox@lists.infradead.org;
-	Thu, 04 Jun 2026 06:50:18 +0000
+	Thu, 04 Jun 2026 06:50:21 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CiumnEoXV/v9qoe/9DtQAE+4Yk9LA8LU66t8H2fZsYt3U6d/As89OfxyH3/SeEhP0q/tmTd2eIHx0bAgaJwVnxgYRCdvG9QT8U65DmGRhLzKSotHVV1UI/sbDXRUfK/8ApUMt9BFZLjP022SDC/6kDmmRLkOHoTMUT4nZ0cDRGtIaZ7a/dxI8hJf9MuvQ2V2FXK93zoNgPtnsPDp2SMvgTy3mrDzpWxgetKr/IfbAqX5Ed9dvBg3+jYUlFPO5Ybq9IJzliM6eJbo0xMjIaPJumW7GbuWC62AX+kDhF2cY133wr3HGwVcU/5D6LENoUfdSpXxEKRUkp/LXc+gQItGrw==
+ b=I4X6pqVWhtuPQ2oN4uOnzOzisiwjKj7CK6gfdT/lPrUDXba1rRTfMwFUZBLi1y6msekN3M++vG4JbzRj0xHab7hqxfbnNiv6Uaf3OX9RNeL+TufTi7q9ZgoMDmd1wnZZz0FUN6+SXpWwKkwXKVflM8+qopRT4TuZwgd0JRManA55T7e3EEdqzFsMXEKOI8+dzCFR8eS3wXpGhPcDLACnAHy8YTnvRNNwYm5QZ9sot9LXCGe7/pgNdwJTMfKSmGnxlvyjpIdGaCfZSeEq+1GM90DnglOpmyvYbq0bJQD/fRKis9rvsuHcUU6gi9CCkMvRV7RbCNS7vZwdFJuQxa0/SA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ofkohQmu+SGUOZoaorM/fcAgsZoIyS43u9+Zbu71UH0=;
- b=dvcl6kGRsujacEPD6lV6pjieZhX5Dq72jpPFRUBIFMeagPSZ0Nnd6PTLZa4U/M204m8Vcu97+WbwlbnUeGhT+ePLWDadJFbJKCoEu77TqZDiMV27//HygMwNudWcJOqzMJV28fWf67CACje45N01v55esEFtrrV70K7RoTApyCPi2ya+SpKlxXS0j+EEq1D/3yyYOc5JbvcepPQBo5h1tD2oGqj5MnCr5o+6Q/LgGnNECuVxbk73wDdH1dWQzpp2ZJ3UwnuqMi9SbqMMvAMXb4Yypk3RVCbOH3+inyD098iebaSMn/nO91orNb7xxMW3bxzfl5WZKkBUMDNhB7GLZA==
+ bh=QQw3WwyqQVCqty50IpSNgL40ligLN5BpIDPvnG+3IIA=;
+ b=I0Jp7F+fSNGYL9KbA6BQCAYWEdyv07/2g0LXBfylvhy18KQkOXHTNyR46V1dFGpFucyVAVcoTmOTGvkp/Hj288TuQpWJU/NT6CJ0kaPf1CLHFD5tZ6dL9zDC9MNLvlCdi64yKfb+fqIuJBPEAXKfxxyouHfcaRPETjuNFhbfgvkgYDU9U1oqp9PNzsi+oqjgcrH0NzTP5HS1kKvpjXfIKSCnxISfyGy//zWXt9lXbPD0qCoMWL4auIK/j/HXYXsV4VaHfzD0ybdADADhyFHD2qPsIIIHYMzMorXtKt3fiTaH2zZYDBnHSl1IVgqV7mFt/xBLEs6V5NSyFPJEaDiynQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  193.8.40.99) smtp.rcpttodomain=lists.infradead.org
  smtp.mailfrom=leica-geosystems.com; dmarc=pass (p=reject sp=reject pct=100)
@@ -47,18 +47,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ofkohQmu+SGUOZoaorM/fcAgsZoIyS43u9+Zbu71UH0=;
- b=lThfu3o6nMGxaEJtGz4yCkCNBzoztkK0wDOUG/u0ca3NlreunEus8b6qXzEATTsYObI55x2j2P44Lgj5oNGa9CiYgMvsvAH4XzZRI86X0ul/XbIWIz29I/iU0OwTnHCaksh3If9t+zz4UmM8jwlnL2GA0xcSVlmERWgzWSl1H+8=
-Received: from CWLP265CA0463.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1d4::15)
- by VE1PR06MB6944.eurprd06.prod.outlook.com (2603:10a6:800:1ac::8) with
+ bh=QQw3WwyqQVCqty50IpSNgL40ligLN5BpIDPvnG+3IIA=;
+ b=km9GqAVqLs4chzTV8yi/rlEEEc+DOPtnWQzhBzKnI9Ws9rd1kieA2KypNXRt773CsryOCgApAVcQUoLtuxW1d79T4KnnAd+TQg7Kik9pItecOE8ruse4RFt7u8lMW1SFYaTYCegki665YGiSjZ7tVtSCJ2YyuEvbsVgyL8nfEYQ=
+Received: from CWLP265CA0464.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1d4::19)
+ by FR8PR06MB10694.eurprd06.prod.outlook.com (2603:10a6:d10:1b5::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.92.7; Thu, 4 Jun 2026
- 06:50:10 +0000
+ 06:50:15 +0000
 Received: from AMS0EPF00000199.eurprd05.prod.outlook.com
- (2603:10a6:400:1d4:cafe::3) by CWLP265CA0463.outlook.office365.com
- (2603:10a6:400:1d4::15) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.7 via Frontend Transport; Thu, 4
- Jun 2026 06:50:10 +0000
+ (2603:10a6:400:1d4:cafe::b4) by CWLP265CA0464.outlook.office365.com
+ (2603:10a6:400:1d4::19) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.92.8 via Frontend Transport; Thu, 4
+ Jun 2026 06:50:14 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 193.8.40.99)
  smtp.mailfrom=leica-geosystems.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=leica-geosystems.com;
@@ -68,9 +68,9 @@ Received-SPF: Pass (protection.outlook.com: domain of leica-geosystems.com
 Received: from hexagon.com (193.8.40.99) by
  AMS0EPF00000199.mail.protection.outlook.com (10.167.16.245) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.92.5 via Frontend Transport; Thu, 4 Jun 2026 06:50:10 +0000
+ 15.21.92.5 via Frontend Transport; Thu, 4 Jun 2026 06:50:14 +0000
 Received: from aherlnxbspsrv01.lgs-net.com ([10.61.228.61]) by hexagon.com with Microsoft SMTPSVC(10.0.17763.1697);
-	 Thu, 4 Jun 2026 08:50:08 +0200
+	 Thu, 4 Jun 2026 08:50:12 +0200
 From: Johannes Schneider <johannes.schneider@leica-geosystems.com>
 To: barebox@lists.infradead.org,
 	a.fatoum@pengutronix.de,
@@ -78,41 +78,40 @@ To: barebox@lists.infradead.org,
 	l.stach@pengutronix.de
 Cc: thomas.haemmerle@leica-geosystems.com,
 	Johannes Schneider <johannes.schneider@leica-geosystems.com>
-Date: Thu,  4 Jun 2026 06:49:57 +0000
-Message-ID: <20260604065006.2933142-3-johannes.schneider@leica-geosystems.com>
+Date: Thu,  4 Jun 2026 06:50:06 +0000
+Message-ID: <20260604065006.2933142-12-johannes.schneider@leica-geosystems.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260604065006.2933142-1-johannes.schneider@leica-geosystems.com>
 References: <20260604065006.2933142-1-johannes.schneider@leica-geosystems.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 04 Jun 2026 06:50:08.0968 (UTC) FILETIME=[62350480:01DCF3EE]
+X-OriginalArrivalTime: 04 Jun 2026 06:50:12.0718 (UTC) FILETIME=[647138E0:01DCF3EE]
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMS0EPF00000199:EE_|VE1PR06MB6944:EE_
+X-MS-TrafficTypeDiagnostic: AMS0EPF00000199:EE_|FR8PR06MB10694:EE_
 Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: 18bed824-111e-43a7-38f8-08dec2058562
+X-MS-Office365-Filtering-Correlation-Id: f927f3bf-90b4-4889-f66f-08dec2058820
 X-SET-LOWER-SCL-SCANNER: YES
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|82310400026|36860700016|376014|1800799024|56012099006|11063799006|3023799007|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: iBg63hFydEmOw7FgoKsanLt4pqSVgUAUSgAQi0fP+ftc+tnuaJsS179r3mYtwDqNWKaoOM1VxM3L5u29zuztUXyOKK5/qSl4eJTHk5N+lfa99QyXPVw4xOqOPMS7js2j/yeRjo+m9jPAQWl9IrlyeLvG6bW5t/YyVvfQ2zukN7FfGoCwRAnRlDYUqW1KcdabWR0oaoiVhOwbRBkjyAgUWSHxMcFgR9tS2utmlo6DA/+PY+C8vLODcTCPTkOiqVA8/wNxUfR/dfNzDXGlRnJ1qV9YuP5UB+55C85jvi+E2jxexKRQRtDes9iU2nmOi4/zehEmITjCMHP77DR0qnn0S8UwnXvTFbTiAZIMiPwN3/PwZTWVZC9vHPXfuGyqwtF9fyfsqoPXeeoWJfOwMz8aafu1KDCyV717eW6rf7CoUgtf/qsJu4YDGcgxbpDvXdkwQFgDHt9bVAxuAiXJhnd5umKYqeZ0LHAN8Gpemrr/y1ZwvxY10850PVeKYphFWErVDhzUq6Cw4btO0JOv762bcS8lzZvVkR/u65DZgnkf2TlqBL+CSFhsrh5azhmBKzblEfVdzvtbRg7tHE7s3Xyu9BGp9ejxUe/o22IXR8hEBixmH3Dmx2es5Rg2BMO3hcfKxgEGM2FhaEsM8eoGKnK9PQ+JDYCuppVbWFvczzXLC4Z6K+/3KKNQaNBmroLRL7uX7lkGrw8K4XRRcqzkuYkHrjKhFp1OYnwhWS7fyZqyt38=
-X-Forefront-Antispam-Report: CIP:193.8.40.99;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:hexagon.com;PTR:ahersrvdom51.leica-geosystems.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(376014)(1800799024)(56012099006)(11063799006)(3023799007)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|36860700016|82310400026|1800799024|376014|11063799006|56012099006|22082099003|18002099003;
+X-Microsoft-Antispam-Message-Info: BLo3sJR94LG0MetEFiglt8H7nAZ135Ln75LAPxRW+0R2uPlCiL9rsuccc5Z6gW8vmxEEBObbllVBBSt2NKs2/7Lxq+SmhZ5m4KMffPoRJ5/J94X+qL9YkhP3ZoRXzGWxXFZc/mYN9sfOtJNFXH82dFjq+hBxLyQBk4sq2TuJ8GMluCQ+LrtsMa46IIKHWrvDq16+e4z1eMWOG7QOYVmCLxpmMb315/rkvqOpeI4zxBwJR3CH076SJshlHS0Q0ALY3aD0bZVg3jQT+oGT+aPft/KDROp7WdQAhIk4x69LhiBHVmfDYkCJLX73mZRAGrQ1g8SVn1voosF6Ydl871aVs9nIPPoRGt6UM+t3C8vO2NQykqWIZNwWltN8ubNJPgopsIoK+HebJ9aSorctLj6mGksqydVO2enCXYQhvlwuMsG3vb2gt/6NeYaNslL7zA2pg1j1IYBOEn8CAV8y9AdyGtlgkUHH8tvtlGAB6tUsuajqc7yeINP3y52B257pE3XyYqL5t/TgBFHlYxJ9TeN/sfZmhuyilUbT+5h4ZFyYdowSqCBB1xqtAgPsGqJyfNb0rMxkCfsKVUOViTHiC1cp6gbmzyvVHhpaioPcsQ7v1H1T0j/5c87SJqMai7GpXUlDlnY5ZwCpS3MwBrL/7XcomJjhVEz4W0VB1ec3YERsT5BZzzI6WXV6ij7zmQc3eBdZDXItx1fI145nwUa3sCnQaIYmyWM0EpVNvxklAOzjEjM=
+X-Forefront-Antispam-Report: CIP:193.8.40.99;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:hexagon.com;PTR:ahersrvdom51.leica-geosystems.com;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(1800799024)(376014)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: HIleXRaCGqMcQzHeHugYkzZTwIPCnK4Uck4LnOiIn5l/CYY9855la/kjPVYlZr6LqziwlHwTc5FayAGRL8UpWYnsR5ZpY5Tn2AxGriAg1LB9Nn/mxreBW9eAcvvXPO+rx3QOWwLlh2GuCk+NBYAiMWwj5I72j4ue+O8sb1wbtZCGciqqKdLLsibOSvTEQ/ddC874RPVeDLVp20quAKFXY+X76eFiyRiqFpIJvddspeDRPZZAels8iQmFltgum7j0BVY6A1lMDmEgxCT4b8H5U4Sbu1nDpSGJvh0P6UuS1by6g/9fuvwE/gpV2cY/XyzYhIyhi/NhHHd0GVHhai4PlugUCB6OusKtAev41F8rEgtSu+4BbbIkGYnmeazTd7SfKSxvlyeuquZesHVf3j96tYIwmHRj1DvWKh3zxgawxZ0Be7udPUogzykHF3WvjKzB
+X-MS-Exchange-AntiSpam-MessageData-0: TyShTYLFM90NoIIiiPCJ/wdgznk0zHq60D9W4QAK0FU+Fdl6oRUrxpx/x2yeUFFDNa9MChqh+1kpgFrx5ksOYJctAtgEBIM0s1Otajo9ccBkH2HCj2s5RcBX5XxzOaym/XtYPZBO48Ezo8QbIOJmU82xl4bRTl95o0+ykYZIRlWoVT64vDi5I+fSpVwR2qdfW3F6alElIXOBYGsfA72VpmaNjZ7Ula3LimyUN9t9epzfPVQpBQyqA841yphLdMXXuoY9HyPk0TNFwfl0EvBKm15G4SpHloXrzcbB8mJhGj9qs8yHy3JhL1N29smN8EYc3OvkxPNyWjbMcrWzORUmHfbUaFLjYRGfETM4qLQdQJNGsmx61ES1nQvx3nZKmBQF6hlN1fS2duEiG9sLZobkzui75Ls+H2zOP5hmIfZMDJ7JT+hNwlMjkA5PX4Zc5YJu
 X-OriginatorOrg: leica-geosystems.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 06:50:10.1256
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2026 06:50:14.7315
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 18bed824-111e-43a7-38f8-08dec2058562
+X-MS-Exchange-CrossTenant-Network-Message-Id: f927f3bf-90b4-4889-f66f-08dec2058820
 X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.99];Helo=[hexagon.com]
 X-MS-Exchange-CrossTenant-AuthSource: AMS0EPF00000199.eurprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR06MB6944
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR8PR06MB10694
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260603_235016_573888_C0F6DC5E 
-X-CRM114-Status: UNSURE (   8.46  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260603_235020_434168_83F25D63 
+X-CRM114-Status: GOOD (  10.72  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -134,43 +133,47 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 02/11] clk: imx8mp: add 1039.5 MHz and 519.75 MHz rate entries for VIDEO_PLL1
+Subject: [PATCH v2 11/11] video: simple-panel: lazily resolve backlight without failing
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The upstream arch/arm64/boot/dts/freescale/imx8mp.dtsi pins VIDEO_PLL1
-to 1039.5 MHz (1080p60 LVDS link, 148.5 MHz * 7) via media_blk_ctrl's
-assigned-clock-rates.  Without the table entry, that assignment fails
--EINVAL at media_blk_ctrl probe and the clock tree below LCDIF2 is
-broken before lcdif2's own assigned-clock-rates can rebind it.
+simple_panel_enable() returned -ENODEV when of_backlight_find() came
+back NULL at the moment of VPL_ENABLE.  With deep-probe, or simply
+when the panel binds before its pwm-backlight, the first call sees
+NULL -- and we'd then skip the regulator and enable-GPIO assertion
+entirely, leaving the panel dark even though scanout was already
+running into it.
 
-Add the 1039.5 MHz entry and the 519.75 MHz dual-link half-rate from
-Linux's imx_pll1443x_tbl.  Parameters:
-  Fout = 24 MHz * (m + k/65536) / (p * 2^s)
-  1039.5 MHz: m=173, p=2, s=1, k=16384
-   519.75 MHz: m=173, p=2, s=2, k=16384
+Try the lookup on each enable, but if it isn't there yet just skip
+the brightness_default() call and proceed with the rest of the panel
+power-up.  Board code that drives the backlight separately still
+works; the panel re-resolves on the next VPL_ENABLE.
 
 Signed-off-by: Johannes Schneider <johannes.schneider@leica-geosystems.com>
 ---
- drivers/clk/imx/clk-pll14xx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/video/simple-panel.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/imx/clk-pll14xx.c b/drivers/clk/imx/clk-pll14xx.c
-index db7e744e87..8a773f19f8 100644
---- a/drivers/clk/imx/clk-pll14xx.c
-+++ b/drivers/clk/imx/clk-pll14xx.c
-@@ -61,9 +61,11 @@ static const struct imx_pll14xx_rate_table imx_pll1416x_tbl[] = {
- };
+diff --git a/drivers/video/simple-panel.c b/drivers/video/simple-panel.c
+index 66d519425a..8ffb6db6f6 100644
+--- a/drivers/video/simple-panel.c
++++ b/drivers/video/simple-panel.c
+@@ -36,13 +36,9 @@ static int simple_panel_enable(struct simple_panel *panel)
  
- static const struct imx_pll14xx_rate_table imx_pll1443x_tbl[] = {
-+	PLL_1443X_RATE(1039500000U, 173, 2, 1, 16384),
- 	PLL_1443X_RATE(700000000U, 350, 3, 2, 0),
- 	PLL_1443X_RATE(650000000U, 325, 3, 2, 0),
- 	PLL_1443X_RATE(594000000U, 198, 2, 2, 0),
-+	PLL_1443X_RATE(519750000U, 173, 2, 2, 16384),
- 	PLL_1443X_RATE(393216000U, 262, 2, 3, 9437),
- 	PLL_1443X_RATE(361267200U, 361, 3, 3, 17511),
- };
+ 	dev_dbg(panel->dev, "enabling\n");
+ 
+-	if (panel->backlight_node && !panel->backlight) {
++	/* resolve lazily; backlight may probe after us */
++	if (panel->backlight_node && !panel->backlight)
+ 		panel->backlight = of_backlight_find(panel->backlight_node);
+-		if (!panel->backlight) {
+-			dev_err(panel->dev, "Cannot find backlight\n");
+-			return -ENODEV;
+-		}
+-	}
+ 
+ 	regulator_enable(panel->power);
+ 
 -- 
 2.43.0
 
