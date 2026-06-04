@@ -1,47 +1,47 @@
-Delivery-date: Thu, 04 Jun 2026 13:08:12 +0200
+Delivery-date: Thu, 04 Jun 2026 13:08:24 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wV5vo-002Fog-0Q
+	id 1wV5w0-002Fp6-2Z
 	for lore@lore.pengutronix.de;
-	Thu, 04 Jun 2026 13:08:12 +0200
+	Thu, 04 Jun 2026 13:08:24 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wV5vn-0000oL-GQ
-	for lore@pengutronix.de; Thu, 04 Jun 2026 13:08:12 +0200
+	id 1wV5w0-0000sn-4c
+	for lore@pengutronix.de; Thu, 04 Jun 2026 13:08:24 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3X4iBiG+x43ruUBMdKuHEJnianOWYJdPk9EnPNApL44=; b=1FEks92M80XQPgs//csDf81rSH
-	k3kOM99olRbMxEokmVsNlGvM/ARzmU38xQVIfaH+XPoRIIWX/2WoO0iqea9YhoMmOUkW2kzfYIdfK
-	xfa4Sz/c7EAfbJuX49pYIY1Qe9lVQaC4U5IcykXu9Er3qdD/cX1Hf9utW4xGOH6LtMuqsjVujHtzz
-	L3TVw0urEkNSkN2bheAmFIemtQAny3uTKP+YP7VIqWPO2yV3U1tS42QuZlfglSjiyXuhC+GOHQi4Y
-	+ry6WC8LlAMms1MeUKze2zeYV9Dib8J3foG668TIXvEYrIe95uflKVg2CL9peENWSBMGwEy4bnfDE
-	LFxT6KQA==;
+	bh=RaqM/9ys3EuMo/Qnkigq4ydIVBeBXgODPq6eZEZwjoQ=; b=KVvVM8aYjMt0UmIoER8akKKENy
+	+UTjMT+lIuH3lFcK0P1ggjrvsL0B00osWpk9b6a3a290Adx8aYoOJal3hjxrGuLKWCSsSsD5Fitcs
+	jYnBAsvk/3yW+WDHOnRMSYAC7BxL2dLjuJQAjBH8benIATB/IQ/NIE//dpTH3Tm2QtTS4pOky9fM5
+	df+yXFYjxdRg+RXL47ZKdIERaGmJrp1VRzppMjGmLaayJ9x5fpF5cfUzLWZQkjT40Z10MTKVOoWU0
+	Wer1m8PiBDL0XhnKxxDjPDRS9qtBHKisIFcOgoY2QOe0u9nmDMyFZZWQHz8WcJ7fsXtz4LjYWPt0i
+	mLrcjp4g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wV5ul-0000000Gbyv-1eIY;
+	id 1wV5ul-0000000Gbyn-1Axg;
 	Thu, 04 Jun 2026 11:07:07 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wV5ue-0000000GbwS-2YCh
+	id 1wV5ue-0000000GbwU-2ZBG
 	for barebox@lists.infradead.org;
-	Thu, 04 Jun 2026 11:07:05 +0000
+	Thu, 04 Jun 2026 11:07:04 +0000
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.tretter@pengutronix.de>)
-	id 1wV5uc-0000IX-7r; Thu, 04 Jun 2026 13:06:58 +0200
+	id 1wV5uc-0000IX-AQ; Thu, 04 Jun 2026 13:06:58 +0200
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Thu, 04 Jun 2026 13:06:54 +0200
+Date: Thu, 04 Jun 2026 13:06:56 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260604-socfpga-axe5-sdram-init-v1-1-274f6361ce98@pengutronix.de>
+Message-Id: <20260604-socfpga-axe5-sdram-init-v1-3-274f6361ce98@pengutronix.de>
 References: <20260604-socfpga-axe5-sdram-init-v1-0-274f6361ce98@pengutronix.de>
 In-Reply-To: <20260604-socfpga-axe5-sdram-init-v1-0-274f6361ce98@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -50,8 +50,8 @@ Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>,
  Michael Tretter <m.tretter@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260604_040700_670870_13AD59B9 
-X-CRM114-Status: GOOD (  10.27  )
+X-CRM114-CacheID: sfid-20260604_040700_673424_6DAA43AB 
+X-CRM114-Status: GOOD (  15.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,71 +72,68 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH 1/5] arm: socfpga: agilex5: separate EL3 init function
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 3/5] arm: socfpga: iossm: add delay to wait for firmware
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Extract the EL3 initialization from the entry function as cleanup and to
-be able to adjust the el3_init code more easily.
+Depending on the boot time of barebox, I observed cases, where the IOSSM
+version register reported mailbox version 0 even though its version 0.
+If this happens, barebox uses the wrong interface to read the SDRAM
+configuration, is not able to detect and configure the SDRAM, and fails
+to boot.
+
+Unfortunately, the IOSSM firmware does not provide a proper
+synchronization point to detect if the firmware finished its
+initialization.
+
+Add a workaround to delay the boot until the firmware initialized the
+version register or a delay for mailbox version 0.
+
+Don't use readl_poll_timeout, because in the PBL readl_poll_timeout
+polls indefinitely and the polling needs to run into the timeout in case
+of mailbox version 0.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
- arch/arm/mach-socfpga/atf.c | 35 ++++++++++++++++++++---------------
- 1 file changed, 20 insertions(+), 15 deletions(-)
+ arch/arm/mach-socfpga/iossm_mailbox.c | 23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-socfpga/atf.c b/arch/arm/mach-socfpga/atf.c
-index e1f0a3558b04..1fd11c426bc2 100644
---- a/arch/arm/mach-socfpga/atf.c
-+++ b/arch/arm/mach-socfpga/atf.c
-@@ -61,27 +61,32 @@ static void __noreturn agilex5_load_and_start_image_via_tfa(void)
- 	__builtin_unreachable();
- }
- 
-+static void agilex5_el3_init(void)
-+{
-+	agilex5_initialize_security_policies();
-+	pr_debug("Security policies initialized\n");
-+
-+	/*
-+	 * need to set the bank select enable before the
-+	 * agilex5_ddr_init_full() otherwise the serial doesn't show
-+	 * anything.
-+	 */
-+	if (!IS_ENABLED(CONFIG_DEBUG_LL))
-+		writel(LCR_BKSE, SOCFPGA_UART0_ADDRESS + LCR);
-+	agilex5_ddr_init_full();
-+
-+	socfpga_agilex5_qspi_init();
-+
-+	agilex5_load_and_start_image_via_tfa();
-+}
-+
- void __noreturn agilex5_barebox_entry(void *fdt)
+diff --git a/arch/arm/mach-socfpga/iossm_mailbox.c b/arch/arm/mach-socfpga/iossm_mailbox.c
+index 168bef3faeeb..6a9a7a489b75 100644
+--- a/arch/arm/mach-socfpga/iossm_mailbox.c
++++ b/arch/arm/mach-socfpga/iossm_mailbox.c
+@@ -158,10 +158,27 @@ static int io96b_mb_version(struct io96b_info *io96b_ctrl)
  {
- 	phys_addr_t membase;
- 	phys_size_t memsize;
+ 	void __iomem *io96b_csr_addr = io96b_ctrl->io96b[0].io96b_csr_addr;
+ 	u32 mailbox_header;
+-	int version;
++	int version = 0;
++	int retry;
  
- 	if (current_el() == 3) {
--		agilex5_initialize_security_policies();
--		pr_debug("Security policies initialized\n");
--
--		/*
--		 * need to set the bank select enable before the
--		 * agilex5_ddr_init_full() otherwise the serial doesn't show
--		 * anything.
--		 */
--		if (!IS_ENABLED(CONFIG_DEBUG_LL))
--			writel(LCR_BKSE, SOCFPGA_UART0_ADDRESS + LCR);
--		agilex5_ddr_init_full();
--
--		socfpga_agilex5_qspi_init();
--
--		agilex5_load_and_start_image_via_tfa();
-+		agilex5_el3_init();
- 		__builtin_unreachable();
- 	}
+-	mailbox_header = readl(io96b_csr_addr + IOSSM_MAILBOX_HEADER_OFFSET);
+-	version = FIELD_GET(IOSSM_MAILBOX_SPEC_VERSION_MASK, mailbox_header);
++	/*
++	 * There is a race between barebox on the HPS and the IOSSM firmware
++	 * initialization, which may cause barebox to read a mailbox version 0
++	 * from the IOSSM even though it's actually mailbox version 1, but the
++	 * register has not been updated, yet. Unfortunately, there is no
++	 * reliable synchronization point.
++	 *
++	 * Workaround this issue by reading the mailbox version more often. On
++	 * mailbox version 1, barebox waits until the firmware wrote the
++	 * version register. On mailbox version 0, barebox runs into the
++	 * timeout caused by the number of retries.
++	 *
++	 * The number of retries has been experimentally determined.
++	 */
++	for (retry = 100; version == 0 && retry > 0; retry--) {
++		mailbox_header = readl(io96b_csr_addr + IOSSM_MAILBOX_HEADER_OFFSET);
++		version = FIELD_GET(IOSSM_MAILBOX_SPEC_VERSION_MASK, mailbox_header);
++	}
  
+ 	return version;
+ }
 
 -- 
 2.47.3
