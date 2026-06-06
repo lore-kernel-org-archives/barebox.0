@@ -1,57 +1,52 @@
-Delivery-date: Fri, 05 Jun 2026 15:08:17 +0200
+Delivery-date: Sat, 06 Jun 2026 20:23:26 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wVUHZ-002cqx-1s
+	id 1wVvg6-00336r-2m
 	for lore@lore.pengutronix.de;
-	Fri, 05 Jun 2026 15:08:17 +0200
+	Sat, 06 Jun 2026 20:23:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wVUHY-0005RR-O5
-	for lore@pengutronix.de; Fri, 05 Jun 2026 15:08:17 +0200
+	id 1wVvg6-0006Y0-0y
+	for lore@pengutronix.de; Sat, 06 Jun 2026 20:23:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=cnCnB0EHOnYiDQukMnuTFh8RyFWtwGKVnCBay1zLwGU=; b=zGYLBZ9EkBdu1T4JMA8FTfQMYt
-	lE4bAd3F8Kzg7lswWFoi9s61eVDC4+cV5/WXvLGZhnZ9r1mCCKgZyTYY6xBd5M/PankcPuMrQJPep
-	ERqE5R8U8bkQhaBdhGHA4OiExc4LPFPdjRroH9a0bMQWchUBwe/diIDuBQ4gsX2uBs17m4xN3tj81
-	hGX7PUmKgxvHVMQFsOcc73Cj/mCR8Tzh5bRHJe9+OcKPdFtoVyZe24gwmWa7Pfo7unHyFCuxPcMAU
-	gaBSwAAjwYknxirdD+HQ4SjMcVlbC5NtYEqo52jYgJFVcplH3QhdeTp/VmeElS7BQc/D2MBxtNjZ+
-	qS4CUVUA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=XQ4Jyu1UOxnxx7WgNC+1peWdkiyXEz3Uj2QRbP3+k8g=; b=Hi8AdlBVPCIslCzr1Gq5YqvbLx
+	eaaGJSMDev9rxh1mmrjDjbKqCCEHSW5tadu+R32BRdcUGRVBQyed0QDyOadT2DlAA7Cedn9bXIc7D
+	xc0zYkK+IM8nq6hAZWaJiOOOANF6ime7LNsio8dAjkIqXzVedmaJoMiNUF1dmdIB31wn+Q9a1cUPd
+	gi8rZ8erN6fSCqvktx3Av7zUPbGHEkkQNSHR3sIgTwFQ6ZwlRhqJNYBSWcypVcISVEcq0XeH/ifvh
+	RnrO+jdQ+j2IlfUUiNdzzzNZpUfIO7DkriM2q4eKX3DyBFIP4hj6qG3dfRg5fpZFIB7NW369AUacD
+	4PrgkETA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wVUG9-00000000eof-0Xky;
-	Fri, 05 Jun 2026 13:06:49 +0000
+	id 1wVvee-00000001kaQ-3KNq;
+	Sat, 06 Jun 2026 18:21:56 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wVUG5-00000000emf-1hTB
+	id 1wVveb-00000001kZq-1zbV
 	for barebox@lists.infradead.org;
-	Fri, 05 Jun 2026 13:06:47 +0000
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	Sat, 06 Jun 2026 18:21:55 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.tretter@pengutronix.de>)
-	id 1wVUG3-0004ul-PP; Fri, 05 Jun 2026 15:06:43 +0200
-From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Fri, 05 Jun 2026 15:06:44 +0200
+	(envelope-from <a.fatoum@barebox.org>)
+	id 1wVveX-0006J5-GO; Sat, 06 Jun 2026 20:21:49 +0200
+From: Ahmad Fatoum <a.fatoum@barebox.org>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Sat,  6 Jun 2026 20:20:24 +0200
+Message-ID: <20260606182148.337137-1-a.fatoum@barebox.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260605-socfpga-agilex5-clk-v2-2-780562ec169f@pengutronix.de>
-References: <20260605-socfpga-agilex5-clk-v2-0-780562ec169f@pengutronix.de>
-In-Reply-To: <20260605-socfpga-agilex5-clk-v2-0-780562ec169f@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>, 
- BAREBOX <barebox@lists.infradead.org>
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
- Michael Tretter <m.tretter@pengutronix.de>
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260605_060645_493415_3315239F 
-X-CRM114-Status: GOOD (  10.22  )
+X-CRM114-CacheID: sfid-20260606_112153_532110_7EFBB301 
+X-CRM114-Status: GOOD (  21.78  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,105 +67,133 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH v2 2/4] clk: socfpga: remove clk-phase setting
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] pinctrl: generic: rename PIN_CONFIG_OUTPUT to LEVEL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-There are no device trees that have the clk-phase property and the Linux
-driver doesn't have the code. Remove the unused clk-phase setting.
+To make porting drivers from newer Linux versions a bit easier,
+port Linux commit 203a83112e097a501fbe12722b6342787497efe0:
 
-Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+|   pinctrl: generic: rename PIN_CONFIG_OUTPUT to LEVEL
+|
+|   This generic pin config property is confusingly named so let's
+|   rename it to make things clearer.
+|
+|   There are already drivers in the tree that use PIN_CONFIG_OUTPUT
+|   to *read* the value of an output driven pin, which is a big
+|   semantic confusion for the head: are we then reading the
+|   setting of the output or the actual value/level that is put
+|   out on the pin?
+|
+|   We already have PIN_CONFIG_OUTPUT_ENABLE that turns on driver
+|   buffers for output, so this can by logical conclusion only
+|   drive the voltage level if it should be any different.
+|
+|   But if we read the pin, are we then reading the *setting* of
+|   the output value or the *actual* value we can see on the
+|   line?
+|
+|   If the pin has not first been set into output mode with
+|   PIN_CONFIG_OUTPUT_ENABLE, but is instead in some input mode
+|   or tristate, what will reading this property actually
+|   return?
+|
+|   Reading the current users reading this property it is clear
+|   that what we read is the logical level of the pin as 0 or 1
+|   depending on if it is low or high.
+|
+|   Rename it to PIN_CONFIG_LEVEL so it is crystal clear that
+|   we set or read the voltage level of the pin and nothing else.
+|
+|   Acked-by: Sudeep Holla <sudeep.holla@arm.com>
+|   Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- drivers/clk/socfpga/clk-gate-a10.c | 55 --------------------------------------
- 1 file changed, 55 deletions(-)
+ drivers/pinctrl/pinctrl-rockchip.c      |  8 ++++----
+ drivers/pinctrl/pinctrl-stm32.c         |  2 +-
+ include/linux/pinctrl/pinconf-generic.h | 12 ++++++++----
+ 3 files changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/clk/socfpga/clk-gate-a10.c b/drivers/clk/socfpga/clk-gate-a10.c
-index e6bcc91b0490..b43e19d2ca3f 100644
---- a/drivers/clk/socfpga/clk-gate-a10.c
-+++ b/drivers/clk/socfpga/clk-gate-a10.c
-@@ -36,59 +36,11 @@ static unsigned long socfpga_gate_clk_recalc_rate(struct clk_hw *hw,
- 	return parent_rate / div;
- }
- 
--static int socfpga_clk_prepare(struct clk_hw *hw)
--{
--	struct socfpga_gate_clk *socfpgaclk = to_socfpga_gate_clk(hw);
--	int i;
--	u32 hs_timing;
--	u32 clk_phase[2];
--
--	if (socfpgaclk->clk_phase[0] || socfpgaclk->clk_phase[1]) {
--		for (i = 0; i < ARRAY_SIZE(clk_phase); i++) {
--			switch (socfpgaclk->clk_phase[i]) {
--			case 0:
--				clk_phase[i] = 0;
--				break;
--			case 45:
--				clk_phase[i] = 1;
--				break;
--			case 90:
--				clk_phase[i] = 2;
--				break;
--			case 135:
--				clk_phase[i] = 3;
--				break;
--			case 180:
--				clk_phase[i] = 4;
--				break;
--			case 225:
--				clk_phase[i] = 5;
--				break;
--			case 270:
--				clk_phase[i] = 6;
--				break;
--			case 315:
--				clk_phase[i] = 7;
--				break;
--			default:
--				clk_phase[i] = 0;
--				break;
--			}
--		}
--
--		hs_timing = SYSMGR_SDMMC_CTRL_SET(clk_phase[0], clk_phase[1]);
--		writel(hs_timing, ARRIA10_SYSMGR_SDMMC);
--	}
--	return 0;
--}
--
- static int clk_socfpga_enable(struct clk_hw *hw)
- {
- 	struct socfpga_gate_clk *socfpga_clk = to_socfpga_gate_clk(hw);
- 	u32 val;
- 
--	socfpga_clk_prepare(hw);
--
- 	val = readl(socfpga_clk->reg);
- 	val |= 1 << socfpga_clk->bit_idx;
- 	writel(val, socfpga_clk->reg);
-@@ -115,7 +67,6 @@ static struct clk *__socfpga_gate_init(struct device_node *node,
- {
- 	u32 clk_gate[2];
- 	u32 div_reg[3];
--	u32 clk_phase[2];
- 	u32 fixed_div;
- 	struct clk_hw *hw_clk;
- 	struct socfpga_gate_clk *socfpga_clk;
-@@ -153,12 +104,6 @@ static struct clk *__socfpga_gate_init(struct device_node *node,
- 		socfpga_clk->div_reg = NULL;
+diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
+index f2a6c0266b69..482c6d213d2b 100644
+--- a/drivers/pinctrl/pinctrl-rockchip.c
++++ b/drivers/pinctrl/pinctrl-rockchip.c
+@@ -323,10 +323,10 @@ static unsigned long parse_gpio_direction(struct device_node *np)
+ 	if (of_property_read_bool(np, "input-enable")) {
+ 		param = PIN_CONFIG_INPUT_ENABLE;
+ 	} else if (of_property_read_bool(np, "output-low")) {
+-		param = PIN_CONFIG_OUTPUT;
++		param = PIN_CONFIG_LEVEL;
+ 		argument = 0;
+ 	} else if (of_property_read_bool(np, "output-high")) {
+-		param = PIN_CONFIG_OUTPUT;
++		param = PIN_CONFIG_LEVEL;
+ 		argument = 1;
  	}
  
--	rc = of_property_read_u32_array(node, "clk-phase", clk_phase, 2);
--	if (!rc) {
--		socfpga_clk->clk_phase[0] = clk_phase[0];
--		socfpga_clk->clk_phase[1] = clk_phase[1];
--	}
--
- 	of_property_read_string(node, "clock-output-names", &clk_name);
+@@ -3188,7 +3188,7 @@ static void rockchip_set_gpio(struct rockchip_pin_bank *bank,
+ 	enum pin_config_param param = pinconf_to_config_param(config);
+ 	struct gpio_chip *gpio;
  
- 	init.name = clk_name;
-
+-	if (param != PIN_CONFIG_OUTPUT && param != PIN_CONFIG_INPUT_ENABLE)
++	if (param != PIN_CONFIG_LEVEL && param != PIN_CONFIG_INPUT_ENABLE)
+ 		return;
+ 
+ 	gpio = of_gpio_get_chip_by_alias(bank->name);
+@@ -3202,7 +3202,7 @@ static void rockchip_set_gpio(struct rockchip_pin_bank *bank,
+ 	}
+ 
+ 	switch (param) {
+-	case PIN_CONFIG_OUTPUT:
++	case PIN_CONFIG_LEVEL:
+ 		gpio->ops->direction_output(gpio, pin_num,
+ 					    pinconf_to_config_argument(config));
+ 		break;
+diff --git a/drivers/pinctrl/pinctrl-stm32.c b/drivers/pinctrl/pinctrl-stm32.c
+index dd5a70c6d295..f0cfcc11d80f 100644
+--- a/drivers/pinctrl/pinctrl-stm32.c
++++ b/drivers/pinctrl/pinctrl-stm32.c
+@@ -289,7 +289,7 @@ static int stm32_gpio_set_config(struct gpio_chip *chip,
+ 	case PIN_CONFIG_BIAS_PULL_DOWN:
+ 		__stm32_pmx_set_bias(bank->base, gpio, STM32_PIN_PULL_DOWN);
+ 		break;
+-	case PIN_CONFIG_OUTPUT:
++	case PIN_CONFIG_LEVEL:
+ 		__stm32_pmx_gpio_output(bank->base, gpio, arg);
+ 		break;
+ 	default:
+diff --git a/include/linux/pinctrl/pinconf-generic.h b/include/linux/pinctrl/pinconf-generic.h
+index 9214258ffac4..3c79f2ed61db 100644
+--- a/include/linux/pinctrl/pinconf-generic.h
++++ b/include/linux/pinctrl/pinconf-generic.h
+@@ -79,9 +79,13 @@
+  *	passed in the argument on a custom form, else just use argument 1
+  *	to indicate low power mode, argument 0 turns low power mode off.
+  * @PIN_CONFIG_MODE_PWM: this will configure the pin for PWM
+- * @PIN_CONFIG_OUTPUT: this will configure the pin as an output and drive a
+- * 	value on the line. Use argument 1 to indicate high level, argument 0 to
+- *	indicate low level. (Please see Documentation/driver-api/pin-control.rst,
++ * @PIN_CONFIG_LEVEL: setting this will configure the pin as an output and
++ *	drive a value on the line. Use argument 1 to indicate high level,
++ *	argument 0 to indicate low level. Conversely the value of the line
++ *	can be read using this parameter, if and only if that value can be
++ *	represented as a binary 0 or 1 where 0 indicate a low voltage level
++ *	and 1 indicate a high voltage level.
++ *	(Please see Documentation/driver-api/pin-control.rst,
+  *	section "GPIO mode pitfalls" for a discussion around this parameter.)
+  * @PIN_CONFIG_OUTPUT_ENABLE: this will enable the pin's output mode
+  * 	without driving a value there. For most platforms this reduces to
+@@ -127,7 +131,7 @@ enum pin_config_param {
+ 	PIN_CONFIG_INPUT_SCHMITT_ENABLE,
+ 	PIN_CONFIG_MODE_LOW_POWER,
+ 	PIN_CONFIG_MODE_PWM,
+-	PIN_CONFIG_OUTPUT,
++	PIN_CONFIG_LEVEL,
+ 	PIN_CONFIG_OUTPUT_ENABLE,
+ 	PIN_CONFIG_OUTPUT_IMPEDANCE_OHMS,
+ 	PIN_CONFIG_PERSIST_STATE,
 -- 
 2.47.3
 
