@@ -1,68 +1,54 @@
-Delivery-date: Tue, 09 Jun 2026 14:53:44 +0200
+Delivery-date: Tue, 09 Jun 2026 18:11:19 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wWvxg-003zVI-2a
+	id 1wWz2t-0042Xu-1l
 	for lore@lore.pengutronix.de;
-	Tue, 09 Jun 2026 14:53:44 +0200
+	Tue, 09 Jun 2026 18:11:19 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wWvxg-00045D-5v
-	for lore@pengutronix.de; Tue, 09 Jun 2026 14:53:44 +0200
+	id 1wWz2s-0004fA-UY
+	for lore@pengutronix.de; Tue, 09 Jun 2026 18:11:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=wUCzCIICLp44KLCYUuXpWmncxjB41nlzj1E0pAl5FAY=; b=ryx/YRjAFv/OwZUqmj+f+/AvB9
-	38D+Efp2gh+bLJ78OT9bozOIaTqXTcrdp+Oij5MHz5+jEiTHdmpAAZZKQpM634Ry0CvqBN8U5JYeL
-	i1sEPsW8Sgmq0UYBI/oMJCOpSAuR7FyssWY94X4rYcthqQbq2Mu1Ao9xXUqDqLoVcmj28PS1R0V3E
-	I7W8SD78qU0CEHGkUuxwFKCULZMCADD6afbRkCJdkuwYDJnSQwj9kjX1IGHjjJLQ/7+YQWKbkmi8y
-	t54KqzFjYy8yhSEySx6EneUmWYQd5jEHrsT/teTDkzIIB7LIFCrvO4hbLIU/ilUy6euQXvcLtTCOY
-	EX2pdR8g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=JviZRmGdTktQhhyTVlOeKEdOQ7MnvsvOQ6x7Qciz0+g=; b=vKHeZpOhbfLgfxq8HjUOvrnuXb
+	U6MtiBFDPtYFBNDMYy8uGhkH6dkmMI1CHGYtmGmSFTbi7dcnkdkdtUJr1khoaP92fgA9x/o8U97cC
+	WxDrRRE31s/emS1buO8D1omn0k/aWfejUBOksnNOxfPzCu9bOIIa2eJoP5koDKYonHCXAqTGRtPaD
+	2tuW2Er5xCVF9gcpCEvY/VSGMLt2Lj+EX2EB2tHmEo4+QVaMkMS3bjt8hxXSV6tr51/VKAkP6aR3S
+	IbjVIDQSYfWT3HnJpgA7jIxRk0v+nncK0JItzsZz2chnOxpB8mUImToNVa8ony2S6J3ugkCk2gHso
+	V4zphW/g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wWvvw-00000005bLs-2Q87;
-	Tue, 09 Jun 2026 12:51:56 +0000
+	id 1wWz1Q-0000000603j-1hU4;
+	Tue, 09 Jun 2026 16:09:48 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wWvvt-00000005bLW-2BIS
+	id 1wWz1M-0000000602s-3Vss
 	for barebox@lists.infradead.org;
-	Tue, 09 Jun 2026 12:51:55 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	Tue, 09 Jun 2026 16:09:46 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=localhost.localdomain)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <mtr@pengutronix.de>)
-	id 1wWvvr-0003mn-87; Tue, 09 Jun 2026 14:51:51 +0200
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mtr@pengutronix.de>)
-	id 1wWvvr-001tFh-0e;
-	Tue, 09 Jun 2026 14:51:51 +0200
-Received: from mtr by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <mtr@pengutronix.de>)
-	id 1wWvvr-00000009ZBp-0QzI;
-	Tue, 09 Jun 2026 14:51:51 +0200
-Date: Tue, 9 Jun 2026 14:51:51 +0200
-From: Michael Tretter <mtr@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <aigMZ3KQ-8H3p3wJ@pengutronix.de>
-References: <20260609124050.254522-1-s.hauer@pengutronix.de>
+	(envelope-from <a.fatoum@barebox.org>)
+	id 1wWz1I-0004NX-NN; Tue, 09 Jun 2026 18:09:40 +0200
+From: Ahmad Fatoum <a.fatoum@barebox.org>
+To: barebox@lists.infradead.org
+Cc: Fabian Pflug <f.pflug@pengutronix.de>,
+	Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Tue,  9 Jun 2026 18:09:37 +0200
+Message-ID: <20260609160939.2032936-1-a.fatoum@barebox.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260609124050.254522-1-s.hauer@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260609_055153_562771_71DC5804 
-X-CRM114-Status: GOOD (  21.15  )
+X-CRM114-CacheID: sfid-20260609_090945_131955_78002F8E 
+X-CRM114-Status: UNSURE (   9.41  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,63 +66,55 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: rockchip: tfa: pass NULL fdt when there is none
+Subject: [PATCH RFT] ARM: lib32: bootm: support booting EFI-stubbed kernels without EFI
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, 09 Jun 2026 14:40:49 +0200, Sascha Hauer wrote:
-> We pass an address to the TF-A even when there is none. The FDT could be
-> absent when either CONFIG_ARCH_ROCKCHIP_ATF_PASS_FDT is disabled or
-> copying it to the scratch area fails. Instead of passing an invalid FDT
-> in this case, explicitly pass a NULL pointer.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+The bootm_efi_check_image callback implements the global.bootm.efi aware
+handling for EFI-stubbed kernels:
 
-Tested-by: Michael Tretter <m.tretter@pengutronix.de>
+  - If no CONFIG_EFI_LOADER support is compiled in, boot normally
+  - If CONFIG_EFI_LOADER=y, consult global.bootm.efi
 
-> ---
->  arch/arm/mach-rockchip/atf.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/mach-rockchip/atf.c b/arch/arm/mach-rockchip/atf.c
-> index 74b8cdc2f4..0b4566f8ae 100644
-> --- a/arch/arm/mach-rockchip/atf.c
-> +++ b/arch/arm/mach-rockchip/atf.c
-> @@ -271,6 +271,8 @@ void __noreturn rk3588_barebox_entry(void *fdt)
->  	rk_scratch = (void *)arm_mem_scratch(memend);
->  
->  	if (current_el() == 3) {
-> +		void *fdt_bl31 = NULL;
-> +
->  		rk3588_lowlevel_init();
->  		rockchip_store_bootrom_iram(IOMEM(RK3588_IRAM_BASE));
->  		ROCKCHIP_GET_ADDRESSES(RK3588, rk3588_bl31_bin, rk3588_bl32_bin);
-> @@ -281,9 +283,11 @@ void __noreturn rk3588_barebox_entry(void *fdt)
->  			ret = rockchip_create_optee_fdt(rk_scratch->fdt, sizeof(rk_scratch->fdt));
->  			if (ret)
->  				pr_warn("Failed to create OP-TEE Device tree\n");
-> +			else
-> +				fdt_bl31 = rk_scratch->fdt;
->  		}
->  
-> -		rockchip_atf_load_bl31(rk_scratch->fdt);
-> +		rockchip_atf_load_bl31(fdt_bl31);
->  		/* not reached when CONFIG_ARCH_ROCKCHIP_ATF */
->  	}
->  
-> -- 
-> 2.47.3
-> 
-> 
+In absence of this callback, the filetype match is taken literally,
+which will just lead to EFI-stubbed kernel images being refused
+outright.
 
+Align ARM32 with what ARM64 and RISC-V already do and set
+image_handler::check_image appropriately.
+
+Fixes: 0fca24055c57 ("filetype: add new filetype for efi-stubbed ARM zImages")
+Reported-by: Fabian Pflug <f.pflug@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+---
+ arch/arm/lib32/bootm.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
+index 4bca29c3fbf8..e94bb979eff9 100644
+--- a/arch/arm/lib32/bootm.c
++++ b/arch/arm/lib32/bootm.c
+@@ -515,12 +515,14 @@ static int do_bootz_linux(struct image_data *data)
+ static struct image_handler zimage_handler = {
+ 	.name = "ARM zImage",
+ 	.bootm = do_bootz_linux,
++	.check_image = bootm_efi_check_image,
+ 	.filetype = filetype_arm_zimage,
+ };
+ 
+ static struct image_handler barebox_handler = {
+ 	.name = "ARM barebox",
+ 	.bootm = do_bootm_linux,
++	.check_image = bootm_efi_check_image,
+ 	.filetype = filetype_arm_barebox,
+ };
+ 
 -- 
-Pengutronix e.K.                           | Michael Tretter             |
-Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.47.3
+
 
 
