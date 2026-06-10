@@ -1,54 +1,53 @@
-Delivery-date: Wed, 10 Jun 2026 13:58:08 +0200
+Delivery-date: Wed, 10 Jun 2026 14:50:36 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wXHZQ-004KQL-26
+	id 1wXIOC-004LEP-1I
 	for lore@lore.pengutronix.de;
-	Wed, 10 Jun 2026 13:58:08 +0200
+	Wed, 10 Jun 2026 14:50:36 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wXHZP-0002gU-VL
-	for lore@pengutronix.de; Wed, 10 Jun 2026 13:58:08 +0200
+	id 1wXIOB-0003ls-Oa
+	for lore@pengutronix.de; Wed, 10 Jun 2026 14:50:36 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
-	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:To:From:
-	Subject:Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=RzCWv2O2YR12K8HcAawuLbNLh7ajhdujZlzOIIBagRE=; b=J+0G3kep55f3pBNAltwuZx37Jq
-	nCXMQa9/aL5wd+YF11jEHY29lIcTJwdm726Eq8n8UW5HtUKG9LuBUI7CJmAWRAiDbkoA/4BxlQqj8
-	GnnyZstdC11g//MKm3r/p+4ssR1Y/1T9ol4B7vDYjyWtSTq94DGRFJNGe3BKhUBqJdSZWNHLlXM9E
-	JUhecQBolbu090fkbxtWfh1CFmZVM0EIkBYuof0ZqDmPkkBDs7KRZVTZyycalsdlnt7wf/3ztOhLw
-	n7RXkrFF3hHgyDGTJsYQPYcxOrXv1rWkTnKt1eVIj5tC51Uf0pc3vgc+WksfKpKIzhgmrkFcchi38
-	Hy2dErig==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=r+9R9QxYmkhrGTnj+Sn10PPqVkf3NAS9zeUMhPDKTn0=; b=YDEJ8te6LfKHayLJB41NyXFdWA
+	zjQKoptnNIsu805pbao/Ea/x3Om2soKTF19NJXSLbwb2uaKDSJvFGx/7aimAfJdUhxMw6r/mEwVdO
+	BYWpsIHn9TitZt9lrfFiGFwu4oC15p8Jnt1zDediXycZTDfVRaWRnkOM7a1QrElSQ4l+ilACCPKa5
+	DyfoPMo/vAZ1BxovFLRalnN+Wqf4xbK6ZA9SVRz5Y3NQsabi3+6sa7h+HCk8x+Viph5M8SOyWe2MK
+	uQebT6jIMxEn3ycKqdfzuSRnEwmfPnZsabaSPJ2E9kk96KJmk/jkpV2awxIh3KYOHkXM8g6t96UCU
+	zzhHzylw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wXHX0-00000007Zxv-3F1i;
-	Wed, 10 Jun 2026 11:55:38 +0000
+	id 1wXIN2-00000007fOl-3808;
+	Wed, 10 Jun 2026 12:49:24 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wXHWx-00000007Zx0-30RI
+	id 1wXIMz-00000007fMl-0Kie
 	for barebox@lists.infradead.org;
-	Wed, 10 Jun 2026 11:55:37 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	Wed, 10 Jun 2026 12:49:23 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=localhost.localdomain)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <f.pflug@pengutronix.de>)
-	id 1wXHWu-0002BX-Gg; Wed, 10 Jun 2026 13:55:32 +0200
-Message-ID: <8dfb3266069c6be5293510c70b3f0536ed19e172.camel@pengutronix.de>
-From: Fabian Pflug <f.pflug@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@barebox.org>, barebox@lists.infradead.org
-Date: Wed, 10 Jun 2026 13:55:32 +0200
-In-Reply-To: <20260609160939.2032936-1-a.fatoum@barebox.org>
-References: <20260609160939.2032936-1-a.fatoum@barebox.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2-0+deb13u1 
+	(envelope-from <a.fatoum@barebox.org>)
+	id 1wXIMw-0003Y6-RS; Wed, 10 Jun 2026 14:49:18 +0200
+From: Ahmad Fatoum <a.fatoum@barebox.org>
+To: barebox@lists.infradead.org
+Cc: mtr@pengutronix.de,
+	Ahmad Fatoum <a.fatoum@barebox.org>
+Date: Wed, 10 Jun 2026 14:49:12 +0200
+Message-ID: <20260610124916.2629105-1-a.fatoum@barebox.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260610_045535_756714_1350FD9E 
-X-CRM114-Status: GOOD (  12.40  )
+X-CRM114-CacheID: sfid-20260610_054921_115420_73753A8E 
+X-CRM114-Status: GOOD (  10.83  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -66,58 +65,69 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH RFT] ARM: lib32: bootm: support booting EFI-stubbed
- kernels without EFI
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: [PATCH RFT] defaultenv: boot/devboot: add a devboot boot target
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, 2026-06-09 at 18:09 +0200, Ahmad Fatoum wrote:
-> The bootm_efi_check_image callback implements the global.bootm.efi aware
-> handling for EFI-stubbed kernels:
->=20
-> =C2=A0 - If no CONFIG_EFI_LOADER support is compiled in, boot normally
-> =C2=A0 - If CONFIG_EFI_LOADER=3Dy, consult global.bootm.efi
->=20
-> In absence of this callback, the filetype match is taken literally,
-> which will just lead to EFI-stubbed kernel images being refused
-> outright.
->=20
-> Align ARM32 with what ARM64 and RISC-V already do and set
-> image_handler::check_image appropriately.
->=20
-> Fixes: 0fca24055c57 ("filetype: add new filetype for efi-stubbed ARM zIma=
-ges")
-> Reported-by: Fabian Pflug <f.pflug@pengutronix.de>
+Executing devboot without arguments instructs it to use
+"$global.boot.default" and thus leaves no way to use devboot as default
+boot target easily.
 
-Tested-by: Fabian Pflug <f.pflug@pengutronix.de>
+Address this by adding a new devboot boot target that internally uses
+${global.boot.devboot_default} instead of the default
+${global.boot.default}.
 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
-> ---
-> =C2=A0arch/arm/lib32/bootm.c | 2 ++
-> =C2=A01 file changed, 2 insertions(+)
->=20
-> diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
-> index 4bca29c3fbf8..e94bb979eff9 100644
-> --- a/arch/arm/lib32/bootm.c
-> +++ b/arch/arm/lib32/bootm.c
-> @@ -515,12 +515,14 @@ static int do_bootz_linux(struct image_data *data)
-> =C2=A0static struct image_handler zimage_handler =3D {
-> =C2=A0	.name =3D "ARM zImage",
-> =C2=A0	.bootm =3D do_bootz_linux,
-> +	.check_image =3D bootm_efi_check_image,
-> =C2=A0	.filetype =3D filetype_arm_zimage,
-> =C2=A0};
-> =C2=A0
-> =C2=A0static struct image_handler barebox_handler =3D {
-> =C2=A0	.name =3D "ARM barebox",
-> =C2=A0	.bootm =3D do_bootm_linux,
-> +	.check_image =3D bootm_efi_check_image,
-> =C2=A0	.filetype =3D filetype_arm_barebox,
-> =C2=A0};
-> =C2=A0
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+---
+ Documentation/user/devboot.rst            | 11 +++++++++++
+ defaultenv/defaultenv-2-base/boot/devboot | 10 ++++++++++
+ 2 files changed, 21 insertions(+)
+ create mode 100755 defaultenv/defaultenv-2-base/boot/devboot
+
+diff --git a/Documentation/user/devboot.rst b/Documentation/user/devboot.rst
+index 550ab9120576..f8b2c8ec684e 100644
+--- a/Documentation/user/devboot.rst
++++ b/Documentation/user/devboot.rst
+@@ -200,6 +200,17 @@ script is loaded. Make them persistent with:
+ ``global.hostname`` is typically derived from the device tree, but can be
+ overridden.
+ 
++devboot boot target
++^^^^^^^^^^^^^^^^^^^
++
++Using the ``devboot`` boot target, the ``devboot`` script can be set
++as default boot target.  Example usage:
++
++.. code-block:: sh
++
++   nv boot.devboot_default=system0
++   nv boot.default=devboot
++
+ Forwarding a remote build directory over the internet
+ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 
+diff --git a/defaultenv/defaultenv-2-base/boot/devboot b/defaultenv/defaultenv-2-base/boot/devboot
+new file mode 100755
+index 000000000000..ec75cf2f274c
+--- /dev/null
++++ b/defaultenv/defaultenv-2-base/boot/devboot
+@@ -0,0 +1,10 @@
++#!/bin/sh
++
++if [ "${global.boot.devboot_default}" = "" ] ||
++   [ "${global.boot.devboot_default}" = "devboot" ] ||
++   [ "${global.boot.devboot_default}" = "/env/boot/devboot" ]; then
++    echo "Set global.boot.devboot_default to your eventual boot target!"
++    exit 1
++fi
++
++devboot "${global.boot.devboot_default}"
+-- 
+2.47.3
+
 
 
