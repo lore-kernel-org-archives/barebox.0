@@ -1,52 +1,54 @@
-Delivery-date: Thu, 11 Jun 2026 23:23:14 +0200
+Delivery-date: Thu, 11 Jun 2026 23:23:17 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wXmrq-004ptJ-10
+	id 1wXmrs-004pth-3A
 	for lore@lore.pengutronix.de;
-	Thu, 11 Jun 2026 23:23:14 +0200
+	Thu, 11 Jun 2026 23:23:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wXmrp-00060c-NZ
-	for lore@pengutronix.de; Thu, 11 Jun 2026 23:23:14 +0200
+	id 1wXmrs-000625-9N
+	for lore@pengutronix.de; Thu, 11 Jun 2026 23:23:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=m7/Jj33wgKHC/qoJdioARnqAcbtQ0gpZ71BXup++2Oo=; b=xU/DAnlDxwiXa/8fWSZL9yF9p+
-	Xjetacs/qKK+NDiSnqdvM/h9Zdy0YQ9mySbVLwCYbu4z0G+tQJbsoDJ0d/+DDczOQTfHX3Yn9K+ax
-	gba5Eg/AwJ0VrsCiEZP0HWnIWSR3FfGjI9GHcWnPVwqix1AN0SGu84mLxf/7bvqXtX+faK7oarXMN
-	3p1dR7PsvwI823KJV4BZHXtRQL8pvXkyEj60VFSOEi2KAFtW3B+x9uN1B4gdtI6j5Zhzp+rUzrOGV
-	r3lpxkzWwMUei6enGKFghL8KYCmdSXXLPdu5z3OCamS53gtwV1jXdni8EFTx2t+oGp6gpgAJr3oQG
-	Cs9KELnQ==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=v2U9uA7jIlY5zjTbR8vkAPOkj4VGJ6+s+W7BARFuy+4=; b=CHSgFc5bwnaizZa2cUvnOOG4/J
+	u75mVbtQclor7xIVX5Z9zRcV89Rxw5piwn/0d3GFZQ8dLfaRCuHF4GIXod++pVeiLtJm60hNj2kWA
+	cs+xWXs+jaf8yynK0P1bydJ3QETDPF2CMTkbroorVWN9f5HAEAEgD9pKKpQ/r7vjUK+945ZFfE639
+	QjbGKZyaUpAD0CyKRcL6ra6OgWpoliO7W0TMEMz5jo3a0CjhZ4DkW76EmSDLEjfYuC7ymX3R0kCX+
+	GmE+73jC12R1riEu5DlXBnk3HHuUGrbJRujKjm00S7XIfwPlY5Bg3A221MlE9gilXn6zHXNWKEFvS
+	CQyU5tww==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wXmqs-0000000A5Zh-3oYJ;
-	Thu, 11 Jun 2026 21:22:14 +0000
+	id 1wXmqu-0000000A5aE-0NnI;
+	Thu, 11 Jun 2026 21:22:16 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wXmqr-0000000A5Yq-2BQ7
+	id 1wXmqr-0000000A5Yr-2c2P
 	for barebox@lists.infradead.org;
 	Thu, 11 Jun 2026 21:22:14 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=localhost.localdomain)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1wXmqp-0005kh-Q4; Thu, 11 Jun 2026 23:22:11 +0200
+	id 1wXmqq-0005kh-3l; Thu, 11 Jun 2026 23:22:12 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Thu, 11 Jun 2026 23:22:00 +0200
-Message-ID: <20260611212206.4103255-1-a.fatoum@barebox.org>
+Date: Thu, 11 Jun 2026 23:22:01 +0200
+Message-ID: <20260611212206.4103255-2-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260611212206.4103255-1-a.fatoum@barebox.org>
+References: <20260611212206.4103255-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260611_142213_554748_AB58C55A 
-X-CRM114-Status: UNSURE (   8.20  )
+X-CRM114-CacheID: sfid-20260611_142213_657090_F8DD6E68 
+X-CRM114-Status: UNSURE (   8.08  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -68,44 +70,38 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH master 1/2] efi: loader: release bootm OS staging buffer
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH master 2/2] efi: loader: bump memory map key on FreePages
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The initial location of the OS image is currently kept reserved until
-it's reclaimed after exiting boot services. This is unnecessary though
-as the relevant parts of the PE are copied out anyway.
+efi_allocate_pages() increments the map key on every allocation, but
+efi_free_pages() did not.
 
-Therefore, free the original OS image to leave more space to the
-decompresser.
+A payload that calls FreePages() before ExitBootServices() may thus
+pass a stale memory map under a key that barebox still accepts.
 
-Fixes: 229bc3b37e64 ("efi: loader: implement bootm handler")
-Assisted-by: Codex:gpt-5.5
+Fix this by incrementing the key after a successful free.
+
+Fixes: b880bfb8ed85 ("efi: loader: add memory accounting")
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- efi/loader/bootm.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ efi/loader/memory.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/efi/loader/bootm.c b/efi/loader/bootm.c
-index e1f1d508c59e..a68db742e173 100644
---- a/efi/loader/bootm.c
-+++ b/efi/loader/bootm.c
-@@ -267,6 +267,14 @@ static int efi_loader_bootm(struct image_data *data)
- 		goto out;
- 	}
+diff --git a/efi/loader/memory.c b/efi/loader/memory.c
+index e8dfd59ee8ca..8931cd1bab52 100644
+--- a/efi/loader/memory.c
++++ b/efi/loader/memory.c
+@@ -301,6 +301,8 @@ efi_status_t efi_free_pages(uint64_t memory, size_t pages)
+ 	if (nfreed <= 0)
+ 		return EFI_INVALID_PARAMETER;
  
-+	/*
-+	 * efi_load_pe() copied the executable image into EFI-managed memory.
-+	 * The bootm staging buffer is no longer needed, and keeping it in the
-+	 * memory map can block payloads from using their normal load address.
-+	 */
-+	release_sdram_region(data->os_res);
-+	data->os_res = NULL;
++	++efi_memory_map_key;
 +
- 	efiret = efi_set_load_options(handle, load_option_size, load_option);
- 	if (efiret)
- 		goto out;
+ 	return EFI_SUCCESS;
+ }
+ 
 -- 
 2.47.3
 
