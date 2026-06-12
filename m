@@ -1,55 +1,64 @@
-Delivery-date: Thu, 11 Jun 2026 23:23:17 +0200
+Delivery-date: Fri, 12 Jun 2026 08:00:17 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wXmrs-004pth-3A
+	id 1wXuwA-004xr4-1D
 	for lore@lore.pengutronix.de;
-	Thu, 11 Jun 2026 23:23:16 +0200
+	Fri, 12 Jun 2026 08:00:17 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wXmrs-000625-9N
-	for lore@pengutronix.de; Thu, 11 Jun 2026 23:23:16 +0200
+	id 1wXuw7-0005AD-Kp
+	for lore@pengutronix.de; Fri, 12 Jun 2026 08:00:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=v2U9uA7jIlY5zjTbR8vkAPOkj4VGJ6+s+W7BARFuy+4=; b=CHSgFc5bwnaizZa2cUvnOOG4/J
-	u75mVbtQclor7xIVX5Z9zRcV89Rxw5piwn/0d3GFZQ8dLfaRCuHF4GIXod++pVeiLtJm60hNj2kWA
-	cs+xWXs+jaf8yynK0P1bydJ3QETDPF2CMTkbroorVWN9f5HAEAEgD9pKKpQ/r7vjUK+945ZFfE639
-	QjbGKZyaUpAD0CyKRcL6ra6OgWpoliO7W0TMEMz5jo3a0CjhZ4DkW76EmSDLEjfYuC7ymX3R0kCX+
-	GmE+73jC12R1riEu5DlXBnk3HHuUGrbJRujKjm00S7XIfwPlY5Bg3A221MlE9gilXn6zHXNWKEFvS
-	CQyU5tww==;
+	bh=uztYYGNDTekpneqbXeSjerVqFG4sMB805FoPzDtGtlU=; b=quLiWEwqOumydQrTgsP/CgxCdU
+	Req0lxdOgt31K+Ha/Lki3F5S6VR9OBwAJcX2dRWp9zCpm4AxzvXFHvobc+1TcFgGDgKOKaFBK/Q73
+	ZhU/2fU/3pamgpke10sWvd/pgFS1kZA86UNbsHw7TlmBpV6O7VPiaXm0z+tTih60eh8lUIuCe3SWN
+	lMs6gRIZ0IcXqP6YzLvDH1oXp8KLOAy6VsBE/5buiniPlUvNLUYHI/4tq4/ddcGQPO8mmOx0dQIaf
+	CezOwxrx1HiFRE9Q3SkJ24hqWP1H6/a/Po1H2lfn6ukxv8EwNcvz2F8SEOnSCzSodXaHf5XNbCuLQ
+	0ZTnXh7g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wXmqu-0000000A5aE-0NnI;
-	Thu, 11 Jun 2026 21:22:16 +0000
+	id 1wXuve-0000000AOTD-0s39;
+	Fri, 12 Jun 2026 05:59:42 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wXmqr-0000000A5Yr-2c2P
+	id 1wXuvZ-0000000AOPc-1uHC
 	for barebox@lists.infradead.org;
-	Thu, 11 Jun 2026 21:22:14 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=localhost.localdomain)
+	Fri, 12 Jun 2026 05:59:40 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@barebox.org>)
-	id 1wXmqq-0005kh-3l; Thu, 11 Jun 2026 23:22:12 +0200
-From: Ahmad Fatoum <a.fatoum@barebox.org>
+	(envelope-from <ore@pengutronix.de>)
+	id 1wXuvW-0004mZ-6r; Fri, 12 Jun 2026 07:59:34 +0200
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wXuvW-002Kex-0Q;
+	Fri, 12 Jun 2026 07:59:34 +0200
+Received: from ore by dude04 with local (Exim 4.98.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1wXuvW-00000002fQA-06t4;
+	Fri, 12 Jun 2026 07:59:34 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Thu, 11 Jun 2026 23:22:01 +0200
-Message-ID: <20260611212206.4103255-2-a.fatoum@barebox.org>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Fri, 12 Jun 2026 07:59:22 +0200
+Message-ID: <20260612055930.635833-6-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260611212206.4103255-1-a.fatoum@barebox.org>
-References: <20260611212206.4103255-1-a.fatoum@barebox.org>
+In-Reply-To: <20260612055930.635833-1-o.rempel@pengutronix.de>
+References: <20260612055930.635833-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260611_142213_657090_F8DD6E68 
-X-CRM114-Status: UNSURE (   8.08  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260611_225937_524416_69AE3189 
+X-CRM114-Status: GOOD (  17.42  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,41 +76,125 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master 2/2] efi: loader: bump memory map key on FreePages
+Subject: [PATCH v1 06/10] mci: atmel-sdhci: add Microchip LAN9691 / LAN969X SDHCI support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-efi_allocate_pages() increments the map key on every allocation, but
-efi_free_pages() did not.
+Match the "microchip,lan9691-sdhci" compatible and allow building on
+ARCH_MICROCHIP (and COMPILE_TEST). LAN969X uses a different GCK rate
+(100 MHz) than the AT91 SAMA5D2 (240 MHz), so plumb the per-compatible
+rate through device_get_match_data() and fall back to the SAMA5D2 rate
+when no match data is supplied.
 
-A payload that calls FreePages() before ExitBootServices() may thus
-pass a stale memory map under a key that barebox still accepts.
+The LAN969X SDHCI binding doesn't expose the PMC base clock that
+sama5d2/sam9x60 carry as "baseclk" (the GCK driver handles the upstream
+source internally), so make that lookup optional.
 
-Fix this by incrementing the key after a successful free.
-
-Fixes: b880bfb8ed85 ("efi: loader: add memory accounting")
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- efi/loader/memory.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/mci/Kconfig       |  6 +++---
+ drivers/mci/atmel-sdhci.c | 22 ++++++++++++++++++----
+ 2 files changed, 21 insertions(+), 7 deletions(-)
 
-diff --git a/efi/loader/memory.c b/efi/loader/memory.c
-index e8dfd59ee8ca..8931cd1bab52 100644
---- a/efi/loader/memory.c
-+++ b/efi/loader/memory.c
-@@ -301,6 +301,8 @@ efi_status_t efi_free_pages(uint64_t memory, size_t pages)
- 	if (nfreed <= 0)
- 		return EFI_INVALID_PARAMETER;
+diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
+index b38f7a3bdf8b..8108c7b14848 100644
+--- a/drivers/mci/Kconfig
++++ b/drivers/mci/Kconfig
+@@ -197,12 +197,12 @@ config MCI_ATMEL
+ 	  Atmel AT91.
  
-+	++efi_memory_map_key;
-+
- 	return EFI_SUCCESS;
+ config MCI_ATMEL_SDHCI
+-	bool "ATMEL SDHCI (sama5d2)"
++	bool "ATMEL SDHCI (sama5d2, lan9691)"
+ 	select MCI_SDHCI
+-	depends on ARCH_AT91
++	depends on ARCH_AT91 || ARCH_MICROCHIP || COMPILE_TEST
+ 	help
+ 	  Enable this entry to add support to read and write SD cards on an
+-	  Atmel sama5d2
++	  Atmel sama5d2 or Microchip LAN969X.
+ 
+ config MCI_MMCI
+ 	bool "ARM PL180 MMCI"
+diff --git a/drivers/mci/atmel-sdhci.c b/drivers/mci/atmel-sdhci.c
+index 462cf21bc25f..458d022fa3fa 100644
+--- a/drivers/mci/atmel-sdhci.c
++++ b/drivers/mci/atmel-sdhci.c
+@@ -18,6 +18,7 @@
+ 
+ #define ATMEL_SDHC_MIN_FREQ	400000
+ #define ATMEL_SDHC_GCK_RATE	240000000
++#define LAN969X_GCK_RATE	100000000
+ 
+ struct at91_sdhci_priv {
+ 	struct at91_sdhci host;
+@@ -55,7 +56,8 @@ static int at91_sdhci_mci_init(struct mci_host *mci, struct device *dev)
+ 			       priv->mci.non_removable, priv->cal_always_on);
  }
  
+-static int at91_sdhci_conf_clks(struct at91_sdhci_priv *priv)
++static int at91_sdhci_conf_clks(struct at91_sdhci_priv *priv,
++				unsigned long gck_rate)
+ {
+ 	unsigned long real_gck_rate;
+ 	int ret;
+@@ -66,7 +68,7 @@ static int at91_sdhci_conf_clks(struct at91_sdhci_priv *priv)
+ 	 * base clock rate and the clock mult from capabilities.
+ 	 */
+ 	clk_enable(priv->hclock);
+-	ret = clk_set_rate(priv->gck, ATMEL_SDHC_GCK_RATE);
++	ret = clk_set_rate(priv->gck, gck_rate);
+ 	if (ret < 0) {
+ 		clk_disable(priv->hclock);
+ 		return ret;
+@@ -109,6 +111,11 @@ static int at91_sdhci_probe(struct device *dev)
+ {
+ 	struct at91_sdhci_priv *priv;
+ 	struct resource *iores;
++	unsigned long gck_rate;
++
++	gck_rate = (uintptr_t)device_get_match_data(dev);
++	if (!gck_rate)
++		gck_rate = ATMEL_SDHC_GCK_RATE;
+ 
+ 	priv = xzalloc(sizeof(*priv));
+ 	dev->priv = priv;
+@@ -119,7 +126,12 @@ static int at91_sdhci_probe(struct device *dev)
+ 		return PTR_ERR(iores);
+ 	}
+ 
+-	priv->mainck = clk_get(dev, "baseclk");
++	/*
++	 * "baseclk" is the PMC base clock on sama5d2/sam9x60. The LAN969X
++	 * SDHCI binding doesn't expose it (the GCK driver handles the upstream
++	 * source internally), so treat it as optional.
++	 */
++	priv->mainck = clk_get_optional(dev, "baseclk");
+ 	if (IS_ERR(priv->mainck)) {
+ 		dev_err(dev, "failed to get baseclk\n");
+ 		return PTR_ERR(priv->mainck);
+@@ -147,7 +159,7 @@ static int at91_sdhci_probe(struct device *dev)
+ 	at91_sdhci_mmio_init(&priv->host, IOMEM(iores->start));
+ 	priv->host.sdhci.mci = &priv->mci;
+ 
+-	priv->gck_rate = at91_sdhci_conf_clks(priv);
++	priv->gck_rate = at91_sdhci_conf_clks(priv, gck_rate);
+ 	if (priv->gck_rate < 0)
+ 		return priv->gck_rate;
+ 
+@@ -164,6 +176,8 @@ static int at91_sdhci_probe(struct device *dev)
+ static const struct of_device_id at91_sdhci_dt_match[] = {
+ 	{ .compatible = "atmel,sama5d2-sdhci"  },
+ 	{ .compatible = "microchip,sam9x60-sdhci" },
++	{ .compatible = "microchip,lan9691-sdhci",
++	  .data = (void *)LAN969X_GCK_RATE },
+ 	{ /* sentinel */ }
+ };
+ MODULE_DEVICE_TABLE(of, at91_sdhci_dt_match);
 -- 
 2.47.3
 
