@@ -1,138 +1,111 @@
-Delivery-date: Sat, 13 Jun 2026 11:52:47 +0200
+Delivery-date: Sat, 13 Jun 2026 22:52:42 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wYL2l-005NMq-0D
+	id 1wYVLO-005XT7-0H
 	for lore@lore.pengutronix.de;
-	Sat, 13 Jun 2026 11:52:47 +0200
+	Sat, 13 Jun 2026 22:52:42 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wYL2k-0002Nm-4N
-	for lore@pengutronix.de; Sat, 13 Jun 2026 11:52:46 +0200
+	id 1wYVLM-0005Et-Ns
+	for lore@pengutronix.de; Sat, 13 Jun 2026 22:52:41 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
-	Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Message-ID:Date
-	:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Z9aaZ41xt0U2VqN5klogIxqgVR3k9mhTiXFomizNeIc=; b=fDnCmRBBoXwtq7xOBIF0fM0hX7
-	ha7WOLHgcFpiRa2mmXUqHbQqSjBFxUVl/D6BWc92xWu1KcBbqOz7Gxk4/35LQkJILvQ/xnDKJKMYI
-	j7sJJQ1RW25eDbnKJTcumrwWJ/Ds/8yo/WRvoz5Pup+icJ5DsSmdFq2a0qfozYoa0GEkhbRpOXKM0
-	EZatvp8DkNQH+sJaJmvilkiBSRi8Q4tJanrlDtY+m4kDTgjfvSnkjsPuUACmiJpHyXqPKD+bLHPED
-	q62GV5+IFpIBtElq8OSWedQLrJ1Bje4jGaW2cIbHpeimZC+ohIVwH+ifqnWe3m3OoN3ltdgBQh7Qz
-	0eeJJKDg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=mJ8JvcwZTrFMyFg2eNLcVnHORYcP3E+rByGDRc2gG98=; b=X1uUx6ud/60S1gej6xA+NnsIg/
+	8CHkW2v+hTOHOjPNCftegQYF4f+CMfaLngzv7aZ1zUb8fDW0y2TKLCattXliqlZbpBUuUZHIfDkYl
+	8Pi2NeJvln7gYtcxA+e9OIRpRIbHa555+pheHE0BbLC1maBvp6qlafL867nYoRkUldDc9Rdjc2R1U
+	I7n2+2IypDHc+F0OP5gQHkN83q+D68qHgR7o+bX4bsgAT4gkNpO8oeAc3zeBLwycA6M+PO1s2d6GA
+	1fz2ZQmYAXxWxOqOIfJY3OisVL+59kzbTynqipwa1IzwjRpWfj8jVJxC8tNyFp0sme11TBg/I2djf
+	/ZizcQOA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wYKoU-0000000C7ne-32T6;
-	Sat, 13 Jun 2026 09:38:02 +0000
+	id 1wYUTA-0000000CWUF-1w2W;
+	Sat, 13 Jun 2026 19:56:40 +0000
 Received: from mail-northeuropeazlp170120005.outbound.protection.outlook.com ([2a01:111:f403:c200::5] helo=DUZPR83CU001.outbound.protection.outlook.com)
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wYKoS-0000000C7nE-2ehY
+	id 1wYUT6-0000000CWTr-2nLM
 	for barebox@lists.infradead.org;
-	Sat, 13 Jun 2026 09:38:02 +0000
+	Sat, 13 Jun 2026 19:56:38 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HqsIpaWzBKjBsmt68itqOeZMY2j+E/I983Kq3UybPy5eAiiW075AveiTk9y7auuGPPECkxxjQwEeCCJ0ELm/IdZ/p9J8mR4EuYWFs0/c3fV5qTbulFGrtder0DS94h1CEFSvpFZ2nTHGFQoDtkt4xt7SLLAUPNcqBMlQjVgd7CXzNyenrBgnA0xNKvaY+OXJ+nO/TkArEoztXapXHWYi9hdxGAnUnaRtMfwKBBW3VCsPfgpDBESLymXS2h5zrT/VxPucVr332rLTTV7fr+clWL0KwtpDCrnQwCHBCLLkQPsPFgrjIzqY132sL3uYVhT4T9/JR9Z6IjnHDIuabfGC3g==
+ b=TLZ/IF6vZkNFxZbGgzJvKotIfxze+vawHeXl7Xq+JUatqf3j1Ht6ZZVOiJMdZix7v+HOlMRyS1rox4b/jJKTi3dK3xxU/9NZtLVXgrTDN0QQBDcBWJ6PdNqFy7Q4Gn+i4mxt3aVpm2yYuS0mvLVvWvQpXdUHADzpQRDXMKKWNetiaomAGinKkDXiCru51deipzVSYTI9N2my4DyqDGrUZcR1x3EMk8Phz0cPI69Jg286Z6Yyzk9iO4tCVoEbgk2AhW+lPpVvl+WQjXgstaMnckWEjx2tyuO/McVsGN3lWS4OBvxXF7K0xomoXJtlnh33VblyLqzz2qvMlUMSc3+YyA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Z9aaZ41xt0U2VqN5klogIxqgVR3k9mhTiXFomizNeIc=;
- b=i7YK2ZY9guTsTG2o07m09gWpPtpHNTzisH1I/SgBNXayVIVnuk9SuA3dqYdMJ5O1m9kCRMLe7LrKl4sTVJPGNOagGg03hLcPIs9WCxYUtIjWOoCfbEfgNODudMqphQKWKaLSuvAbD8juROXcyUyJ4ebnnhMPY+1vPi1ANNSJxK5zkTKV9txLzrCb6B4DptF9ekwh4BI4/lNEDZYntRgzv993gZ23R2qVQsbU3AqDabc+1VZtz9rEosRoTr74Som+LKQ4f54QjISM5RYCVMa1TEwICH+vfYxO7GW2EgCmRSTz5d6PsPb2E0QPuRr4khJQBvR3dTinZvknhDOIr9YjVw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=leica-geosystems.com; dmarc=pass action=none
- header.from=leica-geosystems.com; dkim=pass header.d=leica-geosystems.com;
- arc=none
+ bh=mJ8JvcwZTrFMyFg2eNLcVnHORYcP3E+rByGDRc2gG98=;
+ b=H/JUm54FdkiZgPe9zdR4bNf0ySHCjbX0LhnWuB9oQaJ3Qp6z1tUDifLF/CulhD+6MfVoEry3up2AkI3ihG4PUuDXgPv53gare5yU3H79cnlGOgGzHm0acF87dmR68cnGj++r3lv01GSYm1OmUkOSFASkGjQL9psOfRRYiu+Q2mHd4a8NAjrcYUdLN4cFIFzZ4VqpUUFKVZICbiCB4D+t/JkZMnwNMjXTV5tdgIYPPQpaDCBzTZ6HQhALCbng5kJgaHakM1GLfuf4zcS1lQRd7yuntWQnC8YIANLNevsBDxkOdet49d3y73CafhkFsdzOWT5UnVuA06hWwI2UoAFqeg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 193.8.40.99) smtp.rcpttodomain=lists.infradead.org
+ smtp.mailfrom=leica-geosystems.com; dmarc=pass (p=reject sp=reject pct=100)
+ action=none header.from=leica-geosystems.com; dkim=none (message not signed);
+ arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Z9aaZ41xt0U2VqN5klogIxqgVR3k9mhTiXFomizNeIc=;
- b=U6XipkiGGkIYQo22wrIrzCGG0nJzKCCt0gsHH5uuJ1U/T1VYAiu5C5B461Ecl4FMzIQPj30L6yldvtbcY+x1mV6P/z1QTD0VeqR9alobcu1culXy7CaDWBLPjBjpEaA5pSeFis7/KpX2BelQYesOXqPV2sxz7g9SC0d4X0+jYMU=
-Received: from AM0PR06MB4148.eurprd06.prod.outlook.com (2603:10a6:208:6a::27)
- by GVXPR06MB8608.eurprd06.prod.outlook.com (2603:10a6:150:110::17) with
+ bh=mJ8JvcwZTrFMyFg2eNLcVnHORYcP3E+rByGDRc2gG98=;
+ b=FF8D73wXukAYnvbGufc7W97ZKDYHni+PuQFfypR6ECoymZ3GDFd4F14OXCNsL3dGTslAuBK8OOfcIEDhMAZdCUXzqliB04B3RxKgw3xo0vr6uJdNTd+1zQSwwoiJ9t+zzIdSQuFxBi2sC4E+2wLd+VvvJ4zEaiVstvY/GxiAiHE=
+Received: from DB9PR05CA0005.eurprd05.prod.outlook.com (2603:10a6:10:1da::10)
+ by VI1PR06MB8851.eurprd06.prod.outlook.com (2603:10a6:800:1d5::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.16; Sat, 13 Jun
- 2026 09:37:54 +0000
-Received: from AM0PR06MB4148.eurprd06.prod.outlook.com
- ([fe80::dae7:3a84:9c7f:c6bc]) by AM0PR06MB4148.eurprd06.prod.outlook.com
- ([fe80::dae7:3a84:9c7f:c6bc%4]) with mapi id 15.21.0113.013; Sat, 13 Jun 2026
- 09:37:54 +0000
-From: SCHNEIDER Johannes <johannes.schneider@leica-geosystems.com>
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Thread-Topic: [PATCH] lib: decompress_unlz4: drop redundant -4 in wrapper call
- to unlz4
-Thread-Index: AQHc+vM8zj2qauOgvEOQcLeE6y7wgrY8OFnH
-Date: Sat, 13 Jun 2026 09:37:54 +0000
-Message-ID: <AM0PR06MB414868E79F9E8C8128214B70BC192@AM0PR06MB4148.eurprd06.prod.outlook.com>
-References: <20260613051225.3778935-1-johannes.schneider@leica-geosystems.com>
-In-Reply-To: <20260613051225.3778935-1-johannes.schneider@leica-geosystems.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=leica-geosystems.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: AM0PR06MB4148:EE_|GVXPR06MB8608:EE_
-x-ms-office365-filtering-correlation-id: 748a72db-fe8d-430d-8a6f-08dec92f71af
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|23010399003|366016|10070799003|1800799024|11063799006|5023799004|56012099006|22082099003|18002099003|3023799007|6133799003|38070700021;
-x-microsoft-antispam-message-info: 3KYRIEI25QPcLO7C3bNq6s5kCDZR/S2nAquzzRiYJ4B+kwe+9nsTwnTnHhG+rQOgVMTcU9ANPypJCb75sYvmEzwL+NTPOJ4+H/uiZf5umSn0dEbsalk/xXX1YZejHHg3jWSnP7KpDacm5YeNFXb7EXYmgC5Qpw+OP/kzyejmDQXhGYARRrgU1MdERK5wB3mm55dW2/3HyIb6YYy2qTcbPDV2C/+j5f2GvfdRY9XR9nzoQjc14rTdOpP4BvJyhp+EBkBtRGodvYy2ZIe0dBg2O4zcnPww2eYap0HhzToynpYpE+YMMLLb4SLX3H86Q83B+EdL8i5OrB/N4TaJlv3bJPLNljI+xwDplgcPunXFCwFZZB6twdPQOgTn1+ztYZyewdnoKXCdbiCfosBG9yq1Hg4EIl0Z9M2EtayWAI7E/hlFq0tKaKT1HqBPfGWMz/vPDyAaEEvgUZ5olNEeVohl1T2sOUhPqq4ZIpoRpTKChzXnypPLBRZHf0kpzLed7d9rnUDYrUequy/hNBjzoK/O/URaU7DCu37b35/HWH5QOvYi7hbK+dvuib/x0NynrtjKbSu8kmxNkfvzhAIYv78F6/TE/uWp/7f4bC+YA5xe5QRrMDs7cdzUYml+mXJmY37BiIpZsk326e/dx8jVEQ/fIctyys1KtvwDxRNHr+JOk5yutP6xXjd2vgeP/Js3IYmeal4bjSYR6qCye6yL3nWtc4UqbDtbN7P5Ys3Hz8TlS5firHXdw/alPuwtnHECO9bS
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR06MB4148.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(366016)(10070799003)(1800799024)(11063799006)(5023799004)(56012099006)(22082099003)(18002099003)(3023799007)(6133799003)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 2
-x-ms-exchange-antispam-messagedata-0: =?Windows-1252?Q?gqKZ2qRfw4608stpJhrzvcKE3v9CO0SXFJcs6sbiBYAr/KoUNRprguWc?=
- =?Windows-1252?Q?ciwEMMy+Q42ZXXSPi/7JCObLoOj03rto4RTnZ8NGo2OdzCn464geV23S?=
- =?Windows-1252?Q?aCSzi+3BMxN3/DR1FcB4w2H5iuYVh7yQ+o8eUQrmKHdAyIGaowjLlqFb?=
- =?Windows-1252?Q?dlijioB3isIx4LrjjvR81RSDkEHJUXKkXZ0hzDI5qgYabhT88tEQYJbU?=
- =?Windows-1252?Q?2+8rD8NGZKywyjl3Dn2gMXOl643X7s1vOsDi9ilmadA+XjB3FyrgPi8/?=
- =?Windows-1252?Q?43ye5tRRB0ZzTWex+jEgjjfjoBr4cFF5s1jgMGPp1YUtzx+9dkmnHdFn?=
- =?Windows-1252?Q?rvTNFlhpA5wNaMJyvr/nEc0+jiVXPETXxGQmXNvJAVDHKtU8LXmRTHd6?=
- =?Windows-1252?Q?k1Ffjm4Lr8QpP1dK/ND3cIzpsCCxV5IT2+JuaWtINtmv2zytCprdqNCZ?=
- =?Windows-1252?Q?1fcTIbXwyl33uEoXtxdDKG1HUs+X9+xvYAcCmnwt3JZh8JhEc8IC53ds?=
- =?Windows-1252?Q?vl0CDQs3pWp5sp+WzW4eLFfYpFq0FCcCPeCUtGeudbVq6AB/0vBYl8Oy?=
- =?Windows-1252?Q?jIUZuP4syoPAT+JI1OTba6ua+gNLTaArDQcrIm3hlE67jTp65fVIecJg?=
- =?Windows-1252?Q?XNsQddBK5ZFrQewsmH19kWxrqWFE/ly6WnXT0xBpHuArX3pzSABCZCy5?=
- =?Windows-1252?Q?0HwKPyDvAZ3wsm75zaZy7jwRvJODAj0ZuLgjjpfWUlHo9E7IAnYSXApf?=
- =?Windows-1252?Q?SF/i5zWy7vOSvKzbHExHa+WsCjAgQ7AFmI37JrZF+MW7V1N9mCxnd5u7?=
- =?Windows-1252?Q?lqzbH6RD9qcff856+B5bJfG6DfGsO4sR3zEIak45HnBSo368tQIG0bkK?=
- =?Windows-1252?Q?c6bTPY4ywbWecT5XUVzQfq0PgVxzCyDLRvC+Aq0PXoAgwEEqBJDymU3p?=
- =?Windows-1252?Q?PtXPwzJJ8+lnMk3pFDD0TnLUKQOv2ZxtWM/xpIt2h/LaBFfcY6UWSJvY?=
- =?Windows-1252?Q?AvFI4LSfgz/FzSSGzXpEOawC0fyJBObJW4BGzYfd1Yj6RdF3Ncgs0gc8?=
- =?Windows-1252?Q?+V93on4VFANkKOago6eLIUI6O12OyJ/TZeE+zKSYO714I9Fd5fkrnVqF?=
- =?Windows-1252?Q?OrA/YMv5wM2qxwPooLBxpAfGLWJPefq6PgIW4IHnMnpx2BVkd0Q9Nf5h?=
- =?Windows-1252?Q?6xYEEubveXCpt+elA1W/wQ9s9vBbVi6QKhER+E1hJBasPaRlpgfQB2cN?=
- =?Windows-1252?Q?aGu6qw5wD2MzPKn7HIqYElyU8b4BtvKgkOKrzWueVvlESf6gpLzZsOKI?=
- =?Windows-1252?Q?hvfw3LLjmeu2zUm1IlOMZO3yIukqu7zc+H379NW4uBNElIUK6b0vcngo?=
- =?Windows-1252?Q?AhWfFHDbs+bXNEsfh0NdClbyAzq70NRQv0imJwAdVap6nUGm1+ys8Gx0?=
- =?Windows-1252?Q?p5SQob+RM3pRTp/Yu0zGbeNXduzl8CfsMuUvEvI7waI8BVCgOxCTSjrD?=
- =?Windows-1252?Q?HSc+8iaQ2ubKMhNuiYBqV2MXzkherdUQUO5e93kwl/eCdhNIDgpEvpLi?=
- =?Windows-1252?Q?4uoTbV7L5fwYdQuWcnf28NouqDN9jWV0vzdLJK7C/ocyJqaffCfmYljF?=
- =?Windows-1252?Q?UkirU75QP+6SI6I9fFKtutDgr2j4nia/725NuCB+bi1MRFrHG91hw+vt?=
- =?Windows-1252?Q?/IkqQgLCTGunIDpukYMhjCqp5SJevidMPl75/PDffL+yWBMjLyN/lsbw?=
- =?Windows-1252?Q?H3rUot6IzYh55Xe1+qHqVpBryWpNN0PIOdf9LzcTyhbz76B8aXtR3lLh?=
- =?Windows-1252?Q?JIcEtyEh2kT68abKm0JAtKWinvKipx+JrMKScbHaMVlwvuonWeo1FuKa?=
- =?Windows-1252?Q?PgenMEiHhofEqENEYWijivmqassBbiTwjfr/3bpH7X5lYEVZ+5u7i1j2?=
- =?Windows-1252?Q?fZlqgb7Y?=
-x-ms-exchange-antispam-messagedata-1: +0P1QFjO9Er6eYZSrs6DYqzgbv24DOD7bYWYeb48W4YPaqgkok5VORqj
-Content-Type: text/plain; charset="Windows-1252"
-Content-Transfer-Encoding: quoted-printable
+ 2026 19:56:28 +0000
+Received: from DB1PEPF00039231.eurprd03.prod.outlook.com
+ (2603:10a6:10:1da:cafe::40) by DB9PR05CA0005.outlook.office365.com
+ (2603:10a6:10:1da::10) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.16 via Frontend Transport; Sat,
+ 13 Jun 2026 19:56:28 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 193.8.40.99)
+ smtp.mailfrom=leica-geosystems.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=leica-geosystems.com;
+Received-SPF: Pass (protection.outlook.com: domain of leica-geosystems.com
+ designates 193.8.40.99 as permitted sender) receiver=protection.outlook.com;
+ client-ip=193.8.40.99; helo=hexagon.com; pr=C
+Received: from hexagon.com (193.8.40.99) by
+ DB1PEPF00039231.mail.protection.outlook.com (10.167.8.104) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.113.7 via Frontend Transport; Sat, 13 Jun 2026 19:56:27 +0000
+Received: from aherlnxbspsrv01.lgs-net.com ([10.61.228.61]) by hexagon.com with Microsoft SMTPSVC(10.0.17763.1697);
+	 Sat, 13 Jun 2026 21:56:27 +0200
+From: Johannes Schneider <johannes.schneider@leica-geosystems.com>
+To: barebox@lists.infradead.org
+Cc: Johannes Schneider <johannes.schneider@leica-geosystems.com>
+Date: Sat, 13 Jun 2026 19:56:25 +0000
+Message-ID: <20260613195626.1650288-1-johannes.schneider@leica-geosystems.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 13 Jun 2026 19:56:27.0472 (UTC) FILETIME=[B8812D00:01DCFB6E]
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB1PEPF00039231:EE_|VI1PR06MB8851:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: 383431d1-f568-4e7b-e475-08dec985db37
+X-SET-LOWER-SCL-SCANNER: YES
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|36860700016|23010399003|82310400026|376014|1800799024|56012099006|11063799006|5023799004|18002099003|6133799003;
+X-Microsoft-Antispam-Message-Info: KZD1L1NgmvUeny/aElasjTfdZ5B7sgwmm81yIHDGZJ9h5vwGJBn9+xG7FmhQj+VihOjx8P4+MeWnX2Eu3POr2Sdhq3g3ySs53xKWn5G4ixgELJOlMZveVxdAsMeQXp1QF90e4aApFYo8aHvMgYcUzGLMDiluohysuJ2CnP2uObT6mP7OW/4ySYKXFASCyhKvhT4XNFOUhZ6vR85NaQiWL7q1UwvV2tb+OM9tsddleWFJJEf6z9TRiRJSjTH7AswxDPPW7ZIWU3GV7FBwvJZWwMRLyuE36uecPHLN/boYol083ieDvWwH95utm105mUGYCWrFejc3YQEh9EnvwDiAWsXTf3IWVjZpgo4RooPk0PlBTq5IBmIGgPGhf7FM7b8SKj/P70dQ9G4NNLBtr7c+NW3gUS1KsVWNd3cPuViubWfnH1jlrrvAL+ux5rtFPZCAhHOYmy6eE0QVgN05LuCrg1klJQHbfoeQgy9dfKdnOJxrLZvOVGdNyObPZo7PYVZS8A4ruhTeZ2feNwaBG4RJbLN5kMrs+0SXLdyROyxNo2RyfEzkv0FFZFaIw5MPtM0z0sXKtEs53MqKcFz1XEXUuHhLnHO3UbowvgNZskJGLoCExGKS4uTzr6jKBYsjnydFYBuz43ofhzkTE2M4VhAmBtozs5D7ZG6Y3cmeNtcOF2Mfg+1FqMHVrdrFsWfBY7tOy+urobBy9YZ4pyelb8Q26GaNOSc/hnMb0TxPEFPAs40=
+X-Forefront-Antispam-Report: CIP:193.8.40.99;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:hexagon.com;PTR:ahersrvdom51.leica-geosystems.com;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(82310400026)(376014)(1800799024)(56012099006)(11063799006)(5023799004)(18002099003)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: dnkhd1FLiu5VxqNKmnlrOxlud3MkCvf0M/Rm9dTAbxO7xEr60RYBbIKJaRItcHXiFcNr2se+tBWSTdDK/WA8ItA7l+Tz9pRwgc+c9qkAWwL+w1PPggwbgy23kcYMAytDLQcJUg8zFNJw7uqfEUdwSQAN7OIOr8F/DZ8CjTKiB9MqC5owJBTgOpegg10UfjwuQBPaZnBCRDRFcu/DrgiTdRBMTGPE+Kj1Cjqz4Mkzd1+eDhjd8wHKwGOyoyE5UlUD79WbkZynfFDRVsmNUr4bsdEgeoEeh8YzEtaTZjH7nLQcCNDZY+JSAnrtnJLk/qbeAeCY1v66G7nx/6foGShk6Aa2CeeYTqDRQ2/77dxlhd9POogeYAJm/8GXRDSPLR4iuwyr+8GoIKYg4BBUTRbyLYJmVjlGommovxAUUIklBGday92ixBTBrsiyI9PhjQcH
 X-OriginatorOrg: leica-geosystems.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR06MB4148.eurprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 748a72db-fe8d-430d-8a6f-08dec92f71af
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jun 2026 09:37:54.0737
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2026 19:56:27.8257
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: i4iNFWfiqxx4PGhBm+Ad7SE1dcFouqVVWOo0XaPoGt2WOdIYfJC8Hu0AflNS4EmemOWynqZkFFUlSNUl3KJPYtRvPxMSZwHIS2szPOWnbVAHhQvOvp9U2wfbn+irLKm+
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR06MB8608
+X-MS-Exchange-CrossTenant-Network-Message-Id: 383431d1-f568-4e7b-e475-08dec985db37
+X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.99];Helo=[hexagon.com]
+X-MS-Exchange-CrossTenant-AuthSource: DB1PEPF00039231.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR06MB8851
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260613_023800_836587_D32E3E7B 
-X-CRM114-Status: GOOD (  14.16  )
+X-CRM114-CacheID: sfid-20260613_125636_894431_B17EBA14 
+X-CRM114-Status: GOOD (  18.23  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -150,105 +123,364 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] lib: decompress_unlz4: drop redundant -4 in wrapper call
- to unlz4
+Subject: [PATCH v1] firmware: choose PBL fw-external verify algorithm via Kconfig
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hoi,
+The PBL verifies fw-external blobs by hashing them in DRAM after the
+BootROM-supplied load, before handing off to TF-A. SHA-256 is the
+only choice today, and it runs with the MMU off and DRAM reads
+uncached -- no D-cache, no hardware crypto, plain software hash
+walking DRAM through the slowest available access path. The cost is
+non-trivial.
 
+Measured on Cortex-A53, MMU off, uncached DRAM:
 
-please disregard this patch :-S
+  SHA-256, ~720 KiB blob:  ~2 s
+  CRC32,   ~720 KiB blob:  ~10 ms
 
-i've since found out that the root cause lies in the way we build lz4 compr=
-essed fitimage parts - there a plain lz4 call, with no 4-byte size trailer =
-is used. And this missing trailer is what triggered the "Error: Fit: data c=
-orrupted" - which is non fatal anyway, as the system still booted.
+That ~2 s sits in PBL phase 1, before BL31 entry, and is paid every
+boot. When the SoC's secure boot (HABv4 on i.MX8M, AHAB on i.MX9, or
+an upstream-signed FIT / bundle) already authenticates the blob
+before the PBL ever sees it, the in-PBL SHA-256 is redundant: it
+only re-checks the BootROM->DRAM copy against a value baked into the
+PBL itself, not against an external trust anchor. A 32-bit CRC over
+the same window catches the realistic failure mode (a corrupted copy
+into DRAM) at ~200x lower wall-clock cost.
 
-Now i'm wondering why barebox is using this (legacy?) format?
+Make the verify algorithm a Kconfig choice:
 
+  PBL_FIRMWARE_EXT_VERIFY_NONE    no verify
+  PBL_FIRMWARE_EXT_VERIFY_CRC32   4-byte CRC, cheap corruption check
+  PBL_FIRMWARE_EXT_VERIFY_SHA256  current behaviour, default
 
-gru=DF
-Johannes
+firmware/Makefile selects an algorithm and passes it to gen-fw-s,
+which emits nothing for NONE, a 4-byte .long for CRC32, or 32 bytes
+for SHA-256 in the per-blob .rodata.<fwstr>.sha section. The macro
+in include/firmware.h declares the verify symbols only when actually
+used (offset != 0, i.e. fw-external blobs), so NONE is a true no-op
+and in-tree firmware never grew a section dependency.
+firmware_ext_verify() dispatches via IS_ENABLED() at compile time.
 
-________________________________________
-From: Johannes Schneider <johannes.schneider@leica-geosystems.com>
-Sent: Saturday, June 13, 2026 07:12
-To: barebox@lists.infradead.org
-Cc: SCHNEIDER Johannes
-Subject: [PATCH] lib: decompress_unlz4: drop redundant -4 in wrapper call t=
-o unlz4
+The verify-section symbol names (_fw_*_sha_*) are kept as-is rather
+than renamed, since firmware_next_image_verify() also references
+them for the FIRMWARE_VERIFY_NEXT_IMAGE path; under CRC32 the name
+no longer describes the contents, but renaming would expand the
+patch scope unnecessarily.
 
-decompress_unlz4() passes in_len - 4 to unlz4(), as if the caller had
-already stripped the LZ4 legacy frame magic from the buffer. But unlz4()
-reads the magic itself from buf[0..3] and, in the buffer-input path,
-explicitly accounts for it via:
-
-        if (!fill) {
-                inp +=3D 4;
-                size -=3D 4;
-        }
-
-So the magic is subtracted twice from the running size counter. After
-the last chunk is consumed, the counter underflows to -4 instead of 0,
-which trips the "data corrupted" check at the end of the chunk loop:
-
-        if (!fill) {
-                size -=3D chunksize;
-                if (size =3D=3D 0)
-                        break;
-                else if (size < 0) {
-                        error("data corrupted");
-                        goto exit_2;
-                }
-                inp +=3D chunksize;
-        }
-
-The bug is benign in practice =97 by the time the size check fires, all
-chunks have already been successfully decompressed and flushed, and ret
-holds the 0 returned by the last lz4_decompress_unknownoutputsize()
-call. unlz4() returns 0 and the caller treats the operation as
-successful, but a spurious "data corrupted" line is printed on every
-LZ4 decompression. With pr_fmt set by image-fit.c, FIT-image kernel
-boots show:
-
-        ERROR: FIT: data corrupted
-
-right between the configuration line and the cmdline-append line.
-
-Pass in_len through unchanged. unlz4() handles the magic itself in both
-the input and fill paths.
-
-Fill-mode callers (e.g. uncompress_fd_to_fd) are unaffected: they pass
-in_len=3D0, and unlz4() overwrites the initial size on the first fill()
-call.
+Default stays at SHA-256 so existing defconfigs keep their current
+semantics.
 
 Assisted-by: Claude:claude-opus-4-7
 Signed-off-by: Johannes Schneider <johannes.schneider@leica-geosystems.com>
 ---
- lib/decompress_unlz4.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ firmware/Kconfig   | 33 +++++++++++++++++++++++++++
+ firmware/Makefile  | 15 ++++++++++--
+ include/firmware.h | 41 +++++++++++++++++++++++----------
+ include/pbl.h      |  2 ++
+ pbl/decomp.c       | 35 ++++++++++++++++++++++++++++
+ scripts/gen-fw-s   | 57 +++++++++++++++++++++++++++++++++-------------
+ 6 files changed, 153 insertions(+), 30 deletions(-)
 
-diff --git a/lib/decompress_unlz4.c b/lib/decompress_unlz4.c
-index 2bb30e71bb..17bb4e5de7 100644
---- a/lib/decompress_unlz4.c
-+++ b/lib/decompress_unlz4.c
-@@ -209,6 +209,6 @@ STATIC int decompress_unlz4(unsigned char *buf, long in=
-_len,
-                              void(*error)(char *x)
-        )
+diff --git a/firmware/Kconfig b/firmware/Kconfig
+index b9b4556dbd..f745819a67 100644
+--- a/firmware/Kconfig
++++ b/firmware/Kconfig
+@@ -151,4 +151,37 @@ config FIRMWARE_VERIFY_NEXT_IMAGE
+ 	  verified images. The function to check the next stage image hash is
+ 	  firmware_next_image_verify(), make sure your SoC code uses it.
+ 
++choice
++	prompt "PBL fw-external blob verification"
++	default PBL_FIRMWARE_EXT_VERIFY_SHA256
++	help
++	  Algorithm used by the PBL to verify an fw-external blob against a
++	  value embedded at build time, before handoff to TF-A. Runs with
++	  the MMU off and DRAM reads uncached, so cost scales sharply with
++	  blob size and algorithm. This checks integrity vs the build-time
++	  value; it is not authentication against an external trust anchor.
++
++config PBL_FIRMWARE_EXT_VERIFY_NONE
++	bool "none"
++	help
++	  Skip the verify. Appropriate when the boot chain authenticates the
++	  blob upstream of the PBL (HAB, AHAB, signed FIT, ...) -- the
++	  in-PBL check is then redundant.
++
++config PBL_FIRMWARE_EXT_VERIFY_CRC32
++	bool "CRC32"
++	select CRC32
++	help
++	  4-byte CRC32 (zlib polynomial). Catches accidental corruption
++	  of the BootROM->DRAM copy; not cryptographic.
++
++config PBL_FIRMWARE_EXT_VERIFY_SHA256
++	bool "SHA-256"
++	help
++	  Cryptographic hash, software-computed with MMU off. Strongest
++	  option but by far the slowest -- prefer NONE or CRC32 when the
++	  blob is already authenticated upstream of the PBL.
++
++endchoice
++
+ endmenu
+diff --git a/firmware/Makefile b/firmware/Makefile
+index 7e433a1824..1590bed9f1 100644
+--- a/firmware/Makefile
++++ b/firmware/Makefile
+@@ -61,8 +61,19 @@ pbl-fwext-y := $(addsuffix .extgen.o, $(fw-external-y))
+ 
+ FWNAME    = $(patsubst $(obj)/%.extgen.S,%,$(patsubst $(obj)/%.gen.S,%,$@))
+ 
+-filechk_fwbin = $(srctree)/scripts/gen-fw-s $(FWNAME) $(FIRMWARE_DIR) .rodata '' $(fwobjdir)
+-filechk_fwbin_ext = $(srctree)/scripts/gen-fw-s $(FWNAME) $(FIRMWARE_DIR) .pblext a $(fwobjdir)
++# Verify algorithm passed to gen-fw-s for fw-external blobs. Drives the
++# verify metadata section emitted into .extgen.S and matched by
++# firmware_ext_verify() in include/firmware.h.
++ifdef CONFIG_PBL_FIRMWARE_EXT_VERIFY_NONE
++fw_verify_algo := none
++else ifdef CONFIG_PBL_FIRMWARE_EXT_VERIFY_CRC32
++fw_verify_algo := crc32
++else
++fw_verify_algo := sha256
++endif
++
++filechk_fwbin = $(srctree)/scripts/gen-fw-s $(FWNAME) $(FIRMWARE_DIR) .rodata '' $(fwobjdir) sha256
++filechk_fwbin_ext = $(srctree)/scripts/gen-fw-s $(FWNAME) $(FIRMWARE_DIR) .pblext a $(fwobjdir) $(fw_verify_algo)
+ 
+ $(obj)/%.gen.S: FORCE
+ 	$(call filechk,fwbin)
+diff --git a/include/firmware.h b/include/firmware.h
+index 6511d56b2e..72a47f24e3 100644
+--- a/include/firmware.h
++++ b/include/firmware.h
+@@ -80,13 +80,21 @@ static inline void release_firmware(const struct firmware *fw)
+ 
+ void firmwaremgr_list_handlers(void);
+ 
+-static inline void firmware_ext_verify(const void *data_start, size_t data_size,
+-				       const void *hash_start, size_t hash_size)
++static inline void firmware_ext_verify(const void *data, size_t data_size,
++				       const void *verify, size_t verify_size)
  {
--       return unlz4(buf, in_len - 4, fill, flush, output, posp, error);
-+       return unlz4(buf, in_len, fill, flush, output, posp, error);
+-	if (pbl_barebox_verify(data_start, data_size,
+-			       hash_start, hash_size) != 0) {
++	int ret;
++
++	if (IS_ENABLED(CONFIG_PBL_FIRMWARE_EXT_VERIFY_CRC32))
++		ret = pbl_barebox_verify_crc32(data, data_size,
++					       verify, verify_size);
++	else
++		ret = pbl_barebox_verify(data, data_size,
++					 verify, verify_size);
++
++	if (ret != 0) {
+ 		putc_ll('!');
+-		panic("hash mismatch, refusing to decompress");
++		panic("firmware verify mismatch, refusing to decompress");
+ 	}
  }
- #define decompress decompress_unlz4
+ 
+@@ -96,22 +104,31 @@ struct fwobj {
+ 	void *data;
+ };
+ 
++#if defined(CONFIG_PBL_FIRMWARE_EXT_VERIFY_NONE)
++# define __fw_ext_verify(name, fwobj)	do { } while (0)
++#else
++# define __fw_ext_verify(name, fwobj)					\
++	do {								\
++		extern char _fw_##name##_sha_start[];		\
++		extern char _fw_##name##_sha_end[];			\
++		firmware_ext_verify(					\
++			(fwobj)->data, (fwobj)->size,			\
++			_fw_##name##_sha_start,			\
++			_fw_##name##_sha_end -			\
++			_fw_##name##_sha_start);			\
++	} while (0)
++#endif
++
+ #define __get_builtin_firmware(name, offset, fwobj)			\
+ 	do {								\
+ 		extern char _fw_##name##_start[];			\
+ 		extern char _fw_##name##_end[];				\
+-		extern char _fw_##name##_sha_start[];			\
+-		extern char _fw_##name##_sha_end[];			\
+ 		(fwobj)->data = _fw_##name##_start;			\
+ 		(fwobj)->size = _fw_##name##_end - _fw_##name##_start;	\
+ 		if (!(offset))						\
+ 			break;						\
+ 		(fwobj)->data += (offset);				\
+-		firmware_ext_verify(					\
+-			(fwobj)->data, (fwobj)->size,			\
+-			_fw_##name##_sha_start,				\
+-			_fw_##name##_sha_end - _fw_##name##_sha_start	\
+-		);							\
++		__fw_ext_verify(name, fwobj);				\
+ 	} while (0)
+ 
+ 
+diff --git a/include/pbl.h b/include/pbl.h
+index fe4367825c..57ca8b4eb3 100644
+--- a/include/pbl.h
++++ b/include/pbl.h
+@@ -29,6 +29,8 @@ fdt_device_get_match_data(const void *fdt, const char *nodepath,
+ 
+ int pbl_barebox_verify(const void *compressed_start, unsigned int len,
+ 		       const void *hash, unsigned int hash_len);
++int pbl_barebox_verify_crc32(const void *data_start, unsigned int len,
++			     const void *crc, unsigned int crc_len);
+ int pbl_load_fdt(const void *fdt, void *dest, int destsize);
+ 
+ #define PBL_MALLOC_SIZE SZ_128K
+diff --git a/pbl/decomp.c b/pbl/decomp.c
+index 1539a6b67e..ace121eac6 100644
+--- a/pbl/decomp.c
++++ b/pbl/decomp.c
+@@ -13,6 +13,10 @@
+ #include <asm/sections.h>
+ #include <pbl.h>
+ #include <debug_ll.h>
++#ifdef CONFIG_PBL_FIRMWARE_EXT_VERIFY_CRC32
++#include <crc.h>
++#include <asm/unaligned.h>
++#endif
+ 
+ #define STATIC static
+ 
+@@ -90,6 +94,37 @@ int pbl_barebox_verify(const void *compressed_start, unsigned int len,
+ 	return memcmp(hash, computed_hash, SHA256_DIGEST_SIZE);
+ }
+ 
++#ifdef CONFIG_PBL_FIRMWARE_EXT_VERIFY_CRC32
++int pbl_barebox_verify_crc32(const void *data_start, unsigned int len,
++			     const void *crc, unsigned int crc_len)
++{
++	uint32_t expected, computed;
++
++	if (crc_len != sizeof(uint32_t))
++		return -1;
++
++	/* Stored little-endian by .long in the .rodata.*.sha section. */
++	expected = get_unaligned_le32(crc);
++	computed = crc32(0, data_start, len);
++
++	if (IS_ENABLED(CONFIG_DEBUG_LL)) {
++		puts_ll("CRC ");
++		puthexc_ll((computed >> 24) & 0xff);
++		puthexc_ll((computed >> 16) & 0xff);
++		puthexc_ll((computed >> 8)  & 0xff);
++		puthexc_ll(computed & 0xff);
++		puts_ll(" vs ");
++		puthexc_ll((expected >> 24) & 0xff);
++		puthexc_ll((expected >> 16) & 0xff);
++		puthexc_ll((expected >> 8)  & 0xff);
++		puthexc_ll(expected & 0xff);
++		putc_ll('\n');
++	}
++
++	return computed == expected ? 0 : -1;
++}
++#endif
++
+ void pbl_barebox_uncompress(void *dest, void *compressed_start, unsigned int len)
+ {
+ 	uint32_t pbl_hash_len;
+diff --git a/scripts/gen-fw-s b/scripts/gen-fw-s
+index 78c3193479..d7d7d15824 100755
+--- a/scripts/gen-fw-s
++++ b/scripts/gen-fw-s
+@@ -3,13 +3,20 @@
+ #
+ # Generate assembly source to embed firmware binary
+ #
+-# Usage: gen-fw-s <fwname> <fwdir> <secprefix> [secflags] [fwobjdir]
++# Usage: gen-fw-s <fwname> <fwdir> <secprefix> [secflags] [fwobjdir] [verify-algo]
++#
++# verify-algo selects the metadata emitted in the .rodata.<fwstr>.sha
++# section, matched by firmware_ext_verify() in include/firmware.h:
++#   sha256 (default) -- 32-byte SHA-256
++#   crc32            -- 4-byte CRC32 (zlib polynomial)
++#   none             -- no section, no symbols
+ 
+ fwname=$1
+ fwdir=$2
+ secprefix=$3
+ secflags=$4
+ fwobjdir=$5
++verify_algo=${6:-sha256}
+ 
+ fwstr=$(echo "$fwname" | tr '/.-' '___')
+ fwpath="$fwdir/$fwname"
+@@ -19,8 +26,6 @@ if [ -f "$fwpath" ]; then
+ 	fw_uncompressed=$(stat -c %s "$fwpath")
+ fi
+ 
+-sha=$(sha256sum "$fwpath" 2>/dev/null | sed 's/ .*$//;s/../0x&, /g;s/, $//')
+-
+ echo "/* Generated by scripts/gen-fw-s */"
+ echo "#include <asm-generic/pointer.h>"
+ echo ".section .note.GNU-stack,\"\",%progbits"
+@@ -59,19 +64,39 @@ echo ".global _fw_z_${fwstr}_end"
+ echo "_fw_z_${fwstr}_end:"
+ echo "#endif"
+ 
+-# include sha256, needed for external firmware
+-echo "    .section .rodata.${fwstr}.sha"
+-echo "    .p2align ASM_LGPTR"
+-echo ".global _fw_${fwstr}_sha_start"
+-echo "_fw_${fwstr}_sha_start:"
+-echo "    .byte ${sha}"
+-echo ".global _fw_${fwstr}_sha_end"
+-echo "_fw_${fwstr}_sha_end:"
+-if [ -f "$fwpath" ]; then
+-	echo ".if _fw_${fwstr}_sha_start + 32 - _fw_${fwstr}_sha_end"
+-	echo ".error \"sha256sum invalid\""
+-	echo ".endif"
+-fi
++# verify metadata for fw-external blobs, consumed by firmware_ext_verify()
++# in include/firmware.h. Driven by the PBL_FIRMWARE_EXT_VERIFY Kconfig
++# choice (passed in from firmware/Makefile).
++case "$verify_algo" in
++none)
++	;;
++crc32)
++	crc=$(python3 -c 'import sys,zlib; sys.stdout.write("0x%08x" % zlib.crc32(open(sys.argv[1],"rb").read()))' \
++		"$fwpath" 2>/dev/null || echo "0x00000000")
++	echo "    .section .rodata.${fwstr}.sha"
++	echo "    .p2align 2"
++	echo ".global _fw_${fwstr}_sha_start"
++	echo "_fw_${fwstr}_sha_start:"
++	echo "    .long ${crc}"
++	echo ".global _fw_${fwstr}_sha_end"
++	echo "_fw_${fwstr}_sha_end:"
++	;;
++sha256|*)
++	sha=$(sha256sum "$fwpath" 2>/dev/null | sed 's/ .*$//;s/../0x&, /g;s/, $//')
++	echo "    .section .rodata.${fwstr}.sha"
++	echo "    .p2align ASM_LGPTR"
++	echo ".global _fw_${fwstr}_sha_start"
++	echo "_fw_${fwstr}_sha_start:"
++	echo "    .byte ${sha}"
++	echo ".global _fw_${fwstr}_sha_end"
++	echo "_fw_${fwstr}_sha_end:"
++	if [ -f "$fwpath" ]; then
++		echo ".if _fw_${fwstr}_sha_start + 32 - _fw_${fwstr}_sha_end"
++		echo ".error \"sha256sum invalid\""
++		echo ".endif"
++	fi
++	;;
++esac
+ 
+ # include a string containing the firmware name. When a non existing
+ # firmware is referenced in the PBL then _fwname_${fwstr} is referenced
 
 base-commit: 6c70fb327d486376c1f2e37dfff2212cb9eebb1b
---
+-- 
 2.43.0
 
 
