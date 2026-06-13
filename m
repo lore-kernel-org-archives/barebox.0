@@ -1,111 +1,138 @@
-Delivery-date: Sat, 13 Jun 2026 07:13:37 +0200
+Delivery-date: Sat, 13 Jun 2026 11:52:47 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wYGga-005JFK-37
+	id 1wYL2l-005NMq-0D
 	for lore@lore.pengutronix.de;
-	Sat, 13 Jun 2026 07:13:37 +0200
+	Sat, 13 Jun 2026 11:52:47 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wYGgW-00044d-7l
-	for lore@pengutronix.de; Sat, 13 Jun 2026 07:13:36 +0200
+	id 1wYL2k-0002Nm-4N
+	for lore@pengutronix.de; Sat, 13 Jun 2026 11:52:46 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=GFHrjFEYwF7yMWZRkMG+ynhgO25sXDlFFoqupe2OVE0=; b=CxkVT24Mo/c/tBN3CwE43cB3Pt
-	gY+W7GFfjrY5H1p67T84QnZcjz/smDdf/V9igULDIKahBB0daUKYQojdrOAr9NLGcnjuDaGkJ+Etv
-	DM+qMBg2SN6MUuls69p19jZ1Usj6GGMNIFZcJezum0nXh1xRKmh58aM3vXiDq68PIeRQU5bG5Gjvm
-	QuyFeHjxKzxbJzvD3IekbpcHg0Wq+QnVBH59RxP3eo0LVrn10Gqs66Q/1lr5QSYhfURXSxhNT5PIY
-	HuprzI/TNmt3Kk5+59w2WyeH8N1MfW/NK1KHXthcgxc0yU2nkb4FkXr6GTmvqxxYOoSWGVIm8Vq7E
-	oMPLiraA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
+	Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Message-ID:Date
+	:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Z9aaZ41xt0U2VqN5klogIxqgVR3k9mhTiXFomizNeIc=; b=fDnCmRBBoXwtq7xOBIF0fM0hX7
+	ha7WOLHgcFpiRa2mmXUqHbQqSjBFxUVl/D6BWc92xWu1KcBbqOz7Gxk4/35LQkJILvQ/xnDKJKMYI
+	j7sJJQ1RW25eDbnKJTcumrwWJ/Ds/8yo/WRvoz5Pup+icJ5DsSmdFq2a0qfozYoa0GEkhbRpOXKM0
+	EZatvp8DkNQH+sJaJmvilkiBSRi8Q4tJanrlDtY+m4kDTgjfvSnkjsPuUACmiJpHyXqPKD+bLHPED
+	q62GV5+IFpIBtElq8OSWedQLrJ1Bje4jGaW2cIbHpeimZC+ohIVwH+ifqnWe3m3OoN3ltdgBQh7Qz
+	0eeJJKDg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wYGff-0000000BxcX-2pQ4;
-	Sat, 13 Jun 2026 05:12:39 +0000
-Received: from mail-northeuropeazlp170100001.outbound.protection.outlook.com ([2a01:111:f403:c200::1] helo=DB3PR0202CU003.outbound.protection.outlook.com)
+	id 1wYKoU-0000000C7ne-32T6;
+	Sat, 13 Jun 2026 09:38:02 +0000
+Received: from mail-northeuropeazlp170120005.outbound.protection.outlook.com ([2a01:111:f403:c200::5] helo=DUZPR83CU001.outbound.protection.outlook.com)
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wYGfc-0000000Bxbv-10Ai
+	id 1wYKoS-0000000C7nE-2ehY
 	for barebox@lists.infradead.org;
-	Sat, 13 Jun 2026 05:12:38 +0000
+	Sat, 13 Jun 2026 09:38:02 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aNtCMvHWq5LoGNmdaGJiY8zcmDZXNS0RcxUkM6VVXsBQ2T1qDuSwLWy8zfxiidAQzrzuzCb6Y5n8/NpWULPWFeuLDUl3Z+8B8jX7/GPSK7eXVqw8hm7GqEE0QwHU8ilO4Dph7TNHHAk3RswPwIRLdB85Vuw5g0nGoemgvN/04XScFeg104rogtdjVKsstLdcoVbVHaJQ9GFQrIDPtaDoL/a6n/N2vLGsv86YrwySr9Eo1LYxykA9A8Fzn0ACpJjYZB6oDoRhW3Hf0DsTeh0N8/F4kl+HLfUQYIaEbcUtx34FvOip7D3N8KA0Avtd7aWU1WO7dqpQ/1CdfQNFWXhF0g==
+ b=HqsIpaWzBKjBsmt68itqOeZMY2j+E/I983Kq3UybPy5eAiiW075AveiTk9y7auuGPPECkxxjQwEeCCJ0ELm/IdZ/p9J8mR4EuYWFs0/c3fV5qTbulFGrtder0DS94h1CEFSvpFZ2nTHGFQoDtkt4xt7SLLAUPNcqBMlQjVgd7CXzNyenrBgnA0xNKvaY+OXJ+nO/TkArEoztXapXHWYi9hdxGAnUnaRtMfwKBBW3VCsPfgpDBESLymXS2h5zrT/VxPucVr332rLTTV7fr+clWL0KwtpDCrnQwCHBCLLkQPsPFgrjIzqY132sL3uYVhT4T9/JR9Z6IjnHDIuabfGC3g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GFHrjFEYwF7yMWZRkMG+ynhgO25sXDlFFoqupe2OVE0=;
- b=BvU89N7gAlvTNP7tWj5MoNnDb0s/7l+uuGTEm/sWBlV5mTHtIBJqD1dYeO2HSdbCBCVvbkK36Rt8K556opLyAc8shxaPluwmlE291DgkTi7wRAHhb+bC9zUzrdGqN3TGW2Ipc+TBNwNe52t7IBQjdCZkp7dNCKWRXTHDIFwWFSJWygPLv+ZbbAaDeLsywbNbPJ8cfaYMWYieWh1HB0RpdsVsJajVR6WwrQCDMU2r6ZEjpyz/ifunQF+ZQuXtZ/V4QHlsd/rIZPb3wAqlhte0LaqwBVqbOuh5Urr1cYQwtJynAMtgRH2a7Czf3jE2kayaZqgA160DDlEZlKMa9EjUYA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 193.8.40.99) smtp.rcpttodomain=lists.infradead.org
- smtp.mailfrom=leica-geosystems.com; dmarc=pass (p=reject sp=reject pct=100)
- action=none header.from=leica-geosystems.com; dkim=none (message not signed);
- arc=none (0)
+ bh=Z9aaZ41xt0U2VqN5klogIxqgVR3k9mhTiXFomizNeIc=;
+ b=i7YK2ZY9guTsTG2o07m09gWpPtpHNTzisH1I/SgBNXayVIVnuk9SuA3dqYdMJ5O1m9kCRMLe7LrKl4sTVJPGNOagGg03hLcPIs9WCxYUtIjWOoCfbEfgNODudMqphQKWKaLSuvAbD8juROXcyUyJ4ebnnhMPY+1vPi1ANNSJxK5zkTKV9txLzrCb6B4DptF9ekwh4BI4/lNEDZYntRgzv993gZ23R2qVQsbU3AqDabc+1VZtz9rEosRoTr74Som+LKQ4f54QjISM5RYCVMa1TEwICH+vfYxO7GW2EgCmRSTz5d6PsPb2E0QPuRr4khJQBvR3dTinZvknhDOIr9YjVw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=leica-geosystems.com; dmarc=pass action=none
+ header.from=leica-geosystems.com; dkim=pass header.d=leica-geosystems.com;
+ arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GFHrjFEYwF7yMWZRkMG+ynhgO25sXDlFFoqupe2OVE0=;
- b=FxtMkExUJpEKxv1Bkp73P4HQSiqbegLfDdHVud1OUpjYAJPdBs9r908iQYW5GX4e13oeoBpRsYjOX861TnLnFdXgy13uLemO+/1TyrlCPZZS65tElYMaqxGqHyUSaxIyK4M5dE7J0IBf+ZU7rvOFW1rbT/YFgOjTtqtMGhvE8Dc=
-Received: from DB7PR05CA0033.eurprd05.prod.outlook.com (2603:10a6:10:36::46)
- by DU2PR06MB8383.eurprd06.prod.outlook.com (2603:10a6:10:2f2::13) with
+ bh=Z9aaZ41xt0U2VqN5klogIxqgVR3k9mhTiXFomizNeIc=;
+ b=U6XipkiGGkIYQo22wrIrzCGG0nJzKCCt0gsHH5uuJ1U/T1VYAiu5C5B461Ecl4FMzIQPj30L6yldvtbcY+x1mV6P/z1QTD0VeqR9alobcu1culXy7CaDWBLPjBjpEaA5pSeFis7/KpX2BelQYesOXqPV2sxz7g9SC0d4X0+jYMU=
+Received: from AM0PR06MB4148.eurprd06.prod.outlook.com (2603:10a6:208:6a::27)
+ by GVXPR06MB8608.eurprd06.prod.outlook.com (2603:10a6:150:110::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.15; Sat, 13 Jun
- 2026 05:12:26 +0000
-Received: from DB1PEPF000509FF.eurprd03.prod.outlook.com
- (2603:10a6:10:36:cafe::a5) by DB7PR05CA0033.outlook.office365.com
- (2603:10a6:10:36::46) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.113.15 via Frontend Transport; Sat,
- 13 Jun 2026 05:12:26 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 193.8.40.99)
- smtp.mailfrom=leica-geosystems.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=leica-geosystems.com;
-Received-SPF: Pass (protection.outlook.com: domain of leica-geosystems.com
- designates 193.8.40.99 as permitted sender) receiver=protection.outlook.com;
- client-ip=193.8.40.99; helo=hexagon.com; pr=C
-Received: from hexagon.com (193.8.40.99) by
- DB1PEPF000509FF.mail.protection.outlook.com (10.167.242.41) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.113.7 via Frontend Transport; Sat, 13 Jun 2026 05:12:26 +0000
-Received: from aherlnxbspsrv01.lgs-net.com ([10.61.228.61]) by hexagon.com with Microsoft SMTPSVC(10.0.17763.1697);
-	 Sat, 13 Jun 2026 07:12:26 +0200
-From: Johannes Schneider <johannes.schneider@leica-geosystems.com>
-To: barebox@lists.infradead.org
-Cc: Johannes Schneider <johannes.schneider@leica-geosystems.com>
-Date: Sat, 13 Jun 2026 05:12:24 +0000
-Message-ID: <20260613051225.3778935-1-johannes.schneider@leica-geosystems.com>
-X-Mailer: git-send-email 2.43.0
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.113.16; Sat, 13 Jun
+ 2026 09:37:54 +0000
+Received: from AM0PR06MB4148.eurprd06.prod.outlook.com
+ ([fe80::dae7:3a84:9c7f:c6bc]) by AM0PR06MB4148.eurprd06.prod.outlook.com
+ ([fe80::dae7:3a84:9c7f:c6bc%4]) with mapi id 15.21.0113.013; Sat, 13 Jun 2026
+ 09:37:54 +0000
+From: SCHNEIDER Johannes <johannes.schneider@leica-geosystems.com>
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Thread-Topic: [PATCH] lib: decompress_unlz4: drop redundant -4 in wrapper call
+ to unlz4
+Thread-Index: AQHc+vM8zj2qauOgvEOQcLeE6y7wgrY8OFnH
+Date: Sat, 13 Jun 2026 09:37:54 +0000
+Message-ID: <AM0PR06MB414868E79F9E8C8128214B70BC192@AM0PR06MB4148.eurprd06.prod.outlook.com>
+References: <20260613051225.3778935-1-johannes.schneider@leica-geosystems.com>
+In-Reply-To: <20260613051225.3778935-1-johannes.schneider@leica-geosystems.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=leica-geosystems.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM0PR06MB4148:EE_|GVXPR06MB8608:EE_
+x-ms-office365-filtering-correlation-id: 748a72db-fe8d-430d-8a6f-08dec92f71af
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|23010399003|366016|10070799003|1800799024|11063799006|5023799004|56012099006|22082099003|18002099003|3023799007|6133799003|38070700021;
+x-microsoft-antispam-message-info: 3KYRIEI25QPcLO7C3bNq6s5kCDZR/S2nAquzzRiYJ4B+kwe+9nsTwnTnHhG+rQOgVMTcU9ANPypJCb75sYvmEzwL+NTPOJ4+H/uiZf5umSn0dEbsalk/xXX1YZejHHg3jWSnP7KpDacm5YeNFXb7EXYmgC5Qpw+OP/kzyejmDQXhGYARRrgU1MdERK5wB3mm55dW2/3HyIb6YYy2qTcbPDV2C/+j5f2GvfdRY9XR9nzoQjc14rTdOpP4BvJyhp+EBkBtRGodvYy2ZIe0dBg2O4zcnPww2eYap0HhzToynpYpE+YMMLLb4SLX3H86Q83B+EdL8i5OrB/N4TaJlv3bJPLNljI+xwDplgcPunXFCwFZZB6twdPQOgTn1+ztYZyewdnoKXCdbiCfosBG9yq1Hg4EIl0Z9M2EtayWAI7E/hlFq0tKaKT1HqBPfGWMz/vPDyAaEEvgUZ5olNEeVohl1T2sOUhPqq4ZIpoRpTKChzXnypPLBRZHf0kpzLed7d9rnUDYrUequy/hNBjzoK/O/URaU7DCu37b35/HWH5QOvYi7hbK+dvuib/x0NynrtjKbSu8kmxNkfvzhAIYv78F6/TE/uWp/7f4bC+YA5xe5QRrMDs7cdzUYml+mXJmY37BiIpZsk326e/dx8jVEQ/fIctyys1KtvwDxRNHr+JOk5yutP6xXjd2vgeP/Js3IYmeal4bjSYR6qCye6yL3nWtc4UqbDtbN7P5Ys3Hz8TlS5firHXdw/alPuwtnHECO9bS
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR06MB4148.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(23010399003)(366016)(10070799003)(1800799024)(11063799006)(5023799004)(56012099006)(22082099003)(18002099003)(3023799007)(6133799003)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 2
+x-ms-exchange-antispam-messagedata-0: =?Windows-1252?Q?gqKZ2qRfw4608stpJhrzvcKE3v9CO0SXFJcs6sbiBYAr/KoUNRprguWc?=
+ =?Windows-1252?Q?ciwEMMy+Q42ZXXSPi/7JCObLoOj03rto4RTnZ8NGo2OdzCn464geV23S?=
+ =?Windows-1252?Q?aCSzi+3BMxN3/DR1FcB4w2H5iuYVh7yQ+o8eUQrmKHdAyIGaowjLlqFb?=
+ =?Windows-1252?Q?dlijioB3isIx4LrjjvR81RSDkEHJUXKkXZ0hzDI5qgYabhT88tEQYJbU?=
+ =?Windows-1252?Q?2+8rD8NGZKywyjl3Dn2gMXOl643X7s1vOsDi9ilmadA+XjB3FyrgPi8/?=
+ =?Windows-1252?Q?43ye5tRRB0ZzTWex+jEgjjfjoBr4cFF5s1jgMGPp1YUtzx+9dkmnHdFn?=
+ =?Windows-1252?Q?rvTNFlhpA5wNaMJyvr/nEc0+jiVXPETXxGQmXNvJAVDHKtU8LXmRTHd6?=
+ =?Windows-1252?Q?k1Ffjm4Lr8QpP1dK/ND3cIzpsCCxV5IT2+JuaWtINtmv2zytCprdqNCZ?=
+ =?Windows-1252?Q?1fcTIbXwyl33uEoXtxdDKG1HUs+X9+xvYAcCmnwt3JZh8JhEc8IC53ds?=
+ =?Windows-1252?Q?vl0CDQs3pWp5sp+WzW4eLFfYpFq0FCcCPeCUtGeudbVq6AB/0vBYl8Oy?=
+ =?Windows-1252?Q?jIUZuP4syoPAT+JI1OTba6ua+gNLTaArDQcrIm3hlE67jTp65fVIecJg?=
+ =?Windows-1252?Q?XNsQddBK5ZFrQewsmH19kWxrqWFE/ly6WnXT0xBpHuArX3pzSABCZCy5?=
+ =?Windows-1252?Q?0HwKPyDvAZ3wsm75zaZy7jwRvJODAj0ZuLgjjpfWUlHo9E7IAnYSXApf?=
+ =?Windows-1252?Q?SF/i5zWy7vOSvKzbHExHa+WsCjAgQ7AFmI37JrZF+MW7V1N9mCxnd5u7?=
+ =?Windows-1252?Q?lqzbH6RD9qcff856+B5bJfG6DfGsO4sR3zEIak45HnBSo368tQIG0bkK?=
+ =?Windows-1252?Q?c6bTPY4ywbWecT5XUVzQfq0PgVxzCyDLRvC+Aq0PXoAgwEEqBJDymU3p?=
+ =?Windows-1252?Q?PtXPwzJJ8+lnMk3pFDD0TnLUKQOv2ZxtWM/xpIt2h/LaBFfcY6UWSJvY?=
+ =?Windows-1252?Q?AvFI4LSfgz/FzSSGzXpEOawC0fyJBObJW4BGzYfd1Yj6RdF3Ncgs0gc8?=
+ =?Windows-1252?Q?+V93on4VFANkKOago6eLIUI6O12OyJ/TZeE+zKSYO714I9Fd5fkrnVqF?=
+ =?Windows-1252?Q?OrA/YMv5wM2qxwPooLBxpAfGLWJPefq6PgIW4IHnMnpx2BVkd0Q9Nf5h?=
+ =?Windows-1252?Q?6xYEEubveXCpt+elA1W/wQ9s9vBbVi6QKhER+E1hJBasPaRlpgfQB2cN?=
+ =?Windows-1252?Q?aGu6qw5wD2MzPKn7HIqYElyU8b4BtvKgkOKrzWueVvlESf6gpLzZsOKI?=
+ =?Windows-1252?Q?hvfw3LLjmeu2zUm1IlOMZO3yIukqu7zc+H379NW4uBNElIUK6b0vcngo?=
+ =?Windows-1252?Q?AhWfFHDbs+bXNEsfh0NdClbyAzq70NRQv0imJwAdVap6nUGm1+ys8Gx0?=
+ =?Windows-1252?Q?p5SQob+RM3pRTp/Yu0zGbeNXduzl8CfsMuUvEvI7waI8BVCgOxCTSjrD?=
+ =?Windows-1252?Q?HSc+8iaQ2ubKMhNuiYBqV2MXzkherdUQUO5e93kwl/eCdhNIDgpEvpLi?=
+ =?Windows-1252?Q?4uoTbV7L5fwYdQuWcnf28NouqDN9jWV0vzdLJK7C/ocyJqaffCfmYljF?=
+ =?Windows-1252?Q?UkirU75QP+6SI6I9fFKtutDgr2j4nia/725NuCB+bi1MRFrHG91hw+vt?=
+ =?Windows-1252?Q?/IkqQgLCTGunIDpukYMhjCqp5SJevidMPl75/PDffL+yWBMjLyN/lsbw?=
+ =?Windows-1252?Q?H3rUot6IzYh55Xe1+qHqVpBryWpNN0PIOdf9LzcTyhbz76B8aXtR3lLh?=
+ =?Windows-1252?Q?JIcEtyEh2kT68abKm0JAtKWinvKipx+JrMKScbHaMVlwvuonWeo1FuKa?=
+ =?Windows-1252?Q?PgenMEiHhofEqENEYWijivmqassBbiTwjfr/3bpH7X5lYEVZ+5u7i1j2?=
+ =?Windows-1252?Q?fZlqgb7Y?=
+x-ms-exchange-antispam-messagedata-1: +0P1QFjO9Er6eYZSrs6DYqzgbv24DOD7bYWYeb48W4YPaqgkok5VORqj
+Content-Type: text/plain; charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 13 Jun 2026 05:12:26.0190 (UTC) FILETIME=[396FD6E0:01DCFAF3]
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB1PEPF000509FF:EE_|DU2PR06MB8383:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5e1fd83e-3246-4aac-cb4f-08dec90a5c18
-X-SET-LOWER-SCL-SCANNER: YES
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|82310400026|36860700016|23010399003|376014|18002099003|56012099006|3023799007|6133799003|11063799006|5023799004;
-X-Microsoft-Antispam-Message-Info: +sMsLelAjedcwPFtRJrWI7Gc2TWYiwpPQr+cFnwo87tIdMbyk5EYSVZgdufCoZboBhv+Uk967KcJfvmkoOy1yiZfrzYsIZJSBcFGOIgqkLL68ecF2Vm2opF7ma9nekaWcq9uR/cPKB4bBciH8NwI88GzBypqgh7qsU2QrEFZOC4PKvh/OGQuLVfbNz07libLwYAJbAUJu34JegAydZQkivruUwC7SEaM+QzjlMqifX2IP1nEG1ikacd/OgeOPM4dCyp4ZUZRk/+yrqV9YZK0nQ2i6vpnwC0i8p+VFp8zaQlde8IQxWaUYf1e3SZkbIOS5PJvYGlrOgYCXnULXxkaLXKEvh2zB86JGoHI8ppqwvWv30FNrDuxHk0m7kWDVZack9va9uNjTLNVkBRwmuSvMMEn7efqaB9Z4ql0nx+zYcYBhft383+jVcT5PpGuZJGwbVD1y6WlRTt0ySK13nYxZOxyXND2lhdDtC2HFeespZ0AhB4cTs0xouzsC8uSyF7JZl+Pb8HvKbBjAoG/ZxH8e/j3Cea0HiwS55hexTeh35zFSa1KreH62x0TVZrnXgdUkqDad/LvDfkxm8qnZr7ePnASOzx1gN2/68+sY5dGaQA5CeP/MdGDZT89FDq0dV3JrkwGnonKwEtOmd7QZzH2P7ExmyHZ6W80TGGPqO0PmXH3u+6sZvPI8DnRRPXOQ/aTNhjIhIfDGalyXIVNEbgSIgI7n6hUuwarnbQOoq80/Cc=
-X-Forefront-Antispam-Report: CIP:193.8.40.99;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:hexagon.com;PTR:ahersrvdom51.leica-geosystems.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(23010399003)(376014)(18002099003)(56012099006)(3023799007)(6133799003)(11063799006)(5023799004);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: GIuxjBSjOoN30Dfp7dl2+ANVIvN1E00fVSLOtf9ERKMhJsg2IjYJHrxxfr5M95gafmRfZKjqxeiTt6C841wa2epayc/O32YoNlaBrwGpGZG2mBdg7FOt98B5gpKSz4D6VWwLOcQlhFXRTQl7F+eS42zB3WmCtIajljiP3EqLLS1gkQUDYNH9812jJQD7g4gSrIldDGn3opBc2eLugdhaRF7P8Pe8CD2nzFORl9wbmgzbICn78clAQkSDRiB1IzIkQHku+7Dk53HPdp6L+wJ6cAmILJ995olmUB5qogD1nTuxWw3klcrdVRQrL4EghsW7dxKXlLJEU4gG/AOSq1CznzuWYcEV2V2d6xa784lOz0iRJsLmaL0a8ZiWMp9KrIJA16fb9aP5VqNDbNUggCHs842+f0VKLaZ8QS27MuWFGkrLpWXd2vrR904h4ZbiH8XE
 X-OriginatorOrg: leica-geosystems.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2026 05:12:26.4534
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR06MB4148.eurprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 748a72db-fe8d-430d-8a6f-08dec92f71af
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jun 2026 09:37:54.0737
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5e1fd83e-3246-4aac-cb4f-08dec90a5c18
-X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.99];Helo=[hexagon.com]
-X-MS-Exchange-CrossTenant-AuthSource: DB1PEPF000509FF.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR06MB8383
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: i4iNFWfiqxx4PGhBm+Ad7SE1dcFouqVVWOo0XaPoGt2WOdIYfJC8Hu0AflNS4EmemOWynqZkFFUlSNUl3KJPYtRvPxMSZwHIS2szPOWnbVAHhQvOvp9U2wfbn+irLKm+
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR06MB8608
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260612_221236_463369_67AD1EA0 
-X-CRM114-Status: GOOD (  12.26  )
+X-CRM114-CacheID: sfid-20260613_023800_836587_D32E3E7B 
+X-CRM114-Status: GOOD (  14.16  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -123,40 +150,65 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] lib: decompress_unlz4: drop redundant -4 in wrapper call to unlz4
+Subject: Re: [PATCH] lib: decompress_unlz4: drop redundant -4 in wrapper call
+ to unlz4
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
+
+Hoi,
+
+
+please disregard this patch :-S
+
+i've since found out that the root cause lies in the way we build lz4 compr=
+essed fitimage parts - there a plain lz4 call, with no 4-byte size trailer =
+is used. And this missing trailer is what triggered the "Error: Fit: data c=
+orrupted" - which is non fatal anyway, as the system still booted.
+
+Now i'm wondering why barebox is using this (legacy?) format?
+
+
+gru=DF
+Johannes
+
+________________________________________
+From: Johannes Schneider <johannes.schneider@leica-geosystems.com>
+Sent: Saturday, June 13, 2026 07:12
+To: barebox@lists.infradead.org
+Cc: SCHNEIDER Johannes
+Subject: [PATCH] lib: decompress_unlz4: drop redundant -4 in wrapper call t=
+o unlz4
 
 decompress_unlz4() passes in_len - 4 to unlz4(), as if the caller had
 already stripped the LZ4 legacy frame magic from the buffer. But unlz4()
 reads the magic itself from buf[0..3] and, in the buffer-input path,
 explicitly accounts for it via:
 
-	if (!fill) {
-		inp += 4;
-		size -= 4;
-	}
+        if (!fill) {
+                inp +=3D 4;
+                size -=3D 4;
+        }
 
 So the magic is subtracted twice from the running size counter. After
 the last chunk is consumed, the counter underflows to -4 instead of 0,
 which trips the "data corrupted" check at the end of the chunk loop:
 
-	if (!fill) {
-		size -= chunksize;
-		if (size == 0)
-			break;
-		else if (size < 0) {
-			error("data corrupted");
-			goto exit_2;
-		}
-		inp += chunksize;
-	}
+        if (!fill) {
+                size -=3D chunksize;
+                if (size =3D=3D 0)
+                        break;
+                else if (size < 0) {
+                        error("data corrupted");
+                        goto exit_2;
+                }
+                inp +=3D chunksize;
+        }
 
-The bug is benign in practice — by the time the size check fires, all
+The bug is benign in practice =97 by the time the size check fires, all
 chunks have already been successfully decompressed and flushed, and ret
 holds the 0 returned by the last lz4_decompress_unknownoutputsize()
 call. unlz4() returns 0 and the caller treats the operation as
@@ -164,7 +216,7 @@ successful, but a spurious "data corrupted" line is printed on every
 LZ4 decompression. With pr_fmt set by image-fit.c, FIT-image kernel
 boots show:
 
-	ERROR: FIT: data corrupted
+        ERROR: FIT: data corrupted
 
 right between the configuration line and the cmdline-append line.
 
@@ -172,7 +224,7 @@ Pass in_len through unchanged. unlz4() handles the magic itself in both
 the input and fill paths.
 
 Fill-mode callers (e.g. uncompress_fd_to_fd) are unaffected: they pass
-in_len=0, and unlz4() overwrites the initial size on the first fill()
+in_len=3D0, and unlz4() overwrites the initial size on the first fill()
 call.
 
 Assisted-by: Claude:claude-opus-4-7
@@ -185,17 +237,18 @@ diff --git a/lib/decompress_unlz4.c b/lib/decompress_unlz4.c
 index 2bb30e71bb..17bb4e5de7 100644
 --- a/lib/decompress_unlz4.c
 +++ b/lib/decompress_unlz4.c
-@@ -209,6 +209,6 @@ STATIC int decompress_unlz4(unsigned char *buf, long in_len,
- 			      void(*error)(char *x)
- 	)
+@@ -209,6 +209,6 @@ STATIC int decompress_unlz4(unsigned char *buf, long in=
+_len,
+                              void(*error)(char *x)
+        )
  {
--	return unlz4(buf, in_len - 4, fill, flush, output, posp, error);
-+	return unlz4(buf, in_len, fill, flush, output, posp, error);
+-       return unlz4(buf, in_len - 4, fill, flush, output, posp, error);
++       return unlz4(buf, in_len, fill, flush, output, posp, error);
  }
  #define decompress decompress_unlz4
 
 base-commit: 6c70fb327d486376c1f2e37dfff2212cb9eebb1b
--- 
+--
 2.43.0
 
 
