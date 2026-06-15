@@ -1,57 +1,55 @@
-Delivery-date: Mon, 15 Jun 2026 12:01:26 +0200
+Delivery-date: Mon, 15 Jun 2026 12:42:04 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wZ48E-0065zc-1i
+	id 1wZ4lY-0066fz-1Q
 	for lore@lore.pengutronix.de;
-	Mon, 15 Jun 2026 12:01:26 +0200
+	Mon, 15 Jun 2026 12:42:04 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wZ48D-0006Bc-Og
-	for lore@pengutronix.de; Mon, 15 Jun 2026 12:01:26 +0200
+	id 1wZ4lW-0007qU-A5
+	for lore@pengutronix.de; Mon, 15 Jun 2026 12:42:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=WClpjglm1Fl/TqpWObP4OOPiKkULIy281OTEkBZG3FY=; b=FaynvVXFtAp0ngYwoPi04eAo9K
-	Jga7IHaqA/jYzvT818tppIndWSE2ViCSRgxTYLMm8+Kh4V1i7J8keoEmu3/ScgtPNUo5FU/K2TVGD
-	zTHkVz6ioc4uk0VmV6bqTU9MyavAZpy3BbP3yFsZI4rl4+kzYOCeqhZMOQ3vqlS1ugK0E1X7u8JIo
-	RoiUDXIsNoJf5sbTiEMPaEGpmCFIsMS5vx1L23Xksex4t7b3o5znW2T+TSd8ahuzP5D9Mhqsocpjj
-	NoR1frAEygQXoz6BaEwhbvwwJjcIsjaaT3fuA9cmHPku8hFQpY3wRXip8gaiLYrH2AO7hrmiN8ut5
-	foHJ6LtQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
+	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:Cc:To:From
+	:Subject:Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=8g7101GG6LLf/aC/pdClNH1HEdm/Szk9N5G70Q24kZQ=; b=Bg+nAOH9peK8pleSQbQaw/jED8
+	CAbnxvBLCN6rRK7cGVTPqYwx3Pw0LXkpGScSNp73J4CE4st9YUv8Dt2+gts5PXiCnI9jtSy1ksOJV
+	Y3dX9G6VL7oWHqZQJJQozpbU1TXize9qS521DfqdchB306DQX0LwlberbhzbdZH3D0ZRBFLfxz3aB
+	7XBE31QfYc3nCmd9H6JymUgjzLGR3tCe+uvlK148JXZLFkeceEl0FfkaJKMCCnGtoXGNgs+/szcUb
+	eFa6HWGxX2nF79eskQeP2Ybl4ZrGh3QztRYpnbSmZP1H/m1+tdstjsufwZx/oq56fXHmDq7xkM7rB
+	k8lbcPnQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wZ47r-0000000E1HM-1TGP;
-	Mon, 15 Jun 2026 10:01:03 +0000
+	id 1wZ4kL-0000000E3nb-3K7U;
+	Mon, 15 Jun 2026 10:40:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wZ47p-0000000E1GJ-0YOz
+	id 1wZ4kG-0000000E3n6-3TaW
 	for barebox@lists.infradead.org;
-	Mon, 15 Jun 2026 10:01:02 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	Mon, 15 Jun 2026 10:40:48 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wZ47n-0005yr-Ku; Mon, 15 Jun 2026 12:00:59 +0200
-Message-ID: <90b2981c-737b-42b9-916a-1d3ca8be04a2@pengutronix.de>
-Date: Mon, 15 Jun 2026 12:00:59 +0200
+	(envelope-from <f.pfitzner@pengutronix.de>)
+	id 1wZ4kD-0007XO-OP; Mon, 15 Jun 2026 12:40:41 +0200
+Message-ID: <8c2c1b7e0f7c3cccd95dc84dadaf26880b61c34e.camel@pengutronix.de>
+From: Fabian Pfitzner <f.pfitzner@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Date: Mon, 15 Jun 2026 12:40:41 +0200
+In-Reply-To: <E1wQ2Ub-00000004VNh-09rq@pty.whiteo.stw.pengutronix.de>
+References: <E1wQ2Ub-00000004VNh-09rq@pty.whiteo.stw.pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.60.2 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: SCHNEIDER Johannes <johannes.schneider@leica-geosystems.com>,
- "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-References: <20260613051225.3778935-1-johannes.schneider@leica-geosystems.com>
- <AM0PR06MB414868E79F9E8C8128214B70BC192@AM0PR06MB4148.eurprd06.prod.outlook.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <AM0PR06MB414868E79F9E8C8128214B70BC192@AM0PR06MB4148.eurprd06.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260615_030101_172035_1ECEA9BB 
-X-CRM114-Status: GOOD (  28.07  )
+X-CRM114-CacheID: sfid-20260615_034044_892169_B8126F86 
+X-CRM114-Status: GOOD (  29.83  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,123 +67,134 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] lib: decompress_unlz4: drop redundant -4 in wrapper call
- to unlz4
+Subject: Re: [PATCH 2/2] arch: arm: imx: detect secondary boot
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello,
+On Thu, 2026-05-21 at 12:27 +0000, Sascha Hauer wrote:
+> On 2026-05-20 10:33, Fabian Pfitzner wrote:
+> > Integrate support to detect secondary boot on imx machines.
+> > Copy the logic for detection from the uboot-imx project[1].
+> >=20
+> > The information will be stored in the `bootsource_instance_index`
+> > variable.
+> >=20
+> > [1]
+> > https://github.com/nxp-imx/uboot-imx/blob/99518e6b6f20cb6a2bf19115e355d=
+b9f58100af8/arch/arm/mach-imx/imx8m/soc.c#L792
+> >=20
+> > Signed-off-by: Fabian Pfitzner <f.pfitzner@pengutronix.de>
+> > ---
+> > =C2=A0arch/arm/mach-imx/boot.c | 52
+> > ++++++++++++++++++++++++++++++++++++++++++++++++
+> > =C2=A01 file changed, 52 insertions(+)
+> >=20
+> > diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
+> > index
+> > 3fea22d05f3bfdf2fe9caa6767e1c7c5ea3ced00..a35a1acc2e71231236d3dd500
+> > 8523f6c66912000 100644
+> > --- a/arch/arm/mach-imx/boot.c
+> > +++ b/arch/arm/mach-imx/boot.c
+> > @@ -26,6 +26,8 @@
+> > =C2=A0
+> > =C2=A0#include <soc/fsl/fsl_udc.h>
+> > =C2=A0
+> > +int imx8m_detect_secondary_image_boot(void);
+>=20
+> It should be either static without forward declaration or exported
+> with
+> the declaration in a header file.
+>=20
+> > +
+> > =C2=A0static void
+> > =C2=A0imx_boot_save_loc(void (*get_boot_source)(enum bootsource *, int
+> > *))
+> > =C2=A0{
+> > @@ -35,6 +37,10 @@ imx_boot_save_loc(void (*get_boot_source)(enum
+> > bootsource *, int *))
+> > =C2=A0	get_boot_source(&src, &instance);
+> > =C2=A0
+> > =C2=A0	bootsource_set(src, instance);
+> > +
+> > +	int index =3D imx8m_detect_secondary_image_boot();
+>=20
+> You assume you are running on i.MX8M here which is not necessarily
+> the
+> case.
+>=20
+> > +
+> > +	bootsource_set_instance_index(index);
+> > =C2=A0}
+> > =C2=A0
+> > =C2=A0
+> > @@ -756,3 +762,49 @@ void imx8mn_get_boot_source(enum bootsource
+> > *src, int *instance)
+> > =C2=A0
+> > =C2=A0void imx8mn_boot_save_loc(void)
+> > =C2=A0	__alias(imx8mp_boot_save_loc);
+> > +
+> > +int imx8m_detect_secondary_image_boot(void)
+> > +{
+> > +	u32 *rom_log_addr =3D (u32 *)0x9e0;
+> > +	u32 *rom_log;
+> > +	u8 event_id;
+> > +	int i, boot_secondary =3D 0;
+> > +
+> > +	/* If the ROM event log pointer is not valid. */
+> > +	if (*rom_log_addr < 0x900000 || *rom_log_addr >=3D 0xb00000
+> > ||
+> > +	=C2=A0=C2=A0=C2=A0 *rom_log_addr & 0x3)
+> > +		return -EINVAL;
+>=20
+> We have imx8m_get_bootrom_log() which handles different cases like we
+> are in PBL/EL3 or in barebox proper. Why not use it here?
 
-On 6/13/26 11:37 AM, SCHNEIDER Johannes wrote:
-> Hoi,
-> 
-> 
-> please disregard this patch :-S
-> 
-> i've since found out that the root cause lies in the way we build lz4 compressed fitimage parts - there a plain lz4 call, with no 4-byte size trailer is used. And this missing trailer is what triggered the "Error: Fit: data corrupted" - which is non fatal anyway, as the system still booted.
-> 
-> Now i'm wondering why barebox is using this (legacy?) format?
+I tried using `imx8m_get_bootrom_log()` here, but it does not seem to
+work. The function returns an invalid address (0x8000) here.
 
-gzip includes the size of the uncompressed data. The kernel
-decompressors that barebox imports add that field manually for other
-compression algorithms, whose header format lack it.
-
-If you find a way that can accommodate both, we can go with it.
-
-Cheers,
-Ahmad
-
-> 
-> 
-> gruß
-> Johannes
-> 
-> ________________________________________
-> From: Johannes Schneider <johannes.schneider@leica-geosystems.com>
-> Sent: Saturday, June 13, 2026 07:12
-> To: barebox@lists.infradead.org
-> Cc: SCHNEIDER Johannes
-> Subject: [PATCH] lib: decompress_unlz4: drop redundant -4 in wrapper call to unlz4
-> 
-> decompress_unlz4() passes in_len - 4 to unlz4(), as if the caller had
-> already stripped the LZ4 legacy frame magic from the buffer. But unlz4()
-> reads the magic itself from buf[0..3] and, in the buffer-input path,
-> explicitly accounts for it via:
-> 
->         if (!fill) {
->                 inp += 4;
->                 size -= 4;
->         }
-> 
-> So the magic is subtracted twice from the running size counter. After
-> the last chunk is consumed, the counter underflows to -4 instead of 0,
-> which trips the "data corrupted" check at the end of the chunk loop:
-> 
->         if (!fill) {
->                 size -= chunksize;
->                 if (size == 0)
->                         break;
->                 else if (size < 0) {
->                         error("data corrupted");
->                         goto exit_2;
->                 }
->                 inp += chunksize;
->         }
-> 
-> The bug is benign in practice — by the time the size check fires, all
-> chunks have already been successfully decompressed and flushed, and ret
-> holds the 0 returned by the last lz4_decompress_unknownoutputsize()
-> call. unlz4() returns 0 and the caller treats the operation as
-> successful, but a spurious "data corrupted" line is printed on every
-> LZ4 decompression. With pr_fmt set by image-fit.c, FIT-image kernel
-> boots show:
-> 
->         ERROR: FIT: data corrupted
-> 
-> right between the configuration line and the cmdline-append line.
-> 
-> Pass in_len through unchanged. unlz4() handles the magic itself in both
-> the input and fill paths.
-> 
-> Fill-mode callers (e.g. uncompress_fd_to_fd) are unaffected: they pass
-> in_len=0, and unlz4() overwrites the initial size on the first fill()
-> call.
-> 
-> Assisted-by: Claude:claude-opus-4-7
-> Signed-off-by: Johannes Schneider <johannes.schneider@leica-geosystems.com>
-> ---
->  lib/decompress_unlz4.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/lib/decompress_unlz4.c b/lib/decompress_unlz4.c
-> index 2bb30e71bb..17bb4e5de7 100644
-> --- a/lib/decompress_unlz4.c
-> +++ b/lib/decompress_unlz4.c
-> @@ -209,6 +209,6 @@ STATIC int decompress_unlz4(unsigned char *buf, long in_len,
->                               void(*error)(char *x)
->         )
->  {
-> -       return unlz4(buf, in_len - 4, fill, flush, output, posp, error);
-> +       return unlz4(buf, in_len, fill, flush, output, posp, error);
->  }
->  #define decompress decompress_unlz4
-> 
-> base-commit: 6c70fb327d486376c1f2e37dfff2212cb9eebb1b
+>=20
+> I wonder how this works at all because you are derefencing the ROM
+> which
+> is inside the faulting zero page. I would assume barebox crashes here
+> when this is called from barebox proper.
+>=20
+> > +
+> > +	/* Parse the ROM event ID version 2 log */
+> > +	rom_log =3D (u32 *)(uintptr_t)(*rom_log_addr);
+> > +	for (i =3D 0; i < 128; i++) {
+> > +		event_id =3D rom_log[i] >> 24;
+>=20
+> We already have defines for this, see arch/arm/mach-imx/bootrom-cmd.c
+>=20
+> Sascha
+>=20
 > --
-> 2.43.0
-> 
-> 
-> 
+> Pengutronix e.K.=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0
+> |=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 |
+> Steuerwalder Str. 21=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |
+> http://www.pengutronix.de/=C2=A0 |
+> 31137 Hildesheim, Germany=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | Phone: +49-5121-20=
+6917-
+> 0=C2=A0=C2=A0=C2=A0 |
+> Amtsgericht Hildesheim, HRA 2686=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 | Fax:=C2=A0=C2=A0 +49-5121-206917-
+> 5555 |
 
--- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-
+--=20
+Pengutronix e.K. | Fabian Pfitzner |
+Steuerwalder Str. 21 | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany | Phone: +49-5121-206917-0 |
+Amtsgericht Hildesheim, HRA 2686 | Fax: +49-5121-206917-9 |
 
 
