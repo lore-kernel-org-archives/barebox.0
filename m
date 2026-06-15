@@ -1,65 +1,62 @@
-Delivery-date: Mon, 15 Jun 2026 10:30:43 +0200
+Delivery-date: Mon, 15 Jun 2026 10:50:47 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wZ2iR-0064d6-1s
+	id 1wZ31r-0064to-2K
 	for lore@lore.pengutronix.de;
-	Mon, 15 Jun 2026 10:30:43 +0200
+	Mon, 15 Jun 2026 10:50:47 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wZ2iQ-0007HZ-Sa
-	for lore@pengutronix.de; Mon, 15 Jun 2026 10:30:43 +0200
+	id 1wZ31r-0004Rz-2u
+	for lore@pengutronix.de; Mon, 15 Jun 2026 10:50:47 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=SPwEbUbzfE9HsjTPXUAcdX9RLv2bMEXjxcfNt/Vc1NU=; b=ml1h24TsdYXojJl+cqzc6OUbai
-	vtVf7RUl8jlNxqJ9+xBqbKJwEQiId0ItDgSZupSycy8jr/aOBZBYQYvlre15kiEZX7LVzOh0gfVSC
-	uHxSYmpjooT68Lwe4HQ8QZSY10E01lJLLb7rf03b8sqqTTKrT3zLNxpaJWsv3J86EThSCORFz034M
-	OCn0pddFw80dI0MPm/CgfwwxdSVPgyVv8CiR83FSl675RFvA8PIyI8j3dcKxpGPif7qIlJ1f3kMQI
-	QbgShcn5Tq78XQ7oouNHx7WpRK2bv9o5/fqlQIgbhxyRlP634XCIYCduQLr0XrFgNSRHMUpyfBhe9
-	oN35GSoA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:
+	Content-Transfer-Encoding:Content-Type:In-Reply-To:Cc:To:Subject:From:
+	Reply-To:MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
+	bh=EiYtLSnaYw/E8z8HVaF8AULEUubVGidbZbzvTWKg/k0=; b=nh1mvWBoWsbO+vxf69GYp1rO+g
+	pW8M3Lxoso60epEdr7vxEKNtCHracJyftVx3Sg3NFjpzuQ7xl81q2rZuPBU7HdE/xj+aLX2bVcevL
+	CX7cynNHj/ND8/T91z5yFCfqws1mkIeEATzPzYjyCHWZSMbFI6rjYzFn+BHgPgM0jAc/Uw9m0gISG
+	eb0c3oxMSjVzZeXQPSStNtCqTkZg2BS9SYPWX+aSay7sf0jFCP4sTrfieN6Or2X5ReHiyvj2k1An9
+	3iGkArDDDFIi9hedMYrrVJg58LvuJO9/7rg6+nkVSeWg4JWaBbELKRLDRhK8h5rLk29lVTQWYAmOV
+	oMcNf2Gg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wZ2hR-0000000Dru1-3q11;
-	Mon, 15 Jun 2026 08:29:41 +0000
+	id 1wZ30f-0000000DuFw-0FIw;
+	Mon, 15 Jun 2026 08:49:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wZ2hO-0000000DrtD-3Cdq
+	id 1wZ30b-0000000DuF9-3Bfq
 	for barebox@lists.infradead.org;
-	Mon, 15 Jun 2026 08:29:40 +0000
+	Mon, 15 Jun 2026 08:49:31 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wZ2hN-0006xG-3j; Mon, 15 Jun 2026 10:29:37 +0200
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	(envelope-from <sha@pengutronix.de>)
+	id 1wZ30Z-00042M-Sa; Mon, 15 Jun 2026 10:49:27 +0200
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wZ2hN-002pft-0C;
-	Mon, 15 Jun 2026 10:29:37 +0200
-Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wZ2hN-0000000FG1h-00uP;
-	Mon, 15 Jun 2026 10:29:37 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20260606182148.337137-1-a.fatoum@barebox.org>
-References: <20260606182148.337137-1-a.fatoum@barebox.org>
-Message-Id: <178151217700.3636233.1064124468993563081.b4-ty@pengutronix.de>
-Date: Mon, 15 Jun 2026 10:29:37 +0200
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+	(envelope-from <sha@pengutronix.de>)
+	id 1wZ30Z-002po1-2f;
+	Mon, 15 Jun 2026 10:49:27 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1wZ30Z-00000006Gk9-35a3;
+	Mon, 15 Jun 2026 10:49:27 +0200
+From: "Sascha Hauer" <s.hauer@pengutronix.de>
+To: "Ahmad Fatoum" <a.fatoum@pengutronix.de>
+Cc: "Andrei Lalaev" <andrey.lalaev@gmail.com>, barebox@lists.infradead.org
+In-Reply-To: <7d47871b-989a-4ad0-bfb1-4d449fd13ceb@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 15 Jun 2026 08:49:27 +0000
+Message-Id: <E1wZ30Z-00000006Gk9-35a3@pty.whiteo.stw.pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260615_012938_931569_9F50A8B7 
-X-CRM114-Status: GOOD (  18.97  )
+X-CRM114-CacheID: sfid-20260615_014929_819931_B0C26844 
+X-CRM114-Status: GOOD (  18.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,60 +77,54 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] pinctrl: generic: rename PIN_CONFIG_OUTPUT to LEVEL
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: iMX ddrphy_utils difference with U-boot
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+On 2026-06-08 19:26, Ahmad Fatoum wrote:
+> Hello Andrei,
+>=20
+> On 6/8/26 16:24, Andrei Lalaev wrote:
+> > Hi,
+> >=20
+> > I am moving an iMX8MP module from vendor U-Boot 2024.04 to Barebox 2025=
+.02
+>=20
+> Sidenote: You'll probably want to use one of the still supported
+> v2026.04 or v2026.06 releases.
+>=20
+> > and found a strange difference in the DDR training code:
+> >=20
+> >   vim drivers/ddr/imx/ddrphy_utils.c +94
+> >=20
+> > And the corresponding line in U-Boot:
+> >=20
+> >   vim drivers/ddr/imx/phy/ddrphy_utils.c +101
+> >=20
+> > Is there any chance that somebody knows/remembers why "return -1" was r=
+eplaced with "hang()"?
+>=20
+> I can't speak for Sascha, but having looked at the code, I see no reason
+> why not to propagate the error.
+>=20
+> > I couldn't find any explanation in the commits/mailing lists.
+>=20
+> My guess is that it wasn't anticipated that boards would handle
+> the error gracefully to fall back to a different DDR init.
 
-On Sat, 06 Jun 2026 20:20:24 +0200, Ahmad Fatoum wrote:
-> To make porting drivers from newer Linux versions a bit easier,
-> port Linux commit 203a83112e097a501fbe12722b6342787497efe0:
-> 
-> |   pinctrl: generic: rename PIN_CONFIG_OUTPUT to LEVEL
-> |
-> |   This generic pin config property is confusingly named so let's
-> |   rename it to make things clearer.
-> |
-> |   There are already drivers in the tree that use PIN_CONFIG_OUTPUT
-> |   to *read* the value of an output driven pin, which is a big
-> |   semantic confusion for the head: are we then reading the
-> |   setting of the output or the actual value/level that is put
-> |   out on the pin?
-> |
-> |   We already have PIN_CONFIG_OUTPUT_ENABLE that turns on driver
-> |   buffers for output, so this can by logical conclusion only
-> |   drive the voltage level if it should be any different.
-> |
-> |   But if we read the pin, are we then reading the *setting* of
-> |   the output value or the *actual* value we can see on the
-> |   line?
-> |
-> |   If the pin has not first been set into output mode with
-> |   PIN_CONFIG_OUTPUT_ENABLE, but is instead in some input mode
-> |   or tristate, what will reading this property actually
-> |   return?
-> |
-> |   Reading the current users reading this property it is clear
-> |   that what we read is the logical level of the pin as 0 or 1
-> |   depending on if it is low or high.
-> |
-> |   Rename it to PIN_CONFIG_LEVEL so it is crystal clear that
-> |   we set or read the voltage level of the pin and nothing else.
-> |
-> |   Acked-by: Sudeep Holla <sudeep.holla@arm.com>
-> |   Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-> 
-> [...]
+That's my guess as well. Note the callers of
+imx8m_wait_ddrphy_training_complete() which is only a wrapper around
+calling wait_ddrphy_training_complete() do not check the error code, so
+when changing it back to return an error code we likely want to add
+error checking where missing.
 
-Applied, thanks!
+Sascha
 
-[1/1] pinctrl: generic: rename PIN_CONFIG_OUTPUT to LEVEL
-      https://git.pengutronix.de/cgit/barebox/commit/?id=afd843c1a83b (link may not be stable)
-
-Best regards,
--- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+--=20
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
