@@ -1,63 +1,67 @@
-Delivery-date: Thu, 18 Jun 2026 09:10:17 +0200
+Delivery-date: Thu, 18 Jun 2026 09:10:23 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wa6tF-007B8n-0D
+	id 1wa6tL-007B9C-2U
 	for lore@lore.pengutronix.de;
-	Thu, 18 Jun 2026 09:10:17 +0200
+	Thu, 18 Jun 2026 09:10:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wa6tE-0003nF-9e
-	for lore@pengutronix.de; Thu, 18 Jun 2026 09:10:17 +0200
+	id 1wa6tJ-0003va-QJ
+	for lore@pengutronix.de; Thu, 18 Jun 2026 09:10:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:
-	Content-Transfer-Encoding:Content-Type:In-Reply-To:Cc:To:Subject:From:
-	Reply-To:MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
-	bh=9TLtIaV/yyaY7Y6IwipRLoyY2CX5Eucf62cHc3YxdxM=; b=qqEaO/r6ZO/E7oVoGkxzwhlVJE
-	J+d7qQ5jluPZwKVvxHjCXtRtdG5ygjoEhHKbHG8NJ2sZ7t5R5mg4Yvl1Gh936+BBPGdY3lTJrVUGX
-	IpTsChjjVTZPjp9i+eZUQQ4FfQeH3XJFbuYT/21CmMyaj0RV3DSKtIKr9+OrMvajSkTyRGbmrpuYR
-	L1g6SOXQ4NldhVdCrue1SEmCMVHL4pLfDuwFxC6OYO1ReTB3Jrgtyd48TJrZa+vhhX7v7I0CGqXhx
-	jMDbZO3F+1Hr85Cm/GQDlGdkRyjp4y9mz0VTF6v1Le69E3SOSTHZPZiskdhyZbTCYQFgTaEBwXjct
-	Os5Nrlyg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=9yAMw0QoU/Fies/lixqvMdvZjvqpIHOK0mt/qfhSYMo=; b=F7hyKn4+Vh9ESeRRy9rrdOUWcY
+	6/yBnqWiAppxVL4LstFXqZvMT3S6FFrESZ1v6My6QwQTj+v7XIXJh0R3xuGc1VzOaL5gYsoPzDW5I
+	uiK8ZMixbs3vVK4fYnidCEt7pgJaUJmj9KurPSanhWBHuFZPWVRljZry/B+ugK2yoXixWa7eujIP/
+	+F/DJ5OaDdlRsHaEpGzsJcSGUtYiZ6Rh2yyO1gwsfO2kVGQ5ME2iaVSOUORfkCatW4adyOPaDf6Jy
+	lJLOgeN6EE9vOOdzTTRI2KtrnfrQxg2xcG8A5+3hDDe2OhBThbGsuLQ9NGBy/KB4sTUMFH3x8koFB
+	JTCgaPOA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wa6sB-00000000jhE-30vx;
-	Thu, 18 Jun 2026 07:09:11 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1wa6sK-00000000jjY-3fMQ;
+	Thu, 18 Jun 2026 07:09:20 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wa6s8-00000000jgs-2jt3
+	id 1wa6sH-00000000jie-3zue
 	for barebox@lists.infradead.org;
-	Thu, 18 Jun 2026 07:09:10 +0000
+	Thu, 18 Jun 2026 07:09:19 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id E04C3200B9E;
-	Thu, 18 Jun 2026 09:09:05 +0200 (CEST)
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 356C7200B9E;
+	Thu, 18 Jun 2026 09:09:16 +0200 (CEST)
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1wa6s5-003Ove-2d;
-	Thu, 18 Jun 2026 09:09:05 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1wa6s5-0000000DfRi-31Jx;
-	Thu, 18 Jun 2026 09:09:05 +0200
-From: "Sascha Hauer" <s.hauer@pengutronix.de>
-To: "Ahmad Fatoum" <a.fatoum@pengutronix.de>
-Cc: "Bastian Krause" <bst@pengutronix.de>, barebox@lists.infradead.org, "Marco
- Felsch" <mfe@pengutronix.de>
-In-Reply-To: <c3ffa653-e2e8-4b11-a5b4-4a9e1c60e2e9@pengutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 18 Jun 2026 07:09:05 +0000
-Message-Id: <E1wa6s5-0000000DfRi-31Jx@pty.whiteo.stw.pengutronix.de>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wa6sG-003Ovq-0R;
+	Thu, 18 Jun 2026 09:09:16 +0200
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wa6sG-0000000DbP8-0HBQ;
+	Thu, 18 Jun 2026 09:09:16 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Bastian Krause <bst@pengutronix.de>
+Cc: Marco Felsch <mfe@pengutronix.de>
+In-Reply-To: <20260612115800.3475528-1-bst@pengutronix.de>
+References: <20260612115800.3475528-1-bst@pengutronix.de>
+Message-Id: <178176655606.3240511.4129626017295243866.b4-ty@pengutronix.de>
+Date: Thu, 18 Jun 2026 09:09:16 +0200
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260618_000908_868170_15AC3828 
-X-CRM114-Status: GOOD (  21.05  )
+X-CRM114-CacheID: sfid-20260618_000918_152190_1F428C3D 
+X-CRM114-Status: UNSURE (   6.43  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,74 +87,25 @@ Subject: Re: [PATCH] ARM: dts: i.MX8MP FRDM: remove memory node
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 2026-06-12 16:15, Ahmad Fatoum wrote:
-> Hello,
->=20
-> On 6/12/26 13:58, Bastian Krause wrote:
-> > Since f083fffe52 ("ARM: dts: i.MX8MP: add DDRC compatibles") the esdctl
-> > driver is used. This causes the errors below since barebox tries to add
-> > the memory twice:
-> >=20
-> >   imx-esdctl 3d400000.memory-controller@3d400000.of: probe failed: Devi=
-ce or resource busy
-> >   initcall imx_esdctl_driver_init+0x0/0x2c failed: No such device
->=20
-> Can you share the full output? -EBUSY here is not expected for
-> the issues you describe. barebox has been tolerant of the same
-> memory bank being registered by different means for a number
-> of years now.
->=20
-> > Remove the memory node to fix this.
-> >=20
-> > 604c974c968 ("ARM: dts: i.MX8MP: remove memory node") already fixed this
-> > for the i.MX8MP EVK and the TQMa8MPxL on the MBa8MPxL.
->=20
-> This commit doesn't exist upstream.
 
-This is upstream as e3b5c9b604 ("ARM: dts: i.MX8MP: remove memory node")
+On Fri, 12 Jun 2026 13:58:00 +0200, Bastian Krause wrote:
+> Since f083fffe52 ("ARM: dts: i.MX8MP: add DDRC compatibles") the esdctl
+> driver is used. This causes the errors below since barebox tries to add
+> the memory twice:
+> 
+>   imx-esdctl 3d400000.memory-controller@3d400000.of: probe failed: Device or resource busy
+>   initcall imx_esdctl_driver_init+0x0/0x2c failed: No such device
+> 
+> [...]
 
-Fixed while applying.
+Applied, thanks!
 
->=20
-> >=20
-> > Fixes: f083fffe52 ("ARM: dts: i.MX8MP: add DDRC compatibles")
->=20
-> This commit is 3 years old and the FRDM was only added this year.
-> Was the error message there all the time..?
->=20
-> Thanks,
-> Ahmad
->=20
->=20
-> > Signed-off-by: Bastian Krause <bst@pengutronix.de>
-> > ---
-> >  arch/arm/dts/imx8mp-frdm.dts | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >=20
-> > diff --git a/arch/arm/dts/imx8mp-frdm.dts b/arch/arm/dts/imx8mp-frdm.dts
-> > index b1870213baf..7d770c3e456 100644
-> > --- a/arch/arm/dts/imx8mp-frdm.dts
-> > +++ b/arch/arm/dts/imx8mp-frdm.dts
-> > @@ -11,3 +11,5 @@
-> >  / {
-> >  	barebox,deep-probe;
-> >  };
-> > +
-> > +/delete-node/ &{/memory@40000000};
->=20
->=20
-> --=20
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->=20
->=20
+[1/1] ARM: dts: i.MX8MP FRDM: remove memory node
+      https://git.pengutronix.de/cgit/barebox/commit/?id=bed9b8e103b9 (link may not be stable)
 
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best regards,
+-- 
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
