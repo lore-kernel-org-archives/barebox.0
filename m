@@ -1,64 +1,63 @@
-Delivery-date: Thu, 18 Jun 2026 17:18:25 +0200
+Delivery-date: Fri, 19 Jun 2026 08:09:43 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1waEVd-007IFo-1t
+	id 1waSQB-007VLe-0l
 	for lore@lore.pengutronix.de;
-	Thu, 18 Jun 2026 17:18:25 +0200
+	Fri, 19 Jun 2026 08:09:43 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1waEVc-0002ON-S6
-	for lore@pengutronix.de; Thu, 18 Jun 2026 17:18:25 +0200
+	id 1waSQA-0007hT-JV
+	for lore@pengutronix.de; Fri, 19 Jun 2026 08:09:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=qLceIRWM09dEhcXXWMsZtg6cqtcnPOArwMdWUU3JpG8=; b=boSX02e/qz0Y8msQ9sR1jZKBq4
-	RIaOg1cGW+90DIkMYkcaVXHPvD2PLgYqicSXjI/xaoqI6xSA1EadlBt59sQfosIRfnsVwl7WrvpT9
-	43PZTT1nK2/iZn599IUNEC0KtasT1LpqvO32pZaP9q8yzUBgtFo4CmiachUudiqeKmPOHFZJRnpzS
-	daSYbF9wWWlDiJAIG8W5mFgAEKTbHkpXzE5nC+fES8/RSSe/YO1pmALQvGzWi4n/A9JqJ6MDhkszm
-	Dw9Uh9Najf0JeRtFvZc78cgr1AcHJ632A+4DK3+EWoCXL2QR5ZfXHUX5TIsirev9f9H09dKXgQcR0
-	ereNE3Kg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:
+	Content-Transfer-Encoding:Content-Type:To:Subject:From:Reply-To:Cc:
+	MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=usOEDTIu3isJDqt0UrZXAhsD5ASWnsGubwIbPLSfjPA=; b=WMgu+upkQrwjQT
+	mY07fqtHb44WV4lvtElB/5LSpW6rJeRlWS1HPcuYLG07dzLFn6QekavD09Wh+tfp9bbI0Tz+RNixj
+	9uwYtbk+lPzz1yeoEnjz2j9jbFVYtqMKinBZLUx56EkUA01A5pSDe6YlBadSCSIU85SoASrxqDk/C
+	KLYQkXBHmvEjVaGquQ5F3yck+b3/QcoXgqqtPtnctnVdFUqTQoxrqhY9QtJsBTLq9KskxGLDmtP5l
+	2a8p/Xm519twRfNQdS7zkhI3Ej3sWPOTGU3//TwSdDjhZnR1450+Yv5nzcCu1Df9/PyJ9E5ABtwEn
+	SFO9oi8NWGLVL7QW2Vtg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1waEUM-00000001Tkx-1dpO;
-	Thu, 18 Jun 2026 15:17:06 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1waSOl-000000022Sb-3cDZ;
+	Fri, 19 Jun 2026 06:08:15 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1waEUJ-00000001Tk8-3m11
+	id 1waSOh-000000022SB-42Tg
 	for barebox@lists.infradead.org;
-	Thu, 18 Jun 2026 15:17:05 +0000
+	Fri, 19 Jun 2026 06:08:14 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C44EA200320;
-	Thu, 18 Jun 2026 17:17:00 +0200 (CEST)
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 9A124200964
+	for <barebox@lists.infradead.org>; Fri, 19 Jun 2026 08:08:08 +0200 (CEST)
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1waEUG-003SLM-2K;
-	Thu, 18 Jun 2026 17:17:00 +0200
-Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1waEUG-00000002oao-2UnH;
-	Thu, 18 Jun 2026 17:17:00 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	(envelope-from <sha@pengutronix.de>)
+	id 1waSOe-003YQW-1i
+	for barebox@lists.infradead.org;
+	Fri, 19 Jun 2026 08:08:08 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1waSOe-0000000G2ki-1rVP
+	for barebox@lists.infradead.org;
+	Fri, 19 Jun 2026 08:08:08 +0200
+From: "Sascha Hauer" <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	"Lucie L. Hartmann" <lucie@mntre.com>
-Date: Thu, 18 Jun 2026 17:16:58 +0200
-Message-ID: <20260618151700.671088-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Date: Fri, 19 Jun 2026 06:08:08 +0000
+Message-Id: <E1waSOe-0000000G2ki-1rVP@pty.whiteo.stw.pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260618_081704_087357_7B50C8A0 
-X-CRM114-Status: GOOD (  11.86  )
+X-CRM114-CacheID: sfid-20260618_230812_153438_09BC73DA 
+X-CRM114-Status: UNSURE (   6.41  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,87 +75,33 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH master] ARM: rockchip: hide CONFIG_ARCH_ROCKCHIP_ATF_FDT_SIZE behind ATF_PASS_FDT
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: v2026.06.1
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-If a user had configured barebox before the addition of
-CONFIG_ARCH_ROCKCHIP_ATF_FDT_SIZE, updating barebox to a newer version
-would set the variable to its default of 0.
+Hi All,
 
-If they then enable CONFIG_ARCH_ROCKCHIP_ATF_PASS_FDT, the default were
-not be reapplied thus ending up with
-CONFIG_ARCH_ROCKCHIP_ATF_FDT_SIZE=0, which is guaranteed to fail.
+Here comes a stable release for the June barebox with a few fixes.
 
-In older barebox versions, this had a chance of hanging during BL31
-setup, because an uninitialized FDT pointer was passed to TF-A.
+Sascha
 
-This is fixed now, but still the default settings for
-CONFIG_ARCH_ROCKCHIP_ATF_FDT_SIZE are likely to confuse users interested
-in passing along the FDT.
+Ahmad Fatoum (3):
+      ARM: lib32: bootm: support booting EFI-stubbed kernels without EFI
+      efi: loader: release bootm OS staging buffer
+      efi: loader: bump memory map key on FreePages
 
-Improve the situation a bit by hiding CONFIG_ARCH_ROCKCHIP_ATF_FDT_SIZE
-behind CONFIG_ARCH_ROCKCHIP_ATF_PASS_FDT and having only a single default.
+Sascha Hauer (2):
+      ARM: rockchip: tfa: pass NULL fdt when there is none
+      Release v2026.06.1
 
-This is not the neatest solution, because now users will likely get a
-build error, because CONFIG_SCRATCH_SIZE will need to be increased in
-accordance, but at least it's a build-time failure rather than runtime..
-
-Reported-by: Lucie L. Hartmann <lucie@mntre.com>
-Fixes: 8dfab4e2aafa ("ARM: rockchip: pass device tree to TF-A")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/mach-rockchip/Kconfig  | 7 +++----
- include/mach/rockchip/bootrom.h | 8 +++++++-
- 2 files changed, 10 insertions(+), 5 deletions(-)
-
-diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
-index 454499834081..3fd4498c64c1 100644
---- a/arch/arm/mach-rockchip/Kconfig
-+++ b/arch/arm/mach-rockchip/Kconfig
-@@ -187,10 +187,9 @@ config ARCH_ROCKCHIP_ATF_PASS_FDT
- 	  enabled.
- 
- config ARCH_ROCKCHIP_ATF_FDT_SIZE
--	hex
--	default 0x0
--	default 0x60000 if ARCH_ROCKCHIP_ATF_PASS_FDT
--	prompt "Reserved size for the FDT blob passed to the TF-A"
-+	hex "Reserved size for the FDT blob passed to the TF-A"
-+	depends on ARCH_ROCKCHIP_ATF_PASS_FDT
-+	default 0x60000
- 	help
- 	  Set this size to CFG_DTB_MAX_SIZE in the OP-TEE configuration. OP-TEE
- 	  may modify the passed device tree and increase it's size. This
-diff --git a/include/mach/rockchip/bootrom.h b/include/mach/rockchip/bootrom.h
-index fc63e793783b..3caa66cded74 100644
---- a/include/mach/rockchip/bootrom.h
-+++ b/include/mach/rockchip/bootrom.h
-@@ -10,11 +10,17 @@
- #include <tee/optee.h>
- #include <pbl.h>
- 
-+#ifdef CONFIG_ARCH_ROCKCHIP_ATF_FDT_SIZE
-+#define ROCKCHIP_ATF_FDT_SIZE CONFIG_ARCH_ROCKCHIP_ATF_FDT_SIZE
-+#else
-+#define ROCKCHIP_ATF_FDT_SIZE 0
-+#endif
-+
- struct rockchip_scratch_space {
- 	u32 iram[16];
- 	struct optee_header optee_hdr;
- 	/* FDT needs an 8 byte alignment */
--	u8 fdt[CONFIG_ARCH_ROCKCHIP_ATF_FDT_SIZE] __aligned(8);
-+	u8 fdt[ROCKCHIP_ATF_FDT_SIZE] __aligned(8);
- };
- static_assert(sizeof(struct rockchip_scratch_space) <= CONFIG_SCRATCH_SIZE);
- 
--- 
-2.47.3
-
+--
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
