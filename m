@@ -1,63 +1,64 @@
-Delivery-date: Wed, 24 Jun 2026 08:08:20 +0200
+Delivery-date: Wed, 24 Jun 2026 14:31:24 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wcGmZ-009G5j-38
+	id 1wcMlI-009LpU-2J
 	for lore@lore.pengutronix.de;
-	Wed, 24 Jun 2026 08:08:19 +0200
+	Wed, 24 Jun 2026 14:31:24 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wcGmZ-0003sI-A6
-	for lore@pengutronix.de; Wed, 24 Jun 2026 08:08:19 +0200
+	id 1wcMlI-0002do-0z
+	for lore@pengutronix.de; Wed, 24 Jun 2026 14:31:24 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=vLi6gFtAIKnI2cOOVu9MtENkt75ZBdesdggcIeH5rCA=; b=N73VQYk32zyPXG8tYyDSw5m2iw
-	W6xdnGZYr7GWB4mLgbMe/A3DMKF71DZFnYTILZS7BuBbozi4tPp3rDZgRxNhMsueXkae9taxtVhWK
-	s7s2i+0e5GPDiG4C0zc37YSyStgFg3y20u4x4Jncuu4GMw7k4xPQjxdMTmugXVSuEwXLXAjqLJWHh
-	/dVZ2dJSH4+28rSUPPPvnmQC/ADTGlL3l3zkyFj5MFW4eqJrFz4aNynhkm4BqBXEmbFVE67EBKf+X
-	CaOCO027ouXvRfZj3Ap+jErrYY6u/mccXmE4zvMjRwc+Vu43YznZ6h85pDh31KTzoQxq7VtqY7RUu
-	64vrKDVg==;
+	bh=D+uQc3u7YpYHa+R3OF/Jsbc8srqqHlJWewqFIx7Vu+g=; b=To3mYmGizcTfkLERqoVADK6byH
+	4P1ttF3rAxQqyaPmrw49/dF2JwztxxDC3uAhPMF4Y94YkYkDrvMjLJb0KPGlKpxsRWTWGZEKzA8Ks
+	jXm1yweA8jICe5kQAUj9t2ShQLIPFsQQ/jW2pj5o+6fc+nEQI0IYUHTcnkKkbNyP58bld9isO1qDH
+	UYHAMdv8/3jAWiYGCbe7qs/PmyeccEix4Kl4pUNgDgCC+iu0STmhUjIkOHsijSQD0qvpjyEiKJIiz
+	QidtofD8nzOl2juf8h3ujqWXi2aBvq6uu5ENxdOuA0sY9brjIsJfotYgzYuRhD6MgOw7sf8hT2qwQ
+	Z37yFO7Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wcGlJ-00000007CwP-0e2E;
-	Wed, 24 Jun 2026 06:07:01 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1wcMjs-00000007koB-1m2Z;
+	Wed, 24 Jun 2026 12:29:56 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wcGlF-00000007CvY-2h69
+	id 1wcMjn-00000007kmi-3oMt
 	for barebox@lists.infradead.org;
-	Wed, 24 Jun 2026 06:06:59 +0000
+	Wed, 24 Jun 2026 12:29:54 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 6C8732006B1;
-	Wed, 24 Jun 2026 08:06:53 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 61B5E2007B6;
+	Wed, 24 Jun 2026 14:29:47 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wcGlB-004Ngp-15;
-	Wed, 24 Jun 2026 08:06:53 +0200
+	id 1wcMjj-004QJk-0z;
+	Wed, 24 Jun 2026 14:29:47 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wcGlB-00000007kE4-0xF6;
-	Wed, 24 Jun 2026 08:06:53 +0200
+	id 1wcMjj-00000005jo0-0j5W;
+	Wed, 24 Jun 2026 14:29:47 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 24 Jun 2026 08:06:47 +0200
-Message-ID: <20260624060648.1845974-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Bastian Krause <bst@pengutronix.de>
+Date: Wed, 24 Jun 2026 14:29:43 +0200
+Message-ID: <20260624122946.1366278-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260623_230657_973700_A62A1267 
-X-CRM114-Status: GOOD (  10.98  )
+X-CRM114-CacheID: sfid-20260624_052952_093293_CCB2E619 
+X-CRM114-Status: GOOD (  16.20  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,52 +79,56 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] bootm: include origin of device tree in verbose output
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: [PATCH] misc: clarify deep-probe compatibility for CONFIG_STORAGE_BY_ALIAS
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-To make it easier to see at a glance if the device tree to be passed to
-Linux is barebox' own or an externally provided DT, include this
-information into verbosity level 1.
+The bulk of the help text described the limitations around the
+"barebox,storage-by-uuid" compatible, which was the only compatible
+initially available: because it requires the device in question to
+be already probed, it's probe order dependent.
 
-Previously we only printed "using internal devicetree" at verbosity
-level 2, but that's the same level we dump the whole DT, so we bump it
-down a level and rename it to make it clear what the DT is internal to
-(e.g. it's not a FIT-internal DT).
+"barebox,bootsource" doesn't suffer from this issue as it depends on the
+bootsource being resolvable via a device tree alias or chosen entry.
 
+Reported-by: Bastian Krause <bst@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/bootm.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/misc/Kconfig | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/common/bootm.c b/common/bootm.c
-index 26465875ad94..de1b87fe2072 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -328,13 +328,19 @@ void *bootm_get_devicetree(struct image_data *data)
- 			return ERR_PTR(-EINVAL);
- 		}
+diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
+index e235646ee551..6831b96cffe6 100644
+--- a/drivers/misc/Kconfig
++++ b/drivers/misc/Kconfig
+@@ -65,12 +65,16 @@ config STORAGE_BY_ALIAS
+ 	  Alias the device barebox was booted from. This is useful to have
+ 	  barebox-state come from the same device as barebox itself.
  
-+		if (bootm_verbose(data))
-+			printf("using %s as devicetree\n", data->oftree->name);
++	  This is deep-probe compatible as even though the target device
++	  may not have been probed yet, the bootsource itself is known very
++	  early and can be used to probe the device on demand.
 +
- 	} else {
- 		data->of_root_node = of_dup_root_node_for_boot();
--		if (!data->of_root_node)
-+		if (!data->of_root_node) {
-+			if (bootm_verbose(data))
-+				printf("using no devicetree\n");
- 			return NULL;
-+		}
+ 	  - "barebox,storage-by-uuid"
  
--		if (bootm_verbose(data) > 1)
--			printf("using internal devicetree\n");
-+		if (bootm_verbose(data))
-+			printf("using barebox's internal devicetree\n");
- 	}
+ 	  Look for a storage device matching the given DISKUUID and when found
+ 	  registers a new cdev for the device.
  
- 	if (data->initrd_res) {
+-	  This driver solved a very specific problem. On EFI the storage devices
++	  This compatible solves a very specific problem. On EFI the storage devices
+ 	  are not connected to any device tree node. barebox-state however expects
+ 	  a node to use as its backend. The obvious solution would be to create
+ 	  a partition with a specific partuuid and use that for state, in our
+@@ -80,7 +84,7 @@ config STORAGE_BY_ALIAS
+ 	  a partition in an unallocated are of the disk which is then used for
+ 	  state.
+ 
+-	  This driver has the problem that it depends on storage devices which
++	  This compatible has the problem that it depends on storage devices which
+ 	  are not described in the device tree. This means it cannot work with
+ 	  deep probe. This is not a problem on EFI though. It's a special purpose
+ 	  driver, it's not recommended for general use.
 -- 
 2.47.3
 
