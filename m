@@ -1,52 +1,52 @@
-Delivery-date: Fri, 26 Jun 2026 14:47:15 +0200
+Delivery-date: Fri, 26 Jun 2026 18:22:36 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wd5xj-00A4x8-10
+	id 1wd9K8-00A8FQ-1X
 	for lore@lore.pengutronix.de;
-	Fri, 26 Jun 2026 14:47:15 +0200
+	Fri, 26 Jun 2026 18:22:36 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wd5xi-0003mh-1e
-	for lore@pengutronix.de; Fri, 26 Jun 2026 14:47:15 +0200
+	id 1wd9K7-0000d3-7l
+	for lore@pengutronix.de; Fri, 26 Jun 2026 18:22:36 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=GNeE7D/AjGTMgS/WwEzLIdhcS9gtXk3LebngoUuuiUQ=; b=VjzAiULvrZhNqVBMBKX0STqpUH
-	Vt9xaJoTzkU9kkIzkVsHQ8YIiCkQJYTv0XnGfW0OM+Axf947Y67VhbtS1yv+zfMW4sHakTQzzHHqg
-	qfmecF4w0+ktUv6xS1K+cZw7KVyk63LQWKO/26NWw3FgwBrPjVvlVyKxsqnkVzuIQpp843bdZPBwk
-	4fKRGLD3Tg30EhIx1okQS/j3rwn26TxNk6igZQY0b2ABoPV8hZT1n1Vl6u3vRV6pIMEEczFaaC/Jg
-	AiGrQfzG57E6KGHkU2at36uxJa9mTJ473OfZSkUp8slM+LTMT0QBz4qp7seb2IjPmldStHjBqJArW
-	UTDyzr1w==;
+	bh=o/GFFUB6stNRtVnxQ45FJKg0blT5zJIk2cqlTLBUjqI=; b=agZxQcvAZ+A2HthmmWGu/rnt98
+	fPTXB/CRzy2BwwOd4/YBl2Um8mHD6SXTRQD3ZzgSlHPYddg3V1jZTA8tcvB4QtFVMFrLi8dOwGfaf
+	F8bJMoT4j6XD8hybqqWQzqqpvi3rGTQ7wLX7yG0KMRxt6MrY9/epV9pOkd8p9sSQAMfQFfUB8uK/c
+	/qfFwdjzIZ6KBdmIgKVc7XoNBgYl0WGkjBpJYt6pTMafIXrqABcPXryMoVgpGxFWtWH5pZ9XIkhHh
+	omrUqyO9Dm5EuyshIHPo8URtJ+lGiYmQzrrc+YJweYXqIlB9xlolEnMg5PPhYjhb+zN1lTVmEGf9E
+	jrrqYUGw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wd5wb-0000000BKFK-3P2s;
-	Fri, 26 Jun 2026 12:46:05 +0000
+	id 1wd9JP-0000000BcUV-41oV;
+	Fri, 26 Jun 2026 16:21:51 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wd5wV-0000000BKCQ-18ey
+	id 1wd9JK-0000000BcPE-17AS
 	for barebox@lists.infradead.org;
-	Fri, 26 Jun 2026 12:46:02 +0000
+	Fri, 26 Jun 2026 16:21:49 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1wd5wS-0007zx-NF; Fri, 26 Jun 2026 14:45:56 +0200
+	id 1wd9JH-0006R9-Lb; Fri, 26 Jun 2026 18:21:43 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Fri, 26 Jun 2026 14:45:42 +0200
-Message-ID: <20260626124555.1644951-1-a.fatoum@barebox.org>
+Date: Fri, 26 Jun 2026 18:19:32 +0200
+Message-ID: <20260626162136.1885999-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260626_054559_605871_0ACCDDBE 
-X-CRM114-Status: GOOD (  16.63  )
+X-CRM114-CacheID: sfid-20260626_092146_600395_E27183A5 
+X-CRM114-Status: GOOD (  17.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,8 +67,8 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/5] scripts: duplicate conftest.py as qemu_interactive.py
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: [PATCH v2 1/9] scripts: duplicate conftest.py as qemu_interactive.py
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
@@ -81,6 +81,9 @@ Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
 Change can be squashed into follow-up commit. This doesn't yet work,
 but doesn't break anything.
+
+v1 -> v2:
+  - no change
 ---
  scripts/qemu_interactive.py | 304 ++++++++++++++++++++++++++++++++++++
  1 file changed, 304 insertions(+)
