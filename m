@@ -3,52 +3,50 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wd5xj-00A4wx-0D
+	id 1wd5xj-00A4x8-10
 	for lore@lore.pengutronix.de;
 	Fri, 26 Jun 2026 14:47:15 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wd5xg-0003Z6-Hn
+	id 1wd5xi-0003mh-1e
 	for lore@pengutronix.de; Fri, 26 Jun 2026 14:47:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=KwUEmqBAenzWBdmOVXmg8Xdp/oGugJUl/X1yRQhrnQ8=; b=OrsuHaBKTKO6rPDsR3Dw6E7oVp
-	FlbmqJqSPakf2nwQ7V9iRD560BWa69TXG6+BGKLbLn1zRGsJSW2+yXslWhnUse5KysOMKGiyvL2pS
-	uYiOsRB4IZOuMGmx+ICGsWueDzVh2Lwc0bvd6okhZUkhxkUW/37refsmg12MfGGpwLh4cYtnBGFwS
-	jh4WTknm/vLwwcmRLHYaT8YWuq9idbFe8tfFrqu3M+XIrAjLTLOpFiTVxqJbKkYcVbkKCx46yfMbf
-	GLeV+uxT41YPH4qTvV7LY+A1+w2/DirzXOQIv5GfEzfGXIuXH6BfxOsKmlvMCRQOon6NrObS1ZsMS
-	kC/0zjoQ==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=GNeE7D/AjGTMgS/WwEzLIdhcS9gtXk3LebngoUuuiUQ=; b=VjzAiULvrZhNqVBMBKX0STqpUH
+	Vt9xaJoTzkU9kkIzkVsHQ8YIiCkQJYTv0XnGfW0OM+Axf947Y67VhbtS1yv+zfMW4sHakTQzzHHqg
+	qfmecF4w0+ktUv6xS1K+cZw7KVyk63LQWKO/26NWw3FgwBrPjVvlVyKxsqnkVzuIQpp843bdZPBwk
+	4fKRGLD3Tg30EhIx1okQS/j3rwn26TxNk6igZQY0b2ABoPV8hZT1n1Vl6u3vRV6pIMEEczFaaC/Jg
+	AiGrQfzG57E6KGHkU2at36uxJa9mTJ473OfZSkUp8slM+LTMT0QBz4qp7seb2IjPmldStHjBqJArW
+	UTDyzr1w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wd5wb-0000000BKF9-2vUX;
+	id 1wd5wb-0000000BKFK-3P2s;
 	Fri, 26 Jun 2026 12:46:05 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wd5wV-0000000BKCR-18Iv
+	id 1wd5wV-0000000BKCQ-18ey
 	for barebox@lists.infradead.org;
 	Fri, 26 Jun 2026 12:46:02 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1wd5wT-0007zx-A2; Fri, 26 Jun 2026 14:45:57 +0200
+	id 1wd5wS-0007zx-NF; Fri, 26 Jun 2026 14:45:56 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Fri, 26 Jun 2026 14:45:44 +0200
-Message-ID: <20260626124555.1644951-3-a.fatoum@barebox.org>
+Date: Fri, 26 Jun 2026 14:45:42 +0200
+Message-ID: <20260626124555.1644951-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260626124555.1644951-1-a.fatoum@barebox.org>
-References: <20260626124555.1644951-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260626_054559_309263_8A774919 
-X-CRM114-Status: GOOD (  21.40  )
+X-CRM114-CacheID: sfid-20260626_054559_605871_0ACCDDBE 
+X-CRM114-Status: GOOD (  16.63  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,177 +68,334 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/5] usb: xhci-hcd: add XHCI over PCI driver
+Subject: [PATCH 1/5] scripts: duplicate conftest.py as qemu_interactive.py
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-In order to support USB in QEMU Virt, add support for registering over
-PCI as well. The probe function looks nearly identical to the DT-probed
-xhci_probe with the difference that we map a PCI MMIO region.
+To make the change splitting pytest --interactive into its own script
+easier to follow, duplicate the existing code under the new name.
 
-To make it readily usable, also enable it in multi_v8_defconfig.
+No functional change.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- arch/arm/configs/multi_v8_defconfig |  1 +
- drivers/usb/host/Kconfig            |  7 +++
- drivers/usb/host/Makefile           |  1 +
- drivers/usb/host/xhci-pci.c         | 97 +++++++++++++++++++++++++++++
- drivers/usb/host/xhci.h             |  1 +
- 5 files changed, 107 insertions(+)
- create mode 100644 drivers/usb/host/xhci-pci.c
+Change can be squashed into follow-up commit. This doesn't yet work,
+but doesn't break anything.
+---
+ scripts/qemu_interactive.py | 304 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 304 insertions(+)
+ create mode 100644 scripts/qemu_interactive.py
 
-diff --git a/arch/arm/configs/multi_v8_defconfig b/arch/arm/configs/multi_v8_defconfig
-index e62dbc96fd03..9712113bf1cd 100644
---- a/arch/arm/configs/multi_v8_defconfig
-+++ b/arch/arm/configs/multi_v8_defconfig
-@@ -213,6 +213,7 @@ CONFIG_USB_IMX_CHIPIDEA=y
- CONFIG_USB_DWC3=y
- CONFIG_USB_DWC3_DUAL_ROLE=y
- CONFIG_USB_EHCI=y
-+CONFIG_USB_XHCI_PCI=y
- CONFIG_USB_STORAGE=y
- CONFIG_USB_ONBOARD_DEV=y
- CONFIG_USB_GADGET=y
-diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index 58f276cdb45a..21a99dd85b28 100644
---- a/drivers/usb/host/Kconfig
-+++ b/drivers/usb/host/Kconfig
-@@ -41,3 +41,10 @@ config USB_XHCI
- 
- 	  This driver currently only supports virtual USB 2.0 ports, if you
- 	  plan to use USB 3.0 devices, use a USB 2.0 cable in between.
-+
-+config USB_XHCI_PCI
-+	tristate "xHCI over PCI driver"
-+	depends on USB_XHCI
-+	help
-+	  Say y here if your USB 3.0 controller is connected via PCI and
-+	  you wish to access the USB devices on the bus from barebox.
-diff --git a/drivers/usb/host/Makefile b/drivers/usb/host/Makefile
-index cbddfbe9232e..ed446d0d801c 100644
---- a/drivers/usb/host/Makefile
-+++ b/drivers/usb/host/Makefile
-@@ -6,3 +6,4 @@ obj-$(CONFIG_USB_EHCI_ZYNQ)	+= ehci-zynq.o
- obj-$(CONFIG_USB_OHCI)		+= ohci-hcd.o
- obj-$(CONFIG_USB_OHCI_AT91)	+= ohci-at91.o
- obj-$(CONFIG_USB_XHCI)		+= xhci.o xhci-mem.o xhci-ring.o
-+obj-$(CONFIG_USB_XHCI_PCI)	+= xhci-pci.o
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+diff --git a/scripts/qemu_interactive.py b/scripts/qemu_interactive.py
 new file mode 100644
-index 000000000000..ebd64b347430
+index 000000000000..6f76586e010b
 --- /dev/null
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -0,0 +1,97 @@
-+// SPDX-License-Identifier: GPL-2.0
++++ b/scripts/qemu_interactive.py
+@@ -0,0 +1,304 @@
++# SPDX-License-Identifier: GPL-2.0-only
++import pytest
++import os
++import argparse
++from labgrid.exceptions import NoDriverFoundError
++from test.py import helper
 +
-+#include <linux/pci.h>
-+#include <linux/slab.h>
-+#include <linux/module.h>
-+#include <linux/reset.h>
-+#include <module.h>
 +
-+#include "xhci.h"
++def transition_to_barebox(request, strategy):
++    try:
++        strategy.transition('barebox')
++    except Exception as e:
++        # If a normal strategy transition fails, there's no point in
++        # continuing the test. Let's print stderr and exit.
++        capmanager = request.config.pluginmanager.getplugin("capturemanager")
++        with capmanager.global_and_fixture_disabled():
++            _, stderr = capmanager.read_global_capture()
++            pytest.exit(f"{type(e).__name__}(\"{e}\"). Standard error:\n{stderr}",
++                        returncode=3)
 +
-+static const char hcd_name[] = "xhci_hcd";
 +
-+static int xhci_pci_common_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct xhci_ctrl *ctrl;
-+	void __iomem *base;
-+	int ret;
++@pytest.fixture(scope='function')
++def barebox(request, strategy, target):
++    transition_to_barebox(request, strategy)
++    return target.get_driver('BareboxDriver')
 +
-+	(void)id;
 +
-+	ret = pci_enable_device(pdev);
-+	if (ret)
-+		return ret;
++@pytest.fixture(scope='function')
++def shell(strategy, target):
++    strategy.transition('shell')
++    return target.get_driver('ShellDriver')
 +
-+	pci_set_master(pdev);
 +
-+	base = pci_iomap(pdev, 0);
-+	if (!base) {
-+		ret = dev_err_probe(dev, -EBUSY, "failed to map BAR0\n");
-+		goto err_clear_master;
-+	}
++@pytest.fixture(scope="session")
++def barebox_config(request, strategy, target):
++    transition_to_barebox(request, strategy)
++    command = target.get_driver("BareboxDriver")
++    return helper.get_config(command)
 +
-+	ctrl = xzalloc(sizeof(*ctrl));
-+	ctrl->dev = dev;
-+	ctrl->hccr = base;
-+	ctrl->hcor = (struct xhci_hcor *)((uintptr_t)ctrl->hccr +
-+		HC_LENGTH(xhci_readl(&(ctrl->hccr)->cr_capbase)));
 +
-+	dev->priv = ctrl;
++def get_enabled_arch(config):
++    # Get the absolute path to the directory containing this script
++    base_dir = os.path.dirname(os.path.abspath(__file__))
 +
-+	ret = xhci_register(ctrl);
-+	if (ret)
-+		goto err_free_ctrl;
++    # Path to the 'arch' directory relative to this script
++    arch_dir = os.path.join(base_dir, "arch")
 +
-+	return 0;
++    if not os.path.isdir(arch_dir):
++        return None
 +
-+err_free_ctrl:
-+	dev->priv = NULL;
-+	free(ctrl);
-+err_clear_master:
-+	pci_clear_master(pdev);
-+	return ret;
-+}
++    # Optional mapping from directory names to config key suffixes
++    arch_map = {"powerpc": "ppc"}
 +
-+static int xhci_pci_probe(struct pci_dev *dev, const struct pci_device_id *id)
-+{
-+	return xhci_pci_common_probe(dev, id);
-+}
++    for entry in os.listdir(arch_dir):
++        path = os.path.join(arch_dir, entry)
++        if os.path.isdir(path):
++            key_suffix = arch_map.get(entry, entry).upper()
++            config_key = f"CONFIG_{key_suffix}"
++            if config.get(config_key):
++                return entry
 +
-+static void xhci_pci_remove(struct pci_dev *dev)
-+{
-+	struct xhci_ctrl *ctrl = dev->dev.priv;
++    return None
 +
-+	xhci_deregister(ctrl);
-+	pci_clear_master(dev);
-+	free(ctrl);
-+}
 +
-+/*-------------------------------------------------------------------------*/
++def guess_lg_env():
++    config_file = helper.open_config_file(os.environ['LG_BUILDDIR'] + "/.config")
++    config = helper.parse_config(config_file)
++    if not config or not config.get('CONFIG_NAME'):
++        return None
++    arch = get_enabled_arch(config)
++    if not arch:
++        return None
++    filename = os.path.join("test", arch, f"{config['CONFIG_NAME']}.yaml")
++    if os.path.exists(filename):
++        return filename
++    return None
 +
-+/* PCI driver selection metadata; PCI hotplugging uses this */
-+static const struct pci_device_id pci_ids[] = {
-+	/* handle any USB 3.0 xHCI controller */
-+	{ PCI_DEVICE_CLASS(PCI_CLASS_SERIAL_USB_XHCI, ~0),
-+	},
-+	{ /* end: all zeroes */ }
-+};
-+MODULE_DEVICE_TABLE(pci, pci_ids);
 +
-+/* pci driver glue; this is a "new style" PCI driver module */
-+static struct pci_driver xhci_pci_driver = {
-+	.name =		hcd_name,
-+	.id_table =	pci_ids,
++lg_env = lg_builddir = None
 +
-+	.probe =	xhci_pci_probe,
-+	.remove =	xhci_pci_remove,
-+};
 +
-+static int __init xhci_pci_init(void)
-+{
-+	return pci_register_driver(&xhci_pci_driver);
-+}
-+module_init(xhci_pci_init);
++def pytest_configure(config):
++    if 'LG_BUILDDIR' not in os.environ:
++        if 'KBUILD_OUTPUT' in os.environ:
++            os.environ['LG_BUILDDIR'] = os.environ['KBUILD_OUTPUT']
++        elif os.path.isdir('build'):
++            os.environ['LG_BUILDDIR'] = os.path.realpath('build')
++        else:
++            os.environ['LG_BUILDDIR'] = os.getcwd()
 +
-+MODULE_DESCRIPTION("xHCI PCI Host Controller Driver");
-+MODULE_LICENSE("GPL");
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 37e8cee843cf..e5feb4f3d5a1 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -20,6 +20,7 @@
- #include <io.h>
- #include <io-64-nonatomic-lo-hi.h>
- #include <linux/list.h>
-+#include <linux/usb/usb.h>
- 
- #define MAX_EP_CTX_NUM		31
- #define XHCI_ALIGNMENT		64
++    if os.environ['LG_BUILDDIR'] is not None:
++        os.environ['LG_BUILDDIR'] = os.path.realpath(os.environ['LG_BUILDDIR'])
++
++    global lg_env
++    global lg_builddir
++
++    lg_builddir = os.environ['LG_BUILDDIR']
++    lg_env = config.option.lg_env
++    if lg_env is None:
++        lg_env = os.environ.get('LG_ENV')
++    if lg_env is None:
++        if lg_env := guess_lg_env():
++            os.environ['LG_ENV'] = lg_env
++
++
++def pytest_report_header(config):
++    report = []
++    if lg_builddir is not None:
++        report += [f"Build diectory: {lg_builddir}"]
++    if lg_env is not None:
++        report += [f"Labgrid Environment: {lg_env}"]
++    return "\n".join(report)
++
++
++def pytest_addoption(parser):
++    def assignment(arg):
++        return arg.split('=', 1)
++
++    parser.addoption('--interactive', action='store_const', const='qemu_interactive',
++                     dest='lg_initial_state',
++                     help=('(for debugging) skip tests and just start Qemu interactively'))
++    parser.addoption('--dry-run', action='store_const', const='qemu_dry_run',
++                     dest='lg_initial_state',
++                     help=('(for debugging) skip tests and just print Qemu command line'))
++    parser.addoption('--dump-dtb', action='store_const', const='qemu_dump_dtb',
++                     dest='lg_initial_state',
++                     help=('(for debugging) skip tests and just dump the Qemu device tree'))
++    parser.addoption('--graphic', '--graphics', action='store_true', dest='qemu_graphics',
++                     help=('enable QEMU graphics output'))
++    parser.addoption('--rng', action='count', dest='qemu_rng',
++                     help=('instantiate Virt I/O random number generator'))
++    parser.addoption('--console', action='count', dest='qemu_console', default=0,
++                     help=('Pass an extra console (Virt I/O or ns16550_pci) to emulated barebox'))
++    parser.addoption('--fs', action='append', dest='qemu_fs',
++                     default=[], metavar="[tag=]DIR", type=assignment,
++                     help=('Pass directory trees to emulated barebox. Can be specified more than once'))  # noqa
++    parser.addoption('--blk', action='append', dest='qemu_block',
++                     default=[], metavar="FILE",
++                     help=('Pass block device to emulated barebox. Can be specified more than once'))  # noqa
++    parser.addoption('--env', action='append', dest='qemu_fw_cfg', type=assignment,
++                     default=[], metavar="[envpath=]content | [envpath=]@filepath",
++                     help=('Pass barebox environment files to barebox. Can be specified more than once'))  # noqa
++    parser.addoption('--qemu', dest='qemu_arg', nargs=argparse.REMAINDER, default=[],
++                     help=('Pass all remaining options to QEMU as is'))
++    parser.addoption('--bootarg', action='append', dest='bootarg', default=[],
++                     help=('Pass boot arguments to barebox for debugging purposes'))
++    parser.addoption('--port-forward', metavar="PORT", action='append', dest='qemu_port', default=[],
++                     help=('Forward incoming TCP or UDP connections on specified PORT'))
++
++
++@pytest.fixture(scope="session")
++def strategy(request, target, pytestconfig):  # noqa: max-complexity=30
++    try:
++        strategy = target.get_driver("Strategy")
++    except NoDriverFoundError as e:
++        pytest.exit(e)
++
++    try:
++        main = target.env.config.data["targets"]["main"]
++        features = main["features"]
++    except KeyError:
++        features = []
++
++    try:
++        main = target.env.config.data["targets"]["main"]
++        yaml_env = main["env"]
++    except KeyError:
++        yaml_env = {}
++
++    try:
++        main = target.env.config.data["targets"]["main"]
++        qemu_bin = main["drivers"]["QEMUDriver"]["qemu_bin"]
++        features.append("qemu")
++    except KeyError:
++        pass
++
++    virtio = None
++
++    if "virtio-mmio" in features:
++        virtio = "device"
++        strategy.append_qemu_args('-global virtio-mmio.force-legacy=false')
++    if "virtio-pci" in features:
++        virtio = "pci,disable-modern=off"
++        features.append("pci")
++
++    if virtio and pytestconfig.option.qemu_rng:
++        for i in range(pytestconfig.option.qemu_rng):
++            strategy.append_qemu_args("-device", f"virtio-rng-{virtio}")
++
++    for i in range(pytestconfig.option.qemu_console):
++        if virtio and i == 0:
++            strategy.append_qemu_args(
++                "-device", f"virtio-serial-{virtio}",
++                "-chardev", f"pty,id=virtcon{i}",
++                "-device", f"virtconsole,chardev=virtcon{i},name=console.virtcon{i}"
++            )
++            continue
++
++        # ns16550 serial driver only works with x86 so far
++        if 'pci' in features:
++            strategy.append_qemu_args(
++                "-chardev", f"pty,id=pcicon{i}",
++                "-device", f"pci-serial,chardev=pcicon{i}"
++            )
++        else:
++            pytest.exit("barebox currently supports only a single extra virtio console\n", 1)
++
++    if "qemu" in features:
++        if not pytestconfig.option.qemu_graphics:
++            graphics = '-nographic'
++        elif qemu_bin == "qemu-system-x86_64":
++            graphics = '-device isa-vga'
++        elif 'pci' in features:
++            graphics = '-device VGA'
++        elif virtio:
++            graphics = '-vga none -device ramfb'
++            graphics += f' -device virtio-keyboard-{virtio}'
++        else:
++            pytest.exit("--graphics unsupported for target\n", 1)
++
++        if graphics is not None and \
++                pytestconfig.option.lg_initial_state != 'qemu_interactive':
++            graphics += ' -display none'
++
++        strategy.append_qemu_args(graphics)
++
++    for i, blk in enumerate(pytestconfig.option.qemu_block):
++        if virtio:
++            strategy.append_qemu_args(
++                "-drive", f"if=none,format=raw,id=hd{i},file={blk}",
++                "-device", f"virtio-blk-{virtio},drive=hd{i}"
++            )
++        else:
++            pytest.exit("--blk unsupported for target\n", 1)
++
++    envopts = {}
++
++    for i, fw_cfg in enumerate(pytestconfig.option.qemu_fw_cfg):
++        value = fw_cfg.pop()
++        envpath = fw_cfg.pop() if fw_cfg else f"data/fw_cfg{i}"
++
++        envopts[envpath] = value
++
++    for envpath, value in (yaml_env | envopts).items():
++        if virtio:
++            if isinstance(value, str) and value.startswith('@'):
++                source = f"file='{value[1:]}'"
++            else:
++                source = f"string='{value}'"
++
++            strategy.append_qemu_args(
++                '-fw_cfg', f'name=opt/org.barebox.env/{envpath},{source}'
++            )
++        else:
++            pytest.exit("env unsupported for target\n", 1)
++
++    if len(pytestconfig.option.bootarg) > 0:
++        strategy.append_qemu_bootargs(pytestconfig.option.bootarg)
++
++    for arg in pytestconfig.option.qemu_arg:
++        strategy.append_qemu_args(arg)
++
++    qemu_nic = "user,id=net0"
++
++    for port in pytestconfig.option.qemu_port:
++        qemu_nic += f",hostfwd=udp:127.0.0.2:{port}-:{port}"
++        qemu_nic += f",hostfwd=tcp:127.0.0.2:{port}-:{port}"
++
++    if "testfs" in features:
++        if not any(fs and fs[0] == "testfs" for fs in pytestconfig.option.qemu_fs):
++            testfs_path = os.path.join(os.environ["LG_BUILDDIR"], "testfs")
++            pytestconfig.option.qemu_fs.append(["testfs", testfs_path])
++            os.makedirs(testfs_path, exist_ok=True)
++            qemu_nic += f",tftp={testfs_path}"
++
++    if "qemu" in features:
++        strategy.append_qemu_args("-nic", qemu_nic)
++
++    for i, fs in enumerate(pytestconfig.option.qemu_fs):
++        if virtio:
++            path = fs.pop()
++            tag = fs.pop() if fs else f"fs{i}"
++
++            strategy.append_qemu_args(
++                "-fsdev", f"local,security_model=none,id=fs{i},path={path}",
++                "-device", f"virtio-9p-{virtio},id=fs{i},fsdev=fs{i},mount_tag={tag}"
++            )
++        else:
++            pytest.exit("--fs unsupported for target\n", 1)
++
++    state = request.config.option.lg_initial_state
++    if state is not None:
++        strategy.force(state)
++
++    return strategy
++
++
++@pytest.fixture(scope="session")
++def testfs(strategy, env):
++    if "testfs" not in env.get_target_features():
++        pytest.skip("testfs not supported on this platform")
++
++    path = os.path.join(os.environ["LG_BUILDDIR"], "testfs")
++    return path
 -- 
 2.47.3
 
