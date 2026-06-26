@@ -1,54 +1,54 @@
-Delivery-date: Fri, 26 Jun 2026 18:23:02 +0200
+Delivery-date: Fri, 26 Jun 2026 18:23:03 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wd9KY-00A8GC-0y
+	id 1wd9KZ-00A8GY-1j
 	for lore@lore.pengutronix.de;
-	Fri, 26 Jun 2026 18:23:02 +0200
+	Fri, 26 Jun 2026 18:23:03 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wd9KX-0001vb-0Q
-	for lore@pengutronix.de; Fri, 26 Jun 2026 18:23:02 +0200
+	id 1wd9KY-0001xB-MW
+	for lore@pengutronix.de; Fri, 26 Jun 2026 18:23:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=nq9oW1jmEyTDToZbUVCNeIJpsbXyYmiuDpOlAk5ErXE=; b=YJywAL/hzgSYqgwk1rke7ZBClr
-	5p8LLYJVtpacPKZUwXKdmJM9E3w9RlHXPDyOkAVbDKaUFLI/6c7Yw8gmVW9/WzW70V9qrsLfZFfow
-	ncl+dtFFDe7o75Pm0B31XqwHalxUBd64mcEcgOEX3U+hH+0VCwYWES8whWUYSQOsmJG1syh4cJMwB
-	L+fm4mu1uLg5pdm6LdG8vKqBkKmlCGsCmbxC8Z6FvNNU7P3LX3Zh/HeHoKFqILvYIAka48ltbkFun
-	oG0LRVneCj8+pkS1LVxkKRnh5tog5M2jXxnxJktSC2v6+M0Qvm6LlNeFVQJkFqCG1AApHpxvVwKec
-	sIGpikcQ==;
+	bh=HDIklTFkaaiudPTIFHHlE6m7nIvxAUStiEdnXG7Oudc=; b=UcbEtBICTZU5LgLzPKoXO1mYPu
+	qkMUGFxSAfvloOeEmTcSIHJw/ssqKQ1QpnOI5DfUCUdg38mC8jtgKOrIV4IgEqzXBOQ4qtU/1uRij
+	uF4Y8N4lAoVEZsO7cYbA0QB8dfj22ZBtvWDtvJ2jFfckhsMTd8/0rQuTULfN6M+mf8sqbU1gjfEY/
+	xdxB6RctwkLih34WlK+gUi3ci/blikjGcid7Sj/IwJcQLF1tNJfgkoueIftAcz5HTBEJ6QFCBTiAU
+	syWXtlRid5CCsIG2nFkjPKxyNmxoCeVdOMJ0Yb0PWUzrYYCcCFiLjFwoDfuerw/qExOlmJvUHBGWG
+	WvlrGg3w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wd9JN-0000000BcSa-09OH;
-	Fri, 26 Jun 2026 16:21:49 +0000
+	id 1wd9JQ-0000000BcUi-0k4s;
+	Fri, 26 Jun 2026 16:21:52 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wd9JK-0000000BcPS-1Jai
+	id 1wd9JK-0000000BcPZ-35N5
 	for barebox@lists.infradead.org;
-	Fri, 26 Jun 2026 16:21:48 +0000
+	Fri, 26 Jun 2026 16:21:49 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1wd9JI-0006R9-Pm; Fri, 26 Jun 2026 18:21:44 +0200
+	id 1wd9JJ-0006R9-6X; Fri, 26 Jun 2026 18:21:45 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Fri, 26 Jun 2026 18:19:37 +0200
-Message-ID: <20260626162136.1885999-6-a.fatoum@barebox.org>
+Date: Fri, 26 Jun 2026 18:19:39 +0200
+Message-ID: <20260626162136.1885999-8-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260626162136.1885999-1-a.fatoum@barebox.org>
 References: <20260626162136.1885999-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260626_092146_356653_52C4CA5E 
-X-CRM114-Status: UNSURE (   8.01  )
+X-CRM114-CacheID: sfid-20260626_092146_772213_12DFF3F4 
+X-CRM114-Status: UNSURE (   6.77  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -71,76 +71,70 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
 	UPPERCASE_50_75 autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 6/9] mci: sdhci: define same SDHCI_INT_* constants as Linux
+Subject: [PATCH v2 8/9] ARM: multi_v8_defconfig: enable OP-TEE and RPMB support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We already define a number of these bits and make use of them, but not
-all of them are named identically to Linux.
-
-To make code easier to port and avoid confusion, just define the Linux
-bits as well.
+To allow testing the TEE + RPMB functionality in barebox, enable
+everything the relevant barebox drivers and commands as well as command
+for manipulating and partitioning the mmc.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
 v1 -> v2:
   - new commit
 ---
- drivers/mci/sdhci.h | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ arch/arm/configs/multi_v8_defconfig | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
-index d1f05ac96859..a3b8e65b55ee 100644
---- a/drivers/mci/sdhci.h
-+++ b/drivers/mci/sdhci.h
-@@ -111,6 +111,10 @@
- #define  SDHCI_RESET_DATA			BIT(2)
- #define SDHCI_INT_STATUS					0x30
- #define SDHCI_INT_NORMAL_STATUS					0x30
-+#define  SDHCI_INT_TUNING_ERROR			BIT(26)
-+#define  SDHCI_INT_ADMA_ERROR			BIT(25)
-+#define  SDHCI_INT_AUTO_CMD_ERR			BIT(24)
-+#define  SDHCI_INT_BUS_POWER			BIT(23)
- #define  SDHCI_INT_DATA_END_BIT			BIT(22)
- #define  SDHCI_INT_DATA_CRC			BIT(21)
- #define  SDHCI_INT_DATA_TIMEOUT			BIT(20)
-@@ -119,13 +123,36 @@
- #define  SDHCI_INT_CRC				BIT(17)
- #define  SDHCI_INT_TIMEOUT			BIT(16)
- #define  SDHCI_INT_ERROR			BIT(15)
-+#define  SDHCI_INT_CQE				BIT(14)
-+/* Host Version 4.10 */
-+#define  SDHCI_INT_FX_EVENT			BIT(13)
-+#define  SDHCI_INT_RETUNE			BIT(12)
- #define  SDHCI_INT_CARD_INT			BIT(8)
- #define  SDHCI_INT_CARD_INSERT			BIT(6)
- #define  SDHCI_INT_DATA_AVAIL			BIT(5)
- #define  SDHCI_INT_SPACE_AVAIL			BIT(4)
- #define  SDHCI_INT_DMA				BIT(3)
-+#define  SDHCI_INT_BLK_GAP			BIT(2)
- #define  SDHCI_INT_XFER_COMPLETE		BIT(1)
- #define  SDHCI_INT_CMD_COMPLETE			BIT(0)
-+
-+/* Linux-compatible constants */
-+#define  SDHCI_INT_RESPONSE			SDHCI_INT_CMD_COMPLETE
-+#define  SDHCI_INT_DATA_END			SDHCI_INT_XFER_COMPLETE
-+#define  SDHCI_INT_DMA_END			SDHCI_INT_DMA
-+#define  SDHCI_INT_CARD_REMOVE			SDHCI_INT_CARD_INT
-+
-+#define  SDHCI_INT_CMD_MASK	(SDHCI_INT_RESPONSE | SDHCI_INT_TIMEOUT | \
-+		SDHCI_INT_CRC | SDHCI_INT_END_BIT | SDHCI_INT_INDEX | \
-+		SDHCI_INT_AUTO_CMD_ERR)
-+#define  SDHCI_INT_DATA_MASK	(SDHCI_INT_DATA_END | SDHCI_INT_DMA_END | \
-+		SDHCI_INT_DATA_AVAIL | SDHCI_INT_SPACE_AVAIL | \
-+		SDHCI_INT_DATA_TIMEOUT | SDHCI_INT_DATA_CRC | \
-+		SDHCI_INT_DATA_END_BIT | SDHCI_INT_ADMA_ERROR | \
-+		SDHCI_INT_BLK_GAP | SDHCI_INT_TUNING_ERROR)
-+#define SDHCI_INT_ALL_MASK	((unsigned int)-1)
-+
-+
- #define SDHCI_INT_ERROR_STATUS					0x32
- #define SDHCI_INT_ENABLE					0x34
- #define SDHCI_INT_ERROR_ENABLE					0x36
+diff --git a/arch/arm/configs/multi_v8_defconfig b/arch/arm/configs/multi_v8_defconfig
+index 5ea63372d050..0ed2770d2d37 100644
+--- a/arch/arm/configs/multi_v8_defconfig
++++ b/arch/arm/configs/multi_v8_defconfig
+@@ -84,6 +84,7 @@ CONFIG_CMD_MEMINFO=y
+ CONFIG_CMD_ARM_MMUINFO=y
+ CONFIG_CMD_REGULATOR=y
+ CONFIG_CMD_BFETCH=y
++CONFIG_CMD_MMC=y
+ CONFIG_CMD_MMC_EXTCSD=y
+ CONFIG_CMD_POLLER=y
+ CONFIG_CMD_SLICE=y
+@@ -94,6 +95,7 @@ CONFIG_CMD_UIMAGE=y
+ CONFIG_CMD_BOOTCHOOSER=y
+ CONFIG_CMD_PARTITION=y
+ CONFIG_CMD_FINDMNT=y
++CONFIG_CMD_PARTED=y
+ CONFIG_CMD_EXPORT=y
+ CONFIG_CMD_DEFAULTENV=y
+ CONFIG_CMD_LOADENV=y
+@@ -141,6 +143,7 @@ CONFIG_CMD_SMC=y
+ CONFIG_CMD_LED_TRIGGER=y
+ CONFIG_CMD_USBGADGET=y
+ CONFIG_CMD_WD=y
++CONFIG_CMD_AVB_PVALUE=y
+ CONFIG_CMD_LOGIN=y
+ CONFIG_CMD_PASSWD=y
+ CONFIG_CMD_BAREBOX_UPDATE=y
+@@ -228,6 +231,9 @@ CONFIG_DRIVER_VIDEO_RAMFB=y
+ CONFIG_SOUND=y
+ CONFIG_MCI=y
+ CONFIG_MCI_MMC_BOOT_PARTITIONS=y
++CONFIG_MCI_MMC_GPP_PARTITIONS=y
++CONFIG_MCI_MMC_RPMB=y
++CONFIG_MCI_SDHCI_PCI=y
+ CONFIG_MCI_DW=y
+ CONFIG_MCI_SUNXI_SMHC=y
+ CONFIG_MCI_ROCKCHIP_DWCMSHC=y
+@@ -290,6 +296,9 @@ CONFIG_NVMEM_REBOOT_MODE=y
+ CONFIG_VIRTIO_MMIO=y
+ CONFIG_VIRTIO_PCI=y
+ CONFIG_MAILBOX=y
++CONFIG_TEE=y
++CONFIG_OPTEE=y
++CONFIG_OPTEE_AVB_PERSISTENT_VALUES=y
+ CONFIG_FS_CRAMFS=y
+ CONFIG_FS_EXT4=y
+ CONFIG_FS_TFTP=y
 -- 
 2.47.3
 
