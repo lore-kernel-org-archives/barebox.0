@@ -3,13 +3,13 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wd2HY-00A19z-1M
+	id 1wd2HY-00A1AC-2C
 	for lore@lore.pengutronix.de;
 	Fri, 26 Jun 2026 10:51:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wd2HW-000208-Kr
+	id 1wd2HW-00020A-Nq
 	for lore@pengutronix.de; Fri, 26 Jun 2026 10:51:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,53 +17,38 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qvqs9ZispN7JY7c8r1vWkQ1mPSn5D7I86xS1Gm1CFyY=; b=iCz8RKZ4KMXXG0dNg8pzRmWw9h
-	+zn+4yEJgeFMHudZmLH+788Yxo09ru3eZrPK/0FEcaOkwlHKyB9rbmPaWewd+bAoxo2+CqBWntFTW
-	dzwfCFHMJ8CFIWiwAAtpo22BgYje9DlGmcv1j//zZsn7zRuj8KmTubzGo1tX6JBwB79Lbb709ycSl
-	BV5FIZtJehVXEhClynAcbe0F4gReHnbs2DJRlffFqClJIgydy/k2Q2CeLVhmT4oAccMSWNlH5G0L9
-	qzas9gUq6xOjHEuPx9Jz2i2nSqWRn4jtu/zpIVK3dXip78LE8g7Vs/2y/8EnIOPPW0GYVAroC3bm7
-	LbpqhKJA==;
+	bh=QJYHeFPYEECpSk62ZJH0v4azSoL3vnJzqTcTeaY9Wt0=; b=OwWWuevRHTfpyGsZx00JwXBMZH
+	uP5dBX6AtQL0RrwlisVsIbCGJQ5zeqEIWA6scKWkBHG0KC8KoAXPNRJRHqqtH+4Wfkh+dPZSi8EDe
+	mFB97REIRNeXkedrAg9uv5wBeoKpzOwt7XGpU1Mk16d0yFoKrcI3wILrN4XVWiG27Q9GYcdv8ORDa
+	kvbuoFMUetz0DusfoimuqX0PwI/GrYJzeEAxN4wBQpE0ReRTXeWrsXXwuhLG5Z9EdQIZqHIoSt/gZ
+	HlyP6C5HTaa8Sbamki4KhzicEHLglgOZWiNiQF/n7GL3mt9nJkvG28V2lXaI9Duvu+PvcgW5KK5MB
+	8ps99orQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wd2Ci-0000000AtNu-1hwE;
-	Fri, 26 Jun 2026 08:46:28 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wd2Cd-0000000AtEv-3dlD
-	for barebox@bombadil.infradead.org;
-	Fri, 26 Jun 2026 08:46:24 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=qvqs9ZispN7JY7c8r1vWkQ1mPSn5D7I86xS1Gm1CFyY=; b=K2D0mynV5Mcm8nST0jlg1ammYc
-	L79Qo1qZ1TpyIgs+dIO2QdZj0m9Ys1hnWsezbnqC/8mzVil4wT6IysjExPgyHh4UbQff8TkqH6MRz
-	kKr3QLYc5PvBgJFvRNb0krxIFBNIyzhIBuVcC+7+1jTGy8wDs0s7SucD7OkoB2/5kxbakqc5bFGdW
-	TFN4CFyZqVGsJky8sRntbtuD8QlExeS0q/tzQFcfqXhFZSWKgYKy5mAKE9n2UFh5MbI0hgvlpkcpN
-	mw+1lJ5JQT2WlMWHLe7rRoVAIPKUuXrOxKpNT1xyU3fSLvAXcWQn/1aiPpN4UoEa40z/B7TPC4/j/
-	L8NCz3CQ==;
+	id 1wd2Cf-0000000AtI5-0M3Q;
+	Fri, 26 Jun 2026 08:46:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wd2CY-00000004cm5-2Fs4
+	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wd2CW-0000000At8T-3BaA
 	for barebox@lists.infradead.org;
 	Fri, 26 Jun 2026 08:46:21 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1wd2CW-0003ZP-AR; Fri, 26 Jun 2026 10:46:16 +0200
+	id 1wd2CU-0003ZP-1r; Fri, 26 Jun 2026 10:46:14 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Fri, 26 Jun 2026 10:42:33 +0200
-Message-ID: <20260626084608.1388806-23-a.fatoum@barebox.org>
+Date: Fri, 26 Jun 2026 10:42:22 +0200
+Message-ID: <20260626084608.1388806-12-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260626084608.1388806-1-a.fatoum@barebox.org>
 References: <20260626084608.1388806-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260626_094619_704780_C82F2AFA 
-X-CRM114-Status: GOOD (  17.21  )
+X-CRM114-CacheID: sfid-20260626_014616_799197_3F632DFA 
+X-CRM114-Status: GOOD (  17.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,200 +70,172 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 22/26] fs: fat: support larger block device sectors
+Subject: [PATCH 11/26] filetype: don't hardcode sector size in file_detect_partition_table
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The FAT filesystem implementation already has variable sector size support,
-but we kept _MAX_SS fixed at the minimum of 512 bytes, which disabled it.
+The GPT is identified by the second LBA starting with "EFI PART".
+file_detect_partition_table() checks for that, but implicitly assumes LBA
+size to be 512 byte, which precludes using it to detect partitions
+tables on block device with e.g. 4K block sizes.
 
-Further, the glue between the filesystem and the cdev layer still hardcoded
-512-byte.
+In preparation for fixing that, adapt file_detect_partition_table() to
+always take a sector size.
 
-Set _MAX_SS as 4096 and fix the glue to be able to use the underlying
-block device's block size.
-
-PBL is kept at the existing fixed 512-byte sector size.
+No functional change.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- fs/fat/diskio.h     |  9 ++++++++
- fs/fat/fat-diskio.c | 10 ++++++++-
- fs/fat/fat.c        | 51 +++++++++++++++++++++++++++++++++------------
- fs/fat/ffconf.h     |  6 +++++-
- 4 files changed, 61 insertions(+), 15 deletions(-)
+ commands/createnv.c     |  2 +-
+ common/bootscan.c       |  3 ++-
+ common/filetype.c       | 16 +++++++++-------
+ common/partitions.c     |  4 ++--
+ common/partitions/efi.c |  3 ++-
+ include/filetype.h      |  3 ++-
+ 6 files changed, 18 insertions(+), 13 deletions(-)
 
-diff --git a/fs/fat/diskio.h b/fs/fat/diskio.h
-index 57626d2fbd7b..04a587e3bc47 100644
---- a/fs/fat/diskio.h
-+++ b/fs/fat/diskio.h
-@@ -14,6 +14,7 @@
+diff --git a/commands/createnv.c b/commands/createnv.c
+index df03664be112..0c74637a114c 100644
+--- a/commands/createnv.c
++++ b/commands/createnv.c
+@@ -77,7 +77,7 @@ static int do_createnv(int argc, char *argv[])
+ 		goto err;
+ 	}
  
- #define _USE_IOCTL	1	/* 1: Use disk_ioctl fucntion */
+-	filetype = file_detect_partition_table(buf, 2 * SECTOR_SIZE);
++	filetype = file_detect_partition_table(buf, 2 * SECTOR_SIZE, SECTOR_SIZE);
  
-+#include "disks.h"
- #include "integer.h"
- 
- 
-@@ -42,6 +43,14 @@ DRESULT disk_write (FATFS *fatfs, const BYTE*, DWORD, BYTE);
- #endif
- DRESULT disk_ioctl (FATFS *fatfs, BYTE, void*);
- 
-+#if IN_PROPER
-+unsigned int disk_sector_size(FATFS *fat);
-+#else
-+static inline unsigned int disk_sector_size(FATFS *fat)
-+{
-+	return SECTOR_SIZE;
-+}
-+#endif
- 
- 
- /* Disk Status Bits (DSTATUS) */
-diff --git a/fs/fat/fat-diskio.c b/fs/fat/fat-diskio.c
-index aa16d3bdc44b..6ba18993b870 100644
---- a/fs/fat/fat-diskio.c
-+++ b/fs/fat/fat-diskio.c
-@@ -23,7 +23,15 @@ DWORD get_fattime(void)
- 
- DRESULT disk_ioctl (FATFS *fat, BYTE command, void *buf)
- {
--	return 0;
-+	switch (command) {
-+	case GET_SECTOR_SIZE:
-+		*(WORD *)buf = disk_sector_size(fat);
-+		return RES_OK;
-+	case CTRL_SYNC:
-+		return RES_OK;
-+	default:
-+		return RES_PARERR;
-+	}
- }
- 
- WCHAR ff_convert(WCHAR src, UINT dir)
-diff --git a/fs/fat/fat.c b/fs/fat/fat.c
-index 93d1e08b8456..0402db1d945a 100644
---- a/fs/fat/fat.c
-+++ b/fs/fat/fat.c
-@@ -25,6 +25,8 @@
- #include <linux/ctype.h>
+ 	switch (filetype) {
+ 	case filetype_gpt:
+diff --git a/common/bootscan.c b/common/bootscan.c
+index 1c865c6b1382..5b70024a75aa 100644
+--- a/common/bootscan.c
++++ b/common/bootscan.c
+@@ -4,6 +4,7 @@
+ #include <driver.h>
  #include <xfuncs.h>
- #include <fcntl.h>
-+#include <block.h>
-+#include <linux/sizes.h>
- #include "ff.h"
- #include "integer.h"
- #include "diskio.h"
-@@ -36,33 +38,44 @@ struct fat_priv {
+ #include <block.h>
++#include <disks.h>
+ #include <fs.h>
+ #include <linux/stat.h>
+ #include <linux/err.h>
+@@ -109,7 +110,7 @@ int boot_scan_cdev(struct bootscanner *scanner,
  
- /* ---------------------------------------------------------------*/
+ 	readsize = ret;
  
-+unsigned int disk_sector_size(FATFS *fat)
-+{
-+	struct fat_priv *priv = fat->userdata;
-+
-+	return cdev_blocksize(priv->cdev);
-+}
-+
- DRESULT disk_read(FATFS *fat, BYTE *buf, DWORD sector, BYTE count)
+-	type = file_detect_partition_table(buf, readsize);
++	type = file_detect_partition_table(buf, readsize, SECTOR_SIZE);
+ 	filetype = file_detect_type(buf, readsize);
+ 	free(buf);
+ 
+diff --git a/common/filetype.c b/common/filetype.c
+index 80b7e1d98ce0..01cef7f1fbb7 100644
+--- a/common/filetype.c
++++ b/common/filetype.c
+@@ -157,16 +157,16 @@ static inline int pmbr_part_valid(const uint8_t *buf)
+  * Validity depends on three things:
+  *  1) MSDOS signature is in the last two bytes of the MBR
+  *  2) One partition of type 0xEE is found
+- *  3) EFI GPT signature is at offset 512
++ *  3) EFI GPT signature is at the next logical block
+  */
+-static int is_gpt_valid(const uint8_t *buf)
++static int is_gpt_valid(const uint8_t *buf, unsigned int sector_size)
  {
- 	struct fat_priv *priv = fat->userdata;
-+	unsigned int sector_size = disk_sector_size(fat);
-+	size_t len = count * sector_size;
- 	int ret;
+ 	int i;
  
- 	debug("%s: sector: %ld count: %d\n", __func__, sector, count);
+ 	if (get_unaligned_le16(&buf[BS_55AA]) != 0xAA55)
+ 		return 0;
  
--	ret = cdev_read(priv->cdev, buf, count << 9, (loff_t)sector * 512, 0);
--	if (ret != count << 9)
--		return ret;
-+	ret = cdev_read(priv->cdev, buf, len, (loff_t)sector * sector_size, 0);
-+	if (ret != len)
-+		return RES_ERROR;
+-	if (strncmp(&buf[512], "EFI PART", 8))
++	if (strncmp(buf + sector_size, "EFI PART", 8))
+ 		return 0;
  
--	return 0;
-+	return RES_OK;
+ 	buf += MBR_Table;
+@@ -268,19 +268,21 @@ enum filetype is_fat_or_mbr(const unsigned char *sector, unsigned long *bootsec)
+ 	return filetype_mbr;
  }
  
- DRESULT disk_write(FATFS *fat, const BYTE *buf, DWORD sector, BYTE count)
+-enum filetype file_detect_partition_table(const void *_buf, size_t bufsize)
++enum filetype file_detect_partition_table(const void *_buf,
++					  size_t bufsize,
++					  unsigned int sector_size)
  {
- 	struct fat_priv *priv = fat->userdata;
-+	unsigned int sector_size = disk_sector_size(fat);
-+	size_t len = count * sector_size;
- 	int ret;
+ 	const u8 *buf8 = _buf;
+ 	enum filetype type;
  
- 	debug("%s: buf: %p sector: %ld count: %d\n",
- 			__func__, buf, sector, count);
+-	if (bufsize < 512)
++	if (bufsize < MIN_SECTOR_SIZE || sector_size < MIN_SECTOR_SIZE)
+ 		return filetype_unknown;
  
--	ret = cdev_write(priv->cdev, buf, count << 9, (loff_t)sector * 512, 0);
--	if (ret != count << 9)
--		return ret;
-+	ret = cdev_write(priv->cdev, buf, len, (loff_t)sector * sector_size, 0);
-+	if (ret != len)
-+		return RES_ERROR;
+ 	/*
+ 	 * EFI GPT need to be detected before MBR otherwise
+ 	 * we will detect a MBR
+ 	 */
+-	if (bufsize >= 520 && is_gpt_valid(buf8))
++	if (bufsize >= sector_size + 8 && is_gpt_valid(buf8, sector_size))
+ 		return filetype_gpt;
  
--	return 0;
-+	return RES_OK;
- }
+ 	type = is_fat_or_mbr(buf8, NULL);
+@@ -468,7 +470,7 @@ enum filetype file_detect_type(const void *_buf, size_t bufsize)
+ 	if (bufsize < 512)
+ 		return filetype_unknown;
  
- /* ---------------------------------------------------------------*/
-@@ -342,14 +355,27 @@ static int fat_stat(struct device *dev, const char *filename, struct stat *s)
- static int fat_probe(struct device *dev)
- {
- 	struct fs_device *fsdev = dev_to_fs_device(dev);
--	struct fat_priv *priv = xzalloc(sizeof(struct fat_priv));
-+	struct fat_priv *priv;
-+	unsigned int blocksize;
- 	int ret;
+-	type = file_detect_partition_table(_buf, bufsize);
++	type = file_detect_partition_table(_buf, bufsize, SECTOR_SIZE);
+ 	if (type != filetype_unknown)
+ 		return type;
  
--	dev->priv = priv;
--
- 	ret = fsdev_open_cdev(fsdev);
- 	if (ret)
--		goto err_open;
-+		return ret;
-+
-+	/*
-+	 * No need to cleanup fsdev_open_cdev(), only way to invoke this
-+	 * probe function is via mount() and that will already take care
-+	 * of calling fs_remove for us.
-+	 */
-+	blocksize = cdev_blocksize(fsdev->cdev);
-+	if (blocksize > SZ_4K) {
-+		dev_err(dev, "FAT on %u-byte block devices is unsupported\n",
-+			blocksize);
-+		return -ENOSYS;
-+	}
-+
-+	priv = dev->priv = xzalloc(sizeof(struct fat_priv));
+diff --git a/common/partitions.c b/common/partitions.c
+index 40f4c629e1ac..ff977516aa1f 100644
+--- a/common/partitions.c
++++ b/common/partitions.c
+@@ -97,7 +97,7 @@ static struct partition_parser *partition_parser_get_by_filetype(uint8_t *buf)
+ 	struct partition_parser *parser;
  
- 	priv->cdev = fsdev->cdev;
- 	fsdev->sb.s_casefold = true;
-@@ -362,7 +388,6 @@ static int fat_probe(struct device *dev)
- 	return 0;
+ 	/* first new partition table as EFI GPT */
+-	type = file_detect_partition_table(buf, SECTOR_SIZE * 2);
++	type = file_detect_partition_table(buf, SECTOR_SIZE * 2, SECTOR_SIZE);
  
- err_mount:
--err_open:
- 	free(priv);
+ 	list_for_each_entry(parser, &partition_parser_list, list) {
+ 		if (parser->type == type)
+@@ -108,7 +108,7 @@ static struct partition_parser *partition_parser_get_by_filetype(uint8_t *buf)
+ 	 * so if EFI GPT not enable take it as MBR
+ 	 * useful for compatibility
+ 	 */
+-	type = file_detect_partition_table(buf, SECTOR_SIZE);
++	type = file_detect_partition_table(buf, SECTOR_SIZE, SECTOR_SIZE);
+ 	if (type == filetype_fat && !is_fat_boot_sector(buf))
+ 		type = filetype_mbr;
  
- 	return ret;
-diff --git a/fs/fat/ffconf.h b/fs/fat/ffconf.h
-index abf7d1e92e0b..b7dbf39efbf7 100644
---- a/fs/fat/ffconf.h
-+++ b/fs/fat/ffconf.h
-@@ -103,7 +103,11 @@
- /* Number of volumes (logical drives) to be used. */
+diff --git a/common/partitions/efi.c b/common/partitions/efi.c
+index 674f920743d3..4847f88fa551 100644
+--- a/common/partitions/efi.c
++++ b/common/partitions/efi.c
+@@ -505,7 +505,8 @@ static int find_valid_gpt(struct efi_partition_desc *epd, void *buf)
+ 	lastlba = last_lba(blk);
+ 	if (force_gpt) {
+ 		/* This will be added to the EFI Spec. per Intel after v1.02. */
+-		if (file_detect_partition_table(buf, SECTOR_SIZE * 2) != filetype_gpt)
++		if (file_detect_partition_table(buf, SECTOR_SIZE * 2,
++						SECTOR_SIZE) != filetype_gpt)
+ 			goto fail;
+ 	}
  
+diff --git a/include/filetype.h b/include/filetype.h
+index 759ef9c2a343..2fd0e2217729 100644
+--- a/include/filetype.h
++++ b/include/filetype.h
+@@ -81,7 +81,8 @@ struct cdev;
  
--#define	_MAX_SS		512		/* 512, 1024, 2048 or 4096 */
-+#if IN_PROPER
-+#define	_MAX_SS		4096		/* 512, 1024, 2048 or 4096 */
-+#else
-+#define	_MAX_SS		512
-+#endif
- /* Maximum sector size to be handled.
- /  Always set 512 for memory card and hard disk but a larger value may be
- /  required for on-board flash memory, floppy disk and optical disk.
+ const char *file_type_to_string(enum filetype f);
+ const char *file_type_to_short_string(enum filetype f);
+-enum filetype file_detect_partition_table(const void *_buf, size_t bufsize);
++enum filetype file_detect_partition_table(const void *_buf, size_t bufsize,
++					  unsigned int sector_size);
+ enum filetype file_detect_compression_type(const void *_buf, size_t bufsize);
+ enum filetype file_detect_fs_type(const void *_buf, size_t bufsize);
+ enum filetype file_detect_type(const void *_buf, size_t bufsize);
 -- 
 2.47.3
 
