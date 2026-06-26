@@ -3,13 +3,13 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wd2DM-00A11Q-0u
+	id 1wd2DM-00A11q-32
 	for lore@lore.pengutronix.de;
 	Fri, 26 Jun 2026 10:47:08 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wd2DL-0005yx-BR
+	id 1wd2DL-0005zM-Fb
 	for lore@pengutronix.de; Fri, 26 Jun 2026 10:47:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,39 +17,38 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=oqEJUJlRm40Skj7JDVod15XSe8T1i/Q5ZCOJ7DJOpis=; b=zZDn6+TKQ9AQeQdN70JJ5Imqul
-	c9TqGO/XwF97d4irvTjeXoEYLo0haK9g04d8OyeI1HGNR+tdEbtTObnJ3RidJeq5IIIi+hXxTyrDj
-	vKqcorKZXYQPMpUEZhYdGDcdZlq0bWZGOSLP0UEaND5qZVn+pneBtbRXz3XHvO4ygjTqZhj6faPAE
-	dLb5/xUz7w98cLbeklrKX31Ov2K6wbahlUcFLqvQZ6P0lHruGDA+gqUgRvQ7qseq1ZF2sdp37oBNd
-	bgECD1cb0BG9f33TrSYeav79ASlwA0hE0g4bAJn5kjw/jKLAolUMXa6dZXXm7WHwN2E4suKtKMLhx
-	02Ha83kw==;
+	bh=Ik1ojqeIkegAI6SOJhkQyesncKmiKAyusxYiC3gi70k=; b=je0+0syyp1z1DFa7UG0Bzb/353
+	ryi5Www9su+EjLuJTzuECryfWOR7Z7kajHAQAhcBUdaAkxhHUPAJ0eYosfr0aqwEqejxbsOdbihfx
+	+aZjFbLq0mEt/Chh7IiI55ubKZIKRYCX9IazvBaCZBzGg+6y+8f6Gn8V8O8fhI/rf4ifQ1sWI0rww
+	lVJn70ZsnC69IFYeko7iclZe4DTadhS6270xVHjpTjCffs+zabyqgRlLfVEv5E1tezqxkzVWXNXGf
+	tN7KHWoddp0ld2kfHwH39iDDizhVo6B2yTAUSsXOcOIuzU1E/alN1tvbWkl66PKHtp8iYpRFTnNlM
+	DiKnev+w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wd2Cb-0000000AtDR-0eMF;
-	Fri, 26 Jun 2026 08:46:21 +0000
+	id 1wd2Ce-0000000AtHR-2Z93;
+	Fri, 26 Jun 2026 08:46:24 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wd2CV-0000000At86-3zoF
+	id 1wd2CW-0000000At8E-2IsZ
 	for barebox@lists.infradead.org;
-	Fri, 26 Jun 2026 08:46:18 +0000
+	Fri, 26 Jun 2026 08:46:21 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1wd2CS-0003ZP-7P; Fri, 26 Jun 2026 10:46:12 +0200
+	id 1wd2CT-0003ZP-Dp; Fri, 26 Jun 2026 10:46:13 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Fri, 26 Jun 2026 10:42:13 +0200
-Message-ID: <20260626084608.1388806-3-a.fatoum@barebox.org>
+Date: Fri, 26 Jun 2026 10:42:19 +0200
+Message-ID: <20260626084608.1388806-9-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260626084608.1388806-1-a.fatoum@barebox.org>
 References: <20260626084608.1388806-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260626_014616_043736_FF5A022F 
-X-CRM114-Status: UNSURE (   9.94  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260626_014616_584058_C108CE18 
+X-CRM114-Status: GOOD (  10.09  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,40 +70,42 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 02/26] nvme: fix buffer advancement when chunking due to max_hw_sectors
+Subject: [PATCH 08/26] block: fix discard zeroing too little memory
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-max_hw_sectors can be derived by reading from the NVMe driver and
-controls how many sectors to maximally read/write at once.
+Discard ranges are stored as cdev byte ranges, while
+writebuffer_io_nblocks() returns a number of logical blocks.
 
-Bigger reads/writes were split by doing the operation in a loop.
+block_cache() mixes these units up when checking whether a cache chunk
+falls inside the most recent discard range.
 
-However, only the first iteration of the loop worked, because the buffer
-was advanced by the _block_ count and not the _byte_ count.
+This bug resulted in a cache hit for discarded data zeroing only the
+logical block count in bytes. A 16-block chunk cleared 16 bytes instead of
+16 logical blocks, leaving stale data in the rest of the cache buffer.
 
-Fix this by advancing by advancing by number of bytes instead.
-
-Fixes: aedcb568afe4 ("drivers: Import a very basic NVME implementation from Linux")
-Assisted-by: Codex:gpt-5.5
+Fixes: e488952b9d ("block: Implement discard_range")
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- drivers/nvme/host/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ common/block.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 98731ffe7cb2..21aeda78ebfb 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -328,7 +328,7 @@ static int nvme_submit_sync_rw(struct nvme_ns *ns, struct nvme_command *cmnd,
- 				break;
+diff --git a/common/block.c b/common/block.c
+index 96f48ba7aa41..f4b2a692407a 100644
+--- a/common/block.c
++++ b/common/block.c
+@@ -185,9 +185,9 @@ static int block_cache(struct block_device *blk, sector_t block)
  
- 			num_blocks -= chunk;
--			buffer += chunk;
-+			buffer += chunk << ns->lba_shift;
- 			block += chunk;
- 		}
- 
+ 	len = writebuffer_io_nblocks(blk, chunk);
+ 	if (chunk->block_start * BLOCKSIZE(blk) >= blk->discard_start &&
+-	    chunk->block_start * BLOCKSIZE(blk) + len
++	    (chunk->block_start + len) * BLOCKSIZE(blk)
+ 	    <= blk->discard_start + blk->discard_size) {
+-		memset(chunk->data, 0, len);
++		memset(chunk->data, 0, len << blk->blockbits);
+ 		list_add(&chunk->list, &blk->buffered_blocks);
+ 		return 0;
+ 	}
 -- 
 2.47.3
 
