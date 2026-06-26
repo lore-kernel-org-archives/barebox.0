@@ -1,69 +1,54 @@
-Delivery-date: Fri, 26 Jun 2026 10:51:29 +0200
+Delivery-date: Fri, 26 Jun 2026 10:51:32 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wd2HZ-00A1B5-2p
+	id 1wd2Hb-00A1Bm-37
 	for lore@lore.pengutronix.de;
-	Fri, 26 Jun 2026 10:51:29 +0200
+	Fri, 26 Jun 2026 10:51:31 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wd2HY-00021T-UO
-	for lore@pengutronix.de; Fri, 26 Jun 2026 10:51:29 +0200
+	id 1wd2Ha-0002Gf-M9
+	for lore@pengutronix.de; Fri, 26 Jun 2026 10:51:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fmy0tOu5F+R+j5BTQ527GXvdEQPBC2cob0/uT4NbDAM=; b=byJsL08LDVIvb/LnMJKuSUnKWs
-	zVwH/2j29TS5aARLxpWgHbudrk72fflnrdXJJHO30nCd6jsARjLejeiZlzpQ80zc6KkfrQn1LponP
-	DyncHDDGbFc0YwzE2w0CXmDJOwTmuiQ6Iwu6WUYtF87hd5BBul5Uw1uBovq9dp/VG9avzlHX5KlZq
-	nhQSmrKG8VqntkToZvTkZYIRdTJR7YuXu5i2trHNZD1CRsEO9Rpn9e/7gajkn+Vi0Xm8MvfVwmQwW
-	J7Ef9eycchxCi98ArLxZex6GBnphiJCMQeskZz/QhIwIHAYSyMtJbZEiQP+nAgZSs7XDjojDtPKP7
-	gbKi8xEg==;
+	bh=g6mQpLIBwpvQ8VYc5g27aTUKwEJaAfc3MRloC5Nf19o=; b=oEdww5Xe+IkL+BmNvnhFCZZbfQ
+	2rK91lUf8BE/mW5dsmLvXDOncJ6N35AyZOf8NgYZPXTPdyzPIMg8wb6ivdNE6NHpJE+8zheWlAg7M
+	A3P6O+vrG2U8aTerBgUJ7COtbIBbskYWr18ZXkA8Bq3/36Psk1oHX8z+JYyBEssj1qgbs0F8G+dVz
+	asm8mYwRGiODNPXZEhsuoveaWLYbc/4sanuM4bqetO9r319TOFMAx6z0uyNG39bXVRE7FGuJRmIzd
+	ig+sNimr9DZ4+BoJu6JXhMTjTX/NFhicvhfUxb7koY3GMHnKSDCBKoCcedx3MVFXOaW0R3ZedZgev
+	oTf66Q6Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wd2Cm-0000000AtWh-2c77;
-	Fri, 26 Jun 2026 08:46:32 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	id 1wd2Cf-0000000AtIv-22Pi;
+	Fri, 26 Jun 2026 08:46:25 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([185.203.201.7])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wd2Ce-0000000AtG5-2NPt
-	for barebox@bombadil.infradead.org;
-	Fri, 26 Jun 2026 08:46:24 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=fmy0tOu5F+R+j5BTQ527GXvdEQPBC2cob0/uT4NbDAM=; b=EWfQSfNNxCRRDfzp/AY6Vneweq
-	i13F/vdhf3uwejJdWHiekSut4f7tj3y0BmmE9BHMdV1CHtn52PJMUEgiRiAhCCUHupvKYxf14pWWj
-	GLCkiXo9k2z3HhA68SB5hOGKncYh013khkt/7FsMsnJxoGc+z7nKL1MyVWrGX+gQZpSF/OkIOi29a
-	Z9ysykpNaCru69IMhao0z1ds9/VQH+XAzI0wZp9V2D9zzy4kGpxrTC3hEIploeyQzjRYp777tZoVK
-	6WQI+zwkAlKWN8rS9xmM8J7BtseTyXBNqAdRD1jH6Xz8NjGmyoNqp7SBNopENzL81R7lFNkK5oWgW
-	7zDuh3yQ==;
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wd2CZ-00000004cmA-2kIF
+	id 1wd2CY-0000000AtBJ-0Zox
 	for barebox@lists.infradead.org;
-	Fri, 26 Jun 2026 08:46:23 +0000
+	Fri, 26 Jun 2026 08:46:21 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1wd2CW-0003ZP-Uc; Fri, 26 Jun 2026 10:46:17 +0200
+	id 1wd2CV-0003ZP-Tf; Fri, 26 Jun 2026 10:46:16 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Fri, 26 Jun 2026 10:42:36 +0200
-Message-ID: <20260626084608.1388806-26-a.fatoum@barebox.org>
+Date: Fri, 26 Jun 2026 10:42:31 +0200
+Message-ID: <20260626084608.1388806-21-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260626084608.1388806-1-a.fatoum@barebox.org>
 References: <20260626084608.1388806-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260626_094620_095705_48FD89CC 
-X-CRM114-Status: GOOD (  11.43  )
+X-CRM114-CacheID: sfid-20260626_014618_382502_CB721332 
+X-CRM114-Status: GOOD (  21.01  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,145 +70,279 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH 25/26] commands: parted: prepare use of non-512-byte sectors
+Subject: [PATCH 20/26] partition: support non-512 byte sectors
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Switching parted to create non-512-byte sectors needs a bit more effort
-than just switching out all hardcoded SECTOR_SIZE/SHIFT.
+Partition parsing still mixed LBAs with hardcoded 512-byte sectors
+all over the place.
 
-Nevertheless, pick these low hanging fruit and defer the rest to some
-unknown point in the future.
+Carry the block device logical block size through all read paths.
 
 Assisted-by: Codex:gpt-5.5
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- commands/createnv.c     | 11 ++++++-----
- commands/parted.c       | 14 +++++++-------
- common/partitions/efi.c |  6 +++---
- 3 files changed, 16 insertions(+), 15 deletions(-)
+ common/partitions.c     | 55 +++++++++++++++++++++++++++--------------
+ common/partitions/dos.c |  4 +--
+ common/partitions/efi.c | 21 ++++++----------
+ include/partitions.h    |  2 +-
+ 4 files changed, 47 insertions(+), 35 deletions(-)
 
-diff --git a/commands/createnv.c b/commands/createnv.c
-index 0c74637a114c..6083ab7c2c8f 100644
---- a/commands/createnv.c
-+++ b/commands/createnv.c
-@@ -69,15 +69,16 @@ static int do_createnv(int argc, char *argv[])
- 		goto err;
+diff --git a/common/partitions.c b/common/partitions.c
+index 8637b54b1708..617c2770eadf 100644
+--- a/common/partitions.c
++++ b/common/partitions.c
+@@ -36,10 +36,10 @@ static int register_one_partition(struct block_device *blk, struct partition *pa
+ 	char *partition_name;
+ 	int ret;
+ 	struct cdev *cdev;
+-	struct devfs_partition partinfo = {
+-		.offset = part->first_sec * SECTOR_SIZE,
+-		.size = part->size * SECTOR_SIZE,
+-	};
++	struct devfs_partition partinfo = {};
++
++	partinfo.offset = part->first_sec * BLOCKSIZE(blk);
++	partinfo.size = part->size * BLOCKSIZE(blk);
+ 
+ 	partition_name = xasprintf("%s.%d", blk->cdev.name, part->num);
+ 
+@@ -92,24 +92,26 @@ static int remove_one_partition(struct block_device *blk, int no)
+ 	return ret;
+ }
+ 
+-static struct partition_parser *partition_parser_get_by_filetype(uint8_t *buf)
++static struct partition_parser *partition_parser_get_by_filetype(uint8_t *buf,
++								 unsigned int blocksize)
+ {
+ 	enum filetype type;
+ 	struct partition_parser *parser;
+ 
+ 	/* first new partition table as EFI GPT */
+-	type = file_detect_partition_table(buf, SECTOR_SIZE * 2, SECTOR_SIZE);
++	type = file_detect_partition_table(buf, blocksize * 2, blocksize);
+ 
+ 	list_for_each_entry(parser, &partition_parser_list, list) {
+ 		if (parser->type == type)
+ 			return parser;
  	}
  
--	buf = xzalloc(2 * SECTOR_SIZE);
-+	buf = xzalloc(2 * BLOCKSIZE(blk));
+-	/* if not parser found search for old one
+-	 * so if EFI GPT not enable take it as MBR
+-	 * useful for compatibility
++	/* If no parser found search for old one, so if EFI GPT i
++	 * not enabled, probe for MBR. useful for compatibility.
++	 * 512 is hardcoded here as the MBR detection is not
++	 * block-size dependent.
+ 	 */
+-	type = file_detect_partition_table(buf, SECTOR_SIZE, SECTOR_SIZE);
++	type = file_detect_partition_table(buf, 512, 512);
+ 	if (type == filetype_fat && !is_fat_boot_sector(buf))
+ 		type = filetype_mbr;
  
--	ret = cdev_read(cdev, buf, 2 * SECTOR_SIZE, 0, 0);
-+	ret = cdev_read(cdev, buf, 2 * BLOCKSIZE(blk), 0, 0);
- 	if (ret < 0) {
- 		printf("Cannot read from %s: %pe\n", cdev->name, ERR_PTR(ret));
- 		goto err;
- 	}
- 
--	filetype = file_detect_partition_table(buf, 2 * SECTOR_SIZE, SECTOR_SIZE);
-+	filetype = file_detect_partition_table(buf, 2 * BLOCKSIZE(blk),
-+					       BLOCKSIZE(blk));
- 
- 	switch (filetype) {
- 	case filetype_gpt:
-@@ -108,7 +109,7 @@ static int do_createnv(int argc, char *argv[])
- 		}
- 	}
- 
--	size >>= SECTOR_SHIFT;
-+	size = blockdevice_round_nblocks(blk, size);
- 
- 	ret = partition_find_free_space(pdesc, size, &start);
- 	if (ret) {
-@@ -123,7 +124,7 @@ static int do_createnv(int argc, char *argv[])
- 	}
- 
- 	printf("Will create a barebox environment partition of size %llu bytes on %s\n",
--	       size << SECTOR_SHIFT, cdev->name);
-+	       size * BLOCKSIZE(blk), cdev->name);
- 
- 	if (!force) {
- 		char c;
-diff --git a/commands/parted.c b/commands/parted.c
-index dd79def62a3e..3f531faaef3f 100644
---- a/commands/parted.c
-+++ b/commands/parted.c
-@@ -109,15 +109,15 @@ static int do_print(struct block_device *blk, int argc, char *argv[])
- 	}
- 
- 	printf("Disk /dev/%s: %s\n", blk->cdev.name,
--	       size_human_readable(blk->num_blocks << SECTOR_SHIFT));
-+	       size_human_readable(blockdevice_size(blk)));
- 	printf("Partition Table: %s\n", pdesc->parser->name);
- 
- 	printf("Number      Start           End          Size     Name\n");
- 
- 	list_for_each_entry(part, &pdesc->partitions, list) {
--		uint64_t start = part->first_sec << SECTOR_SHIFT;
--		uint64_t size = part->size << SECTOR_SHIFT;
--		uint64_t end = start + size - SECTOR_SIZE;
-+		uint64_t start = part->first_sec << blk->blockbits;
-+		uint64_t size = part->size << blk->blockbits;
-+		uint64_t end = start + size - BLOCKSIZE(blk);
- 
- 		printf(" %3d   %10llu%-3s %10llu%-3s %10llu%-3s  %-36s\n",
- 			part->num,
-@@ -162,7 +162,7 @@ static int do_mkpart(struct block_device *blk, int argc, char *argv[])
- 	start = ALIGN(start, SZ_1M);
- 
- 	/* convert to LBA */
--	start >>= SECTOR_SHIFT;
-+	start = blockdevice_round_nblocks(blk, start);
- 
- 	if (!strcmp(argv[4], "max")) {
- 		/* gpt requires 34 blocks at the end */
-@@ -182,7 +182,7 @@ static int do_mkpart(struct block_device *blk, int argc, char *argv[])
- 		end *= mult;
- 
- 		/* convert to LBA */
--		end >>= SECTOR_SHIFT;
-+		end >>= blk->blockbits;
- 
- 		/*
- 		 * When unit is >= KB then subtract one sector for user
-@@ -235,7 +235,7 @@ static int do_mkpart_size(struct block_device *blk, int argc, char *argv[])
- 	size = ALIGN(size, PARTITION_ALIGN_SIZE);
- 
- 	/* convert to LBA */
--	size >>= SECTOR_SHIFT;
-+	size = blockdevice_round_nblocks(blk, size);
- 
- 	pdesc = pdesc_get(blk);
- 	if (!pdesc)
-diff --git a/common/partitions/efi.c b/common/partitions/efi.c
-index 33d9a1df9e83..18a8c4d56632 100644
---- a/common/partitions/efi.c
-+++ b/common/partitions/efi.c
-@@ -689,7 +689,7 @@ static __maybe_unused struct partition_desc *efi_partition_create_table(struct b
- 
- 	partition_desc_init(&epd->pd, blk);
- 
--	epd->gpt = xzalloc(SECTOR_SIZE);
-+	epd->gpt = xzalloc(BLOCKSIZE(blk));
- 	gpt = epd->gpt;
- 
- 	gpt->signature = cpu_to_le64(GPT_HEADER_SIGNATURE);
-@@ -851,12 +851,12 @@ static int __efi_partition_write(struct efi_partition_desc *epd, bool primary)
- 	uint64_t my_lba, partition_entry_lba;
+@@ -150,9 +152,11 @@ struct partition_desc *partition_table_read(struct block_device *blk)
+ 	struct partition_parser *parser;
+ 	struct partition_desc *pdesc = NULL;
+ 	uint8_t *buf;
++	unsigned int blocksize;
  	int ret;
  
--	gpt = xmemdup(epd->gpt, SECTOR_SIZE);
-+	gpt = xmemdup(epd->gpt, BLOCKSIZE(blk));
+-	buf = malloc(2 * SECTOR_SIZE);
++	blocksize = BLOCKSIZE(blk);
++	buf = malloc(2 * blocksize);
  
- 	count = le32_to_cpu(gpt->num_partition_entries) *
- 		le32_to_cpu(gpt->sizeof_partition_entry);
+ 	ret = block_read(blk, buf, 0, 2);
+ 	if (ret != 0) {
+@@ -160,7 +164,7 @@ struct partition_desc *partition_table_read(struct block_device *blk)
+ 		goto err;
+ 	}
  
+-	parser = partition_parser_get_by_filetype(buf);
++	parser = partition_parser_get_by_filetype(buf, blocksize);
+ 	if (!parser)
+ 		goto err;
+ 
+@@ -187,7 +191,7 @@ bool partition_is_free(struct partition_desc *pdesc, uint64_t start, uint64_t si
+ {
+ 	struct partition *p;
+ 
+-	if (start < PARTITION_ALIGN_SECTORS)
++	if (start < partition_align_lba(pdesc->blk))
+ 		return false;
+ 
+ 	if (start + size >= pdesc->blk->num_blocks)
+@@ -204,7 +208,7 @@ bool partition_is_free(struct partition_desc *pdesc, uint64_t start, uint64_t si
+ int partition_find_free_space(struct partition_desc *pdesc, uint64_t sectors, uint64_t *start)
+ {
+ 	struct partition *p;
+-	uint64_t align = PARTITION_ALIGN_SECTORS;
++	uint64_t align = partition_align_lba(pdesc->blk);
+ 	uint64_t min_sec;
+ 
+ 	min_sec = max(align, partition_first_usable_lba(pdesc->blk));
+@@ -371,19 +375,25 @@ static int fuzz_partition_table_parser(struct block_device *ramdisk)
+ 	struct partition *part;
+ 	int rc = 0;
+ 	struct partition_parser *parser;
+-	u8 buf[2 * SECTOR_SIZE] __aligned(8);
++	u8 *buf;
++	unsigned int blocksize;
++
++	blocksize = BLOCKSIZE(ramdisk);
++	buf = malloc(2 * blocksize);
++	if (!buf)
++		return 0;
+ 
+ 	rc = block_read(ramdisk, buf, 0, 2);
+ 	if (rc != 0)
+-		return 0;
++		goto out;
+ 
+-	parser = partition_parser_get_by_filetype(buf);
++	parser = partition_parser_get_by_filetype(buf, blocksize);
+ 	if (!parser)
+-		return 0;
++		goto out;
+ 
+ 	pdesc = parser->parse(buf, ramdisk);
+ 	if (!pdesc)
+-		return 0;
++		goto out;
+ 
+ 	pdesc->parser = parser;
+ 
+@@ -394,6 +404,8 @@ static int fuzz_partition_table_parser(struct block_device *ramdisk)
+ 
+ 	partition_table_free(pdesc);
+ 
++out:
++	free(buf);
+ 	return 0;
+ }
+ fuzz_test_ramdisk("partitions", fuzz_partition_table_parser);
+@@ -430,6 +442,11 @@ sector_t partition_first_usable_lba(const struct block_device *blk)
+ 	return blockdevice_round_nblocks(blk, first_partition_offset);
+ }
+ 
++sector_t partition_align_lba(const struct block_device *blk)
++{
++	return blockdevice_round_nblocks(blk, PARTITION_ALIGN_SIZE);
++}
++
+ static int set_first_partition_offset(struct param_d *p, void *priv)
+ {
+ 	if (first_partition_offset < MIN_SECTOR_SIZE) {
+diff --git a/common/partitions/dos.c b/common/partitions/dos.c
+index 1526b97dec67..e5286cb6eb1f 100644
+--- a/common/partitions/dos.c
++++ b/common/partitions/dos.c
+@@ -60,7 +60,7 @@ static inline int is_extended_partition(struct partition *p)
+ 
+ static void *read_mbr(struct block_device *blk)
+ {
+-	void *buf = xmalloc(SECTOR_SIZE);
++	void *buf = xmalloc(BLOCKSIZE(blk));
+ 	int ret;
+ 
+ 	ret = block_read(blk, buf, 0, 1);
+@@ -126,7 +126,7 @@ static int dos_get_disk_signature(struct param_d *p, void *_priv)
+ static void dos_extended_partition(struct block_device *blk, struct dos_partition_desc *dpd,
+ 		struct partition *partition, uint32_t signature)
+ {
+-	uint8_t *buf = xmalloc(SECTOR_SIZE);
++	uint8_t *buf = xmalloc(BLOCKSIZE(blk));
+ 	uint32_t ebr_sector = partition->first_sec;
+ 	struct partition_entry *table = (struct partition_entry *)&buf[0x1be];
+ 	unsigned partno = 4;
+diff --git a/common/partitions/efi.c b/common/partitions/efi.c
+index 295c26a5a491..33d9a1df9e83 100644
+--- a/common/partitions/efi.c
++++ b/common/partitions/efi.c
+@@ -199,19 +199,20 @@ static gpt_entry *alloc_read_gpt_entries(struct block_device *blk,
+ {
+ 	u32 count = 0;
+ 	gpt_entry *pte = NULL;
+-	unsigned long from, size;
++	unsigned long from;
++	blkcnt_t size;
+ 	int ret;
+ 
+ 	count = compute_partitions_entries_size(pgpt_head);
+ 	if (!count)
+ 		return NULL;
+ 
+-	pte = calloc(count, 1);
++	pte = calloc(blockdevice_round_block_nbytes(blk, count), 1);
+ 	if (!pte)
+ 		return NULL;
+ 
+ 	from = le64_to_cpu(pgpt_head->partition_entry_lba);
 -	size = count / GPT_BLOCK_SIZE;
 +	size = blockdevice_round_nblocks(blk, count);
+ 	ret = block_read(blk, pte, from, size);
+ 	if (ret) {
+ 		free(pte);
+@@ -220,12 +221,6 @@ static gpt_entry *alloc_read_gpt_entries(struct block_device *blk,
+ 	return pte;
+ }
  
- 	if (primary) {
- 		my_lba = 1;
+-static inline unsigned short bdev_logical_block_size(struct block_device
+-*bdev)
+-{
+-	return SECTOR_SIZE;
+-}
+-
+ /**
+  * alloc_read_gpt_header(): Allocates GPT header, reads into it from disk
+  * @state
+@@ -239,7 +234,7 @@ static gpt_header *alloc_read_gpt_header(struct block_device *blk,
+ 					 u64 lba)
+ {
+ 	gpt_header *gpt;
+-	unsigned ssz = bdev_logical_block_size(blk);
++	unsigned ssz = BLOCKSIZE(blk);
+ 	int ret;
+ 
+ 	gpt = calloc(ssz, 1);
+@@ -286,7 +281,7 @@ static int is_gpt_valid(struct block_device *blk, u64 lba,
+ 	}
+ 
+ 	if (le32_to_cpu((*gpt)->header_size) < sizeof(struct _gpt_header) ||
+-        le32_to_cpu((*gpt)->header_size) > bdev_logical_block_size(blk))
++	    le32_to_cpu((*gpt)->header_size) > BLOCKSIZE(blk))
+ 		goto fail;
+ 
+ 	/* Check the GUID Partition Table CRC */
+@@ -505,8 +500,8 @@ static int find_valid_gpt(struct efi_partition_desc *epd, void *buf)
+ 	lastlba = last_lba(blk);
+ 	if (force_gpt) {
+ 		/* This will be added to the EFI Spec. per Intel after v1.02. */
+-		if (file_detect_partition_table(buf, SECTOR_SIZE * 2,
+-						SECTOR_SIZE) != filetype_gpt)
++		if (file_detect_partition_table(buf, 2 * BLOCKSIZE(blk),
++						BLOCKSIZE(blk)) != filetype_gpt)
+ 			goto fail;
+ 	}
+ 
+diff --git a/include/partitions.h b/include/partitions.h
+index 398813eca58c..7eb8b1e6e228 100644
+--- a/include/partitions.h
++++ b/include/partitions.h
+@@ -58,7 +58,6 @@ struct partition_parser {
+ };
+ 
+ #define PARTITION_ALIGN_SIZE	SZ_1M
+-#define PARTITION_ALIGN_SECTORS	(PARTITION_ALIGN_SIZE >> SECTOR_SHIFT)
+ 
+ void partition_desc_init(struct partition_desc *pd, struct block_device *blk);
+ int partition_parser_register(struct partition_parser *p);
+@@ -72,5 +71,6 @@ void partition_table_free(struct partition_desc *pdesc);
+ bool partition_is_free(struct partition_desc *pdesc, uint64_t start, uint64_t size);
+ int partition_find_free_space(struct partition_desc *pdesc, uint64_t sectors, uint64_t *start);
+ sector_t partition_first_usable_lba(const struct block_device *blk);
++sector_t partition_align_lba(const struct block_device *blk);
+ 
+ #endif /* __PARTITIONS_PARSER_H__ */
 -- 
 2.47.3
 
