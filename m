@@ -1,69 +1,54 @@
-Delivery-date: Fri, 26 Jun 2026 10:47:45 +0200
+Delivery-date: Fri, 26 Jun 2026 10:51:27 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wd2Dx-00A16r-2u
+	id 1wd2HW-00A19d-36
 	for lore@lore.pengutronix.de;
-	Fri, 26 Jun 2026 10:47:45 +0200
+	Fri, 26 Jun 2026 10:51:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wd2Dx-0007XX-5n
-	for lore@pengutronix.de; Fri, 26 Jun 2026 10:47:45 +0200
+	id 1wd2HW-000205-8w
+	for lore@pengutronix.de; Fri, 26 Jun 2026 10:51:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=i/limAGO7gUtbut7KPLY8thboZugGh8HXkMP4cPid60=; b=DtYlNAZ5Hn/gy9QfBZSaN/U0Ky
-	LtafhTwqqBq9/fZhavqGTq9T663ulWeiLF7pNPNltAJMM2QB9+DqB6/ZyXZcxVFDowDfR0EZz7JCk
-	wPHGyp/U67jlh+K11djm4UBDdZj8Yzp0T+evsyakH4dmm/ZQQprLdEikG8B8d7QW9COplMTzstLkL
-	XTtq5mvUGr+e3I/h/iAlujhuB0TTecqmrVSLiYuNSDBTbfJvFZ5UvmZ3WHV0HvBsli1Vffm+wtpq6
-	AQrsjZmkE4MuknE7zTy4PXohUevIWtYUNi9alJjNE2b3zFTFst3Qi3XwHQTBQpPeDxjLgzBxYrdoH
-	oErb4tKA==;
+	bh=Jk0Jv2lqN/FORhPUxGfSLQ2QZxkfPTZqlGVd1NQ4cfw=; b=Le26hixlRP8t+2HVjKjgE0qLQ3
+	22NHLJ+nEGhQAcwmpwm81ddDFmjvp44WOdkuU5LzkNiGo0a2iZM7++4z9scBs/t5GYAigkf/VduDn
+	7T1QCUn176K1rzHanmjcrQl6eTF6tYsH5m+rfh2a176TUK7d9hhjWjZSOdvqH+AzpoxQYXBSuz295
+	R+z8AGW7KjkPZU9DPcVOJLbixC9nxvUUuSfzn0DblIhld2etYGn9U9JNns1+iRsn44hsgS3QrrtK3
+	mPTTshBnUogxGWprGGLedte4TUa/7cRiJrCWfHjWKxIfh5ZUw6JgmDEVnH5IvSyhq9b3GbqoLtS73
+	9qNTs1lw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wd2Cl-0000000AtVg-244E;
-	Fri, 26 Jun 2026 08:46:31 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wd2Ce-0000000AtG9-2Xdg
-	for barebox@bombadil.infradead.org;
+	id 1wd2Ce-0000000AtGV-1gCR;
 	Fri, 26 Jun 2026 08:46:24 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=i/limAGO7gUtbut7KPLY8thboZugGh8HXkMP4cPid60=; b=iDmHsUSTj6/IA9UcXlYLu6PEAE
-	ycYn4Q4NL0WWv5qzViKsaWPoKn0KaRcsW2B3pSxPuT2ETyOhddDpP3NoT+LWkhOxcgwiPd/b0jK6o
-	abZel3mIucHKuKmyrYtrtCwh4dMeTRIGKF+wjjr92sfFIf+UUNUl39fmV3OGPGc/e1ViEolVFlCQG
-	N8+OWQATICqCqTEuO0vGi50iNHxor5Gq7cUJs2EtdUCxFSdL336S5bA59O+ep2VcW/BewPsRhMdda
-	iOLlVYcTS6Ct8oO7DeeIe0dWeJThWrfPPV5Nge2WHnt5kT6Ih7B+bIN5MsppeCQkusPY6Y6OTdiRN
-	6KEpIJ1g==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wd2CZ-00000004cm9-2kSu
+	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wd2CW-0000000At8H-1AxV
 	for barebox@lists.infradead.org;
-	Fri, 26 Jun 2026 08:46:23 +0000
+	Fri, 26 Jun 2026 08:46:20 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1wd2CW-0003ZP-Nr; Fri, 26 Jun 2026 10:46:16 +0200
+	id 1wd2CT-0003ZP-L6; Fri, 26 Jun 2026 10:46:13 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Fri, 26 Jun 2026 10:42:35 +0200
-Message-ID: <20260626084608.1388806-25-a.fatoum@barebox.org>
+Date: Fri, 26 Jun 2026 10:42:20 +0200
+Message-ID: <20260626084608.1388806-10-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260626084608.1388806-1-a.fatoum@barebox.org>
 References: <20260626084608.1388806-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260626_094620_062723_8FADC209 
-X-CRM114-Status: GOOD (  10.39  )
+X-CRM114-CacheID: sfid-20260626_014616_314244_09388E9D 
+X-CRM114-Status: GOOD (  10.93  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,94 +70,35 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 24/26] fuzz: add 4K-sector partition ramdisk target
+Subject: [PATCH 09/26] block: use logical block size for reparse checks
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Make fuzz_test_ramdisk() take the ramdisk sector size so the partition
-parser fuzzer can exercise both 512-byte and 4096-byte block devices.
+A reparse of the partition table at close time is queued if the two
+first sectors are written.
 
-Keep the existing fuzz-partitions target on 512-byte sectors and
-add fuzz-partitions-4k for the 4K-sector case.
+In preparation for allowing non-512-byte sectors, replace the hardcoded
+512-byte sector size with the block size encoded into the block device.
 
 Assisted-by: Codex:gpt-5.5
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- Documentation/devel/fuzzing.rst | 1 +
- common/partitions.c             | 3 ++-
- images/Makefile.sandbox         | 1 +
- include/fuzz.h                  | 9 +++++----
- 4 files changed, 9 insertions(+), 5 deletions(-)
+ common/block.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devel/fuzzing.rst b/Documentation/devel/fuzzing.rst
-index b475fd12fcea..a34d92b97e2e 100644
---- a/Documentation/devel/fuzzing.rst
-+++ b/Documentation/devel/fuzzing.rst
-@@ -25,6 +25,7 @@ options to crash barebox on detection of memory safety issues::
-   fuzz-dtb
-   fuzz-fdt-compatible
-   fuzz-partitions
-+  fuzz-partitions-4k
+diff --git a/common/block.c b/common/block.c
+index f4b2a692407a..20ec3665d900 100644
+--- a/common/block.c
++++ b/common/block.c
+@@ -326,7 +326,7 @@ static ssize_t block_op_write(struct cdev *cdev, const void *buf, size_t count,
+ 	 * written to LBA1, so LBA1 must change as well when the partioning
+ 	 * is changed.
+ 	 */
+-	if (offset < 2 * SECTOR_SIZE)
++	if (offset < 2 * BLOCKSIZE(blk))
+ 		blk->need_reparse = true;
  
- All fuzzers generated are symlinks to the same barebox executable. barebox
- will detect that it was invoked via symlink and switch to fuzzing mode.
-diff --git a/common/partitions.c b/common/partitions.c
-index 617c2770eadf..617b33460429 100644
---- a/common/partitions.c
-+++ b/common/partitions.c
-@@ -408,7 +408,8 @@ static int fuzz_partition_table_parser(struct block_device *ramdisk)
- 	free(buf);
- 	return 0;
- }
--fuzz_test_ramdisk("partitions", fuzz_partition_table_parser);
-+fuzz_test_ramdisk("partitions", fuzz_partition_table_parser, 512);
-+fuzz_test_ramdisk("partitions-4k", fuzz_partition_table_parser, 4096);
- 
- /**
-  * cdev_unallocated_space - return unallocated space
-diff --git a/images/Makefile.sandbox b/images/Makefile.sandbox
-index 210a7bf48ac8..2af83b395f9f 100644
---- a/images/Makefile.sandbox
-+++ b/images/Makefile.sandbox
-@@ -9,6 +9,7 @@ fuzzer-$(CONFIG_FITIMAGE)	+= fit
- fuzzer-$(CONFIG_OFTREE)		+= dtb
- fuzzer-$(CONFIG_OFTREE)		+= fdt-compatible
- fuzzer-$(CONFIG_PARTITION)	+= partitions
-+fuzzer-$(CONFIG_PARTITION)	+= partitions-4k
- 
- ifeq ($(CONFIG_SANDBOX),y)
- 
-diff --git a/include/fuzz.h b/include/fuzz.h
-index 4d637f72b176..559e67a09b50 100644
---- a/include/fuzz.h
-+++ b/include/fuzz.h
-@@ -47,13 +47,14 @@ extern const struct fuzz_test __barebox_fuzz_tests_end;
- 	static __always_unused void * _unused##_func = _func
- #endif
- 
--#define fuzz_test_ramdisk(_name, _func)				\
--	static int _func##_ramdisk(const u8 *data, size_t size)	\
-+#define fuzz_test_ramdisk(_name, _func, _sector_size)			\
-+	static int _func##_ramdisk_##_sector_size(const u8 *data,	\
-+						  size_t size)		\
- 	{							\
- 		static struct ramdisk *ramdisk;			\
- 		int ret;					\
- 		if (!ramdisk)					\
--			ramdisk = ramdisk_init(512);		\
-+			ramdisk = ramdisk_init(_sector_size);	\
- 		if (!ramdisk)					\
- 			return -ENODEV;				\
- 		ramdisk_setup_ro(ramdisk, data, size);		\
-@@ -61,7 +62,7 @@ extern const struct fuzz_test __barebox_fuzz_tests_end;
- 		ramdisk_setup_ro(ramdisk, NULL, 0);		\
- 		return ret;					\
- 	}							\
--	fuzz_test(_name, _func##_ramdisk)
-+	fuzz_test(_name, _func##_ramdisk_##_sector_size)
- 
- #define fuzz_test_str(_name, _func)				\
- 	static int _func##_str(const u8 *_data, size_t size)	\
+ 	if (offset & mask) {
 -- 
 2.47.3
 
