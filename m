@@ -1,70 +1,69 @@
-Delivery-date: Fri, 26 Jun 2026 10:47:10 +0200
+Delivery-date: Fri, 26 Jun 2026 10:47:11 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wd2DO-00A13d-2h
+	id 1wd2DP-00A13z-0S
 	for lore@lore.pengutronix.de;
-	Fri, 26 Jun 2026 10:47:10 +0200
+	Fri, 26 Jun 2026 10:47:11 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wd2DN-000656-Tw
-	for lore@pengutronix.de; Fri, 26 Jun 2026 10:47:10 +0200
+	id 1wd2DO-00063m-CK
+	for lore@pengutronix.de; Fri, 26 Jun 2026 10:47:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=iXCaz+I3TcI1BIZlKXB+hN2d1ADI1+3SxmkmQzMLWqY=; b=IuVeMzxdGq4U9+rREVivtTQxAX
-	63x/8Xg46a8RLGuObZTykE7NCd2HGo6Oc0pj/SojUSzua0t7X/W9GH2Vkh+2nhJWk1HqDwOzEMRYS
-	u+2At/hvefPutXi/YLoIxXrRuZ2881CDupB7WpNYY/jKVg/poHdaGAtcHC9corIbL+eQx4h8cHDWk
-	12UWACT/u9/UEGZhRTHSSgf9zPKHSBOI88u8yZ0QHUtxvYDvzoJvPCTDNAjiCXIzOXs0uNJNeIuQ4
-	o+2d/oqWfzoQIl8BZ3SUbrsKMM78zbr0H/Kdgdk/VmhbOvZBPy8IGvgkWo1ZFgn+WsjogdzjyOdZV
-	AMoAj4vA==;
+	bh=23VTNzxsqD1YSO3O1ecv5FB5rQEFrjp8XJibyOaXnxM=; b=CEVOROgZO34lqHnu2NU7kHBaoe
+	gXouHRUrhvb+8ybUZR/rr9iiqAPdyuojFl2Z5yyJCY919OnpuSXjCtjR4+Tfic2IKRTlPl26Qx/Sx
+	kr/xVhw57M0x/jFN2hGicASfbKobKdMBFi5pS90mghtB9kXHF8UUNQhd2Y/GFGGxgP0lmNjPkpOmp
+	1brl2SsKOPoF+6VaVhWV9HYnxiR4POQb0frUMIUPADJiKXlu6yps8qKBDxoUeWoJaLCDIjPpXQ0ky
+	/qLprYPSCNdS6x11Pz4SbktqwuwotU6VH7vk58dRZqov83aqSxRckG5saXaXnunOE8VjgCrVsppXm
+	P4dqYzaw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wd2Cn-0000000Atam-3j7U;
-	Fri, 26 Jun 2026 08:46:33 +0000
+	id 1wd2Cf-0000000AtJX-2wQN;
+	Fri, 26 Jun 2026 08:46:25 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wd2Cg-0000000AtIg-0fud
+	id 1wd2Cd-0000000AtEw-0YBE
 	for barebox@bombadil.infradead.org;
-	Fri, 26 Jun 2026 08:46:26 +0000
+	Fri, 26 Jun 2026 08:46:23 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=iXCaz+I3TcI1BIZlKXB+hN2d1ADI1+3SxmkmQzMLWqY=; b=EGMsHWW1X6L0c+lx+ZhOLudz8S
-	ZW8pM1fpS/svvWvED6mV7YckVWWHdcXEGBEliFvJJomZscHWYk0DN/PnYb84AJ7dDfCjX1ceso/qR
-	BDkni6WkA3c6Gvm3t560zTvV6IE+ZwOOgx4GtK06CckWKg/O+5oDMFs4uiMtHbV5lKEEBzb9FzQYC
-	DIoGVA1BXe3ewYZ2exLAhF6Wxa6ILEYg+7ULPnXvQvYi7/truIKOKmAJyzJYMoJSZ8WkOIlM4z1rH
-	4lclvzpnpHbBpGbwtPOUwkQ4ikqd3LOF+4eKPCXrQmKy/L7aA9fsBVedVBwxli9+41ZRsnEQfcKgZ
-	NvrncUyg==;
+	bh=23VTNzxsqD1YSO3O1ecv5FB5rQEFrjp8XJibyOaXnxM=; b=ZYdDHbHeO1epexQpiiqGbUS4JJ
+	nxMhCEak9uxT4vSjIRIL1r+V2zZFvmJkcGYaEqDhTZ816I/gRhwUU0/tAPOZvEhVkP393eH1CCDza
+	sLCkEoxlv6QEZ/OYS0Dv2vQXxWVf8GmEh2iu/XpVYL78GYImyLneB+btBGB+oyt/tUxqqbd3sHZHm
+	dQsC4YgjjVUC3ttVEtCVj2oZOqOjaLCztsCY8lMuwgPYfVvh5+ghK5kl24+wOO8XMebC8h0eYPydF
+	BxmYu6N9gQ8rHUec4CIOsM6dsKS0nyPRUQAmjIrhK3GS7abed2KQ00CpV5uQjQaNFHAGM6gzcWwkP
+	GZxvOIXg==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wd2CY-00000004clx-2rxt
+	id 1wd2CY-00000004clt-1Zqd
 	for barebox@lists.infradead.org;
-	Fri, 26 Jun 2026 08:46:24 +0000
+	Fri, 26 Jun 2026 08:46:21 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1wd2CV-0003ZP-2z; Fri, 26 Jun 2026 10:46:15 +0200
+	id 1wd2CU-0003ZP-M7; Fri, 26 Jun 2026 10:46:14 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Fri, 26 Jun 2026 10:42:27 +0200
-Message-ID: <20260626084608.1388806-17-a.fatoum@barebox.org>
+Date: Fri, 26 Jun 2026 10:42:25 +0200
+Message-ID: <20260626084608.1388806-15-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260626084608.1388806-1-a.fatoum@barebox.org>
 References: <20260626084608.1388806-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260626_094620_100722_BCDAC40A 
-X-CRM114-Status: UNSURE (   9.82  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260626_094618_592274_E5BD07F7 
+X-CRM114-Status: GOOD (  12.68  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,64 +84,106 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH 16/26] efi: loader: disk: report block device size in Block I/O
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 14/26] ramdisk: validate exported sector size
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-So far we hardcoded 512 byte block sizes in what we report. This didn't
-matter much as we didn't support other block sizes, but when we do soon,
-we either need to do block size translation or pass devices as-is.
+ramdisk_init() currently accepts arbitrary sector sizes, including
+sizes smaller than 512 bytes and non-power-of-two.
 
-We will go with the second option, so drop the hardcoded 512-byte sector
-sizes.
+Make use of the new block_size_bits() to trigger an error message when
+this occurs and while at it, also fix the memory leaks if the function
+fails.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- efi/loader/protocols/disk.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/block/ramdisk.c | 36 ++++++++++++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 10 deletions(-)
 
-diff --git a/efi/loader/protocols/disk.c b/efi/loader/protocols/disk.c
-index 5494f9197cb4..5c5447acca20 100644
---- a/efi/loader/protocols/disk.c
-+++ b/efi/loader/protocols/disk.c
-@@ -22,6 +22,7 @@
- #include <malloc.h>
- #include <bootsource.h>
+diff --git a/drivers/block/ramdisk.c b/drivers/block/ramdisk.c
+index 6f3c9348058a..f6f1c4cda963 100644
+--- a/drivers/block/ramdisk.c
++++ b/drivers/block/ramdisk.c
+@@ -3,12 +3,12 @@
+ 
+ #include <ramdisk.h>
  #include <block.h>
 +#include <disks.h>
+ #include <driver.h>
  #include <fs.h>
+ #include <string.h>
+ #include <xfuncs.h>
+ #include <linux/align.h>
+-#include <linux/log2.h>
  
- const efi_guid_t efi_system_partition_guid = PARTITION_SYSTEM_GUID;
-@@ -194,6 +195,7 @@ static efi_status_t efi_disk_add_cdev(efi_handle_t parent,
- 	struct efi_disk_obj *diskobj;
- 	struct efi_object *handle;
- 	const efi_guid_t *esp_guid = NULL;
-+	unsigned int blockbits = cdev_blockbits(cdev);
- 	int score = 0;
- 	efi_status_t ret;
+ struct ramdisk {
+ 	struct block_device blk;
+@@ -101,39 +101,55 @@ static struct cdev_operations ramdisk_ops = {
  
-@@ -251,9 +253,9 @@ static efi_status_t efi_disk_add_cdev(efi_handle_t parent,
- 	diskobj->media.removable_media = removable;
- 	diskobj->media.media_present = true;
- 	diskobj->media.read_only = cdev->flags & DEVFS_PARTITION_READONLY;
--	diskobj->media.block_size = 512;
--	diskobj->media.io_align = 512;
--	diskobj->media.last_block = cdev->size / diskobj->media.block_size - 1;
-+	diskobj->media.block_size = diskobj->media.io_align = 1u << blockbits;
-+	diskobj->media.last_block = (cdev->size >> blockbits) - 1;
-+	diskobj->blockbits = blockbits;
+ struct ramdisk *ramdisk_init(int sector_size)
+ {
++	struct device *dev;
+ 	struct ramdisk *ramdisk;
+ 	struct block_device *blk;
+-	int ret;
++	int blockbits, ret;
++
  
- 	diskobj->ops = block_io_disk_template;
- 	diskobj->ops.media = &diskobj->media;
-@@ -380,7 +382,6 @@ static efi_status_t efi_disk_register(void *data)
- 			return ret;
- 		}
+ 	ramdisk = xzalloc(sizeof(*ramdisk));
++	dev = &ramdisk->dev;
  
--		disk->blockbits = bdev->blockbits;
- 		ndisks++;
+-	dev_set_name(&ramdisk->dev, "ramdisk");
+-	ramdisk->dev.id = DEVICE_ID_DYNAMIC;
++	dev_set_name(dev, "ramdisk");
++	dev->id = DEVICE_ID_DYNAMIC;
  
- 		/* Partitions show up as block devices in EFI */
+-	ret = register_device(&ramdisk->dev);
++	ret = register_device(dev);
+ 	if (ret)
+-		return NULL;
++		goto free_ramdisk;
++
++	blockbits = block_size_bits(dev, sector_size);
++	if (blockbits < 0)
++		goto unregister_device;
+ 
+ 	blk = &ramdisk->blk;
+-	blk->dev = &ramdisk->dev;
++	blk->dev = dev;
+ 	blk->type = BLK_TYPE_VIRTUAL;
+ 
+ 	blk->cdev.size = 0;
+-	blk->cdev.name = xstrdup(dev_name(&ramdisk->dev));
++	blk->cdev.name = xstrdup(dev_name(dev));
+ 	blk->cdev.dev = blk->dev;
+ 	blk->cdev.ops = &ramdisk_ops;
+ 	blk->cdev.priv = ramdisk;
+ 	blk->cdev.flags |= DEVFS_IS_BLOCK_DEV;
+-	blk->blockbits = ilog2(sector_size);
++	blk->blockbits = blockbits;
+ 
+ 	ret = devfs_create(&blk->cdev);
+ 	if (ret)
+-		return NULL;
++		goto free_cdev_name;
+ 
+ 	INIT_LIST_HEAD(&blk->buffered_blocks);
+ 	INIT_LIST_HEAD(&blk->idle_blocks);
+ 
+ 	return ramdisk;
++
++free_cdev_name:
++	free(blk->cdev.name);
++unregister_device:
++	unregister_device(dev);
++free_ramdisk:
++	free(ramdisk);
++
++	return NULL;
+ }
+ 
+ struct block_device *ramdisk_get_block_device(struct ramdisk *ramdisk)
 -- 
 2.47.3
 
