@@ -1,55 +1,54 @@
-Delivery-date: Fri, 26 Jun 2026 20:15:09 +0200
+Delivery-date: Sat, 27 Jun 2026 11:57:13 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wdB53-00AA7V-0H
+	id 1wdPmj-00AO6Z-1Y
 	for lore@lore.pengutronix.de;
-	Fri, 26 Jun 2026 20:15:09 +0200
+	Sat, 27 Jun 2026 11:57:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wdB51-00062c-LV
-	for lore@pengutronix.de; Fri, 26 Jun 2026 20:15:09 +0200
+	id 1wdPmi-0007sB-Ns
+	for lore@pengutronix.de; Sat, 27 Jun 2026 11:57:13 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3ERxydOtUJbjL+VS1jdu1FrSvmMs0DR3NF6iz6kPF7g=; b=kF2ecnjOyJKRpgpA+ZHmwQUbYE
-	suixwXt52MjHQsyr4Qm+ivE0D3aYgAYTvVQPCg2kFeWrZYg9MxOPbck66Pw8vfJst0C+NdsRKGCmf
-	A1lUvXCd+RgL3zTO7ra8d68w/alF4vdRaohbI71E5cpmlYuSa5XqdVZTy6KL4G6i2DTJx0xyxtIMJ
-	d+xyilSEHTGlUmwsVKVM2573sAvkUWn0oIf4VIX21rWF7Lgd9CxeO8CTSkra9DdngSIJQpsBgcJHw
-	Or7+MI1wm9yVoCyyQqx/tBS+xyVZZZ0HpPsInYjI0Z/Hf5poZSw6yYoKr4YmGH4yZXBNuKAPsJ+C2
-	MhXAjVlA==;
+	bh=uGAkwRCh0j4tGudIoewwb6i9MpEGct+s+zHiP+C24Vw=; b=IlSOuXq+GWnNLzqji5G9brTJIV
+	atXn9wcTebSblRremCcRxeU39zC/nWnuIFSIp8Iuc4o8bVZiPcm4pLZYm408UMyg3JCggLWfcjl+D
+	m0Fvw9RyO9aC6YWbmj2C/Em2C1EmVTOa/LRvLqgS8eRQ7wPj5TqiYdrMERDeoz8yLX6YvvbrxUbAV
+	UUwuYkoF+N8GAMmei0XXku8GsbC7bdOjhtFBoKypUBH+o6lICkv+PDkmygJKkUkqO5AVzCFTOyz0H
+	e1yr6ve8+BAzZ6FzVpRCTrRsU7lo2hezauSbGPQwgjQNkk4rJbV4ItcV4zH/mv2eGM81C1QWjVXLL
+	PViK8mxQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wdAak-0000000BiX6-0gOM;
-	Fri, 26 Jun 2026 17:43:50 +0000
+	id 1wdPlR-0000000CLx4-0bLq;
+	Sat, 27 Jun 2026 09:55:53 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wdAag-0000000BiUz-3Og7
+	id 1wdPlN-0000000CLw1-31Cc
 	for barebox@lists.infradead.org;
-	Fri, 26 Jun 2026 17:43:48 +0000
+	Sat, 27 Jun 2026 09:55:51 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1wdAae-0003ev-Vn; Fri, 26 Jun 2026 19:43:45 +0200
+	id 1wdPlK-0002ad-Ur; Sat, 27 Jun 2026 11:55:47 +0200
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Fri, 26 Jun 2026 19:31:37 +0200
-Message-ID: <20260626174342.1923132-2-a.fatoum@barebox.org>
+Date: Sat, 27 Jun 2026 11:55:41 +0200
+Message-ID: <20260627095543.2462939-3-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260626174342.1923132-1-a.fatoum@barebox.org>
-References: <20260626174342.1923132-1-a.fatoum@barebox.org>
+In-Reply-To: <20260627095543.2462939-1-a.fatoum@barebox.org>
+References: <20260627095543.2462939-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260626_104346_842629_F1AF4E29 
-X-CRM114-Status: UNSURE (   7.83  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260627_025549_771251_170702C5 
+X-CRM114-Status: GOOD (  10.10  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,44 +70,79 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/5] usb: hub: wait after port reset recovery
+Subject: [PATCH master 3/3] efi: gop: report and use framebuffer stride
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Port over U-Boot commit b5999f8f6ca89223b70ec3038fcfe9dbb6c67475:
+Both barebox and EFI GOP differentiate between the width of a line on
+screen and in memory.
 
-|   usb: hub: Add missing reset recovery delay
-|
-|   Some devices like YubiKeys need more time before SET_ADDRESS. The spec
-|   says we need to wait 10ms.
-|
-|   Signed-off-by: Hector Martin <marcan@marcan.st>
-|   Reviewed-by: Marek Vasut <marex@denx.de>
+The EFI GOP driver we had imported from U-Boot loses that distinction
+and reports PixelsPerScanLine to be identical to the visible horizontal
+resolution. Pass the framebuffer line length instead to fix potential
+issues when they differ.
 
 Assisted-by: Codex:gpt-5.5
+Fixes: d040f49ad0b3 ("efi: loader: protocol: add graphical output protocol support")
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- drivers/usb/core/hub.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ efi/loader/protocols/gop.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index 70da8566b289..e969fc466a8e 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -282,6 +282,13 @@ static void usb_hub_port_connect_change(struct usb_device *dev, int port,
- 		return;
+diff --git a/efi/loader/protocols/gop.c b/efi/loader/protocols/gop.c
+index 03995d9eee29..fbbcace83eef 100644
+--- a/efi/loader/protocols/gop.c
++++ b/efi/loader/protocols/gop.c
+@@ -174,7 +174,7 @@ static __always_inline efi_status_t gop_blt_int(struct efi_graphics_output_proto
+ 		break;
+ 	case EFI_BLT_VIDEO_TO_BLT_BUFFER:
+ 	case EFI_BLT_VIDEO_TO_VIDEO:
+-		swidth = gopobj->info.horizontal_resolution;
++		swidth = gopobj->info.pixels_per_scan_line;
+ 		if (!vid_bpp)
+ 			return EFI_UNSUPPORTED;
+ 		break;
+@@ -187,7 +187,7 @@ static __always_inline efi_status_t gop_blt_int(struct efi_graphics_output_proto
+ 	case EFI_BLT_BUFFER_TO_VIDEO:
+ 	case EFI_BLT_VIDEO_FILL:
+ 	case EFI_BLT_VIDEO_TO_VIDEO:
+-		dwidth = gopobj->info.horizontal_resolution;
++		dwidth = gopobj->info.pixels_per_scan_line;
+ 		if (!vid_bpp)
+ 			return EFI_UNSUPPORTED;
+ 		break;
+@@ -489,6 +489,7 @@ static efi_status_t efi_gop_register(void *data)
+ 	struct fb_info *fbi;
+ 	struct screen *sc;
+ 	struct efi_pixel_bitmask *pixel_information;
++	u32 bytes_per_pixel, pixels_per_scan_line;
+ 
+ 	sc = fb_open(fbdev);
+ 	if (IS_ERR(sc)) {
+@@ -510,6 +511,14 @@ static efi_status_t efi_gop_register(void *data)
+ 		return EFI_UNSUPPORTED;
  	}
  
-+	/*
-+	 * USB 2.0 7.1.7.5: devices must be able to accept a SetAddress()
-+	 * request (refer to Section 11.24.2 and Section 9.4 respectively)
-+	 * after the reset recovery time 10 ms
-+	 */
-+	mdelay(10);
++	bytes_per_pixel = fbi->bits_per_pixel / BITS_PER_BYTE;
++	if (fbi->line_length % bytes_per_pixel)
++		return EFI_UNSUPPORTED;
 +
- 	dev->children[port] = usb;
- 	usb->parent = dev;
- 	usb->portnr = port + 1;
++	pixels_per_scan_line = fbi->line_length / bytes_per_pixel;
++	if (pixels_per_scan_line < col)
++		return EFI_UNSUPPORTED;
++
+ 	gopobj = calloc(1, sizeof(*gopobj));
+ 	if (!gopobj) {
+ 		pr_err("Out of memory\n");
+@@ -566,7 +575,7 @@ static efi_status_t efi_gop_register(void *data)
+ 		pixel_information->green_mask = 0x07e0;
+ 		pixel_information->blue_mask = 0x001f;
+ 	}
+-	gopobj->info.pixels_per_scan_line = col;
++	gopobj->info.pixels_per_scan_line = pixels_per_scan_line;
+ 	gopobj->fb = fbi->screen_base;
+ 	gopobj->fbi = fbi;
+ 
 -- 
 2.47.3
 
