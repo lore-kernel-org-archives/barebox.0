@@ -1,69 +1,62 @@
-Delivery-date: Mon, 29 Jun 2026 14:51:35 +0200
+Delivery-date: Mon, 29 Jun 2026 16:29:55 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1weBSY-00B7WH-33
+	id 1weCzj-00B91t-1d
 	for lore@lore.pengutronix.de;
-	Mon, 29 Jun 2026 14:51:34 +0200
+	Mon, 29 Jun 2026 16:29:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1weBSY-000686-8h
-	for lore@pengutronix.de; Mon, 29 Jun 2026 14:51:34 +0200
+	id 1weCzi-0007q6-UV
+	for lore@pengutronix.de; Mon, 29 Jun 2026 16:29:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+ZkbYDCyxc9gAjI0NxG6hqz/hMaduhXNfgzuc2ayC9g=; b=2ruGTJbDFsw4pkhvlnGK8LCVpL
-	WpGhWweN7GBBA0Y0HAVNSdJjK7PDWmTB7ZLEaqTB8WjtljWg5M8bna+4M86890rE8EOyB5FgAykmj
-	yqhP5o8tJQDlAoc1HNbEoFH5yY+oRaUeQRgTIUDfeBXXffbKwH/yXuz5V5QDc0Q4p2H0O6kE1Ce4H
-	M/JolJhlYF+ER1OV2K2hs0oinnKjQTyW1L13FRzKfy/mxU2S0qkWjx7xVSncL3xmeSbgAvk144rUx
-	rMkI+aJSOXJtHfA57wsoD14h8Nn6oWBjST8JmBrJXPqjM4PcLGLGqSviOyMzFWPOBsDAXzPfdB0n9
-	GJLgJNHw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:
+	Content-Transfer-Encoding:Content-Type:In-Reply-To:Cc:To:Subject:From:
+	Reply-To:MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
+	bh=+TgXFWnNhlNi6KFQHl1tZHfpcV72BflZqOVeQk0wQxY=; b=HElZrME8bOJBlQJ5fo0aaUGat/
+	bp9wgVvm+WLgraf0P3FL6M2toipbQIrsxcx6/Et6XhjZoJzV14iHacZ4kCtbMTQT4Uiofa1uHW6as
+	oSO78NxODiGO03cD8TAVl6Lwa3cgl7HVFb4JXPaTzpMeW512nHxxxKBT//AKcdniUlNxSP138AZR+
+	gJEwwWlSWL1qScHQsi/0AWSVQMacvTpVVZeI9fww2/u9hnL5SLE7lV9ZSBU40FnPh2ayhYvJWDkeX
+	D9ae0TD/TISE5Lb9FMMJ3Pj92xUdAEiJaDdQ0SdaI4TsdOVC0yisgaVDoC0LpbqVL/XGZqcQAsX/u
+	WyT57JkQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1weBNr-0000000EbZ0-37dn;
-	Mon, 29 Jun 2026 12:46:43 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	id 1weCDr-0000000EmVL-2EKM;
+	Mon, 29 Jun 2026 13:40:27 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1weBNo-0000000EbWw-3unc
-	for barebox@bombadil.infradead.org;
-	Mon, 29 Jun 2026 12:46:40 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=+ZkbYDCyxc9gAjI0NxG6hqz/hMaduhXNfgzuc2ayC9g=; b=f7aaNJKFSsFH9Ml5VNQCI/UlxF
-	6NRZUEp3/4KsNgJBpmwm2Awppsnb34BBPJV4EeEpD4ydvqCBIbQWA4hJ85u9m01IvtS/mUL70/eI2
-	yHq2BJ8VYy/8DQ6flDIo2rMZdKi3RunMVbgnMGKBo3ijqpZXCTd3lkQmzLQ9xobYzv+wN8n3fakAE
-	o8SBdzuScnyAbEy//4cWtzP/q73lVfFskJAWcEdpbu5ufGPNgEckf9HKlOiuC6E//sjwxfkFm3j67
-	bWH8E4+RA1C6c1USutLJvgIQfarfzAt3Kb4gCiBwxStDVdtx8O05aQfkBnlvgqEwF86FGaZVt7YoC
-	8jw7bOhw==;
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1weBNl-0000000106Y-3aY0
+	id 1weCDo-0000000EmUu-1bXR
 	for barebox@lists.infradead.org;
-	Mon, 29 Jun 2026 12:46:39 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@barebox.org>)
-	id 1weBNj-0000LG-DK; Mon, 29 Jun 2026 14:46:35 +0200
-From: Ahmad Fatoum <a.fatoum@barebox.org>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Date: Mon, 29 Jun 2026 14:45:28 +0200
-Message-ID: <20260629124631.689090-9-a.fatoum@barebox.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260629124631.689090-1-a.fatoum@barebox.org>
-References: <20260629124631.689090-1-a.fatoum@barebox.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+	Mon, 29 Jun 2026 13:40:26 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B69C42002FE;
+	Mon, 29 Jun 2026 15:40:21 +0200 (CEST)
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1weCDl-005Fmd-28;
+	Mon, 29 Jun 2026 15:40:21 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1weCDl-00000005ilx-2MEA;
+	Mon, 29 Jun 2026 15:40:21 +0200
+From: "Sascha Hauer" <s.hauer@pengutronix.de>
+To: "Johannes Schneider" <johannes.schneider@leica-geosystems.com>
+Cc: barebox@lists.infradead.org, "Johannes Schneider" <johannes.schneider@leica-geosystems.com>
+In-Reply-To: <20260627194324.2230643-7-johannes.schneider@leica-geosystems.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 29 Jun 2026 13:40:21 +0000
+Message-Id: <E1weCDl-00000005ilx-2MEA@pty.whiteo.stw.pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260629_134638_140197_643609EB 
-X-CRM114-Status: UNSURE (   7.61  )
+X-CRM114-CacheID: sfid-20260629_064024_597296_9A017466 
+X-CRM114-Status: UNSURE (   8.14  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -82,78 +75,33 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
-	UPPERCASE_50_75 autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 09/10] ARM: multi_v8_defconfig: enable OP-TEE and RPMB support
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v1 7/7] mci: imx-esdhc: support DMA in the i.MX8M PBL
+ eMMC loader
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-To allow testing the TEE + RPMB functionality in barebox, enable
-everything the relevant barebox drivers and commands as well as command
-for manipulating and partitioning the mmc.
+On 2026-06-27 19:43, Johannes Schneider wrote:
+> The PBL eMMC loader was hardwired to PIO via esdhc_use_pio_mode(): IN_PBL
+> forced PIO unconditionally. PIO is slow -- on an i.MX8MM board loading the
+> ~1.6 MB next stage took ~559 ms; SDMA/ADMA2 do it in ~21 ms.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
----
-v2 -> v3:
-  - no change
-v1 -> v2:
-  - new commit
----
- arch/arm/configs/multi_v8_defconfig | 9 +++++++++
- 1 file changed, 9 insertions(+)
+For proper DMA support you'll need memory synchronization in form of dma_ma=
+p_*
+or dma_sync_* helpers which we do not have in PBL. Without them it won't
+work with MMU enabled. Have you tried enabling the MMU in the mean time? Th=
+is
+should give you decent performance even with PIO.
 
-diff --git a/arch/arm/configs/multi_v8_defconfig b/arch/arm/configs/multi_v8_defconfig
-index 5ea63372d050..0ed2770d2d37 100644
---- a/arch/arm/configs/multi_v8_defconfig
-+++ b/arch/arm/configs/multi_v8_defconfig
-@@ -84,6 +84,7 @@ CONFIG_CMD_MEMINFO=y
- CONFIG_CMD_ARM_MMUINFO=y
- CONFIG_CMD_REGULATOR=y
- CONFIG_CMD_BFETCH=y
-+CONFIG_CMD_MMC=y
- CONFIG_CMD_MMC_EXTCSD=y
- CONFIG_CMD_POLLER=y
- CONFIG_CMD_SLICE=y
-@@ -94,6 +95,7 @@ CONFIG_CMD_UIMAGE=y
- CONFIG_CMD_BOOTCHOOSER=y
- CONFIG_CMD_PARTITION=y
- CONFIG_CMD_FINDMNT=y
-+CONFIG_CMD_PARTED=y
- CONFIG_CMD_EXPORT=y
- CONFIG_CMD_DEFAULTENV=y
- CONFIG_CMD_LOADENV=y
-@@ -141,6 +143,7 @@ CONFIG_CMD_SMC=y
- CONFIG_CMD_LED_TRIGGER=y
- CONFIG_CMD_USBGADGET=y
- CONFIG_CMD_WD=y
-+CONFIG_CMD_AVB_PVALUE=y
- CONFIG_CMD_LOGIN=y
- CONFIG_CMD_PASSWD=y
- CONFIG_CMD_BAREBOX_UPDATE=y
-@@ -228,6 +231,9 @@ CONFIG_DRIVER_VIDEO_RAMFB=y
- CONFIG_SOUND=y
- CONFIG_MCI=y
- CONFIG_MCI_MMC_BOOT_PARTITIONS=y
-+CONFIG_MCI_MMC_GPP_PARTITIONS=y
-+CONFIG_MCI_MMC_RPMB=y
-+CONFIG_MCI_SDHCI_PCI=y
- CONFIG_MCI_DW=y
- CONFIG_MCI_SUNXI_SMHC=y
- CONFIG_MCI_ROCKCHIP_DWCMSHC=y
-@@ -290,6 +296,9 @@ CONFIG_NVMEM_REBOOT_MODE=y
- CONFIG_VIRTIO_MMIO=y
- CONFIG_VIRTIO_PCI=y
- CONFIG_MAILBOX=y
-+CONFIG_TEE=y
-+CONFIG_OPTEE=y
-+CONFIG_OPTEE_AVB_PERSISTENT_VALUES=y
- CONFIG_FS_CRAMFS=y
- CONFIG_FS_EXT4=y
- CONFIG_FS_TFTP=y
--- 
-2.47.3
+Sascha
 
+--
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
