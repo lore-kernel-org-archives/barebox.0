@@ -1,62 +1,66 @@
-Delivery-date: Mon, 29 Jun 2026 10:49:07 +0200
+Delivery-date: Mon, 29 Jun 2026 10:49:52 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1we7fv-00B3lR-0e
+	id 1we7ge-00B3mP-0a
 	for lore@lore.pengutronix.de;
-	Mon, 29 Jun 2026 10:49:07 +0200
+	Mon, 29 Jun 2026 10:49:52 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1we7fu-0004go-Gr
-	for lore@pengutronix.de; Mon, 29 Jun 2026 10:49:07 +0200
+	id 1we7gd-0005WS-Bd
+	for lore@pengutronix.de; Mon, 29 Jun 2026 10:49:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:
-	Content-Transfer-Encoding:Content-Type:In-Reply-To:Cc:To:Subject:From:
-	Reply-To:MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
-	bh=AFVGMqssiv1jWlogFEXOOUTIcK5qUoQ/ge3OYm2qsRM=; b=dT3OFeKL+yzHFiPhn8jSHgxL1n
-	IQxkr+3YkOTn3Ndi1NCTK+dbJAApZgGzY2b/CstyDgvkCGWfLPnVA/RqMlpTNFPCfffjeuwgHEdBj
-	2W9nWyiPeb9gGLAAbTuo3OMbYi5dYSB7kLqYOE8Ba+z6iu7LYBDQlrbUo3aKRWC8KYQbEZcE5sgzc
-	wS0VyKYt1eX6q2sNnpwZy0H5mc6FbC91hxq6nvhJUbmshhLT2eP2AkGHFqDnCHPuoKUkbV4ET9G4r
-	QJs7klIiZ2B46XBt/1dOpIujvVYvtZxsFtiWDujo6r3mWJzjDitzVqEacb8yNnvTMjzahSDS1nECM
-	yygcjVEA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Bl9FYQZbgUe0iCdSh3ed7D2OjhYS6AU/lzEVwkUetH0=; b=0RkWsZZE5TEjLIkUtHq3eD7kmo
+	cBW/GcOYvqLHCi7WwLdKCZOjF6ca5jxt0W0kWG7Si9kd38XR99CG1M0Z9T6izbtSzIdh+AItdONab
+	c1WBdN6XV41gtMqwKrag1OiIyw9Mgcf48EK+/+5ISiL+p6TR5Pq8SFikZysWF3bkjq1YhAc1debxZ
+	3IixhDalZXu/pOV/3bnrApJ/LNRLlYLc6y8v2T+P/wLHsg8PqFXMcHx4HkNmUixNQistYt+wLwUVy
+	J7eLkstR5oxvf66auH+feScibrAO/6WtBNL61/p9jWd4TAntDIk9u0YQbDkDAfNRaDlMWNwEEJhDh
+	6Iz24BlQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1we7ef-0000000E21c-2Op3;
-	Mon, 29 Jun 2026 08:47:49 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1we7fd-0000000E2D6-3eDJ;
+	Mon, 29 Jun 2026 08:48:49 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1we7ec-0000000E20r-3CjA
+	id 1we7fa-0000000E2CM-3XuD
 	for barebox@lists.infradead.org;
-	Mon, 29 Jun 2026 08:47:48 +0000
+	Mon, 29 Jun 2026 08:48:48 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id F23212002FE;
-	Mon, 29 Jun 2026 10:47:43 +0200 (CEST)
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 537322002FE;
+	Mon, 29 Jun 2026 10:48:43 +0200 (CEST)
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1we7eZ-005DLB-2w;
-	Mon, 29 Jun 2026 10:47:43 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1we7eZ-00000005eQz-3Roc;
-	Mon, 29 Jun 2026 10:47:43 +0200
-From: "Sascha Hauer" <s.hauer@pengutronix.de>
-To: "Ahmad Fatoum" <a.fatoum@barebox.org>
-Cc: barebox@lists.infradead.org, "Ahmad Fatoum" <a.fatoum@barebox.org>
-In-Reply-To: <20260626162136.1885999-7-a.fatoum@barebox.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 29 Jun 2026 08:47:43 +0000
-Message-Id: <E1we7eZ-00000005eQz-3Roc@pty.whiteo.stw.pengutronix.de>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1we7fX-005DLL-0q;
+	Mon, 29 Jun 2026 10:48:43 +0200
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1we7fX-00000000iUP-0qqi;
+	Mon, 29 Jun 2026 10:48:43 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
+In-Reply-To: <20260626113132.1557874-1-a.fatoum@barebox.org>
+References: <20260626113132.1557874-1-a.fatoum@barebox.org>
+Message-Id: <178272292319.171008.3000483984593625707.b4-ty@pengutronix.de>
+Date: Mon, 29 Jun 2026 10:48:43 +0200
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260629_014746_951359_3A45896F 
-X-CRM114-Status: GOOD (  19.39  )
+X-CRM114-CacheID: sfid-20260629_014847_047465_F561EF45 
+X-CRM114-Status: UNSURE (   4.78  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,90 +82,28 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 7/9] mci: add PCI SDHCI controller support
+Subject: Re: [PATCH 1/2] ci: container: add FAT image tools to container
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 2026-06-26 18:19, Ahmad Fatoum wrote:
-> QEMU can expose eMMC through the class-compliant sdhci-pci device, but
-> barebox only had platform SDHCI glue. Add a PCI host driver that maps BAR=
-0,
-> enables bus mastering, initializes the SDHCI core and registers an MCI ho=
-st.
->=20
-> This is intentionally small and PIO-based, which is enough for the QEMU R=
-PMB
-> test environment while reusing the common SDHCI helpers.
 
-Is this comment wrong? The driver depends on HAS_DMA and even calls
-sdhci_setup_adma().
+On Fri, 26 Jun 2026 13:31:22 +0200, Ahmad Fatoum wrote:
+> To prepare testing the FAT implementation in future, make the required
+> host tools explicit in the test container instead of relying on
+> transitive dependencies.
+> 
+> 
 
->=20
-> Assisted-by: Codex:gpt-5.5
-> Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
-> ---
-> v1 -> v2:
->   - new commit
-> ---
->  drivers/mci/Kconfig     |   8 ++
->  drivers/mci/Makefile    |   1 +
->  drivers/mci/mci-core.c  |   2 +-
->  drivers/mci/sdhci-pci.c | 203 ++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 213 insertions(+), 1 deletion(-)
->  create mode 100644 drivers/mci/sdhci-pci.c
->=20
-> diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-> index b38f7a3bdf8b..55e63aad92d4 100644
-> --- a/drivers/mci/Kconfig
-> +++ b/drivers/mci/Kconfig
-> @@ -90,6 +90,14 @@ config MCI_MMC_RPMB
-> =20
->  comment "--- MCI host drivers ---"
-> =20
-> +config MCI_SDHCI_PCI
-> +	bool "PCI SDHCI controller"
-> +	depends on PCI && HAS_DMA
-> +	select MCI_SDHCI
-> +	help
-> +	  Enable support for PCI-attached SDHCI controllers, such as QEMU's
-> +	  sdhci-pci device used to attach emulated eMMC devices.
-> +
->  config MCI_DWC_MSHC
->  	bool "Synopsys DesignWare Cores MSHC"
->  	depends on HAS_DMA
-> diff --git a/drivers/mci/Makefile b/drivers/mci/Makefile
-> index 67a1f7bf1724..761f4187c079 100644
-> --- a/drivers/mci/Makefile
-> +++ b/drivers/mci/Makefile
-> @@ -2,6 +2,7 @@
->  obj-$(CONFIG_MCI)		+=3D mci-core.o
->  pbl-$(CONFIG_MCI)		+=3D mci-pbl.o
->  obj-$(CONFIG_MCI_MMC_RPMB)	+=3D rpmb.o
-> +obj-$(CONFIG_MCI_SDHCI_PCI)	+=3D sdhci-pci.o
->  obj-$(CONFIG_MCI_AM654)		+=3D am654-sdhci.o
->  obj-$(CONFIG_MCI_ARASAN)	+=3D arasan-sdhci.o
->  obj-$(CONFIG_MCI_ATMEL)		+=3D atmel_mci.o atmel_mci_common.o
-> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> index 4413fd1655aa..d6746fbec28f 100644
-> --- a/drivers/mci/mci-core.c
-> +++ b/drivers/mci/mci-core.c
-> @@ -2942,7 +2942,7 @@ static struct device_node *mci_get_partition_node(s=
-truct device_node *hwnode,
->  	struct device_node *np;
->  	char partnodename[sizeof("bootx-partitions")];
-> =20
-> -	if (index > 8)
-> +	if (!hwnode || index > 8)
->  		return NULL;
+Applied, thanks!
 
-Should this be an extra patch?
+[1/2] ci: container: add FAT image tools to container
+      https://git.pengutronix.de/cgit/barebox/commit/?id=36bbc65abe47 (link may not be stable)
+[2/2] ci: container: enable rustc and bindgen in container
+      https://git.pengutronix.de/cgit/barebox/commit/?id=f44ae82e520f (link may not be stable)
 
-Sascha
+Best regards,
+-- 
+Sascha Hauer <s.hauer@pengutronix.de>
 
---
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
