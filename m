@@ -1,66 +1,56 @@
-Delivery-date: Mon, 29 Jun 2026 10:50:39 +0200
+Delivery-date: Mon, 29 Jun 2026 10:52:56 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1we7hP-00B3nG-0y
+	id 1we7jc-00B3p7-23
 	for lore@lore.pengutronix.de;
-	Mon, 29 Jun 2026 10:50:39 +0200
+	Mon, 29 Jun 2026 10:52:56 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1we7hO-0006OG-N5
-	for lore@pengutronix.de; Mon, 29 Jun 2026 10:50:39 +0200
+	id 1we7jc-0000Cw-1N
+	for lore@pengutronix.de; Mon, 29 Jun 2026 10:52:56 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=uAUUrus7mxqcU6aIQBCkBNbcnxCpLbjW6F/XZamF9q0=; b=z5rVyGlrg8uC73GjsJcGQiJMlZ
-	BNArZLxaL5xnoHxRDLRwfRJ0eZ2EiCLMSa1L3sKj1iERVveMYtlaXqCigX8VKqic9XetU5HwyGB0L
-	zRXFsQJZAFQGUEbK1WBExQuNO3v24HCV2Ae4IiN+WurofeqnL90m03vnxv5U/UVFCJLquU2hpXzzr
-	OJKigh+IslqO3iMNVktv6ctu6CeXzYkCapq/SjMhHeUc3KHJGNzoMpwpdXoWQ6kBgZFC5p0bxsvg+
-	kN9vi7HX2evfAEg3Fjf5QcJJS6CondbO7Ku215IJxmw7Xb30tABqTCHH/lOY7bxbI2p/iyiO39v6S
-	nmqVkP9g==;
+	bh=e3sxNy+6WnaRLlB3AoiS6dGDWjQ+9YhbLiqiM21X7Yc=; b=qMKccGXksGdk7xuJgS7vanKtCr
+	G6kC1YZkZLt8Z6LNfu+rXowd7rdK1jCT/w3W7NbpWaICmH8OANZZnNE1rvk2c980IoB+kur5r9YDj
+	3pwDSXHmpuF1jSXaTozq5HrHq0ZzSFytqhIa8Qary0cGn2Cca0FURSKKBrR5Jg3tn2foSGbQieZ5U
+	j7SciS9doIDTm3VvbjD1srO0qERGtxxvSYHRBgyGzIC0cy6pqXxYdbMxPdnU0gD/lsTWN//txeFwH
+	8Afr/2UFwi/mLz1/UUGvn/TvgCyX6dWsUe3BvfOG3WldH2FUbPDEP5vkwbVHirqOXpMbF5kcpQpvP
+	3QMjWifw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1we7gO-0000000E2MG-0Nv5;
-	Mon, 29 Jun 2026 08:49:36 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1we7ie-0000000E2aO-28gD;
+	Mon, 29 Jun 2026 08:51:56 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1we7gL-0000000E2LB-08YU
+	id 1we7ib-0000000E2ZT-2PtT
 	for barebox@lists.infradead.org;
-	Mon, 29 Jun 2026 08:49:34 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 7583220045F;
-	Mon, 29 Jun 2026 10:49:30 +0200 (CEST)
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1we7gI-005DLS-1H;
-	Mon, 29 Jun 2026 10:49:30 +0200
-Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1we7gI-00000000ixR-1QRo;
-	Mon, 29 Jun 2026 10:49:30 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260625173012.701765-1-a.fatoum@pengutronix.de>
-References: <20260625173012.701765-1-a.fatoum@pengutronix.de>
-Message-Id: <178272297033.172801.4631472976542062660.b4-ty@pengutronix.de>
-Date: Mon, 29 Jun 2026 10:49:30 +0200
+	Mon, 29 Jun 2026 08:51:55 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@barebox.org>)
+	id 1we7iY-0007aW-55; Mon, 29 Jun 2026 10:51:50 +0200
+Message-ID: <9f66c07d-b0f4-4a7c-bee3-3b3bf9caca17@barebox.org>
+Date: Mon, 29 Jun 2026 10:51:50 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <E1we7eZ-00000005eQz-3Roc@pty.whiteo.stw.pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@barebox.org>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <E1we7eZ-00000005eQz-3Roc@pty.whiteo.stw.pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260629_014933_233525_E61BCBE8 
-X-CRM114-Status: UNSURE (   5.33  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260629_015153_639920_182C05D4 
+X-CRM114-Status: GOOD (  16.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,31 +68,61 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] commands: loadx: remove non-existent options from
- usage string
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v2 7/9] mci: add PCI SDHCI controller support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Hello Sascha,
 
-On Thu, 25 Jun 2026 19:30:04 +0200, Ahmad Fatoum wrote:
-> There is no -p or -c option, so drop them from the usage string as well
-> as from the getopt argument if they fall through into the error
-> (default) case.
+On 6/29/26 10:47 AM, Sascha Hauer wrote:
+> On 2026-06-26 18:19, Ahmad Fatoum wrote:
+>> QEMU can expose eMMC through the class-compliant sdhci-pci device, but
+>> barebox only had platform SDHCI glue. Add a PCI host driver that maps BAR0,
+>> enables bus mastering, initializes the SDHCI core and registers an MCI host.
+>>
+>> This is intentionally small and PIO-based, which is enough for the QEMU RPMB
+>> test environment while reusing the common SDHCI helpers.
 > 
+> Is this comment wrong? The driver depends on HAS_DMA and even calls
+> sdhci_setup_adma().
+
+Yes, I had problems getting RPMB access to work with PIO and ADMA fixed
+that and I had not dug deeper.
+
+Can you remove that paragraph when applying?
+>> index 4413fd1655aa..d6746fbec28f 100644
+>> --- a/drivers/mci/mci-core.c
+>> +++ b/drivers/mci/mci-core.c
+>> @@ -2942,7 +2942,7 @@ static struct device_node *mci_get_partition_node(struct device_node *hwnode,
+>>  	struct device_node *np;
+>>  	char partnodename[sizeof("bootx-partitions")];
+>>  
+>> -	if (index > 8)
+>> +	if (!hwnode || index > 8)
+>>  		return NULL;
 > 
+> Should this be an extra patch?
 
-Applied, thanks!
+This is the first non-DT instantiated device and thus there is no DT
+node. I can split this off if you like. The rest of the file seems to
+handle non-existence of a DT node just fine.
 
-[1/1] commands: loadx: remove non-existent options from usage string
-      https://git.pengutronix.de/cgit/barebox/commit/?id=f05a0334c3dd (link may not be stable)
+Cheers,
+Ahmad
 
-Best regards,
--- 
-Sascha Hauer <s.hauer@pengutronix.de>
+> 
+> Sascha
+> 
+> --
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
 
 
 
