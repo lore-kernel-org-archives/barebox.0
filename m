@@ -1,66 +1,61 @@
-Delivery-date: Mon, 29 Jun 2026 12:28:38 +0200
+Delivery-date: Mon, 29 Jun 2026 12:58:06 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1we9EE-00B5M8-1w
+	id 1we9gk-00B5hr-1m
 	for lore@lore.pengutronix.de;
-	Mon, 29 Jun 2026 12:28:38 +0200
+	Mon, 29 Jun 2026 12:58:06 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1we9EE-0002e8-0i
-	for lore@pengutronix.de; Mon, 29 Jun 2026 12:28:38 +0200
+	id 1we9gj-0005iE-R7
+	for lore@pengutronix.de; Mon, 29 Jun 2026 12:58:06 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+Q5QqTHkHmlcGXTzj06OZyWd6GTBzFBbTfogDvaAvF4=; b=Ha7MlwCPiIpJJpQBS/O0Kct8wz
-	qrSRxTTIvb8JhNSiEjxKTN7TPC+R3d7Ulvu9KgQPZUrKm4VaYQr8r1oNS+3cwg5wDBAbFX3xPC+w6
-	Zzp+NvKh7rZ/QAbzPtlvJAl1DGPNCatKLd1yCZHDk5jRxRmpFlfXIIkdmdjPtSAVyrvN4GBxo7cWy
-	j4a/6s5xtMpWcBqodG5xdUjGCCkTum9/ncxWHOKRNv6rAMwRW4IGF0SXvO9biCOU4n7SBUbOpMJDU
-	MAqqgiSAsSCshGsFSgQ029QpuFxE7BXEu0IKxhyYPz+eesGnHt48ZRfPhWJbbBFRwsBK9g1Kfy/dd
-	sozIA31A==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:
+	Content-Transfer-Encoding:Content-Type:In-Reply-To:To:Subject:From:Reply-To:
+	MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
+	bh=H5JHiCw2kqs/PEW4sKs4j/DM3Ha/CqE5BEeyhQg3mK4=; b=Xucf0D61fWHv2qLvQ4C5K3YJqi
+	CSS99De1d3XCzS7IpVoT5+h4u1j/01m/VlHoGAVZKt29pmg7NVpOv/GP5ZDfs9fVdNLFLJuufPRCY
+	Oon09dpSsb1TpjcJXcVj/JNVPBQIrrL0dUik2xVP+itMwg3PvlalP18YJ6YuABdr6vIeM/VJyG9ND
+	fpUafixgAMjC4sDG9H3tix6MorHboEhysFcB+EzQcmKhHSNASAMeFcisOa2VSTgcvQp3GI5egQM2L
+	65+LQ0VWsCMl2BK+F8mnHUdovHld21lE45Pwy8KED8PwLgFLdez9OejcbaJdG3xlpPsYtY5+HBV8V
+	kLMSKEFg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1we9D6-0000000EL4N-2OoZ;
-	Mon, 29 Jun 2026 10:27:28 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1we9fb-0000000ENoz-3JNy;
+	Mon, 29 Jun 2026 10:56:55 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1we9D4-0000000EL3X-2gwR
+	id 1we9fZ-0000000ENoa-0EoU
 	for barebox@lists.infradead.org;
-	Mon, 29 Jun 2026 10:27:28 +0000
+	Mon, 29 Jun 2026 10:56:54 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 7DCB2200320;
-	Mon, 29 Jun 2026 12:27:24 +0200 (CEST)
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 1AF6C2002FE;
+	Mon, 29 Jun 2026 12:56:51 +0200 (CEST)
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1we9D2-005ECg-1N;
-	Mon, 29 Jun 2026 12:27:24 +0200
-Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1we9D2-00000000n4e-1YIL;
-	Mon, 29 Jun 2026 12:27:24 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260624060648.1845974-1-a.fatoum@pengutronix.de>
-References: <20260624060648.1845974-1-a.fatoum@pengutronix.de>
-Message-Id: <178272884436.188629.10344130788468648956.b4-ty@pengutronix.de>
-Date: Mon, 29 Jun 2026 12:27:24 +0200
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+	(envelope-from <sha@pengutronix.de>)
+	id 1we9fX-005EK1-06;
+	Mon, 29 Jun 2026 12:56:51 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1we9fW-00000005ggu-3u1v;
+	Mon, 29 Jun 2026 12:56:50 +0200
+From: "Sascha Hauer" <s.hauer@pengutronix.de>
+To: chalianis1@gmail.com
+In-Reply-To: <20260623142330.79621-1-chalianis1@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 29 Jun 2026 10:56:50 +0000
+Message-Id: <E1we9fW-00000005ggu-3u1v@pty.whiteo.stw.pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260629_032726_843497_915252FB 
-X-CRM114-Status: UNSURE (   9.09  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260629_035653_265536_0F01079D 
+X-CRM114-Status: GOOD (  19.57  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,6 +67,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Chali Anis <chalianis1@gmail.com>, barebox@lists.infradead.org
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -81,32 +77,70 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] bootm: include origin of device tree in verbose output
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] usb: dwc2: skip polling for the soft reset clear bit
+ and add  after reset delay
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+On 2026-06-23 10:23, chalianis1 wrote:
+> From: Chali Anis <chalianis1@gmail.com>
+>=20
+> The RPi4 SoC do not deassert GRSTCTL_CSFTRST within the expected
+> window but continue to operate correctly, causing probe to fail
+> with ETIMEDOUT.
 
-On Wed, 24 Jun 2026 08:06:47 +0200, Ahmad Fatoum wrote:
-> To make it easier to see at a glance if the device tree to be passed to
-> Linux is barebox' own or an externally provided DT, include this
-> information into verbosity level 1.
-> 
-> Previously we only printed "using internal devicetree" at verbosity
-> level 2, but that's the same level we dump the whole DT, so we bump it
-> down a level and rename it to make it clear what the DT is internal to
-> (e.g. it's not a FIT-internal DT).
-> 
-> [...]
+Does "within the expected window" imply that there is a bigger window in
+which it is de-asserted?
 
-Applied, thanks!
+>=20
+> Per the datasheet, GRSTCTL_CSFTRST is self-clearing but requires at least
+> 3 PHY clocks after reset before any PHY domain access. Add a 1us delay to
+> satisfy this requirement.
 
-[1/1] bootm: include origin of device tree in verbose output
-      https://git.pengutronix.de/cgit/barebox/commit/?id=5f8f67f08dcf (link may not be stable)
+Which datasheet, the SoC datasheet or a DWC2 datasheet?
 
-Best regards,
--- 
-Sascha Hauer <s.hauer@pengutronix.de>
+I'm just asking if there is a chance to not need a SoC check here.
 
+Sascha
+
+>=20
+> Signed-off-by: Chali Anis <chalianis1@gmail.com>
+> ---
+>  drivers/usb/dwc2/core.c | 13 +++++++++----
+>  1 file changed, 9 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/drivers/usb/dwc2/core.c b/drivers/usb/dwc2/core.c
+> index 60cc690fdbc0..6d4b7930da9e 100644
+> --- a/drivers/usb/dwc2/core.c
+> +++ b/drivers/usb/dwc2/core.c
+> @@ -809,11 +809,16 @@ int dwc2_core_reset(struct dwc2 *dwc2)
+>  	greset |=3D GRSTCTL_CSFTRST;
+>  	dwc2_writel(dwc2, greset, GRSTCTL);
+> =20
+> -	ret =3D dwc2_wait_bit_clear(dwc2, GRSTCTL, GRSTCTL_CSFTRST, 10000);
+> -	if (ret) {
+> -		dwc2_warn(dwc2, "%s: Timeout! Waiting for Core Soft Reset\n",
+> +	/* Wait for at least 3 PHY Clocks */
+> +	udelay(1);
+> +
+> +	if (!of_machine_is_compatible("brcm,bcm2711")) {
+> +		ret =3D dwc2_wait_bit_clear(dwc2, GRSTCTL, GRSTCTL_CSFTRST, 10000);
+> +		if (ret) {
+> +			dwc2_warn(dwc2, "%s: Timeout! Waiting for Core Soft Reset\n",
+>  				__func__);
+> -		return ret;
+> +			return ret;
+> +		}
+>  	}
+> =20
+>  	if (wait_for_host_mode)
+>=20
+
+--=20
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
