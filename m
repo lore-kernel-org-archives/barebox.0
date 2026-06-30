@@ -1,62 +1,52 @@
-Delivery-date: Mon, 29 Jun 2026 16:29:55 +0200
+Delivery-date: Tue, 30 Jun 2026 11:03:21 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1weCzj-00B91t-1d
+	id 1weUNF-00BPqn-1W
 	for lore@lore.pengutronix.de;
-	Mon, 29 Jun 2026 16:29:55 +0200
+	Tue, 30 Jun 2026 11:03:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1weCzi-0007q6-UV
-	for lore@pengutronix.de; Mon, 29 Jun 2026 16:29:55 +0200
+	id 1weUND-0004HG-ND
+	for lore@pengutronix.de; Tue, 30 Jun 2026 11:03:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:
-	Content-Transfer-Encoding:Content-Type:In-Reply-To:Cc:To:Subject:From:
-	Reply-To:MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
-	bh=+TgXFWnNhlNi6KFQHl1tZHfpcV72BflZqOVeQk0wQxY=; b=HElZrME8bOJBlQJ5fo0aaUGat/
-	bp9wgVvm+WLgraf0P3FL6M2toipbQIrsxcx6/Et6XhjZoJzV14iHacZ4kCtbMTQT4Uiofa1uHW6as
-	oSO78NxODiGO03cD8TAVl6Lwa3cgl7HVFb4JXPaTzpMeW512nHxxxKBT//AKcdniUlNxSP138AZR+
-	gJEwwWlSWL1qScHQsi/0AWSVQMacvTpVVZeI9fww2/u9hnL5SLE7lV9ZSBU40FnPh2ayhYvJWDkeX
-	D9ae0TD/TISE5Lb9FMMJ3Pj92xUdAEiJaDdQ0SdaI4TsdOVC0yisgaVDoC0LpbqVL/XGZqcQAsX/u
-	WyT57JkQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=iNuA8mChvjOiUb0YDMZECibuEEKlQEL+NurhjShV5jY=; b=nRVnezIUBGgzAZZX97erFWJfTK
+	lKXkhMC3bHSmKd6JU/O1HzUEZSshF1Cv8qT3PIQtn0UeppH4e0mW/QCjZAsvFCGiIqdmeidX0gfKa
+	56bkswEAcBXPUpaqcsOCp278+/RiRATuXdZYAgBv05X4HUzX4NmCp0fs7BqdXTA0ojiiLe7qNcVro
+	yy3J589Kxzz+GjJnFdMRGHZQm054pmYqi2s9J9GlgVdXSQ4oMsDkLUVlC6YfTO6muDju30gbuChbk
+	ORuyjJI1WXup/yCYWdWkSzdrnDNRVYBS+dRZp8HG3I493IC5aHRDNg4U0FCEt5mwOwXCX+WwpGOjL
+	gQxvl36g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1weCDr-0000000EmVL-2EKM;
-	Mon, 29 Jun 2026 13:40:27 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1weULz-0000000GKb8-0i5a;
+	Tue, 30 Jun 2026 09:02:03 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1weCDo-0000000EmUu-1bXR
+	id 1weULw-0000000GKaa-0fWK
 	for barebox@lists.infradead.org;
-	Mon, 29 Jun 2026 13:40:26 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B69C42002FE;
-	Mon, 29 Jun 2026 15:40:21 +0200 (CEST)
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1weCDl-005Fmd-28;
-	Mon, 29 Jun 2026 15:40:21 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1weCDl-00000005ilx-2MEA;
-	Mon, 29 Jun 2026 15:40:21 +0200
-From: "Sascha Hauer" <s.hauer@pengutronix.de>
-To: "Johannes Schneider" <johannes.schneider@leica-geosystems.com>
-Cc: barebox@lists.infradead.org, "Johannes Schneider" <johannes.schneider@leica-geosystems.com>
-In-Reply-To: <20260627194324.2230643-7-johannes.schneider@leica-geosystems.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 29 Jun 2026 13:40:21 +0000
-Message-Id: <E1weCDl-00000005ilx-2MEA@pty.whiteo.stw.pengutronix.de>
+	Tue, 30 Jun 2026 09:02:01 +0000
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <bst@pengutronix.de>)
+	id 1weULs-0001t3-TV; Tue, 30 Jun 2026 11:01:56 +0200
+From: Bastian Krause <bst@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Bastian Krause <bst@pengutronix.de>
+Date: Tue, 30 Jun 2026 11:01:53 +0200
+Message-ID: <20260630090153.505217-1-bst@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260629_064024_597296_9A017466 
-X-CRM114-Status: UNSURE (   8.14  )
+X-CRM114-CacheID: sfid-20260630_020200_220588_7751BF0F 
+X-CRM114-Status: UNSURE (   6.56  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -75,33 +65,37 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v1 7/7] mci: imx-esdhc: support DMA in the i.MX8M PBL
- eMMC loader
+Subject: [PATCH] Documentation: user: usb: mention "fastboot erase"
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 2026-06-27 19:43, Johannes Schneider wrote:
-> The PBL eMMC loader was hardwired to PIO via esdhc_use_pio_mode(): IN_PBL
-> forced PIO unconditionally. PIO is slow -- on an i.MX8MM board loading the
-> ~1.6 MB next stage took ~559 ms; SDMA/ADMA2 do it in ~21 ms.
+fastboot erase was implemented from the beginning, see [1].
 
-For proper DMA support you'll need memory synchronization in form of dma_ma=
-p_*
-or dma_sync_* helpers which we do not have in PBL. Without them it won't
-work with MMU enabled. Have you tried enabling the MMU in the mean time? Th=
-is
-should give you decent performance even with PIO.
+[1] e8993bc5457 ("Documentation: fastboot: fastboot erase is implemented")
 
-Sascha
+Signed-off-by: Bastian Krause <bst@pengutronix.de>
+---
+ Documentation/user/usb.rst | 1 +
+ 1 file changed, 1 insertion(+)
 
---
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
+index c6ff383c565..3f01e6b2c36 100644
+--- a/Documentation/user/usb.rst
++++ b/Documentation/user/usb.rst
+@@ -168,6 +168,7 @@ The Fastboot gadget supports the following commands:
+ - fastboot getvar
+ - fastboot boot
+ - fastboot reboot
++- fastboot erase
+ 
+ ``fastboot flash`` additionally supports image types UBI and Barebox. For UBI
+ Images and a MTD device as target, ubiformat is called. For a Barebox image
+-- 
+2.47.3
+
 
 
