@@ -1,16 +1,16 @@
-Delivery-date: Thu, 02 Jul 2026 09:00:23 +0200
+Delivery-date: Thu, 02 Jul 2026 09:06:19 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wfBPL-00CAe6-1p
+	id 1wfBV4-00CAj3-34
 	for lore@lore.pengutronix.de;
-	Thu, 02 Jul 2026 09:00:23 +0200
+	Thu, 02 Jul 2026 09:06:18 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 4C35E200498
-	for <lore@pengutronix.de>; Thu, 02 Jul 2026 09:00:22 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id C3B71200498
+	for <lore@pengutronix.de>; Thu, 02 Jul 2026 09:06:18 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=njdN9Eg4;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=pohYKSro;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,51 +19,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=CYwCnOoExlHUxsDNRChef7FKsgFWuwm6bUKPIQClKwk=; b=njdN9Eg4GRn/dPZc8/9iDuyeHM
-	6VFzQgwNe7dfagA1LvrOazukTiGT19LigL5BFzDFTVjRJoyY1Hi1eJbgZRdoJ2l2Wx/kOhdcCoQer
-	XcKbhxr18nMCCSKDyf2LmNZ2iov1576J9DneZOQiIF+LQKJuPF5teG6/MDHxO58LowkM8k0i+4HfF
-	fZtl0WwGA0M3Alpl8wS+uGaJe/f8dHFa6jPlZWp6344pM+eN1Z3VwKqCsQ9AHEVZ6KXjzCuItq3iB
-	cAKcAaMQDRTFNsn7Wtf74fNQR9ozeRjGhVozAdEoi0M+atFUhu6GBvGEPxiJnzqLz4er6e2CBMl6Y
-	y9UdRulQ==;
+	bh=v+aaVZ/bhQ1GOFKOSy/KQZsVgWAGLPPYTGq8kIFt7kE=; b=pohYKSrovh37h1rYGvd3x/aJKk
+	K8jRg6XB+v533G5zWjGfn5E+cyiY9IUwGQPleJspp0l5DtuKjm8a+JZF8PM4m2AVG8/wb4457Lt2H
+	d2zg6x7Gl1OaLCTI3WsElDRDblx96f/9TTqC3yVOFfSi0Dzbe2PH3aoFsZVFoA7uyGjhljq3N06K7
+	OPuFsK//cHlRv0TbWuIMUrBrK+sWcLuJ0q+rOjAKkeUrdJsWEB9RCcZx2nc+ha7mHvvJG5gN8NeLx
+	NpV2ux826edisjt9WKJLiocvanUatUa5/MTanZodJ5sIj2hzy9+6ZpPdcjbn/5WS8CEbHjaaRzPaj
+	h1sO8dbA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wfBO3-00000003gZS-2xpZ;
-	Thu, 02 Jul 2026 06:59:03 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1wfBTt-00000003h5K-1Nry;
+	Thu, 02 Jul 2026 07:05:05 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wfBNz-00000003gXq-2AMr
+	id 1wfBTq-00000003h4u-2XAN
 	for barebox@lists.infradead.org;
-	Thu, 02 Jul 2026 06:59:02 +0000
+	Thu, 02 Jul 2026 07:05:04 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 9917A200498;
-	Thu, 02 Jul 2026 08:58:55 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 6257E201107;
+	Thu, 02 Jul 2026 09:05:00 +0200 (CEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wfBNv-005hhC-1d;
-	Thu, 02 Jul 2026 08:58:55 +0200
+	id 1wfBTo-005hxk-0v;
+	Thu, 02 Jul 2026 09:05:00 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wfBNv-00000008Uwj-1rJA;
-	Thu, 02 Jul 2026 08:58:55 +0200
+	id 1wfBTo-00000008V9r-0vZP;
+	Thu, 02 Jul 2026 09:05:00 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20260629124631.689090-1-a.fatoum@barebox.org>
-References: <20260629124631.689090-1-a.fatoum@barebox.org>
-Subject: Re: [PATCH v3 01/10] scripts: duplicate conftest.py as
- qemu_interactive.py
-Message-Id: <178297553543.2025550.11679151357938219652.b4-ty@pengutronix.de>
-Date: Thu, 02 Jul 2026 08:58:55 +0200
+To: barebox@lists.infradead.org, Bastian Krause <bst@pengutronix.de>
+In-Reply-To: <20260630090153.505217-1-bst@pengutronix.de>
+References: <20260630090153.505217-1-bst@pengutronix.de>
+Subject: Re: [PATCH] Documentation: user: usb: mention "fastboot erase"
+Message-Id: <178297590021.2026376.10729559286643477471.b4-ty@pengutronix.de>
+Date: Thu, 02 Jul 2026 09:05:00 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260701_235859_738710_464A64FD 
-X-CRM114-Status: UNSURE (   5.93  )
+X-CRM114-CacheID: sfid-20260702_000502_798264_7A826F59 
+X-CRM114-Status: UNSURE (   3.71  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -72,9 +71,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Mon, 29 Jun 2026 14:45:20 +0200, Ahmad Fatoum wrote: >
-    To make the change splitting pytest --interactive into its own script > easier
-    to follow, duplicate the existing code under the new name. > > [...] 
+ Content preview:  On Tue, 30 Jun 2026 11:01:53 +0200, Bastian Krause wrote:
+    > fastboot erase was implemented from the beginning, see [1]. > > [1] e8993bc5457
+    ("Documentation: fastboot: fastboot erase is implemented") [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -97,27 +96,26 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Rspamd-Queue-Id: 4C35E200498
+X-Rspamd-Queue-Id: C3B71200498
 X-Spamd-Result: default: False [-6.71 / 15.00];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received];
+	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:1101:1d::28:received,2607:7c80:54:3::133:from];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MAILLIST(-0.20)[mailman];
-	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	RCVD_IN_DNSWL_LOW(-0.10)[2a0a:edc0:0:c01:1d::a2:received];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
+	ARC_NA(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
 	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
@@ -128,40 +126,21 @@ X-Spamd-Result: default: False [-6.71 / 15.00];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Stat-Signature: s6ndpbeqyw1j7sot8m5k3nzyhnjurj8s
+X-Stat-Signature: 6qrpxwct5nomwy1ohd317stmf9mg8w7r
 X-Rspamd-Server: mx1
 
 
-On Mon, 29 Jun 2026 14:45:20 +0200, Ahmad Fatoum wrote:
-> To make the change splitting pytest --interactive into its own script
-> easier to follow, duplicate the existing code under the new name.
+On Tue, 30 Jun 2026 11:01:53 +0200, Bastian Krause wrote:
+> fastboot erase was implemented from the beginning, see [1].
 > 
-> No functional change.
+> [1] e8993bc5457 ("Documentation: fastboot: fastboot erase is implemented")
 > 
 > 
 
 Applied, thanks!
 
-[01/10] scripts: duplicate conftest.py as qemu_interactive.py
-        https://git.pengutronix.de/cgit/barebox/commit/?id=d441f4a2068b (link may not be stable)
-[02/10] test: move interactive QEMU launcher out of pytest
-        https://git.pengutronix.de/cgit/barebox/commit/?id=8b1d70b64199 (link may not be stable)
-[03/10] usb: xhci-hcd: add XHCI over PCI driver
-        https://git.pengutronix.de/cgit/barebox/commit/?id=fcb6345b3882 (link may not be stable)
-[04/10] scripts: qemu_interactive.py: add new --usbblk option
-        https://git.pengutronix.de/cgit/barebox/commit/?id=bdc6e2fa7341 (link may not be stable)
-[05/10] scripts: qemu_interactive.py: add new --nvmeblk option
-        https://git.pengutronix.de/cgit/barebox/commit/?id=0fe30f1bfb41 (link may not be stable)
-[06/10] mci: do not look up OF partitions for DT-less host controllers
-        https://git.pengutronix.de/cgit/barebox/commit/?id=7623e715fcba (link may not be stable)
-[07/10] mci: sdhci: define same SDHCI_INT_* constants as Linux
-        https://git.pengutronix.de/cgit/barebox/commit/?id=29ac18bbced2 (link may not be stable)
-[08/10] mci: add PCI SDHCI controller support
-        https://git.pengutronix.de/cgit/barebox/commit/?id=4de8c91148c8 (link may not be stable)
-[09/10] ARM: multi_v8_defconfig: enable OP-TEE and RPMB support
-        https://git.pengutronix.de/cgit/barebox/commit/?id=c8b84e685d94 (link may not be stable)
-[10/10] scripts: qemu_interactive.py: add new --sdblk and --emmcblk options
-        https://git.pengutronix.de/cgit/barebox/commit/?id=0741b9f22170 (link may not be stable)
+[1/1] Documentation: user: usb: mention "fastboot erase"
+      https://git.pengutronix.de/cgit/barebox/commit/?id=4907943d52cd (link may not be stable)
 
 Best regards,
 -- 
