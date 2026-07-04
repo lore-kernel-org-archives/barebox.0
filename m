@@ -1,17 +1,17 @@
-Delivery-date: Sat, 04 Jul 2026 14:38:23 +0200
+Delivery-date: Sat, 04 Jul 2026 14:40:30 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wfzdX-000CAp-1W
+	id 1wfzfa-000CCd-13
 	for lore@lore.pengutronix.de;
-	Sat, 04 Jul 2026 14:38:23 +0200
+	Sat, 04 Jul 2026 14:40:30 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id F004B2026D8
-	for <lore@pengutronix.de>; Sat, 04 Jul 2026 14:38:22 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id A1E542026DA
+	for <lore@pengutronix.de>; Sat, 04 Jul 2026 14:40:29 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=2bybb5nZ;
-	dkim=pass header.d=leica-geosystems.com header.s=selector1 header.b="rrEzo/dv";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=gWHX9HMk;
+	dkim=pass header.d=leica-geosystems.com header.s=selector1 header.b=IjTmSEAE;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
 	dmarc=pass (policy=reject) header.from=leica-geosystems.com
@@ -21,28 +21,28 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Message-ID:Date
 	:Subject:CC:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kdTTlo3O2CU65zOD9QIjctTOt0kA3DjYS5ekL8foPFY=; b=2bybb5nZ/bNe4LCncYzngkgXuF
-	LFJ4SjdVKGdj0W3/onvH7JxYhKGJBFRhfafbYDgrkeC6Qfujhj4QgGt9mr4f212Nyf5c0Da0Iu87/
-	D1q9ap2WDPf+nIQ3crss7Ay6uVrWi4JwIFz28Cil1+bQkVo2RiwBQvCkrj77Eik4DKbiyZVVj0BOq
-	VrMzIjEW+nGDacjNkzESYmxiNLyhvSqwJrbGGDjulQ3V3oduu2NsNMfS3wKwfWKn3JBRnXvuuAVTp
-	Z8kzqWxbhbAruQlKnG9Rh+T+UUiZrNk50Aj0aJ7FQUiz5JbqUcqhrB+yqTlhp8/aTQ76R3EQDPvNg
-	WjNo7aEg==;
+	bh=yZHA+KAl+nvKGuemp/MvkSDFCE++ECBllJtQt6A2g9o=; b=gWHX9HMkmE1AdxylNPHSj3y50d
+	KYcbyT6BrhGejJxHgVYe+EHRpp/QdzB+SC+PUElN6jSwayHMnbxfvyDpYdM01xCrihWJPxYZSc27q
+	I5CdKJ+k3voGAobXFQTzkkh4zsrVSLEpDYKmBwHz4GVe0mKGCAAriHvHco+N2h7r4w60yzU95gc6H
+	Fbu3N/qpzFFKG3KuwAYzrC8mb7z1u6GD2z2OHozfawnu3r0AxNSEM4Ute2L4lyp52d3hfljZas8Vi
+	EFie4L7UMloVNHYD1VFTjmk4u+0cWZYHkhK0f7pQhTvw72gBTUbP67tJpQPb8JpIELoGwvLU/nyrS
+	K25ohqcg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wfzd7-00000008RDW-1b2F;
-	Sat, 04 Jul 2026 12:37:57 +0000
-Received: from mail-northeuropeazon11012034.outbound.protection.outlook.com ([52.101.66.34] helo=DUZPR83CU001.outbound.protection.outlook.com)
+	id 1wfzfD-00000008ROm-2h0x;
+	Sat, 04 Jul 2026 12:40:07 +0000
+Received: from mail-northeuropeazon11012012.outbound.protection.outlook.com ([52.101.66.12] helo=DUZPR83CU001.outbound.protection.outlook.com)
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wfzd5-00000008RD8-0U6d
+	id 1wfzfA-00000008RO3-2WN9
 	for barebox@lists.infradead.org;
-	Sat, 04 Jul 2026 12:37:56 +0000
+	Sat, 04 Jul 2026 12:40:06 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TTx5tCaCe72uz2QtfEoAoqHJywjSxOKl1uZYotvi0N+ei+5ObJ2K5VlTiwxBOYa+MO0YKyRkDVdQgi5ZsPqK0adMZqVRmyS8VgivhreDdkKm6YvNFMufsiWaFNFZ+kzyqBtTFwPHi8lcTfdqWeE0yMbSX5ObfLAw3P+4nufcHKz2EGcu+feZV+CzLwMqW6Gv835BnLO2ZwuaBnWnj05j5OCSgcckDPDauXIYNpvnd+zUzs9iMBxL0dlVMMDo2D+HEp+Q0yt7wgmQ/qqEb9IFKH3tq1gVrnyFZYfk+72MQqwi3FO8N4JPmbxb22fS22PA0fWteclEsKYeEIKl75OdAw==
+ b=CkZTmlW7xET/yp2aPNm3V8byoHQYjLwg7jh4G7m86CInjSHbpg+pz9nZb1+A+6UjvezYzoUHRfMFciiV1JJ2bs0PoHjUjMH9xS1GlS3FiHimRiMkwZtGUej/P/C+ec/vhnEpGoFihVNSYGRMNxwBcXW/gx4SIdkGw6KeFfcuDUhWLpdWdmvGf7w4EsGuzSDkOAhz7r8c0v6uLOnUmT9nr8VRV6bPjRN7QT7rrcEYfNjwBrX15X98+ZZlj6mKrAPcEIZnTGztik7NkLzD2LcqiIiJOtrBXmKy10NXmDt4L/CQQdFlWiYo7kgAcbNTK40xwZRUoJczutiCaQV5yg2a7w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kdTTlo3O2CU65zOD9QIjctTOt0kA3DjYS5ekL8foPFY=;
- b=ZjmpVd54wHy8hovdUbmRRmoEtdJL/srf29XulpsDwmA2RQxwPE8aKmqynERBclLvvr4clZiMYpsFu9iiDQwW0CUsU3XJuIEz4EalK/nHHsSAYcJH98TMQTJj+WCBr0XNnE8QuDdhtd/0YTVo7A467IAaJofjtpTrsDIc/je0oPFHSifIjlfDtnUHIewBnLqB5WEDGMvPsCLTC7TDdNr9iGfanTEH52si39L5r9GJYshPCMQlAJgLVIgcTNS0rVTWKXJDEvm+JovfaXl3GFQOYErv8+LiPHQvBli/sGLhqvLx8AjIz2r1YFLmYGUa1mZwrNdtt65SMBKZZqeFjU7ilQ==
+ bh=yZHA+KAl+nvKGuemp/MvkSDFCE++ECBllJtQt6A2g9o=;
+ b=IIzzzGO8IZAkdmwwq3st9axG/bel/HSmlkvKPc2mkBT8kuROh8rWcoopepHoLAS9r6ZT3iNT7UwxXD6JKDn+kgTgLFaILUCjL2xvQmwIC60Fqv+MzBlG9/aVj4GGHuGVxy9sbg4uVqXsATW4v0t+hHvnv9kY/ifFr0JXVm05kiInGl8UfvMUKb/Bh4psRFUXRwIz51E9O9n5ooWvboBxpuBD0VlVpjrswFyy4nmJydw8JX/WIT6A7wIutKEcQq9QKu/O5gK3Z7c7fs8GSdLjpWCaBD9Q7V3HcroJIlxBd9L1sciTVNiFBu3PMVHr2R9boxAx6ovHk+UErrBEKykcnA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=leica-geosystems.com; dmarc=pass action=none
  header.from=leica-geosystems.com; dkim=pass header.d=leica-geosystems.com;
@@ -50,30 +50,30 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kdTTlo3O2CU65zOD9QIjctTOt0kA3DjYS5ekL8foPFY=;
- b=rrEzo/dvqa5ys49m7m1dENTdzlCH+bS/eaQlCOPx5Eo53Hi2JFuQEfAvX4JLv+wVL4Muc76TRuDhgSQpxMgj8zDzCRc7DV7mWISqAVMa2QZrQ4ocVt/DOGtIxWcBGzXiXwIKdVU3g8tR2k+T4mRu8e/Qgn2+RuIoUqIH90hMOCQ=
+ bh=yZHA+KAl+nvKGuemp/MvkSDFCE++ECBllJtQt6A2g9o=;
+ b=IjTmSEAE1KtJQoVJHU+obzMBQDXgvzo/QHuTUXqLvey76fX7AlEdiU10YxVNLRadgsZgsQbnxUlbdTpKDbzV0IT/cBd6udioJQMCit3Ph//bXQjgqTVwz4xXLVO/AGeVrXEsLIrW5bkAMWiLAWu2cRjmjPUdVPLiBY/PylmuROc=
 Received: from AM0PR06MB4148.eurprd06.prod.outlook.com (2603:10a6:208:6a::27)
  by PA1PR06MB9993.eurprd06.prod.outlook.com (2603:10a6:102:4ee::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.11; Sat, 4 Jul
- 2026 12:37:49 +0000
+ 2026 12:40:01 +0000
 Received: from AM0PR06MB4148.eurprd06.prod.outlook.com
  ([fe80::dae7:3a84:9c7f:c6bc]) by AM0PR06MB4148.eurprd06.prod.outlook.com
  ([fe80::dae7:3a84:9c7f:c6bc%4]) with mapi id 15.21.0181.010; Sat, 4 Jul 2026
- 12:37:49 +0000
+ 12:40:01 +0000
 From: SCHNEIDER Johannes <johannes.schneider@leica-geosystems.com>
 To: Sascha Hauer <sascha@saschahauer.de>
 CC: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Subject: Re: [PATCH] ARM: i.MX8M: enable MMU in PBL around fw-external BL32
- verify
-Thread-Topic: [PATCH] ARM: i.MX8M: enable MMU in PBL around fw-external BL32
- verify
-Thread-Index: AQHc/aGpxJ42UXPGIUu4nz5so1aACrZZ7yIAgAN4BBY=
-Date: Sat, 4 Jul 2026 12:37:49 +0000
-Message-ID: <AM0PR06MB4148CED25B27F40C6BE4C8DCBCF32@AM0PR06MB4148.eurprd06.prod.outlook.com>
-References: <20260616144924.1614561-1-johannes.schneider@leica-geosystems.com>
- <E1wfBwF-003FZD-0x@saschahauer.de>
-In-Reply-To: <E1wfBwF-003FZD-0x@saschahauer.de>
+Subject: Re: [PATCH] crypto: sha256: PBL multi-block transform via ARMv8
+ Crypto Extensions Crypto Extensions
+Thread-Topic: [PATCH] crypto: sha256: PBL multi-block transform via ARMv8
+ Crypto Extensions Crypto Extensions
+Thread-Index: AQHc/aGqPgde27Gf40WUEagao5GFDbZZ8/eAgAN0sOw=
+Date: Sat, 4 Jul 2026 12:40:01 +0000
+Message-ID: <AM0PR06MB4148C9EFCC3967FB213F5FDEBCF32@AM0PR06MB4148.eurprd06.prod.outlook.com>
+References: <20260616144924.1614561-2-johannes.schneider@leica-geosystems.com>
+ <E1wfCCx-003FrC-2i@saschahauer.de>
+In-Reply-To: <E1wfCCx-003FrC-2i@saschahauer.de>
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -81,63 +81,63 @@ X-MS-TNEF-Correlator:
 msip_labels: 
 x-ms-publictraffictype: Email
 x-ms-traffictypediagnostic: AM0PR06MB4148:EE_|PA1PR06MB9993:EE_
-x-ms-office365-filtering-correlation-id: 43031fed-1eef-46c4-4f06-08ded9c90ec1
+x-ms-office365-filtering-correlation-id: 335ca7dd-0410-43ad-5e4f-08ded9c95d94
 x-ms-exchange-senderadcheck: 1
 x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|23010399003|10070799003|1800799024|38070700021|56012099006|11063799006|4143699003|22082099003|18002099003;
-x-microsoft-antispam-message-info: Ss4Ifx2Nn02kJUSCKFgc+qtivft5XdpU/IGPWfHctCiK8R13TDg6GlVxJSSSOFggA2F2ffOLycqjWxvQSYFmBLH7WaOc38eIm+AdSE9fKIb0kBrI+u5Tj3aJ4QW/OdMapkid75YNzzMp7yOgF42nAx+wem1/qSEiJ6NOmmGvCXI0ydbM6gJZpo7jMeQF+uEhNQUCrpdaJMgrD9ElHIuukkkrFkpvCH+064x4LaxIk6jN+qZ3p/N80qQVcH+e2Oj6H1LPZqeFKxeRADAS6xoLE8KB/pGIJBQsVev3YvQQN/JFOyh2SjcpAHPOLUO1x3lh0Rn5kCUFvq7+E3Sewl0EnsUDW23OvkTJRsCjuFXhQFHiohq1CptfRblJqIJtEHJ1a1pcvQll2SzkOZ3MPTuZML5pqzaE4WpGRBc1otzlejkMek8PnjoQEo0lu5RjSgG3HkECjCNeCJenswrzS099E0OGDUN3AmdJ1e+Xk9T+lgqogyeB00ZMtMdIbuCiMrplc0cau/Sqc2yH4muWDH6oO7hHwIKmgaoPG+uVbZ6zIJAUAHHZCE2sq829B/xwOThNa7q1DJWQCi+xsvDJ1dGcXsmoj9weQa/BkKEhZGQHaWVIIxzfYXR9SoBEv7/et3CE/XKejHZe9k7g7d0U/2e8+LXp4E2WwWdEUGE1juDbrCgVg3asCDVVc/XeODONYPg1LFtC0AqOpFBmTSHI90dWwcO4yWIm10VJ8XXosDsa/ZM=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR06MB4148.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(10070799003)(1800799024)(38070700021)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|23010399003|10070799003|1800799024|38070700021|56012099006|11063799006|4143699003|6133799003|22082099003|18002099003;
+x-microsoft-antispam-message-info: NOBcDSAvsyNHA9UEImo+FB71TD1+iqhf3djOMEUA02nkfBx5zIkwRKKn9Hh2xaMcU1k93h02jEAsi9bfb8p9ZA+z0uSL2HCRSIgYl+FAfQhCwx26jh/M2NYgOZIvxhUJRcRdTBIVUddDqI0IGZRSkmgiseqfe8vGAHZkJsPDhxcO4CEulG697HFY4rBb8rHauvr3vYz3JaNT6Lhm2XLRrpASTY5U75SqRiHAJ5rOVBXqk1eApN9t2QLEZ30F7h0HVnD7DEOd3G+HEVbhqp1S7oH75Mi28NTbJYgPPKl1BIFAY4PlVkNG3jSYKILw/qCgpAALZWT46ZwnrPxjwNbnd44fAkYW4NqA6Jza8uNBLVxWSFCRll993BrxIDAsE/MyoL+ursQFz1P5zm6unh3/nhVLimpxKS/iJdBFjy//Ktjz+biyXmQFhR+DLxldW8zSramzRoFQsAxp3xeGk987j4+UaJYqjPRq54uGSusLcFlJh2DRhTDLh968G4Gip7sBj51yGqv9VrNPp69ZPTfeQbXCRNg+i4H/eNEAuzy9Aky5yFVeTMSyK4cIi4FIGgSTO17WhBTARdMLGIsfuMrcLbTlhgBuWxfgt1tcRuz09qTA2/Pk48d5XGL29fCHAF94ETsGf41rtctYzFHWiReMv3oLrsWUW+TVYbwISzrmJMoRrl+ok6Q9tIMbBkYQgjB2P9r4SrbTBmJmQu/2uvgvdrcCyahBKzlm/y7Jht+Nk4E=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR06MB4148.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(10070799003)(1800799024)(38070700021)(56012099006)(11063799006)(4143699003)(6133799003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
 x-ms-exchange-antispam-messagedata-chunkcount: 2
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?PCekV7FkvwMxueZVJHZit149VnhzMihdlaHT7qNSjpjcux6KrvOG1hCc6X?=
- =?iso-8859-1?Q?xVuijQfyaEsVAJsfFGaelJ98D/l04OvbBaVs6Ocl+uhwJF/7Bs7tqZhN54?=
- =?iso-8859-1?Q?FJUdrfulqNRr6beNsLlm+yGBDZ6Ug1qb7MUEC+EL8RSIN3Y7qQurpf9i/Q?=
- =?iso-8859-1?Q?JQ6eZfphQhrW6CNIn4wFrRydDVFRA8g79ylMviNYXT76OSrFqWILOlSDzu?=
- =?iso-8859-1?Q?jzUrMPDgD7X2D/9Gg+AO2v49WOnrzbHXtOBqRhGRzsolbjhnH9PZjSXj5s?=
- =?iso-8859-1?Q?yrx8gzpVb/tDFMzM2Ctp+CYIobdmfQuxXMdnqYHkIfgsGpgTHORYTmISk1?=
- =?iso-8859-1?Q?iREplqXDgcFck3vgXoatKDgJowEZrJXNLWOr/9Bf0rF8fT49VP2ZhrePjI?=
- =?iso-8859-1?Q?HRqz6tNBsGVpy0oi8ZajWLwYzmDquGSAwkn++wOp2epUq5Tc6WoWmw/7Vu?=
- =?iso-8859-1?Q?+Ja3byBzG5KUox5NmTkArK+exOjefxq7mDW41a+AaZQRd0MTrLl/0NUggY?=
- =?iso-8859-1?Q?2WRt6MQ22Dk0OohhHZRcF2UolmQvRKBCtqtIJNE0KmXC2dqAQZ0n2KluXe?=
- =?iso-8859-1?Q?k204Jv2KTuHuP5ugYsjfVhXbQ53OXkntsqA6t9718LkfCKtwVtbGuuBnQG?=
- =?iso-8859-1?Q?t/jeU7bV4kmcCLFrK10druisjmTPeArkBNmDh/i2TkBtGmpqakEwp4KIPi?=
- =?iso-8859-1?Q?1KwkEHQTT91bU3Q0Hrk29MO8ZHUUD1gPczpro4FxrLhBJ03hLsR5oZPst5?=
- =?iso-8859-1?Q?oJdHEh63NJYPeMqVuSmI5pRENJM/VIanL0njkmX1m3ucSjbptj2olRmo1e?=
- =?iso-8859-1?Q?Jieu/r0zaeyxmI7+IjpZXBMWaW6WbdAmRpR2coqSIaMsgW1YWnZCfJ6fEi?=
- =?iso-8859-1?Q?wsWfPNQIh86YgyLH7pb7gSXF9qg6gbthev72nAXzGTzEmUsm54HYDMUrtx?=
- =?iso-8859-1?Q?ex56WI2E1b4bNcEvN7jvQ75BZ6PwkiFnNZ3o5ZcYUrzcVm6DOVZo5mNnr5?=
- =?iso-8859-1?Q?jEtlq1e6x+kGTuOcVmSfhycAALLIuhEw4iiIImZc/c5o9B/t9/UY5GGFY8?=
- =?iso-8859-1?Q?hJ4PG9s2LAPHnmdl0K0Sz3Vj1o4e7Z4FwwV6ni1Ff2qDy2UjQyVCbHMNHX?=
- =?iso-8859-1?Q?62Vj2dsMmBo/0cp4TC02ODWsiY2yOGRuQyUMDb4bvYtMKsLGNzmAS4dPzU?=
- =?iso-8859-1?Q?Nba5oqYv+vnddNjl99GwSyGxoDhiPSdwHntKpVx4NFRbL0HFGcKmmtuOnH?=
- =?iso-8859-1?Q?0FUsX24C2JR64KXzBb0r8fX19UZeCncaVUgGiHlXxbfRC1siJUJdVish/f?=
- =?iso-8859-1?Q?8e+JfS08FeIxboUDJKEiOpTUuUPPEH06HfbH99S/RYhWcwbgkDuOn8e/eC?=
- =?iso-8859-1?Q?QC4tx/VlrrLBkvC2TL7GfRwrUYo86v9NR0o5UENEP64n8nrGtOAOMK9cVX?=
- =?iso-8859-1?Q?PJGSsQrj70NCua5FOdhWpFNh4drFJHjw4w6r2gOCUTp8GnrhzqYveSl1gj?=
- =?iso-8859-1?Q?V6UdbCLcYtur4EBbN8WTpOpPov6sSc7fSjumj5euRPe4F5YjgOZ3iTtdVM?=
- =?iso-8859-1?Q?1uixDug/Uk4uf54wnBXoAyKS7HXFVU+rKbmTPaGdei+AtLiC6HOMoTDSfi?=
- =?iso-8859-1?Q?nVoS2cKGmZt+9q5CizKEITkP+Rk555E294SDQsZrvf342hiiOVS8mBrfX2?=
- =?iso-8859-1?Q?cRP7HFINX3RTZf05Oc0/Mvt4856zwYeo83KkV7P8fdb8BwzgZehkjsHZQV?=
- =?iso-8859-1?Q?yFm0YKhyQrniZgUnPNDFJx17ceIt1jTfrCAQM1Z2ZXTlphLRpCCYwQHhjG?=
- =?iso-8859-1?Q?B76TTZuKkf6UTxyRapv56bawW9/6dOmrLrzkfMX1DysMQFwU5ERDKrosQ6?=
- =?iso-8859-1?Q?k/?=
-x-ms-exchange-antispam-messagedata-1: Cz+JALz76I8rUx0xn6dyIHjh+X/HtjJU1JOukw9XcgsYjJke4IC5szNN
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?arf2c6zL3ubk8a1jKd0XmI6DfjkyXM72LezUA3xPxa1rdv7LaIVA2dLlAI?=
+ =?iso-8859-1?Q?XyFopPwsEh9fsFn5GwkbVNe831d3M70gtT6JNqwOdsXwyGm1i82E16uMpV?=
+ =?iso-8859-1?Q?ghyG+ESskPCes6m9ByDHw76chWPLZ/V5biQ9L2Oq/2fEMZqXJzXJG8N3hv?=
+ =?iso-8859-1?Q?zOLOEAbkSMwe915w1yFv8GupmESX0TlfIiyafXe5JrVKY3d8xITpSotH13?=
+ =?iso-8859-1?Q?QTM4TiPTbdothHuPkvKr+QBHJ4YFvMRXPJC5YIk9X474n2zIpr94sIOOai?=
+ =?iso-8859-1?Q?uIkmBVWcUdKZcMSLxZRE0LI+D2xgIR/9CYC7SdyCzqgymqdZ47fHVnqZO0?=
+ =?iso-8859-1?Q?7MDrDLdjs25gaoKhiNRy8JpqQakEK6ZDKaWbufeAQWPbNp2W28Zy3i/3Dm?=
+ =?iso-8859-1?Q?6dsvl4G2yOM3K3UEpL8nqNHQ4UGJKOgHOC+uKGSGVmIhbrb6etYQJ8qjEW?=
+ =?iso-8859-1?Q?tU3a/C+qBFHMYsf+U7JUIezf18uAJqdk/zQC1Lg4xIUEjoq0foySLu/Oe4?=
+ =?iso-8859-1?Q?WWp6h8PR2cWpoF30ochX3V7wNl7tlF1XOeUKuWwfu1pgC/OGoTHPbTW72v?=
+ =?iso-8859-1?Q?EtqdMpMuyOqKpCeKoUXDcBkXJVz9bCzYCvIzH7y6l6X8O2BPtWAxlXyQ0T?=
+ =?iso-8859-1?Q?67lWRceBkITW8SOSlbz/FV6O9rLZsFChZYolaoGyn1R2E497CYAlqX//It?=
+ =?iso-8859-1?Q?l+oZF3YxewAfaa6da+tmdB54eFnBsx/ZJQYFZiBuQV7+SsXMek9HGVsi67?=
+ =?iso-8859-1?Q?xc5s3lFl6FJzRP5lCGDS2v+2zvwVZSBhDNFNbfGB9ujset79g+1tCE24a3?=
+ =?iso-8859-1?Q?0/WAqDRvpRugYs6VSszPGAPXSannN+5dcbd/ustG9ifXcFNE7CrmpfwI8L?=
+ =?iso-8859-1?Q?L9yvjEpW1RsH47GYL5CBJjiNNbIoCiWNXais1O4vTzlaSobMi1XG5ZJJtr?=
+ =?iso-8859-1?Q?3MlwhI+c7ST2cCHXssa8ns6NOP63LF+22IxvEzr/klr1NX2dgUT5zK4TBR?=
+ =?iso-8859-1?Q?Gy7m1jDsTM+0tsuwoVXd5LSoz3fDyCi5yAfvM3727rEQUxx14l3RQwUJqB?=
+ =?iso-8859-1?Q?G9NBWVL4Eui4lLBmq4saqgJKjwiess0UmCO2x6fuuev4/36Y9YHUz6BlEY?=
+ =?iso-8859-1?Q?ml1K2TAlFsue0ur2V1KjVZKNtwfCcITOkR5wOwipA0gMFiu7mmKbxG32ZM?=
+ =?iso-8859-1?Q?3oTDgpg/g+9Adwv6eWoeq7427+Y2yRILyUo3LSehUbMnmFMdkMAlP3aAp3?=
+ =?iso-8859-1?Q?oocJnB6pPnwantocBnycPVlfj1a4qCPb0qZC3SaIq7s2n6OVoqI2Y8d1ZM?=
+ =?iso-8859-1?Q?9KbZ8PwPiO8kPBM8k5M4OmQ6q1GMSHv49wPkFr1X/1j7WaB4g0dM3nenQU?=
+ =?iso-8859-1?Q?+K6ImyxnYPdWymtIRCbpJuiJ9Ge5LegdfJQdzvMgSHRgEjgAqqW27F5WTx?=
+ =?iso-8859-1?Q?yONBTE99LtGXDLiD8KYZ35LeM3R0Xqy6RkfugaNpMdoeM+pZlTEMCQ2GKk?=
+ =?iso-8859-1?Q?RPkE55XjJtPeETiE+2lgLT5T7FUJ3Q9P9gI69M2kWw86wfQrjOM3rfJyT+?=
+ =?iso-8859-1?Q?JDU1NUAm27qp3pjK5p0jNjiAq0Z0Q5AfKWi3PVztsofouSXKSi75tJEuRk?=
+ =?iso-8859-1?Q?NVJunDbbvR/nnAQiQA6mU5wwYaeyIYXyDqv0r9A/PqRcgx15fQZr5navd2?=
+ =?iso-8859-1?Q?R9JPiJVvCRgp+N1/iA884A6gW8Vqcg0aRKqejkp0brJuBziD3Di7UTmy3n?=
+ =?iso-8859-1?Q?2kp7vycc8iTH1+hXyTN8E0guD3cPl2lesmJEf/2O0Th59s2+38mbCLoGVA?=
+ =?iso-8859-1?Q?BK/w9Nmh8awYDtGdXzoUa5YYmdQANHrluDcuiJN5f6RvEJpvla1mEfk5HD?=
+ =?iso-8859-1?Q?pG?=
+x-ms-exchange-antispam-messagedata-1: oC9QcaXMUgn1OCfBMN78bcDWmuiG33AXCtJhlwECHmOK8mI8fTkUEFCj
 Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
 X-OriginatorOrg: leica-geosystems.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
 X-MS-Exchange-CrossTenant-AuthSource: AM0PR06MB4148.eurprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 43031fed-1eef-46c4-4f06-08ded9c90ec1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Jul 2026 12:37:49.2004
+X-MS-Exchange-CrossTenant-Network-Message-Id: 335ca7dd-0410-43ad-5e4f-08ded9c95d94
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Jul 2026 12:40:01.4327
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
 X-MS-Exchange-CrossTenant-id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ObWLMNeaEfxiYJTs3PwTIa7O5AVG0BI8+fC0/iPonWMjRrqLGMBB+BCOznuGrLYn65VFg69+TgAcMEhzgkXxdZvq9Mw7KryXw0KNKiIyS4JPt7dqvggtl1FVNsThx6qv
+X-MS-Exchange-CrossTenant-userprincipalname: sA6RMJTCZ99t08UNJ3qwEOzopfYiqs4ah4ojcnjv1a3KDHeXUfl2rH2BILZHh1t9h90UrCtAGVkdkFO1lhcnyoUjukmm0aATbli32n4rJ69xrQUffSJajl3SRZifOMam
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR06MB9993
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260704_053755_178474_D4C06C02 
-X-CRM114-Status: GOOD (  19.74  )
+X-CRM114-CacheID: sfid-20260704_054004_645252_C9B154A2 
+X-CRM114-Status: GOOD (  20.32  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -146,9 +146,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  the administrator of that system for details.
  
  Content preview:  Hoi Sascha, > On 2026-06-16 14:49, Johannes Schneider wrote:
-    > > The BL32 fw-external blob is loaded into DRAM by the PBL and then > >
-    SHA-256-verified inside get_builtin_firmware_ext(). The verify runs > > in
-    PB [...] 
+    > > barebox's PBL ships a generic-C sha256_transform() that runs roughly
+   > > 1.6 MB/s on a Cortex-A53. Callers that hash MB-scale blobs in the PBL
+   > > [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -156,9 +156,7 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  ---- ---------------------- --------------------------------------------------
  -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/, no
                              trust
-                             [52.101.66.34 listed in list.dnswl.org]
-  0.0 RCVD_IN_MSPIKE_H2      RBL: Average reputation (+2)
-                             [52.101.66.34 listed in wl.mailspike.net]
+                             [52.101.66.12 listed in list.dnswl.org]
  -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
  -0.0 SPF_PASS               SPF: sender matches SPF record
   0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
@@ -169,6 +167,8 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
                              envelope-from domain
  -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
                              [score: 0.0000]
+  0.0 RCVD_IN_MSPIKE_H2      RBL: Average reputation (+2)
+                             [52.101.66.12 listed in wl.mailspike.net]
  -0.0 DMARC_PASS             DMARC pass policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -183,9 +183,9 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: F004B2026D8
+X-Rspamd-Queue-Id: A1E542026DA
 X-Spamd-Result: default: False [-7.91 / 15.00];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	ARC_ALLOW(-1.00)[microsoft.com:s=arcselector10001:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[leica-geosystems.com,reject];
@@ -199,15 +199,15 @@ X-Spamd-Result: default: False [-7.91 / 15.00];
 	FORGED_RECIPIENTS(0.00)[m:sascha@saschahauer.de,m:barebox@lists.infradead.org,s:lore@pengutronix.de];
 	RCPT_COUNT_TWO(0.00)[2];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER(0.00)[johannes.schneider@leica-geosystems.com,barebox-bounces@lists.infradead.org];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
 	TO_DN_EQ_ADDR_SOME(0.00)[];
+	FORGED_SENDER(0.00)[johannes.schneider@leica-geosystems.com,barebox-bounces@lists.infradead.org];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_IN_DNSWL_NONE(0.00)[52.101.66.34:received];
+	RCVD_IN_DNSWL_NONE(0.00)[52.101.66.12:received];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -219,96 +219,119 @@ X-Spamd-Result: default: False [-7.91 / 15.00];
 	DKIM_TRACE(0.00)[lists.infradead.org:+,leica-geosystems.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Stat-Signature: wsw8sshmn864xs59z7ju6x3bymgsr9g8
+X-Stat-Signature: t8s7f4ek3exthjtwghyqdxbbmzae4c63
 
 Hoi Sascha,=0A=
 =0A=
-=0A=
+ =0A=
 > On 2026-06-16 14:49, Johannes Schneider wrote:=0A=
-> > The BL32 fw-external blob is loaded into DRAM by the PBL and then=0A=
-> > SHA-256-verified inside get_builtin_firmware_ext(). The verify runs=0A=
-> > in PBL phase 1 with the MMU off and D-cache cold, walking ~720 KiB=0A=
-> > through uncached DRAM accesses; on a Cortex-A53 this costs around=0A=
-> > 2 s of pre-BL31 wall-clock on every boot.=0A=
+> > barebox's PBL ships a generic-C sha256_transform() that runs roughly=0A=
+> > 1.6 MB/s on a Cortex-A53. Callers that hash MB-scale blobs in the PBL=
+=0A=
+> > -- e.g. the fw-external SHA-256 verify on i.MX8M, ~720 KiB of BL32 --=
+=0A=
+> > spend hundreds of ms in the transform even with the D-cache warm.=0A=
 > >=0A=
-> > The verify is the only thing anchoring the BL32 content to the=0A=
-> > signed PBL: HABv4 on i.MX8M only signs and loads what fits in=0A=
-> > on-chip SRAM (=3D the PBL), and BL31/BL32 reach DRAM via PBL-driven=0A=
-> > copies, so skipping the SHA-256 would be a security regression.=0A=
+> > Wire the asm core in arch/arm/crypto/sha2-ce-core.S into the PBL link=
+=0A=
+> > and expose it through a new sha256_transform_blocks() entry point.=0A=
+> > The asm has an internal multi-block loop; a single call amortises the=
+=0A=
+> > prologue (round-constant load, state load) over the whole input, which=
+=0A=
+> > makes the difference between ~200 ms (per-block calls) and ~5 ms=0A=
+> > (batched) on the BL32 verify.=0A=
 > >=0A=
-> > Turn on MMU + D-cache once the DRAM is populated and right before=0A=
-> > the SHA-256 verify + BL31/BL32 memcpy run, and drop the MMU again=0A=
-> > right before the BL31 entry (BL31 expects MMU off). Mirrors the=0A=
-> > Rockchip handling in commits f2ae1a4a85 ("ARM: rockchip: atf:=0A=
-> > enable MMU in PBL") and a0ef3a1b5c ("ARM: rockchip: atf: pass=0A=
-> > correct memsize to mmu_early_enable()").=0A=
+> > Rewire sha256_update()'s bulk path to call sha256_transform_blocks()=0A=
+> > with the remaining block count rather than looping over a single-block=
+=0A=
+> > transform. The generic-C path gets a trivial blocks-wrapping shim so=0A=
+> > both code paths share the same caller-side API.=0A=
 > >=0A=
-> > Measured on i.MX8MM and i.MX8MP (Cortex-A53, ~720 KiB BL32 blob):=0A=
-> > the BL32 verify drops from ~2 s to ~300 ms (generic-C SHA-256 in=0A=
-> > both cases, the difference is the D-cache state) and the BL31=0A=
-> > early-init also benefits from the warm cache (~200 ms saved).=0A=
+> > The asm needs two link-time constants (sha256_ce_offsetof_count and=0A=
+> > sha256_ce_offsetof_finalize) which we provide locally rather than=0A=
+> > pulling in sha2-ce-glue.c -- the glue drags crypto-API and=0A=
+> > kernel_neon_begin shims that the PBL has no use for.=0A=
+> >=0A=
+> > Measured on i.MX8MM and i.MX8MP, ~720 KiB SHA-256 verify with MMU on:=
+=0A=
+> >   ~300 ms (generic-C)=0A=
+> >   -> 17 ms (crypto-ext, single block per call)=0A=
+> >   -> 3-5 ms (crypto-ext, batched).=0A=
+> > Both crypto-ext savings carry over with MMU off too, just shifted up=0A=
+> > by the uncached-DRAM read cost.=0A=
 > >=0A=
 > > Assisted-by: Claude:claude-opus-4-7=0A=
 > > Signed-off-by: Johannes Schneider <johannes.schneider@leica-geosystems.=
 com>=0A=
 > > ---=0A=
-> > --- a/arch/arm/mach-imx/atf.c=0A=
-> > +++ b/arch/arm/mach-imx/atf.c=0A=
-> > @@ -20,6 +20,7 @@=0A=
-> >  #include <mach/imx/xload.h>=0A=
-> >  #include <mach/imx/snvs.h>=0A=
-> >  #include <pbl.h>=0A=
-> > +#include <asm/mmu.h>=0A=
-> >=0A=
-> >  static void imx_adjust_optee_memory(void **bl32, void **bl32_image, si=
-ze_t *bl32_size)=0A=
-> >  {=0A=
-> > @@ -187,6 +188,9 @@=0A=
-> >                    "r" (tfa_dest - 16) :=0A=
-> >                    "cc");=0A=
-> >=0A=
-> > +     /* BL31 expects MMU off. */=0A=
-> > +     mmu_disable();=0A=
-> > +=0A=
-> >       /*=0A=
-> >        * If enabled the bl_params are passed via x0 to the TF-A, except=
- for=0A=
-> >        * the i.MX8MQ which doesn't support bl_params yet.=0A=
-> > @@ -284,6 +288,12 @@=0A=
-> >       imx8m_setup_snvs();=0A=
-> >       imx8mm_load_bl33(bl33);=0A=
-> >=0A=
-> > +     /* Cache DRAM for the BL32 verify + BL31/BL32 memcpy that follow.=
- */=0A=
-> > +     mmu_early_enable(MX8M_DDR_CSD1_BASE_ADDR,=0A=
-> > +                      imx8m_barebox_earlymem_size(32),=0A=
-> > +                      MX8M_DDR_CSD1_BASE_ADDR +=0A=
-> > +                      imx8m_barebox_earlymem_size(32) - OPTEE_SIZE);=
+> >  arch/arm/crypto/Makefile |  3 ++=0A=
+> >  crypto/Kconfig           | 12 ++++++++=0A=
+> >  crypto/sha2.c            | 66 ++++++++++++++++++++++++++++++++++++----=
 =0A=
+> >  3 files changed, 75 insertions(+), 6 deletions(-)=0A=
+> >=0A=
+> > diff --git a/arch/arm/crypto/Makefile b/arch/arm/crypto/Makefile=0A=
+> > index 55b3ac0538..72d4bd77c0 100644=0A=
+> > --- a/arch/arm/crypto/Makefile=0A=
+> > +++ b/arch/arm/crypto/Makefile=0A=
+> > @@ -15,6 +15,9 @@ sha1-ce-y :=3D sha1-ce-glue.o sha1-ce-core.o=0A=
+> >  obj-$(CONFIG_DIGEST_SHA256_ARM64_CE) +=3D sha2-ce.o=0A=
+> >  sha2-ce-y :=3D sha2-ce-glue.o sha2-ce-core.o=0A=
+> >=0A=
+> > +# Reuse the asm core (glue is provided inline in crypto/sha2.c).=0A=
+> > +pbl-$(CONFIG_PBL_DIGEST_SHA256_ARM64_CE) +=3D sha2-ce-core.o=0A=
+> > +=0A=
+> >  quiet_cmd_perl =3D PERL    $@=0A=
+> >        cmd_perl =3D $(PERL) $(<) > $(@)=0A=
+> >=0A=
+> > diff --git a/crypto/Kconfig b/crypto/Kconfig=0A=
+> > index 528e9a0d22..3dfb316b32 100644=0A=
+> > --- a/crypto/Kconfig=0A=
+> > +++ b/crypto/Kconfig=0A=
+> > @@ -107,6 +107,18 @@ config DIGEST_SHA256_ARM64_CE=0A=
+> >         Architecture: arm64 using:=0A=
+> >         - ARMv8 Crypto Extensions=0A=
+> >=0A=
+> > +config PBL_DIGEST_SHA256_ARM64_CE=0A=
+> > +     bool "SHA-256 in PBL via ARMv8 Crypto Extensions"=0A=
+> > +     depends on CPU_V8 && PBL_IMAGE=0A=
+> > +     help=0A=
+> > +       Use ARMv8 Crypto Extensions (sha256h/sha256h2/sha256su0/sha256s=
+u1)=0A=
+> > +       for the SHA-256 transform inside the PBL. Roughly 100x faster t=
+han=0A=
+> > +       the generic-C transform; for callers that hash large blobs (e.g=
+.=0A=
+> > +       fw-external SHA-256 verifies) this is the difference between te=
+ns=0A=
+> > +       of ms and hundreds. Requires Cortex-A53 or later with the optio=
+nal=0A=
+> > +       Crypto Extensions feature.=0A=
+> > +=0A=
+> > +=0A=
+> >  endif=0A=
+> >=0A=
+> >  config CRYPTO_PBKDF2=0A=
+> > diff --git a/crypto/sha2.c b/crypto/sha2.c=0A=
 > =0A=
-> mmu_early_enable() only takes two arguments.=0A=
+> Don't modify this file for adding a special purpose sha256=0A=
+> implementation.=0A=
 > =0A=
-> Please add a new imx8m_mmu_early_enable() function usable for all i.MX8M =
-to=0A=
-> enable the MMU.=0A=
+> Instead create a pbl/sha256.c where you have a=0A=
 > =0A=
-> We already have this snippet elsewhere:=0A=
+> pbl_sha256(void *buf, size_t size)=0A=
 > =0A=
->         endmem =3D MX8M_DDR_CSD1_BASE_ADDR;=0A=
->         if (cpu_is_mx8mn())=0A=
->                 endmem +=3D imx8m_barebox_earlymem_size(16);=0A=
->         else=0A=
->                 endmem +=3D imx8m_barebox_earlymem_size(32);=0A=
-> =0A=
-> Which could help implementing this function.=0A=
+> In this pick the best available implementation.=0A=
 > =0A=
 > Sascha=0A=
->=0A=
+> =0A=
 =0A=
-Ok, done so and merged into one v2 patchset together with the PIO+MMU / SDM=
-A chain=0A=
-the new version of this patch is now this one:=0A=
-https://lists.infradead.org/pipermail/barebox/2026-July/056905.html=0A=
+Ok, done too - and also merged into the v2 patchstack with the PIO+MMU / SD=
+MA,=0A=
+since the sha-ing also wants the mmu enable commit.=0A=
+This patches follow up version is this one here:=0A=
+https://lists.infradead.org/pipermail/barebox/2026-July/056908.html=0A=
 =0A=
 =0A=
 gru=DF=0A=
