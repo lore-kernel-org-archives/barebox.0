@@ -1,118 +1,143 @@
-Delivery-date: Sat, 04 Jul 2026 14:31:43 +0200
+Delivery-date: Sat, 04 Jul 2026 14:38:23 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wfzX5-000C6G-2D
+	id 1wfzdX-000CAp-1W
 	for lore@lore.pengutronix.de;
-	Sat, 04 Jul 2026 14:31:43 +0200
+	Sat, 04 Jul 2026 14:38:23 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 0A2332026DB
-	for <lore@pengutronix.de>; Sat, 04 Jul 2026 14:31:43 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id F004B2026D8
+	for <lore@pengutronix.de>; Sat, 04 Jul 2026 14:38:22 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=DpPGMfSU;
-	dkim=pass header.d=leica-geosystems.com header.s=selector1 header.b=BfKvLmvF;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=2bybb5nZ;
+	dkim=pass header.d=leica-geosystems.com header.s=selector1 header.b="rrEzo/dv";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
 	dmarc=pass (policy=reject) header.from=leica-geosystems.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
-	:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
+	Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Message-ID:Date
+	:Subject:CC:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=43KiURPQ5ThGUO+X+kgQUu/X25Tf3vPkCxYVghxqvyA=; b=DpPGMfSUrkfSkw7aLtEenxdMBq
-	t499AnJ4Qe9s1klByeVlr9CKL/YRM43cow0+ux2VWwc2/eY3przLyW7JJMvOqpeiD5dqnFB32J0jg
-	NDT/SGHlZJLI4H1YPjFt2Sy6sCcmVZB4X4XW6SD5y8l3bIqOgQz5MwDOD7GCRFzNWwlCDMXTakrIj
-	2z30R+Dw5TDy/K+K1eVzi+NxwIgRcm3etgM4WVpJNo8KuyKgIidkQI2x2Mu4EVvXOWMe0JaOMbOaC
-	4oXWOF8syaj4wz6MDocIYU830t9SK5pyg+iBbuBX3skEGARiBu4AlI47X80m/rktC27/knhAssxwZ
-	KuUDDrJA==;
+	bh=kdTTlo3O2CU65zOD9QIjctTOt0kA3DjYS5ekL8foPFY=; b=2bybb5nZ/bNe4LCncYzngkgXuF
+	LFJ4SjdVKGdj0W3/onvH7JxYhKGJBFRhfafbYDgrkeC6Qfujhj4QgGt9mr4f212Nyf5c0Da0Iu87/
+	D1q9ap2WDPf+nIQ3crss7Ay6uVrWi4JwIFz28Cil1+bQkVo2RiwBQvCkrj77Eik4DKbiyZVVj0BOq
+	VrMzIjEW+nGDacjNkzESYmxiNLyhvSqwJrbGGDjulQ3V3oduu2NsNMfS3wKwfWKn3JBRnXvuuAVTp
+	Z8kzqWxbhbAruQlKnG9Rh+T+UUiZrNk50Aj0aJ7FQUiz5JbqUcqhrB+yqTlhp8/aTQ76R3EQDPvNg
+	WjNo7aEg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wfzSF-00000008Q0I-3WcN;
-	Sat, 04 Jul 2026 12:26:43 +0000
-Received: from mail-norwayeastazlp170130007.outbound.protection.outlook.com ([2a01:111:f403:c20f::7] helo=OSPPR02CU001.outbound.protection.outlook.com)
+	id 1wfzd7-00000008RDW-1b2F;
+	Sat, 04 Jul 2026 12:37:57 +0000
+Received: from mail-northeuropeazon11012034.outbound.protection.outlook.com ([52.101.66.34] helo=DUZPR83CU001.outbound.protection.outlook.com)
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wfzSC-00000008PwE-2Kxf
+	id 1wfzd5-00000008RD8-0U6d
 	for barebox@lists.infradead.org;
-	Sat, 04 Jul 2026 12:26:42 +0000
+	Sat, 04 Jul 2026 12:37:56 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NpHBWCYKh+QQDzMW971ycVddpuaGUrhmi7guOK/JLyDpUjz/LiqCRXsrhZuDogH0Yc02lsXmq2tS8QO5FTu42Z8HrH0u1XwxksjuV6RE4GaLriAhRGHKZZLwjjCbchSJhDgkaQ3/CWZ4GjRlHO0Lg31nlhOzgi+Smz2LCBmkaS+JavSYfbgziH1r7dHe99pSHhpoKULvSETwxkXdeHOFdmJNPvlv7CAMvrxiONu+t+4XOp5R4FBNK8oyzc2qIVGZbKdszjvJhHAuyZmgOJRebKOmftQP0vYxjXRqPlJRuJSmLG2E69jr+Zkab1Wq8WeB0RQx6+9Gt9WFhFYAyAHTpg==
+ b=TTx5tCaCe72uz2QtfEoAoqHJywjSxOKl1uZYotvi0N+ei+5ObJ2K5VlTiwxBOYa+MO0YKyRkDVdQgi5ZsPqK0adMZqVRmyS8VgivhreDdkKm6YvNFMufsiWaFNFZ+kzyqBtTFwPHi8lcTfdqWeE0yMbSX5ObfLAw3P+4nufcHKz2EGcu+feZV+CzLwMqW6Gv835BnLO2ZwuaBnWnj05j5OCSgcckDPDauXIYNpvnd+zUzs9iMBxL0dlVMMDo2D+HEp+Q0yt7wgmQ/qqEb9IFKH3tq1gVrnyFZYfk+72MQqwi3FO8N4JPmbxb22fS22PA0fWteclEsKYeEIKl75OdAw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=43KiURPQ5ThGUO+X+kgQUu/X25Tf3vPkCxYVghxqvyA=;
- b=Z4t+tHwGmVe5u8XppdFsxkd1S7/ayx4k4EvEKrMuKqtN1KiuuVR7utcwnv++xSLa/R8lPlBBAuzY3I+O5OQLvqBMu1UB7XHcD13Y6ZSw1WFs2igRTduP/1f1L2opA118MFR270j4OzgWd5i99r/LUTiEqpEB9pfMuQTOct2SXvArju+KQSMtu6eUakqvoKNH6DIveXr9v8v+LUvtcZpV4kGL3HqQr24CffuxXQQKXLL6fxEEC+rLWJbazCin5KC1HZpO+zTNfF6Az3g/OUBgJjiIHObGoRjOV9BqBhtUbwG0pbiPyWHyb/lNOWYvi09sx1lg8ft/W4l4f8GRweNo4A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 193.8.40.99) smtp.rcpttodomain=lists.infradead.org
- smtp.mailfrom=leica-geosystems.com; dmarc=pass (p=reject sp=reject pct=100)
- action=none header.from=leica-geosystems.com; dkim=none (message not signed);
- arc=none (0)
+ bh=kdTTlo3O2CU65zOD9QIjctTOt0kA3DjYS5ekL8foPFY=;
+ b=ZjmpVd54wHy8hovdUbmRRmoEtdJL/srf29XulpsDwmA2RQxwPE8aKmqynERBclLvvr4clZiMYpsFu9iiDQwW0CUsU3XJuIEz4EalK/nHHsSAYcJH98TMQTJj+WCBr0XNnE8QuDdhtd/0YTVo7A467IAaJofjtpTrsDIc/je0oPFHSifIjlfDtnUHIewBnLqB5WEDGMvPsCLTC7TDdNr9iGfanTEH52si39L5r9GJYshPCMQlAJgLVIgcTNS0rVTWKXJDEvm+JovfaXl3GFQOYErv8+LiPHQvBli/sGLhqvLx8AjIz2r1YFLmYGUa1mZwrNdtt65SMBKZZqeFjU7ilQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=leica-geosystems.com; dmarc=pass action=none
+ header.from=leica-geosystems.com; dkim=pass header.d=leica-geosystems.com;
+ arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=43KiURPQ5ThGUO+X+kgQUu/X25Tf3vPkCxYVghxqvyA=;
- b=BfKvLmvFqpzLEutZ+wdxjx/LR0cIr7RgM2QgYnan+FNrQdwGIyoyZ3u2M551G8m+vwJYiDRo3R3bWtbPIgxsd199fcjfuwDTKvwSRLd6hPDSPpy0qEBme2C7Luuns0H90o4q4apXqmbexnW4e1W/qjMUrMcondmomt27PzVGgus=
-Received: from DU2P250CA0029.EURP250.PROD.OUTLOOK.COM (2603:10a6:10:231::34)
- by VI0PR06MB9144.eurprd06.prod.outlook.com (2603:10a6:800:246::8) with
+ bh=kdTTlo3O2CU65zOD9QIjctTOt0kA3DjYS5ekL8foPFY=;
+ b=rrEzo/dvqa5ys49m7m1dENTdzlCH+bS/eaQlCOPx5Eo53Hi2JFuQEfAvX4JLv+wVL4Muc76TRuDhgSQpxMgj8zDzCRc7DV7mWISqAVMa2QZrQ4ocVt/DOGtIxWcBGzXiXwIKdVU3g8tR2k+T4mRu8e/Qgn2+RuIoUqIH90hMOCQ=
+Received: from AM0PR06MB4148.eurprd06.prod.outlook.com (2603:10a6:208:6a::27)
+ by PA1PR06MB9993.eurprd06.prod.outlook.com (2603:10a6:102:4ee::13) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.10; Sat, 4 Jul
- 2026 12:26:34 +0000
-Received: from DB1PEPF000509EA.eurprd03.prod.outlook.com
- (2603:10a6:10:231:cafe::73) by DU2P250CA0029.outlook.office365.com
- (2603:10a6:10:231::34) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.181.12 via Frontend Transport; Sat, 4
- Jul 2026 12:26:33 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 193.8.40.99)
- smtp.mailfrom=leica-geosystems.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=leica-geosystems.com;
-Received-SPF: Pass (protection.outlook.com: domain of leica-geosystems.com
- designates 193.8.40.99 as permitted sender) receiver=protection.outlook.com;
- client-ip=193.8.40.99; helo=hexagon.com; pr=C
-Received: from hexagon.com (193.8.40.99) by
- DB1PEPF000509EA.mail.protection.outlook.com (10.167.242.68) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.181.6 via Frontend Transport; Sat, 4 Jul 2026 12:26:33 +0000
-Received: from aherlnxbspsrv01.lgs-net.com ([10.61.228.61]) by hexagon.com with Microsoft SMTPSVC(10.0.17763.1697);
-	 Sat, 4 Jul 2026 14:26:30 +0200
-From: Johannes Schneider <johannes.schneider@leica-geosystems.com>
-To: barebox@lists.infradead.org
-Cc: Johannes Schneider <johannes.schneider@leica-geosystems.com>
-Subject: [PATCH v2 06/11] mci: imx-esdhc: support HS400 and HS400ES on i.MX8M
-Date: Sat,  4 Jul 2026 12:26:23 +0000
-Message-ID: <20260704122628.3326142-7-johannes.schneider@leica-geosystems.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260704122628.3326142-1-johannes.schneider@leica-geosystems.com>
-References: <20260704122628.3326142-1-johannes.schneider@leica-geosystems.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.181.11; Sat, 4 Jul
+ 2026 12:37:49 +0000
+Received: from AM0PR06MB4148.eurprd06.prod.outlook.com
+ ([fe80::dae7:3a84:9c7f:c6bc]) by AM0PR06MB4148.eurprd06.prod.outlook.com
+ ([fe80::dae7:3a84:9c7f:c6bc%4]) with mapi id 15.21.0181.010; Sat, 4 Jul 2026
+ 12:37:49 +0000
+From: SCHNEIDER Johannes <johannes.schneider@leica-geosystems.com>
+To: Sascha Hauer <sascha@saschahauer.de>
+CC: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Subject: Re: [PATCH] ARM: i.MX8M: enable MMU in PBL around fw-external BL32
+ verify
+Thread-Topic: [PATCH] ARM: i.MX8M: enable MMU in PBL around fw-external BL32
+ verify
+Thread-Index: AQHc/aGpxJ42UXPGIUu4nz5so1aACrZZ7yIAgAN4BBY=
+Date: Sat, 4 Jul 2026 12:37:49 +0000
+Message-ID: <AM0PR06MB4148CED25B27F40C6BE4C8DCBCF32@AM0PR06MB4148.eurprd06.prod.outlook.com>
+References: <20260616144924.1614561-1-johannes.schneider@leica-geosystems.com>
+ <E1wfBwF-003FZD-0x@saschahauer.de>
+In-Reply-To: <E1wfBwF-003FZD-0x@saschahauer.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM0PR06MB4148:EE_|PA1PR06MB9993:EE_
+x-ms-office365-filtering-correlation-id: 43031fed-1eef-46c4-4f06-08ded9c90ec1
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|23010399003|10070799003|1800799024|38070700021|56012099006|11063799006|4143699003|22082099003|18002099003;
+x-microsoft-antispam-message-info: Ss4Ifx2Nn02kJUSCKFgc+qtivft5XdpU/IGPWfHctCiK8R13TDg6GlVxJSSSOFggA2F2ffOLycqjWxvQSYFmBLH7WaOc38eIm+AdSE9fKIb0kBrI+u5Tj3aJ4QW/OdMapkid75YNzzMp7yOgF42nAx+wem1/qSEiJ6NOmmGvCXI0ydbM6gJZpo7jMeQF+uEhNQUCrpdaJMgrD9ElHIuukkkrFkpvCH+064x4LaxIk6jN+qZ3p/N80qQVcH+e2Oj6H1LPZqeFKxeRADAS6xoLE8KB/pGIJBQsVev3YvQQN/JFOyh2SjcpAHPOLUO1x3lh0Rn5kCUFvq7+E3Sewl0EnsUDW23OvkTJRsCjuFXhQFHiohq1CptfRblJqIJtEHJ1a1pcvQll2SzkOZ3MPTuZML5pqzaE4WpGRBc1otzlejkMek8PnjoQEo0lu5RjSgG3HkECjCNeCJenswrzS099E0OGDUN3AmdJ1e+Xk9T+lgqogyeB00ZMtMdIbuCiMrplc0cau/Sqc2yH4muWDH6oO7hHwIKmgaoPG+uVbZ6zIJAUAHHZCE2sq829B/xwOThNa7q1DJWQCi+xsvDJ1dGcXsmoj9weQa/BkKEhZGQHaWVIIxzfYXR9SoBEv7/et3CE/XKejHZe9k7g7d0U/2e8+LXp4E2WwWdEUGE1juDbrCgVg3asCDVVc/XeODONYPg1LFtC0AqOpFBmTSHI90dWwcO4yWIm10VJ8XXosDsa/ZM=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR06MB4148.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(23010399003)(10070799003)(1800799024)(38070700021)(56012099006)(11063799006)(4143699003)(22082099003)(18002099003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 2
+x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?PCekV7FkvwMxueZVJHZit149VnhzMihdlaHT7qNSjpjcux6KrvOG1hCc6X?=
+ =?iso-8859-1?Q?xVuijQfyaEsVAJsfFGaelJ98D/l04OvbBaVs6Ocl+uhwJF/7Bs7tqZhN54?=
+ =?iso-8859-1?Q?FJUdrfulqNRr6beNsLlm+yGBDZ6Ug1qb7MUEC+EL8RSIN3Y7qQurpf9i/Q?=
+ =?iso-8859-1?Q?JQ6eZfphQhrW6CNIn4wFrRydDVFRA8g79ylMviNYXT76OSrFqWILOlSDzu?=
+ =?iso-8859-1?Q?jzUrMPDgD7X2D/9Gg+AO2v49WOnrzbHXtOBqRhGRzsolbjhnH9PZjSXj5s?=
+ =?iso-8859-1?Q?yrx8gzpVb/tDFMzM2Ctp+CYIobdmfQuxXMdnqYHkIfgsGpgTHORYTmISk1?=
+ =?iso-8859-1?Q?iREplqXDgcFck3vgXoatKDgJowEZrJXNLWOr/9Bf0rF8fT49VP2ZhrePjI?=
+ =?iso-8859-1?Q?HRqz6tNBsGVpy0oi8ZajWLwYzmDquGSAwkn++wOp2epUq5Tc6WoWmw/7Vu?=
+ =?iso-8859-1?Q?+Ja3byBzG5KUox5NmTkArK+exOjefxq7mDW41a+AaZQRd0MTrLl/0NUggY?=
+ =?iso-8859-1?Q?2WRt6MQ22Dk0OohhHZRcF2UolmQvRKBCtqtIJNE0KmXC2dqAQZ0n2KluXe?=
+ =?iso-8859-1?Q?k204Jv2KTuHuP5ugYsjfVhXbQ53OXkntsqA6t9718LkfCKtwVtbGuuBnQG?=
+ =?iso-8859-1?Q?t/jeU7bV4kmcCLFrK10druisjmTPeArkBNmDh/i2TkBtGmpqakEwp4KIPi?=
+ =?iso-8859-1?Q?1KwkEHQTT91bU3Q0Hrk29MO8ZHUUD1gPczpro4FxrLhBJ03hLsR5oZPst5?=
+ =?iso-8859-1?Q?oJdHEh63NJYPeMqVuSmI5pRENJM/VIanL0njkmX1m3ucSjbptj2olRmo1e?=
+ =?iso-8859-1?Q?Jieu/r0zaeyxmI7+IjpZXBMWaW6WbdAmRpR2coqSIaMsgW1YWnZCfJ6fEi?=
+ =?iso-8859-1?Q?wsWfPNQIh86YgyLH7pb7gSXF9qg6gbthev72nAXzGTzEmUsm54HYDMUrtx?=
+ =?iso-8859-1?Q?ex56WI2E1b4bNcEvN7jvQ75BZ6PwkiFnNZ3o5ZcYUrzcVm6DOVZo5mNnr5?=
+ =?iso-8859-1?Q?jEtlq1e6x+kGTuOcVmSfhycAALLIuhEw4iiIImZc/c5o9B/t9/UY5GGFY8?=
+ =?iso-8859-1?Q?hJ4PG9s2LAPHnmdl0K0Sz3Vj1o4e7Z4FwwV6ni1Ff2qDy2UjQyVCbHMNHX?=
+ =?iso-8859-1?Q?62Vj2dsMmBo/0cp4TC02ODWsiY2yOGRuQyUMDb4bvYtMKsLGNzmAS4dPzU?=
+ =?iso-8859-1?Q?Nba5oqYv+vnddNjl99GwSyGxoDhiPSdwHntKpVx4NFRbL0HFGcKmmtuOnH?=
+ =?iso-8859-1?Q?0FUsX24C2JR64KXzBb0r8fX19UZeCncaVUgGiHlXxbfRC1siJUJdVish/f?=
+ =?iso-8859-1?Q?8e+JfS08FeIxboUDJKEiOpTUuUPPEH06HfbH99S/RYhWcwbgkDuOn8e/eC?=
+ =?iso-8859-1?Q?QC4tx/VlrrLBkvC2TL7GfRwrUYo86v9NR0o5UENEP64n8nrGtOAOMK9cVX?=
+ =?iso-8859-1?Q?PJGSsQrj70NCua5FOdhWpFNh4drFJHjw4w6r2gOCUTp8GnrhzqYveSl1gj?=
+ =?iso-8859-1?Q?V6UdbCLcYtur4EBbN8WTpOpPov6sSc7fSjumj5euRPe4F5YjgOZ3iTtdVM?=
+ =?iso-8859-1?Q?1uixDug/Uk4uf54wnBXoAyKS7HXFVU+rKbmTPaGdei+AtLiC6HOMoTDSfi?=
+ =?iso-8859-1?Q?nVoS2cKGmZt+9q5CizKEITkP+Rk555E294SDQsZrvf342hiiOVS8mBrfX2?=
+ =?iso-8859-1?Q?cRP7HFINX3RTZf05Oc0/Mvt4856zwYeo83KkV7P8fdb8BwzgZehkjsHZQV?=
+ =?iso-8859-1?Q?yFm0YKhyQrniZgUnPNDFJx17ceIt1jTfrCAQM1Z2ZXTlphLRpCCYwQHhjG?=
+ =?iso-8859-1?Q?B76TTZuKkf6UTxyRapv56bawW9/6dOmrLrzkfMX1DysMQFwU5ERDKrosQ6?=
+ =?iso-8859-1?Q?k/?=
+x-ms-exchange-antispam-messagedata-1: Cz+JALz76I8rUx0xn6dyIHjh+X/HtjJU1JOukw9XcgsYjJke4IC5szNN
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 04 Jul 2026 12:26:30.0291 (UTC) FILETIME=[579B0630:01DD0BB0]
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB1PEPF000509EA:EE_|VI0PR06MB9144:EE_
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: 1c754e4f-89fa-43a7-f0d9-08ded9c77c24
-X-SET-LOWER-SCL-SCANNER: YES
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|36860700016|1800799024|23010399003|82310400026|11063799006|56012099006|6133799003|18002099003|22082099003|3023799007;
-X-Microsoft-Antispam-Message-Info: 4myDtsaj10P+IiyMSVrTiC/2xCHkuNi3uax1XWg1m82ukU84RqBg12sgq0d8Jr+m2ZvO/GQnwPh/Nv+TFDc6liZpMIu6g11Tc5oSf+yryqzwcDpsuHHhnZaVgx81qzfSId9U1MZ8H/I12zSwPYKkWRCxN3D5NiAheucxAjPhOogQs5ZgoNW8zOmiDvjheFNxYqehy0nTsm8ayAH/CqO9/W8PVf2D/I5MYSRS73Ur978kcq18q2QStJFcx0jcE8ua0TigqmxATyvYG5Jhnz2OeRG+wxK7QJupZmlo0sySOiicYGnwVn7b6wbFZUp5i8AoDjnOsCEQLVhN2Ms22KkCUWHpJ8ZH1iGSO58iPYtMauURVSOnOIRwlZ2o6HbUJw6qCSdIKfBFEGhN7Fc/l2X2Sn+b5BpEZrBqRo0PdtKuyl187npTr6LKiE4T9ZlQsSsCb8NlNZ8/7HfWC7/qtNWzDoZzYv/ntvzk+R2qeajeFYwXi0W7irS70lLUJrCgI7jkhmZXQsO6MN6dT/669jYbRHVotapz3HuYz4HljLF+zpVg5BLpt0U5UoHYBUnJSfR2f0dS3dcnV1RT8bAS/2l+7yNcFoSlS6iqyciBfzwVTY+cJ5X5v+VAxVd6szIjnBNavEAjd282erkn+p5EjmT260QsfW9bXpKCSKxIcWvDDS+E2rQntCzmx0RdsdTVTxpyyTNXrJys1TD4Cdmjc2osBw==
-X-Forefront-Antispam-Report: CIP:193.8.40.99;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:hexagon.com;PTR:ahersrvdom51.leica-geosystems.com;CAT:NONE;SFS:(13230040)(376014)(36860700016)(1800799024)(23010399003)(82310400026)(11063799006)(56012099006)(6133799003)(18002099003)(22082099003)(3023799007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: MG+HhczsTVXswzp0xc28zLGsSY8RdGk/e1OnUtfOjg6EQVR3hI0oc9yFE8KTPf8vr2NTiPRuugWtv9RoKVSDJ+vyBb5ZXI8m+v7Af9YfzarQlWqm1pRcSU7JSUiVQeXSIuhIj+u15mJgLGPiyufRCu+3uQ30T8Ws4ESivtI9f0sFsHOAl7VqVzQSeBnfhnwtXg/N6rIP29a1VSV1WKViv67S7IM03KPbX/aNlP5/0xHxNPUGj7X3jB/EBrEI9N7ISaIk3qJfKqwv3I+sCiR2DDLpdHbkPBw1jqmhGthMGiLNw0yy1LbJq8e49qH7L6kmCh7tuuQuvgG5974njUQ39YHe0W13fFQbgv2mBLAYuhA4CNqCJIVpLHvtFjtvJkbQ0I6txxrEP4sGU74NMIv7J32eAYD6eRzDZCB52v+i43p1ewCjmnFVT+HYo8MnY8dQ
 X-OriginatorOrg: leica-geosystems.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jul 2026 12:26:33.7076
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR06MB4148.eurprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 43031fed-1eef-46c4-4f06-08ded9c90ec1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Jul 2026 12:37:49.2004
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1c754e4f-89fa-43a7-f0d9-08ded9c77c24
-X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.99];Helo=[hexagon.com]
-X-MS-Exchange-CrossTenant-AuthSource: DB1PEPF000509EA.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR06MB9144
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ObWLMNeaEfxiYJTs3PwTIa7O5AVG0BI8+fC0/iPonWMjRrqLGMBB+BCOznuGrLYn65VFg69+TgAcMEhzgkXxdZvq9Mw7KryXw0KNKiIyS4JPt7dqvggtl1FVNsThx6qv
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR06MB9993
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260704_052640_792880_7E9A7245 
-X-CRM114-Status: GOOD (  22.57  )
+X-CRM114-CacheID: sfid-20260704_053755_178474_D4C06C02 
+X-CRM114-Status: GOOD (  19.74  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -120,12 +145,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  The i.MX8M uSDHC can run HS400/HS400ES, but the barebox driver
-    topped out at HS200: fsl,imx8mm-usdhc was routed to usdhc_imx6sx_data (HS200
-    only) and the HS400 timing/strobe-DLL path was absent. Add a usdhc_imx8mm_data
-    with ESDHC_FLAG_HS200 | HS400 | HS400_ES and point the imx8mm/imx8mn/imx8mp
-    compatibles at it. Add the strobe-DLL register block and esdhc_set_strobe_dll()
-    (gate the card clock [...] 
+ Content preview:  Hoi Sascha, > On 2026-06-16 14:49, Johannes Schneider wrote:
+    > > The BL32 fw-external blob is loaded into DRAM by the PBL and then > >
+    SHA-256-verified inside get_builtin_firmware_ext(). The verify runs > > in
+    PB [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -133,8 +156,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  ---- ---------------------- --------------------------------------------------
  -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/, no
                              trust
-                             [2a01:111:f403:c20f:0:0:0:7 listed in]
-                             [list.dnswl.org]
+                             [52.101.66.34 listed in list.dnswl.org]
+  0.0 RCVD_IN_MSPIKE_H2      RBL: Average reputation (+2)
+                             [52.101.66.34 listed in wl.mailspike.net]
  -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
  -0.0 SPF_PASS               SPF: sender matches SPF record
   0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
@@ -159,294 +183,135 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 0A2332026DB
-X-Spamd-Result: default: False [-6.41 / 15.00];
-	BAYES_HAM(-3.00)[100.00%];
+X-Rspamd-Queue-Id: F004B2026D8
+X-Spamd-Result: default: False [-7.91 / 15.00];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[microsoft.com:s=arcselector10001:i=1];
 	DMARC_POLICY_ALLOW(-0.50)[leica-geosystems.com,reject];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_MISSING_CHARSET(0.50)[];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,leica-geosystems.com:s=selector1];
 	MAILLIST(-0.20)[mailman];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,leica-geosystems.com:s=selector1];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[johannes.schneider@leica-geosystems.com,barebox-bounces@lists.infradead.org];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCVD_IN_DNSWL_NONE(0.00)[2a01:111:f403:c20f::7:received];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_RECIPIENTS(0.00)[m:sascha@saschahauer.de,m:barebox@lists.infradead.org,s:lore@pengutronix.de];
 	RCPT_COUNT_TWO(0.00)[2];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,leica-geosystems.com:+];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER(0.00)[johannes.schneider@leica-geosystems.com,barebox-bounces@lists.infradead.org];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCVD_TLS_LAST(0.00)[];
+	RCVD_IN_DNSWL_NONE(0.00)[52.101.66.34:received];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	FROM_HAS_DN(0.00)[]
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[johannes.schneider@leica-geosystems.com,barebox-bounces@lists.infradead.org];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,leica-geosystems.com:+];
+	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Stat-Signature: w8hx9zbxzc1mnzx8hzuppajryoqn44q5
+X-Stat-Signature: wsw8sshmn864xs59z7ju6x3bymgsr9g8
 
-The i.MX8M uSDHC can run HS400/HS400ES, but the barebox driver topped out at
-HS200: fsl,imx8mm-usdhc was routed to usdhc_imx6sx_data (HS200 only) and the
-HS400 timing/strobe-DLL path was absent.
-
-Add a usdhc_imx8mm_data with ESDHC_FLAG_HS200 | HS400 | HS400_ES and point the
-imx8mm/imx8mn/imx8mp compatibles at it. Add the strobe-DLL register block and
-esdhc_set_strobe_dll() (gate the card clock, pulse reset, program the read
-delay target, poll for REF/SLV lock), an HS400 case in usdhc_set_timing()
-(set MIX_CTRL DDREN|HS400_EN, re-apply the clock, run the strobe DLL),
-HS400ES handling, and MMC_CAP2_HS400[_ES] advertisement gated on the flags.
-The MIXCTRL preserve-mask in __esdhc_send_cmd() is widened from bits 22-25 to
-22-27 so the HS400 mode bits survive command writes. Strobe read delay is
-configurable via the existing fsl,strobe-dll-delay-target DT binding
-(default 0x7).
-
-usdhc_imx8mm_data keeps ESDHC_FLAG_STD_TUNING: barebox already drove these
-parts (fsl,imx8mm-usdhc) at HS200 with standard tuning, and U-Boot uses it for
-the i.MX8M family too. (Linux uses manual tuning for imx8mm; moving barebox to
-manual tuning would be a separate, separately-tested change.)
-
-Register sequence mirrors Linux sdhci-esdhc-imx.c; the barebox idiom follows
-the Rockchip dwcmshc HS400 support.
-
-Assisted-by: Claude Opus 4.8 (1M context)
-Signed-off-by: Johannes Schneider <johannes.schneider@leica-geosystems.com>
----
-
-Notes:
-    v2:
-    - No functional change; rebased on next.
-
- drivers/mci/imx-esdhc-common.c |  4 +-
- drivers/mci/imx-esdhc.c        | 91 ++++++++++++++++++++++++++++++++--
- drivers/mci/imx-esdhc.h        | 14 ++++++
- 3 files changed, 103 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/mci/imx-esdhc-common.c b/drivers/mci/imx-esdhc-common.c
-index d31a2ad779..a0c2dee32d 100644
---- a/drivers/mci/imx-esdhc-common.c
-+++ b/drivers/mci/imx-esdhc-common.c
-@@ -360,8 +360,8 @@ int __esdhc_send_cmd(struct fsl_esdhc_host *host, struct mci_cmd *cmd,
- 	if (esdhc_is_usdhc(host)) {
- 		/* write lower-half of xfertyp to mixctrl */
- 		mixctrl = xfertyp;
--		/* Keep the bits 22-25 of the register as is */
--		mixctrl |= (sdhci_read32(&host->sdhci, IMX_SDHCI_MIXCTRL) & (0xF << 22));
-+		/* keep tuning bits (22-25) and HS400 mode bits (26-27) as is */
-+		mixctrl |= (sdhci_read32(&host->sdhci, IMX_SDHCI_MIXCTRL) & (0x3F << 22));
- 		mixctrl |= mci_timing_is_ddr(host->sdhci.timing) ? MIX_CTRL_DDREN : 0;
- 		sdhci_write32(&host->sdhci, IMX_SDHCI_MIXCTRL, mixctrl);
- 	}
-diff --git a/drivers/mci/imx-esdhc.c b/drivers/mci/imx-esdhc.c
-index ba33daffc4..e123bd3ede 100644
---- a/drivers/mci/imx-esdhc.c
-+++ b/drivers/mci/imx-esdhc.c
-@@ -274,12 +274,51 @@ static int esdhc_change_pinstate(struct fsl_esdhc_host *host,
- }
- 
- 
-+/* Ported from Linux esdhc_set_strobe_dll() in drivers/mmc/host/sdhci-esdhc-imx.c */
-+static void esdhc_set_strobe_dll(struct fsl_esdhc_host *host)
-+{
-+	u32 strobe_delay, v;
-+	int ret;
-+
-+	/* disable the card clock before (re)programming the strobe DLL */
-+	sdhci_write32(&host->sdhci, ESDHC_VENDOR_SPEC,
-+		      sdhci_read32(&host->sdhci, ESDHC_VENDOR_SPEC) &
-+		      ~ESDHC_VENDOR_SPEC_FRC_SDCLK_ON);
-+	ret = esdhc_poll(host, ESDHC_PRSSTAT, v, (v & ESDHC_CLOCK_GATE_OFF),
-+			 100 * USECOND);
-+	if (ret)
-+		dev_warn(host->dev, "card clock not gated off before strobe DLL\n");
-+
-+	/* force a reset on the strobe DLL, then clear it before any setting */
-+	sdhci_write32(&host->sdhci, ESDHC_STROBE_DLL_CTRL,
-+		      ESDHC_STROBE_DLL_CTRL_RESET);
-+	sdhci_write32(&host->sdhci, ESDHC_STROBE_DLL_CTRL, 0);
-+
-+	if (host->boarddata.strobe_dll_delay_target)
-+		strobe_delay = host->boarddata.strobe_dll_delay_target;
-+	else
-+		strobe_delay = ESDHC_STROBE_DLL_CTRL_SLV_DLY_TARGET_DEFAULT;
-+
-+	v = ESDHC_STROBE_DLL_CTRL_ENABLE |
-+	    ESDHC_STROBE_DLL_CTRL_SLV_UPDATE_INT_DEFAULT |
-+	    (strobe_delay << ESDHC_STROBE_DLL_CTRL_SLV_DLY_TARGET_SHIFT);
-+	sdhci_write32(&host->sdhci, ESDHC_STROBE_DLL_CTRL, v);
-+
-+	ret = esdhc_poll(host, ESDHC_STROBE_DLL_STATUS, v,
-+			 (v & ESDHC_STROBE_DLL_STS_REF_LOCK) &&
-+			 (v & ESDHC_STROBE_DLL_STS_SLV_LOCK),
-+			 50 * USECOND);
-+	if (ret)
-+		dev_warn(host->dev,
-+			 "HS400 strobe DLL not locked in 50us, status 0x%08x\n", v);
-+}
-+
- static void usdhc_set_timing(struct fsl_esdhc_host *host, enum mci_timing timing)
- {
- 	u32 mixctrl;
- 
- 	mixctrl = sdhci_read32(&host->sdhci, IMX_SDHCI_MIXCTRL);
--	mixctrl &= ~MIX_CTRL_DDREN;
-+	mixctrl &= ~(MIX_CTRL_DDREN | MIX_CTRL_HS400_EN);
- 
- 	switch (timing) {
- 	case MMC_TIMING_UHS_DDR50:
-@@ -296,6 +335,14 @@ static void usdhc_set_timing(struct fsl_esdhc_host *host, enum mci_timing timing
- 			sdhci_write32(&host->sdhci, IMX_SDHCI_DLL_CTRL, v);
- 		}
- 		break;
-+	case MMC_TIMING_MMC_HS400:
-+		/*
-+		 * HS400 is a DDR mode; the strobe DLL is set up later from
-+		 * esdhc_set_ios() once the HS400 clock is running.
-+		 */
-+		mixctrl |= MIX_CTRL_DDREN | MIX_CTRL_HS400_EN;
-+		sdhci_write32(&host->sdhci, IMX_SDHCI_MIXCTRL, mixctrl);
-+		break;
- 	case MMC_TIMING_UHS_SDR12:
- 	case MMC_TIMING_UHS_SDR25:
- 	case MMC_TIMING_UHS_SDR50:
-@@ -339,6 +386,19 @@ static void layerscape_set_timing(struct fsl_esdhc_host *host, enum mci_timing t
- 	host->sdhci.timing = timing;
- }
- 
-+static void esdhc_hs400_enhanced_strobe(struct mci_host *mci, struct mci_ios *ios)
-+{
-+	struct fsl_esdhc_host *host = to_fsl_esdhc(mci);
-+	u32 m;
-+
-+	m = sdhci_read32(&host->sdhci, IMX_SDHCI_MIXCTRL);
-+	if (ios->enhanced_strobe)
-+		m |= MIX_CTRL_HS400_ES;
-+	else
-+		m &= ~MIX_CTRL_HS400_ES;
-+	sdhci_write32(&host->sdhci, IMX_SDHCI_MIXCTRL, m);
-+}
-+
- static void esdhc_set_ios(struct mci_host *mci, struct mci_ios *ios)
- {
- 	struct fsl_esdhc_host *host = to_fsl_esdhc(mci);
-@@ -386,6 +446,13 @@ static void esdhc_set_ios(struct mci_host *mci, struct mci_ios *ios)
- 		return;
- 	}
- 
-+	/*
-+	 * (Re)program the strobe DLL on every HS400 set_ios(): mci-core selects
-+	 * HS400 timing while still at the old clock and only raises the clock on
-+	 * a later set_ios(), so the DLL must lock against the final read clock.
-+	 */
-+	if (ios->timing == MMC_TIMING_MMC_HS400 && ios->clock)
-+		esdhc_set_strobe_dll(host);
- }
- 
- static int esdhc_card_present(struct mci_host *mci)
-@@ -511,6 +578,7 @@ static const struct mci_ops fsl_esdhc_ops = {
- 	.set_ios = esdhc_set_ios,
- 	.init = esdhc_init,
- 	.card_present = esdhc_card_present,
-+	.hs400_enhanced_strobe = esdhc_hs400_enhanced_strobe,
- };
- 
- static void fsl_esdhc_probe_dt(struct device *dev, struct fsl_esdhc_host *host)
-@@ -528,6 +596,9 @@ static void fsl_esdhc_probe_dt(struct device *dev, struct fsl_esdhc_host *host)
- 		boarddata->tuning_start_tap = ESDHC_TUNING_START_TAP_DEFAULT;
- 	if (of_property_read_u32(np, "fsl,delay-line", &boarddata->delay_line))
- 		boarddata->delay_line = 0;
-+	if (of_property_read_u32(np, "fsl,strobe-dll-delay-target",
-+			     &boarddata->strobe_dll_delay_target))
-+		boarddata->strobe_dll_delay_target = 0;
- 
- 	if (esdhc_is_usdhc(host) && !IS_ERR(host->pinctrl)) {
- 		host->pins_100mhz = pinctrl_lookup_state(host->pinctrl,
-@@ -567,6 +638,11 @@ static bool usdhc_setup_tuning(struct fsl_esdhc_host *host)
- 	mci->ops.execute_tuning = usdhc_execute_tuning;
- 	mci->caps2 |= MMC_CAP2_HS200;
- 
-+	if (host->socdata->flags & ESDHC_FLAG_HS400)
-+		mci->caps2 |= MMC_CAP2_HS400_1_8V;
-+	if (host->socdata->flags & ESDHC_FLAG_HS400_ES)
-+		mci->caps2 |= MMC_CAP2_HS400_ES;
-+
- 	return true;
- }
- 
-@@ -684,6 +760,13 @@ static struct esdhc_soc_data usdhc_imx6sx_data = {
- 	.clkidx = "per",
- };
- 
-+static struct esdhc_soc_data usdhc_imx8mm_data = {
-+	.flags = ESDHC_FLAG_USDHC | ESDHC_FLAG_STD_TUNING
-+	       | ESDHC_FLAG_HAVE_CAP1 | ESDHC_FLAG_HS200
-+	       | ESDHC_FLAG_HS400 | ESDHC_FLAG_HS400_ES,
-+	.clkidx = "per",
-+};
-+
- static struct esdhc_soc_data esdhc_ls_be_data = {
- 	.flags = ESDHC_FLAG_MULTIBLK_NO_INT | ESDHC_FLAG_BIGENDIAN |
- 		 ESDHC_FLAG_LAYERSCAPE,
-@@ -702,9 +785,9 @@ static __maybe_unused struct of_device_id fsl_esdhc_compatible[] = {
- 	{ .compatible = "fsl,imx6sl-usdhc", .data = &usdhc_imx6sl_data },
- 	{ .compatible = "fsl,imx6sx-usdhc", .data = &usdhc_imx6sx_data },
- 	{ .compatible = "fsl,imx8mq-usdhc", .data = &usdhc_imx6sx_data },
--	{ .compatible = "fsl,imx8mm-usdhc", .data = &usdhc_imx6sx_data },
--	{ .compatible = "fsl,imx8mn-usdhc", .data = &usdhc_imx6sx_data },
--	{ .compatible = "fsl,imx8mp-usdhc", .data = &usdhc_imx6sx_data },
-+	{ .compatible = "fsl,imx8mm-usdhc", .data = &usdhc_imx8mm_data },
-+	{ .compatible = "fsl,imx8mn-usdhc", .data = &usdhc_imx8mm_data },
-+	{ .compatible = "fsl,imx8mp-usdhc", .data = &usdhc_imx8mm_data },
- 	{ .compatible = "fsl,ls1028a-esdhc",.data = &esdhc_ls_le_data  },
- 	{ .compatible = "fsl,ls1046a-esdhc",.data = &esdhc_ls_be_data  },
- 	{ /* sentinel */ }
-diff --git a/drivers/mci/imx-esdhc.h b/drivers/mci/imx-esdhc.h
-index df8aca18ad..5562371652 100644
---- a/drivers/mci/imx-esdhc.h
-+++ b/drivers/mci/imx-esdhc.h
-@@ -66,6 +66,17 @@
- #define  IMX_SDHCI_DLL_CTRL_OVERRIDE_EN_SHIFT	8
- #define IMX_SDHCI_MIX_CTRL_FBCLK_SEL	BIT(25)
- 
-+/* HS400 data strobe line delay-locked loop (read clock) */
-+#define ESDHC_STROBE_DLL_CTRL				0x70
-+#define  ESDHC_STROBE_DLL_CTRL_ENABLE			BIT(0)
-+#define  ESDHC_STROBE_DLL_CTRL_RESET			BIT(1)
-+#define  ESDHC_STROBE_DLL_CTRL_SLV_DLY_TARGET_SHIFT	3
-+#define  ESDHC_STROBE_DLL_CTRL_SLV_DLY_TARGET_DEFAULT	0x7
-+#define  ESDHC_STROBE_DLL_CTRL_SLV_UPDATE_INT_DEFAULT	(4 << 20)
-+#define ESDHC_STROBE_DLL_STATUS				0x74
-+#define  ESDHC_STROBE_DLL_STS_REF_LOCK			BIT(1)
-+#define  ESDHC_STROBE_DLL_STS_SLV_LOCK			BIT(0)
-+
- /* pltfm-specific */
- #define ESDHC_HOST_CONTROL_LE	0x20
- 
-@@ -163,6 +174,8 @@
- #define ESDHC_FLAG_BIGENDIAN		BIT(10)
- /* Layerscape variant ls1046a, ls1028a, ls1088a, revisit for ls1012a */
- #define ESDHC_FLAG_LAYERSCAPE		BIT(11)
-+/* The IP supports HS400ES mode */
-+#define ESDHC_FLAG_HS400_ES		BIT(12)
- 
- struct esdhc_soc_data {
- 	u32 flags;
-@@ -177,6 +190,7 @@ struct esdhc_platform_data {
- 	unsigned int delay_line;
- 	unsigned int tuning_step;       /* The delay cell steps in tuning procedure */
- 	unsigned int tuning_start_tap;	/* The start delay cell point in tuning procedure */
-+	unsigned int strobe_dll_delay_target;	/* HS400 strobe read-clock delay cell */
- };
- 
- struct fsl_esdhc_host {
--- 
-2.43.0
-
+Hoi Sascha,=0A=
+=0A=
+=0A=
+> On 2026-06-16 14:49, Johannes Schneider wrote:=0A=
+> > The BL32 fw-external blob is loaded into DRAM by the PBL and then=0A=
+> > SHA-256-verified inside get_builtin_firmware_ext(). The verify runs=0A=
+> > in PBL phase 1 with the MMU off and D-cache cold, walking ~720 KiB=0A=
+> > through uncached DRAM accesses; on a Cortex-A53 this costs around=0A=
+> > 2 s of pre-BL31 wall-clock on every boot.=0A=
+> >=0A=
+> > The verify is the only thing anchoring the BL32 content to the=0A=
+> > signed PBL: HABv4 on i.MX8M only signs and loads what fits in=0A=
+> > on-chip SRAM (=3D the PBL), and BL31/BL32 reach DRAM via PBL-driven=0A=
+> > copies, so skipping the SHA-256 would be a security regression.=0A=
+> >=0A=
+> > Turn on MMU + D-cache once the DRAM is populated and right before=0A=
+> > the SHA-256 verify + BL31/BL32 memcpy run, and drop the MMU again=0A=
+> > right before the BL31 entry (BL31 expects MMU off). Mirrors the=0A=
+> > Rockchip handling in commits f2ae1a4a85 ("ARM: rockchip: atf:=0A=
+> > enable MMU in PBL") and a0ef3a1b5c ("ARM: rockchip: atf: pass=0A=
+> > correct memsize to mmu_early_enable()").=0A=
+> >=0A=
+> > Measured on i.MX8MM and i.MX8MP (Cortex-A53, ~720 KiB BL32 blob):=0A=
+> > the BL32 verify drops from ~2 s to ~300 ms (generic-C SHA-256 in=0A=
+> > both cases, the difference is the D-cache state) and the BL31=0A=
+> > early-init also benefits from the warm cache (~200 ms saved).=0A=
+> >=0A=
+> > Assisted-by: Claude:claude-opus-4-7=0A=
+> > Signed-off-by: Johannes Schneider <johannes.schneider@leica-geosystems.=
+com>=0A=
+> > ---=0A=
+> > --- a/arch/arm/mach-imx/atf.c=0A=
+> > +++ b/arch/arm/mach-imx/atf.c=0A=
+> > @@ -20,6 +20,7 @@=0A=
+> >  #include <mach/imx/xload.h>=0A=
+> >  #include <mach/imx/snvs.h>=0A=
+> >  #include <pbl.h>=0A=
+> > +#include <asm/mmu.h>=0A=
+> >=0A=
+> >  static void imx_adjust_optee_memory(void **bl32, void **bl32_image, si=
+ze_t *bl32_size)=0A=
+> >  {=0A=
+> > @@ -187,6 +188,9 @@=0A=
+> >                    "r" (tfa_dest - 16) :=0A=
+> >                    "cc");=0A=
+> >=0A=
+> > +     /* BL31 expects MMU off. */=0A=
+> > +     mmu_disable();=0A=
+> > +=0A=
+> >       /*=0A=
+> >        * If enabled the bl_params are passed via x0 to the TF-A, except=
+ for=0A=
+> >        * the i.MX8MQ which doesn't support bl_params yet.=0A=
+> > @@ -284,6 +288,12 @@=0A=
+> >       imx8m_setup_snvs();=0A=
+> >       imx8mm_load_bl33(bl33);=0A=
+> >=0A=
+> > +     /* Cache DRAM for the BL32 verify + BL31/BL32 memcpy that follow.=
+ */=0A=
+> > +     mmu_early_enable(MX8M_DDR_CSD1_BASE_ADDR,=0A=
+> > +                      imx8m_barebox_earlymem_size(32),=0A=
+> > +                      MX8M_DDR_CSD1_BASE_ADDR +=0A=
+> > +                      imx8m_barebox_earlymem_size(32) - OPTEE_SIZE);=
+=0A=
+> =0A=
+> mmu_early_enable() only takes two arguments.=0A=
+> =0A=
+> Please add a new imx8m_mmu_early_enable() function usable for all i.MX8M =
+to=0A=
+> enable the MMU.=0A=
+> =0A=
+> We already have this snippet elsewhere:=0A=
+> =0A=
+>         endmem =3D MX8M_DDR_CSD1_BASE_ADDR;=0A=
+>         if (cpu_is_mx8mn())=0A=
+>                 endmem +=3D imx8m_barebox_earlymem_size(16);=0A=
+>         else=0A=
+>                 endmem +=3D imx8m_barebox_earlymem_size(32);=0A=
+> =0A=
+> Which could help implementing this function.=0A=
+> =0A=
+> Sascha=0A=
+>=0A=
+=0A=
+Ok, done so and merged into one v2 patchset together with the PIO+MMU / SDM=
+A chain=0A=
+the new version of this patch is now this one:=0A=
+https://lists.infradead.org/pipermail/barebox/2026-July/056905.html=0A=
+=0A=
+=0A=
+gru=DF=0A=
+Johannes=
 
 
