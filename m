@@ -1,69 +1,69 @@
-Delivery-date: Tue, 07 Jul 2026 08:49:00 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Tue, 07 Jul 2026 08:49:26 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wgzc4-00181R-25
+	id 1wgzcU-00182A-0J
 	for lore@lore.pengutronix.de;
-	Tue, 07 Jul 2026 08:49:00 +0200
+	Tue, 07 Jul 2026 08:49:26 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 740E820257E
-	for <lore@pengutronix.de>; Tue, 07 Jul 2026 08:49:00 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id E33E420257E
+	for <lore@pengutronix.de>; Tue, 07 Jul 2026 08:49:25 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=v43Fo+Z6;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=vTFGLXl3;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=hT1OzPldDY/6ek+6UgJi6FHc5vzkldsRG2Dz1U8vzHo=; b=v43Fo+Z67+YRJO6y7//NzMlZWX
-	tCj5Hi4WIbNBifXkx1wcgMauLMHRHzVqNJ/SNGjLoNfm3iS5qrQ7YQ1H1XXES1wqxRykZPPdmtTPH
-	t/nx2XGXed0PMxgrvh5TPK7Jld2RC/3nXUnZi5fKsoWcaK6rRRouNyJT6kJvztommRkrDo2YBEueh
-	+uH7hwHI0/bb+rM4JcxvEsTAVgzE9zos3G2R2FxLNwYJqRYLSd62Iu+kB0SUFPuxDJdOrxSLWcFFp
-	mspvEK7U+Y5lMEFXmi3TIO0bf8ElxvxT4ILvs/XLlbyPHnD+1ljMwberu1gyOOlyZN5gsYkvkEBiy
-	Cu/rcT1g==;
+	bh=IpLhFz9mCPyR9DgKMKgZ4HSIIfdjHvkPwjeosvGaXSk=; b=vTFGLXl3tyqqSzsxdEFgdoNKCQ
+	u7S+K/eKgJTHBzPvTa5WBF69472v+nRpF9PSHz28JnLfrj9J+qO+ou8DnrgkvqWwtCne/UHMiHDuK
+	ebDFKU3z0l3orVvokn2L1gAaVjzYvpr/OAdwbYfaPWIJJYmSNQDgmxntwQ52AQpIixnJKtoDY/Skc
+	NFv0nEUEvx6VnqHH/gIIwBlSOXHY1dmXtSR2nyqHM3oDHMFsZhcye6NjeBt63vyLpkthOd/a+o1X+
+	dV7vQ3RPs9rv1d4kHgszpzvEzRDmD+wi9wwPDdwuoZlEhQYLUllNCUnkbSNNo/QDmT/hfsrmuc8aI
+	nQsxL/Nw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wgzax-0000000EFUS-44xO;
-	Tue, 07 Jul 2026 06:47:51 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1wgzbT-0000000EFYb-0TmJ;
+	Tue, 07 Jul 2026 06:48:23 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wgzav-0000000EFTg-1wCY
+	id 1wgzbQ-0000000EFXj-0W7O
 	for barebox@lists.infradead.org;
-	Tue, 07 Jul 2026 06:47:50 +0000
+	Tue, 07 Jul 2026 06:48:21 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id AD92620258F;
-	Tue, 07 Jul 2026 08:47:47 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 63FAA202429;
+	Tue, 07 Jul 2026 08:48:18 +0200 (CEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wgzat-000WuL-21;
-	Tue, 07 Jul 2026 08:47:47 +0200
+	id 1wgzbO-000WuP-13;
+	Tue, 07 Jul 2026 08:48:18 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wgzat-0000000E1gK-2OA6;
-	Tue, 07 Jul 2026 08:47:47 +0200
+	id 1wgzbO-0000000E4mT-11nD;
+	Tue, 07 Jul 2026 08:48:18 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20260706141322.2185729-1-a.fatoum@pengutronix.de>
-References: <20260706141322.2185729-1-a.fatoum@pengutronix.de>
-Subject: Re: [PATCH] ARM: multi_v8_defconfig: enable more MMC support
-Message-Id: <178340686756.3342789.15024893059035737781.b4-ty@pengutronix.de>
-Date: Tue, 07 Jul 2026 08:47:47 +0200
+To: Barebox List <barebox@lists.infradead.org>, 
+ =?utf-8?q?Ulrich_=C3=96lmann?= <u.oelmann@pengutronix.de>
+In-Reply-To: <20260703102344.1957129-1-u.oelmann@pengutronix.de>
+References: <20260703102344.1957129-1-u.oelmann@pengutronix.de>
+Subject: Re: [PATCH 1/2] common: Kconfig: fix typo
+Message-Id: <178340689824.3354238.13125781228394111328.b4-ty@pengutronix.de>
+Date: Tue, 07 Jul 2026 08:48:18 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260706_234749_654083_4763BB92 
-X-CRM114-Status: UNSURE (   7.81  )
+X-CRM114-CacheID: sfid-20260706_234820_356045_06AF8900 
+X-CRM114-Status: UNSURE (   3.14  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -72,9 +72,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Mon, 06 Jul 2026 16:13:14 +0200, Ahmad Fatoum wrote: >
-    To prepare testing the OP-TEE + RPMB functionality in barebox, enable > all
-    the relevant barebox MMC drivers and MMC/partitioning commands, > [...] 
+ Content preview:  On Fri, 03 Jul 2026 12:23:43 +0200, Ulrich Ölmann wrote:
+    > Applied, thanks! [1/2] common: Kconfig: fix typo https://git.pengutronix.de/cgit/barebox/commit/?id=4d27dc4be3f8
+    (link may not be stable) [2/2] security: Kconfig.policy: fix typos https://git.pengutronix.de/cgit/bareb
+    [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -101,25 +102,25 @@ X-Spamd-Result: default: False [-6.71 / 15.00];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received];
+	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:1101:1d::28:received,2607:7c80:54:3::133:from];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MIME_GOOD(-0.10)[text/plain];
 	RCVD_IN_DNSWL_LOW(-0.10)[2a0a:edc0:0:c01:1d::a2:received];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	RCVD_TLS_LAST(0.00)[];
 	DMARC_NA(0.00)[pengutronix.de];
-	RCPT_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	TO_DN_ALL(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
@@ -127,24 +128,20 @@ X-Spamd-Result: default: False [-6.71 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 740E820257E
-X-Stat-Signature: m8ce619774hqi6tcj84n7o5i68sunkd6
+X-Rspamd-Queue-Id: E33E420257E
+X-Stat-Signature: 9b8d6i6uhhpuzy7k6s9k3pmdkgy6nigp
 
 
-On Mon, 06 Jul 2026 16:13:14 +0200, Ahmad Fatoum wrote:
-> To prepare testing the OP-TEE + RPMB functionality in barebox, enable
-> all the relevant barebox MMC drivers and MMC/partitioning commands,
-> short of OP-TEE itself:
-> The OP-TEE region is not reclaimed when OP-TEE is not used, so we don't
-> want to enable it in a common config just yet.
+On Fri, 03 Jul 2026 12:23:43 +0200, Ulrich Ölmann wrote:
 > 
-> 
-> [...]
+
 
 Applied, thanks!
 
-[1/1] ARM: multi_v8_defconfig: enable more MMC support
-      https://git.pengutronix.de/cgit/barebox/commit/?id=868c5b842ae7 (link may not be stable)
+[1/2] common: Kconfig: fix typo
+      https://git.pengutronix.de/cgit/barebox/commit/?id=4d27dc4be3f8 (link may not be stable)
+[2/2] security: Kconfig.policy: fix typos
+      https://git.pengutronix.de/cgit/barebox/commit/?id=05d8c67b4224 (link may not be stable)
 
 Best regards,
 -- 
