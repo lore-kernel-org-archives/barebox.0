@@ -1,16 +1,16 @@
-Delivery-date: Tue, 07 Jul 2026 08:53:29 +0200
+Delivery-date: Tue, 07 Jul 2026 08:59:27 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wgzgP-00185A-2j
+	id 1wgzmB-00188v-2h
 	for lore@lore.pengutronix.de;
-	Tue, 07 Jul 2026 08:53:29 +0200
+	Tue, 07 Jul 2026 08:59:27 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id A4950201CD7
-	for <lore@pengutronix.de>; Tue, 07 Jul 2026 08:53:29 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id A91C520240C
+	for <lore@pengutronix.de>; Tue, 07 Jul 2026 08:59:27 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=YBA3Tafp;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=Tn0muXoi;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,51 +19,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=bZl8J9Zh/4RvOIe1laybC/3S9rvQDeCzE9ILcR5L8H4=; b=YBA3TafpWEvD3idiPGgiEQ2m7s
-	3e0+/sxPNpws3px/Q/om5t5Ha1YSHM2ty9trqzYU/uoUrFuFbTXS8a0sTg3nWiYH2FOs4YPH8rgqs
-	YFsRh2i2YXgm5gs0ufWxajbS+H+m1Ot8ey5lxAAdo/6ZkA2UvY18W06btSz3GuWwWj03fWCoMRMWf
-	KD+dwQ1r708sqL7t9KlqWlTdVEHDcJRcHvCW9n9Cr9o7dTdissAsOShw/YqZNqHjuqYbzpeD7w52p
-	LvErmesJbXI/pL1uHbCmlls59GfkTpLDIDIhdmwZE6K7OunBmyqHJbWMZNh9JHyLT0tr+V7dKBS4g
-	c7HTWsaQ==;
+	bh=RFNadXnuo4YCIk03nekzYYQwyRpUfOwjSc9WWOZBYoo=; b=Tn0muXoiUh2HnCvdf0J/X/n3kz
+	sQD5Aho+7j7hyyfiLY6axquqn8aoTIpnqnlYx57XeKWBPVbZWsRQmhON+4tj6fjiFPK4mzEw7pmtD
+	tR04JxA0STTSCrOmW3ZT4tUalhpsKEgzAt/ibwa3zXESTSliToRVUBugV06zBMxrY9JCIvtB7Y7p7
+	Ch16hs02aBMYQK26dc1KYq6FLT09grIREUgxHnr0X7e+yRNvi2L+xHyxuvArBVcz2jXpq+bsWhSx3
+	7GjDqQv+p/v9IGC9QG8A+0PnTRY2XQybDaSnqE0lSBa/YgUfYdI8EwCOvqLWC0BlZeB5WkWb3QGaO
+	buxMXNfQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wgzfO-0000000EG0i-3xKP;
-	Tue, 07 Jul 2026 06:52:26 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1wgzl7-0000000EGx3-3cW9;
+	Tue, 07 Jul 2026 06:58:21 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wgzfL-0000000EFyz-38VY
+	id 1wgzkz-0000000EGrd-1nVx
 	for barebox@lists.infradead.org;
-	Tue, 07 Jul 2026 06:52:25 +0000
+	Tue, 07 Jul 2026 06:58:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 0094A201CD7;
-	Tue, 07 Jul 2026 08:52:22 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 584D720257E;
+	Tue, 07 Jul 2026 08:58:11 +0200 (CEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wgzfJ-000Wuf-2v;
-	Tue, 07 Jul 2026 08:52:21 +0200
+	id 1wgzkx-000Wv3-0o;
+	Tue, 07 Jul 2026 08:58:11 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wgzfJ-0000000ETDF-3Uld;
-	Tue, 07 Jul 2026 08:52:21 +0200
+	id 1wgzkx-0000000F6JF-0i2d;
+	Tue, 07 Jul 2026 08:58:11 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260702103851.2391715-1-a.fatoum@pengutronix.de>
-References: <20260702103851.2391715-1-a.fatoum@pengutronix.de>
-Subject: Re: [PATCH] optee: device: report correct command in enumeration
- error message
-Message-Id: <178340714182.3448233.16608084536594491315.b4-ty@pengutronix.de>
-Date: Tue, 07 Jul 2026 08:52:21 +0200
+To: barebox@lists.infradead.org, Lucas Stach <l.stach@pengutronix.de>
+In-Reply-To: <20260703204002.2572586-1-l.stach@pengutronix.de>
+References: <20260703204002.2572586-1-l.stach@pengutronix.de>
+Subject: Re: [PATCH] ARM: boards: add Gira NCP
+Message-Id: <178340749116.3597408.2303266466682799761.b4-ty@pengutronix.de>
+Date: Tue, 07 Jul 2026 08:58:11 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260706_235223_948074_1E5A53D1 
-X-CRM114-Status: UNSURE (   6.06  )
+X-CRM114-CacheID: sfid-20260706_235813_627816_464EB182 
+X-CRM114-Status: UNSURE (   5.42  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -72,10 +71,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Thu, 02 Jul 2026 12:38:51 +0200, Ahmad Fatoum wrote: >
-    While enumeration failure always mentions "PTA_CMD_GET_DEVICES", it is >
-   possible that either PTA_CMD_GET_DEVICES_SUPP or PTA_CMD_GET_DEVICES [...]
-    
+ Content preview:  On Fri, 03 Jul 2026 22:40:02 +0200, Lucas Stach wrote: >
+   This adds basic support for the Gira NCP panel with > the following supported
+    features: > - serial console > - SD card > - eMMC with HS200 > - [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -128,24 +126,25 @@ X-Spamd-Result: default: False [-6.71 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: A4950201CD7
-X-Stat-Signature: ohguxwbwrwre4a33n38383rz1eu343oq
+X-Rspamd-Queue-Id: A91C520240C
+X-Stat-Signature: 5u91isfi8gnptt43rxnbdwijro151t9y
 
 
-On Thu, 02 Jul 2026 12:38:51 +0200, Ahmad Fatoum wrote:
-> While enumeration failure always mentions "PTA_CMD_GET_DEVICES", it is
-> possible that either PTA_CMD_GET_DEVICES_SUPP or PTA_CMD_GET_DEVICES_RPMB
-> were the culprits.
-> 
-> Remove the hardcoded PTA_CMD_GET_DEVICES in the error message as it's no
-> longer accurate and replace it by the actual command being sent.
+On Fri, 03 Jul 2026 22:40:02 +0200, Lucas Stach wrote:
+> This adds basic support for the Gira NCP panel with
+> the following supported features:
+> - serial console
+> - SD card
+> - eMMC with HS200
+> - ethernet
+> - watchdog via PMIC
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] optee: device: report correct command in enumeration error message
-      https://git.pengutronix.de/cgit/barebox/commit/?id=7f383894cb68 (link may not be stable)
+[1/1] ARM: boards: add Gira NCP
+      https://git.pengutronix.de/cgit/barebox/commit/?id=a87474d10cb1 (link may not be stable)
 
 Best regards,
 -- 
