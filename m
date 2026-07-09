@@ -1,67 +1,63 @@
-Delivery-date: Thu, 09 Jul 2026 15:20:34 +0200
+Delivery-date: Thu, 09 Jul 2026 15:31:43 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1whog6-001vLV-2z
+	id 1whoqt-001vRv-1u
 	for lore@lore.pengutronix.de;
-	Thu, 09 Jul 2026 15:20:34 +0200
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 85798201D9C
-	for <lore@pengutronix.de>; Thu, 09 Jul 2026 15:20:34 +0200 (CEST)
+	Thu, 09 Jul 2026 15:31:43 +0200
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 8B9B8201DBC
+	for <lore@pengutronix.de>; Thu, 09 Jul 2026 15:31:42 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=OtCg9oKi;
-	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 198.137.202.133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=brrZSbsD;
+	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=zes64OGTl+Pw8ePgy8Cuzpk+B9j9rsf0tblXwp7mpU4=; b=OtCg9oKigfOuq132CVr1CC7Yj1
-	3m5brbFt+dH1hhY2Ed7Hg4upQmdkmZR2F6hY3b1845V+yoMCKUTwDXvmZf6GS5R2pfPKkGq9BRcJp
-	kF4gNhKlAtAm1qKwcyQw0Z9G4AQ81uXD4TGaKfYLSCcyiJk9f82iM8l1A3EnLx3dJ7KK+AIpGEwxl
-	iKDqic1S0WVwqEL2l9B1Rt9GPoKqC9iYIJeTBzdpE08Fv+WcLIewNsKkrmpMJWhPzXHnmBl9F6Z5W
-	fv/HPo9UZFXXBG46rU3xwWT0w55XyOToXN3eHuhdQa3twyOYIEXzVM9Gw8uezXwPjg5b0t3l5r2Cs
-	nCyatbPQ==;
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=XRtaUlKwI5YSuuX5gN0JgJ8McKSobjewska6V87cJRE=; b=brrZSbsDFWzyEH3Icc4VyAnsLo
+	0oWTGEo6ryTUjfSzGxDaAWTPKw914cFgI9JZg2C8AMdmMdtsYocjSvAJg5qVri9WfIDuop7/h03SQ
+	ide7dh73tsRwjUBWnnxpL4j3RAuEzFENJ2Y88ERetqd+7Z/rksb2TOzhZ3CWdpEy3ZA2CFkn3EKEI
+	MjUYV6CUCSR5kxxfk77n1ObqVvPRIaFZxjsFNkDgJZf9gBVevHE58NqvwqXw697ONZMK7o8b31DLc
+	cm/xvci7fVxdPw6opAOLt+IgueG1rCDVEzTOFCuyg83ri9tIpXJ7KWBPk/GqN2w5KDEq2ZUhjmWPh
+	3V0olZQQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1whoWA-00000002VZE-0ACw;
-	Thu, 09 Jul 2026 13:10:18 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1whoqP-00000002Yzp-2d58;
+	Thu, 09 Jul 2026 13:31:13 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1whoW6-00000002VYa-2xAn
+	id 1whoqK-00000002Yyk-1Z56
 	for barebox@lists.infradead.org;
-	Thu, 09 Jul 2026 13:10:16 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id CC19A2000CA;
-	Thu, 09 Jul 2026 15:10:10 +0200 (CEST)
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
+	Thu, 09 Jul 2026 13:31:12 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1whoW2-000vM8-2S;
-	Thu, 09 Jul 2026 15:10:10 +0200
-Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1whoW2-0000000DqKU-2lPq;
-	Thu, 09 Jul 2026 15:10:10 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH] common: fastboot: make CONFIG_FASTBOOT_SPARSE=y the default
-Date: Thu,  9 Jul 2026 15:10:06 +0200
-Message-ID: <20260709131008.3299405-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	id 1whoqG-0003Fk-EC; Thu, 09 Jul 2026 15:31:04 +0200
+Message-ID: <097a768a-8da4-4a97-b54b-f690704d792f@pengutronix.de>
+Date: Thu, 9 Jul 2026 15:31:04 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ARM: multi_v8_defconfig: enable more MMC support
+To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+References: <20260706141322.2185729-1-a.fatoum@pengutronix.de>
+ <178340686756.3342789.15024893059035737781.b4-ty@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <178340686756.3342789.15024893059035737781.b4-ty@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
+X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260709_061014_890827_B310392E 
-X-CRM114-Status: UNSURE (   8.36  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260709_063108_413992_C55026B5 
+X-CRM114-Status: GOOD (  14.19  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -69,17 +65,21 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Back in 2018, sparse support was made optional as "[s]parse
-    support is not always desired" without further elaboration. Arguably the
-   majority of users would benefit from sparse support enabled, so flip the Kconfig
-    default to make it opt-out instead. 
+ Content preview:  Hello Sascha, On 7/7/26 8:47 AM, Sascha Hauer wrote: > > On
+    Mon, 06 Jul 2026 16:13:14 +0200, Ahmad Fatoum wrote: >> To prepare testing
+    the OP-TEE + RPMB functionality in barebox, enable >> all the relevant barebox
+    [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
- -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
+ -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/, no
+                             trust
+                             [2a0a:edc0:2:b01:1d:0:0:104 listed in]
+                             [list.dnswl.org]
  -0.0 SPF_PASS               SPF: sender matches SPF record
+  0.0 SPF_HELO_NONE          SPF: HELO does not publish an SPF Record
  -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
                              [score: 0.0000]
   0.0 DMARC_MISSING          Missing DMARC policy
@@ -95,72 +95,77 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-5.11 / 15.00];
-	BAYES_HAM(-3.00)[100.00%];
+X-Spamd-Result: default: False [-6.61 / 15.00];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:1101:1d::54:received,198.137.202.133:from];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
+	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:900:1d::77:received];
 	R_SPF_ALLOW(-0.20)[+mx:c];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	DMARC_NA(0.00)[pengutronix.de];
-	RCVD_IN_DNSWL_NONE(0.00)[2a0a:edc0:0:c01:1d::a2:received];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[];
 	ARC_NA(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWO(0.00)[2];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
+	FORGED_SENDER(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_IN_DNSWL_NONE(0.00)[2a0a:edc0:2:b01:1d::104:received];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:7247, ipnet:198.137.202.0/24, country:US];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	MID_RHS_MATCH_FROM(0.00)[];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 85798201D9C
-X-Stat-Signature: 7buse8swy649pkxjudxs5zaye4oxxzzw
+X-Rspamd-Queue-Id: 8B9B8201DBC
+X-Stat-Signature: er6xap7e1ni4hznnkgndkgw9m571hhfs
 
-Back in 2018, sparse support was made optional as "[s]parse support
-is not always desired" without further elaboration.
+Hello Sascha,
 
-Arguably the majority of users would benefit from sparse support enabled,
-so flip the Kconfig default to make it opt-out instead.
+On 7/7/26 8:47 AM, Sascha Hauer wrote:
+> 
+> On Mon, 06 Jul 2026 16:13:14 +0200, Ahmad Fatoum wrote:
+>> To prepare testing the OP-TEE + RPMB functionality in barebox, enable
+>> all the relevant barebox MMC drivers and MMC/partitioning commands,
+>> short of OP-TEE itself:
+>> The OP-TEE region is not reclaimed when OP-TEE is not used, so we don't
+>> want to enable it in a common config just yet.
+>>
+>>
+>> [...]
+> 
+> Applied, thanks!
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-@Sascha, do you recall what reasons would there be to disable sparse
-support? As I can't think of any besides binary size, I chose not to
-include a migration guide entry about the default changing.
+Thanks for applying. Please also drop
+"ARM: multi_v8_defconfig: enable OP-TEE and RPMB support" from next to
+fix the CI regression.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- common/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+Thanks,
+Ahmad
 
-diff --git a/common/Kconfig b/common/Kconfig
-index f7122d89c6e2..85df7f7daec6 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1478,6 +1478,7 @@ config FASTBOOT_SPARSE
- 	bool
- 	select IMAGE_SPARSE
- 	prompt "Enable Fastboot sparse image support"
-+	default y
- 	help
- 	  Sparse images are a way for the fastboot protocol to write
- 	  images that are bigger than the available memory. If unsure,
+
+> 
+> [1/1] ARM: multi_v8_defconfig: enable more MMC support
+>       https://git.pengutronix.de/cgit/barebox/commit/?id=868c5b842ae7 (link may not be stable)
+> 
+> Best regards,
+
 -- 
-2.47.3
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
