@@ -1,16 +1,16 @@
-Delivery-date: Fri, 10 Jul 2026 23:39:18 +0200
+Delivery-date: Fri, 10 Jul 2026 23:43:43 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wiIwI-002Nnt-19
+	id 1wiJ0Z-002Nuh-1K
 	for lore@lore.pengutronix.de;
-	Fri, 10 Jul 2026 23:39:18 +0200
+	Fri, 10 Jul 2026 23:43:43 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 2DABC20201F
-	for <lore@pengutronix.de>; Fri, 10 Jul 2026 23:39:18 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 37B4120202F
+	for <lore@pengutronix.de>; Fri, 10 Jul 2026 23:43:43 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=rE3tHjnn;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="tp97hKJ/";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,50 +19,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=s6vlnKUS5NSboNCKx1giqCsD5KHSWlMmasqgwkwSQXQ=; b=rE3tHjnnxsUCRoNJl/uRBTU7AJ
-	ywprUDYrSKTUMg4YcefLg51ka3AoNCPKUnCbL+rt9tk/0YPTtDQqhVSSX0hZFuQATjAMI1F7pNBvA
-	yS8euy6d4Zo11uzZsCK/rr8eGkz/tsGWkMxx8GmM8vh38pGa/pB3+N5KqMDmUTqqWj97F0eE38b1N
-	Tj1RFEW1av17b+x3n/PnyQ32YjVW/48ay56xltnuKpfu2bwC+t4dmhyF7MR89Ae0WpNRqPOAAbpXw
-	GQmBFEw3AZ1LAIRtVUGjlLVmopIcdUrse2NGS79b/QhMPNOHMmwHY6rcxbEDSFvDNRUJ4ch/qv9wO
-	TpGRHHxg==;
+	bh=lf2P+WQH+VNt5/annDfwAdw7P9AAD5arniHr/xd5LWU=; b=tp97hKJ/UkywKqrAtOmw0fkdsp
+	rTeiUYTbNa9hDzc9oRcID4D1DmHQXE6NJvjuuYrJaXnSn3GQauHCD/hHWxyXOnKWnqBg2VpL+QCyv
+	VA95KwD/Rr/X7WkTMawNupPQkkR5ehkAaypee32Y0aklJwT6msWz1MPY/nplCHHZGu9m8ZmmaomgX
+	eJlTr7oED+6LCmxUMvHFZNBohNfYZdDDvHex8mxn7H08QY6bH5aEB4wub+D6TmXzl7HGiO9EqlnYf
+	Sxu5Kj9XIEy+qqeTPuS5GyNkjO2GzA9eHkIbZN49kz1I6yMUu3Xn0jF4toPUUH8W0FLWMUCDVBsUI
+	EyKJSaFg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wiIvJ-00000005rme-1jKe;
-	Fri, 10 Jul 2026 21:38:17 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1wiIzW-00000005sM4-0yeh;
+	Fri, 10 Jul 2026 21:42:38 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wiIvG-00000005rlh-3NJu
+	id 1wiIzS-00000005sKv-2LtM
 	for barebox@lists.infradead.org;
-	Fri, 10 Jul 2026 21:38:16 +0000
+	Fri, 10 Jul 2026 21:42:36 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 1FA1120201F;
-	Fri, 10 Jul 2026 23:38:13 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 9FC69200668;
+	Fri, 10 Jul 2026 23:42:32 +0200 (CEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wiIvF-0018qh-09;
-	Fri, 10 Jul 2026 23:38:13 +0200
+	id 1wiIzQ-0018r3-1r;
+	Fri, 10 Jul 2026 23:42:32 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wiIvE-0000000Ercj-487Y;
-	Fri, 10 Jul 2026 23:38:12 +0200
+	id 1wiIzQ-0000000Erke-2AJO;
+	Fri, 10 Jul 2026 23:42:32 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20260709072255.510962-1-a.fatoum@barebox.org>
-References: <20260709072255.510962-1-a.fatoum@barebox.org>
-Subject: Re: [PATCH 1/2] nvme: fix PRP pool resize before first use
-Message-Id: <178371949297.3542698.14395611616678805994.b4-ty@pengutronix.de>
-Date: Fri, 10 Jul 2026 23:38:12 +0200
+In-Reply-To: <20260709073316.522048-1-a.fatoum@barebox.org>
+References: <20260709073316.522048-1-a.fatoum@barebox.org>
+Subject: Re: [PATCH] partitions: efi: validate complete GPT entry array
+Message-Id: <178371975251.3543177.9333629623864855495.b4-ty@pengutronix.de>
+Date: Fri, 10 Jul 2026 23:42:32 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260710_143814_990509_51C7490C 
-X-CRM114-Status: UNSURE (   5.55  )
+X-CRM114-CacheID: sfid-20260710_144234_765976_742C1F24 
+X-CRM114-Status: UNSURE (   6.24  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -71,9 +71,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Thu, 09 Jul 2026 09:22:51 +0200, Ahmad Fatoum wrote: >
-    It's not safe to call dma_free_coherent on a NULL pointer. Implement > dma_realloc_coherent,
-    which correctly handles reallocating a buffer > [...] 
+ Content preview:  On Thu, 09 Jul 2026 09:33:14 +0200, Ahmad Fatoum wrote: >
+    The Fedora-Workstation-Live-44-1.7.aarch64.iso image advertises 248 > slots,
+    which exceeds the 128 partition limit that the barebox EFI > par [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -128,24 +128,25 @@ X-Spamd-Result: default: False [-6.61 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 2DABC20201F
-X-Stat-Signature: woy4bjs6538xf93t7x8sft4hom5epimr
+X-Rspamd-Queue-Id: 37B4120202F
+X-Stat-Signature: 89ritbkurtx5rtb18y9egjsibkqc6x1y
 
 
-On Thu, 09 Jul 2026 09:22:51 +0200, Ahmad Fatoum wrote:
-> It's not safe to call dma_free_coherent on a NULL pointer. Implement
-> dma_realloc_coherent, which correctly handles reallocating a buffer
-> without leaking memory and use it to ensure only actually allocated
-> buffers are freed.
+On Thu, 09 Jul 2026 09:33:14 +0200, Ahmad Fatoum wrote:
+> The Fedora-Workstation-Live-44-1.7.aarch64.iso image advertises 248
+> slots, which exceeds the 128 partition limit that the barebox EFI
+> partition parser enforced because of the MAX_PARTITION macro.
 > 
+> The enforcement is not only for creating actual partitions, but also
+> for computing the CRC, so valid GPTs with a larger entry array are
+> rejected, even though they have fewer actual partitions.
 > 
+> [...]
 
 Applied, thanks!
 
-[1/2] nvme: fix PRP pool resize before first use
-      https://git.pengutronix.de/cgit/barebox/commit/?id=7ee7cf65c2f7 (link may not be stable)
-[2/2] nvme: pass device to dma dma_alloc/free_coherent
-      https://git.pengutronix.de/cgit/barebox/commit/?id=4af7798538c2 (link may not be stable)
+[1/1] partitions: efi: validate complete GPT entry array
+      https://git.pengutronix.de/cgit/barebox/commit/?id=9317ffc12b61 (link may not be stable)
 
 Best regards,
 -- 
