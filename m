@@ -1,66 +1,66 @@
-Delivery-date: Thu, 09 Jul 2026 15:41:54 +0200
+Delivery-date: Fri, 10 Jul 2026 08:43:31 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1whp0k-001vY9-1A
+	id 1wi4xP-002Ael-1K
 	for lore@lore.pengutronix.de;
-	Thu, 09 Jul 2026 15:41:54 +0200
+	Fri, 10 Jul 2026 08:43:31 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id E4BD6200382
-	for <lore@pengutronix.de>; Thu, 09 Jul 2026 15:41:52 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 743D5201FD4
+	for <lore@pengutronix.de>; Fri, 10 Jul 2026 08:43:30 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=j932YmpF;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=st1Z9+Yy;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-Type:MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=INjT6IK9m/Tr3MDD+/70DKWwpyxuSgKD1cM0Vj4qn5k=; b=j932YmpFYWIGVKoqK5awxIyD+k
-	j/l1f2iXH3QgrFg5J9kNilcWGABy60LZ2+PQcPi/RP5Na2r3wnj3EYYO0cbNg2Q4UVnVoCVqEnkh9
-	RCw2ioUgbdTE6bR26zHVoed+b2swwVbv3y+7R4XPIAWtHpaSyJLNs2QwUZjitSID2SJaSDehw/OHT
-	lQLpGSu17L/KKR6bxK79uD1kAd3w63kaM+V2dLviF3U0qBsZBsEzvIi25m+s5AgsZxh5fBnwdOUD6
-	5sW6Riql34sI6Ru0SrNykkMbrXR+/koi8NsbYr+M+P/XikiaUuDJoyTzDS/IMFTs8WNPkDPRJ4A/V
-	K+FEwrTg==;
+	bh=YfgVx43y8Vxku+vq7hNgEK808UJWxRxqiHKOQznxzKo=; b=st1Z9+Yy6NTKJIkos9EreS7Q2U
+	76U0WRd/k5POKK4dwvwVAWKR0TkOimgG5Anyc95umZBhZrgmG0sMLoF4oBPZqTEdO1g3JF84XIHTc
+	kPp1s6iKR/gTd0ecwwWBFMDT5YFJJDN0n22npuoJPjZD/YY1ahloLq6xfbyYUmoQfekNRHCs0WlR9
+	8bBros1dIWRSDb+Jzo3LiMq9PS4tvvanOkjdwsYHby9eUh6Nm5x+mG59g2YpuSA2Z5PLp04iCs+//
+	4mtsC0cAYCScwJMs0mwjeura3gqW/KZoDb20v81NmBhg71xlx7bff3QqaesRPAD+D4+qLfA3We82C
+	xBRCcjpA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1whp0H-00000002aZe-3iSu;
-	Thu, 09 Jul 2026 13:41:25 +0000
+	id 1wi3mg-00000004CMJ-0qFG;
+	Fri, 10 Jul 2026 05:28:22 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1whp0B-00000002aYs-2VDk
+	id 1wi3mc-00000004CLj-1OLf
 	for barebox@lists.infradead.org;
-	Thu, 09 Jul 2026 13:41:24 +0000
+	Fri, 10 Jul 2026 05:28:21 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 9E5DD2001CD;
-	Thu, 09 Jul 2026 15:41:15 +0200 (CEST)
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 420D3201FD4;
+	Fri, 10 Jul 2026 07:28:15 +0200 (CEST)
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1whp07-000vW8-1l;
-	Thu, 09 Jul 2026 15:41:15 +0200
-Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1whp07-0000000Du9P-1tOi;
-	Thu, 09 Jul 2026 15:41:15 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH] dma: return NULL on dma_alloc_coherent failure
-Date: Thu,  9 Jul 2026 15:41:05 +0200
-Message-ID: <20260709134111.3314089-1-a.fatoum@pengutronix.de>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wi3mZ-0011x1-0Z;
+	Fri, 10 Jul 2026 07:28:15 +0200
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wi3mZ-00000002Xvi-0EMh;
+	Fri, 10 Jul 2026 07:28:15 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] ARM: dts: imx8mp-debix: use upstream dts files directly
+Date: Fri, 10 Jul 2026 07:28:12 +0200
+Message-ID: <20260710052813.607073-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260709_064122_591413_3136D8AA 
-X-CRM114-Status: GOOD (  19.91  )
+X-CRM114-CacheID: sfid-20260709_222818_933086_ED7A0243 
+X-CRM114-Status: GOOD (  12.83  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -68,11 +68,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  The majority of our calls to dma_alloc_coherent check for
-   a NULL return that would indicate an error as that's the Linux API as well.
-    In barebox, dma_alloc_coherent panics though. This mostly doesn't matter,
-    because these are mostly fixed size allocations at driver probe time, but
-    we have some older code like the Freescale UDC drive [...] 
+ Content preview:  The Debix Model A and SOM A on BMB-08 board files carried
+   private copies of the upstream device trees (imx8mp-debix-*-upstream.*) in
+    arch/arm/dts. barebox already imports the corresponding kernel devi [...]
+    
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -95,637 +94,1374 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-5.11 / 15.00];
+X-Spamd-Result: default: False [-5.61 / 15.00];
 	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::54:received];
+	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	DMARC_NA(0.00)[pengutronix.de];
-	RCVD_IN_DNSWL_NONE(0.00)[2a0a:edc0:0:c01:1d::a2:received];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[];
 	ARC_NA(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWO(0.00)[2];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCPT_COUNT_ONE(0.00)[1];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_ALL(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCVD_IN_DNSWL_NONE(0.00)[2a0a:edc0:0:c01:1d::a2:received];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: E4BD6200382
-X-Stat-Signature: oyqn9i8qytdx9y4yi8jzduk51aigow6y
+X-Rspamd-Queue-Id: 743D5201FD4
+X-Stat-Signature: jraen7k3hypfg69se5hkiwowepz58e93
 
-The majority of our calls to dma_alloc_coherent check for a NULL return
-that would indicate an error as that's the Linux API as well.
+The Debix Model A and SOM A on BMB-08 board files carried private copies
+of the upstream device trees (imx8mp-debix-*-upstream.*) in arch/arm/dts.
+barebox already imports the corresponding kernel device trees under
+dts/src, so include those directly and drop the stale local copies.
 
-In barebox, dma_alloc_coherent panics though. This mostly doesn't matter,
-because these are mostly fixed size allocations at driver probe time,
-but we have some older code like the Freescale UDC driver that allocates
-coherent memory out of a poller context.
+Besides removing the duplication, this pulls in the fixes and additions
+that accumulated upstream, most notably:
 
-This can turn a simple out-of-memory condition when writing too many bytes
-over fastboot into a panic.
+  - Model A: EQOS PHY moved from MDIO address 0 to 1, HDMI/LCDIF output,
+    USB3 host with the on-board hub, and i2c2 left disabled.
+  - SOM A: eMMC restricted with no-sd/no-sdio, status LED added.
+  - BMB-08: HDMI output and the CSI camera regulators.
 
-Make the failure mode graceful by propagating -ENOMEM instead.
-
-Reported-by: matthias:dieholzkatze.de # Matrix
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Assisted-by: Claude Opus 4.8
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/mmu-common.c         |  4 +++-
- arch/arm/include/asm/dma.h        |  4 +++-
- arch/mips/include/asm/dma.h       |  5 ++++-
- arch/riscv/cpu/dma.c              |  4 +++-
- arch/sandbox/include/asm/dma.h    |  4 +++-
- arch/x86/include/asm/dma.h        |  5 +++--
- drivers/crypto/caam/caamrng.c     |  2 ++
- drivers/crypto/caam/pbl-init.c    |  7 +++++--
- drivers/dma/ti/k3-udma-am62l.c    |  4 ++++
- drivers/dma/ti/k3-udma.c          |  4 ++++
- drivers/firmware/qemu_fw_cfg.c    |  4 ++++
- drivers/net/ag71xx.c              |  6 +++++-
- drivers/net/arc_emac.c            |  3 +++
- drivers/net/at91_ether.c          |  5 +++++
- drivers/net/e1000/main.c          |  2 ++
- drivers/net/fec_imx.c             |  5 +++++
- drivers/net/gianfar.c             |  8 +++++++-
- drivers/net/macb.c                |  9 ++++++++-
- drivers/net/mvneta.c              | 11 +++++++++--
- drivers/net/orion-gbe.c           |  4 ++++
- drivers/net/r8169_main.c          | 17 +++++++++++++++--
- drivers/net/rtl8139.c             |  3 +++
- drivers/soc/starfive/jh7100_dma.c |  4 +++-
- drivers/usb/host/ehci-hcd.c       | 10 ++++++++++
- drivers/video/atmel_lcdfb_core.c  |  7 ++++++-
- drivers/video/pxa.c               |  5 +++++
- drivers/video/ramfb.c             |  2 ++
- 27 files changed, 130 insertions(+), 18 deletions(-)
+ .../arm/dts/imx8mp-debix-model-a-upstream.dts | 506 ------------------
+ arch/arm/dts/imx8mp-debix-model-a.dts         |   2 +-
+ .../imx8mp-debix-som-a-bmb-08-upstream.dts    | 473 ----------------
+ arch/arm/dts/imx8mp-debix-som-a-bmb-08.dts    |   2 +-
+ arch/arm/dts/imx8mp-debix-som-a-upstream.dtsi | 285 ----------
+ 5 files changed, 2 insertions(+), 1266 deletions(-)
+ delete mode 100644 arch/arm/dts/imx8mp-debix-model-a-upstream.dts
+ delete mode 100644 arch/arm/dts/imx8mp-debix-som-a-bmb-08-upstream.dts
+ delete mode 100644 arch/arm/dts/imx8mp-debix-som-a-upstream.dtsi
 
-diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
-index b84485a2763e..615ad421c12f 100644
---- a/arch/arm/cpu/mmu-common.c
-+++ b/arch/arm/cpu/mmu-common.c
-@@ -43,7 +43,9 @@ void *dma_alloc_map(struct device *dev,
- 	void *ret;
+diff --git a/arch/arm/dts/imx8mp-debix-model-a-upstream.dts b/arch/arm/dts/imx8mp-debix-model-a-upstream.dts
+deleted file mode 100644
+index 48014748c5..0000000000
+--- a/arch/arm/dts/imx8mp-debix-model-a-upstream.dts
++++ /dev/null
+@@ -1,506 +0,0 @@
+-// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+-/*
+- * Copyright 2019 NXP
+- * Copyright 2022 Ideas on Board Oy
+- */
+-
+-/dts-v1/;
+-
+-#include <dt-bindings/gpio/gpio.h>
+-#include <dt-bindings/leds/common.h>
+-#include <dt-bindings/usb/pd.h>
+-
+-#include <arm64/freescale/imx8mp.dtsi>
+-
+-/ {
+-	model = "Polyhex Debix Model A i.MX8MPlus board";
+-	compatible = "polyhex,imx8mp-debix-model-a", "polyhex,imx8mp-debix", "fsl,imx8mp";
+-
+-	chosen {
+-		stdout-path = &uart2;
+-	};
+-
+-	leds {
+-		compatible = "gpio-leds";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_gpio_led>;
+-
+-		led-0 {
+-			function = LED_FUNCTION_POWER;
+-			color = <LED_COLOR_ID_RED>;
+-			gpios = <&gpio3 16 GPIO_ACTIVE_HIGH>;
+-			default-state = "on";
+-		};
+-	};
+-
+-	reg_usdhc2_vmmc: regulator-usdhc2 {
+-		compatible = "regulator-fixed";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_reg_usdhc2_vmmc>;
+-		regulator-name = "VSD_3V3";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-		gpio = <&gpio2 19 GPIO_ACTIVE_HIGH>;
+-		enable-active-high;
+-	};
+-};
+-
+-&A53_0 {
+-	cpu-supply = <&buck2>;
+-};
+-
+-&A53_1 {
+-	cpu-supply = <&buck2>;
+-};
+-
+-&A53_2 {
+-	cpu-supply = <&buck2>;
+-};
+-
+-&A53_3 {
+-	cpu-supply = <&buck2>;
+-};
+-
+-&eqos {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_eqos>;
+-	phy-connection-type = "rgmii-id";
+-	phy-handle = <&ethphy0>;
+-	status = "okay";
+-
+-	mdio {
+-		compatible = "snps,dwmac-mdio";
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		ethphy0: ethernet-phy@0 { /* RTL8211E */
+-			compatible = "ethernet-phy-ieee802.3-c22";
+-			reg = <0>;
+-			reset-gpios = <&gpio4 18 GPIO_ACTIVE_LOW>;
+-			reset-assert-us = <20>;
+-			reset-deassert-us = <200000>;
+-		};
+-	};
+-};
+-
+-&i2c1 {
+-	clock-frequency = <400000>;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_i2c1>;
+-	status = "okay";
+-
+-	pmic@25 {
+-		compatible = "nxp,pca9450c";
+-		reg = <0x25>;
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_pmic>;
+-		interrupt-parent = <&gpio1>;
+-		interrupts = <3 IRQ_TYPE_EDGE_RISING>;
+-
+-		regulators {
+-			buck1: BUCK1 {
+-				regulator-name = "BUCK1";
+-				regulator-min-microvolt = <600000>;
+-				regulator-max-microvolt = <2187500>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-				regulator-ramp-delay = <3125>;
+-			};
+-
+-			buck2: BUCK2 {
+-				regulator-name = "BUCK2";
+-				regulator-min-microvolt = <600000>;
+-				regulator-max-microvolt = <2187500>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-				regulator-ramp-delay = <3125>;
+-				nxp,dvs-run-voltage = <950000>;
+-				nxp,dvs-standby-voltage = <850000>;
+-			};
+-
+-			buck4: BUCK4{
+-				regulator-name = "BUCK4";
+-				regulator-min-microvolt = <600000>;
+-				regulator-max-microvolt = <3400000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-
+-			buck5: BUCK5{
+-				regulator-name = "BUCK5";
+-				regulator-min-microvolt = <600000>;
+-				regulator-max-microvolt = <3400000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-
+-			buck6: BUCK6 {
+-				regulator-name = "BUCK6";
+-				regulator-min-microvolt = <600000>;
+-				regulator-max-microvolt = <3400000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-
+-			ldo1: LDO1 {
+-				regulator-name = "LDO1";
+-				regulator-min-microvolt = <1600000>;
+-				regulator-max-microvolt = <3300000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-
+-			ldo2: LDO2 {
+-				regulator-name = "LDO2";
+-				regulator-min-microvolt = <800000>;
+-				regulator-max-microvolt = <1150000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-
+-			ldo3: LDO3 {
+-				regulator-name = "LDO3";
+-				regulator-min-microvolt = <800000>;
+-				regulator-max-microvolt = <3300000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-
+-			ldo4: LDO4 {
+-				regulator-name = "LDO4";
+-				regulator-min-microvolt = <800000>;
+-				regulator-max-microvolt = <3300000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-
+-			ldo5: LDO5 {
+-				regulator-name = "LDO5";
+-				regulator-min-microvolt = <1800000>;
+-				regulator-max-microvolt = <3300000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-		};
+-	};
+-};
+-
+-&i2c2 {
+-	clock-frequency = <100000>;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_i2c2>;
+-	status = "okay";
+-};
+-
+-&i2c3 {
+-	clock-frequency = <400000>;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_i2c3>;
+-	status = "okay";
+-};
+-
+-&i2c4 {
+-	clock-frequency = <100000>;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_i2c4>;
+-	status = "okay";
+-
+-	eeprom@50 {
+-		compatible = "atmel,24c02";
+-		reg = <0x50>;
+-		pagesize = <16>;
+-	};
+-
+-	rtc@51 {
+-		compatible = "haoyu,hym8563";
+-		reg = <0x51>;
+-		#clock-cells = <0>;
+-		clock-frequency = <32768>;
+-		clock-output-names = "xin32k";
+-		interrupt-parent = <&gpio2>;
+-		interrupts = <11 IRQ_TYPE_EDGE_FALLING>;
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_rtc_int>;
+-	};
+-};
+-
+-&i2c6 {
+-	clock-frequency = <400000>;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_i2c6>;
+-	status = "okay";
+-};
+-
+-&snvs_pwrkey {
+-	status = "okay";
+-};
+-
+-&uart2 {
+-	/* console */
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart2>;
+-	status = "okay";
+-};
+-
+-&uart3 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart3>;
+-	status = "okay";
+-};
+-
+-&uart4 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart4>;
+-	status = "okay";
+-};
+-
+-/* SD Card */
+-&usdhc2 {
+-	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+-	pinctrl-0 = <&pinctrl_usdhc2>, <&pinctrl_usdhc2_gpio>;
+-	pinctrl-1 = <&pinctrl_usdhc2_100mhz>, <&pinctrl_usdhc2_gpio>;
+-	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_gpio>;
+-	cd-gpios = <&gpio2 12 GPIO_ACTIVE_LOW>;
+-	vmmc-supply = <&reg_usdhc2_vmmc>;
+-	bus-width = <4>;
+-	status = "okay";
+-};
+-
+-/* eMMC */
+-&usdhc3 {
+-	assigned-clocks = <&clk IMX8MP_CLK_USDHC3>;
+-	assigned-clock-rates = <400000000>;
+-	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+-	pinctrl-0 = <&pinctrl_usdhc3>;
+-	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
+-	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
+-	bus-width = <8>;
+-	non-removable;
+-	status = "okay";
+-};
+-
+-&wdog1 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_wdog>;
+-	fsl,ext-reset-output;
+-	status = "okay";
+-};
+-
+-&iomuxc {
+-	pinctrl_eqos: eqosgrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_ENET_MDC__ENET_QOS_MDC				0x3
+-			MX8MP_IOMUXC_ENET_MDIO__ENET_QOS_MDIO				0x3
+-			MX8MP_IOMUXC_ENET_RD0__ENET_QOS_RGMII_RD0			0x91
+-			MX8MP_IOMUXC_ENET_RD1__ENET_QOS_RGMII_RD1			0x91
+-			MX8MP_IOMUXC_ENET_RD2__ENET_QOS_RGMII_RD2			0x91
+-			MX8MP_IOMUXC_ENET_RD3__ENET_QOS_RGMII_RD3			0x91
+-			MX8MP_IOMUXC_ENET_RXC__CCM_ENET_QOS_CLOCK_GENERATE_RX_CLK	0x91
+-			MX8MP_IOMUXC_ENET_RX_CTL__ENET_QOS_RGMII_RX_CTL			0x91
+-			MX8MP_IOMUXC_ENET_TD0__ENET_QOS_RGMII_TD0			0x1f
+-			MX8MP_IOMUXC_ENET_TD1__ENET_QOS_RGMII_TD1			0x1f
+-			MX8MP_IOMUXC_ENET_TD2__ENET_QOS_RGMII_TD2			0x1f
+-			MX8MP_IOMUXC_ENET_TD3__ENET_QOS_RGMII_TD3			0x1f
+-			MX8MP_IOMUXC_ENET_TX_CTL__ENET_QOS_RGMII_TX_CTL			0x1f
+-			MX8MP_IOMUXC_ENET_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x1f
+-			MX8MP_IOMUXC_SAI1_RXFS__ENET1_1588_EVENT0_IN			0x1f
+-			MX8MP_IOMUXC_SAI1_RXC__ENET1_1588_EVENT0_OUT			0x1f
+-			MX8MP_IOMUXC_SAI1_TXD6__GPIO4_IO18				0x19
+-		>;
+-	};
+-
+-	pinctrl_fec: fecgrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_SAI1_RXD2__ENET1_MDC				0x3
+-			MX8MP_IOMUXC_SAI1_RXD3__ENET1_MDIO				0x3
+-			MX8MP_IOMUXC_SAI1_RXD4__ENET1_RGMII_RD0				0x91
+-			MX8MP_IOMUXC_SAI1_RXD5__ENET1_RGMII_RD1				0x91
+-			MX8MP_IOMUXC_SAI1_RXD6__ENET1_RGMII_RD2				0x91
+-			MX8MP_IOMUXC_SAI1_RXD7__ENET1_RGMII_RD3				0x91
+-			MX8MP_IOMUXC_SAI1_TXC__ENET1_RGMII_RXC				0x91
+-			MX8MP_IOMUXC_SAI1_TXFS__ENET1_RGMII_RX_CTL			0x91
+-			MX8MP_IOMUXC_SAI1_TXD0__ENET1_RGMII_TD0				0x1f
+-			MX8MP_IOMUXC_SAI1_TXD1__ENET1_RGMII_TD1				0x1f
+-			MX8MP_IOMUXC_SAI1_TXD2__ENET1_RGMII_TD2				0x1f
+-			MX8MP_IOMUXC_SAI1_TXD3__ENET1_RGMII_TD3				0x1f
+-			MX8MP_IOMUXC_SAI1_TXD4__ENET1_RGMII_TX_CTL			0x1f
+-			MX8MP_IOMUXC_SAI1_TXD5__ENET1_RGMII_TXC				0x1f
+-			MX8MP_IOMUXC_SAI1_RXD1__ENET1_1588_EVENT1_OUT			0x1f
+-			MX8MP_IOMUXC_SAI1_RXD0__ENET1_1588_EVENT1_IN			0x1f
+-			MX8MP_IOMUXC_SAI1_TXD7__GPIO4_IO19				0x19
+-		>;
+-	};
+-
+-	pinctrl_gpio_led: gpioledgrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_NAND_READY_B__GPIO3_IO16				0x19
+-		>;
+-	};
+-
+-	pinctrl_i2c1: i2c1grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_I2C1_SCL__I2C1_SCL					0x400001c2
+-			MX8MP_IOMUXC_I2C1_SDA__I2C1_SDA					0x400001c2
+-		>;
+-	};
+-
+-	pinctrl_i2c2: i2c2grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_I2C2_SCL__I2C2_SCL					0x400001c2
+-			MX8MP_IOMUXC_I2C2_SDA__I2C2_SDA					0x400001c2
+-		>;
+-	};
+-
+-	pinctrl_i2c3: i2c3grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_I2C3_SCL__I2C3_SCL					0x400001c2
+-			MX8MP_IOMUXC_I2C3_SDA__I2C3_SDA					0x400001c2
+-		>;
+-	};
+-
+-	pinctrl_i2c4: i2c4grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_I2C4_SCL__I2C4_SCL					0x400001c3
+-			MX8MP_IOMUXC_I2C4_SDA__I2C4_SDA					0x400001c3
+-		>;
+-	};
+-
+-	pinctrl_i2c6: i2c6grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_SAI5_RXFS__I2C6_SCL				0x400001c3
+-			MX8MP_IOMUXC_SAI5_RXC__I2C6_SDA					0x400001c3
+-		>;
+-	};
+-
+-	pinctrl_pmic: pmicirqgrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03				0x41
+-		>;
+-	};
+-
+-	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_SD2_RESET_B__GPIO2_IO19				0x41
+-		>;
+-	};
+-
+-	pinctrl_rtc_int: rtcintgrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_SD1_STROBE__GPIO2_IO11				0x140
+-		>;
+-	};
+-
+-	pinctrl_uart2: uart2grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_UART2_RXD__UART2_DCE_RX				0x14f
+-			MX8MP_IOMUXC_UART2_TXD__UART2_DCE_TX				0x14f
+-		>;
+-	};
+-
+-	pinctrl_uart3: uart3grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_UART3_RXD__UART3_DCE_RX				0x49
+-			MX8MP_IOMUXC_UART3_TXD__UART3_DCE_TX				0x49
+-		>;
+-	};
+-
+-	pinctrl_uart4: uart4grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_UART4_RXD__UART4_DCE_RX				0x49
+-			MX8MP_IOMUXC_UART4_TXD__UART4_DCE_TX				0x49
+-		>;
+-	};
+-
+-	pinctrl_usdhc2: usdhc2grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK				0x190
+-			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD				0x1d0
+-			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0				0x1d0
+-			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1				0x1d0
+-			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2				0x1d0
+-			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3				0x1d0
+-		>;
+-	};
+-
+-	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK				0x194
+-			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD				0x1d4
+-			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0				0x1d4
+-			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1				0x1d4
+-			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2				0x1d4
+-			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3				0x1d4
+-		>;
+-	};
+-
+-	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK				0x196
+-			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD				0x1d6
+-			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0				0x1d6
+-			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1				0x1d6
+-			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2				0x1d6
+-			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3				0x1d6
+-		>;
+-	};
+-
+-	pinctrl_usdhc2_gpio: usdhc2gpiogrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_SD2_CD_B__GPIO2_IO12				0x1c4
+-		>;
+-	};
+-
+-	pinctrl_usdhc3: usdhc3grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK				0x190
+-			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD				0x1d0
+-			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0				0x1d0
+-			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1				0x1d0
+-			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2				0x1d0
+-			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3				0x1d0
+-			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4				0x1d0
+-			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5				0x1d0
+-			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6				0x1d0
+-			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7				0x1d0
+-			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE				0x190
+-		>;
+-	};
+-
+-	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK				0x194
+-			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD				0x1d4
+-			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0				0x1d4
+-			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1				0x1d4
+-			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2				0x1d4
+-			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3				0x1d4
+-			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4				0x1d4
+-			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5				0x1d4
+-			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6				0x1d4
+-			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7				0x1d4
+-			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE				0x194
+-		>;
+-	};
+-
+-	pinctrl_usdhc3_200mhz: usdhc3-200mhzgrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK				0x196
+-			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD				0x1d6
+-			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0				0x1d6
+-			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1				0x1d6
+-			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2				0x1d6
+-			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3				0x1d6
+-			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4				0x1d6
+-			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5				0x1d6
+-			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6				0x1d6
+-			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7				0x1d6
+-			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE				0x196
+-		>;
+-	};
+-
+-	pinctrl_wdog: wdoggrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_GPIO1_IO02__WDOG1_WDOG_B				0xc6
+-		>;
+-	};
+-};
+diff --git a/arch/arm/dts/imx8mp-debix-model-a.dts b/arch/arm/dts/imx8mp-debix-model-a.dts
+index 81596ec7c1..0a3126aacd 100644
+--- a/arch/arm/dts/imx8mp-debix-model-a.dts
++++ b/arch/arm/dts/imx8mp-debix-model-a.dts
+@@ -2,7 +2,7 @@
  
- 	size = PAGE_ALIGN(size);
--	ret = xmemalign(PAGE_SIZE, size);
-+	ret = memalign(PAGE_SIZE, size);
-+	if (!ret)
-+		return NULL;
- 	if (dma_handle)
- 		*dma_handle = (dma_addr_t)ret;
+ /dts-v1/;
  
-diff --git a/arch/arm/include/asm/dma.h b/arch/arm/include/asm/dma.h
-index 2232ebac8b88..208bc652c70d 100644
---- a/arch/arm/include/asm/dma.h
-+++ b/arch/arm/include/asm/dma.h
-@@ -16,7 +16,9 @@ struct device;
- static inline void *dma_alloc_coherent(struct device *dev,
- 				       size_t size, dma_addr_t *dma_handle)
- {
--	void *ret = xmemalign(4096, size);
-+	void *ret = memalign(4096, size);
-+	if (!ret)
-+		return NULL;
- 	if (dma_handle)
- 		*dma_handle = (dma_addr_t)ret;
+-#include "imx8mp-debix-model-a-upstream.dts"
++#include <arm64/freescale/imx8mp-debix-model-a.dts>
+ #include "imx8mp.dtsi"
  
-diff --git a/arch/mips/include/asm/dma.h b/arch/mips/include/asm/dma.h
-index e5c8abd0bf1e..c1cf0e50afe5 100644
---- a/arch/mips/include/asm/dma.h
-+++ b/arch/mips/include/asm/dma.h
-@@ -30,7 +30,10 @@ static inline void *dma_alloc_coherent(struct device *dev,
- 	void *ptr;
- 	unsigned long virt;
+ / {
+diff --git a/arch/arm/dts/imx8mp-debix-som-a-bmb-08-upstream.dts b/arch/arm/dts/imx8mp-debix-som-a-bmb-08-upstream.dts
+deleted file mode 100644
+index 1e47499659..0000000000
+--- a/arch/arm/dts/imx8mp-debix-som-a-bmb-08-upstream.dts
++++ /dev/null
+@@ -1,473 +0,0 @@
+-// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+-/*
+- * Copyright 2019 NXP
+- * Copyright (C) 2023 Pengutronix, Marco Felsch <kernel@pengutronix.de>
+- */
+-
+-/dts-v1/;
+-
+-#include "imx8mp-debix-som-a-upstream.dtsi"
+-
+-/ {
+-	model = "Polyhex i.MX8MPlus Debix SOM A on BMB-08";
+-	compatible = "polyhex,imx8mp-debix-som-a-bmb-08", "polyhex,imx8mp-debix-som-a",
+-		     "fsl,imx8mp";
+-	barebox,deep-probe;
+-
+-	aliases {
+-		ethernet0 = &eqos;
+-		ethernet1 = &fec;
+-	};
+-
+-	chosen {
+-		stdout-path = &uart2;
+-	};
+-
+-	reg_baseboard_vdd3v3: regulator-baseboard-vdd3v3 {
+-		compatible = "regulator-fixed";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-		regulator-name = "BB_VDD3V3";
+-		/* Required timings for ethernet phy's */
+-		startup-delay-us = <50000>;
+-		off-on-delay-us = <110000>;
+-		gpio = <&expander0 10 GPIO_ACTIVE_HIGH>;
+-		enable-active-high;
+-	};
+-
+-	reg_baseboard_vdd5v0: regulator-baseboard-vdd5v0 {
+-		compatible = "regulator-fixed";
+-		regulator-min-microvolt = <5000000>;
+-		regulator-max-microvolt = <5000000>;
+-		regulator-name = "BB_VDD5V";
+-		gpio = <&expander0 9 GPIO_ACTIVE_HIGH>;
+-		enable-active-high;
+-	};
+-
+-	regulator-som-vdd1v8 {
+-		compatible = "regulator-fixed";
+-		regulator-min-microvolt = <1800000>;
+-		regulator-max-microvolt = <1800000>;
+-		regulator-name = "SOM_VDD1V8_SW";
+-		gpio = <&expander0 12 GPIO_ACTIVE_HIGH>;
+-		enable-active-high;
+-		regulator-always-on;
+-	};
+-
+-	regulator-som-vdd3v3 {
+-		compatible = "regulator-fixed";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-		regulator-name = "SOM_VDD3V3_SW";
+-		gpio = <&expander0 11 GPIO_ACTIVE_HIGH>;
+-		enable-active-high;
+-		regulator-always-on;
+-	};
+-
+-	regulator-vbus-usb20 {
+-		compatible = "regulator-fixed";
+-		regulator-min-microvolt = <5000000>;
+-		regulator-max-microvolt = <5000000>;
+-		regulator-name = "USB20_5V";
+-		gpio = <&expander1 14 GPIO_ACTIVE_HIGH>;
+-		enable-active-high;
+-		regulator-always-on;
+-		vin-supply = <&reg_baseboard_vdd5v0>;
+-	};
+-
+-	regulator-vbus-usb30 {
+-		compatible = "regulator-fixed";
+-		regulator-min-microvolt = <5000000>;
+-		regulator-max-microvolt = <5000000>;
+-		regulator-name = "USB30_5V";
+-		gpio = <&expander1 12 GPIO_ACTIVE_HIGH>;
+-		enable-active-high;
+-		regulator-always-on;
+-		vin-supply = <&reg_baseboard_vdd5v0>;
+-	};
+-
+-	reg_vdd5v0: regulator-vdd5v0 {
+-		compatible = "regulator-fixed";
+-		regulator-min-microvolt = <5000000>;
+-		regulator-max-microvolt = <5000000>;
+-		regulator-name = "VDD_5V";
+-		gpio = <&expander0 8 GPIO_ACTIVE_HIGH>;
+-		enable-active-high;
+-	};
+-};
+-
+-&eqos {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_eqos>;
+-	nvmem-cells = <&ethmac1>;
+-	nvmem-cell-names = "mac-address";
+-	phy-supply = <&reg_baseboard_vdd3v3>;
+-	phy-handle = <&ethphy0>;
+-	phy-mode = "rgmii-id";
+-	status = "okay";
+-
+-	mdio {
+-		compatible = "snps,dwmac-mdio";
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		ethphy0: ethernet-phy@1 {
+-			compatible = "ethernet-phy-ieee802.3-c22";
+-			reg = <1>;
+-			reset-gpios = <&gpio4 18 GPIO_ACTIVE_LOW>;
+-			reset-assert-us = <20000>;
+-			reset-deassert-us = <150000>;
+-			eee-broken-1000t;
+-			realtek,clkout-disable;
+-		};
+-	};
+-};
+-
+-&fec {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_fec>;
+-	nvmem-cells = <&ethmac2>;
+-	nvmem-cell-names = "mac-address";
+-	phy-supply = <&reg_baseboard_vdd3v3>;
+-	phy-handle = <&ethphy1>;
+-	phy-mode = "rgmii-id";
+-	fsl,magic-packet;
+-	status = "okay";
+-
+-	mdio {
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		ethphy1: ethernet-phy@1 {
+-			compatible = "ethernet-phy-ieee802.3-c22";
+-			reg = <1>;
+-			reset-gpios = <&gpio4 19 GPIO_ACTIVE_LOW>;
+-			reset-assert-us = <20000>;
+-			reset-deassert-us = <150000>;
+-			eee-broken-1000t;
+-			realtek,clkout-disable;
+-		};
+-	};
+-};
+-
+-&flexcan1 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_flexcan1>;
+-	xceiver-supply = <&reg_vdd5v0>;
+-	status = "okay";
+-};
+-
+-&flexcan2 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_flexcan2>;
+-	xceiver-supply = <&reg_vdd5v0>;
+-	status = "okay";
+-};
+-
+-&flexspi {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_flexspi0>;
+-	status = "okay";
+-
+-	flash: flash@0 {
+-		compatible = "jedec,spi-nor";
+-		reg = <0>;
+-		spi-max-frequency = <80000000>;
+-		spi-tx-bus-width = <1>;
+-		spi-rx-bus-width = <4>;
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-	};
+-};
+-
+-&i2c4 {
+-	expander0: gpio@20 {
+-		compatible = "nxp,pca9535";
+-		reg = <0x20>;
+-		gpio-controller;
+-		#gpio-cells = <0x02>;
+-	};
+-
+-	expander1: gpio@23 {
+-		compatible = "nxp,pca9535";
+-		reg = <0x23>;
+-		gpio-controller;
+-		#gpio-cells = <0x02>;
+-
+-		/*
+-		 * Since USB1 is bound to peripheral mode we need to ensure
+-		 * that VBUS is turned off.
+-		 */
+-		usb30-otg-hog {
+-			gpio-hog;
+-			gpios = <13 GPIO_ACTIVE_HIGH>;
+-			output-low;
+-			line-name = "USB30_OTG_EN";
+-		};
+-	};
+-
+-	rtc@51 {
+-		compatible = "haoyu,hym8563";
+-		reg = <0x51>;
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_rtc>;
+-		interrupt-parent = <&gpio4>;
+-		interrupts = <3 IRQ_TYPE_EDGE_FALLING>;
+-		#clock-cells = <0>;
+-	};
+-
+-	eeprom@52 {
+-		compatible = "atmel,24c02";
+-		reg = <0x52>;
+-		pagesize = <16>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-
+-		/* MACs stored in ASCII */
+-		ethmac1: mac-address@0 {
+-			reg = <0x0 0xc>;
+-		};
+-
+-		ethmac2: mac-address@c {
+-			reg = <0xc 0xc>;
+-		};
+-	};
+-};
+-
+-&snvs_pwrkey {
+-	status = "okay";
+-};
+-
+-/* Debug */
+-&uart2 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart2>;
+-	status = "okay";
+-};
+-
+-&uart3 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart3>;
+-	status = "okay";
+-};
+-
+-&uart4 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_uart4>;
+-	status = "okay";
+-};
+-
+-&usb3_0 {
+-	status = "okay";
+-};
+-
+-&usb3_1 {
+-	status = "okay";
+-};
+-
+-&usb_dwc3_0 {
+-	dr_mode = "peripheral";
+-	status = "okay";
+-};
+-
+-&usb_dwc3_1 {
+-	dr_mode = "host";
+-	#address-cells = <1>;
+-	#size-cells = <0>;
+-	status = "okay";
+-
+-	/* 2.x hub on port 1 */
+-	usb_hub_2_x: hub@1 {
+-		compatible = "usb5e3,610";
+-		reg = <1>;
+-		reset-gpios = <&expander1 9 GPIO_ACTIVE_LOW>;
+-		vdd-supply = <&reg_vdd5v0>;
+-		peer-hub = <&usb_hub_3_x>;
+-	};
+-
+-	/* 3.x hub on port 2 */
+-	usb_hub_3_x: hub@2 {
+-		compatible = "usb5e3,620";
+-		reg = <2>;
+-		reset-gpios = <&expander1 9 GPIO_ACTIVE_LOW>;
+-		vdd-supply = <&reg_vdd5v0>;
+-		peer-hub = <&usb_hub_2_x>;
+-	};
+-};
+-
+-&usb3_phy0 {
+-	status = "okay";
+-};
+-
+-&usb3_phy1 {
+-	status = "okay";
+-};
+-
+-/* µSD Card */
+-&usdhc2 {
+-	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+-	pinctrl-0 = <&pinctrl_usdhc2>;
+-	pinctrl-1 = <&pinctrl_usdhc2_100mhz>;
+-	pinctrl-2 = <&pinctrl_usdhc2_200mhz>;
+-	assigned-clocks = <&clk IMX8MP_CLK_USDHC2>;
+-	assigned-clock-rates = <400000000>;
+-	vmmc-supply = <&reg_usdhc2_vmmc>;
+-	bus-width = <4>;
+-	disable-wp;
+-	no-sdio;
+-	no-mmc;
+-	status = "okay";
+-};
+-
+-&iomuxc {
+-	pinctrl_eqos: eqosgrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_ENET_MDC__ENET_QOS_MDC				0x3
+-			MX8MP_IOMUXC_ENET_MDIO__ENET_QOS_MDIO				0x3
+-			MX8MP_IOMUXC_ENET_RD0__ENET_QOS_RGMII_RD0			0x91
+-			MX8MP_IOMUXC_ENET_RD1__ENET_QOS_RGMII_RD1			0x91
+-			MX8MP_IOMUXC_ENET_RD2__ENET_QOS_RGMII_RD2			0x91
+-			MX8MP_IOMUXC_ENET_RD3__ENET_QOS_RGMII_RD3			0x91
+-			MX8MP_IOMUXC_ENET_RXC__CCM_ENET_QOS_CLOCK_GENERATE_RX_CLK	0x91
+-			MX8MP_IOMUXC_ENET_RX_CTL__ENET_QOS_RGMII_RX_CTL			0x91
+-			MX8MP_IOMUXC_ENET_TD0__ENET_QOS_RGMII_TD0			0x1f
+-			MX8MP_IOMUXC_ENET_TD1__ENET_QOS_RGMII_TD1			0x1f
+-			MX8MP_IOMUXC_ENET_TD2__ENET_QOS_RGMII_TD2			0x1f
+-			MX8MP_IOMUXC_ENET_TD3__ENET_QOS_RGMII_TD3			0x1f
+-			MX8MP_IOMUXC_ENET_TX_CTL__ENET_QOS_RGMII_TX_CTL			0x1f
+-			MX8MP_IOMUXC_ENET_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x1f
+-
+-			MX8MP_IOMUXC_SAI1_RXFS__ENET1_1588_EVENT0_IN			0x1f
+-			MX8MP_IOMUXC_SAI1_TXD6__GPIO4_IO18				0x19
+-		>;
+-	};
+-
+-	pinctrl_fec: fecgrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_SAI1_RXD2__ENET1_MDC		0x3
+-			MX8MP_IOMUXC_SAI1_RXD3__ENET1_MDIO		0x3
+-			MX8MP_IOMUXC_SAI1_RXD4__ENET1_RGMII_RD0		0x91
+-			MX8MP_IOMUXC_SAI1_RXD5__ENET1_RGMII_RD1		0x91
+-			MX8MP_IOMUXC_SAI1_RXD6__ENET1_RGMII_RD2		0x91
+-			MX8MP_IOMUXC_SAI1_RXD7__ENET1_RGMII_RD3		0x91
+-			MX8MP_IOMUXC_SAI1_TXC__ENET1_RGMII_RXC		0x91
+-			MX8MP_IOMUXC_SAI1_TXFS__ENET1_RGMII_RX_CTL	0x91
+-			MX8MP_IOMUXC_SAI1_TXD0__ENET1_RGMII_TD0		0x1f
+-			MX8MP_IOMUXC_SAI1_TXD1__ENET1_RGMII_TD1		0x1f
+-			MX8MP_IOMUXC_SAI1_TXD2__ENET1_RGMII_TD2		0x1f
+-			MX8MP_IOMUXC_SAI1_TXD3__ENET1_RGMII_TD3		0x1f
+-			MX8MP_IOMUXC_SAI1_TXD4__ENET1_RGMII_TX_CTL	0x1f
+-			MX8MP_IOMUXC_SAI1_TXD5__ENET1_RGMII_TXC		0x1f
+-			MX8MP_IOMUXC_SAI1_RXD0__ENET1_1588_EVENT1_IN    0x1f
+-			MX8MP_IOMUXC_SAI1_TXD7__GPIO4_IO19		0x19
+-		>;
+-	};
+-
+-	pinctrl_flexcan1: flexcan1grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_SAI5_RXD2__CAN1_RX			0x154
+-			MX8MP_IOMUXC_SAI5_RXD1__CAN1_TX			0x154
+-		>;
+-	};
+-
+-	pinctrl_flexcan2: flexcan2grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_SAI5_MCLK__CAN2_RX			0x154
+-			MX8MP_IOMUXC_SAI5_RXD3__CAN2_TX			0x154
+-		>;
+-	};
+-
+-	pinctrl_flexspi0: flexspi0grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_NAND_ALE__FLEXSPI_A_SCLK           0x1c2
+-			MX8MP_IOMUXC_NAND_CE0_B__FLEXSPI_A_SS0_B        0x82
+-			MX8MP_IOMUXC_NAND_DATA00__FLEXSPI_A_DATA00      0x82
+-			MX8MP_IOMUXC_NAND_DATA01__FLEXSPI_A_DATA01      0x82
+-			MX8MP_IOMUXC_NAND_DATA02__FLEXSPI_A_DATA02      0x82
+-			MX8MP_IOMUXC_NAND_DATA03__FLEXSPI_A_DATA03      0x82
+-		>;
+-	};
+-
+-	pinctrl_i2c1: i2c1grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_I2C1_SCL__I2C1_SCL			0x400001c2
+-			MX8MP_IOMUXC_I2C1_SDA__I2C1_SDA			0x400001c2
+-		>;
+-	};
+-
+-	pinctrl_i2c4: i2c4grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_I2C4_SCL__I2C4_SCL			0x400001c3
+-			MX8MP_IOMUXC_I2C4_SDA__I2C4_SDA			0x400001c3
+-		>;
+-	};
+-
+-	pinctrl_rtc: rtcgrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_SAI1_RXD1__GPIO4_IO03		0x140
+-		>;
+-	};
+-
+-	pinctrl_pmic: pmicgrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x41
+-		>;
+-	};
+-
+-	pinctrl_uart2: uart2grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_UART2_RXD__UART2_DCE_RX		0x14f
+-			MX8MP_IOMUXC_UART2_TXD__UART2_DCE_TX		0x14f
+-		>;
+-	};
+-
+-	pinctrl_uart3: uart3grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_UART3_RXD__UART3_DCE_RX		0x49
+-			MX8MP_IOMUXC_UART3_TXD__UART3_DCE_TX		0x49
+-		>;
+-	};
+-
+-	pinctrl_uart4: uart4grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_UART4_RXD__UART4_DCE_RX		0x49
+-			MX8MP_IOMUXC_UART4_TXD__UART4_DCE_TX		0x49
+-		>;
+-	};
+-
+-	pinctrl_usdhc2: usdhc2grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK		0x190
+-			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD		0x1d0
+-			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0		0x1d0
+-			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1		0x1d0
+-			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2		0x1d0
+-			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3		0x1d0
+-			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT		0xc1
+-		>;
+-	};
+-
+-	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK		0x194
+-			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD		0x1d4
+-			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0		0x1d4
+-			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1		0x1d4
+-			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2		0x1d4
+-			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3		0x1d4
+-			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT		0xc1
+-		>;
+-	};
+-
+-	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_SD2_CLK__USDHC2_CLK		0x196
+-			MX8MP_IOMUXC_SD2_CMD__USDHC2_CMD		0x1d6
+-			MX8MP_IOMUXC_SD2_DATA0__USDHC2_DATA0		0x1d6
+-			MX8MP_IOMUXC_SD2_DATA1__USDHC2_DATA1		0x1d6
+-			MX8MP_IOMUXC_SD2_DATA2__USDHC2_DATA2		0x1d6
+-			MX8MP_IOMUXC_SD2_DATA3__USDHC2_DATA3		0x1d6
+-			MX8MP_IOMUXC_GPIO1_IO04__USDHC2_VSELECT		0xc1
+-		>;
+-	};
+-};
+diff --git a/arch/arm/dts/imx8mp-debix-som-a-bmb-08.dts b/arch/arm/dts/imx8mp-debix-som-a-bmb-08.dts
+index 4c66b8a667..dfaf55eee0 100644
+--- a/arch/arm/dts/imx8mp-debix-som-a-bmb-08.dts
++++ b/arch/arm/dts/imx8mp-debix-som-a-bmb-08.dts
+@@ -2,7 +2,7 @@
  
--	ptr = xmemalign(PAGE_SIZE, size);
-+	ptr = memalign(PAGE_SIZE, size);
-+	if (!ptr)
-+		return NULL;
-+
- 	memset(ptr, 0, size);
+ /dts-v1/;
  
- 	virt = (unsigned long)ptr;
-diff --git a/arch/riscv/cpu/dma.c b/arch/riscv/cpu/dma.c
-index 0a4b398c2e3c..fd4a907ff652 100644
---- a/arch/riscv/cpu/dma.c
-+++ b/arch/riscv/cpu/dma.c
-@@ -14,7 +14,9 @@ static void *__dma_alloc_coherent(struct device *dev,
- {
- 	void *ret;
+-#include "imx8mp-debix-som-a-bmb-08-upstream.dts"
++#include <arm64/freescale/imx8mp-debix-som-a-bmb-08.dts>
+ #include "imx8mp.dtsi"
  
--	ret = xmemalign(PAGE_SIZE, size);
-+	ret = memalign(PAGE_SIZE, size);
-+	if (!ret)
-+		return NULL;
- 
- 	memset(ret, 0, size);
- 
-diff --git a/arch/sandbox/include/asm/dma.h b/arch/sandbox/include/asm/dma.h
-index d69cc8fe9f91..a046469c37b3 100644
---- a/arch/sandbox/include/asm/dma.h
-+++ b/arch/sandbox/include/asm/dma.h
-@@ -20,7 +20,9 @@ struct device;
- static inline void *dma_alloc_coherent(struct device *dev,
- 				       size_t size, dma_addr_t *dma_handle)
- {
--	void *ret = xmemalign(4096, size);
-+	void *ret = memalign(4096, size);
-+	if (!ret)
-+		return NULL;
- 	if (dma_handle)
- 		*dma_handle = (dma_addr_t)ret;
- 
-diff --git a/arch/x86/include/asm/dma.h b/arch/x86/include/asm/dma.h
-index 815e1964b184..53c08bb12f70 100644
---- a/arch/x86/include/asm/dma.h
-+++ b/arch/x86/include/asm/dma.h
-@@ -6,7 +6,6 @@
- 
- #include <linux/string.h>
- #include <linux/compiler.h>
--#include <xfuncs.h>
- #include <malloc.h>
- 
- struct device;
-@@ -19,7 +18,9 @@ struct device;
- static inline void *dma_alloc_coherent(struct device *dev,
- 				       size_t size, dma_addr_t *dma_handle)
- {
--	void *ret = xmemalign(4096, size);
-+	void *ret = memalign(4096, size);
-+	if (!ret)
-+		return NULL;
- 	if (dma_handle)
- 		*dma_handle = (dma_addr_t)ret;
- 
-diff --git a/drivers/crypto/caam/caamrng.c b/drivers/crypto/caam/caamrng.c
-index ab32f9dde745..4d0a2d3c383c 100644
---- a/drivers/crypto/caam/caamrng.c
-+++ b/drivers/crypto/caam/caamrng.c
-@@ -211,6 +211,8 @@ static int caam_init_buf(struct caam_rng_ctx *ctx, int buf_id)
- 
- 	bd->buf = dma_alloc_coherent(DMA_DEVICE_BROKEN,
- 				     RN_BUF_SIZE, &bd->addr);
-+	if (!bd->buf)
-+		return -ENOMEM;
- 
- 	err = rng_create_job_desc(ctx, buf_id);
- 	if (err)
-diff --git a/drivers/crypto/caam/pbl-init.c b/drivers/crypto/caam/pbl-init.c
-index 9e1c966050e0..178d6e691f74 100644
---- a/drivers/crypto/caam/pbl-init.c
-+++ b/drivers/crypto/caam/pbl-init.c
-@@ -454,11 +454,14 @@ int early_caam_init(struct caam_ctrl __iomem *_caam, bool is_imx)
- 	 * PBL will only enable MMU right before unpacking, so all memory
- 	 * is uncached and thus coherent here
- 	 */
--	if (IN_PBL)
-+	if (IN_PBL) {
- 		g_jrdata = &pbl_jrdata;
--	else
-+	} else {
- 		g_jrdata = dma_alloc_coherent(DMA_DEVICE_BROKEN, sizeof(*g_jrdata),
- 					      DMA_ADDRESS_BROKEN);
-+		if (!g_jrdata)
-+			return -ENOMEM;
-+	}
- 
- 	jr = IOMEM(caam) + 0x1000;
- 	r4tst = &caam->r4tst[0];
-diff --git a/drivers/dma/ti/k3-udma-am62l.c b/drivers/dma/ti/k3-udma-am62l.c
-index ba54ba53e6d4..81ad348ae713 100644
---- a/drivers/dma/ti/k3-udma-am62l.c
-+++ b/drivers/dma/ti/k3-udma-am62l.c
-@@ -215,9 +215,13 @@ static int am62l_udma_request(struct dma *dma)
- 
- 	if (uc->config.dir == DMA_MEM_TO_DEV) {
- 		uc->desc_tx = dma_alloc_coherent(DMA_DEVICE_BROKEN, ucc->hdesc_size, DMA_ADDRESS_BROKEN);
-+		if (!uc->desc_tx)
-+			return -ENOMEM;
- 	} else {
- 		uc->desc_rx = dma_alloc_coherent(DMA_DEVICE_BROKEN,
- 						 ucc->hdesc_size * UDMA_RX_DESC_NUM, DMA_ADDRESS_BROKEN);
-+		if (!uc->desc_rx)
-+			return -ENOMEM;
- 	}
- 
- 	uc->in_use = true;
-diff --git a/drivers/dma/ti/k3-udma.c b/drivers/dma/ti/k3-udma.c
-index 1f0594749549..6d4270931981 100644
---- a/drivers/dma/ti/k3-udma.c
-+++ b/drivers/dma/ti/k3-udma.c
-@@ -1146,9 +1146,13 @@ static int udma_request(struct dma *dma)
- 
- 	if (uc->config.dir == DMA_MEM_TO_DEV) {
- 		uc->desc_tx = dma_alloc_coherent(DMA_DEVICE_BROKEN, ucc->hdesc_size, DMA_ADDRESS_BROKEN);
-+		if (!uc->desc_tx)
-+			return -ENOMEM;
- 	} else {
- 		uc->desc_rx = dma_alloc_coherent(DMA_DEVICE_BROKEN,
- 				ucc->hdesc_size * UDMA_RX_DESC_NUM, DMA_ADDRESS_BROKEN);
-+		if (!uc->desc_rx)
-+			return -ENOMEM;
- 	}
- 
- 	uc->in_use = true;
-diff --git a/drivers/firmware/qemu_fw_cfg.c b/drivers/firmware/qemu_fw_cfg.c
-index 7a699539d672..0ccb0b881d94 100644
---- a/drivers/firmware/qemu_fw_cfg.c
-+++ b/drivers/firmware/qemu_fw_cfg.c
-@@ -338,6 +338,10 @@ static int fw_cfg_probe(struct device *dev)
- 
- 	fw_cfg->acc_virt = dma_alloc_coherent(DMA_DEVICE_BROKEN,
- 					      sizeof(*fw_cfg->acc_virt), &fw_cfg->acc_dma);
-+	if (!fw_cfg->acc_virt) {
-+		ret = -ENOMEM;
-+		goto err;
-+	}
- 
- 	fw_cfg->cdev.name = "fw_cfg";
- 	fw_cfg->cdev.flags = DEVFS_IS_CHARACTER_DEV;
-diff --git a/drivers/net/ag71xx.c b/drivers/net/ag71xx.c
-index 62b299dd900d..b3cc7fc30edd 100644
---- a/drivers/net/ag71xx.c
-+++ b/drivers/net/ag71xx.c
-@@ -635,13 +635,17 @@ static int ag71xx_probe(struct device *dev)
- 	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG5, (0x66b82) | (1 << 19));
- 	ag71xx_wr(priv, AG71XX_REG_FIFO_CFG3, 0x1f00140);
- 
--	priv->rx_buffer = xmemalign(PAGE_SIZE, NO_OF_RX_FIFOS * MAX_RBUFF_SZ);
-+	priv->rx_buffer = memalign(PAGE_SIZE, NO_OF_RX_FIFOS * MAX_RBUFF_SZ);
- 	priv->fifo_tx = dma_alloc_coherent(DMA_DEVICE_BROKEN,
- 					   NO_OF_TX_FIFOS * sizeof(ag7240_desc_t),
- 					   &priv->addr_tx);
- 	priv->fifo_rx = dma_alloc_coherent(DMA_DEVICE_BROKEN,
- 					   NO_OF_RX_FIFOS * sizeof(ag7240_desc_t),
- 					   &priv->addr_rx);
-+
-+	if (!priv->rx_buffer || !priv->fifo_tx || !priv->fifo_rx)
-+		return -ENOMEM;
-+
- 	priv->next_tx = 0;
- 
- 	mac_l = 0x3344;
-diff --git a/drivers/net/arc_emac.c b/drivers/net/arc_emac.c
-index 1e4d5ba7afce..520b9e5c2fdb 100644
---- a/drivers/net/arc_emac.c
-+++ b/drivers/net/arc_emac.c
-@@ -443,6 +443,9 @@ static int arc_emac_probe(struct device *dev)
- 					DMA_ADDRESS_BROKEN);
- 	priv->rxbuf = dma_alloc(RX_BD_NUM * PKTSIZE);
- 
-+	if (!priv->rxbd || !priv->txbd || !priv->rxbuf)
-+		return -ENOMEM;
-+
- 	/* Set poll rate so that it polls every 1 ms */
- 	arc_reg_set(priv, R_POLLRATE, clock_frequency / 1000000);
- 
-diff --git a/drivers/net/at91_ether.c b/drivers/net/at91_ether.c
-index 7d20e7994ece..fe4bd86992b3 100644
---- a/drivers/net/at91_ether.c
-+++ b/drivers/net/at91_ether.c
-@@ -318,9 +318,14 @@ static int at91_ether_probe(struct device *dev)
- 	ether_dev->rbf_framebuf = dma_alloc_coherent(DMA_DEVICE_BROKEN,
- 						     MAX_RX_DESCR * MAX_RBUFF_SZ,
- 						     DMA_ADDRESS_BROKEN);
-+	if (!ether_dev->rbf_framebuf)
-+		return -ENOMEM;
-+
- 	ether_dev->rbfdt = dma_alloc_coherent(DMA_DEVICE_BROKEN,
- 					      sizeof(struct rbf_t) * MAX_RX_DESCR,
- 					      DMA_ADDRESS_BROKEN);
-+	if (!ether_dev->rbfdt)
-+		return -ENOMEM;
- 
- 	ether_dev->phy_addr = pdata->phy_addr;
- 	miibus->read = at91_ether_mii_read;
-diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
-index 08d8fba43bb9..182db47ea7be 100644
---- a/drivers/net/e1000/main.c
-+++ b/drivers/net/e1000/main.c
-@@ -3595,6 +3595,8 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 					 16 * sizeof(*hw->tx_base), &hw->tx_base_phys);
- 	hw->rx_base = dma_alloc_coherent(DMA_DEVICE_BROKEN,
- 					 16 * sizeof(*hw->rx_base), &hw->rx_base_phys);
-+	if (!hw->tx_base || !hw->rx_base)
-+		return -ENOMEM;
- 
- 	edev = &hw->edev;
- 
-diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-index 8474e6d5be9c..cc4e1ff2a6e2 100644
---- a/drivers/net/fec_imx.c
-+++ b/drivers/net/fec_imx.c
-@@ -865,6 +865,11 @@ static int fec_probe(struct device *dev)
- 
- 	base = dma_alloc_coherent(DMA_DEVICE_BROKEN, FEC_XBD_SIZE,
- 				  DMA_ADDRESS_BROKEN);
-+	if (!base) {
-+		ret = -ENOMEM;
-+		goto free_gpio;
-+	}
-+
- 	fec->rbd_base = base;
- 	base += FEC_RBD_NUM * sizeof(struct buffer_descriptor);
- 	fec->tbd_base = base;
-diff --git a/drivers/net/gianfar.c b/drivers/net/gianfar.c
-index cd43b29f40a8..551950d89988 100644
---- a/drivers/net/gianfar.c
-+++ b/drivers/net/gianfar.c
-@@ -655,11 +655,17 @@ static int gfar_probe(struct device *dev)
- 	size = ((TX_BUF_CNT * sizeof(struct txbd8)) +
- 			(RX_BUF_CNT * sizeof(struct rxbd8)));
- 	if (IS_ENABLED(CONFIG_PPC)) {
--		base = xmemalign(BUF_ALIGN, size);
-+		base = memalign(BUF_ALIGN, size);
- 	} else {
- 		base = dma_alloc_coherent(DMA_DEVICE_BROKEN, size, DMA_ADDRESS_BROKEN);
- 		dma_set_mask(dev, DMA_BIT_MASK(32));
- 	}
-+
-+	if (!base) {
-+		ret = -ENOMEM;
-+		goto free_received_packets;
-+	}
-+
- 	priv->txbd = (struct txbd8 __iomem *)base;
- 	base += TX_BUF_CNT * sizeof(struct txbd8);
- 	priv->rxbd = (struct rxbd8 __iomem *)base;
-diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index 26bc3130bf59..012372b66ed0 100644
---- a/drivers/net/macb.c
-+++ b/drivers/net/macb.c
-@@ -907,9 +907,16 @@ static int macb_probe(struct device *dev)
- 	macb->tx_ring = dma_alloc_coherent(DMA_DEVICE_BROKEN,
- 					   TX_RING_BYTES, &macb->tx_ring_phys);
- 
--	if (macb->is_gem)
-+	if (!macb->rx_ring || !macb->tx_ring)
-+		return -ENOMEM;
-+
-+
-+	if (macb->is_gem) {
- 		macb->gem_q1_descs = dma_alloc_coherent(DMA_DEVICE_BROKEN,
- 				GEM_Q1_DESC_BYTES, &macb->gem_q1_descs_phys);
-+		if (!macb->gem_q1_descs)
-+			return -ENOMEM;
-+	}
- 
- 	macb->rx_packet_buf = net_alloc_packet();
- 
-diff --git a/drivers/net/mvneta.c b/drivers/net/mvneta.c
-index 3178c6e8867b..5feb68c03073 100644
---- a/drivers/net/mvneta.c
-+++ b/drivers/net/mvneta.c
-@@ -576,7 +576,7 @@ static void mvneta_init_rx_ring(struct mvneta_port *priv)
- 	priv->curr_rxdesc = 0;
- }
- 
--static void mvneta_setup_tx_rx(struct mvneta_port *priv)
-+static int mvneta_setup_tx_rx(struct mvneta_port *priv)
- {
- 	u32 val;
- 
-@@ -590,6 +590,9 @@ static void mvneta_setup_tx_rx(struct mvneta_port *priv)
- 					  DMA_ADDRESS_BROKEN);
- 	priv->rxbuf = dma_alloc(RX_RING_SIZE * ALIGN(PKTSIZE, 8));
- 
-+	if (!priv->txdesc || !priv->rxdesc || !priv->rxbuf)
-+		return -ENOMEM;
-+
- 	mvneta_init_rx_ring(priv);
- 
- 	/* Configure the Rx queue */
-@@ -610,6 +613,8 @@ static void mvneta_setup_tx_rx(struct mvneta_port *priv)
- 	/* Set the number of available Rx descriptors */
- 	writel(RX_RING_SIZE << MVNETA_RXQ_ADD_NON_OCCUPIED_SHIFT,
- 	       priv->reg + MVNETA_RXQ_STATUS_UPDATE_REG(0));
-+
-+	return 0;
- }
- 
- static int mvneta_port_config(struct mvneta_port *priv)
-@@ -730,7 +735,9 @@ static int mvneta_probe(struct device *dev)
- 		return ret;
- 
- 	mvneta_conf_mbus_windows(priv);
--	mvneta_setup_tx_rx(priv);
-+	ret = mvneta_setup_tx_rx(priv);
-+	if (ret)
-+		return ret;
- 
- 	/* register eth device */
- 	priv->edev.priv = priv;
-diff --git a/drivers/net/orion-gbe.c b/drivers/net/orion-gbe.c
-index 982d6436c9c0..abf3956c8f9d 100644
---- a/drivers/net/orion-gbe.c
-+++ b/drivers/net/orion-gbe.c
-@@ -409,6 +409,10 @@ static int port_probe(struct device *parent, struct port_priv *port)
- 					  RX_RING_SIZE *
- 					  ALIGN(sizeof(*port->rxdesc), 16),
- 					  DMA_ADDRESS_BROKEN);
-+
-+	if (!port->txdesc || !port->rxdesc)
-+		return -ENOMEM;
-+
- 	port->rxbuf = dma_alloc(RX_RING_SIZE * ALIGN(PKTSIZE, 8));
- 
- 	port_stop(port);
-diff --git a/drivers/net/r8169_main.c b/drivers/net/r8169_main.c
-index bc2040a0173f..444bdecb9b7f 100644
---- a/drivers/net/r8169_main.c
-+++ b/drivers/net/r8169_main.c
-@@ -2874,7 +2874,7 @@ static int rtl8169_init_dev(struct eth_device *edev)
- #define ETH_ZLEN        60              /* Min. octets in frame sans FCS */
- #define PKT_BUF_SIZE   1536
- 
--static void rtl8169_init_ring(struct rtl8169_private *tp)
-+static int rtl8169_init_ring(struct rtl8169_private *tp)
- {
- 	struct eth_device *edev = &tp->edev;
- 	int i;
-@@ -2884,14 +2884,22 @@ static void rtl8169_init_ring(struct rtl8169_private *tp)
- 	tp->TxDescArray = dma_alloc_coherent(DMA_DEVICE_BROKEN,
- 					     NUM_TX_DESC * sizeof(struct TxDesc),
- 					     &tp->TxPhyAddr);
-+	if (!tp->TxDescArray)
-+		return -ENOMEM;
-+
- 	tp->tx_buf = dma_alloc(NUM_TX_DESC * PKT_BUF_SIZE);
-+
- 	tp->tx_buf_phys = dma_map_single(edev->parent, tp->tx_buf,
- 					   NUM_TX_DESC * PKT_BUF_SIZE, DMA_TO_DEVICE);
- 
- 	tp->RxDescArray = dma_alloc_coherent(DMA_DEVICE_BROKEN,
- 					     NUM_RX_DESC * sizeof(struct RxDesc),
- 					     &tp->RxPhyAddr);
-+	if (!tp->RxDescArray)
-+		return -ENOMEM;
-+
- 	tp->rx_buf = dma_alloc(NUM_RX_DESC * PKT_BUF_SIZE);
-+
- 	tp->rx_buf_phys = dma_map_single(edev->parent, tp->rx_buf,
- 					   NUM_RX_DESC * PKT_BUF_SIZE, DMA_FROM_DEVICE);
- 
-@@ -2906,6 +2914,8 @@ static void rtl8169_init_ring(struct rtl8169_private *tp)
- 		tp->RxDescArray[i].addr =
- 				cpu_to_le64(tp->rx_buf_phys + i * PKT_BUF_SIZE);
- 	}
-+
-+	return 0;
- }
- 
- static void r8169_phylink_handler(struct eth_device *edev)
-@@ -2922,7 +2932,10 @@ static int rtl8169_eth_open(struct eth_device *edev)
- 
- 	pci_set_master(tp->pci_dev);
- 
--	rtl8169_init_ring(tp);
-+	ret = rtl8169_init_ring(tp);
-+	if (ret)
-+		return ret;
-+
- 	rtl_hw_start(tp);
- 
- 	ret = phy_device_connect(edev, &tp->miibus, 0, r8169_phylink_handler, 0,
-diff --git a/drivers/net/rtl8139.c b/drivers/net/rtl8139.c
-index a1cad520599c..13f7baa50922 100644
---- a/drivers/net/rtl8139.c
-+++ b/drivers/net/rtl8139.c
-@@ -386,6 +386,9 @@ static int rtl8139_eth_open(struct eth_device *edev)
- 					   &priv->tx_bufs_dma);
- 	priv->rx_ring = dma_alloc_coherent(DMA_DEVICE_BROKEN, RX_BUF_TOT_LEN,
- 					   &priv->rx_ring_dma);
-+	if (!priv->tx_bufs || !priv->rx_ring)
-+		return -ENOMEM;
-+
- 	priv->tx_flag = (TX_FIFO_THRESH << 11) & 0x003f0000;
- 
- 	rtl8139_init_ring(priv);
-diff --git a/drivers/soc/starfive/jh7100_dma.c b/drivers/soc/starfive/jh7100_dma.c
-index 732dfacdb597..64f88d29b8b4 100644
---- a/drivers/soc/starfive/jh7100_dma.c
-+++ b/drivers/soc/starfive/jh7100_dma.c
-@@ -16,7 +16,9 @@ static inline void *jh7100_alloc_coherent(struct device *dev,
- 	dma_addr_t cpu_base;
- 	void *ret;
- 
--	ret = xmemalign(PAGE_SIZE, size);
-+	ret = memalign(PAGE_SIZE, size);
-+	if (!ret)
-+		return NULL;
- 
- 	memset(ret, 0, size);
- 
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index 51b9e52a4ffe..bb6cb47da09c 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -915,6 +915,8 @@ static int ehci_init(struct usb_host *host)
- 		 */
- 		ehci->periodic_list = dma_alloc_coherent(DMA_DEVICE_BROKEN, 1024 * 4,
- 						&ehci->periodic_list_dma);
-+	if (ehci->periodic_list == NULL)
-+		return -ENOMEM;
- 	for (i = 0; i < 1024; i++) {
- 		ehci->periodic_list[i] = cpu_to_hc32((unsigned long)ehci->periodic_queue_dma
- 						| QH_LINK_TYPE_QH);
-@@ -1134,11 +1136,16 @@ static struct int_queue *ehci_create_int_queue(struct usb_device *dev,
- 	result->first = dma_alloc_coherent(DMA_DEVICE_BROKEN,
- 					   sizeof(struct QH) * queuesize,
- 					   &result->first_dma);
-+	if (!result->first)
-+		return NULL;
-+
- 	result->current = result->first;
- 	result->last = result->first + queuesize - 1;
- 	result->tds = dma_alloc_coherent(DMA_DEVICE_BROKEN,
- 					 sizeof(struct qTD) * queuesize,
- 					 &result->tds_dma);
-+	if (!result->tds)
-+		return NULL;
- 
- 	for (i = 0; i < queuesize; i++) {
- 		struct QH *qh = result->first + i;
-@@ -1379,6 +1386,9 @@ struct ehci_host *ehci_register(struct device *dev, struct ehci_data *data)
- 				      sizeof(struct qTD) * NUM_TD,
- 				      &ehci->td_dma);
- 
-+	if (!ehci->qh_list || !ehci->periodic_queue || !ehci->td)
-+		return NULL;
-+
- 	host->hw_dev = dev;
- 	host->init = ehci_init;
- 	host->usbphy = data->usbphy;
-diff --git a/drivers/video/atmel_lcdfb_core.c b/drivers/video/atmel_lcdfb_core.c
-index d7f33bdb4fe8..ac7ed854050c 100644
---- a/drivers/video/atmel_lcdfb_core.c
-+++ b/drivers/video/atmel_lcdfb_core.c
-@@ -476,10 +476,15 @@ int atmel_lcdc_register(struct device *dev, struct atmel_lcdfb_devdata *data)
- 
- 	atmel_lcdfb_start_clock(sinfo);
- 
--	if (data->dma_desc_size)
-+	if (data->dma_desc_size) {
- 		sinfo->dma_desc = dma_alloc_coherent(DMA_DEVICE_BROKEN,
- 						     data->dma_desc_size,
- 						     DMA_ADDRESS_BROKEN);
-+		if (!sinfo->dma_desc) {
-+			ret = -ENOMEM;
-+			goto stop_clk;
-+		}
-+	}
- 
- 	info->dev.parent = dev;
- 	ret = register_framebuffer(info);
-diff --git a/drivers/video/pxa.c b/drivers/video/pxa.c
-index 9d7dfb185f17..f4078b229a87 100644
---- a/drivers/video/pxa.c
-+++ b/drivers/video/pxa.c
-@@ -520,9 +520,14 @@ static int pxafb_probe(struct device *dev)
- 						     DMA_ADDRESS_BROKEN),
- 				  PAGE_SIZE);
- 
-+	if (!fbi->info.screen_base)
-+		return -ENOMEM;
-+
- 	fbi->dma_buff = PTR_ALIGN(dma_alloc_coherent(DMA_DEVICE_BROKEN,
- 						     sizeof(struct pxafb_dma_buff) + 16,
- 				DMA_ADDRESS_BROKEN), 16);
-+	if (!fbi->dma_buff)
-+		return -ENOMEM;
- 
- 	pxafb_activate_var(fbi);
- 
-diff --git a/drivers/video/ramfb.c b/drivers/video/ramfb.c
-index 7d0413afb5e2..0ad864c8d36c 100644
---- a/drivers/video/ramfb.c
-+++ b/drivers/video/ramfb.c
-@@ -41,6 +41,8 @@ static int ramfb_activate_var(struct fb_info *fbi)
- 	fbi->screen_size = fbi->xres * fbi->yres * fbi->bits_per_pixel / BITS_PER_BYTE;
- 	fbi->screen_base = dma_alloc_coherent(hwdev, fbi->screen_size,
- 					      &ramfb->screen_dma);
-+	if (!fbi->screen_base)
-+		return -ENOMEM;
- 
- 	return 0;
- }
+ / {
+diff --git a/arch/arm/dts/imx8mp-debix-som-a-upstream.dtsi b/arch/arm/dts/imx8mp-debix-som-a-upstream.dtsi
+deleted file mode 100644
+index 9e0d19a2a7..0000000000
+--- a/arch/arm/dts/imx8mp-debix-som-a-upstream.dtsi
++++ /dev/null
+@@ -1,285 +0,0 @@
+-// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+-/*
+- * Copyright 2019 NXP
+- * Copyright (C) 2023 Pengutronix, Marco Felsch <kernel@pengutronix.de>
+- */
+-
+-#include <arm64/freescale/imx8mp.dtsi>
+-
+-/ {
+-	model = "Polyhex i.MX8MPlus Debix SOM A";
+-	compatible = "polyhex,imx8mp-debix-som-a", "fsl,imx8mp";
+-
+-	reg_usdhc2_vmmc: regulator-usdhc2 {
+-		compatible = "regulator-fixed";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_reg_usdhc2_vmmc>;
+-		regulator-name = "VSD_3V3";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-		gpio = <&gpio2 19 GPIO_ACTIVE_HIGH>;
+-		enable-active-high;
+-	};
+-};
+-
+-&A53_0 {
+-	cpu-supply = <&buck2>;
+-};
+-
+-&A53_1 {
+-	cpu-supply = <&buck2>;
+-};
+-
+-&A53_2 {
+-	cpu-supply = <&buck2>;
+-};
+-
+-&A53_3 {
+-	cpu-supply = <&buck2>;
+-};
+-
+-&i2c1 {
+-	clock-frequency = <400000>;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_i2c1>;
+-	status = "okay";
+-
+-	pmic@25 {
+-		compatible = "nxp,pca9450c";
+-		reg = <0x25>;
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&pinctrl_pmic>;
+-		interrupt-parent = <&gpio1>;
+-		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
+-
+-		regulators {
+-			buck1: BUCK1 {
+-				regulator-name = "BUCK1";
+-				regulator-min-microvolt = <600000>;
+-				regulator-max-microvolt = <2187500>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-				regulator-ramp-delay = <3125>;
+-			};
+-
+-			buck2: BUCK2 {
+-				regulator-name = "BUCK2";
+-				regulator-min-microvolt = <600000>;
+-				regulator-max-microvolt = <2187500>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-				regulator-ramp-delay = <3125>;
+-				nxp,dvs-run-voltage = <950000>;
+-				nxp,dvs-standby-voltage = <850000>;
+-			};
+-
+-			buck4: BUCK4 {
+-				regulator-name = "BUCK4";
+-				regulator-min-microvolt = <600000>;
+-				regulator-max-microvolt = <3400000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-
+-			buck5: BUCK5 {
+-				regulator-name = "BUCK5";
+-				regulator-min-microvolt = <600000>;
+-				regulator-max-microvolt = <3400000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-
+-			buck6: BUCK6 {
+-				regulator-name = "BUCK6";
+-				regulator-min-microvolt = <600000>;
+-				regulator-max-microvolt = <3400000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-
+-			ldo1: LDO1 {
+-				regulator-name = "LDO1";
+-				regulator-min-microvolt = <1600000>;
+-				regulator-max-microvolt = <3300000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-
+-			ldo2: LDO2 {
+-				regulator-name = "LDO2";
+-				regulator-min-microvolt = <800000>;
+-				regulator-max-microvolt = <1150000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-
+-			ldo3: LDO3 {
+-				regulator-name = "LDO3";
+-				regulator-min-microvolt = <800000>;
+-				regulator-max-microvolt = <3300000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-
+-			ldo4: LDO4 {
+-				regulator-name = "LDO4";
+-				regulator-min-microvolt = <800000>;
+-				regulator-max-microvolt = <3300000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-
+-			ldo5: LDO5 {
+-				regulator-name = "LDO5";
+-				regulator-min-microvolt = <1800000>;
+-				regulator-max-microvolt = <3300000>;
+-				regulator-boot-on;
+-				regulator-always-on;
+-			};
+-		};
+-	};
+-};
+-
+-&i2c4 {
+-	clock-frequency = <400000>;
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_i2c4>;
+-	status = "okay";
+-
+-	adc@48 {
+-		 compatible = "ti,ads1115";
+-		 reg = <0x48>;
+-		 #address-cells = <1>;
+-		 #size-cells = <0>;
+-
+-		 channel@4 {
+-			 reg = <4>;
+-			 ti,gain = <1>;
+-			 ti,datarate = <7>;
+-		 };
+-
+-		 channel@5 {
+-			 reg = <5>;
+-			 ti,gain = <1>;
+-			 ti,datarate = <7>;
+-		 };
+-
+-		 channel@6 {
+-			 reg = <6>;
+-			 ti,gain = <1>;
+-			 ti,datarate = <7>;
+-		 };
+-
+-		 channel@7 {
+-			 reg = <7>;
+-			 ti,gain = <1>;
+-			 ti,datarate = <7>;
+-		 };
+-	 };
+-};
+-
+-&snvs_pwrkey {
+-	status = "okay";
+-};
+-
+-/* eMMC */
+-&usdhc3 {
+-	pinctrl-names = "default", "state_100mhz", "state_200mhz";
+-	pinctrl-0 = <&pinctrl_usdhc3>;
+-	pinctrl-1 = <&pinctrl_usdhc3_100mhz>;
+-	pinctrl-2 = <&pinctrl_usdhc3_200mhz>;
+-	assigned-clocks = <&clk IMX8MP_CLK_USDHC3>;
+-	assigned-clock-rates = <400000000>;
+-	bus-width = <8>;
+-	non-removable;
+-	status = "okay";
+-};
+-
+-&wdog1 {
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&pinctrl_wdog>;
+-	fsl,ext-reset-output;
+-	status = "okay";
+-};
+-
+-&iomuxc {
+-	pinctrl_i2c1: i2c1grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_I2C1_SCL__I2C1_SCL			0x400001c2
+-			MX8MP_IOMUXC_I2C1_SDA__I2C1_SDA			0x400001c2
+-		>;
+-	};
+-
+-	pinctrl_i2c4: i2c4grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_I2C4_SCL__I2C4_SCL			0x400001c3
+-			MX8MP_IOMUXC_I2C4_SDA__I2C4_SDA			0x400001c3
+-		>;
+-	};
+-
+-	pinctrl_pmic: pmicgrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_GPIO1_IO03__GPIO1_IO03		0x41
+-		>;
+-	};
+-
+-	pinctrl_reg_usdhc2_vmmc: regusdhc2vmmcgrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_SD2_RESET_B__GPIO2_IO19		0x41
+-		>;
+-	};
+-
+-	pinctrl_usdhc3: usdhc3grp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK		0x190
+-			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD		0x1d0
+-			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0		0x1d0
+-			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1		0x1d0
+-			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2		0x1d0
+-			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3		0x1d0
+-			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4		0x1d0
+-			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5		0x1d0
+-			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6		0x1d0
+-			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7		0x1d0
+-			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE		0x190
+-		>;
+-	};
+-
+-	pinctrl_usdhc3_100mhz: usdhc3-100mhzgrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK		0x194
+-			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD		0x1d4
+-			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0		0x1d4
+-			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1		0x1d4
+-			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2		0x1d4
+-			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3		0x1d4
+-			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4		0x1d4
+-			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5		0x1d4
+-			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6		0x1d4
+-			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7		0x1d4
+-			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE		0x194
+-		>;
+-	};
+-
+-	pinctrl_usdhc3_200mhz: usdhc3-200mhzgrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_NAND_WE_B__USDHC3_CLK		0x196
+-			MX8MP_IOMUXC_NAND_WP_B__USDHC3_CMD		0x1d6
+-			MX8MP_IOMUXC_NAND_DATA04__USDHC3_DATA0		0x1d6
+-			MX8MP_IOMUXC_NAND_DATA05__USDHC3_DATA1		0x1d6
+-			MX8MP_IOMUXC_NAND_DATA06__USDHC3_DATA2		0x1d6
+-			MX8MP_IOMUXC_NAND_DATA07__USDHC3_DATA3		0x1d6
+-			MX8MP_IOMUXC_NAND_RE_B__USDHC3_DATA4		0x1d6
+-			MX8MP_IOMUXC_NAND_CE2_B__USDHC3_DATA5		0x1d6
+-			MX8MP_IOMUXC_NAND_CE3_B__USDHC3_DATA6		0x1d6
+-			MX8MP_IOMUXC_NAND_CLE__USDHC3_DATA7		0x1d6
+-			MX8MP_IOMUXC_NAND_CE1_B__USDHC3_STROBE		0x196
+-		>;
+-	};
+-
+-	pinctrl_wdog: wdoggrp {
+-		fsl,pins = <
+-			MX8MP_IOMUXC_GPIO1_IO02__WDOG1_WDOG_B		0xc6
+-		>;
+-	};
+-};
 -- 
 2.47.3
 
