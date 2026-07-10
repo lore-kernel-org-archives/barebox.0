@@ -1,16 +1,16 @@
-Delivery-date: Fri, 10 Jul 2026 23:34:45 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Fri, 10 Jul 2026 23:36:25 +0200
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wiIrt-002Nk5-1p
+	id 1wiItV-002NlS-14
 	for lore@lore.pengutronix.de;
-	Fri, 10 Jul 2026 23:34:45 +0200
+	Fri, 10 Jul 2026 23:36:25 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 669C220201F
-	for <lore@pengutronix.de>; Fri, 10 Jul 2026 23:34:45 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 28944200668
+	for <lore@pengutronix.de>; Fri, 10 Jul 2026 23:36:25 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=SQ2autW+;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=DWFga3nH;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,51 +19,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=QZlefFKzbbnx2zTsi0sobpqTOEgQfy7ARSMKiu2p9TE=; b=SQ2autW+7B2AO6MPOjoGrkWY7g
-	fgk3e1wpoiIJL+5HbG21+SGaCSV6VCU++/4gFUCYXqXhChlGNnA9M18IdXvgWjO1mcv87LR/vVKgb
-	1gSINZgSwtQSyDIM675wCZbPDgoLMIy2KIlIzyRVIXGjhHgSBU5J8NGfEL/bzxephrKUwhkqrTiF3
-	1M/V2GfSe96w98SOgLUyM3vs75MXbW1aAwzhJlFSbLL3XAFTqJAywj9Fbmkf4N0EXCo41QPHYrzfG
-	sjc/izceB/ma6XuIz5FT9SslrgPxoiRa3S4KeAikXYao4IxkI5+bQqZkRHbiTybpA1n1gFlyFlgTB
-	dgRPZ9eg==;
+	bh=Za1/SBW6kTWnYXGjUcCjXhYF+duaKxiQrgo1cPf55Qc=; b=DWFga3nHtDNr+xYcrsGYl+x3i2
+	fwqkfnjNNxJfDZP7SMV92vdH/r0+re7ML42ZsyU/cvBeJphw//Z2IxII/74cCg1oirZqrTHJ1Ebrm
+	ftBLwqCAF60f57R4kj6hXxX9yyRzTVwR8GOAPdxCSKu0bx9uY95uTJb/6frLjA27W5/b3AVgPsR62
+	tFFpDbQNwFM+iVJZS0thOaCQo9tiZZRwIOW9NbGR5kFHN+vOQ/kM4nHbFE05nneKiXdEr3amVPpk6
+	EU6njASNCc5yqKuxS8wTrQmw0vBP1eiNczNsW+N30oixM5jyaZ0F8fb/OID49O+lmxb6LWRPHFqiV
+	/4jx4GeQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wiIqo-00000005r8H-0hWe;
-	Fri, 10 Jul 2026 21:33:38 +0000
+	id 1wiIsW-00000005rSL-4BhB;
+	Fri, 10 Jul 2026 21:35:25 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wiIqk-00000005r7b-32P4
+	id 1wiIsU-00000005rRW-2q1H
 	for barebox@lists.infradead.org;
-	Fri, 10 Jul 2026 21:33:36 +0000
+	Fri, 10 Jul 2026 21:35:24 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B72DF20201F;
-	Fri, 10 Jul 2026 23:33:32 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 0DF5B20201F;
+	Fri, 10 Jul 2026 23:35:21 +0200 (CEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wiIqi-0018lj-27;
-	Fri, 10 Jul 2026 23:33:32 +0200
+	id 1wiIsS-0018qK-39;
+	Fri, 10 Jul 2026 23:35:20 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wiIqi-0000000Er2j-2Uym;
-	Fri, 10 Jul 2026 23:33:32 +0200
+	id 1wiIsS-0000000ErVZ-3pqx;
+	Fri, 10 Jul 2026 23:35:20 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260709131008.3299405-1-a.fatoum@pengutronix.de>
-References: <20260709131008.3299405-1-a.fatoum@pengutronix.de>
-Subject: Re: [PATCH] common: fastboot: make CONFIG_FASTBOOT_SPARSE=y the
- default
-Message-Id: <178371921259.3540472.6603030721372679034.b4-ty@pengutronix.de>
-Date: Fri, 10 Jul 2026 23:33:32 +0200
+In-Reply-To: <20260709134111.3314089-1-a.fatoum@pengutronix.de>
+References: <20260709134111.3314089-1-a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] dma: return NULL on dma_alloc_coherent failure
+Message-Id: <178371932090.3542258.1570601136067314894.b4-ty@pengutronix.de>
+Date: Fri, 10 Jul 2026 23:35:20 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260710_143334_916190_623454CC 
-X-CRM114-Status: UNSURE (   5.73  )
+X-CRM114-CacheID: sfid-20260710_143523_146534_E7F88816 
+X-CRM114-Status: UNSURE (   7.72  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -72,9 +71,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Thu, 09 Jul 2026 15:10:06 +0200, Ahmad Fatoum wrote: >
-    Back in 2018, sparse support was made optional as "[s]parse support > is
-   not always desired" without further elaboration. > > Arguably the ma [...]
+ Content preview:  On Thu, 09 Jul 2026 15:41:05 +0200, Ahmad Fatoum wrote: >
+    The majority of our calls to dma_alloc_coherent check for a NULL return >
+    that would indicate an error as that's the Linux API as well. > > I [...]
     
  
  Content analysis details:   (-1.9 points, 5.0 required)
@@ -102,7 +101,7 @@ X-Spamd-Result: default: False [-6.61 / 15.00];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received];
+	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:1101:1d::28:received,2607:7c80:54:3::133:from];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
@@ -129,24 +128,25 @@ X-Spamd-Result: default: False [-6.61 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 669C220201F
-X-Stat-Signature: 1kksfdghqzgc4cf48wgac8co58dtgy3a
+X-Rspamd-Queue-Id: 28944200668
+X-Stat-Signature: 877rrgqg6mdsqwc7mxkbm1bzz4hojbsg
 
 
-On Thu, 09 Jul 2026 15:10:06 +0200, Ahmad Fatoum wrote:
-> Back in 2018, sparse support was made optional as "[s]parse support
-> is not always desired" without further elaboration.
+On Thu, 09 Jul 2026 15:41:05 +0200, Ahmad Fatoum wrote:
+> The majority of our calls to dma_alloc_coherent check for a NULL return
+> that would indicate an error as that's the Linux API as well.
 > 
-> Arguably the majority of users would benefit from sparse support enabled,
-> so flip the Kconfig default to make it opt-out instead.
-> 
+> In barebox, dma_alloc_coherent panics though. This mostly doesn't matter,
+> because these are mostly fixed size allocations at driver probe time,
+> but we have some older code like the Freescale UDC driver that allocates
+> coherent memory out of a poller context.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] common: fastboot: make CONFIG_FASTBOOT_SPARSE=y the default
-      https://git.pengutronix.de/cgit/barebox/commit/?id=712e9cf0f3f4 (link may not be stable)
+[1/1] dma: return NULL on dma_alloc_coherent failure
+      https://git.pengutronix.de/cgit/barebox/commit/?id=467f5e1cc300 (link may not be stable)
 
 Best regards,
 -- 
