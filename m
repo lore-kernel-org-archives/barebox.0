@@ -1,16 +1,16 @@
-Delivery-date: Fri, 10 Jul 2026 23:51:57 +0200
+Delivery-date: Fri, 10 Jul 2026 23:53:22 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wiJ8X-002O18-2q
+	id 1wiJ9u-002O2O-0x
 	for lore@lore.pengutronix.de;
-	Fri, 10 Jul 2026 23:51:57 +0200
+	Fri, 10 Jul 2026 23:53:22 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id AEBB1202029
-	for <lore@pengutronix.de>; Fri, 10 Jul 2026 23:51:57 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 216BA20202F
+	for <lore@pengutronix.de>; Fri, 10 Jul 2026 23:53:22 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=bXr0OP39;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=4r0XXSbL;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,50 +19,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=2TxVL68zgrJOmYKJpYFuUxzzzv+5nr6HI0fCMKPk3Hs=; b=bXr0OP39O2frhX0WAhb6vJw5gL
-	CUdHeAlGSEHcPV15xwwyfoWUHK5pOpEZFTBOMBb/7PlFLLL3p3ifXhUvrN8+w4xzRl7v/9VNl3GZR
-	RTEe2ikzq3DUvzId45LXK44NO4FZFGkJyPLUBgCT6X+68w2E+iSxLP4Nzcd0OvRyuTWT0VMQqpJYf
-	HSUctp3ez3X6pMIheEebK35JBFSHvZR0thhuJUuSPDjPfzAbzoZKOHtPThKHE2ySy6VEkUlL7yQqu
-	rcEJAeKUhm75wLfbo40wDJmuXmd/s5fdUXROU+tBZU0IY7aPC6vy75UpljXmAkcbGP1Zomsd14fyP
-	e7wLKc1Q==;
+	bh=OAf7doSJseLPPqhuUygXWZEmN3PsV2zeTJVOHSUc52c=; b=4r0XXSbLKXYDNriCk7qQYjyrom
+	Ux+vvAPZpBi3fWdgBdfxNfapcNk1okw6eAesrWSw4GUceiCz84O3lJ6UvjgVBYme8jPcHdXEfiU3H
+	BQX2lfhQj6u/0mynAsho3vrcsf4wi+riBDa7bEo2gNwPqjXNPjewBjgeGPXfmNtuIWJJj8zaoS1JR
+	LM4hgzrfK42RKLKTMMwTCCHymqYWsxgE8fTAgs4Ym+pNE4pfmuXswHHrA3V/iTS24UQwIuvuACz+n
+	3izNTDe83O1EN+a3bH9o8qfYdtbL9PXpgH5dpipDQrZ2i6zMpaMZS11OcMzcbuZ5XRNcE+mFt3EGJ
+	lU2LnQ2Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wiJ7Z-00000005srr-1Qq8;
-	Fri, 10 Jul 2026 21:50:57 +0000
+	id 1wiJ8v-00000005t2A-2Yhv;
+	Fri, 10 Jul 2026 21:52:21 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wiJ7W-00000005sqx-2cTm
+	id 1wiJ8s-00000005t1b-0VkX
 	for barebox@lists.infradead.org;
-	Fri, 10 Jul 2026 21:50:56 +0000
+	Fri, 10 Jul 2026 21:52:20 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id F3E96202021;
-	Fri, 10 Jul 2026 23:50:52 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 7761E202029;
+	Fri, 10 Jul 2026 23:52:16 +0200 (CEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wiJ7U-0018ro-2y;
-	Fri, 10 Jul 2026 23:50:52 +0200
+	id 1wiJ8q-0018rv-1K;
+	Fri, 10 Jul 2026 23:52:16 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wiJ7U-0000000EtK4-3bPG;
-	Fri, 10 Jul 2026 23:50:52 +0200
+	id 1wiJ8q-0000000EtLz-1T2O;
+	Fri, 10 Jul 2026 23:52:16 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20260709081106.550595-1-a.fatoum@barebox.org>
-References: <20260709081106.550595-1-a.fatoum@barebox.org>
-Subject: Re: [PATCH] efi: loader: coalesce overdue periodic timers
-Message-Id: <178372025285.3549223.8906304634405329566.b4-ty@pengutronix.de>
-Date: Fri, 10 Jul 2026 23:50:52 +0200
+In-Reply-To: <20260709071526.502694-1-a.fatoum@barebox.org>
+References: <20260709071526.502694-1-a.fatoum@barebox.org>
+Subject: Re: [PATCH] video: fb: mirror cdev writes to shadow buffer
+Message-Id: <178372033634.3549340.1615517830857184320.b4-ty@pengutronix.de>
+Date: Fri, 10 Jul 2026 23:52:16 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260710_145054_822504_A158FCBD 
-X-CRM114-Status: UNSURE (   5.81  )
+X-CRM114-CacheID: sfid-20260710_145218_319597_2647B44E 
+X-CRM114-Status: UNSURE (   5.12  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -71,10 +71,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Thu, 09 Jul 2026 10:11:05 +0200, Ahmad Fatoum wrote: >
-    EFI timer events are polled by the loader instead of being driven from >
-   an interrupt. If a periodic timer is serviced late, advancing the ne [...]
-    
+ Content preview:  On Thu, 09 Jul 2026 09:15:25 +0200, Ahmad Fatoum wrote: >
+    The shadow framebuffer is allocated by the framebuffer core, > but maintained
+    by gui_screen_blit and gu_screen_blit_area. > > Direct framebuf [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -129,25 +128,26 @@ X-Spamd-Result: default: False [-6.61 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: AEBB1202029
-X-Stat-Signature: kxyttbdkcnxyw1buurzi4bkiqzp7ayyi
+X-Rspamd-Queue-Id: 216BA20202F
+X-Stat-Signature: ffoxtfeygwux7dt9i1899n96zmxdtgtx
 
 
-On Thu, 09 Jul 2026 10:11:05 +0200, Ahmad Fatoum wrote:
-> EFI timer events are polled by the loader instead of being driven from
-> an interrupt. If a periodic timer is serviced late, advancing the next
-> deadline by only one period leaves old deadlines pending.
+On Thu, 09 Jul 2026 09:15:25 +0200, Ahmad Fatoum wrote:
+> The shadow framebuffer is allocated by the framebuffer core,
+> but maintained by gui_screen_blit and gu_screen_blit_area.
 > 
-> Advance periodic timers past the current time when they fire. This keeps
-> each poll to one notification and avoids consumers draining stale timer
-> ticks in a tight loop.
+> Direct framebuffer devices currently ignore the shadow framebuffer,
+> which leads to surprising behavior when doing sequences like:
+> 
+>   cp /dev/zero /dev/fb0
+>   splash /env/data/splash.png
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] efi: loader: coalesce overdue periodic timers
-      https://git.pengutronix.de/cgit/barebox/commit/?id=501bfbe6f1ec (link may not be stable)
+[1/1] video: fb: mirror cdev writes to shadow buffer
+      https://git.pengutronix.de/cgit/barebox/commit/?id=dc1cb69a07dd (link may not be stable)
 
 Best regards,
 -- 
