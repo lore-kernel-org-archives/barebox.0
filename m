@@ -1,17 +1,17 @@
-Delivery-date: Thu, 23 Jul 2026 16:02:14 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Thu, 23 Jul 2026 16:02:17 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wmu05-001zDg-1r
+	id 1wmu08-001zE5-1M
 	for lore@lore.pengutronix.de;
-	Thu, 23 Jul 2026 16:02:14 +0200
+	Thu, 23 Jul 2026 16:02:17 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 9FEDD20299C
-	for <lore@pengutronix.de>; Thu, 23 Jul 2026 16:02:13 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 315BC202586
+	for <lore@pengutronix.de>; Thu, 23 Jul 2026 16:02:11 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=4hBg72BE;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HSvr8Bb+;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=faW+mmNU;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gkZ6D0pJ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -20,57 +20,57 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3OQ5l0v1fVTzxMlrt2WJnL+2MwuKUv3TI36r8hNH0/E=; b=4hBg72BEWF3fMEjxcSleZrV7vN
-	HlVvRaZzqLCa2Vuld3kkSrBa38qEIK7EXieQSaAYyyuU4QX/BTrgp6iMZi7BxRCoGS8MaVxp++kEO
-	M+tfuXTcdIJTrmYVBetTTDOnKSqkShdJqnswRe7aJWwli5KBH3ZD9jaZDUR0p/vk+rRmXvdVeb8gT
-	nFuYb0NyK/+5XYNeOJ05dn2/rVcGUftNafBKnVcHkDjhPixwm/ztHO+SqK3snr0cV0ildDK68IVtp
-	Eh0nqiIGkuji1Q+6nAcplQbKddmRLz1IxeX5bUL8ph2OWcM/LK/fc4BGcL7ntcUPC+PXnD8jcqi3L
-	v2kcgyOQ==;
+	bh=6NXBKqDt/mW0bQCDqhS4ddKArKFIfho7MR+yOP02pdg=; b=faW+mmNUS5FHPhK1oDIEFyWrz8
+	s6GOQHvESP7bQofDkwvGDW0VLzGwq02MWmSskAeWYXig/WMbY1OFUDtMceH8lgssF0sNUCM5KbLr+
+	j8UgHLc0wToUCr+FlNqB9sv3CMvTTBXD5tgXaWB1d/OHYDxRfOPnOqsWHVkEO2+5NKaz1GHYOm6qV
+	0iB/wgHkkvbpnZSlseR4d8CnV9ByeFZGbVOnmDGn3t9ladgZOmLQyktxs3Ii7SIbLtT7rz8Q2P5WH
+	hPfneFSylXb8iJ3jZwoo1BR/7IW/GMTPQ5vcCaCJbdN1Now0NhIaVYGuZh/aKFniwlCe7lMV+rPP3
+	WPoVkLLA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wmtvC-0000000EQOm-21Kp;
+	id 1wmtvC-0000000EQOW-13tq;
 	Thu, 23 Jul 2026 13:57:10 +0000
 Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wmtvA-0000000EQMI-3CFw
+	id 1wmtvA-0000000EQMB-2DkP
 	for barebox@lists.infradead.org;
 	Thu, 23 Jul 2026 13:57:08 +0000
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8451144E8C;
+	by sea.source.kernel.org (Postfix) with ESMTP id 486C744A58;
 	Thu, 23 Jul 2026 13:57:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 67725C2BCC7;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2E637C2BCFB;
 	Thu, 23 Jul 2026 13:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1784815028;
-	bh=eK8jUQ4Ft7mRR+TkSNvE8m9GrhYWjDgwR3q4V08b6+s=;
+	bh=Lh5it3Z5nw9hKE8v8f44MTj2UZ4RMYpQWQ+6mFSyfx0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=HSvr8Bb+F5sMGt/7mMqRzILoQBxoCsRlcLeDovBCb5uHAzSQvXisBavsG534Yg7KV
-	 ApOyC0QTrKNS3vD3vE8ALuSKSTdYDeBVyswINBfw7gfKMX8zmfpbD1uxUH7sD0a5CO
-	 CP09wzxvW5bqItQCtQpvJePgrGVynyyoM7SwLub3XA59Y1Lhl3NtRvTXiK9EebTPfY
-	 /SgAmFBAoMYYuyPnYhlw4QH/FM/Em/MRFD0mPuUuW96hftDitI9Z5O8aRIlcW4F73m
-	 Wde1llt7mEKXBfR6g50/mlxJVX0d1Ett7hJESXFF7D122D7CV0TGUG5dblnN62esqa
-	 CeD+iCulm1yXQ==
+	b=gkZ6D0pJAGkY3e1aC+WiyMlq5rfj2ljunUbFH+BtrhzPmgeT9dReBWVXg1E8rFWQe
+	 AOi44mkWhu69cv0N1fO63zbXnQQzzAa9IhPyPnaTNTqHIVZEV7soiRQZwi+1T1cf3S
+	 qmn9InPXGT/DDFwDC2r84TZgFhdtSR/dPyVPP8dKW8Wed9xkFRn8QPGrMX+XN06bn+
+	 DKd786XyYBshLPDQ10jILN5irSrb0YAdh1KM19VWLBxV1Eaj13tKNqye4/XC9VbIV3
+	 Vjzr+aU6M+j3PDdchN3dViBrWsQS0rkqMyEGiAPY0PEhLa0lV0mdbfNNDAARi5DbMC
+	 wxxj4p/P5/H0A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 55E89C531F5;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CA1EC531D4;
 	Thu, 23 Jul 2026 13:57:08 +0000 (UTC)
 From: Luca Lauro via B4 Relay <devnull+famlauro93l.gmail.com@kernel.org>
-Date: Thu, 23 Jul 2026 15:57:54 +0200
-Subject: [PATCH 16/19] usb: ehci: add Marvell EHCI host controller driver
+Date: Thu, 23 Jul 2026 15:57:51 +0200
+Subject: [PATCH 13/19] drivers: fan: add fan framework and API
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260723-rn102-rn104-series-v1-16-7698d25df866@gmail.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260723-rn102-rn104-series-v1-13-7698d25df866@gmail.com>
 References: <20260723-rn102-rn104-series-v1-0-7698d25df866@gmail.com>
 In-Reply-To: <20260723-rn102-rn104-series-v1-0-7698d25df866@gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  "open list:BAREBOX" <barebox@lists.infradead.org>
 Cc: Luca Lauro <famlauro93l@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784815061; l=8932;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784815061; l=47978;
  i=famlauro93l@gmail.com; s=20260723; h=from:subject:message-id;
- bh=p9e7IvWK3WNBPa7+pjQ4WPcMRAPUx8lvXrcNrL5Og1k=;
- b=wIkua8cj1sJW7hnbCjERzK/vwrABX6hwVsTQRJIKB4+cKw9hYpLOgeMqm6UvZkIgFvP/ZmaNH
- WO16MtXqTOYBmjnEsH2L3s/+M/hh5/wwKi63Gp1kOQu/tBPPHKMxR4z
+ bh=Nqh6MIoUbft0h3sNPtKXPMnxx1a0ABbaYz/ytCLLgKU=;
+ b=Wq8Omxp/EkK7Y091InAYpHdM0f9TcCgiRYN3kjj6P2QQUm11UaFP5F0tmjsF2xJqA/ACcPvnc
+ FE10Hxxm1tdDZKFA9bU10qKpkIoYEXJw2N7dZ5Ve2VMvBGwbvqtVA+k
 X-Developer-Key: i=famlauro93l@gmail.com; a=ed25519;
  pk=OAJlcD69ugQCl99Vy6w+Aeu+ZUb1IVGcz1Ijxo6Ch78=
 X-Endpoint-Received: by B4 Relay for famlauro93l@gmail.com/20260723 with
@@ -93,323 +93,1697 @@ X-Spamd-Result: default: False [-6.91 / 15.00];
 	DWL_DNSWL_MED(-4.00)[kernel.org:dkim,infradead.org:dkim];
 	BAYES_HAM(-3.00)[100.00%];
 	FREEMAIL_REPLYTO_NEQ_FROM(2.00)[];
-	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	MAILLIST(-0.20)[mailman];
-	R_SPF_ALLOW(-0.20)[+mx:c];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,kernel.org:s=k20201202];
+	MAILLIST(-0.20)[mailman];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RSPAMD_URIBL_FAIL(0.00)[natisbad.org:query timed out,gnu.org:query timed out];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	FORGED_SENDER(0.00)[devnull@kernel.org,barebox-bounces@lists.infradead.org];
-	FREEMAIL_REPLYTO(0.00)[gmail.com];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[barebox@lists.infradead.org];
-	TO_DN_ALL(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,barebox-bounces@lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
+	ARC_NA(0.00)[];
+	FREEMAIL_REPLYTO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
 	TAGGED_FROM(0.00)[lore=pengutronix.de,famlauro93l.gmail.com];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,kernel.org:+];
 	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_ALL(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,kernel.org:+];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,barebox-bounces@lists.infradead.org];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com];
 	HAS_REPLYTO(0.00)[famlauro93l@gmail.com]
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 9FEDD20299C
+X-Rspamd-Queue-Id: 315BC202586
 X-Rspamd-Server: mx1
-X-Stat-Signature: 5u3u8fjygje1nbypyabyhub6hzpwttob
+X-Stat-Signature: n9gw53mnux6819gwgpdwi7dywewyp5j4
 
 From: Luca Lauro <famlauro93l@gmail.com>
 
 ---
- drivers/usb/host/Kconfig        |   7 ++
- drivers/usb/host/Makefile       |  13 +--
- drivers/usb/host/ehci-marvell.c | 229 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 243 insertions(+), 6 deletions(-)
+ drivers/fan/Kconfig                        |   35 +
+ drivers/fan/Makefile                       |    8 +
+ drivers/fan/fan.c                          |  180 +++++
+ drivers/fan/i2c_fan_controllers/Kconfig    |    6 +
+ drivers/fan/i2c_fan_controllers/Makefile   |    5 +
+ drivers/fan/i2c_fan_controllers/g76x.c     | 1184 ++++++++++++++++++++++++++++
+ drivers/fan/other_fan_controllers/Kconfig  |    7 +
+ drivers/fan/other_fan_controllers/Makefile |    3 +
+ drivers/fan/spi_fan_controllers/Kconfig    |    1 +
+ drivers/fan/spi_fan_controllers/Makefile   |    3 +
+ include/fan/fan.h                          |   94 +++
+ include/fan/i2c_fan_controllers/g76x.h     |   37 +
+ 12 files changed, 1563 insertions(+)
 
-diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index 58f276cdb4..21bf876d69 100644
---- a/drivers/usb/host/Kconfig
-+++ b/drivers/usb/host/Kconfig
-@@ -22,6 +22,13 @@ config USB_EHCI_ZYNQ
- 	help
- 	  Enable support for Zynq on-chip EHCI USB controller
- 
-+config USB_EHCI_MARVELL
-+    bool "Marvell USB EHCI driver"
-+	depends on ARCH_MVEBU
-+	depends on USB_EHCI
-+    help
-+      Enable support for Marvell USB EHCI controller
-+
- config USB_OHCI
- 	bool "OHCI driver"
- 	depends on !MMU && HAS_DMA
-diff --git a/drivers/usb/host/Makefile b/drivers/usb/host/Makefile
-index cbddfbe923..932581d691 100644
---- a/drivers/usb/host/Makefile
-+++ b/drivers/usb/host/Makefile
-@@ -1,8 +1,9 @@
- # SPDX-License-Identifier: GPL-2.0-only
--obj-$(CONFIG_USB_EHCI)		+= ehci-hcd.o
--obj-$(CONFIG_USB_EHCI_OMAP)	+= ehci-omap.o
-+obj-$(CONFIG_USB_EHCI)			+= ehci-hcd.o
-+obj-$(CONFIG_USB_EHCI_OMAP)		+= ehci-omap.o
- obj-$(CONFIG_USB_EHCI_ATMEL)	+= ehci-atmel.o
--obj-$(CONFIG_USB_EHCI_ZYNQ)	+= ehci-zynq.o
--obj-$(CONFIG_USB_OHCI)		+= ohci-hcd.o
--obj-$(CONFIG_USB_OHCI_AT91)	+= ohci-at91.o
--obj-$(CONFIG_USB_XHCI)		+= xhci.o xhci-mem.o xhci-ring.o
-+obj-$(CONFIG_USB_EHCI_ZYNQ)		+= ehci-zynq.o
-+obj-$(CONFIG_USB_EHCI_MARVELL) 	+= ehci-marvell.o
-+obj-$(CONFIG_USB_OHCI)			+= ohci-hcd.o
-+obj-$(CONFIG_USB_OHCI_AT91)		+= ohci-at91.o
-+obj-$(CONFIG_USB_XHCI)			+= xhci.o xhci-mem.o xhci-ring.o
-diff --git a/drivers/usb/host/ehci-marvell.c b/drivers/usb/host/ehci-marvell.c
+diff --git a/drivers/fan/Kconfig b/drivers/fan/Kconfig
 new file mode 100644
-index 0000000000..8accfd697d
+index 0000000000..7b1e795f01
 --- /dev/null
-+++ b/drivers/usb/host/ehci-marvell.c
-@@ -0,0 +1,229 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Marvell Orion / Kirkwood / Armada EHCI host for barebox
-+ *
-+ * Porting basato su ehci-marvell.c di U-Boot moderno,
-+ * adattato al modello ehci_register() di barebox.
-+ */
-+/*#define DEBUG*/
++++ b/drivers/fan/Kconfig
+@@ -0,0 +1,35 @@
++# SPDX-License-Identifier: GPL-2.0-only
++menuconfig FAN
++	bool "Fan controller drivers"
++	help
++	  Add support for various fan controllers.
 +
-+#include <common.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <io.h>
-+#include <of.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/ehci.h>
-+#include <linux/mbus.h>
++if FAN
 +
-+#include "ehci.h"
++menuconfig I2C_FAN
++	bool "i2c fan controllers support"
++	depends on I2C
++	help
++	  add support for fan controllers based on i2c interface.
++	if I2C_FAN
++	source "drivers/fan/i2c_fan_controllers/Kconfig"
++	endif
 +
-+#define USB_WINDOW_CTRL(i)   (0x320 + ((i) << 4))
-+#define USB_WINDOW_BASE(i)   (0x324 + ((i) << 4))
-+#define USB_TARGET_DRAM      0x0
++menuconfig SPI_FAN
++	bool "spi fan controllers support"
++	depends on SPI
++	help
++	  add support fan controllers based on spi interface.
++	if SPI_FAN
++	source "drivers/fan/spi_fan_controllers/Kconfig"
++	endif
 +
-+#define USB2_SBUSCFG_OFF     0x90
++menuconfig OTHER_FAN
++	bool "other fan controllers support"
++	help
++	  support other fan control methods.
++	if OTHER_FAN
++	source "drivers/fan/other_fan_controllers/Kconfig"
++	endif
 +
-+#define USB_SBUSCFG_BAWR_OFF     0x6
-+#define USB_SBUSCFG_BARD_OFF     0x3
-+#define USB_SBUSCFG_AHBBRST_OFF  0x0
++endif
+diff --git a/drivers/fan/Makefile b/drivers/fan/Makefile
+new file mode 100644
+index 0000000000..9ff140c0da
+--- /dev/null
++++ b/drivers/fan/Makefile
+@@ -0,0 +1,8 @@
++# SPDX-License-Identifier: GPL-2.0-only
 +
-+#define USB_SBUSCFG_BAWR_ALIGN_64B   0x4
-+#define USB_SBUSCFG_BARD_ALIGN_64B   0x4
-+#define USB_SBUSCFG_AHBBRST_INCR16   0x7
++# fan controller interface types
 +
-+/* AC5 special window mapping (copiato da U-Boot) */
-+#define USB_TO_DRAM_TARGET_ID  0x2
-+#define USB_TO_DRAM_ATTR_ID    0x0
-+#define USB_DRAM_BASE          0x00000000
-+#define USB_DRAM_SIZE          0xfff   /* non oltrepassare lo spazio sorgente */
++obj-y += fan.o
++obj-$(CONFIG_I2C_FAN) += i2c_fan_controllers/
++obj-$(CONFIG_SPI_FAN) += spi_fan_controllers/
++obj-$(CONFIG_OTHER_FAN) += other_fan_controllers/
+diff --git a/drivers/fan/fan.c b/drivers/fan/fan.c
+new file mode 100644
+index 0000000000..672cda0a71
+--- /dev/null
++++ b/drivers/fan/fan.c
+@@ -0,0 +1,180 @@
++#include <fan/fan.h>
 +
-+/*
-+ * Stato privato per questa istanza EHCI Marvell.
-+ * Non serve conoscere struct ehci_host: basta il puntatore.
-+ */
-+struct marvell_ehci {
-+    struct ehci_host *ehci;
-+    void __iomem *base;
-+    struct device *dev;
-+    u32 dram_bus_base;
-+};
++/* Generic fan driver fan device management */
 +
-+static void marvell_ehci_sbuscfg_fixup(void __iomem *base)
++LIST_HEAD(fan_device_list);
++
++static void fan_set_dev(struct fan_device *fan, struct device *dev)
 +{
-+    /*
-+     * SBUSCFG: Control for the AMBA system bus interface:
-+     * BAWR = BARD = 4 : Align rd/wr bursts packets larger than 64 bytes
-+     * AHBBRST = 7     : Align AHB burst for packets larger than 64 bytes
-+     */
-+    writel((USB_SBUSCFG_BAWR_ALIGN_64B << USB_SBUSCFG_BAWR_OFF) |
-+           (USB_SBUSCFG_BARD_ALIGN_64B << USB_SBUSCFG_BARD_OFF) |
-+           (USB_SBUSCFG_AHBBRST_INCR16 << USB_SBUSCFG_AHBBRST_OFF),
-+           base + USB2_SBUSCFG_OFF);
++    fan->dev = dev;
 +}
-+
 +/*
-+ * Programma le decoding windows USB -> DRAM usando le info MBUS.
-+ * Per AC5 replica lo speciale mapping 0x0..USB_DRAM_SIZE.
-+ */
-+static void marvell_usb_brg_adrdec_setup(struct marvell_ehci *priv)
++static struct device *fan_get_dev(struct fan_device *fan)
 +{
-+    const struct mbus_dram_target_info *dram;
-+    void __iomem *base = priv->base;
-+    int i;
++    return fan->dev;
++}
++*/
++static void fan_set_ops(struct fan_device *fan, struct fan_ops *ops)
++{
++    fan->ops = ops;
++}
++/*
++static const struct fan_ops *fan_get_ops(struct fan_device *fan)
++{
++    return fan->ops;
++}
++*/
 +
-+    dev_info(priv->dev, "USB adrdec setup: ENTER\n");
++/* Generic filesystem fan device management */
 +
-+    dram = mvebu_mbus_dram_info();
-+    if (!dram) {
-+        dev_err(priv->dev, "no MBUS DRAM info\n");
-+        return;
-+    }
++static int fan_idx = 0;
 +
-+    for (i = 0; i < 4; i++) {
-+		writel(0, base + USB_WINDOW_CTRL(i));
-+		writel(0, base + USB_WINDOW_BASE(i));
-+	}
++static void cdev_set_fan(struct fan_device *fan)
++{
++    struct cdev *cdev = fan->cdev;
 +
-+    if (priv->dev->of_node &&
-+        of_device_is_compatible(priv->dev->of_node, "marvell,ac5-ehci")) {
-+        /* mappa DRAM vista da USB a 0x0 (come in U-Boot) */
-+        writel((USB_DRAM_SIZE << 16) |
-+               (USB_TO_DRAM_ATTR_ID << 8) |
-+               (USB_TO_DRAM_TARGET_ID << 4) | 1,
-+               base + USB_WINDOW_CTRL(0));
-+        writel(USB_DRAM_BASE, base + USB_WINDOW_BASE(0));
++    cdev->priv = fan;
++    cdev->dev  = fan->dev;
++    cdev->ops  = NULL;
++    cdev->size = 0;
++    cdev->flags = 0;
++}
++/*
++static struct fan_device *cdev_get_fan(struct cdev *cdev)
++{
++    return cdev->priv;
++}
++*/
++static int cdev_set_name(struct cdev *cdev)
++{
++    char name[32];
 +
-+        dev_dbg(priv->dev,
-+            "AC5 decoding windows: ctrl=0x%08x base=0x%08x\n",
-+            readl(base + USB_WINDOW_CTRL(0)),
-+            readl(base + USB_WINDOW_BASE(0)));
-+    } else {
-+        /* caso generico mvebu: una window per ciascun CS DRAM */
++    if (snprintf(name, sizeof(name), "fan%d", fan_idx++) >= sizeof(name))
++        return -EINVAL;
 +
-+        for (i = 0; i < dram->num_cs; i++) {
-+            const struct mbus_dram_window *cs = dram->cs + i;
++    cdev->name = xstrdup(name);
++    if (!cdev->name)
++        return -ENOMEM;
 +
-+			/* Write size, attributes and target id to control register */
-+			writel(((cs->size - 1) & 0xffff0000) |
-+                   (cs->mbus_attr << 8) |
-+				   (dram->mbus_dram_target_id << 4) | 1,
-+				   base + USB_WINDOW_CTRL(i));
++    return 0;
++}
++/*
++static char *cdev_get_name(struct cdev *cdev)
++{
++    return cdev->name;
++}
++*/
++struct fan_device *fan_device_find(const char *devmatch)
++{
++    struct fan_device *fan = NULL;
++    char devpath[32];
 +
-+			/* Write base address to base register */
-+			writel(cs->base, base + USB_WINDOW_BASE(i));
++    if (!devmatch || strlen(devmatch) > sizeof(devpath) - sizeof("/dev/"))
++        return ERR_PTR(-EINVAL);
++
++    list_for_each_entry(fan, &fan_device_list, list) {
++        /* search by driver-specific fan controller device */
++        if (fan->dev && fan->dev->name) {
++            snprintf(devpath, sizeof(devpath),
++                        "/dev/%s", fan->dev->name);
++
++            /* by path ("/dev/.../ctrlr name") */
++            if (!strcmp(devpath, devmatch))
++                return fan;
++
++            /* or by name ("ctrlr name") */
++            if (!strcmp(fan->dev->name, devmatch))
++                return fan;
++        }
++        /* search by filesystem generic fan device */
++        if (fan->cdev && fan->cdev->name) {
++            snprintf(devpath, sizeof(devpath),
++                        "/dev/%s", fan->cdev->name);
++            /* by path ("/dev/fanX") or by name ("fanX") */
++            if (!strcmp(devpath, devmatch) ||
++                !strcmp(fan->cdev->name, devmatch))
++                return fan;
 +        }
 +    }
 +
-+    for (i = 0; i < 4; i++) {
-+        u32 ctrl = readl(base + USB_WINDOW_CTRL(i));
-+        u32 winb = readl(base + USB_WINDOW_BASE(i));
-+        dev_info(priv->dev, "WIN%d: CTRL=0x%08x BASE=0x%08x\n", i, ctrl, winb);
++    return ERR_PTR(-ENODEV);
++}
++
++
++/* specific fan controller driver device management */
++
++int fan_device_register(struct device *dev, struct fan_ops *ops)
++{
++    struct fan_device *fan;
++    int ret;
++
++    if (!dev || !ops)
++        return -EINVAL;
++
++	/* allocate and initialize generic fan device structure */
++    fan = xzalloc(sizeof(*fan));
++    if (!fan)
++        return -ENOMEM;
++
++    fan->cdev = xzalloc(sizeof(*fan->cdev));
++    if (!fan->cdev) {
++        free(fan);
++        return -ENOMEM;
 +    }
++
++    fan_set_dev(fan, dev);
++    fan_set_ops(fan, ops);
++    dev->type_data = fan;
++
++    list_add(&fan->list, &fan_device_list);
++
++    cdev_set_fan(fan);
++
++    ret = cdev_set_name(fan->cdev);
++    if (ret)
++        goto err;
++
++    ret = devfs_create(fan->cdev);
++    if (ret)
++        goto err;
++
++    // expose fan parameters as global variables
++    // globalvar_add_simple_int(".clk_freq", (int *)fan->ops->get_clk_freq, "%u");
++	// globalvar_add_simple_bool(".fail_state", (int *)fan->ops->get_failure_state);
++	// globalvar_add_simple_bool(".ooc_state", (int *)fan->ops->get_failure_state);
++
++    return 0;
++
++err:
++    if (fan->cdev->name)
++        free(fan->cdev->name);
++    free(fan->cdev);
++    free(fan);
++    dev->type_data = NULL;
++    return ret;
++}
++
++void fan_device_unregister(struct device *dev)
++{
++    /* find the generic fan device associated to the driver-specific fan controller device */
++    struct fan_device *fan;
++
++    if (!dev)
++        return;
++
++    fan = dev->type_data;
++    if (!fan)
++        return;
++
++    list_del(&fan->list);
++
++    if (fan->cdev) {
++        devfs_remove(fan->cdev);
++        if (fan->cdev->name)
++            free(fan->cdev->name);
++        free(fan->cdev);
++    }
++
++    free(fan);
++    dev->type_data = NULL;
++}
+diff --git a/drivers/fan/i2c_fan_controllers/Kconfig b/drivers/fan/i2c_fan_controllers/Kconfig
+new file mode 100644
+index 0000000000..e258783848
+--- /dev/null
++++ b/drivers/fan/i2c_fan_controllers/Kconfig
+@@ -0,0 +1,6 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
++config G76x
++	bool "GMT G76x driver"
++	help
++	Support Global Mixed-mode Technology Inc. G762 and G763 fan speed PWM controller chips
+diff --git a/drivers/fan/i2c_fan_controllers/Makefile b/drivers/fan/i2c_fan_controllers/Makefile
+new file mode 100644
+index 0000000000..ca3c49e8a2
+--- /dev/null
++++ b/drivers/fan/i2c_fan_controllers/Makefile
+@@ -0,0 +1,5 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
++# fan controller interface types
++
++obj-$(CONFIG_G76x) += g76x.o
+\ No newline at end of file
+diff --git a/drivers/fan/i2c_fan_controllers/g76x.c b/drivers/fan/i2c_fan_controllers/g76x.c
+new file mode 100644
+index 0000000000..c5c67766af
+--- /dev/null
++++ b/drivers/fan/i2c_fan_controllers/g76x.c
+@@ -0,0 +1,1184 @@
++/*
++ * g76x - Driver for the Global Mixed-mode Technology Inc. fan speed
++ *        PWM controller chips from G76x family, i.e. g76x and G763
++ *
++ * based on g760a code written by Herbert Valerio Riedel <hvr@gnu.org>
++ * Copyright (C) 2007  Herbert Valerio Riedel <hvr@gnu.org>
++ *
++ * Author: Olivier Mouchet <olivier.mouchet@gmail.com>
++ * Copyright (c) 2009 LaCie
++ *
++ * Copyright (C) 2013, Arnaud EBALARD <arno@natisbad.org>
++ *
++ * g76x: minimal datasheet available at:
++ *       http://www.gmt.com.tw/product/datasheet/EDS-762_3.pdf
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation.
++ */
++
++#include <fan/fan.h>
++#include <stdbool.h>
++#include <i2c/i2c.h>
++#include <init.h>
++#include <of.h>
++#include <of_device.h>
++#include <linux/minmax.h>
++#include <linux/err.h>
++#include <linux/mutex.h>
++#include <linux/limits.h>
++
++/*
++ * driver-specific layer
++ */
++
++static const struct platform_device_id g76x_id[] = {
++	{ "g762", 0 },
++	{ "g763", 0 },
++	{ /* sentinel */ },
++};
++MODULE_DEVICE_TABLE(i2c, g76x_id);
++
++enum g76x_regs {
++	G76x_REG_SET_CNT  = 0x00,
++	G76x_REG_ACT_CNT  = 0x01,
++	G76x_REG_FAN_STA  = 0x02,
++	G76x_REG_SET_OUT  = 0x03,
++	G76x_REG_FAN_CMD1 = 0x04,
++	G76x_REG_FAN_CMD2 = 0x05,
++};
++
++/* Config register bits */
++#define G76x_REG_FAN_CMD1_DET_FAN_FAIL  0x80 /* enable fan_fail signal */
++#define G76x_REG_FAN_CMD1_DET_FAN_OOC   0x40 /* enable fan_out_of_control */
++#define G76x_REG_FAN_CMD1_OUT_MODE      0x20 /* out mode: PWM or DC */
++#define G76x_REG_FAN_CMD1_CTRL_MODE      0x10 /* fan mode: closed/open-loop */
++#define G76x_REG_FAN_CMD1_CLK_DIV_ID1   0x08 /* clock divisor value */
++#define G76x_REG_FAN_CMD1_CLK_DIV_ID0   0x04
++#define G76x_REG_FAN_CMD1_PWM_POLARITY  0x02 /* PWM polarity */
++#define G76x_REG_FAN_CMD1_PULSE_PER_REV 0x01 /* pulse per fan revolution */
++
++#define G76x_REG_FAN_CMD2_GEAR_MODE_1   0x08 /* fan gear mode */
++#define G76x_REG_FAN_CMD2_GEAR_MODE_0   0x04
++#define G76x_REG_FAN_CMD2_FAN_STARTV_1  0x02 /* fan startup voltage */
++#define G76x_REG_FAN_CMD2_FAN_STARTV_0  0x01
++
++#define G76x_REG_FAN_STA_FAIL           0x02 /* fan fail */
++#define G76x_REG_FAN_STA_OOC            0x01 /* fan out of control */
++
++/* Config register values */
++#define G76x_OUT_MODE_PWM            1
++#define G76x_OUT_MODE_ADC             0
++
++#define G76x_FAN_MODE_CLOSED_LOOP    1
++#define G76x_FAN_MODE_OPEN_LOOP      0
++
++#define G76x_PWM_POLARITY_NEGATIVE   1
++#define G76x_PWM_POLARITY_POSITIVE   0
++
++/* Register data is read (and cached) at most once per second. */
++#define G76x_UPDATE_INTERVAL_NS		1000000
++
++/*
++ * Extract fan startup voltage value (0, 1, 2 or 3) from given
++ * FAN_CMD2 register value.
++ */
++#define G76x_STARTV_FROM_REG(reg) \
++	((reg) & (G76x_REG_FAN_CMD2_FAN_STARTV_0 |	\
++			 G76x_REG_FAN_CMD2_FAN_STARTV_1))
++
++/*
++ * Extract fan gear mode multiplier value (0, 2 or 4) from given
++ * FAN_CMD2 register value.
++ */
++#define G76x_GEARMULT_FROM_REG(reg) \
++	(1 << (((reg) & (G76x_REG_FAN_CMD2_GEAR_MODE_0 |	\
++			 G76x_REG_FAN_CMD2_GEAR_MODE_1)) >> 2))
++
++/*
++ * Extract pulse count per fan revolution value (2 or 4) from given
++ * FAN_CMD1 register value.
++ */
++#define G76x_PULSE_FROM_REG(reg) \
++	((((reg) & G76x_REG_FAN_CMD1_PULSE_PER_REV) + 1) << 1)
++
++/*
++ * Extract fan clock divisor (1, 2, 4 or 8) from given FAN_CMD1
++ * register value.
++ */
++#define G76x_CLKDIV_FROM_REG(reg) \
++	(1 << (((reg) & (G76x_REG_FAN_CMD1_CLK_DIV_ID0 |	\
++			 G76x_REG_FAN_CMD1_CLK_DIV_ID1)) >> 2))
++
++struct g76x_data {
++	struct i2c_client *client;
++	struct clk *clk;
++
++	/* update mutex */
++	struct mutex update_lock;
++
++	/* board specific parameters. */
++	uint32_t clk_freq;
++
++	/* g76x register cache */
++	bool valid;
++	uint64_t last_updated; /* in nanoseconds */
++
++	uint8_t set_cnt;  /* controls fan rotation speed in closed-loop mode */
++	uint8_t act_cnt;  /* provides access to current fan RPM value */
++	uint8_t fan_sta;  /* bit 0: set when actual fan speed is more than
++		      *        25% outside requested fan speed
++		      * bit 1: set when no transition occurs on fan
++		      *        pin for 0.7s
++		      */
++	uint8_t set_out;  /* controls fan rotation speed in open-loop mode */
++	uint8_t fan_cmd1; /*   0: FG_PLS_ID0 FG pulses count per revolution
++		      *      0: 2 counts per revolution
++		      *      1: 4 counts per revolution
++		      *   1: PWM_POLARITY 1: negative_duty
++		      *                   0: positive_duty
++		      * 2,3: [FG_CLOCK_ID0, FG_CLK_ID1]
++		      *         00: Divide fan clock by 1
++		      *         01: Divide fan clock by 2
++		      *         10: Divide fan clock by 4
++		      *         11: Divide fan clock by 8
++		      *   4: FAN_MODE 1:closed-loop, 0:open-loop
++		      *   5: OUT_MODE 1:PWM, 0:DC
++		      *   6: DET_FAN_OOC enable "fan ooc" status
++		      *   7: DET_FAN_FAIL enable "fan fail" status
++		      */
++	uint8_t fan_cmd2; /* 0,1: FAN_STARTV 0,1,2,3 -> 0,32,64,96 dac_code
++		      * 2,3: FG_GEAR_MODE
++		      *         00: multiplier = 1
++		      *         01: multiplier = 2
++		      *         10: multiplier = 4
++		      *   4: Mask ALERT# (g763 only)
++		      */
++};
++
++/*
++ * Following structure can be used to set g762 driver-specific platform data
++ * during board init. Note that passing a sparse structure is possible but
++ * will result in non-specified attributes to be set to default value, hence
++ * overloading those installed during boot (e.g. by u-boot).
++ */
++struct g76x_platform_data {
++	unsigned int fan_startv;
++	unsigned int fan_gear_mode;
++	unsigned int pwm_polarity;
++	unsigned int clk_freq;
++};
++
++/* driver-specific helpers */
++
++/*
++ * Convert count value from fan controller register (FAN_SET_CNT) into fan
++ * speed RPM value. Note that the datasheet documents a basic formula;
++ * influence of additional parameters (fan clock divisor, fan gear mode)
++ * have been infered from examples in the datasheet and tests.
++ */
++static inline unsigned int g76x_rpm_from_cnt(uint8_t cnt, uint32_t clk_freq, uint16_t p,
++					uint8_t clk_div, uint8_t gear_mult)
++{
++	return (clk_freq * 30 * gear_mult) / ((cnt ? cnt : 1) * p * clk_div);
 +}
 +
 +/*
-+ * Hook di init chiamato da ehci-hcd.c prima di avviare l'host.
-+ * Qui facciamo solo la parte “bridge address decoding”.
++ * Convert fan RPM value into pulse count value for fan controller
++ * register (FAN_SET_CNT).
 + */
-+static int marvell_ehci_init(void *drvdata)
++static inline unsigned char g76x_cnt_from_rpm(unsigned long rpm, uint32_t clk_freq, uint16_t p,
++					 uint8_t clk_div, uint8_t gear_mult)
 +{
-+    struct marvell_ehci *priv = drvdata;
++	unsigned long f1 = clk_freq * 30 * gear_mult;
++	unsigned long f2 = p * clk_div;
 +
-+    marvell_usb_brg_adrdec_setup(priv);
-+    
-+    writel((USB_SBUSCFG_BAWR_ALIGN_64B << USB_SBUSCFG_BAWR_OFF) |
-+       (USB_SBUSCFG_BARD_ALIGN_64B << USB_SBUSCFG_BARD_OFF) |
-+       (USB_SBUSCFG_AHBBRST_INCR16 << USB_SBUSCFG_AHBBRST_OFF),
-+       priv->base + 0x100 + 0x90);
-+    mdelay(50);
++	rpm = clamp_val(rpm, f1 / (255 * f2), ULONG_MAX / f2);
++	return DIV_ROUND_CLOSEST(f1, rpm * f2);
++}
 +
-+    /*
-+     * La programmazione di SBUSCFG (BAWR/BARD/AHBBRST) in U-Boot
-+     * serve solo per SoC senza hlock (Armada3700, ecc.).
-+     * Per ora la lasciamo fuori: se in futuro servirà, possiamo
-+     * aggiungere un post_init o un hook dedicato nel core EHCI.
-+     */
++/*
++ * Convert count value for fan controller register (FAN_SET_CNT)
++ * into percentage of full speed (0 to 100).
++ */
++static inline unsigned int g76x_level_from_cnt(uint8_t cnt) {
++	uint8_t level = 0;
++	cnt = clamp_val(cnt, 0, 255);
++	level = (cnt * 100) / 255;
++	return level;
++}
 +
-+    dev_dbg(priv->dev, "marvell_ehci_init done\n");
++/*
++ * Convert percentage of full speed into count value for 
++ * fan controller register (FAN_SET_CNT).
++ */
++static inline unsigned int g76x_cnt_from_level(unsigned char level) {
++	unsigned char cnt = 0;
++	level = clamp_val(level, 0, 100);
++	cnt = (level * 255) / 100;
++	return cnt;
++}
++
++/* helper to manage g76x errors */
++static struct g76x_data *g76x_error_handle(struct g76x_data *data, int err_ret)
++{
++    if (data) {
++        mutex_unlock(&data->update_lock);
++        dev_err(&data->client->dev, "g76x error: %d\n", err_ret);
++    }
++
++    return ERR_PTR(err_ret);
++}
++
++/* helper to grab and cache data, at most one time per second */
++static struct g76x_data *g76x_update_client(struct device *dev)
++{
++	struct g76x_data *data = dev->priv;
++	if (!data) return ERR_PTR(-ENODEV);
++	struct i2c_client *client = data->client;
++	int ret = 0;
++
++	mutex_lock(&data->update_lock);
++
++	if (data->valid && !is_timeout(data->last_updated, G76x_UPDATE_INTERVAL_NS)) {
++		mutex_unlock(&data->update_lock);
++		return data;
++	}
++
++	ret = i2c_smbus_read_byte_data(client, G76x_REG_SET_CNT);
++	if (ret < 0) goto err_update;
++	data->set_cnt = ret;
++
++	ret = i2c_smbus_read_byte_data(client, G76x_REG_ACT_CNT);
++	if (ret < 0) goto err_update;
++	data->act_cnt = ret;
++
++	ret = i2c_smbus_read_byte_data(client, G76x_REG_FAN_STA);
++	if (ret < 0) goto err_update;
++	data->fan_sta = ret;
++
++	ret = i2c_smbus_read_byte_data(client, G76x_REG_SET_OUT);
++	if (ret < 0) goto err_update;
++	data->set_out = ret;
++
++	ret = i2c_smbus_read_byte_data(client, G76x_REG_FAN_CMD1);
++	if (ret < 0) goto err_update;
++	data->fan_cmd1 = ret;
++
++	ret = i2c_smbus_read_byte_data(client, G76x_REG_FAN_CMD2);
++	if (ret < 0) goto err_update;
++ 	data->fan_cmd2 = ret;
++
++	data->last_updated = get_time_ns();
++	data->valid = true;
++
++	mutex_unlock(&data->update_lock);
++	return data;
++
++err_update:
++	data->valid = false;
++	return g76x_error_handle(data, ret);
++}
++
++
++/* driver-specific configuration functions */
++
++/* Get and Set fan startup voltage. Accepted values are either 0, 1, 2 or 3. */
++static int g76x_get_fan_startv(struct device *dev, char *buf)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	return sprintf(buf, "%d\n", G76x_STARTV_FROM_REG(data->fan_cmd2));
++}
++
++static int g76x_set_fan_startv(struct device *dev, unsigned long val)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++	int ret;
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	mutex_lock(&data->update_lock);
++	switch (val) {
++	case 0:
++		data->fan_cmd2 &= ~G76x_REG_FAN_CMD2_FAN_STARTV_0;
++		data->fan_cmd2 &= ~G76x_REG_FAN_CMD2_FAN_STARTV_1;
++		break;
++	case 1:
++		data->fan_cmd2 |=  G76x_REG_FAN_CMD2_FAN_STARTV_0;
++		data->fan_cmd2 &= ~G76x_REG_FAN_CMD2_FAN_STARTV_1;
++		break;
++	case 2:
++		data->fan_cmd2 &= ~G76x_REG_FAN_CMD2_FAN_STARTV_0;
++		data->fan_cmd2 |=  G76x_REG_FAN_CMD2_FAN_STARTV_1;
++		break;
++	case 3:
++		data->fan_cmd2 |=  G76x_REG_FAN_CMD2_FAN_STARTV_0;
++		data->fan_cmd2 |=  G76x_REG_FAN_CMD2_FAN_STARTV_1;
++		break;
++	default:
++		mutex_unlock(&data->update_lock);
++		return -EINVAL;
++	}
++	ret = i2c_smbus_write_byte_data(data->client, G76x_REG_FAN_CMD2,
++					data->fan_cmd2);
++	data->valid = false;
++	mutex_unlock(&data->update_lock);
++
++	return ret;
++}
++
++/* Get and Set fan gear multiplier. Accepts either 0, 1 or 2. */
++static int g76x_get_gear_multiplier(struct device *dev, char *buf)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	return sprintf(buf, "%d\n", G76x_GEARMULT_FROM_REG(data->fan_cmd2));
++}
++
++static int g76x_set_gear_multiplier(struct device *dev, unsigned long val)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++	int ret;
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	mutex_lock(&data->update_lock);
++	switch (val) {
++	case 0:
++		data->fan_cmd2 &= ~G76x_REG_FAN_CMD2_GEAR_MODE_0;
++		data->fan_cmd2 &= ~G76x_REG_FAN_CMD2_GEAR_MODE_1;
++		break;
++	case 1:
++		data->fan_cmd2 |=  G76x_REG_FAN_CMD2_GEAR_MODE_0;
++		data->fan_cmd2 &= ~G76x_REG_FAN_CMD2_GEAR_MODE_1;
++		break;
++	case 2:
++		data->fan_cmd2 &= ~G76x_REG_FAN_CMD2_GEAR_MODE_0;
++		data->fan_cmd2 |=  G76x_REG_FAN_CMD2_GEAR_MODE_1;
++		break;
++	default:
++		mutex_unlock(&data->update_lock);
++		return -EINVAL;
++	}
++	ret = i2c_smbus_write_byte_data(data->client, G76x_REG_FAN_CMD2,
++					data->fan_cmd2);
++	data->valid = false;
++	mutex_unlock(&data->update_lock);
++
++	return ret;
++}
++
++/* Get and Set number of fan pulses per revolution. Accepts either 2 or 4. */
++static int g76x_get_fan_ppr(struct device *dev, char *buf)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	return sprintf(buf, "%d\n", G76x_PULSE_FROM_REG(data->fan_cmd1));
++}
++
++static int g76x_set_fan_ppr(struct device *dev, unsigned long val)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++	int ret;
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	mutex_lock(&data->update_lock);
++	switch (val) {
++	case 2:
++		data->fan_cmd1 &= ~G76x_REG_FAN_CMD1_PULSE_PER_REV;
++		break;
++	case 4:
++		data->fan_cmd1 |=  G76x_REG_FAN_CMD1_PULSE_PER_REV;
++		break;
++	default:
++		mutex_unlock(&data->update_lock);
++		return -EINVAL;
++	}
++	ret = i2c_smbus_write_byte_data(data->client, G76x_REG_FAN_CMD1,
++					data->fan_cmd1);
++	data->valid = false;
++	mutex_unlock(&data->update_lock);
++
++	return ret;
++}
++
++/* Get and Set PWM polarity. Accepts either 0 (positive duty) or 1 (negative duty) */
++static int g76x_get_pwm_polarity(struct device *dev, char *buf)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	return sprintf(buf, "%d\n", !!(data->fan_cmd1 & G76x_REG_FAN_CMD1_PWM_POLARITY));
++}
++
++static int g76x_set_pwm_polarity(struct device *dev, unsigned long val)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++	int ret;
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	mutex_lock(&data->update_lock);
++	switch (val) {
++	case G76x_PWM_POLARITY_POSITIVE:
++		data->fan_cmd1 &= ~G76x_REG_FAN_CMD1_PWM_POLARITY;
++		break;
++	case G76x_PWM_POLARITY_NEGATIVE:
++		data->fan_cmd1 |=  G76x_REG_FAN_CMD1_PWM_POLARITY;
++		break;
++	default:
++		mutex_unlock(&data->update_lock);
++		return -EINVAL;
++	}
++	ret = i2c_smbus_write_byte_data(data->client, G76x_REG_FAN_CMD1,
++					data->fan_cmd1);
++	data->valid = false;
++	mutex_unlock(&data->update_lock);
++
++	return ret;
++}
++
++/*
++ * Get and Set input clock frequency received on CLK pin of the chip. Accepted values
++ * are between 0 and 0xffffff. If zero is given, then default frequency
++ * (32768Hz) is used. Note that clock frequency is a characteristic of the
++ * system but an internal parameter, i.e. value is not passed to the device.
++ */
++static int g76x_get_clk_freq(struct device *dev, char *buf)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	return sprintf(buf, "%d\n", !!(data->clk_freq));
++}
++
++static int g76x_set_clk_freq(struct device *dev, unsigned long val)
++{
++    struct i2c_client *client = to_i2c_client(dev);
++    struct g76x_data *data = i2c_get_clientdata(client);
++
++    if (!data)
++		return 0;
++
++	if (val == 0)
++		val = 32768;
++
++	else if (val > 100000000)
++		return -EINVAL;
++
++    data->clk_freq = val;
 +
 +    return 0;
 +}
 +
-+static int marvell_ehci_probe(struct device *dev)
++/* Get and Set fan clock divisor. Accepts either 1, 2, 4 or 8. */
++static int g76x_get_clk_div(struct device *dev, char *buf)
 +{
-+    struct marvell_ehci *priv;
-+    struct resource *iores;
-+    struct ehci_data data;
-+    void __iomem *base;
-+    struct ehci_host *ehci;
++	struct g76x_data *data = g76x_update_client(dev);
 +
-+    priv = xzalloc(sizeof(*priv));
-+    priv->dev = dev;
-+    dev->priv = priv;
++	if (IS_ERR(data))
++		return PTR_ERR(data);
 +
-+    iores = dev_request_mem_resource(dev, 0);
-+    if (IS_ERR(iores))
-+        return PTR_ERR(iores);
-+
-+    base = IOMEM(iores->start);
-+    priv->base = base;
-+
-+    memset(&data, 0, sizeof(data));
-+
-+    /*
-+     * Sui controller Marvell il blocco EHCI inizia a offset 0x100
-+     * rispetto alla base USB.
-+     */
-+    data.hccr = base + 0x100;
-+
-+    u32 capbase = readl(data.hccr);          /* HC_CAPBASE */
-+    u8 caplength = capbase & 0xff;           /* CAPLENGTH */
-+
-+    data.hcor = (void __iomem *)((u8 *)data.hccr + caplength);
-+
-+    dev_info(dev, "EHCI probe: base=%p hccr=%p hcor=%p\n",
-+         base, data.hccr, data.hcor);
-+
-+    dev_info(dev, "EHCI CAPBASE=0x%08x CAPLENGTH=0x%02x\n",
-+            capbase, caplength);
-+
-+    data.init = marvell_ehci_init;
-+    data.drvdata = priv;
-+
-+	if (of_device_is_compatible(dev->of_node, "marvell,armada-3700-ehci"))
-+	    marvell_ehci_sbuscfg_fixup(base);
-+
-+    dev_dbg(dev, "marvell_ehci_probe: done\n");
-+
-+    ehci = ehci_register(dev, &data);
-+    if (IS_ERR(ehci))
-+        return PTR_ERR(ehci);
-+
-+    priv->ehci = ehci;
-+
-+    return 0;
++	return sprintf(buf, "%d\n", G76x_CLKDIV_FROM_REG(data->fan_cmd1));
 +}
 +
-+static void marvell_ehci_remove(struct device *dev)
++static int g76x_set_clk_div(struct device *dev, unsigned long val)
 +{
-+    struct marvell_ehci *priv = dev->priv;
++	struct g76x_data *data = g76x_update_client(dev);
++	int ret;
 +
-+    if (priv && priv->ehci)
-+        ehci_unregister(priv->ehci);
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	mutex_lock(&data->update_lock);
++	switch (val) {
++	case 1:
++		data->fan_cmd1 &= ~G76x_REG_FAN_CMD1_CLK_DIV_ID0;
++		data->fan_cmd1 &= ~G76x_REG_FAN_CMD1_CLK_DIV_ID1;
++		break;
++	case 2:
++		data->fan_cmd1 |=  G76x_REG_FAN_CMD1_CLK_DIV_ID0;
++		data->fan_cmd1 &= ~G76x_REG_FAN_CMD1_CLK_DIV_ID1;
++		break;
++	case 4:
++		data->fan_cmd1 &= ~G76x_REG_FAN_CMD1_CLK_DIV_ID0;
++		data->fan_cmd1 |=  G76x_REG_FAN_CMD1_CLK_DIV_ID1;
++		break;
++	case 8:
++		data->fan_cmd1 |=  G76x_REG_FAN_CMD1_CLK_DIV_ID0;
++		data->fan_cmd1 |=  G76x_REG_FAN_CMD1_CLK_DIV_ID1;
++		break;
++	default:
++		mutex_unlock(&data->update_lock);
++		return -EINVAL;
++	}
++	ret = i2c_smbus_write_byte_data(data->client, G76x_REG_FAN_CMD1,
++					data->fan_cmd1);
++	data->valid = false;
++	mutex_unlock(&data->update_lock);
++
++	return ret;
 +}
 +
-+static const struct of_device_id marvell_ehci_dt_ids[] = {
-+    { .compatible = "marvell,orion-ehci" },
-+    { .compatible = "marvell,armada-3700-ehci" },
-+    { .compatible = "marvell,ac5-ehci" },
-+    { /* sentinel */ }
++/* Get and Set fan control mode. Accepts either 0 (open-loop) or 1 (closed-loop). */
++static int g76x_get_control_mode(struct device *dev, char *buf)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	return sprintf(buf, "%d\n", !!(data->fan_cmd1 & G76x_REG_FAN_CMD1_CTRL_MODE));
++}
++
++static int g76x_set_control_mode(struct device *dev, unsigned long val)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++	int ret;
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	mutex_lock(&data->update_lock);
++	switch (val) {
++	case G76x_FAN_MODE_CLOSED_LOOP:
++		data->fan_cmd1 |=  G76x_REG_FAN_CMD1_CTRL_MODE;
++		break;
++	case G76x_FAN_MODE_OPEN_LOOP:
++		data->fan_cmd1 &= ~G76x_REG_FAN_CMD1_CTRL_MODE;
++		/*
++		 * NOTE: if SET_CNT register value is 255, fan is disarmed,
++		 * no matter the value of SET_OUT (to be specific, this seems
++		 * to happen only in PWM mode). To workaround this case,
++		 * we give SET_CNT value of 0 if it is 255 when switching to open-loop.
++		 * This means that fan will be armed every time we switch to open-loop.
++		 */
++		if (data->set_cnt == 0xff)
++			i2c_smbus_write_byte_data(data->client, G76x_REG_SET_CNT, 0);
++		break;
++	default:
++		mutex_unlock(&data->update_lock);
++		return -EINVAL;
++	}
++
++	ret = i2c_smbus_write_byte_data(data->client, G76x_REG_FAN_CMD1,
++					data->fan_cmd1);
++	data->valid = false;
++	mutex_unlock(&data->update_lock);
++
++	return ret;
++}
++
++/* Get and Set output mode. Accepts either 0 (ADC) or 1 (PWM) */
++static int g76x_get_output_mode(struct device *dev, char *buf)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	return sprintf(buf, "%d\n", !!(data->fan_cmd1 & G76x_REG_FAN_CMD1_OUT_MODE));
++}
++
++static int g76x_set_output_mode(struct device *dev, unsigned long val)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++	int ret;
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	mutex_lock(&data->update_lock);
++	switch (val) {
++	case G76x_OUT_MODE_PWM:
++		data->fan_cmd1 |=  G76x_REG_FAN_CMD1_OUT_MODE;
++		break;
++	case G76x_OUT_MODE_ADC:
++		data->fan_cmd1 &= ~G76x_REG_FAN_CMD1_OUT_MODE;
++		break;
++	default:
++		mutex_unlock(&data->update_lock);
++		return -EINVAL;
++	}
++	ret = i2c_smbus_write_byte_data(data->client, G76x_REG_FAN_CMD1,
++					data->fan_cmd1);
++	data->valid = false;
++	mutex_unlock(&data->update_lock);
++
++	return ret;
++}
++
++/* Get and Set fan out of control detection. Accepts either 0 (disabled) or 1 (enabled) */
++static int g76x_get_ooc_detection(struct device *dev, char *buf)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	return sprintf(buf, "%d\n", !!(data->fan_cmd1 & G76x_REG_FAN_CMD1_DET_FAN_OOC));
++}
++
++static int g76x_set_ooc_detection(struct device *dev, unsigned long val)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++	int ret;
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	mutex_lock(&data->update_lock);
++	switch (val) {
++	case 0:
++		data->fan_cmd1 &= ~G76x_REG_FAN_CMD1_DET_FAN_OOC;
++		break;
++	case 1:
++		data->fan_cmd1 |= G76x_REG_FAN_CMD1_DET_FAN_OOC;
++		break;
++	default:
++		mutex_unlock(&data->update_lock);
++		return -EINVAL;
++	}
++	ret = i2c_smbus_write_byte_data(data->client, G76x_REG_FAN_CMD1,
++									data->fan_cmd1);
++	data->valid = false;
++	mutex_unlock(&data->update_lock);
++
++	return ret;
++}
++
++/* Get and Set fan failure detection. Accepts either 0 (disabled) or 1 (enabled) */
++static int g76x_get_failure_detection(struct device *dev, char *buf)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	return sprintf(buf, "%d\n", !!(data->fan_cmd1 & G76x_REG_FAN_CMD1_DET_FAN_FAIL));
++}
++
++static int g76x_set_failure_detection(struct device *dev, unsigned long val)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++	int ret;
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	mutex_lock(&data->update_lock);
++	switch (val) {
++	case 0:
++		data->fan_cmd1 &= ~G76x_REG_FAN_CMD1_DET_FAN_FAIL;
++		break;
++	case 1:
++		data->fan_cmd1 |= G76x_REG_FAN_CMD1_DET_FAN_FAIL;
++		break;
++	default:
++		mutex_unlock(&data->update_lock);
++		return -EINVAL;
++	}
++	ret = i2c_smbus_write_byte_data(data->client, G76x_REG_FAN_CMD1,
++									data->fan_cmd1);
++	data->valid = false;
++	mutex_unlock(&data->update_lock);
++
++	return ret;
++}
++
++/*
++ * Import hardware characteristics from .dts file and push
++ * those to the chip.
++ */
++#ifdef CONFIG_OF
++static const struct of_device_id g76x_dt_match[] = {
++	{ .compatible = "gmt,g762" },
++	{ .compatible = "gmt,g763" },
++	{ /* sentinel */ },
++};
++MODULE_DEVICE_TABLE(of, g76x_dt_match);
++/*
++ * Grab clock (a required property), enable it, get (fixed) clock frequency
++ * and store it. Note: upon success, clock has been prepared and enabled; it
++ * must later be unprepared and disabled (e.g. during module unloading) by a
++ * call to g76x_of_clock_disable(). Note that a reference to clock is kept
++ * in our private data structure to be used in this function.
++ */
++static int g76x_of_clock_enable(struct i2c_client *client)
++{
++	struct g76x_data *data;
++	unsigned long clk_freq;
++	struct clk *clk;
++	int ret;
++
++	if (!client->dev.of_node)
++		return 0;
++
++	clk = of_clk_get(client->dev.of_node, 0);
++	if (IS_ERR(clk)) {
++		dev_err(&client->dev, "failed to get clock\n");
++		return PTR_ERR(clk);
++	}
++
++	ret = clk_prepare_enable(clk);
++	if (ret) {
++		dev_err(&client->dev, "failed to enable clock\n");
++		clk_put(clk);
++		return ret;
++	}
++
++	clk_freq = clk_get_rate(clk);
++	ret = g76x_set_clk_freq(&client->dev, clk_freq);
++	if (ret) {
++		dev_err(&client->dev, "invalid clock freq %lu\n", clk_freq);
++		clk_disable_unprepare(clk);
++		clk_put(clk);
++		return ret;
++	}
++
++	data = i2c_get_clientdata(client);
++	data->clk = clk;
++
++	return 0;
++}
++
++static void g76x_of_clock_disable(struct i2c_client *client)
++{
++	struct g76x_data *data = i2c_get_clientdata(client);
++
++	if (!data->clk)
++		return;
++
++	clk_disable_unprepare(data->clk);
++	clk_put(data->clk);
++}
++
++static int g76x_of_prop_import_one(struct i2c_client *client,
++				   const char *pname,
++				   int (*psetter)(struct device *dev,
++						  unsigned long val))
++{
++	int ret;
++	uint32_t pval;
++
++	if (of_property_read_u32(client->dev.of_node, pname, &pval))
++		return 0;
++
++	dev_dbg(&client->dev, "found %s (%d)\n", pname, pval);
++	ret = (*psetter)(&client->dev, pval);
++	if (ret)
++		dev_err(&client->dev, "unable to set %s (%d)\n", pname, pval);
++
++	return ret;
++}
++
++static int g76x_of_prop_import(struct i2c_client *client)
++{
++	int ret;
++
++	if (!client->dev.of_node)
++		return 0;
++
++	ret = g76x_of_prop_import_one(client, "fan_gear_mode",
++				      g76x_set_gear_multiplier);
++	if (ret)
++		return ret;
++
++	ret = g76x_of_prop_import_one(client, "pwm_polarity",
++				      g76x_set_pwm_polarity);
++	if (ret)
++		return ret;
++
++	return g76x_of_prop_import_one(client, "fan_startv",
++				       g76x_set_fan_startv);
++}
++
++#else
++static int g76x_of_prop_import(struct i2c_client *client)
++{
++	return 0;
++}
++
++static int g76x_of_clock_enable(struct i2c_client *client)
++{
++	return 0;
++}
++
++static void g76x_of_clock_disable(struct i2c_client *client) { }
++#endif
++
++/*
++ * Import platform data from chip
++ */
++static int g76x_pdata_prop_import(struct i2c_client *client)
++{
++	struct g76x_platform_data *pdata = client->dev.platform_data;
++	int ret;
++
++	if (!pdata)
++		return 0;
++
++	ret = g76x_set_gear_multiplier(&client->dev, pdata->fan_gear_mode);
++	if (ret)
++		return ret;
++
++	ret = g76x_set_pwm_polarity(&client->dev, pdata->pwm_polarity);
++	if (ret)
++		return ret;
++
++	ret = g76x_set_fan_startv(&client->dev, pdata->fan_startv);
++	if (ret)
++		return ret;
++
++	return g76x_set_clk_freq(&client->dev, pdata->clk_freq);
++}
++
++
++/* driver-specific control functions */
++
++/* Get fan failure flag state. 0 (no fault) or 1 (fan failure) */
++static int g76x_get_failure_state(struct device *dev, char *buf)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	return sprintf(buf, "%d\n", !!(data->fan_sta & G76x_REG_FAN_STA_FAIL));
++}
++
++/* Get fan out of control flag state. 0 (fan ooc) or 1 (fan under control) */
++static int g76x_get_ooc_state(struct device *dev, char *buf)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	return sprintf(buf, "%d\n", !!(data->fan_sta & G76x_REG_FAN_STA_OOC));
++}
++
++/*
++ * Get and Set fan speed value. Can be called both in closed and open-loop mode
++ * but effect will only be seen after closed-loop mode is configured.
++ * 
++ * Accepts values between
++ * 0 (stops the fan) and 255 (full speed) for open-loop
++ * 0 (stops the fan) and 254 (full speed) for closed-loop
++ * 255 in closed-loop mode will disarm the fan
++ */
++static int g76x_get_fan_speed(struct device *dev, char *buf)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++	int ret;
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	switch (data->fan_cmd1 & G76x_REG_FAN_CMD1_CTRL_MODE) {
++	case G76x_FAN_MODE_CLOSED_LOOP:
++		ret = sprintf(buf, "%d\n", data->act_cnt);
++		break;
++	default:
++		ret = sprintf(buf, "%d\n", data->set_out);
++		break;
++	}
++
++	return ret;
++}
++
++static int g76x_set_fan_speed(struct device *dev, unsigned long val)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++	int ret;
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	val = clamp_val(val, 0, 255);
++
++	mutex_lock(&data->update_lock);
++	switch (data->fan_cmd1 & G76x_REG_FAN_CMD1_CTRL_MODE) {
++	case G76x_FAN_MODE_CLOSED_LOOP:
++		data->set_cnt = val;
++		ret = i2c_smbus_write_byte_data(data->client, G76x_REG_SET_CNT, val);
++		break;
++	default:
++		data->set_out = val;
++		ret = i2c_smbus_write_byte_data(data->client, G76x_REG_SET_OUT, val);
++		break;
++	}
++	data->valid = false;
++	mutex_unlock(&data->update_lock);
++
++	return ret;
++}
++
++/*
++ * Get/set the fan speed as a RPM value;
++ * in closed-loop mode the chip will regulate the fan speed using
++ * pulses from fan tachometer.
++ *
++ * in open-loop mode fan speed feedback is not available so it will
++ * estimate rpm from open-loop input speed.
++ * 
++ * Also note that due to rounding errors it is possible that you don't read
++ * back exactly the value you have set.
++ */
++ static int g76x_get_fan_rpm(struct device *dev, char *buf)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++	unsigned int rpm;
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++
++	mutex_lock(&data->update_lock);
++	switch (data->fan_cmd1 & G76x_REG_FAN_CMD1_CTRL_MODE) {
++	case G76x_FAN_MODE_CLOSED_LOOP:
++		if (data->set_cnt == 0xff) /* fan disarmed */
++			rpm = 0;
++		else
++			rpm = g76x_rpm_from_cnt(data->act_cnt, data->clk_freq,
++									G76x_PULSE_FROM_REG(data->fan_cmd1),
++									G76x_CLKDIV_FROM_REG(data->fan_cmd1),
++									G76x_GEARMULT_FROM_REG(data->fan_cmd2));
++		break;
++	default:
++		/* estimate rpm from input speed value as a percentage of common max RPM */
++		rpm = (data->set_out * 3000) / 255;
++		break;
++	}
++	mutex_unlock(&data->update_lock);
++
++	return sprintf(buf, "%u\n", rpm);
++}
++
++static int g76x_set_fan_rpm(struct device *dev, unsigned long rpm)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++	unsigned int speed;
++
++	if (IS_ERR(data))
++	    return PTR_ERR(data);
++
++	speed = g76x_cnt_from_rpm(rpm, data->clk_freq,
++							G76x_PULSE_FROM_REG(data->fan_cmd1),
++							G76x_CLKDIV_FROM_REG(data->fan_cmd1),
++							G76x_GEARMULT_FROM_REG(data->fan_cmd2));
++
++	return g76x_set_fan_speed(dev, speed);
++}
++
++/* Get/set the fan speed as a percentage of max speed */
++static int g76x_get_fan_level(struct device *dev, char *buf)
++{
++	struct g76x_data *data = g76x_update_client(dev);
++	unsigned int level;
++
++	if (IS_ERR(data))
++		return PTR_ERR(data);
++	
++	mutex_lock(&data->update_lock);
++
++	switch (data->fan_cmd1 & G76x_REG_FAN_CMD1_CTRL_MODE) {
++	case G76x_FAN_MODE_CLOSED_LOOP:
++		if (data->set_cnt == 0xff) /* fan disarmed */
++			level = 0;
++		else
++			level = g76x_level_from_cnt(data->act_cnt);
++		break;
++	default:
++		/* estimate level from input speed value */
++		level = g76x_level_from_cnt(data->set_out);
++		break;
++	}
++	mutex_unlock(&data->update_lock);
++
++	return sprintf(buf, "%d\n", level);
++}
++
++static int g76x_set_fan_level(struct device *dev, unsigned long level)
++{
++	level = clamp_val(level, 0, 100);
++
++	return g76x_set_fan_speed(dev, g76x_cnt_from_level(level));
++}
++
++/* Setup parameters to a default (and safe) known state and arm the fan */
++static int g76x_fan_init(struct device *dev)
++{
++	/*
++	 * g76x PowerOn/Reset state:
++	 * set_cnt  = 0xff	(fan disarmed)
++	 * act_cnt  = 0xff
++	 * fan_sta  = 0x01	(no fault, no ooc)
++	 * set_out  = 0x0	(open-loop speed set to 0)
++	 * fan_cmd1 = 0x10	(2 ppr, positive duty, clk div 1,
++	 *                  closed-loop, ADC mode, ooc detection disabled,
++	 * 					failure detection disabled)
++	 * fan_cmd2 = 0x01	(fan startv 1, gear mode x1, alert# unmasked)
++	 */
++	int ret;
++	/* default clock frequency */
++	ret = g76x_set_clk_freq(dev, 32768);
++	if (ret < 0) goto err_init;
++
++	/* enable ooc detection */
++	ret = g76x_set_ooc_detection(dev, 1);
++	if (ret < 0) goto err_init;
++	
++	/* enable failure detection */
++	ret = g76x_set_failure_detection(dev, 1);
++	if (ret < 0) goto err_init;
++	
++	/* set speed to 0 and arm the fan */
++	ret = g76x_set_fan_speed(dev, 0);
++	if (ret < 0) goto err_init;
++
++	return 0;
++
++err_init:		 
++	return -EIO;
++}
++
++
++/*
++ * Generic fan driver layer
++ */
++
++static struct fan_ops g76x_fan_ops = {
++    .get_fan_startv			=	g76x_get_fan_startv,
++    .set_fan_startv			=	g76x_set_fan_startv,
++	.get_gear_multiplier	=	g76x_get_gear_multiplier,
++	.set_gear_multiplier	=	g76x_set_gear_multiplier,
++	.get_fan_ppr			=	g76x_get_fan_ppr,
++	.set_fan_ppr			=	g76x_set_fan_ppr,
++	.get_pwm_polarity		=	g76x_get_pwm_polarity,
++	.set_pwm_polarity		=	g76x_set_pwm_polarity,
++	.get_clk_freq			=	g76x_get_clk_freq,
++	.set_clk_freq			=	g76x_set_clk_freq,
++	.get_clk_div			=	g76x_get_clk_div,
++	.set_clk_div			=	g76x_set_clk_div,
++	.get_control_mode		=	g76x_get_control_mode,
++	.set_control_mode		=	g76x_set_control_mode,
++	.get_output_mode		=	g76x_get_output_mode,
++	.set_output_mode		=	g76x_set_output_mode,
++	.get_ooc_detection		=	g76x_get_ooc_detection,
++	.set_ooc_detection		=	g76x_set_ooc_detection,
++	.get_failure_detection	=	g76x_get_failure_detection,
++	.set_failure_detection	=	g76x_set_failure_detection,
++	.get_failure_state		=	g76x_get_failure_state,
++	.get_ooc_state			=	g76x_get_ooc_state,
++	.get_fan_speed			=	g76x_get_fan_speed,
++	.set_fan_speed			=	g76x_set_fan_speed,
++	.get_fan_rpm			=	g76x_get_fan_rpm,
++	.set_fan_rpm			=	g76x_set_fan_rpm,
++	.get_fan_level			=	g76x_get_fan_level,
++	.set_fan_level			=	g76x_set_fan_level,
++	.fan_init				=	g76x_fan_init,
 +};
 +
-+static struct driver marvell_ehci_driver = {
-+    .name         = "marvell-ehci",
-+    .probe        = marvell_ehci_probe,
-+    .remove       = marvell_ehci_remove,
-+    .of_compatible = DRV_OF_COMPAT(marvell_ehci_dt_ids),
++static int g76x_fan_probe(struct device *dev)
++{
++	struct i2c_client *client = to_i2c_client(dev);
++	struct g76x_data *data;
++	int ret;
++
++	/* make sure that chip is present by reading a register */
++	ret = i2c_smbus_read_byte_data(client, G76x_REG_FAN_CMD1);
++	if (ret < 0) {
++		ret = -ENODEV;
++		goto err_ret;
++	}
++
++	/* allocate and initialize driver data structure */
++	data = xzalloc(sizeof(*data));
++	if (!data) {
++		ret = -ENOMEM;
++		goto err_ret;
++	}
++
++	/* pass specific driver data to i2c device */
++	dev->priv = data;
++	i2c_set_clientdata(client, data);
++	data->client = client;
++	mutex_init(&data->update_lock);
++
++	/* Get configuration via DT ... */
++	ret = g76x_of_clock_enable(client);
++	if (ret)
++		goto err_alloc;
++
++	ret = g76x_of_prop_import(client);
++	if (ret)
++		goto err_clk;
++
++	/* ... or platform_data */
++	ret = g76x_pdata_prop_import(client);
++	if (ret)
++		goto err_clk;
++
++	ret = fan_device_register(&client->dev, &g76x_fan_ops);
++	if (ret)
++		goto err_clk;
++
++	return 0;
++
++err_clk:
++    g76x_of_clock_disable(client);
++err_alloc:
++	free(data);
++err_ret:
++	return ret;
++}
++
++static void g76x_fan_remove(struct device *dev)
++{
++	struct i2c_client *client = to_i2c_client(dev);
++	struct g76x_data *data = i2c_get_clientdata(client);
++
++	fan_device_unregister(&client->dev);
++	g76x_of_clock_disable(client);
++	free(data);
++}
++
++static struct driver g76x_driver = {
++	.name = "g76x",
++	.probe	  = g76x_fan_probe,
++	.remove	  = g76x_fan_remove,
++	.id_table = g76x_id,
++	.of_match_table = of_match_ptr(g76x_dt_match),
 +};
-+device_platform_driver(marvell_ehci_driver);
++
++device_i2c_driver(g76x_driver);
+diff --git a/drivers/fan/other_fan_controllers/Kconfig b/drivers/fan/other_fan_controllers/Kconfig
+new file mode 100644
+index 0000000000..8e750fdae5
+--- /dev/null
++++ b/drivers/fan/other_fan_controllers/Kconfig
+@@ -0,0 +1,7 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
++config GPIO_PWM_FAN
++	bool "Generic GPIO PWM controlled fan driver"
++	depends on PWM
++	help
++	Support fan speed control trough GPIO PWM signal
+diff --git a/drivers/fan/other_fan_controllers/Makefile b/drivers/fan/other_fan_controllers/Makefile
+new file mode 100644
+index 0000000000..43ea3ab5b3
+--- /dev/null
++++ b/drivers/fan/other_fan_controllers/Makefile
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
++# fan controller interface types
+diff --git a/drivers/fan/spi_fan_controllers/Kconfig b/drivers/fan/spi_fan_controllers/Kconfig
+new file mode 100644
+index 0000000000..a4e40e534e
+--- /dev/null
++++ b/drivers/fan/spi_fan_controllers/Kconfig
+@@ -0,0 +1 @@
++# SPDX-License-Identifier: GPL-2.0-only
+diff --git a/drivers/fan/spi_fan_controllers/Makefile b/drivers/fan/spi_fan_controllers/Makefile
+new file mode 100644
+index 0000000000..43ea3ab5b3
+--- /dev/null
++++ b/drivers/fan/spi_fan_controllers/Makefile
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
++# fan controller interface types
+diff --git a/include/fan/fan.h b/include/fan/fan.h
+new file mode 100644
+index 0000000000..3289c6d214
+--- /dev/null
++++ b/include/fan/fan.h
+@@ -0,0 +1,94 @@
++#ifndef __FAN_H__
++#define __FAN_H__
++
++#include <common.h>
++#include <device.h>
++#include <driver.h>
++#include <linux/list.h>
++#include <linux/types.h>
++#include <fs.h>
++#include <malloc.h>
++#include <xfuncs.h>
++#include <globalvar.h>
++#include <errno.h>
++
++
++/* Generic fan driver fan device management */
++
++struct fan_device {             /*!< generic fan driver device */
++    struct list_head list;      /*!< link in generic fan driver devices list */
++    struct device *dev;         /*!< specific fan controller driver device */ 
++    const struct fan_ops *ops;  /*!< specific fan controller driver operations */
++    struct cdev *cdev;          /*!< generic filesystem fan device */
++};
++
++struct fan_ops {
++    int (*get_fan_startv)(struct device *dev, char *buf);
++    int (*set_fan_startv)(struct device *dev, unsigned long val);
++
++    int (*get_gear_multiplier)(struct device *dev, char *buf);
++    int (*set_gear_multiplier)(struct device *dev, unsigned long val);
++
++    int (*get_fan_ppr)(struct device *dev, char *buf);
++    int (*set_fan_ppr)(struct device *dev, unsigned long val);
++
++    int (*get_pwm_polarity)(struct device *dev, char *buf);
++    int (*set_pwm_polarity)(struct device *dev, unsigned long val);
++
++    int (*get_clk_freq)(struct device *dev, char *buf);
++    int (*set_clk_freq)(struct device *dev, unsigned long val);
++
++    int (*get_clk_div)(struct device *dev, char *buf);
++    int (*set_clk_div)(struct device *dev, unsigned long val);
++
++    int (*get_control_mode)(struct device *dev, char *buf);
++    int (*set_control_mode)(struct device *dev, unsigned long val);
++
++    int (*get_output_mode)(struct device *dev, char *buf);
++    int (*set_output_mode)(struct device *dev, unsigned long val);
++
++    int (*get_ooc_detection)(struct device *dev, char *buf);
++    int (*set_ooc_detection)(struct device *dev, unsigned long val);
++
++    int (*get_failure_detection)(struct device *dev, char *buf);
++    int (*set_failure_detection)(struct device *dev, unsigned long val);
++
++    int (*get_failure_state)(struct device *dev, char *buf);
++    int (*get_ooc_state)(struct device *dev, char *buf);
++
++    int (*get_fan_speed)(struct device *dev, char *buf);
++    int (*set_fan_speed)(struct device *dev, unsigned long val);
++
++    int (*get_fan_rpm)(struct device *dev, char *buf);
++    int (*set_fan_rpm)(struct device *dev, unsigned long val);
++
++    int (*get_fan_level)(struct device *dev, char *buf);
++    int (*set_fan_level)(struct device *dev, unsigned long val);
++
++    int (*fan_init)(struct device *dev);
++};
++/*
++static void fan_set_dev(struct fan_device *fan, struct device *dev);
++static struct device *fan_get_dev(struct fan_device *fan);
++
++static void fan_set_ops(struct fan_device *fan, struct fan_ops *ops);
++static const struct fan_ops *fan_get_ops(struct fan_device *fan);
++*/
++
++/* Generic filesystem fan device management */
++/*
++static void cdev_set_fan(struct fan_device *fan);
++static struct fan_device *cdev_get_fan(struct cdev *cdev);
++
++static void cdev_set_name(struct cdev *cdev);
++static char *cdev_get_name(struct cdev *cdev);
++*/
++struct fan_device *fan_device_find(const char *devmatch);
++
++
++/* specific fan controller driver device management */
++
++int fan_device_register(struct device *dev, struct fan_ops *ops);
++void fan_device_unregister(struct device *dev);
++
++#endif /* __FAN_H__ */
+\ No newline at end of file
+diff --git a/include/fan/i2c_fan_controllers/g76x.h b/include/fan/i2c_fan_controllers/g76x.h
+new file mode 100644
+index 0000000000..e9075a1b5c
+--- /dev/null
++++ b/include/fan/i2c_fan_controllers/g76x.h
+@@ -0,0 +1,37 @@
++/*
++ * Platform data structure for g762 fan controller driver
++ *
++ * Copyright (C) 2013, Arnaud EBALARD <arno@natisbad.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++#ifndef __LINUX_PLATFORM_DATA_G762_H__
++#define __LINUX_PLATFORM_DATA_G762_H__
++
++/*
++ * Following structure can be used to set g762 driver platform specific data
++ * during board init. Note that passing a sparse structure is possible but
++ * will result in non-specified attributes to be set to default value, hence
++ * overloading those installed during boot (e.g. by u-boot).
++ */
++
++struct g76x_platform_data {
++	unsigned int fan_startv;
++	unsigned int fan_gear_mode;
++	unsigned int pwm_polarity;
++	unsigned int clk_freq;
++};
++
++#endif /* __LINUX_PLATFORM_DATA_G762_H__ */
 
 -- 
 2.47.3
