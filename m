@@ -3,15 +3,15 @@ Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wmu03-001zCE-0X
+	id 1wmu03-001zCF-0a
 	for lore@lore.pengutronix.de;
 	Thu, 23 Jul 2026 16:02:11 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 9CD7F2028A8
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 908B2202887
 	for <lore@pengutronix.de>; Thu, 23 Jul 2026 16:02:11 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=3vsM+dWT;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bnIhqRAM;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=sTBwulbM;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lJzJS8BD;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -20,57 +20,57 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Dybd6Cnc60zZD9Ak8jeEdCuMW/72AVSjg6wUW7u5wJU=; b=3vsM+dWTobSMj27MwzvgyoTQ5M
-	ttQ8qIBPABzawGlFLi91BC6bwxgBMGGG/1IIpL7vkXHE98Q8Z4Z2DJEVpx6vSj2nTrggJDyfPd7Na
-	SmG5FsYA/LO6RayotbuhPd4US5OerDZ2gW4Kb+kf0XLH7EJRtnxSNtmJztll2ajnxbggMQLc5a1Er
-	rj39CCw43BbYlCv9PjyNINy1vI/fTFRyC2MCfgOh0Fp6+0WPwR9QhR9sDj1wGZCDSNXz2GwT/hfyJ
-	j3sYdYO4b7T3kc4eaxfNSPUCKvY29A2JzC0F8DMJnwXTqFVb0qrjeu7Z3CdUMJ9VTQJJXnPARNGRF
-	phQy9l8g==;
+	bh=80IE3yotiD5QWhTNpe5bPibOlsHS7eOzX+G6KFq9J9M=; b=sTBwulbMc0ybYOUbZ/B7dWumgz
+	7eUtw7NHayPcbXkOTVsgtB7cOLukLftFWBs9yCN/KIQqzPfbUx4Kvf0uhgnsCNsnKCmUstYpYwaRe
+	2Eo9q3nF4RtUNzpWd2sLYfCtAN8yeWlmq9Diu9QaicL5V6Vzwp75Ss7YPZ7f6Cu4JiGaNTsyM/jEx
+	3GjIX6ZnfVJ/PaRhhgiiIkycSXygDHEJ9++k8wLEXcr4LZyat68kHVMZEtlBpEESxaroy/4TF8jbM
+	26lDT0dMuIMDz7uttneHA9ec57uKYE7WxONexWzkDQcn5CGU/Y+2kI8YeYbpuqx+Wh7klUk2qkx+O
+	tSATOozg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wmtvD-0000000EQQ4-2OZK;
+	id 1wmtvD-0000000EQQe-3VW9;
 	Thu, 23 Jul 2026 13:57:11 +0000
-Received: from tor.source.kernel.org ([2600:3c04:e001:324:0:1991:8:25])
+Received: from sea.source.kernel.org ([172.234.252.31])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wmtvA-0000000EQMJ-48da
+	id 1wmtvA-0000000EQLb-3n0b
 	for barebox@lists.infradead.org;
-	Thu, 23 Jul 2026 13:57:09 +0000
+	Thu, 23 Jul 2026 13:57:08 +0000
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 62B2460A7E;
+	by sea.source.kernel.org (Postfix) with ESMTP id CE0E244EA1;
 	Thu, 23 Jul 2026 13:57:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 18502C2BCFA;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B391DC2BCC7;
 	Thu, 23 Jul 2026 13:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1784815028;
-	bh=amf+iQLtrevVJARITUc3Bo4MdOsAWMlGhkVfDM8BDqw=;
+	bh=wdlDsjdXVefIWlOFLp1Nm6mDx03+eLpln0iii5A5ewI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=bnIhqRAMW8ZzmCDiGmtzjN6alCdzpjCRTC+MLhV8/XL+IM/BcC327iKjArwtwKn2H
-	 5tuFEtVlqCwzX/qst8eZ4SyrZygvS3UIsebRXzF8zlcljkGWH78Pou6EJ8ZJO5fIrb
-	 mgktMYMA7auZIwbPV4RqHk+1Rs3silWQwnRMLz8k0dE5cgEL8YBviVW15JWbbX2VnQ
-	 3XobB8cJmrk9CQ0mLW+j18EMdqhYIdILGO9N5rtycvRQ2ANVA9jU6jnTymEX1QPwma
-	 vm4vrjem0/fwB0G01oidxmng8yHPwY0zIpfLVzyrw1gNrgqJaf7VN4pUHoIDBLhlWL
-	 b8TbA0GZoBJ/A==
+	b=lJzJS8BDSseXkRYHrH2V/29QwlgDwK9tytezXZjbNsvNZQZ2N3vEd8euXOQ3dFPE4
+	 urNqxkDtaLvHYFk44A7026vrdbwZZKaQ0XBg6R5eNRhrWvIlRhelWTs6admuP5snKO
+	 q/faESCevhpoHhDo/FyjLC7uNMFMLhrSrqnfY3fsSMD9M9WB54HT6wu9/dnEDILNw+
+	 P9cSkWqyNZvAqfm8rbw1u0zEeXaZ4Baep/EClyl9OIv7ZdF8a25+gVd3LogaZXggEL
+	 DDI5yp8SerPDdLgF80wuVqOIf9NVs9F0GMOUGwr9NdM1jp/yPsxc6dp2lbOiTJtXAf
+	 XqMxgITo+/pIQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 06F49C531F5;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A1829C531D4;
 	Thu, 23 Jul 2026 13:57:08 +0000 (UTC)
 From: Luca Lauro via B4 Relay <devnull+famlauro93l.gmail.com@kernel.org>
-Date: Thu, 23 Jul 2026 15:57:50 +0200
-Subject: [PATCH 12/19] ARM: mvebu: rename PUTC_LL to MVEBU_PUTC_LL
+Date: Thu, 23 Jul 2026 15:57:57 +0200
+Subject: [PATCH 19/19] drivers: integrate USB/AHCI changes
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260723-rn102-rn104-series-v1-12-7698d25df866@gmail.com>
+Message-Id: <20260723-rn102-rn104-series-v1-19-7698d25df866@gmail.com>
 References: <20260723-rn102-rn104-series-v1-0-7698d25df866@gmail.com>
 In-Reply-To: <20260723-rn102-rn104-series-v1-0-7698d25df866@gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  "open list:BAREBOX" <barebox@lists.infradead.org>
 Cc: Luca Lauro <famlauro93l@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784815061; l=565;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784815061; l=699;
  i=famlauro93l@gmail.com; s=20260723; h=from:subject:message-id;
- bh=pteQpJSBoykJa1rNZLISGCFm/a/BFP+67qxg280hkDg=;
- b=sPmE2HBKizIlO4yYPFWZMcTL2AYhGAOTLt4Mp+cDywC1zvP0obgR421rB4kewSXljumrHrXUV
- qLc7Snq9fbzBtW7AEm8yU3PNhanCTQQ9LQDVYHLg85ErmbQUTS8Z2iL
+ bh=QRd+hAbkI8LHuSICgMI0gxZ78VkZmA1gngAn6p04eys=;
+ b=7Tx6ZXXurvBGJSddVsxNc7cVWHyr0UF/ipxVxBUUY7jHjjrPV6eGLtHIElezOar5mSOutpYmW
+ Zq9bWBgziJYD1LLvCIQ7sMQCOb22SpK0jUkQArWXgy6gWFnT4pBWKdI
 X-Developer-Key: i=famlauro93l@gmail.com; a=ed25519;
  pk=OAJlcD69ugQCl99Vy6w+Aeu+ZUb1IVGcz1Ijxo6Ch78=
 X-Endpoint-Received: by B4 Relay for famlauro93l@gmail.com/20260723 with
@@ -91,7 +91,7 @@ Reply-To: famlauro93l@gmail.com
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Spamd-Result: default: False [-6.91 / 15.00];
 	DWL_DNSWL_MED(-4.00)[kernel.org:dkim,infradead.org:dkim];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	FREEMAIL_REPLYTO_NEQ_FROM(2.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
@@ -125,29 +125,37 @@ X-Spamd-Result: default: False [-6.91 / 15.00];
 	RCPT_COUNT_THREE(0.00)[3];
 	HAS_REPLYTO(0.00)[famlauro93l@gmail.com]
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 9CD7F2028A8
+X-Rspamd-Queue-Id: 908B2202887
 X-Rspamd-Server: mx1
-X-Stat-Signature: esyrystbwuhesdbds4nt3pwmhyy3msd3
+X-Stat-Signature: nuzo9s7xahwzkeeyfi8cznk8doxcj5x8
 
 From: Luca Lauro <famlauro93l@gmail.com>
 
 ---
- include/mach/mvebu/debug_ll.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/Kconfig  | 1 +
+ drivers/Makefile | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/include/mach/mvebu/debug_ll.h b/include/mach/mvebu/debug_ll.h
-index cf08776d4f..cd81b27e39 100644
---- a/include/mach/mvebu/debug_ll.h
-+++ b/include/mach/mvebu/debug_ll.h
-@@ -15,7 +15,7 @@
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index 32910addcd..b1ba73887a 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -50,5 +50,6 @@ source "drivers/power/Kconfig"
+ source "drivers/virtio/Kconfig"
+ source "drivers/mailbox/Kconfig"
+ source "drivers/tee/Kconfig"
++source "drivers/fan/Kconfig"
  
- #define EARLY_UART	UARTn_BASE(CONFIG_MVEBU_CONSOLE_UART)
- 
--static inline void PUTC_LL(char c)
-+static inline void MVEBU_PUTC_LL(char c)
- {
- 	/* Wait until there is space in the FIFO */
- 	while (!(readl(EARLY_UART + UART_LSR) & LSR_THRE))
+ endmenu
+diff --git a/drivers/Makefile b/drivers/Makefile
+index db491dad83..4d6071fdc7 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -51,3 +51,4 @@ obj-$(CONFIG_SOUND) += sound/
+ obj-y	+= virtio/
+ obj-y	+= mailbox/
+ obj-y	+= tee/
++obj-$(CONFIG_FAN) += fan/
 
 -- 
 2.47.3
