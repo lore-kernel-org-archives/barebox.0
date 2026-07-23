@@ -1,17 +1,17 @@
-Delivery-date: Thu, 23 Jul 2026 16:02:11 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Thu, 23 Jul 2026 16:02:12 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wmu03-001zCF-0a
+	id 1wmu03-001zCj-1O
 	for lore@lore.pengutronix.de;
-	Thu, 23 Jul 2026 16:02:11 +0200
+	Thu, 23 Jul 2026 16:02:12 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 908B2202887
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id DF6AE202771
 	for <lore@pengutronix.de>; Thu, 23 Jul 2026 16:02:11 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=sTBwulbM;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lJzJS8BD;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=RNKNyo0Y;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fdDUqgtP;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -20,57 +20,57 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=80IE3yotiD5QWhTNpe5bPibOlsHS7eOzX+G6KFq9J9M=; b=sTBwulbMc0ybYOUbZ/B7dWumgz
-	7eUtw7NHayPcbXkOTVsgtB7cOLukLftFWBs9yCN/KIQqzPfbUx4Kvf0uhgnsCNsnKCmUstYpYwaRe
-	2Eo9q3nF4RtUNzpWd2sLYfCtAN8yeWlmq9Diu9QaicL5V6Vzwp75Ss7YPZ7f6Cu4JiGaNTsyM/jEx
-	3GjIX6ZnfVJ/PaRhhgiiIkycSXygDHEJ9++k8wLEXcr4LZyat68kHVMZEtlBpEESxaroy/4TF8jbM
-	26lDT0dMuIMDz7uttneHA9ec57uKYE7WxONexWzkDQcn5CGU/Y+2kI8YeYbpuqx+Wh7klUk2qkx+O
-	tSATOozg==;
+	bh=LFsPY1be6Hl9ajAryDMmmkPWz/brgT/s5xdPonj0yPM=; b=RNKNyo0YqNf7Ei/nqBJVmzX3OU
+	KbqnRTbRQii9/IU/H4516gJ05IWk2HN0ReIkPM5yI/Rw+HJcXxpu6AAthjL1bMAETA3AWmPDssZgx
+	C/p2fom35UyEKw24nJJ2JW0NUzCTdq9VmXvZSnQoh7qjWNjZDDGxlufvWAl29Vjjiqd0fakgDquGK
+	wx7ADwtZ/tE8k7IEL9t836KObDTJk8/KWB7LiuAYuwu5DLW2jHucJxNobyfB8Kw4VYxOaprUI16+8
+	ZCbvyomUt06tMwmQtQOQxGr3UEEFAj2c2iCUq5OiCr4FBJvgFZxw5juWRpyPiz0io2CdWFV/dKRDZ
+	95CAIECQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wmtvD-0000000EQQe-3VW9;
-	Thu, 23 Jul 2026 13:57:11 +0000
-Received: from sea.source.kernel.org ([172.234.252.31])
+	id 1wmtvE-0000000EQQz-0pFu;
+	Thu, 23 Jul 2026 13:57:12 +0000
+Received: from tor.source.kernel.org ([172.105.4.254])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wmtvA-0000000EQLb-3n0b
+	id 1wmtvA-0000000EQM5-4A5n
 	for barebox@lists.infradead.org;
-	Thu, 23 Jul 2026 13:57:08 +0000
+	Thu, 23 Jul 2026 13:57:09 +0000
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CE0E244EA1;
+	by tor.source.kernel.org (Postfix) with ESMTP id CE17460A7F;
 	Thu, 23 Jul 2026 13:57:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B391DC2BCC7;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 830DFC2BCC9;
 	Thu, 23 Jul 2026 13:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1784815028;
-	bh=wdlDsjdXVefIWlOFLp1Nm6mDx03+eLpln0iii5A5ewI=;
+	bh=pBjT/+hXsMoNea0nyGn9sQe0G9yUtX95wPAXiHMyu8s=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=lJzJS8BDSseXkRYHrH2V/29QwlgDwK9tytezXZjbNsvNZQZ2N3vEd8euXOQ3dFPE4
-	 urNqxkDtaLvHYFk44A7026vrdbwZZKaQ0XBg6R5eNRhrWvIlRhelWTs6admuP5snKO
-	 q/faESCevhpoHhDo/FyjLC7uNMFMLhrSrqnfY3fsSMD9M9WB54HT6wu9/dnEDILNw+
-	 P9cSkWqyNZvAqfm8rbw1u0zEeXaZ4Baep/EClyl9OIv7ZdF8a25+gVd3LogaZXggEL
-	 DDI5yp8SerPDdLgF80wuVqOIf9NVs9F0GMOUGwr9NdM1jp/yPsxc6dp2lbOiTJtXAf
-	 XqMxgITo+/pIQ==
+	b=fdDUqgtPzSSRpdjBxhMwsQPAp8gs3SOYiyR36D9mQT3Huz4LHHbsc+xeoZPPR2doR
+	 G9D74h46DeBSFMqJQijr77zxv4okczV77CrAy94xuTzX25qeBJ7kVkEDwgzX/358s0
+	 1MPClKP654fnjHePw3aHb0m5+zld8SBvN2kWxhMbZobq8D0Mlg9pd4BUE0/HnHjyks
+	 f+cPgYmFzQ8I8rnYG67Rk7NkExnvtKmwjixALoO6ZU5O71tdPUHXhnYq4GnPXmFC4v
+	 1/MTDrdQTj4gQqzzff8W1EG5KNEwo5NF8WhsROZJELm5v2YuMYh9uQM5u3yDfFLpIl
+	 Ve0MkIyEe6DeA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1829C531D4;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 70FB2C531D4;
 	Thu, 23 Jul 2026 13:57:08 +0000 (UTC)
 From: Luca Lauro via B4 Relay <devnull+famlauro93l.gmail.com@kernel.org>
-Date: Thu, 23 Jul 2026 15:57:57 +0200
-Subject: [PATCH 19/19] drivers: integrate USB/AHCI changes
+Date: Thu, 23 Jul 2026 15:57:55 +0200
+Subject: [PATCH 17/19] usb: ehci: minor fixes for Marvell compatibility
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260723-rn102-rn104-series-v1-19-7698d25df866@gmail.com>
+Message-Id: <20260723-rn102-rn104-series-v1-17-7698d25df866@gmail.com>
 References: <20260723-rn102-rn104-series-v1-0-7698d25df866@gmail.com>
 In-Reply-To: <20260723-rn102-rn104-series-v1-0-7698d25df866@gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  "open list:BAREBOX" <barebox@lists.infradead.org>
 Cc: Luca Lauro <famlauro93l@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784815061; l=699;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784815061; l=2998;
  i=famlauro93l@gmail.com; s=20260723; h=from:subject:message-id;
- bh=QRd+hAbkI8LHuSICgMI0gxZ78VkZmA1gngAn6p04eys=;
- b=7Tx6ZXXurvBGJSddVsxNc7cVWHyr0UF/ipxVxBUUY7jHjjrPV6eGLtHIElezOar5mSOutpYmW
- Zq9bWBgziJYD1LLvCIQ7sMQCOb22SpK0jUkQArWXgy6gWFnT4pBWKdI
+ bh=9aIAfTwznhBF1Q9v0NH1V3efCA0Uw6eq2ly05ERErKE=;
+ b=m0hOskqM0fLUBEdDDpw6khgTra01k78kPoDN1t1JAtVWyjJz/k17/kza36H9z7pWjwoLTfqD6
+ xq8TmXV9+BOBD9uvEBPGp0FBR2LCb5HuZrmmtNWewBnm5kNrnGByIfx
 X-Developer-Key: i=famlauro93l@gmail.com; a=ed25519;
  pk=OAJlcD69ugQCl99Vy6w+Aeu+ZUb1IVGcz1Ijxo6Ch78=
 X-Endpoint-Received: by B4 Relay for famlauro93l@gmail.com/20260723 with
@@ -91,7 +91,7 @@ Reply-To: famlauro93l@gmail.com
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Spamd-Result: default: False [-6.91 / 15.00];
 	DWL_DNSWL_MED(-4.00)[kernel.org:dkim,infradead.org:dkim];
-	BAYES_HAM(-3.00)[100.00%];
+	BAYES_HAM(-3.00)[99.99%];
 	FREEMAIL_REPLYTO_NEQ_FROM(2.00)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
@@ -125,37 +125,88 @@ X-Spamd-Result: default: False [-6.91 / 15.00];
 	RCPT_COUNT_THREE(0.00)[3];
 	HAS_REPLYTO(0.00)[famlauro93l@gmail.com]
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 908B2202887
+X-Rspamd-Queue-Id: DF6AE202771
 X-Rspamd-Server: mx1
-X-Stat-Signature: nuzo9s7xahwzkeeyfi8cznk8doxcj5x8
+X-Stat-Signature: 6i3yxgigws69r39ksfphwpditkj4ynyz
 
 From: Luca Lauro <famlauro93l@gmail.com>
 
 ---
- drivers/Kconfig  | 1 +
- drivers/Makefile | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/usb/host/ehci-hcd.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/Kconfig b/drivers/Kconfig
-index 32910addcd..b1ba73887a 100644
---- a/drivers/Kconfig
-+++ b/drivers/Kconfig
-@@ -50,5 +50,6 @@ source "drivers/power/Kconfig"
- source "drivers/virtio/Kconfig"
- source "drivers/mailbox/Kconfig"
- source "drivers/tee/Kconfig"
-+source "drivers/fan/Kconfig"
+diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+index 51b9e52a4f..b72436b312 100644
+--- a/drivers/usb/host/ehci-hcd.c
++++ b/drivers/usb/host/ehci-hcd.c
+@@ -857,8 +857,6 @@ static int ehci_init(struct usb_host *host)
+ 	struct QH *periodic;
+ 	int i;
  
- endmenu
-diff --git a/drivers/Makefile b/drivers/Makefile
-index db491dad83..4d6071fdc7 100644
---- a/drivers/Makefile
-+++ b/drivers/Makefile
-@@ -51,3 +51,4 @@ obj-$(CONFIG_SOUND) += sound/
- obj-y	+= virtio/
- obj-y	+= mailbox/
- obj-y	+= tee/
-+obj-$(CONFIG_FAN) += fan/
+-	ehci_halt(ehci);
+-
+ 	/* EHCI spec section 4.1 */
+ 	if (ehci_reset(ehci) != 0)
+ 		return -1;
+@@ -870,16 +868,16 @@ static int ehci_init(struct usb_host *host)
+ 	}
+ 
+ 	ehci->qh_list[0].qh_link = cpu_to_hc32(ehci_qh_dma(ehci, &ehci->qh_list[1]) |
+-					       QH_LINK_TYPE_QH);
++									QH_LINK_TYPE_QH);
+ 	ehci->qh_list[0].qh_endpt1 = cpu_to_hc32(QH_ENDPT1_H(1) |
+-						 QH_ENDPT1_EPS(USB_SPEED_HIGH));
++									QH_ENDPT1_EPS(USB_SPEED_HIGH));
+ 	ehci->qh_list[0].qh_curtd = cpu_to_hc32(QT_NEXT_TERMINATE);
+ 	ehci->qh_list[0].qt_next = cpu_to_hc32(QT_NEXT_TERMINATE);
+ 	ehci->qh_list[0].qt_altnext = cpu_to_hc32(QT_NEXT_TERMINATE);
+ 	ehci->qh_list[0].qt_token = cpu_to_hc32(QT_TOKEN_STATUS_HALTED);
+ 
+ 	ehci->qh_list[1].qh_link = cpu_to_hc32(ehci_qh_dma(ehci,
+-							   &ehci->qh_list[0]) |
++									&ehci->qh_list[0]) |
+ 					       QH_LINK_TYPE_QH);
+ 	ehci->qh_list[1].qt_altnext = cpu_to_hc32(QT_NEXT_TERMINATE);
+ 
+@@ -897,6 +895,8 @@ static int ehci_init(struct usb_host *host)
+ 	periodic->qt_next = cpu_to_hc32(QT_NEXT_TERMINATE);
+ 	periodic->qt_altnext = cpu_to_hc32(QT_NEXT_TERMINATE);
+ 
++	ehci->periodic_queue_dma = ehci_qh_dma(ehci, periodic);
++
+ 	/*
+ 	 * Step 2: Setup frame-list: Every microframe, USB tries the same list.
+ 	 *         In particular, device specifications on polling frequency
+@@ -906,23 +906,23 @@ static int ehci_init(struct usb_host *host)
+ 	 *         Split Transactions will be spread across microframes using
+ 	 *         S-mask and C-mask.
+ 	 */
+-	if (ehci->periodic_list == NULL)
++	if (ehci->periodic_list == NULL) {
++		ehci->periodic_list = dma_alloc_coherent(DMA_DEVICE_BROKEN, 1024 * 4,
++								&ehci->periodic_list_dma);
+ 		/*
+ 		 * FIXME: this memory chunk have to be 4k aligned AND
+ 		 * reside in coherent memory. Current implementation of
+ 		 * dma_alloc_coherent() allocates PAGE_SIZE aligned memory chunks.
+ 		 * PAGE_SIZE less then 4k will break this code.
+ 		 */
+-		ehci->periodic_list = dma_alloc_coherent(DMA_DEVICE_BROKEN, 1024 * 4,
+-						&ehci->periodic_list_dma);
+ 	for (i = 0; i < 1024; i++) {
+-		ehci->periodic_list[i] = cpu_to_hc32((unsigned long)ehci->periodic_queue_dma
+-						| QH_LINK_TYPE_QH);
++		ehci->periodic_list[i] = cpu_to_hc32(ehci->periodic_queue_dma
++									| QH_LINK_TYPE_QH);
+ 	}
+ 
+ 	/* Set periodic list base address */
+ 	ehci_writel(&ehci->hcor->or_periodiclistbase,
+-		    (uint32_t)ehci->periodic_list_dma);
++		    ehci->periodic_list_dma);
+ 
+ 	reg = ehci_readl(&ehci->hccr->cr_hcsparams);
+ 	descriptor.hub.bNbrPorts = HCS_N_PORTS(reg);
 
 -- 
 2.47.3
