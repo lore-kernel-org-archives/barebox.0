@@ -1,17 +1,17 @@
 Delivery-date: Thu, 23 Jul 2026 16:02:11 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wmu03-001zCD-0R
+	id 1wmu03-001zCE-0X
 	for lore@lore.pengutronix.de;
 	Thu, 23 Jul 2026 16:02:11 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 7C7F6202771
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 9CD7F2028A8
 	for <lore@pengutronix.de>; Thu, 23 Jul 2026 16:02:11 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=T3A5rPUZ;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hNC13zXq;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=3vsM+dWT;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bnIhqRAM;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -20,57 +20,57 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=FdM5CkiGdefrWR0r8l1cvG6+dbk46v5MIVor00TeTfY=; b=T3A5rPUZ803N7g7AdZNUx2+STQ
-	5wPSvOEijZvsmXn2xeN7/A6VKZxVbMPEls4v0QOpwi8XV+55HapodbibFl5FJusUWaVm2ZD9FZxl+
-	UypaWGY3soOTFTwFFskG+uMJa38iYZgUuAyuv6ZA9HfKTaatN2+31/FBGmk2TGUnNiJxg4yyAQDGm
-	Qt5+JlNsyGSRCHWO3ladKorTr47ldmetqPDoq7yBurXfIxQOzhEs98X9qhm0b0eIjgWXmla9qFjss
-	pu0v6kLnvNmEyy5KX0sB5Mxh69qQFxdpXgLGUYNZz0tKyoG3XFcdjrCYu7vkRN9ZyIu8T9hPdVhzh
-	hcUZncug==;
+	bh=Dybd6Cnc60zZD9Ak8jeEdCuMW/72AVSjg6wUW7u5wJU=; b=3vsM+dWTobSMj27MwzvgyoTQ5M
+	ttQ8qIBPABzawGlFLi91BC6bwxgBMGGG/1IIpL7vkXHE98Q8Z4Z2DJEVpx6vSj2nTrggJDyfPd7Na
+	SmG5FsYA/LO6RayotbuhPd4US5OerDZ2gW4Kb+kf0XLH7EJRtnxSNtmJztll2ajnxbggMQLc5a1Er
+	rj39CCw43BbYlCv9PjyNINy1vI/fTFRyC2MCfgOh0Fp6+0WPwR9QhR9sDj1wGZCDSNXz2GwT/hfyJ
+	j3sYdYO4b7T3kc4eaxfNSPUCKvY29A2JzC0F8DMJnwXTqFVb0qrjeu7Z3CdUMJ9VTQJJXnPARNGRF
+	phQy9l8g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wmtvB-0000000EQNn-2hfD;
-	Thu, 23 Jul 2026 13:57:09 +0000
-Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
+	id 1wmtvD-0000000EQQ4-2OZK;
+	Thu, 23 Jul 2026 13:57:11 +0000
+Received: from tor.source.kernel.org ([2600:3c04:e001:324:0:1991:8:25])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wmtv9-0000000EQLV-3z1t
+	id 1wmtvA-0000000EQMJ-48da
 	for barebox@lists.infradead.org;
-	Thu, 23 Jul 2026 13:57:07 +0000
+	Thu, 23 Jul 2026 13:57:09 +0000
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B27CE441F4;
-	Thu, 23 Jul 2026 13:57:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9591CC2BCC7;
-	Thu, 23 Jul 2026 13:57:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 62B2460A7E;
+	Thu, 23 Jul 2026 13:57:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 18502C2BCFA;
+	Thu, 23 Jul 2026 13:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1784815027;
-	bh=4ZvPn3iKgUL3GV3EQtBDiYyEdVGpQp8YNfwBSXPjPfA=;
+	s=k20201202; t=1784815028;
+	bh=amf+iQLtrevVJARITUc3Bo4MdOsAWMlGhkVfDM8BDqw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=hNC13zXqep862A7FpEWiSPJAJ4N+/FlVH+bhz5krVAtfrSbxqZOnVwD7S9LUzdZha
-	 ANqZjiD9uebCAbO6eKo80BvJ3dFZKVTQdEaqf4uBI/bCQgURvZuhWQYbd8wdLPWZ9+
-	 ehk5ckyYwW0FSSrXUQsMlnL61bQRej2usDysDabz3B9YySelyD/J6wlm07KgWpXbNs
-	 8pSpupFYf6E1Ssp+gE31prmlUqheEj2fmPDiBybz7zSP5vxIHi0au38d4cwexsot01
-	 /xc64YVTrJ2sU9SAp03X1hUSUta8GF0n/4Gc+IEOrXzUI7evvyvWT83e98pyjGM7Ev
-	 VSYNQGusflU7g==
+	b=bnIhqRAMW8ZzmCDiGmtzjN6alCdzpjCRTC+MLhV8/XL+IM/BcC327iKjArwtwKn2H
+	 5tuFEtVlqCwzX/qst8eZ4SyrZygvS3UIsebRXzF8zlcljkGWH78Pou6EJ8ZJO5fIrb
+	 mgktMYMA7auZIwbPV4RqHk+1Rs3silWQwnRMLz8k0dE5cgEL8YBviVW15JWbbX2VnQ
+	 3XobB8cJmrk9CQ0mLW+j18EMdqhYIdILGO9N5rtycvRQ2ANVA9jU6jnTymEX1QPwma
+	 vm4vrjem0/fwB0G01oidxmng8yHPwY0zIpfLVzyrw1gNrgqJaf7VN4pUHoIDBLhlWL
+	 b8TbA0GZoBJ/A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80438C531CB;
-	Thu, 23 Jul 2026 13:57:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 06F49C531F5;
+	Thu, 23 Jul 2026 13:57:08 +0000 (UTC)
 From: Luca Lauro via B4 Relay <devnull+famlauro93l.gmail.com@kernel.org>
-Date: Thu, 23 Jul 2026 15:57:44 +0200
-Subject: [PATCH 06/19] ARM: mvebu: add RN102 image support
+Date: Thu, 23 Jul 2026 15:57:50 +0200
+Subject: [PATCH 12/19] ARM: mvebu: rename PUTC_LL to MVEBU_PUTC_LL
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260723-rn102-rn104-series-v1-6-7698d25df866@gmail.com>
+Message-Id: <20260723-rn102-rn104-series-v1-12-7698d25df866@gmail.com>
 References: <20260723-rn102-rn104-series-v1-0-7698d25df866@gmail.com>
 In-Reply-To: <20260723-rn102-rn104-series-v1-0-7698d25df866@gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  "open list:BAREBOX" <barebox@lists.infradead.org>
 Cc: Luca Lauro <famlauro93l@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1784815061; l=1245;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1784815061; l=565;
  i=famlauro93l@gmail.com; s=20260723; h=from:subject:message-id;
- bh=aps12uUYfY9QQpDr0FOBRfr/XdNoOcN033E8afY4O18=;
- b=eU1LhOUzrpS/q3DMJuT8ndkJ6wK+7Tm2kUF7dNYRZGgjWv300RsSAqiOdoZxxUcB0lOvsdrI5
- 4C7PvSALMzDCekV2LQmNK1jkFFhIURatWKBeyuXOWhOa9WMMDbeo05q
+ bh=pteQpJSBoykJa1rNZLISGCFm/a/BFP+67qxg280hkDg=;
+ b=sPmE2HBKizIlO4yYPFWZMcTL2AYhGAOTLt4Mp+cDywC1zvP0obgR421rB4kewSXljumrHrXUV
+ qLc7Snq9fbzBtW7AEm8yU3PNhanCTQQ9LQDVYHLg85ErmbQUTS8Z2iL
 X-Developer-Key: i=famlauro93l@gmail.com; a=ed25519;
  pk=OAJlcD69ugQCl99Vy6w+Aeu+ZUb1IVGcz1Ijxo6Ch78=
 X-Endpoint-Received: by B4 Relay for famlauro93l@gmail.com/20260723 with
@@ -125,37 +125,29 @@ X-Spamd-Result: default: False [-6.91 / 15.00];
 	RCPT_COUNT_THREE(0.00)[3];
 	HAS_REPLYTO(0.00)[famlauro93l@gmail.com]
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 7C7F6202771
+X-Rspamd-Queue-Id: 9CD7F2028A8
 X-Rspamd-Server: mx1
-X-Stat-Signature: b8596u8fihidxei4hgdpxiwo3y8ubs93
+X-Stat-Signature: esyrystbwuhesdbds4nt3pwmhyy3msd3
 
 From: Luca Lauro <famlauro93l@gmail.com>
 
 ---
- images/Makefile.mvebu | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ include/mach/mvebu/debug_ll.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/images/Makefile.mvebu b/images/Makefile.mvebu
-index 7c918cb9f1..1741f0e9a5 100644
---- a/images/Makefile.mvebu
-+++ b/images/Makefile.mvebu
-@@ -27,6 +27,16 @@ image-$(CONFIG_MACH_GLOBALSCALE_MIRABOX) += barebox-globalscale-mirabox.img
- FILE_barebox-globalscale-mirabox-2nd.img = start_globalscale_mirabox.pblb
- image-$(CONFIG_MACH_GLOBALSCALE_MIRABOX) += barebox-globalscale-mirabox-2nd.img
+diff --git a/include/mach/mvebu/debug_ll.h b/include/mach/mvebu/debug_ll.h
+index cf08776d4f..cd81b27e39 100644
+--- a/include/mach/mvebu/debug_ll.h
++++ b/include/mach/mvebu/debug_ll.h
+@@ -15,7 +15,7 @@
  
-+BOOTSRC_start_netgear_rn102.pblb.mvebu1img = nand
-+BINHDR_start_netgear_rn102.pblb.mvebu1img = $(board)/netgear-rn102/binary.0
-+FLAGS_start_netgear_rn102.pblb.mvebu1img = -B 0x20000:1 -d 0x0 -e 0x0
-+FILE_barebox-netgear-rn102.img = start_netgear_rn102.pblb.mvebu1img
-+pblb-$(CONFIG_MACH_NETGEAR_RN102) += start_netgear_rn102
-+image-$(CONFIG_MACH_NETGEAR_RN102) += barebox-netgear-rn102.img
-+
-+FILE_barebox-netgear-rn102-2nd.img = start_netgear_rn102.pblb
-+image-$(CONFIG_MACH_NETGEAR_RN102) += barebox-netgear-rn102-2nd.img
-+
- FLAGS_start_netgear_rn104.pblb.mvebu1img = -d 0x600000 -e 0x6e0000
- BOOTSRC_start_netgear_rn104.pblb.mvebu1img = nand
- BINHDR_start_netgear_rn104.pblb.mvebu1img = $(board)/netgear-rn104/binary.0
+ #define EARLY_UART	UARTn_BASE(CONFIG_MVEBU_CONSOLE_UART)
+ 
+-static inline void PUTC_LL(char c)
++static inline void MVEBU_PUTC_LL(char c)
+ {
+ 	/* Wait until there is space in the FIFO */
+ 	while (!(readl(EARLY_UART + UART_LSR) & LSR_THRE))
 
 -- 
 2.47.3
