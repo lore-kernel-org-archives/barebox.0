@@ -1,16 +1,16 @@
-Delivery-date: Mon, 27 Jul 2026 15:01:19 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Mon, 27 Jul 2026 15:01:24 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1woKxK-003R1M-2V
+	id 1woKxP-003R1k-1N
 	for lore@lore.pengutronix.de;
-	Mon, 27 Jul 2026 15:01:19 +0200
+	Mon, 27 Jul 2026 15:01:24 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id D5B6E202241
-	for <lore@pengutronix.de>; Mon, 27 Jul 2026 15:01:18 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 7C425202241
+	for <lore@pengutronix.de>; Mon, 27 Jul 2026 15:01:23 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=4BpF6PMv;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=lXp+MWfl;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,57 +19,57 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qv7Q5LJ3gMDqldbmZt8zedgM3I/oYLcK8I/FdbNqPsg=; b=4BpF6PMvPtaaBV06UTF6/z41Jk
-	oTMtDj/wVFpGNuXMLlsCypSwvwig43Hg/0riCc9YF+V/7dlIcsqPuNBdSJ4zIYb+b3DZxUeWDCoL0
-	VmEX8VaenBBOOw3hxxesR8m+sWaTjxeBEI4IZXSYE17M+bRRpCwu22XGTPu5QS+0QavF6vRIUxlfe
-	rlWJoJzhTzNmm80U82yq32BXxMNFOnq7vb3hM3AVBcTrPLG66KuhM3/PsvhaAt0LyrAT+IlFVSE2E
-	ZcZzoUtoqWSGVDsRm+sdWbwRFkEdEKymNUykNBjYNL4kqXcZHq520t0tWQ2fvqOgPQDSBh3nqd+Jr
-	j6Iz/yNw==;
+	bh=5l8VowbhLB1tW9Jm+IKUQ50LMKPGd0eu9Jupe/RX2Rg=; b=lXp+MWfl8ISaDQUYls81fsYDR9
+	8m9AEXmbrqKZIRdD7u+gnNwZiA1ISep6OJLRvhcjG05P6uHG+SHwpgtsrSxFdyl0+JszvgTHGon9Y
+	PjUiD1y5sOSz2nAWIIvau/shROlr0grjQfXGA00pdvq8HTEy8XXXilI+0uI6ZYc7Bwi9PAfCPoHNd
+	B2LzRyBRV/vEHBV3HERJMCqURH30HJ0blE37/aE+5GUKGEf1EqlkosItxiJDolwq1f6O9qq/WRwgG
+	WVJ35Y4HwGqrXF2uVhrxfw89uz3uJsr2pcJfL8ALhHSQSKWrYU+ngQCaKtmjn3aCJ5UUzHPA+y4Uo
+	ggB2982w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woKvz-00000002lUq-47bA;
-	Mon, 27 Jul 2026 12:59:55 +0000
+	id 1woKw1-00000002lVA-0HPS;
+	Mon, 27 Jul 2026 12:59:57 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woKvw-00000002lS0-1WCM
+	id 1woKvw-00000002lS3-1Xi8
 	for barebox@lists.infradead.org;
-	Mon, 27 Jul 2026 12:59:54 +0000
+	Mon, 27 Jul 2026 12:59:55 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 9525E202228;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 8A6E520113B;
 	Mon, 27 Jul 2026 14:59:48 +0200 (CEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1woKvs-001XuZ-1Z;
+	id 1woKvs-001XuX-1V;
 	Mon, 27 Jul 2026 14:59:48 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1woKvs-00000001ECO-1kyI;
+	id 1woKvs-00000001ECO-1kN0;
 	Mon, 27 Jul 2026 14:59:48 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 27 Jul 2026 14:59:45 +0200
-Subject: [PATCH v2 2/2] ARM: pbl: add PBL support for crypto extensions
+Date: Mon, 27 Jul 2026 14:59:44 +0200
+Subject: [PATCH v2 1/2] PBL: add pbl_sha256()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260727-pbl-sha256-v2-2-5f5a16d614ca@pengutronix.de>
+Message-Id: <20260727-pbl-sha256-v2-1-5f5a16d614ca@pengutronix.de>
 References: <20260727-pbl-sha256-v2-0-5f5a16d614ca@pengutronix.de>
 In-Reply-To: <20260727-pbl-sha256-v2-0-5f5a16d614ca@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785157188; l=4890;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785157188; l=3418;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=F6ehQ+hxnmqCmgmUPiUDpoiOhQchbeZ4a2hN+ADYWJU=;
- b=G9++259ME45NoT+tX2f3zROMQEfvmgTjqJKF4ISPNQBn+7bktncZHeTwpTssHR9+GvqAHekm7
- ejXoqWE1XVLAeTDJhdB1jbvU90w5dgSB2HhbQwC2rsWsLQsZNb15NAN
+ bh=dF19NPm9bUHMosixChnb2GGeKfcdrJ4DAFcFCx/c9rM=;
+ b=RVlnMwHeb4Gq04D/L0hftz2BfxiqDPF6GYa9ZbMXJ/AglHyJ+kuhSz/UbkbBOD9wmoeq9Ub/m
+ ebReNvBfBD6CnVOv7EA6ygd/Qn2qDxDp4w3nk3Beh7fYNfqxJTXS4s5
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260727_055952_564883_813ADE5F 
-X-CRM114-Status: GOOD (  16.87  )
+X-CRM114-CacheID: sfid-20260727_055952_563884_32AEE027 
+X-CRM114-Status: GOOD (  15.76  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -77,9 +77,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Hashing large blobs in the PBL with the generic C SHA-256
-   transform is slow; ARMv8 provides optional Crypto Extensions (sha256h/sha256h2/sha256su0/
-    sha256su1) that do the transform roughly 100x faster [...] 
+ Content preview:  The PBL open-codes SHA-256 as sha256_init()/sha256_update()/sha256_final()
+    wherever it needs to hash a blob, which always uses the generic C transform.
+    Add pbl_sha256(), a one-shot helper that hides t [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -132,140 +132,115 @@ X-Spamd-Result: default: False [-6.61 / 15.00];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: D5B6E202241
+X-Rspamd-Queue-Id: 7C425202241
 X-Rspamd-Server: mx1
-X-Stat-Signature: 84q5ck8k1m9ym8uezkuftbowo4ejc7tr
+X-Stat-Signature: 7rh7rbrf5uy4nmamtzut77bo7d5psopa
 
-Hashing large blobs in the PBL with the generic C SHA-256 transform is slow;
-ARMv8 provides optional Crypto Extensions (sha256h/sha256h2/sha256su0/
-sha256su1) that do the transform roughly 100x faster, and barebox proper
-already uses them via arch/arm/crypto/sha2-ce-glue.c.
+The PBL open-codes SHA-256 as sha256_init()/sha256_update()/sha256_final()
+wherever it needs to hash a blob, which always uses the generic C transform.
+Add pbl_sha256(), a one-shot helper that hides this behind a single call and
+is free to pick the best transform available in the PBL. For now it only
+wraps the generic C implementation; an accelerated path is added on top in a
+later commit.
 
-Reuse that driver in the PBL. Build sha2-ce-glue.c and the shared
-sha2-ce-core.S transform for the PBL as well (obj-pbl-) and have the glue
-additionally provide pbl_sha256_ce(), a one-shot hash that drives the asm
-core directly without the digest API or NEON save/restore, neither of which
-exist in the PBL. Like the digest registration it gates on
-ID_AA64ISAR0_EL1.SHA2 and returns -EOPNOTSUPP when the extensions are
-absent, so pbl_sha256() transparently falls back to the generic C transform.
+Convert pbl_barebox_verify() in pbl/decomp.c to the new helper as the first
+user.
 
-Assisted-by: Claude Opus 4.8
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/crypto/Makefile       |  3 +--
- arch/arm/crypto/sha2-ce-glue.c | 44 ++++++++++++++++++++++++++++++++++++++++++
- include/crypto/pbl-sha.h       | 10 ++++++++++
- pbl/sha256.c                   |  3 +++
- 4 files changed, 58 insertions(+), 2 deletions(-)
+ include/crypto/pbl-sha.h |  4 ++++
+ pbl/Makefile             |  1 +
+ pbl/decomp.c             |  6 +-----
+ pbl/sha256.c             | 25 +++++++++++++++++++++++++
+ 4 files changed, 31 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/crypto/Makefile b/arch/arm/crypto/Makefile
-index 55b3ac0538..976c175b71 100644
---- a/arch/arm/crypto/Makefile
-+++ b/arch/arm/crypto/Makefile
-@@ -12,8 +12,7 @@ sha256-arm-y	:= sha256-core.o sha256_glue.o
- obj-$(CONFIG_DIGEST_SHA1_ARM64_CE) += sha1-ce.o
- sha1-ce-y := sha1-ce-glue.o sha1-ce-core.o
- 
--obj-$(CONFIG_DIGEST_SHA256_ARM64_CE) += sha2-ce.o
--sha2-ce-y := sha2-ce-glue.o sha2-ce-core.o
-+obj-pbl-$(CONFIG_DIGEST_SHA256_ARM64_CE) += sha2-ce-glue.o sha2-ce-core.o
- 
- quiet_cmd_perl = PERL    $@
-       cmd_perl = $(PERL) $(<) > $(@)
-diff --git a/arch/arm/crypto/sha2-ce-glue.c b/arch/arm/crypto/sha2-ce-glue.c
-index 8479b3c60c..4ccf1b86cb 100644
---- a/arch/arm/crypto/sha2-ce-glue.c
-+++ b/arch/arm/crypto/sha2-ce-glue.c
-@@ -10,6 +10,7 @@
- #include <init.h>
- #include <crypto/sha.h>
- #include <crypto/sha256_base.h>
-+#include <crypto/pbl-sha.h>
- #include <crypto/internal.h>
- #include <linux/linkage.h>
- #include <asm/byteorder.h>
-@@ -33,6 +34,49 @@ extern const u32 sha256_ce_offsetof_finalize;
- asmlinkage int sha2_ce_transform(struct sha256_ce_state *sst, u8 const *src,
- 				 int blocks);
- 
-+/*
-+ * In the PBL there is no digest API and no NEON save/restore; expose a
-+ * one-shot pbl_sha256_ce() that pbl_sha256() calls in preference to the
-+ * generic C transform.
-+ */
-+static void pbl_sha2_ce_transform(struct sha256_state *sst, u8 const *src,
-+				  int blocks)
-+{
-+	struct sha256_ce_state *s =
-+		container_of(sst, struct sha256_ce_state, sst);
-+
-+	/* finalize == 0: C does the padding via sha256_base_do_finalize(). */
-+	s->finalize = 0;
-+	while (blocks) {
-+		int rem = sha2_ce_transform(s, src, blocks);
-+
-+		src += (blocks - rem) * SHA256_BLOCK_SIZE;
-+		blocks = rem;
-+	}
-+}
-+
-+int pbl_sha256_ce(const void *buf, size_t len, u8 out[SHA256_DIGEST_SIZE])
-+{
-+	struct sha256_ce_state s;
-+	struct digest d = { .ctx = &s, .length = SHA256_DIGEST_SIZE };
-+
-+	/*
-+	 * The Crypto Extensions are optional on ARMv8 and sha256h & co. trap
-+	 * as undefined without them, so gate on ID_AA64ISAR0_EL1.SHA2 like the
-+	 * digest registration below does and let the caller fall back to
-+	 * generic C.
-+	 */
-+	if (!(read_sysreg(ID_AA64ISAR0_EL1) & ID_AA64ISAR0_EL1_SHA2_MASK))
-+		return -EOPNOTSUPP;
-+
-+	sha256_base_init(&d);
-+	sha256_base_do_update(&d, buf, len, pbl_sha2_ce_transform);
-+	sha256_base_do_finalize(&d, pbl_sha2_ce_transform);
-+	sha256_base_finish(&d, out);
-+
-+	return 0;
-+}
-+
- static void __sha2_ce_transform(struct sha256_state *sst, u8 const *src,
- 				int blocks)
- {
 diff --git a/include/crypto/pbl-sha.h b/include/crypto/pbl-sha.h
-index 2508448ab4..3ccd5151e1 100644
+index 7d323ab479..2508448ab4 100644
 --- a/include/crypto/pbl-sha.h
 +++ b/include/crypto/pbl-sha.h
-@@ -14,4 +14,14 @@ int sha256_final(struct digest *desc, u8 *out);
- /* One-shot SHA-256 that picks the best transform available in the PBL. */
- void pbl_sha256(const void *buf, size_t len, u8 out[SHA256_DIGEST_SIZE]);
+@@ -3,6 +3,7 @@
  
-+#ifdef CONFIG_DIGEST_SHA256_ARM64_CE
-+/* ARMv8 Crypto Extensions transform; returns -EOPNOTSUPP if unavailable. */
-+int pbl_sha256_ce(const void *buf, size_t len, u8 out[SHA256_DIGEST_SIZE]);
-+#else
-+static inline int pbl_sha256_ce(const void *buf, size_t len, u8 out[SHA256_DIGEST_SIZE])
-+{
-+	return -EOPNOTSUPP;
-+}
-+#endif
+ #define __PBL_SHA_H_
+ 
++#include <crypto/sha.h>
+ #include <digest.h>
+ #include <types.h>
+ 
+@@ -10,4 +11,7 @@ int sha256_init(struct digest *desc);
+ int sha256_update(struct digest *desc, const void *data, unsigned long len);
+ int sha256_final(struct digest *desc, u8 *out);
+ 
++/* One-shot SHA-256 that picks the best transform available in the PBL. */
++void pbl_sha256(const void *buf, size_t len, u8 out[SHA256_DIGEST_SIZE]);
 +
  #endif /* __PBL-SHA_H_ */
-diff --git a/pbl/sha256.c b/pbl/sha256.c
-index 853d6bcbf6..04cc64a77d 100644
---- a/pbl/sha256.c
-+++ b/pbl/sha256.c
-@@ -21,5 +21,8 @@ static void pbl_sha256_generic(const void *buf, size_t len, u8 *out)
- 
- void pbl_sha256(const void *buf, size_t len, u8 out[static SHA256_DIGEST_SIZE])
+diff --git a/pbl/Makefile b/pbl/Makefile
+index 45cfbf5fba..4506f192fe 100644
+--- a/pbl/Makefile
++++ b/pbl/Makefile
+@@ -6,6 +6,7 @@
+ pbl-y += misc.o
+ pbl-y += string.o
+ pbl-y += malloc.o
++pbl-y += sha256.o
+ pbl-$(CONFIG_HAVE_IMAGE_COMPRESSION) += decomp.o
+ pbl-$(CONFIG_LIBFDT) += fdt.o
+ pbl-$(CONFIG_PBL_CONSOLE) += console.o
+diff --git a/pbl/decomp.c b/pbl/decomp.c
+index 1539a6b67e..2b3c35012f 100644
+--- a/pbl/decomp.c
++++ b/pbl/decomp.c
+@@ -58,8 +58,6 @@ extern unsigned char sha_sum_end[];
+ int pbl_barebox_verify(const void *compressed_start, unsigned int len,
+ 		       const void *hash, unsigned int hash_len)
  {
-+	if (!pbl_sha256_ce(buf, len, out))
-+		return;
+-	struct sha256_state sha_state = { 0 };
+-	struct digest d = { .ctx = &sha_state };
+ 	char computed_hash[SHA256_DIGEST_SIZE];
+ 	int i;
+ 	const char *char_hash = hash;
+@@ -67,9 +65,7 @@ int pbl_barebox_verify(const void *compressed_start, unsigned int len,
+ 	if (hash_len != SHA256_DIGEST_SIZE)
+ 		return -1;
+ 
+-	sha256_init(&d);
+-	sha256_update(&d, compressed_start, len);
+-	sha256_final(&d, computed_hash);
++	pbl_sha256(compressed_start, len, computed_hash);
+ 	if (IS_ENABLED(CONFIG_DEBUG_LL)) {
+ 		puts_ll("CH ");
+ 
+diff --git a/pbl/sha256.c b/pbl/sha256.c
+new file mode 100644
+index 0000000000..853d6bcbf6
+--- /dev/null
++++ b/pbl/sha256.c
+@@ -0,0 +1,25 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * pbl_sha256() - one-shot SHA-256 for the PBL, picking the best available
++ * implementation.
++ */
 +
- 	pbl_sha256_generic(buf, len, out);
- }
++#include <common.h>
++#include <crypto/sha.h>
++#include <crypto/pbl-sha.h>
++#include <digest.h>
++
++static void pbl_sha256_generic(const void *buf, size_t len, u8 *out)
++{
++	struct sha256_state state = { };
++	struct digest d = { .ctx = &state, .length = SHA256_DIGEST_SIZE };
++
++	sha256_init(&d);
++	sha256_update(&d, buf, len);
++	sha256_final(&d, out);
++}
++
++void pbl_sha256(const void *buf, size_t len, u8 out[static SHA256_DIGEST_SIZE])
++{
++	pbl_sha256_generic(buf, len, out);
++}
 
 -- 
 2.47.3
