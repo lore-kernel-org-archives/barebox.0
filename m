@@ -1,16 +1,16 @@
-Delivery-date: Mon, 27 Jul 2026 16:10:56 +0200
+Delivery-date: Mon, 27 Jul 2026 16:14:12 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1woM2h-003SNq-1p
+	id 1woM5r-003SVW-1T
 	for lore@lore.pengutronix.de;
-	Mon, 27 Jul 2026 16:10:56 +0200
+	Mon, 27 Jul 2026 16:14:12 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id D7810202057
-	for <lore@pengutronix.de>; Mon, 27 Jul 2026 16:10:51 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 707BB202228
+	for <lore@pengutronix.de>; Mon, 27 Jul 2026 16:14:07 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=0IVReq+i;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=MsOz2S2y;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,47 +19,46 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:Content-Type:In-Reply-To:To:Subject:From:Reply-To:
 	MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
-	bh=UeiiuSFVbvMqu9bWhbVRdJOQYkBgMuk6k8K/bN0N96Y=; b=0IVReq+iYhn7G50Fze0shPxjre
-	CEevn8TsBGv2C1svLywPgUgsATJFVO9519qnd6wB+CZjQjkq4j25iRQJvpa11QftPATMQfHnoZfaY
-	Jdu6hfB89jl3sGSVM05UP97OheXXivgNzN4kAX/+KHi4Rzae3lbgBTuQbK/s6MImHZwWGjLnew68J
-	epRYp32PVuUuLs4WMWXrBVnGtAz6ZEERNaanUHzJHvUSm9XADLMBjaUmxR3IVewzWWyvCBSwNq+x8
-	5YOwZJ293/rfVeY3fRp6AarwnrIHmoRf5oUZlsolMeQqjKpFR6XL3r1P+kCdgWTtPQFN+tYSVznf4
-	gbOLNBBg==;
+	bh=WeU6Lylw3dhWofZ9wmAoJDZn9V6git4Db69533i1Q8o=; b=MsOz2S2yvreEJxaeBx90UQOU0y
+	dN1DMxuD4l8ZzV67AxANxLoIDssZfqY9T3COYUMM+OHWQiAczBtZIxjqUq4gPnatDalHcS/7Rtoqu
+	F6lJCQsnE2pKJHps9Zk9kd6FeK+DPFKONh5rE21HfauhNe8d+I0S3kH1QtGwrvTv3adQSFBxfxpms
+	u7uXrOCC4KBRDQhI7x40vCC7ldIgUUve7q6lDzC8H3cTVZB6XyDTtaTcaaQooj204wKAhiyxisNkv
+	NhsbGej4QmUDgWavpGTVn42lyMsbpJ5XOlWbOAHUBCs3x7YTx7JAmFNpDQPkxL+301Gv79vBh/t7B
+	bIpVFWFA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woM1F-00000002wPo-13l5;
-	Mon, 27 Jul 2026 14:09:25 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1woM4Q-00000002wt9-3cME;
+	Mon, 27 Jul 2026 14:12:42 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woM1B-00000002wPG-3FKX
+	id 1woM4N-00000002wrW-1GhH
 	for barebox@lists.infradead.org;
-	Mon, 27 Jul 2026 14:09:23 +0000
+	Mon, 27 Jul 2026 14:12:41 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 89FF1202054;
-	Mon, 27 Jul 2026 16:09:15 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 6F90D20226F;
+	Mon, 27 Jul 2026 16:12:33 +0200 (CEST)
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1woM15-001ZH8-1X;
-	Mon, 27 Jul 2026 16:09:15 +0200
+	id 1woM4H-001ZHW-1C;
+	Mon, 27 Jul 2026 16:12:33 +0200
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1woM15-00000007Iv4-1a92;
-	Mon, 27 Jul 2026 16:09:15 +0200
+	id 1woM4H-00000007Iwz-188Y;
+	Mon, 27 Jul 2026 16:12:33 +0200
 From: "Sascha Hauer" <s.hauer@pengutronix.de>
-Subject: Re: [PATCH 16/19] usb: ehci: add Marvell EHCI host controller
- driver
+Subject: Re: [PATCH 17/19] usb: ehci: minor fixes for Marvell compatibility
 To: "Luca Lauro via B4 Relay" <devnull+famlauro93l.gmail.com@kernel.org>
-In-Reply-To: <20260723-rn102-rn104-series-v1-16-7698d25df866@gmail.com>
+In-Reply-To: <20260723-rn102-rn104-series-v1-17-7698d25df866@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 27 Jul 2026 14:09:13 +0000
-Message-Id: <E1woM15-00000007Iv4-1a92@pty.whiteo.stw.pengutronix.de>
+Date: Mon, 27 Jul 2026 14:12:33 +0000
+Message-Id: <E1woM4H-00000007Iwz-188Y@pty.whiteo.stw.pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260727_070921_968381_FF12A0A7 
-X-CRM114-Status: GOOD (  18.90  )
+X-CRM114-CacheID: sfid-20260727_071239_491871_1219A68D 
+X-CRM114-Status: GOOD (  22.36  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -68,8 +67,8 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  the administrator of that system for details.
  
  Content preview:  On 2026-07-23 15:57, Luca Lauro via B4 Relay wrote: > From:
-    Luca Lauro <famlauro93l@gmail.com> > > --- > drivers/usb/host/Kconfig | 7
-    ++ > drivers/usb/host/Makefile | 13 +-- > drivers/usb/host/ehci-ma [...] 
+    Luca Lauro <famlauro93l@gmail.com> > > --- > drivers/usb/host/ehci-hcd.c
+   | 22 +++++++++++ > 1 file changed, 11 insertions(+), 11 [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -99,9 +98,9 @@ X-Spamd-Result: default: False [-2.91 / 15.00];
 	MISSING_MIME_VERSION(2.00)[];
 	CC_EXCESS_BASE64(1.50)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
-	R_SPF_ALLOW(-0.20)[+mx:c];
 	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	R_SPF_ALLOW(-0.20)[+mx:c];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -111,11 +110,11 @@ X-Spamd-Result: default: False [-2.91 / 15.00];
 	TO_DN_ALL(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:devnull+famlauro93l.gmail.com@kernel.org,m:barebox@lists.infradead.org,m:famlauro93l@gmail.com,m:devnull@kernel.org,s:lore@pengutronix.de];
 	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[pengutronix.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORWARDED(0.00)[barebox@lists.infradead.org];
 	ARC_NA(0.00)[];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
 	RCPT_COUNT_THREE(0.00)[3];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
 	RCVD_COUNT_FIVE(0.00)[5];
@@ -133,103 +132,108 @@ X-Spamd-Result: default: False [-2.91 / 15.00];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: D7810202057
+X-Rspamd-Queue-Id: 707BB202228
 X-Rspamd-Server: mx1
-X-Stat-Signature: x9txyb9ne3qf3d69a67idsar3zifjhqc
+X-Stat-Signature: x9535nt3j4xa7pcdo4jhm16i4z1h8sx8
 
 On 2026-07-23 15:57, Luca Lauro via B4 Relay wrote:
 > From: Luca Lauro <famlauro93l@gmail.com>
 >=20
 > ---
->  drivers/usb/host/Kconfig        |   7 ++
->  drivers/usb/host/Makefile       |  13 +--
->  drivers/usb/host/ehci-marvell.c | 229 ++++++++++++++++++++++++++++++++++=
-++++++
->  3 files changed, 243 insertions(+), 6 deletions(-)
+>  drivers/usb/host/ehci-hcd.c | 22 +++++++++++-----------
+>  1 file changed, 11 insertions(+), 11 deletions(-)
 >=20
-> diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-> index 58f276cdb4..21bf876d69 100644
-> --- a/drivers/usb/host/Kconfig
-> +++ b/drivers/usb/host/Kconfig
-> @@ -22,6 +22,13 @@ config USB_EHCI_ZYNQ
->  	help
->  	  Enable support for Zynq on-chip EHCI USB controller
+> diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
+> index 51b9e52a4f..b72436b312 100644
+> --- a/drivers/usb/host/ehci-hcd.c
+> +++ b/drivers/usb/host/ehci-hcd.c
+> @@ -857,8 +857,6 @@ static int ehci_init(struct usb_host *host)
+>  	struct QH *periodic;
+>  	int i;
 > =20
-> +config USB_EHCI_MARVELL
-> +    bool "Marvell USB EHCI driver"
-> +	depends on ARCH_MVEBU
-> +	depends on USB_EHCI
-> +    help
-> +      Enable support for Marvell USB EHCI controller
-> +
->  config USB_OHCI
->  	bool "OHCI driver"
->  	depends on !MMU && HAS_DMA
-> diff --git a/drivers/usb/host/Makefile b/drivers/usb/host/Makefile
-> index cbddfbe923..932581d691 100644
-> --- a/drivers/usb/host/Makefile
-> +++ b/drivers/usb/host/Makefile
-> @@ -1,8 +1,9 @@
->  # SPDX-License-Identifier: GPL-2.0-only
-> -obj-$(CONFIG_USB_EHCI)		+=3D ehci-hcd.o
-> -obj-$(CONFIG_USB_EHCI_OMAP)	+=3D ehci-omap.o
-> +obj-$(CONFIG_USB_EHCI)			+=3D ehci-hcd.o
-> +obj-$(CONFIG_USB_EHCI_OMAP)		+=3D ehci-omap.o
->  obj-$(CONFIG_USB_EHCI_ATMEL)	+=3D ehci-atmel.o
-> -obj-$(CONFIG_USB_EHCI_ZYNQ)	+=3D ehci-zynq.o
-> -obj-$(CONFIG_USB_OHCI)		+=3D ohci-hcd.o
-> -obj-$(CONFIG_USB_OHCI_AT91)	+=3D ohci-at91.o
-> -obj-$(CONFIG_USB_XHCI)		+=3D xhci.o xhci-mem.o xhci-ring.o
-> +obj-$(CONFIG_USB_EHCI_ZYNQ)		+=3D ehci-zynq.o
-> +obj-$(CONFIG_USB_EHCI_MARVELL) 	+=3D ehci-marvell.o
-> +obj-$(CONFIG_USB_OHCI)			+=3D ohci-hcd.o
-> +obj-$(CONFIG_USB_OHCI_AT91)		+=3D ohci-at91.o
-> +obj-$(CONFIG_USB_XHCI)			+=3D xhci.o xhci-mem.o xhci-ring.o
-> diff --git a/drivers/usb/host/ehci-marvell.c b/drivers/usb/host/ehci-marv=
-ell.c
-> new file mode 100644
-> index 0000000000..8accfd697d
-> --- /dev/null
-> +++ b/drivers/usb/host/ehci-marvell.c
-> @@ -0,0 +1,229 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Marvell Orion / Kirkwood / Armada EHCI host for barebox
-> + *
-> + * Porting basato su ehci-marvell.c di U-Boot moderno,
-> + * adattato al modello ehci_register() di barebox.
-> + */
+> -	ehci_halt(ehci);
+> -
+>  	/* EHCI spec section 4.1 */
+>  	if (ehci_reset(ehci) !=3D 0)
+>  		return -1;
+> @@ -870,16 +868,16 @@ static int ehci_init(struct usb_host *host)
+>  	}
+> =20
+>  	ehci->qh_list[0].qh_link =3D cpu_to_hc32(ehci_qh_dma(ehci, &ehci->qh_li=
+st[1]) |
+> -					       QH_LINK_TYPE_QH);
+> +									QH_LINK_TYPE_QH);
 
-Per favore usa l'inglese nel codice ;)
+Please drop the whitespace-only changes in this patch.
 
-> +static int marvell_ehci_probe(struct device *dev)
-> +{
-> +    struct marvell_ehci *priv;
-> +    struct resource *iores;
-> +    struct ehci_data data;
-> +    void __iomem *base;
-> +    struct ehci_host *ehci;
-> +
-> +    priv =3D xzalloc(sizeof(*priv));
-> +    priv->dev =3D dev;
-> +    dev->priv =3D priv;
-> +
-> +    iores =3D dev_request_mem_resource(dev, 0);
-> +    if (IS_ERR(iores))
-> +        return PTR_ERR(iores);
-> +
-> +    base =3D IOMEM(iores->start);
-> +    priv->base =3D base;
-> +
-> +    memset(&data, 0, sizeof(data));
-
-Easier done with
-
-        struct ehci_data data =3D {};
+>From what is left: It deserves a better description why the changes are
+necessary. We can always read *what* is being done from the patch, but
+the most important thing for future readers is *why* it has been done.
 
 Sascha
 
---
+>  	ehci->qh_list[0].qh_endpt1 =3D cpu_to_hc32(QH_ENDPT1_H(1) |
+> -						 QH_ENDPT1_EPS(USB_SPEED_HIGH));
+> +									QH_ENDPT1_EPS(USB_SPEED_HIGH));
+>  	ehci->qh_list[0].qh_curtd =3D cpu_to_hc32(QT_NEXT_TERMINATE);
+>  	ehci->qh_list[0].qt_next =3D cpu_to_hc32(QT_NEXT_TERMINATE);
+>  	ehci->qh_list[0].qt_altnext =3D cpu_to_hc32(QT_NEXT_TERMINATE);
+>  	ehci->qh_list[0].qt_token =3D cpu_to_hc32(QT_TOKEN_STATUS_HALTED);
+> =20
+>  	ehci->qh_list[1].qh_link =3D cpu_to_hc32(ehci_qh_dma(ehci,
+> -							   &ehci->qh_list[0]) |
+> +									&ehci->qh_list[0]) |
+>  					       QH_LINK_TYPE_QH);
+>  	ehci->qh_list[1].qt_altnext =3D cpu_to_hc32(QT_NEXT_TERMINATE);
+> =20
+> @@ -897,6 +895,8 @@ static int ehci_init(struct usb_host *host)
+>  	periodic->qt_next =3D cpu_to_hc32(QT_NEXT_TERMINATE);
+>  	periodic->qt_altnext =3D cpu_to_hc32(QT_NEXT_TERMINATE);
+> =20
+> +	ehci->periodic_queue_dma =3D ehci_qh_dma(ehci, periodic);
+> +
+>  	/*
+>  	 * Step 2: Setup frame-list: Every microframe, USB tries the same list.
+>  	 *         In particular, device specifications on polling frequency
+> @@ -906,23 +906,23 @@ static int ehci_init(struct usb_host *host)
+>  	 *         Split Transactions will be spread across microframes using
+>  	 *         S-mask and C-mask.
+>  	 */
+> -	if (ehci->periodic_list =3D=3D NULL)
+> +	if (ehci->periodic_list =3D=3D NULL) {
+> +		ehci->periodic_list =3D dma_alloc_coherent(DMA_DEVICE_BROKEN, 1024 * 4,
+> +								&ehci->periodic_list_dma);
+>  		/*
+>  		 * FIXME: this memory chunk have to be 4k aligned AND
+>  		 * reside in coherent memory. Current implementation of
+>  		 * dma_alloc_coherent() allocates PAGE_SIZE aligned memory chunks.
+>  		 * PAGE_SIZE less then 4k will break this code.
+>  		 */
+> -		ehci->periodic_list =3D dma_alloc_coherent(DMA_DEVICE_BROKEN, 1024 * 4,
+> -						&ehci->periodic_list_dma);
+>  	for (i =3D 0; i < 1024; i++) {
+> -		ehci->periodic_list[i] =3D cpu_to_hc32((unsigned long)ehci->periodic_q=
+ueue_dma
+> -						| QH_LINK_TYPE_QH);
+> +		ehci->periodic_list[i] =3D cpu_to_hc32(ehci->periodic_queue_dma
+> +									| QH_LINK_TYPE_QH);
+>  	}
+> =20
+>  	/* Set periodic list base address */
+>  	ehci_writel(&ehci->hcor->or_periodiclistbase,
+> -		    (uint32_t)ehci->periodic_list_dma);
+> +		    ehci->periodic_list_dma);
+> =20
+>  	reg =3D ehci_readl(&ehci->hccr->cr_hcsparams);
+>  	descriptor.hub.bNbrPorts =3D HCS_N_PORTS(reg);
+>=20
+> --=20
+> 2.47.3
+>=20
+>=20
+>=20
+
+--=20
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
