@@ -1,16 +1,16 @@
-Delivery-date: Mon, 27 Jul 2026 15:29:06 +0200
+Delivery-date: Mon, 27 Jul 2026 15:32:28 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1woLOE-003RZW-0J
+	id 1woLRT-003Rcj-2P
 	for lore@lore.pengutronix.de;
-	Mon, 27 Jul 2026 15:29:06 +0200
+	Mon, 27 Jul 2026 15:32:28 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 29F572002FE
-	for <lore@pengutronix.de>; Mon, 27 Jul 2026 15:29:06 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 232E020192C
+	for <lore@pengutronix.de>; Mon, 27 Jul 2026 15:32:24 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=t5bb1Ah8;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=zBIZf9rv;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,46 +19,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:Content-Type:In-Reply-To:To:Subject:From:Reply-To:
 	MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
-	bh=B4GOenYbgVsQtHcI/Qefgq7SZf952Ee1ZNRImvRIBic=; b=t5bb1Ah8jRt/D66gnHsWOnrgbu
-	aQ9TzszBPSra8Gh7fqKWkfOxybh1AgqUq3xRGNjRxmN0/pKxrULskV3hx38pxZm3t02clITyCwctl
-	wzoG4zXh7vHg6kVtK/nNVyrQXiPiltbaZd3uK22m6MG33fng3uymLpE9S72g+XkJ27VdWmVy7Z3fu
-	Dj4oye6gbAjsTem+BregYoYaJrMfJ4KlXEX6iIJQj1B7lxk0kW0aPUPUWctovBeJXkX+TJhtTDXUP
-	qnCXOpGsRUDpKBW2z4GpedzzIG4srhzEvWAa9Rvqe9daUJaLMBJl5tInBRqO0kUXIgkd5k0hHJvuR
-	M8o5Bj+g==;
+	bh=cO696LNQOZ1LbyU5S3SYWTLMPFmlTUVBHqGBIdAZnl8=; b=zBIZf9rvLu5+LhcI3MfuYVwNT8
+	7neO5+WvR9pZ/qu9JNOQxCvT5WOSxvTNriaOBuUeZctpxA4OiSXSx5YceY0CB+DFD9FKe7oZI6JT4
+	JGldzrOqo4HUNft1FD8R6bfbtT3TbcD4gPGVcqOBKQlmj665pCl0YS8oAjdE1ZQnp/hs/yHlP4mb9
+	ImGS/hUqT3a6r2jZEhTiJGR8DVdyDaioaY20H/oAb9KbwC1Ql1FI/tGFm+lDJQtSE5f8kOdhvKAE5
+	1yw5Q6WSLUKxWjPgKtjo1/qCeQEJc66LEWN5WaCCa5PG/EyG3UvoTNTDagI2nIAws+GroJP/ap8TU
+	+wy6nXPg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woLN5-00000002rJo-2j7B;
-	Mon, 27 Jul 2026 13:27:55 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1woLQA-00000002rak-0hNu;
+	Mon, 27 Jul 2026 13:31:06 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woLN2-00000002rJH-1HCb
+	id 1woLQ7-00000002raN-1WBG
 	for barebox@lists.infradead.org;
-	Mon, 27 Jul 2026 13:27:54 +0000
+	Mon, 27 Jul 2026 13:31:05 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 0A83620192C;
-	Mon, 27 Jul 2026 15:27:49 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 6B935202228;
+	Mon, 27 Jul 2026 15:30:57 +0200 (CEST)
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1woLMy-001Yip-34;
-	Mon, 27 Jul 2026 15:27:48 +0200
+	id 1woLQ1-001Yqz-13;
+	Mon, 27 Jul 2026 15:30:57 +0200
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1woLMy-00000007IYS-3bLs;
-	Mon, 27 Jul 2026 15:27:48 +0200
+	id 1woLQ1-00000007IaB-0w2q;
+	Mon, 27 Jul 2026 15:30:57 +0200
 From: "Sascha Hauer" <s.hauer@pengutronix.de>
-Subject: Re: [PATCH 01/19] ARM: mvebu: add board support for Netgear RN102
+Subject: Re: [PATCH 02/19] ARM: mvebu: add lowlevel support for Netgear
+ RN102
 To: "Luca Lauro via B4 Relay" <devnull+famlauro93l.gmail.com@kernel.org>
-In-Reply-To: <20260723-rn102-rn104-series-v1-1-7698d25df866@gmail.com>
+In-Reply-To: <20260723-rn102-rn104-series-v1-2-7698d25df866@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 27 Jul 2026 13:27:48 +0000
-Message-Id: <E1woLMy-00000007IYS-3bLs@pty.whiteo.stw.pengutronix.de>
+Date: Mon, 27 Jul 2026 13:30:56 +0000
+Message-Id: <E1woLQ1-00000007IaB-0w2q@pty.whiteo.stw.pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260727_062752_642502_333C0D72 
-X-CRM114-Status: GOOD (  35.42  )
+X-CRM114-CacheID: sfid-20260727_063103_557751_7A869C85 
+X-CRM114-Status: GOOD (  19.15  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -66,9 +67,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Hi Luca, Thanks for the series. Support for more consumer
-   devices is greatly appreciated. On 2026-07-23 15:57, Luca Lauro via B4 Relay
-    wrote: > From: Luca Lauro <famlauro93l@gmail.com> 
+ Content preview:  On 2026-07-23 15:57, Luca Lauro via B4 Relay wrote: > From:
+    Luca Lauro <famlauro93l@gmail.com> > > --- > arch/arm/boards/netgear-rn102/lowlevel.c
+    | 49 ++++++++++++++++++++++++++++++++ > 1 file changed [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -132,328 +133,79 @@ X-Spamd-Result: default: False [-2.91 / 15.00];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 29F572002FE
+X-Rspamd-Queue-Id: 232E020192C
 X-Rspamd-Server: mx1
-X-Stat-Signature: acann4r3d4sesregdkmkgq1kazhqp8nn
-
-Hi Luca,
-
-Thanks for the series. Support for more consumer devices is greatly
-appreciated.
+X-Stat-Signature: 45kgyhami5zr7mm355gafec6nzxhhae4
 
 On 2026-07-23 15:57, Luca Lauro via B4 Relay wrote:
 > From: Luca Lauro <famlauro93l@gmail.com>
-
-Signed-off-by is missing, see https://barebox.org/doc/latest/devel/contribu=
-ting.html#license-and-dco
-
 >=20
 > ---
->  arch/arm/boards/Makefile               |   1 +
->  arch/arm/boards/netgear-rn102/Makefile |   4 +
->  arch/arm/boards/netgear-rn102/board.c  | 243 +++++++++++++++++++++++++++=
+>  arch/arm/boards/netgear-rn102/lowlevel.c | 49 ++++++++++++++++++++++++++=
 ++++++
->  rebuild-series.sh                      |  39 ++++++
->  4 files changed, 287 insertions(+)
+>  1 file changed, 49 insertions(+)
 >=20
-> diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-> index dd2f2c324e..aca1b45a81 100644
-> --- a/arch/arm/boards/Makefile
-> +++ b/arch/arm/boards/Makefile
-> @@ -64,6 +64,7 @@ obj-$(CONFIG_MACH_MARVELL_ARMADA_XP_DB)		+=3D marvell-a=
-rmada-xp-db/
->  obj-$(CONFIG_MACH_MX23EVK)			+=3D freescale-mx23-evk/
->  obj-$(CONFIG_MACH_MX28EVK)			+=3D freescale-mx28-evk/
->  obj-$(CONFIG_MACH_MYIRTECH_X335X)		+=3D myirtech-x335x/
-> +obj-$(CONFIG_MACH_NETGEAR_RN102)		+=3D netgear-rn102/
->  obj-$(CONFIG_MACH_NETGEAR_RN104)		+=3D netgear-rn104/
->  obj-$(CONFIG_MACH_NETGEAR_RN2120)		+=3D netgear-rn2120/
->  obj-$(CONFIG_MACH_NVIDIA_BEAVER)		+=3D nvidia-beaver/
-> diff --git a/arch/arm/boards/netgear-rn102/Makefile b/arch/arm/boards/net=
-gear-rn102/Makefile
+> diff --git a/arch/arm/boards/netgear-rn102/lowlevel.c b/arch/arm/boards/n=
+etgear-rn102/lowlevel.c
 > new file mode 100644
-> index 0000000000..da63d2625f
+> index 0000000000..11130eabbc
 > --- /dev/null
-> +++ b/arch/arm/boards/netgear-rn102/Makefile
-> @@ -0,0 +1,4 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +
-> +obj-y +=3D board.o
-> +lwl-y +=3D lowlevel.o
-> diff --git a/arch/arm/boards/netgear-rn102/board.c b/arch/arm/boards/netg=
-ear-rn102/board.c
-> new file mode 100644
-> index 0000000000..c6673e9356
-> --- /dev/null
-> +++ b/arch/arm/boards/netgear-rn102/board.c
-> @@ -0,0 +1,243 @@
+> +++ b/arch/arm/boards/netgear-rn102/lowlevel.c
+> @@ -0,0 +1,49 @@
 > +// SPDX-License-Identifier: GPL-2.0-only
 > +
 > +#include <common.h>
-> +#include <init.h>
-> +#include <gpio.h>
-> +#include <driver.h>
-> +#include <linux/device.h>
-> +#include <linux/mbus.h>
+> +#include <asm/barebox-arm.h>
+> +#include <mach/mvebu/lowlevel.h>
+> +#include <mach/mvebu/barebox-arm-head.h>
 > +#include <mach/mvebu/armada-370-xp-regs.h>
-> +#include <bbu.h>
 > +
-> +/*
-> + *  Early GPIO0 MMIO
-> + *
-> + * GPIO driver arrives too late for the disks to be
-> + * ready in time for AHCI driver probe.
-> + * So we use GPIO0 direct access for:
-> + *   - reading disk presence monitoring pins
-> + *   - enable powerup for bays that detect disk presence
-> + *   - display bay status with dedicated LEDs
-> + */
-> +#define GPIO0_BASE           (ARMADA_370_XP_INT_REGS_BASE + 0x18100)
-> +#define GPIO_OUT             0x00
-> +#define GPIO_OUT_EN          0x04
-> +#define GPIO_BLINK_EN        0x08
-> +#define GPIO_IN              0x10
-> +#define GPIO_BLINK_CNT_SEL   0x20
-> +#define GPIO_BLINK_CNT_A_ON  0xc0
-> +#define GPIO_BLINK_CNT_A_OFF 0xc4
+> +extern char __dtb_armada_370_rn102_bb_start[];
 > +
-> +static inline void gpio0_set_output(int pin)
+> +#define INTERNAL_REG_BASE_ADDR	0x20080
+> +
+> +static __always_inline void mvebu_remap_registers(void)
 > +{
-> +    u32 v =3D readl(GPIO0_BASE + GPIO_OUT_EN);
+> +	void __iomem *base =3D mvebu_get_initial_int_reg_base();
+> +
+> +	writel(MVEBU_REMAP_INT_REG_BASE, base + INTERNAL_REG_BASE_ADDR);
+> +}
+> +
+> +static unsigned long armada_370_xp_memory_find(void)
+> +{
+> +	unsigned long mem_size =3D 0;
+> +
+> +	for (int cs =3D 0; cs < 4; cs++) {
+> +		u32 ctrl =3D readl(ARMADA_370_XP_SDRAM_BASE + DDR_SIZE_CSn(cs));
+> +
+> +		/* Skip non-enabled CS */
+> +		if ((ctrl & DDR_SIZE_ENABLED) !=3D DDR_SIZE_ENABLED)
+> +			continue;
+> +
+> +		mem_size +=3D (ctrl | ~DDR_SIZE_MASK) + 1;
+> +	}
+> +
+> +	return mem_size;
+> +}
+> +
+> +ENTRY_FUNCTION_MVEBU(start_netgear_rn102, r0, r1, r2)
+> +{
+> +    void *fdt;
+> +
+> +    arm_cpu_lowlevel_init();
+> +=09
+> +	fdt =3D __dtb_armada_370_rn102_bb_start +
+> +		get_runtime_offset();
+> +
+> +	mvebu_remap_registers();
+> +	barebox_arm_entry(0, armada_370_xp_memory_find(), fdt);
+> +	// armada_370_xp_barebox_entry(fdt);
 
-Please use Kernel coding style for barebox. Means, use tabs instead of
-spaces and likely more stuff ./scripts/checkpatch.pl mourns about.
-
-These functions seem to duplicate GPIO support. We already have a GPIO
-driver, so these could likely be dropped in favour for regular
-gpio_set_value and friends.
-
-> +
-> +    v &=3D ~(1 << pin);
-> +    writel(v, GPIO0_BASE + GPIO_OUT_EN);
-> +}
-> +
-> +static inline void gpio0_set_input(int pin)
-> +{
-> +    u32 v =3D readl(GPIO0_BASE + GPIO_OUT_EN);
-> +
-> +    v |=3D (1 << pin);
-> +    writel(v, GPIO0_BASE + GPIO_OUT_EN);
-> +}
-> +
-> +static inline void gpio0_write(int pin, int val)
-> +{
-> +    u32 v =3D readl(GPIO0_BASE + GPIO_OUT);
-> +
-> +    if (val)
-> +        v |=3D (1 << pin);
-> +    else
-> +        v &=3D ~(1 << pin);
-> +
-> +    writel(v, GPIO0_BASE + GPIO_OUT);
-> +}
-> +
-> +static inline int gpio0_read(int pin)
-> +{
-> +    return !!(readl(GPIO0_BASE + GPIO_IN) & (1 << pin));
-> +}
-> +
-> +static void gpio0_blink(int pin, int on_ms, int off_ms)
-> +{
-> +    u32 v;
-> +
-> +    gpio0_set_output(pin);
-> +
-> +    /* set blink counter A on and off time in core clok cycles */
-> +    writel(10*on_ms, GPIO0_BASE + GPIO_BLINK_CNT_A_ON);
-> +    writel(10*off_ms, GPIO0_BASE + GPIO_BLINK_CNT_A_OFF);
-> +
-> +    /* use blink counter A for selected pin */
-> +    v =3D readl(GPIO0_BASE + GPIO_BLINK_CNT_SEL);
-> +    v &=3D ~(1 << pin);
-> +    writel(v, GPIO0_BASE + GPIO_BLINK_CNT_SEL);
-> +
-> +    /* enable blink for selected pin */
-> +    v =3D readl(GPIO0_BASE + GPIO_BLINK_EN);
-> +    v |=3D (1 << pin);
-> +    writel(v, GPIO0_BASE + GPIO_BLINK_EN);
-> +}
-> +
-> +static void gpio0_blink_disable(int pin)
-> +{
-> +    u32 v;
-> +
-> +    v =3D readl(GPIO0_BASE + GPIO_BLINK_EN);
-> +    v &=3D ~(1 << pin);
-> +    writel(v, GPIO0_BASE + GPIO_BLINK_EN);
-> +}
-> +
-> +/* HDD bays description */
-> +
-> +enum disk_state {
-> +    DISK_ABSENT =3D 0,
-> +    DISK_PRESENT,
-> +    DISK_READY,
-> +};
-> +
-> +struct rn102_disk_bay {
-> +    int gpio_detect;        /* input, active-low */
-> +    int gpio_power;         /* output */
-> +    int gpio_led;           /* output, active-low */
-> +    enum disk_state state;
-> +};
-> +
-> +#define RN102_NUM_DISK_BAYS 2
-> +
-> +static struct rn102_disk_bay rn102_bays[RN102_NUM_DISK_BAYS] =3D {
-> +    { 12, 13, 15, DISK_ABSENT }, /* Bay 1, default to disk absent */
-> +    { 10, 11, 14, DISK_ABSENT }, /* Bay 2, default to disk absent */
-> +};
-> +
-> +static void setup_bays(void) {
-> +    pr_info("Early disk power-on...\n");
-> +
-> +    for (int i =3D 0; i < RN102_NUM_DISK_BAYS; i++) {
-> +        int present;
-> +
-> +        gpio0_set_input(rn102_bays[i].gpio_detect);
-> +        present =3D (gpio0_read(rn102_bays[i].gpio_detect) =3D=3D 0);
-> +
-> +        gpio0_set_output(rn102_bays[i].gpio_power);
-> +
-> +        if (present) {
-> +            pr_info("Bay %d: disk detected, powering on\n", i + 1);
-> +            gpio0_blink(rn102_bays[i].gpio_led, 500, 500);
-> +            gpio0_write(rn102_bays[i].gpio_power, 1);
-> +            rn102_bays[i].state =3D DISK_PRESENT;
-> +        } else {
-> +            pr_info("Bay %d empty\n", i + 1);
-> +            gpio0_write(rn102_bays[i].gpio_led, 0);
-> +            gpio0_write(rn102_bays[i].gpio_power, 0);
-> +            rn102_bays[i].state =3D DISK_ABSENT;
-> +        }
-> +    }
-> +}
-> +
-> +/*
-> + * After waiting for present disks spinup,
-> + * we ask explicitly for corresponding ATA devices probe.
-> + */
-> +static void init_disks(void) {
-> +    pr_info("Waiting for disks spinup...\n");
-> +    mdelay(8000);
-> +
-> +    pr_info("Detecting ATA devices:\n");
-> +    for (int i =3D 0; i < RN102_NUM_DISK_BAYS; i++) {
-> +        char name[8];
-> +        struct device *dev;
-> +
-> +        if (rn102_bays[i].state !=3D DISK_PRESENT) {
-> +            gpio0_write(rn102_bays[i].gpio_power, 0);
-> +            gpio0_blink_disable(rn102_bays[i].gpio_led);
-> +            gpio0_write(rn102_bays[i].gpio_led, 0);
-> +            continue;
-> +        }
-> +
-> +        snprintf(name, sizeof(name), "ata%d", i);
-> +
-> +        dev =3D get_device_by_name(name);
-> +        if (!dev) {
-> +            pr_warn("%s not found\n", name);
-> +            gpio0_write(rn102_bays[i].gpio_power, 0);
-> +            gpio0_blink(rn102_bays[i].gpio_led, 1000, 1000);
-> +            continue;
-> +        }
-> +
-> +        pr_info("Connecting %s to disk %d\n", name, i + 1);
-> +        device_detect(dev);
-> +        gpio0_blink_disable(rn102_bays[i].gpio_led);
-> +        gpio0_write(rn102_bays[i].gpio_led, 1);
-> +        rn102_bays[i].state =3D DISK_READY;
-> +    }
-> +}
-> +
-> +/*
-> + *  USB0 =E2=86=92 DRAM MBUS windows
-> + *
-> + * frontal USB 2.0 port of RN102 is connected to the SoC usb0.
-> + * Here we enable MBUS windows toward all the DRAM using
-> + * informations already gathered by mvebu_mbus_dram_info().
-> + */
-> +// #define USB0_BRIDGE_BASE   (ARMADA_370_XP_USB_BASE + 0x300)
-> +// #define USB_WIN_CTRL(n)    (USB0_BRIDGE_BASE + 0x20 + (n) * 0x10)
-> +// #define USB_WIN_BASE(n)    (USB0_BRIDGE_BASE + 0x24 + (n) * 0x10)
-> +
-> +static void setup_usb0(void) {
-> +    // /* Window0: 512MB @ 0x00000000 */
-> +    // writel(0x00000000, USB_WIN_BASE(0));
-> +    // writel(0x1FFF0E01, USB_WIN_CTRL(0));
-> +
-> +    // /* Window1: 512MB @ 0xB0000000 (placeholder) */
-> +    // writel(0xB0000000, USB_WIN_BASE(1));
-> +    // writel(0x1FFE841, USB_WIN_CTRL(1));
-> +
-> +    writel(0x2, 0xf1051404);    /* enable force suspend */
-> +    u32 pwr =3D readl(0xf1051400);
-> +    pwr &=3D ~BIT(2);
-> +    writel(pwr, 0xf1051400);    /* force SUSPENDM=3D0 */
-> +}
-> +
-> +
-> +/* Early init: setup specific hardware without blocking initialization. =
-*/
-> +static int rn102_early_poweron(void)
-> +{
-> +    writel(0xC6, 0xf1020228); /* CFU configuration */
-> +    setup_usb0();
-> +    setup_bays();
-> +
-> +    return 0;
-> +}
-> +postcore_initcall(rn102_early_poweron);
-
-A single barebox image can be compiled for multiple boards/SoCs, so
-such an initcall will be executed on other boards once this board is
-compiled in. You either have to protect them with some
-
-        if (!of_machine_is_compatible("foo"))
-                return 0;
-
-Preferred way is to write the board specific code as a platform driver
-which of-matches against the root node of the device tree, see other
-boards following this pattern.
-
-> +
-> +static int rn102_init(void)
-> +{
-> +    init_disks();
-> +
-> +    return 0;
-> +}
-> +device_initcall(rn102_init);
-> +
-> +
-> +/* BareBox Update handlers */
-> +static int rn102_register_bbu(void)
-> +{
-> +    bbu_register_std_file_update("bootloader", 0,
-> +                     "/dev/nand0.bootloader",
-> +                     filetype_kwbimage_v1);
-> +
-> +    bbu_register_std_file_update("kernel", 0,
-> +                     "/dev/nand0.kernel",
-> +                     filetype_arm_zimage);
-> +
-> +    bbu_register_std_file_update("minirootfs", 0,
-> +                     "/dev/nand0.minirootfs",
-> +                     filetype_gzip);
-> +
-> +    return 0;
-> +}
-> +late_initcall(rn102_register_bbu);
-> diff --git a/rebuild-series.sh b/rebuild-series.sh
-
-This shouldn't be part of the series.
+Why can't you use armada_370_xp_barebox_entry()? I assume that wrongly
+detects the amount of memory. If that's the case the preferred way would
+be to fix the SDRAM detection code. If that's not feasible, please leave
+an explanation in the code why it doesn't work and drop the commented
+out call.
 
 Sascha
 
