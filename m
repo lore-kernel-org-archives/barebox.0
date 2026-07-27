@@ -1,16 +1,16 @@
-Delivery-date: Mon, 27 Jul 2026 15:33:37 +0200
+Delivery-date: Mon, 27 Jul 2026 15:42:11 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1woLSa-003ReD-1P
+	id 1woLat-003RlA-0p
 	for lore@lore.pengutronix.de;
-	Mon, 27 Jul 2026 15:33:37 +0200
+	Mon, 27 Jul 2026 15:42:11 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id B8E7920192C
-	for <lore@pengutronix.de>; Mon, 27 Jul 2026 15:33:32 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 3BA2D202228
+	for <lore@pengutronix.de>; Mon, 27 Jul 2026 15:42:07 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=Qu3jf9Rc;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="DG/LKKjD";
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,47 +19,46 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:Content-Type:In-Reply-To:To:Subject:From:Reply-To:
 	MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
-	bh=oWZzedDGQNL0Cq1tACmYd+byNRYbW/azrqHQipmd2sE=; b=Qu3jf9RchpWdlHuklfyTXZs/YN
-	JyC/mXlFSY8InUYyKrPhUw1mDNHxCKWOWvVrLfjydp5o+4at43BNwrUJ171S2/40iJMHz5fhzPtV9
-	WU+KrlUchAU1LY1qqbLzN+m9O+T9hD3oP3FV8Rt3TCJZ2AQy2iIjUrDzeitgWf7Ar49IlToRl8/jE
-	weaqTV2uRzY+xfbjy3F/xO8yIzpF5qGnmg34oIXDdK03+AvxSvDzG553hDMrjGC16qGu2Xg91yKQj
-	0uaIuFvjSd9vxT26BvMfbXHDxEeREcxQlYIz4YPFhkGibYz6inJX2M+LXDuYAQH1DK4RiPTkmQ2Lv
-	FzWaJaDQ==;
+	bh=Z9kFq/vEj2k/K4X2ms8r+6MCc07lPu2fofN4cnenKPg=; b=DG/LKKjD3I+GGoLkOV/MaTxVnD
+	EKTtPGGu9QLQTWAsj3ORtWenfbv4o8ypZrJmjCeK888B3WdzdWAWxetA43WPNVr3jY5ltooA0+ppy
+	LBfc0YC/oRNVufJqdiM4gvqe90xD7TtKFpgQCFYk5WAtigRah1roUPXrHAijH6Jb673NmGNEaG3e7
+	C3qlQeNrlu6NJbqTH7+cjc3a6Dd6CFi7rpqcIH/JkwHwHLvyDG9ANK5tmvd5p32jsWOPSN7c5R5j4
+	EYXy5l9jqV2pYt69jtk5TyqZ6YRRrEZ6MAZ/SNk0/3BttiFS2UB9pglyWivA6KVGAt9Blr4uOOHMo
+	8IVsXjjw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woLRE-00000002rkS-2YpL;
-	Mon, 27 Jul 2026 13:32:12 +0000
+	id 1woLZO-00000002suV-3PHE;
+	Mon, 27 Jul 2026 13:40:38 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woLRC-00000002rjJ-0QfJ
+	id 1woLZK-00000002stS-3s3p
 	for barebox@lists.infradead.org;
-	Mon, 27 Jul 2026 13:32:11 +0000
+	Mon, 27 Jul 2026 13:40:36 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 1F8F8202876;
-	Mon, 27 Jul 2026 15:32:04 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 01738202241;
+	Mon, 27 Jul 2026 15:40:29 +0200 (CEST)
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1woLR6-001YrQ-03;
-	Mon, 27 Jul 2026 15:32:04 +0200
+	id 1woLZE-001Ywp-2s;
+	Mon, 27 Jul 2026 15:40:28 +0200
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1woLR5-00000007IaW-3m28;
-	Mon, 27 Jul 2026 15:32:03 +0200
+	id 1woLZE-00000007IdC-3EA6;
+	Mon, 27 Jul 2026 15:40:28 +0200
 From: "Sascha Hauer" <s.hauer@pengutronix.de>
-Subject: Re: [PATCH 03/19] ARM: dts: add barebox device tree for Netgear
- RN102
+Subject: Re: [PATCH 04/19] ARM: dts: update RN102 Linux DTS
 To: "Luca Lauro via B4 Relay" <devnull+famlauro93l.gmail.com@kernel.org>
-In-Reply-To: <20260723-rn102-rn104-series-v1-3-7698d25df866@gmail.com>
+In-Reply-To: <20260723-rn102-rn104-series-v1-4-7698d25df866@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 27 Jul 2026 13:32:02 +0000
-Message-Id: <E1woLR5-00000007IaW-3m28@pty.whiteo.stw.pengutronix.de>
+Date: Mon, 27 Jul 2026 13:40:28 +0000
+Message-Id: <E1woLZE-00000007IdC-3EA6@pty.whiteo.stw.pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260727_063210_297670_6A2FE500 
-X-CRM114-Status: GOOD (  15.16  )
+X-CRM114-CacheID: sfid-20260727_064035_115458_F3B228E7 
+X-CRM114-Status: GOOD (  16.78  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -68,8 +67,8 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  the administrator of that system for details.
  
  Content preview:  On 2026-07-23 15:57, Luca Lauro via B4 Relay wrote: > From:
-    Luca Lauro <famlauro93l@gmail.com> > > --- > arch/arm/dts/Makefile | 1 +
-   > arch/arm/dts/armada-370-rn102-bb.dts | 13 +++++++++++++ > 2 files [...] 
+    Luca Lauro <famlauro93l@gmail.com> > > --- > dts/src/arm/marvell/armada-370-netgear-rn102.dts
+    | 114 ++++++++++++++--------- > 1 file changed [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -99,9 +98,9 @@ X-Spamd-Result: default: False [-2.91 / 15.00];
 	MISSING_MIME_VERSION(2.00)[];
 	CC_EXCESS_BASE64(1.50)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
-	R_SPF_ALLOW(-0.20)[+mx:c];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
+	R_SPF_ALLOW(-0.20)[+mx:c];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
 	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -111,11 +110,11 @@ X-Spamd-Result: default: False [-2.91 / 15.00];
 	TO_DN_ALL(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:devnull+famlauro93l.gmail.com@kernel.org,m:barebox@lists.infradead.org,m:famlauro93l@gmail.com,m:devnull@kernel.org,s:lore@pengutronix.de];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
 	FORWARDED(0.00)[barebox@lists.infradead.org];
 	ARC_NA(0.00)[];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	DMARC_NA(0.00)[pengutronix.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
 	RCVD_COUNT_FIVE(0.00)[5];
@@ -133,55 +132,198 @@ X-Spamd-Result: default: False [-2.91 / 15.00];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: B8E7920192C
+X-Rspamd-Queue-Id: 3BA2D202228
 X-Rspamd-Server: mx1
-X-Stat-Signature: s6f5agfiixjr1563ur3w7j3pr9dqpihk
+X-Stat-Signature: njr5s8e3nmofhgfs679hrr4gh3dty1ir
 
 On 2026-07-23 15:57, Luca Lauro via B4 Relay wrote:
 > From: Luca Lauro <famlauro93l@gmail.com>
 >=20
 > ---
->  arch/arm/dts/Makefile                |  1 +
->  arch/arm/dts/armada-370-rn102-bb.dts | 13 +++++++++++++
->  2 files changed, 14 insertions(+)
+>  dts/src/arm/marvell/armada-370-netgear-rn102.dts | 114 ++++++++++++++---=
+------
+>  1 file changed, 71 insertions(+), 43 deletions(-)
 >=20
-> diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-> index a84e09e388..5d1b21b615 100644
-> --- a/arch/arm/dts/Makefile
-> +++ b/arch/arm/dts/Makefile
-> @@ -51,6 +51,7 @@ lwl-$(CONFIG_MACH_MARVELL_ARMADA_XP_GP) +=3D armada-xp-=
-gp-bb.dtb.o
->  lwl-$(CONFIG_MACH_MARVELL_ARMADA_XP_DB) +=3D armada-xp-db-bb.dtb.o
->  lwl-$(CONFIG_MACH_MX28EVK) +=3D imx28-evk.dtb.o
->  lwl-$(CONFIG_MACH_MYIRTECH_X335X) +=3D am335x-myirtech-myd.dtb.o am335x-=
-myirtech-myd-mlo.dtb.o
-> +lwl-$(CONFIG_MACH_NETGEAR_RN102) +=3D armada-370-rn102-bb.dtb.o
->  lwl-$(CONFIG_MACH_NETGEAR_RN104) +=3D armada-370-rn104-bb.dtb.o
->  lwl-$(CONFIG_MACH_NETGEAR_RN2120) +=3D armada-xp-rn2120-bb.dtb.o
->  lwl-$(CONFIG_MACH_NITROGEN6) +=3D imx6q-nitrogen6x.dtb.o imx6dl-nitrogen=
-6x.dtb.o imx6qp-nitrogen6_max.dtb.o
-> diff --git a/arch/arm/dts/armada-370-rn102-bb.dts b/arch/arm/dts/armada-3=
-70-rn102-bb.dts
-> new file mode 100644
-> index 0000000000..0ade2cdd4e
-> --- /dev/null
-> +++ b/arch/arm/dts/armada-370-rn102-bb.dts
-> @@ -0,0 +1,13 @@
-> +/*
-> + * Barebox specific DT overlay for Netgear ReadyNAS 102
-> + */
-> +
-> +#include "arm/marvell/armada-370-netgear-rn102.dts"
-> +
-> +/ {
-> +	barebox,disable-deep-probe;
+> diff --git a/dts/src/arm/marvell/armada-370-netgear-rn102.dts b/dts/src/a=
+rm/marvell/armada-370-netgear-rn102.dts
 
-Why? Would be worth fixing this issue. Might be because you use
-different initcall levels in your board code.
+The files in dts/ are directly taken from the Linux upstream device tree
+files. Changes to them are overwritten with the next sync.
+
+You have to put a dts file into arch/arm/dts/ with your changes and
+include the upstream version instead.
 
 Sascha
 
---
+> index 079b37cf14..f1bad2a233 100644
+> --- a/dts/src/arm/marvell/armada-370-netgear-rn102.dts
+> +++ b/dts/src/arm/marvell/armada-370-netgear-rn102.dts
+> @@ -15,6 +15,10 @@ / {
+>  	model =3D "NETGEAR ReadyNAS 102";
+>  	compatible =3D "netgear,readynas-102", "marvell,armada370", "marvell,ar=
+mada-370-xp";
+> =20
+> +	aliases {
+> +		state =3D &state_nand;
+> +    };
+> +
+>  	chosen {
+>  		stdout-path =3D "serial0:115200n8";
+>  	};
+> @@ -54,7 +58,7 @@ ethernet@74000 {
+>  				phy-mode =3D "rgmii-id";
+>  			};
+> =20
+> -			usb@50000 {
+> +            usb@50000 {
+>  				status =3D "okay";
+>  			};
+> =20
+> @@ -153,10 +157,35 @@ backup-button {
+> =20
+>  	gpio-poweroff {
+>  		compatible =3D "gpio-poweroff";
+> -		pinctrl-0 =3D <&poweroff>;
+> +		pinctrl-0 =3D <&poweroff_pin>;
+>  		pinctrl-names =3D "default";
+>  		gpios =3D <&gpio0 8 GPIO_ACTIVE_LOW>;
+>  	};
+> +
+> +	/* configure nand partition to store barebox environment */
+> +	environment {
+> +      compatible =3D "barebox,environment";
+> +      device-path =3D &nand_controller, "partname:environment";
+> +	};
+> +
+> +	/* configure nand partition to store barebox-state backend */
+> +	state_nand: nand_state_memory {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <1>;
+> +        compatible =3D "barebox,state";
+> +        magic =3D <0xab67421f>;
+> +        backend-type =3D "raw";
+> +        backend =3D <&backend_state_nand>;
+> +        backend-storage-type =3D "circular";
+> +		backend-stridesize =3D <32>;
+> +
+> +       =20
+> +        variable@0 {
+> +                reg =3D <0x0 0x1>;
+> +                type =3D"uint8";
+> +                default =3D <0x1>;
+> +        };
+> +	};
+>  };
+> =20
+>  &pciec {
+> @@ -219,58 +248,57 @@ reset_button_pin: reset-button-pin {
+>  		marvell,function =3D "gpio";
+>  	};
+> =20
+> -	poweroff: poweroff {
+> +	poweroff_pin: poweroff-pin {
+>  		marvell,pins =3D "mpp8";
+>  		marvell,function =3D "gpio";
+>  	};
+>  };
+> =20
+>  &nand_controller {
+> +	compatible =3D "marvell,armada370-nand", "marvell,pxa3xx-nand";
+>  	status =3D "okay";
+> =20
+> -	nand@0 {
+> -		reg =3D <0>;
+> -		label =3D "pxa3xx_nand-0";
+> -		nand-rb =3D <0>;
+> -		marvell,nand-keep-config;
+> -		nand-on-flash-bbt;
+> -
+> -		/* Use Hardware BCH ECC */
+> -		nand-ecc-strength =3D <4>;
+> -		nand-ecc-step-size =3D <512>;
+> -
+> -		partitions {
+> -			compatible =3D "fixed-partitions";
+> -			#address-cells =3D <1>;
+> -			#size-cells =3D <1>;
+> -
+> -			partition@0 {
+> -				label =3D "u-boot";
+> -				reg =3D <0x0000000 0x180000>;  /* 1.5MB */
+> -				read-only;
+> -			};
+> +	label =3D <&nand_controller>;
+> +	nand-rb =3D <0>;
+> +	marvell,nand-keep-config;
+> +	nand-on-flash-bbt;
+> +=09
+> +	/* Use Hardware BCH ECC */
+> +	nand-ecc-strength =3D <4>;
+> +	nand-ecc-step-size =3D <512>;
+> +
+> +	partitions {
+> +		compatible =3D "fixed-partitions";
+> +		#address-cells =3D <1>;
+> +		#size-cells =3D <1>;
+> +	=09
+> +		partition@0 {
+> +			label =3D "bootloader";
+> +			reg =3D <0x0 0x400000>;		 /* 4MB */
+> +			//read-only;
+> +		};
+> =20
+> -			partition@180000 {
+> -				label =3D "u-boot-env";
+> -				reg =3D <0x180000 0x20000>;    /* 128KB */
+> -				read-only;
+> -			};
+> +		partition@0x400000 {
+> +			label =3D "environment";
+> +			reg =3D <0x400000 0x80000>;    /* 0.5MB */
+> +			//read-only;
+> +		};
+> =20
+> -			partition@200000 {
+> -				label =3D "uImage";
+> -				reg =3D <0x0200000 0x600000>;    /* 6MB */
+> -			};
+> +		backend_state_nand: partition@0x480000 {
+> +			label =3D "state";
+> +			reg =3D <0x480000 0x80000>;    /* 0.5MB */
+> +		};
+> =20
+> -			partition@800000 {
+> -				label =3D "minirootfs";
+> -				reg =3D <0x0800000 0x400000>;    /* 4MB */
+> -			};
+> +		partition@0x500000 {
+> +			label =3D "kernel";
+> +			reg =3D <0x500000 0x1400000>;    /* 20MB */
+> +		};
+> =20
+> -			/* Last MB is for the BBT, i.e. not writable */
+> -			partition@c00000 {
+> -				label =3D "ubifs";
+> -				reg =3D <0x0c00000 0x7400000>; /* 116MB */
+> -			};
+> +		partition@0x1900000 {
+> +			label =3D "minirootfs";
+> +			reg =3D <0x1900000 0x6000000>;    /* 100MB */
+>  		};
+> +
+> +		/* Last MB is for the BBT, i.e. not writable */
+>  	};
+> -};
+> +};
+> \ No newline at end of file
+>=20
+> --=20
+> 2.47.3
+>=20
+>=20
+>=20
+
+--=20
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
