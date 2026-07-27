@@ -1,16 +1,16 @@
-Delivery-date: Mon, 27 Jul 2026 15:42:11 +0200
+Delivery-date: Mon, 27 Jul 2026 15:43:32 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1woLat-003RlA-0p
+	id 1woLcB-003Rqs-2F
 	for lore@lore.pengutronix.de;
-	Mon, 27 Jul 2026 15:42:11 +0200
+	Mon, 27 Jul 2026 15:43:32 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 3BA2D202228
-	for <lore@pengutronix.de>; Mon, 27 Jul 2026 15:42:07 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id B945E202265
+	for <lore@pengutronix.de>; Mon, 27 Jul 2026 15:43:27 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="DG/LKKjD";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=VDgwrxTo;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,46 +19,46 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:Content-Type:In-Reply-To:To:Subject:From:Reply-To:
 	MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
-	bh=Z9kFq/vEj2k/K4X2ms8r+6MCc07lPu2fofN4cnenKPg=; b=DG/LKKjD3I+GGoLkOV/MaTxVnD
-	EKTtPGGu9QLQTWAsj3ORtWenfbv4o8ypZrJmjCeK888B3WdzdWAWxetA43WPNVr3jY5ltooA0+ppy
-	LBfc0YC/oRNVufJqdiM4gvqe90xD7TtKFpgQCFYk5WAtigRah1roUPXrHAijH6Jb673NmGNEaG3e7
-	C3qlQeNrlu6NJbqTH7+cjc3a6Dd6CFi7rpqcIH/JkwHwHLvyDG9ANK5tmvd5p32jsWOPSN7c5R5j4
-	EYXy5l9jqV2pYt69jtk5TyqZ6YRRrEZ6MAZ/SNk0/3BttiFS2UB9pglyWivA6KVGAt9Blr4uOOHMo
-	8IVsXjjw==;
+	bh=2L8LRKoctf/nhB310TTmCFYR9hqT4ckPl9ayxiIHFYk=; b=VDgwrxTodedv4yt2+jjZyLPJtq
+	UCH7+AtQ9/O3lvTWX9UItgqLwXUvYW3dPA74koOo9f52Fh3Jc+cDN+4ZQ2pf2shRMr00kQIO67b3V
+	O4KphAXhmABYMVyfkB7k4Ci+cqNkdVlM5gBmmO1GtyBlQBe2KYGad4yr7VozJ1e51yFi7OnMF3vAh
+	gqoMO5udF5z7XnvxadRqSc6/xktksEJlh+UpCwbiaw2ugb4XOPpWFP2fYt2M0Z0C00UNOQUyqbX1Z
+	aYeEOu5/lISfoQD5gsDh7jHbSh9+oIomFsTgsKqCam/qoJ9ibLWBnyCvS1E3KcXGpDV1bTNaM5UFl
+	QudwBwsw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woLZO-00000002suV-3PHE;
-	Mon, 27 Jul 2026 13:40:38 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1woLap-00000002t6p-09hK;
+	Mon, 27 Jul 2026 13:42:07 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woLZK-00000002stS-3s3p
+	id 1woLam-00000002t65-15sk
 	for barebox@lists.infradead.org;
-	Mon, 27 Jul 2026 13:40:36 +0000
+	Mon, 27 Jul 2026 13:42:05 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 01738202241;
-	Mon, 27 Jul 2026 15:40:29 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 7EFFA202767;
+	Mon, 27 Jul 2026 15:41:58 +0200 (CEST)
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1woLZE-001Ywp-2s;
-	Mon, 27 Jul 2026 15:40:28 +0200
+	id 1woLag-001YxH-1Q;
+	Mon, 27 Jul 2026 15:41:58 +0200
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1woLZE-00000007IdC-3EA6;
-	Mon, 27 Jul 2026 15:40:28 +0200
+	id 1woLag-00000007Idm-1SWv;
+	Mon, 27 Jul 2026 15:41:58 +0200
 From: "Sascha Hauer" <s.hauer@pengutronix.de>
 Subject: Re: [PATCH 04/19] ARM: dts: update RN102 Linux DTS
 To: "Luca Lauro via B4 Relay" <devnull+famlauro93l.gmail.com@kernel.org>
 In-Reply-To: <20260723-rn102-rn104-series-v1-4-7698d25df866@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 27 Jul 2026 13:40:28 +0000
-Message-Id: <E1woLZE-00000007IdC-3EA6@pty.whiteo.stw.pengutronix.de>
+Date: Mon, 27 Jul 2026 13:41:58 +0000
+Message-Id: <E1woLag-00000007Idm-1SWv@pty.whiteo.stw.pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260727_064035_115458_F3B228E7 
-X-CRM114-Status: GOOD (  16.78  )
+X-CRM114-CacheID: sfid-20260727_064204_600951_FCCE1939 
+X-CRM114-Status: GOOD (  16.07  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -66,9 +66,11 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On 2026-07-23 15:57, Luca Lauro via B4 Relay wrote: > From:
-    Luca Lauro <famlauro93l@gmail.com> > > --- > dts/src/arm/marvell/armada-370-netgear-rn102.dts
-    | 114 ++++++++++++++--------- > 1 file changed [...] 
+ Content preview:  BTW you can fold patches 1-4 into a single patch so that the
+    full board support comes as a single patch, same with RN104 support. Sascha
+    On 2026-07-23 15:57, Luca Lauro via B4 Relay wrote: > From: Luca Lauro <famlauro93l@gmail.com>
+    > > --- > dts/src/arm/marvell/armada-370-netgear-rn102.dts | 114 ++++++++++++++---------
+    > 1 file changed [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -98,9 +100,9 @@ X-Spamd-Result: default: False [-2.91 / 15.00];
 	MISSING_MIME_VERSION(2.00)[];
 	CC_EXCESS_BASE64(1.50)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
-	R_SPF_ALLOW(-0.20)[+mx:c];
 	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	R_SPF_ALLOW(-0.20)[+mx:c];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
@@ -110,11 +112,11 @@ X-Spamd-Result: default: False [-2.91 / 15.00];
 	TO_DN_ALL(0.00)[];
 	FORGED_RECIPIENTS(0.00)[m:devnull+famlauro93l.gmail.com@kernel.org,m:barebox@lists.infradead.org,m:famlauro93l@gmail.com,m:devnull@kernel.org,s:lore@pengutronix.de];
 	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[pengutronix.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORWARDED(0.00)[barebox@lists.infradead.org];
 	ARC_NA(0.00)[];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
 	RCPT_COUNT_THREE(0.00)[3];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
 	RCVD_COUNT_FIVE(0.00)[5];
@@ -132,9 +134,14 @@ X-Spamd-Result: default: False [-2.91 / 15.00];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 3BA2D202228
+X-Rspamd-Queue-Id: B945E202265
 X-Rspamd-Server: mx1
-X-Stat-Signature: njr5s8e3nmofhgfs679hrr4gh3dty1ir
+X-Stat-Signature: 4iwc66kdper9q4mw641ytg4r8hddd7ym
+
+BTW you can fold patches 1-4 into a single patch so that the full board
+support comes as a single patch, same with RN104 support.
+
+Sascha
 
 On 2026-07-23 15:57, Luca Lauro via B4 Relay wrote:
 > From: Luca Lauro <famlauro93l@gmail.com>
@@ -146,15 +153,6 @@ On 2026-07-23 15:57, Luca Lauro via B4 Relay wrote:
 >=20
 > diff --git a/dts/src/arm/marvell/armada-370-netgear-rn102.dts b/dts/src/a=
 rm/marvell/armada-370-netgear-rn102.dts
-
-The files in dts/ are directly taken from the Linux upstream device tree
-files. Changes to them are overwritten with the next sync.
-
-You have to put a dts file into arch/arm/dts/ with your changes and
-include the upstream version instead.
-
-Sascha
-
 > index 079b37cf14..f1bad2a233 100644
 > --- a/dts/src/arm/marvell/armada-370-netgear-rn102.dts
 > +++ b/dts/src/arm/marvell/armada-370-netgear-rn102.dts
