@@ -1,64 +1,69 @@
-Delivery-date: Mon, 27 Jul 2026 16:18:12 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Mon, 27 Jul 2026 16:33:38 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1woM9k-003Sa5-0t
+	id 1woMOf-003Smi-1J
 	for lore@lore.pengutronix.de;
-	Mon, 27 Jul 2026 16:18:12 +0200
+	Mon, 27 Jul 2026 16:33:38 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 9EA6E202767
-	for <lore@pengutronix.de>; Mon, 27 Jul 2026 16:18:08 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id B5856202877
+	for <lore@pengutronix.de>; Mon, 27 Jul 2026 16:33:33 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=Qd1uI6Vj;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=EH3cptw9;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:
-	Content-Transfer-Encoding:Content-Type:In-Reply-To:To:Subject:From:Reply-To:
-	MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
-	bh=pyCpT1nryqiNqPmock9sj873VbDNBex60uIcIbBs5E8=; b=Qd1uI6VjAjLwxeLaRXoy6bUWQl
-	6xm2vHUMtq9PPwbZKBmRRHTbKfch+/07kZ7Jnw3t84qbcLrLd5RDvcK90P7Wvsw9BgCiQWhqjECiE
-	IEGgfJGLcLj+4g6QazBzKplqScwLc2zwKmkVqQGfq3ZAuLOABfjq0/CMrhHvaHEL/UTXsfFMJSujt
-	W9XX698e3G088VutfDQQfGmdusLRMEyFpnmhDIYkwr6Lmu3L7Ni/L8kZQ/ioF9mFiM+IDlEkPgVp4
-	f4NHz2XR/z11dszPLq5YPG/kPLTRBEgwZAb+7Y8TduDPSsCRuZ26VPPXQL2rIUT371fdUGCMc5AFe
-	8TtnUdkQ==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=1+DLlWhe/1m6/JsJlHKhUsJqOUBEYVY3S22A709HgcI=; b=EH3cptw9esoYR7xTtkn6piOSxp
+	g52OrAGQwE79PsEG8V/ms117T1PbHMBxK/O1uEAwCTrWrRty7yYZCulmFJ4CNoqenU+Nj0yhYfR9R
+	muHb4cTYLZG94fmxHylmFmhfLlZJ6DMfm3kSDqnkoyJoEo7loYAFZwhQABlvCmaRmZyIyhi5WNjjk
+	BnJD3Id3GDKeCMHKCoQI2U89EfDDHYcUiAYAA784hjTBID2K3C8yi97jBQnhzTF3+m4b2gSYkYlCE
+	IBOl9WqbIFrbLs+rAErNk3idCuj9bHKztsxSOzSj+818dfnWbtAMzY+FeqhzNusinLHIpgkp/qzFO
+	bBrpc8+Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woM8S-00000002xRY-2jq2;
-	Mon, 27 Jul 2026 14:16:52 +0000
+	id 1woL4v-00000002o7p-3ySs;
+	Mon, 27 Jul 2026 13:09:09 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1woM8P-00000002xQi-23sR
+	id 1woL4t-00000002o5d-1NWT
 	for barebox@lists.infradead.org;
-	Mon, 27 Jul 2026 14:16:50 +0000
+	Mon, 27 Jul 2026 13:09:09 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 7BD13202057;
-	Mon, 27 Jul 2026 16:16:43 +0200 (CEST)
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 6CC8620192C;
+	Mon, 27 Jul 2026 15:09:05 +0200 (CEST)
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1woM8J-001ZIW-1M;
-	Mon, 27 Jul 2026 16:16:43 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1woM8J-00000007J2h-1Kyd;
-	Mon, 27 Jul 2026 16:16:43 +0200
-From: "Sascha Hauer" <s.hauer@pengutronix.de>
-Subject: Re: [PATCH 19/19] drivers: integrate USB/AHCI changes
-To: "Luca Lauro via B4 Relay" <devnull+famlauro93l.gmail.com@kernel.org>
-In-Reply-To: <20260723-rn102-rn104-series-v1-19-7698d25df866@gmail.com>
-Content-Type: text/plain; charset=utf-8
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1woL4r-001YBl-1A;
+	Mon, 27 Jul 2026 15:09:05 +0200
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1woL4r-00000002HCr-1IGN;
+	Mon, 27 Jul 2026 15:09:05 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ingo Reitz <9l@9lo.re>
+In-Reply-To: <20260712213724.186498-1-9l@9lo.re>
+References: <20260712213724.186498-1-9l@9lo.re>
+Subject: Re: [PATCH] video: backlicht-pwm: parse num-interpolated-steps
+Message-Id: <178515774530.540890.11505369085474428919.b4-ty@pengutronix.de>
+Date: Mon, 27 Jul 2026 15:09:05 +0200
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Date: Mon, 27 Jul 2026 14:16:43 +0000
-Message-Id: <E1woM8J-00000007J2h-1Kyd@pty.whiteo.stw.pengutronix.de>
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260727_071649_692486_2E938DEB 
-X-CRM114-Status: GOOD (  12.33  )
+X-CRM114-CacheID: sfid-20260727_060907_555457_1C5DD07C 
+X-CRM114-Status: UNSURE (   5.73  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -66,9 +71,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On 2026-07-23 15:57, Luca Lauro via B4 Relay wrote: > From:
-    Luca Lauro <famlauro93l@gmail.com> > > --- > drivers/Kconfig | 1 + > drivers/Makefile
-    | 1 + > 2 files changed, 2 insertions(+) > > diff --gi [...] 
+ Content preview:  On Sun, 12 Jul 2026 21:38:25 +0000, Ingo Reitz wrote: > Port
+    the parsing logic for num-interpolated-steps from linux, which populates
+   > brightness-levels between 2 brightness level by linear interpol [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -90,90 +95,58 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: =?utf-8?b?b3BlbiBsaXN0OkJB?= =?utf-8?b?UkVCT1g=?= <barebox@lists.infradead.org>, Luca Lauro <famlauro93l@gmail.com>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-2.91 / 15.00];
+X-Spamd-Result: default: False [-6.61 / 15.00];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	MISSING_MIME_VERSION(2.00)[];
-	CC_EXCESS_BASE64(1.50)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
-	R_SPF_ALLOW(-0.20)[+mx:c];
+	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCPT_COUNT_TWO(0.00)[2];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_ALL(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:devnull+famlauro93l.gmail.com@kernel.org,m:barebox@lists.infradead.org,m:famlauro93l@gmail.com,m:devnull@kernel.org,s:lore@pengutronix.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
 	ARC_NA(0.00)[];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	DMARC_NA(0.00)[pengutronix.de];
-	RCPT_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	NEURAL_HAM(-0.00)[-1.000];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FREEMAIL_CC(0.00)[lists.infradead.org,gmail.com];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TAGGED_RCPT(0.00)[famlauro93l.gmail.com];
 	RCVD_IN_DNSWL_NONE(0.00)[2a0a:edc0:0:c01:1d::a2:received];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 9EA6E202767
+X-Rspamd-Queue-Id: B5856202877
 X-Rspamd-Server: mx1
-X-Stat-Signature: qrn3yyqsq6csm7ueyydo5c3tiscm95a7
+X-Stat-Signature: kqfz3bjfjgub6ahzk5ho5eabnbc9o8qj
 
-On 2026-07-23 15:57, Luca Lauro via B4 Relay wrote:
-> From: Luca Lauro <famlauro93l@gmail.com>
+
+On Sun, 12 Jul 2026 21:38:25 +0000, Ingo Reitz wrote:
+> Port the parsing logic for num-interpolated-steps from linux, which populates
+> brightness-levels between 2 brightness level by linear interpolation.
+> This is useful if the amount of brightness levels exeeds what can
+> practically can be written into the devicetree array.
 > 
-> ---
->  drivers/Kconfig  | 1 +
->  drivers/Makefile | 1 +
->  2 files changed, 2 insertions(+)
 > 
-> diff --git a/drivers/Kconfig b/drivers/Kconfig
-> index 32910addcd..b1ba73887a 100644
-> --- a/drivers/Kconfig
-> +++ b/drivers/Kconfig
-> @@ -50,5 +50,6 @@ source "drivers/power/Kconfig"
->  source "drivers/virtio/Kconfig"
->  source "drivers/mailbox/Kconfig"
->  source "drivers/tee/Kconfig"
-> +source "drivers/fan/Kconfig"
->  
->  endmenu
-> diff --git a/drivers/Makefile b/drivers/Makefile
-> index db491dad83..4d6071fdc7 100644
-> --- a/drivers/Makefile
-> +++ b/drivers/Makefile
-> @@ -51,3 +51,4 @@ obj-$(CONFIG_SOUND) += sound/
->  obj-y	+= virtio/
->  obj-y	+= mailbox/
->  obj-y	+= tee/
-> +obj-$(CONFIG_FAN) += fan/
 
-Naa, this patch has nothing USB or AHCI specific in it, but should be
-squashed into the fan framework patches.
+Applied, thanks!
 
-Sascha
+[1/1] video: backlicht-pwm: parse num-interpolated-steps
+      https://git.pengutronix.de/cgit/barebox/commit/?id=3a7be29e749c (link may not be stable)
 
---
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best regards,
+-- 
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
