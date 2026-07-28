@@ -1,17 +1,17 @@
-Delivery-date: Tue, 28 Jul 2026 19:44:16 +0200
+Delivery-date: Tue, 28 Jul 2026 19:47:59 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wolqi-003roW-07
+	id 1woluJ-003rrF-0Z
 	for lore@lore.pengutronix.de;
-	Tue, 28 Jul 2026 19:44:16 +0200
+	Tue, 28 Jul 2026 19:47:59 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id DABE420214E
-	for <lore@pengutronix.de>; Tue, 28 Jul 2026 19:44:11 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 0E42A2021C9
+	for <lore@pengutronix.de>; Tue, 28 Jul 2026 19:47:55 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=vnN5qY+O;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=inEJvl2a;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="kHLuw/UR";
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GiGOT1hv;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -20,58 +20,57 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=v99NbfNeer9sioA30Z7UfnbbLLscIyKIAqkC0L+Syo0=; b=vnN5qY+OBMwG7K8ZDyMbklukDO
-	DuecY1RE1rHqzk2aJ5LOUyxGn4U4P+tRr5dpBRHy1q2kvRxz68eUAvf4s8wxiRloyZcv1xLRykkvw
-	x4J4Neyc1DoFlOmJAQ3yjxf8wUihxAqWcWjZxzxJgq0XtpovFXQ5EpKWSoFIbiH+bhHaIu77SFu7k
-	AcJZe8qgGINAVl5O338KaKjVQF87K/wNPR9LJnuNUVYXQv5EJXXYlTqwuFy5i3QtNwhhFZgTNjgJH
-	q2LwcExBQH87pSAqBd3x1vn0qpIT9fk2ialsgoWEUUvWPWJiuWHwfr5B9LVMbh6Ry7S8uP96e7uDt
-	cQczyzFA==;
+	bh=ZfaRp3w+9vOvckwg7Lu5sN3mPX6twU2NdrD2PHvXbdE=; b=kHLuw/UR9VSUYZZ9tb0nfmmD7x
+	pZ/uKR+Kc7wgGYU44MF7Cj1f7kYO7OC4hbRoAqBfez2Zu/NYSwzqQ8gGtIj0c5JtycpVeNfxJUzbZ
+	TZg5QE1gdzUkTxo/GVtp46cqRvrzVKWQgC7LoaxSDvd/1CeuDr7vV16xIQokWbJjAWf8HW25Ffh+2
+	WzrOM2ywhvUmrTbC8RmnWEp2Qdvg3Wxw2LPDLq5pAj5wg4sdMHGuDsW8AXZe4A/volzhUVFXJuhgD
+	iXgKSkR3wtz5dsl/TVGJ4neC1pbbcmauhFc8vq5V2UbTm65vFoZPhAK4YS0YTKu+OZ7yVdU5ae5cn
+	aVBOYfUg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wolpA-0000000613J-0Qbh;
-	Tue, 28 Jul 2026 17:42:40 +0000
+	id 1wolp9-0000000612K-1RV5;
+	Tue, 28 Jul 2026 17:42:39 +0000
 Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wolp8-0000000611e-0hz3
+	id 1wolp7-0000000611D-3Bdd
 	for barebox@lists.infradead.org;
-	Tue, 28 Jul 2026 17:42:38 +0000
+	Tue, 28 Jul 2026 17:42:37 +0000
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E09FA43E4E;
+	by sea.source.kernel.org (Postfix) with ESMTP id 6CB1940378;
 	Tue, 28 Jul 2026 17:42:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C5091C2BCF7;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4CDDEC2BCF6;
 	Tue, 28 Jul 2026 17:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1785260557;
-	bh=MLPzmwwTdD1rF2goq4qJBVz0u94anmDVvmIIVFuqxIM=;
+	bh=fbp7mdkeD+9aTIAsLSiVOcxN86jb+Pd29OCf9a/Gex8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=inEJvl2ahHIcD3hYjAzkEZ+d7tuHp1uyTlGtJa5slUwO+SP+uXO0AERGFQN6tkTXy
-	 2W/weCvmZ3gst71R06ylUZN41BqBODqEGpd1EkuhKeQHVA238fe+CQ4su2lt9B4/4o
-	 d1s1b8PZ5+sQXbpoeJdFaFCAr17pZ/M+ic8SDGGEMCl6yP/+bQGXDkusn9gX4eERd5
-	 1U3VPcoZPTm7skXzvwS/Y0DVeD0wj66aOyhFw0GAK4EsAvezPIfrRd6Vf5vXnC7WEF
-	 /ZhnlffGecKjxgOukHE6L5W5Cf6PlI0W2Kp1c1yQZajYXMp/rtnXyMeFZtFm7LqZ6G
-	 r1bR+pcWQa7OA==
+	b=GiGOT1hvnaTXYLYiarwoBjetlzIg9MlPKu2EqSA4bsyie+fowQS121u4OJBmB0L7H
+	 i0xfDkszws6v5H/ezactc4duurvu5A1n+LNcoypAGQrKzp7u6h4CZGbMZqcsHx/BR0
+	 VS6Ku6oTKaldblVNrA1YrtvHNMYyPRoJfy71QZQLUpTSXArmA01WTjKYbBzkFFssA8
+	 P1097HmLugYPkCzY+iaqfZiasEKlxh+cEx5IA4jSo3bT1RUGzP3wdy6cXVTwPJ+LgJ
+	 qK4F7zc7EuQ4rWCTqylk71bpdOrhwcYpyeq5YZzcbtgtTzEFfUPAiakMJRlC3FLXR9
+	 5n8aSo4BVRzTg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B3C58C54F56;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2CB20C54F4D;
 	Tue, 28 Jul 2026 17:42:37 +0000 (UTC)
 From: Luca Lauro via B4 Relay <devnull+famlauro93l.gmail.com@kernel.org>
-Date: Tue, 28 Jul 2026 19:43:22 +0200
-Subject: [PATCH v2 10/10] ata: ahci: add PCI AHCI support and
- Marvell-specific fixes
+Date: Tue, 28 Jul 2026 19:43:13 +0200
+Subject: [PATCH v2 01/10] ARM: mvebu: add Netgear RN102 support
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20260728-rn102-rn104-series-v2-10-ae31f55b7bc8@gmail.com>
+Message-Id: <20260728-rn102-rn104-series-v2-1-ae31f55b7bc8@gmail.com>
 References: <20260728-rn102-rn104-series-v2-0-ae31f55b7bc8@gmail.com>
 In-Reply-To: <20260728-rn102-rn104-series-v2-0-ae31f55b7bc8@gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  "open list:BAREBOX" <barebox@lists.infradead.org>
 Cc: Luca Lauro <famlauro93l@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785260594; l=24339;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785260594; l=19341;
  i=famlauro93l@gmail.com; s=20260723; h=from:subject:message-id;
- bh=Vrvx1yi165xTKF6YmAzlAOzH22VwRZoX7CuDDUPwtLY=;
- b=cXVmn7WhwzT5izGkfWT1GrZrG3SKTPQy3GK4rtH+jHnOZfVUNRciDQYXEDQPOEUZkryUIJEst
- Tgkh0eYM9+sAZQlq1H7xplGDAfFVMaM+aEMNN5/yufjBx0WfLZcURhX
+ bh=EyWDW7KGj7gyd7qvDgWkK/GSEM9J6ucZhwlzyPJawgc=;
+ b=zMVLRr3T7unhFJ5aNp+1u/lYQSMCc6Bh7NfXO1n/L7QZrM1VzH0VPm2HCpAvwSl1GNgLb3As3
+ jhq/nJD7ek7CvIxgpOkR5j3MNdh+N9wRMtiSf/aMY8XXRfmFkYq+VZw
 X-Developer-Key: i=famlauro93l@gmail.com; a=ed25519;
  pk=OAJlcD69ugQCl99Vy6w+Aeu+ZUb1IVGcz1Ijxo6Ch78=
 X-Endpoint-Received: by B4 Relay for famlauro93l@gmail.com/20260723 with
@@ -92,835 +91,698 @@ Reply-To: famlauro93l@gmail.com
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: rcqr9eiqpqmb9rhjune7eufcw4ijj9mg
+X-Stat-Signature: j3g6e5tkquh1y9qyd56njwnnsgs98psm
 X-Spamd-Result: default: False [-6.91 / 15.00];
-	DWL_DNSWL_MED(-4.00)[kernel.org:dkim,infradead.org:dkim];
-	BAYES_HAM(-3.00)[99.99%];
+	DWL_DNSWL_MED(-4.00)[infradead.org:dkim,kernel.org:dkim];
+	BAYES_HAM(-3.00)[100.00%];
 	FREEMAIL_REPLYTO_NEQ_FROM(2.00)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
-	MAILLIST(-0.20)[mailman];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,kernel.org:s=k20201202];
+	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_ALL(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[devnull@kernel.org,barebox-bounces@lists.infradead.org];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	ARC_NA(0.00)[];
-	FREEMAIL_REPLYTO(0.00)[gmail.com];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
 	TAGGED_FROM(0.00)[lore=pengutronix.de,famlauro93l.gmail.com];
 	FREEMAIL_CC(0.00)[gmail.com];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	FREEMAIL_REPLYTO(0.00)[gmail.com];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,kernel.org:+];
 	RCPT_COUNT_THREE(0.00)[3];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,kernel.org:+];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	HAS_REPLYTO(0.00)[famlauro93l@gmail.com]
-X-Rspamd-Queue-Id: DABE420214E
+X-Rspamd-Queue-Id: 0E42A2021C9
 
 From: Luca Lauro <famlauro93l@gmail.com>
 
-This patch extends the barebox AHCI driver with full support for
-PCI-based AHCI controllers, required for Marvell Armada 3700/XP/AC5
-platforms used in the Netgear RN102/RN104 NAS devices.
+This adds full support for the Netgear ReadyNAS 102, including:
 
-Barebox previously supported only memory-mapped AHCI controllers.
-Marvell exposes its AHCI controller through PCI BARs, requiring a
-dedicated probing path and MMIO mapping via pci_iomap(). The new
-ahci_pci_probe() function integrates PCI AHCI devices with the existing
-ahci_add_host() infrastructure.
-
-In addition to PCI support, several functional fixes are required for
-Marvell AHCI to operate reliably:
-
-- Correct DMA handling for zero-length buffers in ahci_io()
-  (avoid invalid DMA mappings and sg entries).
-
-- Implement a Marvell-compatible COMRESET sequence:
-  DET=1 → delay → DET=0, followed by PHY-ready polling.
-
-- Improve port disable logic by clearing START/FIS_RX/LIST_ON and
-  waiting for FR/CR to drop to zero.
-
-- Clear PORT_SCR_ERR before reinitializing the port.
-
-- Program command list and FIS base addresses correctly, including
-  HOST_CAP_64 handling.
-
-The patch also introduces several improvements:
-
-- Add ahci_ata_nodata(), a helper for ATA commands without data
-  (e.g. FLUSH EXT, STANDBY NOW).
-
-- Add definitions for ATA_CMD_FLUSH_EXT and ATA_CMD_STANDBYNOW1.
-
-- Add an AHCI poweroff handler that flushes and parks all disks before
-  shutdown, improving reliability on NAS devices.
-
-These changes are required for reliable SATA enumeration and operation
-on Marvell-based NAS devices. Other AHCI platforms are unaffected, as
-the new logic is only exercised when PCI AHCI is present.
-
-Whitespace-only changes should have been removed.
+ - board driver matching on "netgear,rn102"
+ - lowlevel initialization
+ - barebox device tree
+ - barebox overlay with environment and state backend
+ - NAND partition layout
+ - Kconfig entry
+ - image support
 
 Signed-off-by: Luca Lauro <famlauro93l@gmail.com>
 ---
- drivers/ata/ahci.c | 656 ++++++++++++++++++++++++++++++-----------------------
- drivers/ata/ahci.h |   1 +
- 2 files changed, 374 insertions(+), 283 deletions(-)
+ arch/arm/boards/Makefile                         |   1 +
+ arch/arm/boards/netgear-rn102/Makefile           |   4 +
+ arch/arm/boards/netgear-rn102/board.c            | 243 +++++++++++++++++++++++
+ arch/arm/boards/netgear-rn102/lowlevel.c         |  58 ++++++
+ arch/arm/dts/Makefile                            |   1 +
+ arch/arm/dts/armada-370-rn102-bb.dts             |  80 ++++++++
+ arch/arm/mach-mvebu/Kconfig                      |   4 +
+ dts/src/arm/marvell/armada-370-netgear-rn102.dts | 114 +++++++----
+ images/Makefile.mvebu                            |  10 +
+ 9 files changed, 472 insertions(+), 43 deletions(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 819dc37b3e..6c32393959 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -19,7 +19,9 @@
- #include <disks.h>
- #include <ata_drive.h>
- #include <linux/sizes.h>
-+#include <linux/pci.h>
- #include <clock.h>
-+#include <poweroff.h>
- 
- #include "ahci.h"
- 
-@@ -47,6 +49,54 @@
- #define ahci_debug(ahci, fmt, arg...) \
- 	dev_dbg(ahci->dev, fmt, ##arg)
- 
-+#define ATA_CMD_FLUSH_EXT 0xEA
-+#define ATA_CMD_STANDBYNOW1 0xE0
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index dd2f2c324e..aca1b45a81 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -64,6 +64,7 @@ obj-$(CONFIG_MACH_MARVELL_ARMADA_XP_DB)		+= marvell-armada-xp-db/
+ obj-$(CONFIG_MACH_MX23EVK)			+= freescale-mx23-evk/
+ obj-$(CONFIG_MACH_MX28EVK)			+= freescale-mx28-evk/
+ obj-$(CONFIG_MACH_MYIRTECH_X335X)		+= myirtech-x335x/
++obj-$(CONFIG_MACH_NETGEAR_RN102)		+= netgear-rn102/
+ obj-$(CONFIG_MACH_NETGEAR_RN104)		+= netgear-rn104/
+ obj-$(CONFIG_MACH_NETGEAR_RN2120)		+= netgear-rn2120/
+ obj-$(CONFIG_MACH_NVIDIA_BEAVER)		+= nvidia-beaver/
+diff --git a/arch/arm/boards/netgear-rn102/Makefile b/arch/arm/boards/netgear-rn102/Makefile
+new file mode 100644
+index 0000000000..da63d2625f
+--- /dev/null
++++ b/arch/arm/boards/netgear-rn102/Makefile
+@@ -0,0 +1,4 @@
++# SPDX-License-Identifier: GPL-2.0-only
 +
-+#ifndef PCI_VENDOR_ID_MARVELL_EXT
-+#define PCI_VENDOR_ID_MARVELL_EXT 0x1b4b
-+#endif
++obj-y += board.o
++lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/netgear-rn102/board.c b/arch/arm/boards/netgear-rn102/board.c
+new file mode 100644
+index 0000000000..c6673e9356
+--- /dev/null
++++ b/arch/arm/boards/netgear-rn102/board.c
+@@ -0,0 +1,243 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +
-+static LIST_HEAD(ahci_devices);
++#include <common.h>
++#include <init.h>
++#include <gpio.h>
++#include <driver.h>
++#include <linux/device.h>
++#include <linux/mbus.h>
++#include <mach/mvebu/armada-370-xp-regs.h>
++#include <bbu.h>
 +
-+static const struct pci_device_id ahci_pci_tbl[] = {
-+    { PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x9170) },
-+    { 0, }
++/*
++ *  Early GPIO0 MMIO
++ *
++ * GPIO driver arrives too late for the disks to be
++ * ready in time for AHCI driver probe.
++ * So we use GPIO0 direct access for:
++ *   - reading disk presence monitoring pins
++ *   - enable powerup for bays that detect disk presence
++ *   - display bay status with dedicated LEDs
++ */
++#define GPIO0_BASE           (ARMADA_370_XP_INT_REGS_BASE + 0x18100)
++#define GPIO_OUT             0x00
++#define GPIO_OUT_EN          0x04
++#define GPIO_BLINK_EN        0x08
++#define GPIO_IN              0x10
++#define GPIO_BLINK_CNT_SEL   0x20
++#define GPIO_BLINK_CNT_A_ON  0xc0
++#define GPIO_BLINK_CNT_A_OFF 0xc4
++
++static inline void gpio0_set_output(int pin)
++{
++    u32 v = readl(GPIO0_BASE + GPIO_OUT_EN);
++
++    v &= ~(1 << pin);
++    writel(v, GPIO0_BASE + GPIO_OUT_EN);
++}
++
++static inline void gpio0_set_input(int pin)
++{
++    u32 v = readl(GPIO0_BASE + GPIO_OUT_EN);
++
++    v |= (1 << pin);
++    writel(v, GPIO0_BASE + GPIO_OUT_EN);
++}
++
++static inline void gpio0_write(int pin, int val)
++{
++    u32 v = readl(GPIO0_BASE + GPIO_OUT);
++
++    if (val)
++        v |= (1 << pin);
++    else
++        v &= ~(1 << pin);
++
++    writel(v, GPIO0_BASE + GPIO_OUT);
++}
++
++static inline int gpio0_read(int pin)
++{
++    return !!(readl(GPIO0_BASE + GPIO_IN) & (1 << pin));
++}
++
++static void gpio0_blink(int pin, int on_ms, int off_ms)
++{
++    u32 v;
++
++    gpio0_set_output(pin);
++
++    /* set blink counter A on and off time in core clok cycles */
++    writel(10*on_ms, GPIO0_BASE + GPIO_BLINK_CNT_A_ON);
++    writel(10*off_ms, GPIO0_BASE + GPIO_BLINK_CNT_A_OFF);
++
++    /* use blink counter A for selected pin */
++    v = readl(GPIO0_BASE + GPIO_BLINK_CNT_SEL);
++    v &= ~(1 << pin);
++    writel(v, GPIO0_BASE + GPIO_BLINK_CNT_SEL);
++
++    /* enable blink for selected pin */
++    v = readl(GPIO0_BASE + GPIO_BLINK_EN);
++    v |= (1 << pin);
++    writel(v, GPIO0_BASE + GPIO_BLINK_EN);
++}
++
++static void gpio0_blink_disable(int pin)
++{
++    u32 v;
++
++    v = readl(GPIO0_BASE + GPIO_BLINK_EN);
++    v &= ~(1 << pin);
++    writel(v, GPIO0_BASE + GPIO_BLINK_EN);
++}
++
++/* HDD bays description */
++
++enum disk_state {
++    DISK_ABSENT = 0,
++    DISK_PRESENT,
++    DISK_READY,
 +};
 +
-+static int ahci_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-+{
-+    struct ahci_device *ahci;
-+    void __iomem *mmio;
-+    int ret;
++struct rn102_disk_bay {
++    int gpio_detect;        /* input, active-low */
++    int gpio_power;         /* output */
++    int gpio_led;           /* output, active-low */
++    enum disk_state state;
++};
 +
-+    dev_info(&pdev->dev, "ahci: PCI probe %04x:%04x rev %02x\n",
-+         pdev->vendor, pdev->device, pdev->revision);
++#define RN102_NUM_DISK_BAYS 2
 +
-+    ret = pci_enable_device(pdev);
-+    if (ret)
-+        return ret;
++static struct rn102_disk_bay rn102_bays[RN102_NUM_DISK_BAYS] = {
++    { 12, 13, 15, DISK_ABSENT }, /* Bay 1, default to disk absent */
++    { 10, 11, 14, DISK_ABSENT }, /* Bay 2, default to disk absent */
++};
 +
-+    pci_set_master(pdev);
++static void setup_bays(void) {
++    pr_info("Early disk power-on...\n");
 +
-+    mmio = pci_iomap(pdev, 5);
-+    if (!mmio)
-+        return -ENODEV;
++    for (int i = 0; i < RN102_NUM_DISK_BAYS; i++) {
++        int present;
 +
-+    ahci = xzalloc(sizeof(*ahci));
-+    ahci->dev = &pdev->dev;
-+    ahci->mmio_base = mmio;
-+    pdev->dev.priv = ahci;
++        gpio0_set_input(rn102_bays[i].gpio_detect);
++        present = (gpio0_read(rn102_bays[i].gpio_detect) == 0);
 +
-+    ret = ahci_add_host(ahci);
-+    if (ret) {
-+        free(ahci);
-+        pdev->dev.priv = NULL;
-+        return ret;
++        gpio0_set_output(rn102_bays[i].gpio_power);
++
++        if (present) {
++            pr_info("Bay %d: disk detected, powering on\n", i + 1);
++            gpio0_blink(rn102_bays[i].gpio_led, 500, 500);
++            gpio0_write(rn102_bays[i].gpio_power, 1);
++            rn102_bays[i].state = DISK_PRESENT;
++        } else {
++            pr_info("Bay %d empty\n", i + 1);
++            gpio0_write(rn102_bays[i].gpio_led, 0);
++            gpio0_write(rn102_bays[i].gpio_power, 0);
++            rn102_bays[i].state = DISK_ABSENT;
++        }
 +    }
++}
++
++/*
++ * After waiting for present disks spinup,
++ * we ask explicitly for corresponding ATA devices probe.
++ */
++static void init_disks(void) {
++    pr_info("Waiting for disks spinup...\n");
++    mdelay(8000);
++
++    pr_info("Detecting ATA devices:\n");
++    for (int i = 0; i < RN102_NUM_DISK_BAYS; i++) {
++        char name[8];
++        struct device *dev;
++
++        if (rn102_bays[i].state != DISK_PRESENT) {
++            gpio0_write(rn102_bays[i].gpio_power, 0);
++            gpio0_blink_disable(rn102_bays[i].gpio_led);
++            gpio0_write(rn102_bays[i].gpio_led, 0);
++            continue;
++        }
++
++        snprintf(name, sizeof(name), "ata%d", i);
++
++        dev = get_device_by_name(name);
++        if (!dev) {
++            pr_warn("%s not found\n", name);
++            gpio0_write(rn102_bays[i].gpio_power, 0);
++            gpio0_blink(rn102_bays[i].gpio_led, 1000, 1000);
++            continue;
++        }
++
++        pr_info("Connecting %s to disk %d\n", name, i + 1);
++        device_detect(dev);
++        gpio0_blink_disable(rn102_bays[i].gpio_led);
++        gpio0_write(rn102_bays[i].gpio_led, 1);
++        rn102_bays[i].state = DISK_READY;
++    }
++}
++
++/*
++ *  USB0 → DRAM MBUS windows
++ *
++ * frontal USB 2.0 port of RN102 is connected to the SoC usb0.
++ * Here we enable MBUS windows toward all the DRAM using
++ * informations already gathered by mvebu_mbus_dram_info().
++ */
++// #define USB0_BRIDGE_BASE   (ARMADA_370_XP_USB_BASE + 0x300)
++// #define USB_WIN_CTRL(n)    (USB0_BRIDGE_BASE + 0x20 + (n) * 0x10)
++// #define USB_WIN_BASE(n)    (USB0_BRIDGE_BASE + 0x24 + (n) * 0x10)
++
++static void setup_usb0(void) {
++    // /* Window0: 512MB @ 0x00000000 */
++    // writel(0x00000000, USB_WIN_BASE(0));
++    // writel(0x1FFF0E01, USB_WIN_CTRL(0));
++
++    // /* Window1: 512MB @ 0xB0000000 (placeholder) */
++    // writel(0xB0000000, USB_WIN_BASE(1));
++    // writel(0x1FFE841, USB_WIN_CTRL(1));
++
++    writel(0x2, 0xf1051404);    /* enable force suspend */
++    u32 pwr = readl(0xf1051400);
++    pwr &= ~BIT(2);
++    writel(pwr, 0xf1051400);    /* force SUSPENDM=0 */
++}
++
++
++/* Early init: setup specific hardware without blocking initialization. */
++static int rn102_early_poweron(void)
++{
++    writel(0xC6, 0xf1020228); /* CFU configuration */
++    setup_usb0();
++    setup_bays();
 +
 +    return 0;
 +}
++postcore_initcall(rn102_early_poweron);
 +
- struct ahci_cmd_hdr {
- 	u32	opts;
- 	u32	status;
-@@ -148,45 +198,63 @@ static int ahci_fill_sg(struct ahci_port *ahci_port, dma_addr_t buf_dma, int buf
- 	return sg_count;
- }
- 
--static int ahci_io(struct ahci_port *ahci_port, u8 *fis, int fis_len, void *rbuf,
--		const void *wbuf, int buf_len)
-+static int ahci_io(struct ahci_port *ahci_port, u8 *fis, int fis_len,
-+                   void *rbuf, const void *wbuf, int buf_len)
- {
--	u32 opts;
--	int sg_count;
--	int ret;
--	void *buf;
--	dma_addr_t buf_dma;
--	enum dma_data_direction dma_dir;
-+    u32 opts;
-+    int sg_count = 0;
-+    int ret;
-+    void *buf = NULL;
-+    dma_addr_t buf_dma = 0;
-+    enum dma_data_direction dma_dir = DMA_NONE;
- 
--	if (!ahci_link_ok(ahci_port, 1))
--		return -EIO;
-+    if (!ahci_link_ok(ahci_port, 1))
-+        return -EIO;
- 
--	if (wbuf) {
--		buf = (void *)wbuf;
--		dma_dir = DMA_TO_DEVICE;
--	} else {
--		buf = rbuf;
--		dma_dir = DMA_FROM_DEVICE;
--	}
-+    if (buf_len > 0) {
-+        if (wbuf) {
-+            buf = (void *)wbuf;
-+            dma_dir = DMA_TO_DEVICE;
-+        } else {
-+            buf = rbuf;
-+            dma_dir = DMA_FROM_DEVICE;
-+        }
- 
--	buf_dma = dma_map_single(ahci_port->ahci->dev, buf, buf_len, dma_dir);
-+        buf_dma = dma_map_single(ahci_port->ahci->dev, buf, buf_len, dma_dir);
-+        sg_count = ahci_fill_sg(ahci_port, buf_dma, buf_len);
-+    }
- 
--	memcpy(ahci_port->cmd_tbl, fis, fis_len);
-+    memcpy(ahci_port->cmd_tbl, fis, fis_len);
- 
--	sg_count = ahci_fill_sg(ahci_port, buf_dma, buf_len);
--	opts = (fis_len >> 2) | (sg_count << 16);
--	if (wbuf)
--		opts |= CMD_LIST_OPTS_WRITE;
--	ahci_fill_cmd_slot(ahci_port, opts);
-+    opts = (fis_len >> 2) | (sg_count << 16);
-+    if (wbuf && buf_len > 0)
-+        opts |= CMD_LIST_OPTS_WRITE;
-+    ahci_fill_cmd_slot(ahci_port, opts);
- 
--	ahci_port_write_f(ahci_port, PORT_CMD_ISSUE, 1);
-+    ahci_port_write_f(ahci_port, PORT_CMD_ISSUE, 1);
- 
--	ret = wait_on_timeout(WAIT_DATAIO,
--			(ahci_port_read(ahci_port, PORT_CMD_ISSUE) & 0x1) == 0);
-+    ret = wait_on_timeout(WAIT_DATAIO,
-+            (ahci_port_read(ahci_port, PORT_CMD_ISSUE) & 0x1) == 0);
- 
--	dma_unmap_single(ahci_port->ahci->dev, buf_dma, buf_len, dma_dir);
-+    if (buf_len > 0)
-+        dma_unmap_single(ahci_port->ahci->dev, buf_dma, buf_len, dma_dir);
- 
--	return ret;
-+    return ret;
++static int rn102_init(void)
++{
++    init_disks();
++
++    return 0;
++}
++device_initcall(rn102_init);
++
++
++/* BareBox Update handlers */
++static int rn102_register_bbu(void)
++{
++    bbu_register_std_file_update("bootloader", 0,
++                     "/dev/nand0.bootloader",
++                     filetype_kwbimage_v1);
++
++    bbu_register_std_file_update("kernel", 0,
++                     "/dev/nand0.kernel",
++                     filetype_arm_zimage);
++
++    bbu_register_std_file_update("minirootfs", 0,
++                     "/dev/nand0.minirootfs",
++                     filetype_gzip);
++
++    return 0;
++}
++late_initcall(rn102_register_bbu);
+diff --git a/arch/arm/boards/netgear-rn102/lowlevel.c b/arch/arm/boards/netgear-rn102/lowlevel.c
+new file mode 100644
+index 0000000000..af856b0710
+--- /dev/null
++++ b/arch/arm/boards/netgear-rn102/lowlevel.c
+@@ -0,0 +1,58 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include <common.h>
++#include <asm/barebox-arm.h>
++#include <mach/mvebu/lowlevel.h>
++#include <mach/mvebu/barebox-arm-head.h>
++#include <mach/mvebu/armada-370-xp-regs.h>
++
++extern char __dtb_armada_370_rn102_bb_start[];
++
++#define INTERNAL_REG_BASE_ADDR	0x20080
++
++static __always_inline void mvebu_remap_registers(void)
++{
++	void __iomem *base = mvebu_get_initial_int_reg_base();
++
++	writel(MVEBU_REMAP_INT_REG_BASE, base + INTERNAL_REG_BASE_ADDR);
 +}
 +
-+static int ahci_ata_nodata(struct ahci_port *ahci, u8 command, u8 feature)
++/*
++ * NOTE:
++ * armada_370_xp_barebox_entry() cannot be used here because the
++ * upstream SDRAM size detection for Armada 370-XP misinterprets
++ * the DDR_SIZE_CSn registers on this board and reports an incorrect
++ * memory size (256MB instead of 512MB on RN102).
++ *
++ * Until the generic detection code is fixed, we compute the SDRAM
++ * size manually using the DDR_SIZE_CSn values.
++ */
++static unsigned long armada_370_xp_memory_find(void)
 +{
-+    u8 fis[20] = {
-+        0x27,        /* Host to device FIS */
-+        1 << 7,      /* Command FIS */
-+        command,     /* Command */
-+        feature,     /* Features */
++	unsigned long mem_size = 0;
++
++	for (int cs = 0; cs < 4; cs++) {
++		u32 ctrl = readl(ARMADA_370_XP_SDRAM_BASE + DDR_SIZE_CSn(cs));
++
++		/* Skip non-enabled CS */
++		if ((ctrl & DDR_SIZE_ENABLED) != DDR_SIZE_ENABLED)
++			continue;
++
++		mem_size += (ctrl | ~DDR_SIZE_MASK) + 1;
++	}
++
++	return mem_size;
++}
++
++ENTRY_FUNCTION_MVEBU(start_netgear_rn102, r0, r1, r2)
++{
++    void *fdt;
++
++    arm_cpu_lowlevel_init();
++	
++	fdt = __dtb_armada_370_rn102_bb_start +
++		get_runtime_offset();
++
++	mvebu_remap_registers();
++	barebox_arm_entry(0, armada_370_xp_memory_find(), fdt);
++}
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index a84e09e388..5d1b21b615 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -51,6 +51,7 @@ lwl-$(CONFIG_MACH_MARVELL_ARMADA_XP_GP) += armada-xp-gp-bb.dtb.o
+ lwl-$(CONFIG_MACH_MARVELL_ARMADA_XP_DB) += armada-xp-db-bb.dtb.o
+ lwl-$(CONFIG_MACH_MX28EVK) += imx28-evk.dtb.o
+ lwl-$(CONFIG_MACH_MYIRTECH_X335X) += am335x-myirtech-myd.dtb.o am335x-myirtech-myd-mlo.dtb.o
++lwl-$(CONFIG_MACH_NETGEAR_RN102) += armada-370-rn102-bb.dtb.o
+ lwl-$(CONFIG_MACH_NETGEAR_RN104) += armada-370-rn104-bb.dtb.o
+ lwl-$(CONFIG_MACH_NETGEAR_RN2120) += armada-xp-rn2120-bb.dtb.o
+ lwl-$(CONFIG_MACH_NITROGEN6) += imx6q-nitrogen6x.dtb.o imx6dl-nitrogen6x.dtb.o imx6qp-nitrogen6_max.dtb.o
+diff --git a/arch/arm/dts/armada-370-rn102-bb.dts b/arch/arm/dts/armada-370-rn102-bb.dts
+new file mode 100644
+index 0000000000..d82d4cd6ef
+--- /dev/null
++++ b/arch/arm/dts/armada-370-rn102-bb.dts
+@@ -0,0 +1,80 @@
++/*
++ * Barebox specific DT overlay for Netgear ReadyNAS 102
++ */
++
++#include "arm/marvell/armada-370-netgear-rn102.dts"
++
++/ {
++    chosen {
++        stdout-path = &uart0;
 +    };
 +
-+    if (!ahci_link_ok(ahci, 0))
-+        return -ENODEV;
++    aliases {
++        state = &state_nand;
++    };
 +
-+    return ahci_io(ahci, fis, sizeof(fis), NULL, NULL, 0);
- }
- 
- /*
-@@ -272,152 +340,88 @@ static int ahci_write(struct ata_port *ata, const void *buf, sector_t block,
- 
- static int ahci_init_port(struct ahci_port *ahci_port)
- {
--	u32 val, cmd;
--	void *mem;
--	dma_addr_t mem_dma;
--	int ret;
--
--	/* make sure port is not active */
--	val = ahci_port_read(ahci_port, PORT_CMD);
--	if (val & (PORT_CMD_LIST_ON | PORT_CMD_FIS_ON | PORT_CMD_FIS_RX | PORT_CMD_START)) {
--		ahci_port_debug(ahci_port, "Port is active. Deactivating.\n");
--		val &= ~(PORT_CMD_LIST_ON | PORT_CMD_FIS_ON |
--			 PORT_CMD_FIS_RX | PORT_CMD_START);
--		ahci_port_write(ahci_port, PORT_CMD, val);
--
--		/*
--		 * spec says 500 msecs for each bit, so
--		 * this is slightly incorrect.
--		 */
--		mdelay(500);
--	}
--
--	mem = dma_alloc_coherent(DMA_DEVICE_BROKEN,
--				 AHCI_PORT_PRIV_DMA_SZ, &mem_dma);
--	if (!mem) {
--		return -ENOMEM;
--	}
--
--	/*
--	 * First item in chunk of DMA memory: 32-slot command list,
--	 * 32 bytes each in size
--	 */
--	ahci_port->cmd_slot = mem;
--	ahci_port->cmd_slot_dma = mem_dma;
--
--	ahci_port_debug(ahci_port, "cmd_slot = 0x%p (0x%pad)\n",
--			ahci_port->cmd_slot, &ahci_port->cmd_slot_dma);
--
--	/*
--	 * Second item: Received-FIS area
--	 */
--	ahci_port->rx_fis = mem + AHCI_CMD_LIST_SZ;
--	ahci_port->rx_fis_dma = mem_dma + AHCI_CMD_LIST_SZ;
--
--	/*
--	 * Third item: data area for storing a single command
--	 * and its scatter-gather table
--	 */
--	ahci_port->cmd_tbl = mem + AHCI_CMD_LIST_SZ + AHCI_RX_FIS_SZ;
--	ahci_port->cmd_tbl_dma = mem_dma + AHCI_CMD_LIST_SZ + AHCI_RX_FIS_SZ;
--
--	ahci_port_debug(ahci_port, "cmd_tbl = 0x%p (0x%pad)\n",
--			ahci_port->cmd_tbl, &ahci_port->cmd_tbl_dma);
--
--	ahci_port->cmd_tbl_sg = ahci_port->cmd_tbl + AHCI_CMD_TBL_HDR_SZ;
--
--	ahci_port_write_f(ahci_port, PORT_LST_ADDR, lower_32_bits(ahci_port->cmd_slot_dma));
--	if (ahci_port->ahci->cap & HOST_CAP_64)
--		ahci_port_write_f(ahci_port, PORT_LST_ADDR_HI, upper_32_bits(ahci_port->cmd_slot_dma));
--	ahci_port_write_f(ahci_port, PORT_FIS_ADDR, lower_32_bits(ahci_port->rx_fis_dma));
--	if (ahci_port->ahci->cap & HOST_CAP_64)
--		ahci_port_write_f(ahci_port, PORT_FIS_ADDR_HI, upper_32_bits(ahci_port->rx_fis_dma));
--
--	/*
--	 * Add the spinup command to whatever mode bits may
--	 * already be on in the command register.
--	 */
--	cmd = ahci_port_read(ahci_port, PORT_CMD);
--	cmd |= PORT_CMD_FIS_RX;
--	cmd |= PORT_CMD_SPIN_UP;
--	cmd |= PORT_CMD_ICC_ACTIVE;
--	ahci_port_write_f(ahci_port, PORT_CMD, cmd);
--
--	mdelay(10);
--
--	cmd = ahci_port_read(ahci_port, PORT_CMD);
--	cmd |= PORT_CMD_START;
--	ahci_port_write_f(ahci_port, PORT_CMD, cmd);
--
--	/*
--	 * Bring up SATA link.
--	 * SATA link bringup time is usually less than 1 ms; only very
--	 * rarely has it taken between 1-2 ms. Never seen it above 2 ms.
--	 */
--	ret = wait_on_timeout(WAIT_LINKUP,
--			(ahci_port_read(ahci_port, PORT_SCR_STAT) & PORT_SCR_STAT_DET) == 0x3);
--	if (ret) {
--		ahci_port_info(ahci_port, "SATA link timeout\n");
--		ret = -ETIMEDOUT;
--		goto err_init;
--	}
--
--	ahci_port_info(ahci_port, "SATA link ok\n");
--
--	/* Clear error status */
--	val = ahci_port_read(ahci_port, PORT_SCR_ERR);
--	if (val)
--		ahci_port_write(ahci_port, PORT_SCR_ERR, val);
--
--	ahci_port_info(ahci_port, "Spinning up device...\n");
--
--	ret = wait_on_timeout(WAIT_SPINUP,
--			((ahci_port_read(ahci_port, PORT_TFDATA) &
--			 (ATA_STATUS_BUSY | ATA_STATUS_DRQ)) == 0) ||
--			((ahci_port_read(ahci_port, PORT_SCR_STAT) &
--			 PORT_SCR_STAT_DET) == 1));
--	if (ret) {
--		ahci_port_info(ahci_port, "timeout.\n");
--		ret = -ENODEV;
--		goto err_init;
--	}
--
--	if ((ahci_port_read(ahci_port, PORT_SCR_STAT) & PORT_SCR_STAT_DET) == 1) {
--		ahci_port_info(ahci_port, "down.\n");
--		ret = -ENODEV;
--		goto err_init;
--	}
--
--	ahci_port_info(ahci_port, "ok.\n");
--
--	val = ahci_port_read(ahci_port, PORT_SCR_ERR);
--
--	ahci_port_write(ahci_port, PORT_SCR_ERR, val);
--
--	/* ack any pending irq events for this port */
--	val = ahci_port_read(ahci_port, PORT_IRQ_STAT);
--	if (val)
--		ahci_port_write(ahci_port, PORT_IRQ_STAT, val);
--
--	ahci_iowrite(ahci_port->ahci, HOST_IRQ_STAT, 1 << ahci_port->num);
--
--	/* set irq mask (enables interrupts) */
--	ahci_port_write(ahci_port, PORT_IRQ_MASK, DEF_PORT_IRQ);
--
--	/* register linkup ports */
--	val = ahci_port_read(ahci_port, PORT_SCR_STAT);
--
--	ahci_port_debug(ahci_port, "status: 0x%08x\n", val);
--
--	if ((val & PORT_SCR_STAT_DET) == 0x3)
--		return 0;
--
--	ret = -ENODEV;
--
--err_init:
--	dma_free_coherent(DMA_DEVICE_BROKEN,
--			  mem, mem_dma, AHCI_PORT_PRIV_DMA_SZ);
--	return ret;
-+    u32 cmd, val;
-+    void *mem;
-+    dma_addr_t mem_dma;
-+    int ret;
++    environment {
++        compatible = "barebox,environment";
++        device-path = &nand_controller, "partname:environment";
++    };
 +
-+    /* 1. Disable port (clear ST, FRE) */
-+    cmd = ahci_port_read(ahci_port, PORT_CMD);
-+    cmd &= ~(PORT_CMD_START | PORT_CMD_FIS_RX | PORT_CMD_FIS_ON |
-+             PORT_CMD_LIST_ON | PORT_CMD_SPIN_UP);
-+    ahci_port_write_f(ahci_port, PORT_CMD, cmd);
++    state_nand: nand_state_memory {
++        #address-cells = <1>;
++        #size-cells = <1>;
++        compatible = "barebox,state";
++        magic = <0xab67421f>;
++        backend-type = "raw";
++        backend = <&backend_state_nand>;
++        backend-storage-type = "circular";
++        backend-stridesize = <32>;
 +
-+    /* Wait for FR=0 and CR=0 */
-+    ret = wait_on_timeout(SECOND,
-+        !(ahci_port_read(ahci_port, PORT_CMD) &
-+          (PORT_CMD_FIS_ON | PORT_CMD_LIST_ON)));
-+    if (ret)
-+        dev_warn(ahci_port->ahci->dev, "timeout waiting for port disable\n");
-+
-+    /* 2. Clear errors */
-+    val = ahci_port_read(ahci_port, PORT_SCR_ERR);
-+    if (val)
-+        ahci_port_write(ahci_port, PORT_SCR_ERR, val);
-+
-+    /* 3. COMRESET: write DET=1 then DET=0 */
-+    ahci_port_write(ahci_port, PORT_SCR_CTL, 1);
-+    udelay(1000);
-+    ahci_port_write(ahci_port, PORT_SCR_CTL, 0);
-+
-+    /* 4. Wait for PHY ready */
-+    ret = wait_on_timeout(SECOND,
-+        (ahci_port_read(ahci_port, PORT_SCR_STAT) & PORT_SCR_STAT_DET) == 0x3);
-+    if (ret) {
-+        ahci_port_info(ahci_port, "PHY not ready after COMRESET\n");
-+        return -ETIMEDOUT;
-+    }
-+
-+    /* 5. Allocate DMA memory (unchanged) */
-+    mem = dma_alloc_coherent(DMA_DEVICE_BROKEN,
-+                 AHCI_PORT_PRIV_DMA_SZ, &mem_dma);
-+    if (!mem)
-+        return -ENOMEM;
-+
-+    ahci_port->cmd_slot = mem;
-+    ahci_port->cmd_slot_dma = mem_dma;
-+    ahci_port->rx_fis = mem + AHCI_CMD_LIST_SZ;
-+    ahci_port->rx_fis_dma = mem_dma + AHCI_CMD_LIST_SZ;
-+    ahci_port->cmd_tbl = mem + AHCI_CMD_LIST_SZ + AHCI_RX_FIS_SZ;
-+    ahci_port->cmd_tbl_dma = mem_dma + AHCI_CMD_LIST_SZ + AHCI_RX_FIS_SZ;
-+    ahci_port->cmd_tbl_sg = ahci_port->cmd_tbl + AHCI_CMD_TBL_HDR_SZ;
-+
-+    /* 6. Program command list + FIS base addresses */
-+    ahci_port_write_f(ahci_port, PORT_LST_ADDR,
-+        lower_32_bits(ahci_port->cmd_slot_dma));
-+    if (ahci_port->ahci->cap & HOST_CAP_64)
-+        ahci_port_write_f(ahci_port, PORT_LST_ADDR_HI,
-+            upper_32_bits(ahci_port->cmd_slot_dma));
-+
-+    ahci_port_write_f(ahci_port, PORT_FIS_ADDR,
-+        lower_32_bits(ahci_port->rx_fis_dma));
-+    if (ahci_port->ahci->cap & HOST_CAP_64)
-+        ahci_port_write_f(ahci_port, PORT_FIS_ADDR_HI,
-+            upper_32_bits(ahci_port->rx_fis_dma));
-+
-+    /* 7. Enable FIS receive engine */
-+    cmd = ahci_port_read(ahci_port, PORT_CMD);
-+    cmd |= PORT_CMD_FIS_RX;
-+    ahci_port_write_f(ahci_port, PORT_CMD, cmd);
-+
-+    /* 8. Enable port start */
-+    cmd |= PORT_CMD_START;
-+    ahci_port_write_f(ahci_port, PORT_CMD, cmd);
-+
-+    /* 9. Wait for device ready (TFDATA not BUSY) */
-+    ret = wait_on_timeout(WAIT_SPINUP,
-+        !(ahci_port_read(ahci_port, PORT_TFDATA) &
-+          (ATA_STATUS_BUSY | ATA_STATUS_DRQ)));
-+    if (ret) {
-+        ahci_port_info(ahci_port, "device not ready\n");
-+        return -ENODEV;
-+    }
-+
-+    return 0;
- }
- 
- static int ahci_port_start(struct ata_port *ata_port)
-@@ -441,49 +445,12 @@ static int ahci_port_start(struct ata_port *ata_port)
- }
- 
- static struct ata_port_operations ahci_ops = {
--	.init = ahci_port_start,
--	.read_id = ahci_read_id,
--	.read = ahci_read,
--	.write = ahci_write,
-+    .init       = ahci_port_start,
-+    .read_id    = ahci_read_id,
-+    .read       = ahci_read,
-+    .write      = ahci_write,
- };
- 
--#if 0
--/*
-- * In the general case of generic rotating media it makes sense to have a
-- * flush capability. It probably even makes sense in the case of SSDs because
-- * one cannot always know for sure what kind of internal cache/flush mechanism
-- * is embodied therein. At first it was planned to invoke this after the last
-- * write to disk and before rebooting. In practice, knowing, a priori, which
-- * is the last write is difficult. Because writing to the disk in u-boot is
-- * very rare, this flush command will be invoked after every block write.
-- */
--static int ata_io_flush(u8 port)
--{
--	u8 fis[20];
--	struct ahci_ioports *pp = &(probe_ent->port[port]);
--	volatile u8 *port_mmio = (volatile u8 *)pp->port_mmio;
--	u32 cmd_fis_len = 5;	/* five dwords */
--
--	/* Preset the FIS */
--	memset(fis, 0, 20);
--	fis[0] = 0x27;		 /* Host to device FIS. */
--	fis[1] = 1 << 7;	 /* Command FIS. */
--	fis[2] = ATA_CMD_FLUSH_EXT;
--
--	memcpy((unsigned char *)pp->cmd_tbl, fis, 20);
--	ahci_fill_cmd_slot(pp, cmd_fis_len);
--	mywritel_with_flush(1, port_mmio + PORT_CMD_ISSUE);
--
--	if (waiting_for_cmd_completed(port_mmio + PORT_CMD_ISSUE,
--			WAIT_MS_FLUSH, 0x1)) {
--		debug("scsi_ahci: flush command timeout on port %d.\n", port);
--		return -EIO;
--	}
--
--	return 0;
--}
--#endif
--
- void ahci_print_info(struct ahci_device *ahci)
- {
- 	u32 vers, cap, cap2, impl, speed;
-@@ -570,73 +537,71 @@ static int ahci_detect(struct device *dev)
- 
- int ahci_add_host(struct ahci_device *ahci)
- {
--	u32 tmp, cap_save;
--	int n_ports, i, ret;
--
--	ahci->host_flags = ATA_FLAG_SATA
--				| ATA_FLAG_NO_LEGACY
--				| ATA_FLAG_MMIO
--				| ATA_FLAG_PIO_DMA
--				| ATA_FLAG_NO_ATAPI;
--	ahci->pio_mask = 0x1f;
--	ahci->udma_mask = 0x7f;	/* FIXME: assume to support UDMA6 */
--
--	ahci_debug(ahci, "ahci_host_init: start\n");
--
--	cap_save = ahci_ioread(ahci, HOST_CAP);
--	cap_save &= (HOST_CAP_SMPS | HOST_CAP_SPM);
--	cap_save |= HOST_CAP_SSS;  /* Staggered Spin-up. Not needed. */
--
--	/* global controller reset */
--	tmp = ahci_ioread(ahci, HOST_CTL);
--	if ((tmp & HOST_RESET) == 0)
--		ahci_iowrite_f(ahci, HOST_CTL, tmp | HOST_RESET);
--
--	/*
--	 * reset must complete within 1 second, or
--	 * the hardware should be considered fried.
--	 */
--	ret = wait_on_timeout(SECOND, (ahci_ioread(ahci, HOST_CTL) & HOST_RESET) == 0);
--	if (ret) {
--		ahci_debug(ahci, "controller reset failed (0x%x)\n", tmp);
--		return -ENODEV;
--	}
--
--	ahci_iowrite_f(ahci, HOST_CTL, HOST_AHCI_EN);
--	ahci_iowrite(ahci, HOST_CAP, cap_save);
--	ahci_iowrite_f(ahci, HOST_PORTS_IMPL, 0xf);
--
--	ahci->cap = ahci_ioread(ahci, HOST_CAP);
--	ahci->port_map = ahci_ioread(ahci, HOST_PORTS_IMPL);
--	ahci->n_ports = (ahci->cap & HOST_CAP_NP) + 1;
--
--	ahci_debug(ahci, "cap 0x%x  port_map 0x%x  n_ports %d\n",
--	      ahci->cap, ahci->port_map, ahci->n_ports);
--
--	n_ports = max_t(int, ahci->n_ports, fls(ahci->port_map));
--
--	for (i = 0; i < n_ports; i++) {
--		struct ahci_port *ahci_port = &ahci->ports[i];
--
--		if (!(ahci->port_map & (1 << i)))
--			continue;
--
--		ahci_port->num = i;
--		ahci_port->ahci = ahci;
--		ahci_port->ata.dev = ahci->dev;
--		ahci_port->port_mmio = ahci_port_base(ahci->mmio_base, i);
--		ahci_port->ata.ops = &ahci_ops;
--		ahci_port->ata.ahci = true;
--		ata_port_register(&ahci_port->ata);
--	}
--
--	tmp = ahci_ioread(ahci, HOST_CTL);
--	ahci_iowrite(ahci, HOST_CTL, tmp | HOST_IRQ_EN);
--	tmp = ahci_ioread(ahci, HOST_CTL);
--
--	ahci->dev->detect = ahci_detect;
--
--	return 0;
-+    u32 tmp;
-+    int n_ports, i, ret;
-+
-+    ahci->host_flags = ATA_FLAG_SATA
-+                | ATA_FLAG_NO_LEGACY
-+                | ATA_FLAG_MMIO
-+                | ATA_FLAG_PIO_DMA
-+                | ATA_FLAG_NO_ATAPI;
-+    ahci->pio_mask = 0x1f;
-+    ahci->udma_mask = 0x7f; /* FIXME: assume to support UDMA6 */
-+
-+    ahci_debug(ahci, "ahci_host_init: start\n");
-+
-+    /*
-+     * Global controller reset: forziamo sempre il bit HOST_RESET,
-+     * come fa il kernel Linux, e aspettiamo che torni a 0.
-+     */
-+    tmp = ahci_ioread(ahci, HOST_CTL);
-+    ahci_iowrite_f(ahci, HOST_CTL, tmp | HOST_RESET);
-+
-+    ret = wait_on_timeout(SECOND,
-+                  (ahci_ioread(ahci, HOST_CTL) & HOST_RESET) == 0);
-+    if (ret) {
-+        ahci_debug(ahci, "controller reset failed (HOST_CTL=0x%x)\n",
-+               ahci_ioread(ahci, HOST_CTL));
-+        return -ENODEV;
-+    }
-+
-+
-+    tmp = ahci_ioread(ahci, HOST_CTL);
-+    tmp |= HOST_AHCI_EN;
-+    ahci_iowrite_f(ahci, HOST_CTL, tmp);
-+
-+    ahci->cap = ahci_ioread(ahci, HOST_CAP);
-+    ahci->port_map = ahci_ioread(ahci, HOST_PORTS_IMPL);
-+    ahci->n_ports = (ahci->cap & HOST_CAP_NP) + 1;
-+
-+    ahci_debug(ahci, "cap 0x%x  port_map 0x%x  n_ports %d\n",
-+           ahci->cap, ahci->port_map, ahci->n_ports);
-+
-+    n_ports = max_t(int, ahci->n_ports, fls(ahci->port_map));
-+
-+    for (i = 0; i < n_ports; i++) {
-+        struct ahci_port *ahci_port = &ahci->ports[i];
-+
-+        if (!(ahci->port_map & (1 << i)))
-+            continue;
-+
-+        ahci_port->num = i;
-+        ahci_port->ahci = ahci;
-+        ahci_port->ata.dev = ahci->dev;
-+        ahci_port->port_mmio = ahci_port_base(ahci->mmio_base, i);
-+        ahci_port->ata.ops = &ahci_ops;
-+        ahci_port->ata.ahci = true;
-+        ata_port_register(&ahci_port->ata);
-+    }
-+
-+    /* enable HBA level interrupts */
-+    tmp = ahci_ioread(ahci, HOST_CTL);
-+    ahci_iowrite(ahci, HOST_CTL, tmp | HOST_IRQ_EN);
-+
-+    ahci->dev->detect = ahci_detect;
-+	list_add(&ahci->list, &ahci_devices);
-+
-+    return 0;
- }
- 
- static int ahci_probe(struct device *dev)
-@@ -665,6 +630,124 @@ static int ahci_probe(struct device *dev)
- 	return ret;
- }
- 
-+/* -------------------------------------------------------------------------- */
-+/*                       AHCI shutdown helpers (kernel-like)                  */
-+/* -------------------------------------------------------------------------- */
-+
-+/* Stop DMA engine (clear START, wait LIST_ON=0) */
-+static int ahci_stop_engine(struct ahci_port *port)
-+{
-+    u32 cmd;
-+
-+    cmd = ahci_port_read(port, PORT_CMD);
-+
-+    /* Already stopped? */
-+    if (!(cmd & (PORT_CMD_START | PORT_CMD_LIST_ON)))
-+        return 0;
-+
-+    /* Clear START */
-+    cmd &= ~PORT_CMD_START;
-+    ahci_port_write_f(port, PORT_CMD, cmd);
-+
-+    /* Wait for LIST_ON to clear */
-+    return wait_on_timeout(500 * MSECOND,
-+        !(ahci_port_read(port, PORT_CMD) & PORT_CMD_LIST_ON));
-+}
-+
-+/* Stop FIS receive engine (clear FIS_RX, wait FIS_ON=0) */
-+static int ahci_stop_fis_rx(struct ahci_port *port)
-+{
-+    u32 cmd;
-+
-+    cmd = ahci_port_read(port, PORT_CMD);
-+    cmd &= ~PORT_CMD_FIS_RX;
-+    ahci_port_write_f(port, PORT_CMD, cmd);
-+
-+    /* Wait for FIS_ON to clear */
-+    return wait_on_timeout(1000 * MSECOND,
-+        !(ahci_port_read(port, PORT_CMD) & PORT_CMD_FIS_ON));
-+}
-+
-+/* Stop all ports (libata_pci_shutdown_one equivalent) */
-+static void __maybe_unused ahci_shutdown_host(struct ahci_device *ahci)
-+{
-+    int i, n_ports;
-+
-+    n_ports = max_t(int, ahci->n_ports, fls(ahci->port_map));
-+
-+    for (i = 0; i < n_ports; i++) {
-+        struct ahci_port *port = &ahci->ports[i];
-+
-+        if (!(ahci->port_map & (1 << i)))
-+            continue;
-+
-+        /* Stop DMA engine */
-+        ahci_stop_engine(port);
-+
-+        /* Stop FIS receive engine */
-+        ahci_stop_fis_rx(port);
-+    }
-+}
-+
-+/* Issue FLUSH EXT + STANDBY IMMEDIATE */
-+static void ahci_port_shutdown(struct ahci_port *port)
-+{
-+    if (!port->cmd_tbl || !port->cmd_slot)
-+        return;
-+
-+    if (!ahci_link_ok(port, 0))
-+        return;
-+
-+    if (ahci_ata_nodata(port, ATA_CMD_FLUSH_EXT, 0))
-+        ahci_port_info(port, "FLUSH EXT failed\n");
-+
-+    if (ahci_ata_nodata(port, ATA_CMD_STANDBYNOW1, 0))
-+        ahci_port_info(port, "STANDBY IMMEDIATE failed\n");
-+}
-+
-+/* Full poweroff sequence */
-+static void ahci_poweroff(struct poweroff_handler *handler, unsigned long flags)
-+{
-+    struct ahci_device *ahci;
-+    int i, n_ports;
-+
-+    list_for_each_entry(ahci, &ahci_devices, list) {
-+
-+        if (!ahci->mmio_base)
-+            continue;
-+
-+        /* 1. FLUSH + STANDBY su tutte le porte attive */
-+        n_ports = max_t(int, ahci->n_ports, fls(ahci->port_map));
-+
-+        for (i = 0; i < n_ports; i++) {
-+            struct ahci_port *port = &ahci->ports[i];
-+
-+            if (!(ahci->port_map & (1 << i)))
-+                continue;
-+
-+            ahci_port_shutdown(port);
-+        }
-+
-+        /* 2. (opzionale) spegnere il controller dopo i comandi
-+         *    Se vuoi tenerlo, fallo SOLO dopo i comandi:
-+         *
-+         * ahci_shutdown_host(ahci);
-+         */
-+    }
-+}
-+
-+static struct poweroff_handler ahci_po_handler = {
-+    .poweroff = ahci_poweroff,
-+    .priority = 200,   /* più alto di gpio-poweroff */
++        variable@0 {
++            reg = <0x0 0x1>;
++            type = "uint8";
++            default = <0x1>;
++        };
++    };
 +};
 +
-+static int ahci_register_poweroff(void)
-+{
-+    poweroff_handler_register(&ahci_po_handler);
-+    return 0;
-+}
-+postcore_initcall(ahci_register_poweroff);
++&nand_controller {
++    compatible = "marvell,armada370-nand", "marvell,pxa3xx-nand";
++    status = "okay";
 +
- static __maybe_unused struct of_device_id ahci_dt_ids[] = {
- 	{
- 		.compatible = "calxeda,hb-ahci",
-@@ -674,6 +757,13 @@ static __maybe_unused struct of_device_id ahci_dt_ids[] = {
- };
- MODULE_DEVICE_TABLE(of, ahci_dt_ids);
- 
-+static struct pci_driver ahci_pci_driver = {
-+	.name = "ahci-pci",
-+	.id_table = ahci_pci_tbl,
-+	.probe = ahci_pci_probe,
++    nand-rb = <0>;
++    marvell,nand-keep-config;
++    nand-on-flash-bbt;
++
++    nand-ecc-strength = <4>;
++    nand-ecc-step-size = <512>;
++
++    partitions {
++        compatible = "fixed-partitions";
++        #address-cells = <1>;
++        #size-cells = <1>;
++
++        partition@0 {
++            label = "bootloader";
++            reg = <0x0 0x400000>;
++        };
++
++        partition@400000 {
++            label = "environment";
++            reg = <0x400000 0x80000>;
++        };
++
++        backend_state_nand: partition@480000 {
++            label = "state";
++            reg = <0x480000 0x80000>;
++        };
++
++        partition@500000 {
++            label = "kernel";
++            reg = <0x500000 0x1400000>;
++        };
++
++        partition@1900000 {
++            label = "minirootfs";
++            reg = <0x1900000 0x6000000>;
++        };
++    };
 +};
-+device_pci_driver(ahci_pci_driver);
+diff --git a/arch/arm/mach-mvebu/Kconfig b/arch/arm/mach-mvebu/Kconfig
+index ed1302af65..046d539656 100644
+--- a/arch/arm/mach-mvebu/Kconfig
++++ b/arch/arm/mach-mvebu/Kconfig
+@@ -37,6 +37,10 @@ config MACH_GLOBALSCALE_MIRABOX
+ 	bool "Globalscale Mirabox"
+ 	select ARCH_ARMADA_370
+ 
++config MACH_NETGEAR_RN102
++	bool "Netgear ReadyNAS 102"
++	select ARCH_ARMADA_370
 +
- static struct driver ahci_driver = {
- 	.name   = "ahci",
- 	.probe  = ahci_probe,
-diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
-index 196bde73c2..d2a19f4648 100644
---- a/drivers/ata/ahci.h
-+++ b/drivers/ata/ahci.h
-@@ -184,6 +184,7 @@ struct ahci_port {
+ config MACH_NETGEAR_RN104
+ 	bool "Netgear ReadyNAS 104"
+ 	select ARCH_ARMADA_370
+diff --git a/dts/src/arm/marvell/armada-370-netgear-rn102.dts b/dts/src/arm/marvell/armada-370-netgear-rn102.dts
+index 079b37cf14..f1bad2a233 100644
+--- a/dts/src/arm/marvell/armada-370-netgear-rn102.dts
++++ b/dts/src/arm/marvell/armada-370-netgear-rn102.dts
+@@ -15,6 +15,10 @@ / {
+ 	model = "NETGEAR ReadyNAS 102";
+ 	compatible = "netgear,readynas-102", "marvell,armada370", "marvell,armada-370-xp";
+ 
++	aliases {
++		state = &state_nand;
++    };
++
+ 	chosen {
+ 		stdout-path = "serial0:115200n8";
+ 	};
+@@ -54,7 +58,7 @@ ethernet@74000 {
+ 				phy-mode = "rgmii-id";
+ 			};
+ 
+-			usb@50000 {
++            usb@50000 {
+ 				status = "okay";
+ 			};
+ 
+@@ -153,10 +157,35 @@ backup-button {
+ 
+ 	gpio-poweroff {
+ 		compatible = "gpio-poweroff";
+-		pinctrl-0 = <&poweroff>;
++		pinctrl-0 = <&poweroff_pin>;
+ 		pinctrl-names = "default";
+ 		gpios = <&gpio0 8 GPIO_ACTIVE_LOW>;
+ 	};
++
++	/* configure nand partition to store barebox environment */
++	environment {
++      compatible = "barebox,environment";
++      device-path = &nand_controller, "partname:environment";
++	};
++
++	/* configure nand partition to store barebox-state backend */
++	state_nand: nand_state_memory {
++        #address-cells = <1>;
++        #size-cells = <1>;
++        compatible = "barebox,state";
++        magic = <0xab67421f>;
++        backend-type = "raw";
++        backend = <&backend_state_nand>;
++        backend-storage-type = "circular";
++		backend-stridesize = <32>;
++
++        
++        variable@0 {
++                reg = <0x0 0x1>;
++                type ="uint8";
++                default = <0x1>;
++        };
++	};
  };
  
- struct ahci_device {
-+	struct list_head list;
- 	struct device		*dev;
- 	struct ahci_port	ports[AHCI_MAX_PORTS];
- 	u32			n_ports;
+ &pciec {
+@@ -219,58 +248,57 @@ reset_button_pin: reset-button-pin {
+ 		marvell,function = "gpio";
+ 	};
+ 
+-	poweroff: poweroff {
++	poweroff_pin: poweroff-pin {
+ 		marvell,pins = "mpp8";
+ 		marvell,function = "gpio";
+ 	};
+ };
+ 
+ &nand_controller {
++	compatible = "marvell,armada370-nand", "marvell,pxa3xx-nand";
+ 	status = "okay";
+ 
+-	nand@0 {
+-		reg = <0>;
+-		label = "pxa3xx_nand-0";
+-		nand-rb = <0>;
+-		marvell,nand-keep-config;
+-		nand-on-flash-bbt;
+-
+-		/* Use Hardware BCH ECC */
+-		nand-ecc-strength = <4>;
+-		nand-ecc-step-size = <512>;
+-
+-		partitions {
+-			compatible = "fixed-partitions";
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-
+-			partition@0 {
+-				label = "u-boot";
+-				reg = <0x0000000 0x180000>;  /* 1.5MB */
+-				read-only;
+-			};
++	label = <&nand_controller>;
++	nand-rb = <0>;
++	marvell,nand-keep-config;
++	nand-on-flash-bbt;
++	
++	/* Use Hardware BCH ECC */
++	nand-ecc-strength = <4>;
++	nand-ecc-step-size = <512>;
++
++	partitions {
++		compatible = "fixed-partitions";
++		#address-cells = <1>;
++		#size-cells = <1>;
++		
++		partition@0 {
++			label = "bootloader";
++			reg = <0x0 0x400000>;		 /* 4MB */
++			//read-only;
++		};
+ 
+-			partition@180000 {
+-				label = "u-boot-env";
+-				reg = <0x180000 0x20000>;    /* 128KB */
+-				read-only;
+-			};
++		partition@0x400000 {
++			label = "environment";
++			reg = <0x400000 0x80000>;    /* 0.5MB */
++			//read-only;
++		};
+ 
+-			partition@200000 {
+-				label = "uImage";
+-				reg = <0x0200000 0x600000>;    /* 6MB */
+-			};
++		backend_state_nand: partition@0x480000 {
++			label = "state";
++			reg = <0x480000 0x80000>;    /* 0.5MB */
++		};
+ 
+-			partition@800000 {
+-				label = "minirootfs";
+-				reg = <0x0800000 0x400000>;    /* 4MB */
+-			};
++		partition@0x500000 {
++			label = "kernel";
++			reg = <0x500000 0x1400000>;    /* 20MB */
++		};
+ 
+-			/* Last MB is for the BBT, i.e. not writable */
+-			partition@c00000 {
+-				label = "ubifs";
+-				reg = <0x0c00000 0x7400000>; /* 116MB */
+-			};
++		partition@0x1900000 {
++			label = "minirootfs";
++			reg = <0x1900000 0x6000000>;    /* 100MB */
+ 		};
++
++		/* Last MB is for the BBT, i.e. not writable */
+ 	};
+-};
++};
+\ No newline at end of file
+diff --git a/images/Makefile.mvebu b/images/Makefile.mvebu
+index 7c918cb9f1..1741f0e9a5 100644
+--- a/images/Makefile.mvebu
++++ b/images/Makefile.mvebu
+@@ -27,6 +27,16 @@ image-$(CONFIG_MACH_GLOBALSCALE_MIRABOX) += barebox-globalscale-mirabox.img
+ FILE_barebox-globalscale-mirabox-2nd.img = start_globalscale_mirabox.pblb
+ image-$(CONFIG_MACH_GLOBALSCALE_MIRABOX) += barebox-globalscale-mirabox-2nd.img
+ 
++BOOTSRC_start_netgear_rn102.pblb.mvebu1img = nand
++BINHDR_start_netgear_rn102.pblb.mvebu1img = $(board)/netgear-rn102/binary.0
++FLAGS_start_netgear_rn102.pblb.mvebu1img = -B 0x20000:1 -d 0x0 -e 0x0
++FILE_barebox-netgear-rn102.img = start_netgear_rn102.pblb.mvebu1img
++pblb-$(CONFIG_MACH_NETGEAR_RN102) += start_netgear_rn102
++image-$(CONFIG_MACH_NETGEAR_RN102) += barebox-netgear-rn102.img
++
++FILE_barebox-netgear-rn102-2nd.img = start_netgear_rn102.pblb
++image-$(CONFIG_MACH_NETGEAR_RN102) += barebox-netgear-rn102-2nd.img
++
+ FLAGS_start_netgear_rn104.pblb.mvebu1img = -d 0x600000 -e 0x6e0000
+ BOOTSRC_start_netgear_rn104.pblb.mvebu1img = nand
+ BINHDR_start_netgear_rn104.pblb.mvebu1img = $(board)/netgear-rn104/binary.0
 
 -- 
 2.47.3
