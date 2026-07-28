@@ -1,17 +1,17 @@
-Delivery-date: Tue, 28 Jul 2026 19:48:02 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Tue, 28 Jul 2026 19:48:03 +0200
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1woluM-003rrw-0B
+	id 1woluM-003rs7-1H
 	for lore@lore.pengutronix.de;
-	Tue, 28 Jul 2026 19:48:02 +0200
+	Tue, 28 Jul 2026 19:48:03 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id D9D5B2020AF
-	for <lore@pengutronix.de>; Tue, 28 Jul 2026 19:47:57 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 4B89320214E
+	for <lore@pengutronix.de>; Tue, 28 Jul 2026 19:47:58 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=Pr3QCXr9;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dgoTIRbq;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=FNgCPdED;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=drbktwY4;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -20,57 +20,57 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=YzE/8Hvjy9zZb6sMFoHpGZZfEkaxW4L1+e7YbvDaRB4=; b=Pr3QCXr9vWLloftyeKAu8XvMFZ
-	fBhL9GuNxmhDiXQnQo5P0MQMeeZsGls8QEstAN0UXFYcduAVnNNk+sAhtosxYMDuIP9FtllSYi0xs
-	cVwsvrD7vsi1ojZSTNGevTArrDD4p12UnuHoewrOF9hvDsimw/HInfJbI8IgNYyuQH2sn9dq999AD
-	M+gzFfLNQjZNTtBHeGMVjpb8DkIW1mdEaTaKiybGZXknhJeDYJGRNlQ8pYnvks6IT58EPXcLYZhMJ
-	ed57/3u8FpVVKdkzoYmH4EhNwHft3z+mpIRfAPMbmJd2719HRFYztRl9shmFqJRporYR5zG7XPfmo
-	MzrY7iMA==;
+	bh=m2Z4czkBiegdPENI/OEsf/76znT3zeCQP9np0B2KlHs=; b=FNgCPdEDpjZtTIYQaPzIF0KqHp
+	46Z8llMdnoCB1+Z6r2unsGrIKmf2Mx0TGMzETHUkQRoCuzAb4injcIRwobvo8CCZPIUAzxjEBibIt
+	Q3PRAmuW/SUYMBmsfEqBwLiobDDz7+64UWQfMBvWF4sqCQVZaJImfdNd1OnEAyMu4ag6mHv86J/lf
+	MPNailJZgumUHNT7aWfZ8YyvKoizAHpjSXTPzw5wLnmughZ5YKyfHFxEmfyc84LuT/KkAsMWP/LNK
+	a1ZZC02er/Byt7J0W+le2mzmP338ysXHKaxlg9AUC5MXYFTEVseiDxQVTSqbcRoNsqEhWfdXlOpYV
+	hHztKtMw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wolp9-0000000612v-3UBb;
+	id 1wolp9-0000000612P-1oiq;
 	Tue, 28 Jul 2026 17:42:39 +0000
 Received: from sea.source.kernel.org ([172.234.252.31])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wolp8-0000000611P-09J1
+	id 1wolp7-0000000611F-3bM8
 	for barebox@lists.infradead.org;
-	Tue, 28 Jul 2026 17:42:38 +0000
+	Tue, 28 Jul 2026 17:42:37 +0000
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id ABC0943D2A;
+	by sea.source.kernel.org (Postfix) with ESMTP id 83D75439CD;
 	Tue, 28 Jul 2026 17:42:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8C83BC2BCF6;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 64379C2BCFA;
 	Tue, 28 Jul 2026 17:42:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1785260557;
-	bh=ZnmxW3sGRCqUNzbd7yjJqxVUPfKDZriH4qgOOwXKOfg=;
+	bh=hLZj2dcZSHUWKSlI7ulBN776bDxIrVn1tX0gn5TNHB8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=dgoTIRbquPXoVF3Lr5o7ajwnc/sKwU6vV1TjpLNcFmnsp1zGsrxs/nW0+rVno/YFP
-	 a51TQZrFegI74oz5hC6RbW9Xw6fKzbGK8jEmJ1UCCW62BZSDpUlsxs8D8GWEvOB+t+
-	 ZhKmqEkJkiy8zlTq9JgLWnwuk7rNfmpp2IywIjPIY8vxuPe1A08btwjVsiK20knBx9
-	 lDdFpzixidL7APl6kMDekE+7g7nrNhrKONqNjgnCC84KRg4BT5D5pFip28zUGkob4W
-	 A3vQbgVkHc3JwLosvsHCIMQAYdqgSTfPVGsKIeCI8e4zXPROQbsPdMvtYPBVOXb4tW
-	 D7BllEm+WtEtw==
+	b=drbktwY4jNi265xL82z4iDhUXWiwcNW0yqa2ISbp4vbOeWHdsltnFxdZ3K/nKh3Lu
+	 ViYn+QRnii6+LBeGBFIDRlMkud/4tZ0c2RnE5CmUY3rh9pbpFDQDbVTlmbq73FIlsr
+	 S1nNzukn/pfMD1wPGX/qA8fhpH2A4pqHMoMPqUI9Tt9B1gvC4x50TnodTIJ/evUvZr
+	 cLDGObt/IT/UQN2UPzfuku+iOXo2VPRCeGsP5EfWOs3HVAb+niN0PQpd+BCwVXO3WS
+	 /lzaecWic0D85y89Hmr48vuzYf/zaFqVa2jLr42+PU1/aQfk4OC63PxQHClTnB1St4
+	 jKog/mGHZdHyA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A04BC54F55;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4CD6BC54F55;
 	Tue, 28 Jul 2026 17:42:37 +0000 (UTC)
 From: Luca Lauro via B4 Relay <devnull+famlauro93l.gmail.com@kernel.org>
-Date: Tue, 28 Jul 2026 19:43:18 +0200
-Subject: [PATCH v2 06/10] commands: add fan control command
+Date: Tue, 28 Jul 2026 19:43:15 +0200
+Subject: [PATCH v2 03/10] ARM: mvebu: add Netgear RN104 support
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260728-rn102-rn104-series-v2-6-ae31f55b7bc8@gmail.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260728-rn102-rn104-series-v2-3-ae31f55b7bc8@gmail.com>
 References: <20260728-rn102-rn104-series-v2-0-ae31f55b7bc8@gmail.com>
 In-Reply-To: <20260728-rn102-rn104-series-v2-0-ae31f55b7bc8@gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  "open list:BAREBOX" <barebox@lists.infradead.org>
 Cc: Luca Lauro <famlauro93l@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785260594; l=14476;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785260594; l=17395;
  i=famlauro93l@gmail.com; s=20260723; h=from:subject:message-id;
- bh=+mWd6c6Mcia5eauBarNCfgJepLLSGh4eKLnkaNZuzpE=;
- b=rIyYauqJ1UgdPP547ghSJMFp/jtmGYbsldJcIjM441+qTl0/BVP+J5uOuiPbec5mUAKPjGIa9
- GseFSIUJdpiDMwYo1Pmf99Hgr2ALCEgfIiFtI04BRY0BM45bXnsQd/t
+ bh=6KxqNyXDneqTZJDagLqg8+hk7OuEXQ6I5ZOiDuSmHos=;
+ b=21gMIYmw0suAGZUA+3H3x6OZcSZtGKELHhmN1ZyPWzlDTmULJF+AgzFqoC5ox2BfRkNfxwmi8
+ mCTHw8tyPp+Bjs+1/EGDM2wqspzQZ9eWDAFvlai31xZOh37zc5NaLNT
 X-Developer-Key: i=famlauro93l@gmail.com; a=ed25519;
  pk=OAJlcD69ugQCl99Vy6w+Aeu+ZUb1IVGcz1Ijxo6Ch78=
 X-Endpoint-Received: by B4 Relay for famlauro93l@gmail.com/20260723 with
@@ -91,7 +91,7 @@ Reply-To: famlauro93l@gmail.com
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: ptu7yyh5sbajixnhjd8tgnhz1irmuwgh
+X-Stat-Signature: ffwnh9eifo99syko5porpgcpssnked6u
 X-Spamd-Result: default: False [-6.91 / 15.00];
 	DWL_DNSWL_MED(-4.00)[kernel.org:dkim,infradead.org:dkim];
 	BAYES_HAM(-3.00)[100.00%];
@@ -100,334 +100,686 @@ X-Spamd-Result: default: False [-6.91 / 15.00];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
-	MAILLIST(-0.20)[mailman];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,kernel.org:s=k20201202];
+	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
 	TO_DN_ALL(0.00)[];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
-	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FORGED_SENDER(0.00)[devnull@kernel.org,barebox-bounces@lists.infradead.org];
 	ARC_NA(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER(0.00)[devnull@kernel.org,barebox-bounces@lists.infradead.org];
-	FREEMAIL_REPLYTO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
 	TAGGED_FROM(0.00)[lore=pengutronix.de,famlauro93l.gmail.com];
+	FREEMAIL_CC(0.00)[gmail.com];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,kernel.org:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[gmail.com];
+	FREEMAIL_REPLYTO(0.00)[gmail.com];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,kernel.org:+];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	HAS_REPLYTO(0.00)[famlauro93l@gmail.com]
-X-Rspamd-Queue-Id: D9D5B2020AF
+X-Rspamd-Queue-Id: 4B89320214E
 
 From: Luca Lauro <famlauro93l@gmail.com>
 
+This updates full support for the Netgear ReadyNAS 104, including:
+
+ - board driver matching on "netgear,rn104"
+ - bay management placeholder
+ - lowlevel initialization
+ - barebox device tree
+ - barebox overlay with environment and state backend
+ - NAND partition layout
+ - image support
+
 Signed-off-by: Luca Lauro <famlauro93l@gmail.com>
 ---
- commands/fan.c | 286 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 286 insertions(+)
+ arch/arm/boards/netgear-rn104/board.c            | 193 +++++++++++++++++++++++
+ arch/arm/boards/netgear-rn104/lowlevel.c         |  43 +++--
+ arch/arm/dts/armada-370-rn104-bb.dts             |  75 ++++++++-
+ dts/src/arm/marvell/armada-370-netgear-rn104.dts | 173 ++++++++++++--------
+ images/Makefile.mvebu                            |   3 +-
+ 5 files changed, 403 insertions(+), 84 deletions(-)
 
-diff --git a/commands/fan.c b/commands/fan.c
+diff --git a/arch/arm/boards/netgear-rn104/board.c b/arch/arm/boards/netgear-rn104/board.c
 new file mode 100644
-index 0000000000..1581751d51
+index 0000000000..29c112ec9e
 --- /dev/null
-+++ b/commands/fan.c
-@@ -0,0 +1,286 @@
++++ b/arch/arm/boards/netgear-rn104/board.c
+@@ -0,0 +1,193 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
 +#include <common.h>
-+#include <command.h>
-+#include <complete.h>
-+#include <errno.h>
-+#include <fan/fan.h>
++#include <init.h>
++#include <gpio.h>
++#include <driver.h>
++#include <linux/device.h>
++#include <linux/mbus.h>
++#include <mach/mvebu/armada-370-xp-regs.h>
++#include <bbu.h>
 +
-+static int do_fan(int argc, char *argv[])
++/*
++ *  Early GPIO0 MMIO
++ *
++ * GPIO driver arrives too late for the disks to be
++ * ready in time for AHCI driver probe.
++ * So we use GPIO0 direct access for:
++ *   - reading disk presence monitoring pins
++ *   - enable powerup for bays that detect disk presence
++ *   - display bay status with dedicated LEDs
++ */
++#define GPIO0_BASE           (ARMADA_370_XP_INT_REGS_BASE + 0x18100)
++#define GPIO_OUT             0x00
++#define GPIO_OUT_EN          0x04
++#define GPIO_BLINK_EN        0x08
++#define GPIO_IN              0x10
++#define GPIO_BLINK_CNT_SEL   0x20
++#define GPIO_BLINK_CNT_A_ON  0xc0
++#define GPIO_BLINK_CNT_A_OFF 0xc4
++
++static inline void gpio0_set_output(int pin)
 +{
-+    struct fan_device *fan;
-+    char buf[32];
-+    unsigned long val;
-+    int ret = 0;
++    u32 v = readl(GPIO0_BASE + GPIO_OUT_EN);
 +
-+
-+    if (argc < 3) {
-+        return COMMAND_ERROR_USAGE;
-+    }
-+
-+    fan = fan_device_find(argv[2]);
-+    if (IS_ERR(fan)) {
-+        printf("Device not found: %s\n", argv[2]);
-+        return PTR_ERR(fan);
-+    }
-+    if (!fan->ops) {
-+        printf("Fan driver ops not initialized\n");
-+        return -ENODEV;
-+    }
-+
-+    if (!strcmp(argv[1], "get")) {
-+        if (argc == 4) {
-+            if (!strcmp(argv[3], "startv") && fan->ops->get_fan_startv) {
-+                ret = fan->ops->get_fan_startv(fan->dev, buf);
-+                printf("Fan startup voltage mode: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "gearmult") && fan->ops->get_gear_multiplier) {
-+                ret = fan->ops->get_gear_multiplier(fan->dev, buf);
-+                printf("Gear multiplier: %s\n", ret >= 0 ? buf : "N/A");
-+}
-+            else if (!strcmp(argv[3], "outmode") && fan->ops->get_output_mode) {
-+                ret = fan->ops->get_output_mode(fan->dev, buf);
-+                printf("Output mode: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "ppr") && fan->ops->get_fan_ppr) {
-+                ret = fan->ops->get_fan_ppr(fan->dev, buf);
-+                printf("Pulses per revolution: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "pwmpol") && fan->ops->get_pwm_polarity) {
-+                ret = fan->ops->get_pwm_polarity(fan->dev, buf);
-+                printf("PWM polarity: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "clkfreq") && fan->ops->get_clk_freq) {
-+                ret = fan->ops->get_clk_freq(fan->dev, buf);
-+                printf("Clock frequency: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "clkdiv") && fan->ops->get_clk_div) {
-+                ret = fan->ops->get_clk_div(fan->dev, buf);
-+                printf("Clock divider: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "ctrlmode") && fan->ops->get_control_mode) {
-+                ret = fan->ops->get_control_mode(fan->dev, buf);
-+                printf("Control mode: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "outmode") && fan->ops->get_output_mode) {
-+                ret = fan->ops->get_output_mode(fan->dev, buf);
-+                printf("Output mode: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "oocdet") && fan->ops->get_ooc_detection) {
-+                ret = fan->ops->get_ooc_detection(fan->dev, buf);
-+                printf("Out of control detection: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "faultdet") && fan->ops->get_failure_detection) {
-+                ret = fan->ops->get_failure_detection(fan->dev, buf);
-+                printf("Failure detection: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "oocstate") && fan->ops->get_ooc_state) {
-+                ret = fan->ops->get_ooc_state(fan->dev, buf);
-+                printf("Fan out of control state: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "faultstate") && fan->ops->get_failure_state) {
-+                ret = fan->ops->get_failure_state(fan->dev, buf);
-+                printf("Fan failure state: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "speed") && fan->ops->get_fan_speed) {
-+                ret = fan->ops->get_fan_speed(fan->dev, buf);
-+                printf("Fan speed: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "rpm") && fan->ops->get_fan_rpm) {
-+                ret = fan->ops->get_fan_rpm(fan->dev, buf);
-+                printf("Fan rpm: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "level") && fan->ops->get_fan_level) {
-+                ret = fan->ops->get_fan_level(fan->dev, buf);
-+                printf("Fan level: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "all")) {
-+                if (fan->ops->get_fan_startv) {
-+                    ret = fan->ops->get_fan_startv(fan->dev, buf);
-+                    printf("Fan startup voltage mode: %s\n", ret >= 0 ? buf : "N/A");
-+                }
-+                if (fan->ops->get_gear_multiplier) {
-+                    ret = fan->ops->get_gear_multiplier(fan->dev, buf);
-+                    printf("Gear multiplier: %s\n", ret >= 0 ? buf : "N/A");
-+                }
-+                if (fan->ops->get_fan_ppr) {
-+                    ret = fan->ops->get_fan_ppr(fan->dev, buf);
-+                    printf("Pulses per revolution: %s\n", ret >= 0 ? buf : "N/A");
-+                }
-+                if (fan->ops->get_pwm_polarity) {
-+                    ret = fan->ops->get_pwm_polarity(fan->dev, buf);
-+                    printf("PWM polarity: %s\n", ret >= 0 ? buf : "N/A");
-+                }
-+                if (fan->ops->get_clk_freq) {
-+                    ret = fan->ops->get_clk_freq(fan->dev, buf);
-+                    printf("Clock frequency: %s\n", ret >= 0 ? buf : "N/A");
-+                }
-+                if (fan->ops->get_clk_div) {
-+                    ret = fan->ops->get_clk_div(fan->dev, buf);
-+                    printf("Clock divider: %s\n", ret >= 0 ? buf : "N/A");
-+                }
-+                if (fan->ops->get_control_mode) {
-+                    ret = fan->ops->get_control_mode(fan->dev, buf);
-+                    printf("Control mode: %s\n", ret >= 0 ? buf : "N/A");
-+                }
-+                if (fan->ops->get_output_mode) {
-+                    ret = fan->ops->get_output_mode(fan->dev, buf);
-+                    printf("Output mode: %s\n", ret >= 0 ? buf : "N/A");
-+                }
-+                if (fan->ops->get_ooc_detection) {
-+                    ret = fan->ops->get_ooc_detection(fan->dev, buf);
-+                    printf("Out of control detection: %s\n", ret >= 0 ? buf : "N/A");
-+                }
-+                if (fan->ops->get_failure_detection) {
-+                    ret = fan->ops->get_failure_detection(fan->dev, buf);
-+                    printf("Failure detection: %s\n", ret >= 0 ? buf : "N/A");
-+                }
-+                if (fan->ops->get_failure_state) {
-+                    ret = fan->ops->get_failure_state(fan->dev, buf);
-+                    printf("Fan failure state: %s\n", ret >= 0 ? buf : "N/A");
-+                }
-+                if (fan->ops->get_ooc_state) {
-+                    ret = fan->ops->get_ooc_state(fan->dev, buf);
-+                    printf("Fan out of control state: %s\n", ret >= 0 ? buf : "N/A");
-+                }
-+                if (fan->ops->get_fan_speed) {
-+                    ret = fan->ops->get_fan_speed(fan->dev, buf);
-+                    printf("Fan speed: %s\n", ret >= 0 ? buf : "N/A");
-+                }
-+                if (fan->ops->get_fan_rpm) {
-+                    ret = fan->ops->get_fan_rpm(fan->dev, buf);
-+                    printf("Fan rpm: %s\n", ret >= 0 ? buf : "N/A");
-+                }
-+                if (fan->ops->get_fan_level) {
-+                    ret = fan->ops->get_fan_level(fan->dev, buf);
-+                    printf("Fan level: %s\n", ret >= 0 ? buf : "N/A");
-+                }
-+            }
-+            else {
-+                printf("Invalid parameter: %s\n", argv[3]);
-+                return COMMAND_ERROR_USAGE;
-+            }
-+        }
-+        else {
-+            printf("Invalid number of arguments for %s cmd\n", argv[1]);
-+            return COMMAND_ERROR_USAGE;
-+        }    
-+    }
-+    else if (!strcmp(argv[1], "set")) {
-+        if (argc == 5) {
-+            val = simple_strtoul(argv[4], NULL, 10);
-+            snprintf(buf, sizeof(buf), "%lu", val);
-+
-+            if (!strcmp(argv[3], "startv") && fan->ops->set_fan_startv) {
-+                ret = fan->ops->set_fan_startv(fan->dev, val);
-+                printf("Fan startup voltage set to: %s\n", ret >= 0 ? buf : "N/A"); 
-+            }
-+            else if (!strcmp(argv[3], "gearmult") && fan->ops->set_gear_multiplier) {
-+                ret = fan->ops->set_gear_multiplier(fan->dev, val);
-+                printf("Gear multiplier set to: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "ppr") && fan->ops->set_fan_ppr) {
-+                ret = fan->ops->set_fan_ppr(fan->dev, val);
-+                printf("Pulses per revolution set to: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "pwmpol") && fan->ops->set_pwm_polarity) {
-+                ret = fan->ops->set_pwm_polarity(fan->dev, val);
-+                printf("PWM polarity set to: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "clkfreq") && fan->ops->set_clk_freq) {
-+                ret = fan->ops->set_clk_freq(fan->dev, val);
-+                printf("Clock frequency set to: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "clkdiv") && fan->ops->set_clk_div) {
-+                ret = fan->ops->set_clk_div(fan->dev, val);
-+                printf("Clock divider set to: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "ctrlmode") && fan->ops->set_control_mode) {
-+                ret = fan->ops->set_control_mode(fan->dev, val);
-+                printf("Control mode set to: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "outmode") && fan->ops->set_output_mode) {
-+                ret = fan->ops->set_output_mode(fan->dev, val);
-+                printf("Output mode set to: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "ooc") && fan->ops->set_ooc_detection) {
-+                ret = fan->ops->set_ooc_detection(fan->dev, val);
-+                printf("Out of control detection set to: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "fault") && fan->ops->set_failure_detection) {
-+                ret = fan->ops->set_failure_detection(fan->dev, val);
-+                printf("Failure detection set to: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "speed") && fan->ops->set_fan_speed) {
-+                ret = fan->ops->set_fan_speed(fan->dev, val);
-+                printf("Fan speed set to: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "rpm") && fan->ops->set_fan_rpm) {
-+                ret = fan->ops->set_fan_rpm(fan->dev, val);
-+                printf("Fan rpm set to: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else if (!strcmp(argv[3], "level") && fan->ops->set_fan_level) {
-+                ret = fan->ops->set_fan_level(fan->dev, val);
-+                printf("Fan level set to: %s\n", ret >= 0 ? buf : "N/A");
-+            }
-+            else {
-+                printf("Invalid parameter: %s\n", argv[3]);
-+                return COMMAND_ERROR_USAGE;
-+            }            
-+        }
-+        else {
-+            printf("Invalid number of arguments for %s cmd\n", argv[1]);
-+            return COMMAND_ERROR_USAGE;
-+        }
-+    }
-+    else if (!strcmp(argv[1], "init")) {
-+        if (argc == 3) {
-+            if (fan->ops->fan_init) {
-+                ret = fan->ops->fan_init(fan->dev);
-+                printf("Fan initialization: %s\n", ret >= 0 ? "successful" : "N/A");
-+            }
-+        }
-+        else {
-+            printf("Invalid number of arguments for %s cmd\n", argv[1]);
-+            return COMMAND_ERROR_USAGE;
-+        }
-+    }
-+    else {
-+            printf("Invalid cmd: %s\n", argv[1]);
-+            return COMMAND_ERROR_USAGE;
-+    }
-+
-+    return ret;
++    v &= ~(1 << pin);
++    writel(v, GPIO0_BASE + GPIO_OUT_EN);
 +}
 +
-+BAREBOX_CMD_HELP_START(fan)
-+BAREBOX_CMD_HELP_TEXT("cmd options:\n")
-+BAREBOX_CMD_HELP_OPT("get", "get fan parameter")
-+BAREBOX_CMD_HELP_OPT("set", "set fan parameter")
-+BAREBOX_CMD_HELP_OPT("init", "initialize fan")
++static inline void gpio0_set_input(int pin)
++{
++    u32 v = readl(GPIO0_BASE + GPIO_OUT_EN);
 +
-+BAREBOX_CMD_HELP_TEXT("\nparameter options:\n")
-+BAREBOX_CMD_HELP_OPT("outmode", "fan controller ouptut mode [0 (adc)|1 (pwm)]")
-+BAREBOX_CMD_HELP_OPT("clkdiv", "fan controller prescaler value [1|2|4|8]")
-+BAREBOX_CMD_HELP_OPT("clkfreq", "input clock frequency (Hz)")
-+BAREBOX_CMD_HELP_OPT("ppr", "fan tachometer pulses per revolution [2|4]")
-+BAREBOX_CMD_HELP_OPT("ctrlmode", "fan control mode [0 (open-loop)|1 (closed-loop)]")
-+BAREBOX_CMD_HELP_OPT("speed", "fan speed register value [0:255]")
-+BAREBOX_CMD_HELP_OPT("rpm", "fan rpm [0:(max fan rpm)]")
-+BAREBOX_CMD_HELP_OPT("level", "fan speed percentage [0:100]")
-+BAREBOX_CMD_HELP_OPT("startv", "fan startup voltage [0|1|2|3]")
-+BAREBOX_CMD_HELP_OPT("gearmult", "gear multiplier [0|1|2]")
-+BAREBOX_CMD_HELP_OPT("pwmpol", "PWM polarity [0 (positive)|1 (negative)]")
-+BAREBOX_CMD_HELP_OPT("faultdet", "enable/disable failure detection [0|1]")
-+BAREBOX_CMD_HELP_OPT("oocdet", "enable/disable out-of-control detection [0|1]")
-+BAREBOX_CMD_HELP_OPT("fault", "fan failure flag [0 (ok)|1 (fault)]")
-+BAREBOX_CMD_HELP_OPT("ooc", "fan out of control flag [1 (ok):0 (ooc)]")
-+BAREBOX_CMD_HELP_OPT("all", "print all fan parameters")
-+BAREBOX_CMD_HELP_TEXT("\n")
-+BAREBOX_CMD_HELP_END
++    v |= (1 << pin);
++    writel(v, GPIO0_BASE + GPIO_OUT_EN);
++}
 +
-+BAREBOX_CMD_START(fan)
-+    .cmd		= do_fan,
-+    BAREBOX_CMD_DESC("fan management")
-+	BAREBOX_CMD_OPTS("<cmd> <devpath> <parameter> [value]")
-+	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
-+	BAREBOX_CMD_HELP(cmd_fan_help)
-+BAREBOX_CMD_END
++static inline void gpio0_write(int pin, int val)
++{
++    u32 v = readl(GPIO0_BASE + GPIO_OUT);
++
++    if (val)
++        v |= (1 << pin);
++    else
++        v &= ~(1 << pin);
++
++    writel(v, GPIO0_BASE + GPIO_OUT);
++}
++
++static inline int gpio0_read(int pin)
++{
++    return !!(readl(GPIO0_BASE + GPIO_IN) & (1 << pin));
++}
++
++static void gpio0_blink(int pin, int on_ms, int off_ms)
++{
++    u32 v;
++
++    gpio0_set_output(pin);
++
++    /* set blink counter A on and off time in core clok cycles */
++    writel(10*on_ms, GPIO0_BASE + GPIO_BLINK_CNT_A_ON);
++    writel(10*off_ms, GPIO0_BASE + GPIO_BLINK_CNT_A_OFF);
++
++    /* use blink counter A for selected pin */
++    v = readl(GPIO0_BASE + GPIO_BLINK_CNT_SEL);
++    v &= ~(1 << pin);
++    writel(v, GPIO0_BASE + GPIO_BLINK_CNT_SEL);
++
++    /* enable blink for selected pin */
++    v = readl(GPIO0_BASE + GPIO_BLINK_EN);
++    v |= (1 << pin);
++    writel(v, GPIO0_BASE + GPIO_BLINK_EN);
++}
++
++static void gpio0_blink_disable(int pin)
++{
++    u32 v;
++
++    v = readl(GPIO0_BASE + GPIO_BLINK_EN);
++    v &= ~(1 << pin);
++    writel(v, GPIO0_BASE + GPIO_BLINK_EN);
++}
++
++/* HDD bays description */
++
++enum disk_state {
++    DISK_ABSENT = 0,
++    DISK_PRESENT,
++    DISK_READY,
++};
++
++struct rn104_disk_bay {
++    int gpio_detect;        /* input, active-low */
++    int gpio_power;         /* output */
++    int gpio_led;           /* output, active-low */
++    enum disk_state state;
++};
++
++#define rn104_NUM_DISK_BAYS 1
++
++static struct rn104_disk_bay rn104_bays[rn104_NUM_DISK_BAYS] = {
++    { -1, -1, -1, DISK_ABSENT }, /* placeholder */
++};
++
++static void setup_bays(void)
++{
++    pr_info("RN104: bay management not implemented (PCA9554-based)\n");
++}
++
++/*
++ * After waiting for present disks spinup,
++ * we ask explicitly for corresponding ATA devices probe.
++ */
++static void init_disks(void)
++{
++    pr_info("RN104: disk spin-up logic not implemented\n");
++}
++
++/*
++ *  USB0 → DRAM MBUS windows
++ *
++ * frontal USB 2.0 port of rn104 is connected to the SoC usb0.
++ * Here we enable MBUS windows toward all the DRAM using
++ * informations already gathered by mvebu_mbus_dram_info().
++ */
++// #define USB0_BRIDGE_BASE   (ARMADA_370_XP_USB_BASE + 0x300)
++// #define USB_WIN_CTRL(n)    (USB0_BRIDGE_BASE + 0x20 + (n) * 0x10)
++// #define USB_WIN_BASE(n)    (USB0_BRIDGE_BASE + 0x24 + (n) * 0x10)
++
++static void setup_usb0(void) {
++    // /* Window0: 512MB @ 0x00000000 */
++    // writel(0x00000000, USB_WIN_BASE(0));
++    // writel(0x1FFF0E01, USB_WIN_CTRL(0));
++
++    // /* Window1: 512MB @ 0xB0000000 (placeholder) */
++    // writel(0xB0000000, USB_WIN_BASE(1));
++    // writel(0x1FFE841, USB_WIN_CTRL(1));
++
++    writel(0x2, 0xf1051404);    /* enable force suspend */
++    u32 pwr = readl(0xf1051400);
++    pwr &= ~BIT(2);
++    writel(pwr, 0xf1051400);    /* force SUSPENDM=0 */
++}
++
++
++/* Early init: setup specific hardware without blocking initialization. */
++static int rn104_early_poweron(void)
++{
++    writel(0xC6, 0xf1020228); /* CFU configuration */
++    setup_usb0();
++    setup_bays();
++
++    return 0;
++}
++postcore_initcall(rn104_early_poweron);
++
++static int rn104_init(void)
++{
++    init_disks();
++
++    return 0;
++}
++device_initcall(rn104_init);
++
++
++/* BareBox Update handlers */
++static int rn104_register_bbu(void)
++{
++    bbu_register_std_file_update("bootloader", 0,
++                     "/dev/nand0.bootloader",
++                     filetype_kwbimage_v1);
++
++    bbu_register_std_file_update("kernel", 0,
++                     "/dev/nand0.kernel",
++                     filetype_arm_zimage);
++
++    bbu_register_std_file_update("minirootfs", 0,
++                     "/dev/nand0.minirootfs",
++                     filetype_gzip);
++
++    return 0;
++}
++late_initcall(rn104_register_bbu);
+diff --git a/arch/arm/boards/netgear-rn104/lowlevel.c b/arch/arm/boards/netgear-rn104/lowlevel.c
+index e693d13993..4fb5b6432b 100644
+--- a/arch/arm/boards/netgear-rn104/lowlevel.c
++++ b/arch/arm/boards/netgear-rn104/lowlevel.c
+@@ -1,24 +1,49 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ 
+-/*
+- * Copyright (C) 2014  Uwe Kleine-Koenig <uwe@kleine-koenig.org>
+- */
+-
+ #include <common.h>
+ #include <asm/barebox-arm.h>
+-#include <mach/mvebu/barebox-arm-head.h>
+ #include <mach/mvebu/lowlevel.h>
++#include <mach/mvebu/barebox-arm-head.h>
++#include <mach/mvebu/armada-370-xp-regs.h>
+ 
+ extern char __dtb_armada_370_rn104_bb_start[];
+ 
+-ENTRY_FUNCTION_MVEBU(start_netgear_rn104, r0, r1, r2)
++#define INTERNAL_REG_BASE_ADDR	0x20080
++
++static __always_inline void mvebu_remap_registers(void)
++{
++	void __iomem *base = mvebu_get_initial_int_reg_base();
++
++	writel(MVEBU_REMAP_INT_REG_BASE, base + INTERNAL_REG_BASE_ADDR);
++}
++
++static unsigned long armada_370_xp_memory_find(void)
+ {
+-	void *fdt;
++	unsigned long mem_size = 0;
++
++	for (int cs = 0; cs < 4; cs++) {
++		u32 ctrl = readl(ARMADA_370_XP_SDRAM_BASE + DDR_SIZE_CSn(cs));
++
++		/* Skip non-enabled CS */
++		if ((ctrl & DDR_SIZE_ENABLED) != DDR_SIZE_ENABLED)
++			continue;
++
++		mem_size += (ctrl | ~DDR_SIZE_MASK) + 1;
++	}
+ 
+-	arm_cpu_lowlevel_init();
++	return mem_size;
++}
++
++ENTRY_FUNCTION_MVEBU(start_netgear_rn104, r0, r1, r2)
++{
++    void *fdt;
+ 
++    arm_cpu_lowlevel_init();
++	
+ 	fdt = __dtb_armada_370_rn104_bb_start +
+ 		get_runtime_offset();
+ 
+-	armada_370_xp_barebox_entry(fdt);
++	mvebu_remap_registers();
++	barebox_arm_entry(0, armada_370_xp_memory_find(), fdt);
++	// armada_370_xp_barebox_entry(fdt);
+ }
+diff --git a/arch/arm/dts/armada-370-rn104-bb.dts b/arch/arm/dts/armada-370-rn104-bb.dts
+index b786ef350a..2649ede4f4 100644
+--- a/arch/arm/dts/armada-370-rn104-bb.dts
++++ b/arch/arm/dts/armada-370-rn104-bb.dts
+@@ -5,9 +5,76 @@
+ #include "arm/marvell/armada-370-netgear-rn104.dts"
+ 
+ / {
+-	barebox,disable-deep-probe;
++    chosen {
++        stdout-path = &uart0;
++    };
+ 
+-	chosen {
+-		stdout-path = &uart0;
+-	};
++    aliases {
++        state = &state_nand;
++    };
++
++    environment {
++        compatible = "barebox,environment";
++        device-path = &nand_controller, "partname:environment";
++    };
++
++    state_nand: nand_state_memory {
++        #address-cells = <1>;
++        #size-cells = <1>;
++        compatible = "barebox,state";
++        magic = <0xab67421f>;
++        backend-type = "raw";
++        backend = <&backend_state_nand>;
++        backend-storage-type = "circular";
++        backend-stridesize = <32>;
++
++        variable@0 {
++            reg = <0x0 0x1>;
++            type = "uint8";
++            default = <0x1>;
++        };
++    };
++};
++
++&nand_controller {
++    compatible = "marvell,armada370-nand", "marvell,pxa3xx-nand";
++    status = "okay";
++
++    nand-rb = <0>;
++    marvell,nand-keep-config;
++    nand-on-flash-bbt;
++
++    nand-ecc-strength = <4>;
++    nand-ecc-step-size = <512>;
++
++    partitions {
++        compatible = "fixed-partitions";
++        #address-cells = <1>;
++        #size-cells = <1>;
++
++        partition@0 {
++            label = "bootloader";
++            reg = <0x0 0x400000>;
++        };
++
++        partition@400000 {
++            label = "environment";
++            reg = <0x400000 0x80000>;
++        };
++
++        backend_state_nand: partition@480000 {
++            label = "state";
++            reg = <0x480000 0x80000>;
++        };
++
++        partition@500000 {
++            label = "kernel";
++            reg = <0x500000 0x1400000>;
++        };
++
++        partition@1900000 {
++            label = "minirootfs";
++            reg = <0x1900000 0x6000000>;
++        };
++    };
+ };
+diff --git a/dts/src/arm/marvell/armada-370-netgear-rn104.dts b/dts/src/arm/marvell/armada-370-netgear-rn104.dts
+index d752ac1d7b..d7cc0549f4 100644
+--- a/dts/src/arm/marvell/armada-370-netgear-rn104.dts
++++ b/dts/src/arm/marvell/armada-370-netgear-rn104.dts
+@@ -15,6 +15,10 @@ / {
+ 	model = "NETGEAR ReadyNAS 104";
+ 	compatible = "netgear,readynas-104", "marvell,armada370", "marvell,armada-370-xp";
+ 
++	aliases {
++		state = &state_nand;
++    };
++
+ 	chosen {
+ 		stdout-path = "serial0:115200n8";
+ 	};
+@@ -40,6 +44,12 @@ serial@12000 {
+ 				status = "okay";
+ 			};
+ 
++			/* eSATA interface */
++			sata@a0000 {
++				nr-ports = <1>;
++				status = "okay";
++			};
++
+ 			ethernet@70000 {
+ 				pinctrl-0 = <&ge0_rgmii_pins>;
+ 				pinctrl-names = "default";
+@@ -103,15 +113,10 @@ g762_clk: g762-oscillator {
+ 
+ 	gpio-leds {
+ 		compatible = "gpio-leds";
+-		pinctrl-0 = <&backup_led_pin &power_led_pin>;
++		pinctrl-0 = <&power_led_pin
++			     &backup_led_pin>;
+ 		pinctrl-names = "default";
+ 
+-		blue-backup-led {
+-			label = "rn104:blue:backup";
+-			gpios = <&gpio1 31 GPIO_ACTIVE_HIGH>;
+-			default-state = "off";
+-		};
+-
+ 		blue-power-led {
+ 			label = "rn104:blue:pwr";
+ 			gpios = <&gpio2 0 GPIO_ACTIVE_LOW>;
+@@ -141,6 +146,12 @@ blue-sata4-led {
+ 			gpios = <&pca9554 3 GPIO_ACTIVE_LOW>;
+ 			default-state = "off";
+ 		};
++
++		blue-backup-led {
++			label = "rn104:blue:backup";
++			gpios = <&gpio1 31 GPIO_ACTIVE_HIGH>;
++			default-state = "off";
++		};
+ 	};
+ 
+ 	auxdisplay {
+@@ -159,17 +170,11 @@ auxdisplay {
+ 
+ 	gpio-keys {
+ 		compatible = "gpio-keys";
+-		pinctrl-0 = <&backup_button_pin
+-			     &power_button_pin
+-			     &reset_button_pin>;
++		pinctrl-0 = <&power_button_pin
++			     &reset_button_pin
++			     &backup_button_pin>;
+ 		pinctrl-names = "default";
+ 
+-		backup-button {
+-			label = "Backup Button";
+-			linux,code = <KEY_COPY>;
+-			gpios = <&gpio1 20 GPIO_ACTIVE_LOW>;
+-		};
+-
+ 		power-button {
+ 			label = "Power Button";
+ 			linux,code = <KEY_POWER>;
+@@ -181,6 +186,12 @@ reset-button {
+ 			linux,code = <KEY_RESTART>;
+ 			gpios = <&gpio2 1 GPIO_ACTIVE_LOW>;
+ 		};
++
++		backup-button {
++			label = "Backup Button";
++			linux,code = <KEY_COPY>;
++			gpios = <&gpio1 20 GPIO_ACTIVE_LOW>;
++		};
+ 	};
+ 
+ 	gpio-poweroff {
+@@ -189,18 +200,43 @@ gpio-poweroff {
+ 		pinctrl-names = "default";
+ 		gpios = <&gpio1 28 GPIO_ACTIVE_LOW>;
+ 	};
++
++	/* configure nand partition to store barebox environment */
++	environment {
++      compatible = "barebox,environment";
++      device-path = &nand_controller, "partname:environment";
++	};
++
++	/* configure nand partition to store barebox-state backend */
++	state_nand: nand_state_memory {
++        #address-cells = <1>;
++        #size-cells = <1>;
++        compatible = "barebox,state";
++        magic = <0xab67421f>;
++        backend-type = "raw";
++        backend = <&backend_state_nand>;
++        backend-storage-type = "circular";
++		backend-stridesize = <32>;
++
++        
++        variable@0 {
++                reg = <0x0 0x1>;
++                type ="uint8";
++                default = <0x1>;
++        };
++	};
+ };
+ 
+ &pciec {
+ 	status = "okay";
+ 
+-	/* Connected to FL1009 USB 3.0 controller */
++	/* Connected to Marvell 88SE9170 SATA controller */
+ 	pcie@1,0 {
+ 		/* Port 0, Lane 0 */
+ 		status = "okay";
+ 	};
+ 
+-	/* Connected to Marvell 88SE9215 SATA controller */
++	/* Connected to FL1009 USB 3.0 controller */
+ 	pcie@2,0 {
+ 		/* Port 1, Lane 0 */
+ 		status = "okay";
+@@ -220,8 +256,13 @@ phy1: ethernet-phy@1 { /* Marvell 88E1318 */
+ };
+ 
+ &pinctrl {
+-	poweroff: poweroff {
+-		marvell,pins = "mpp60";
++	power_led_pin: power-led-pin {
++		marvell,pins = "mpp64";
++		marvell,function = "gpio";
++	};
++
++	backup_led_pin: backup-led-pin {
++		marvell,pins = "mpp63";
+ 		marvell,function = "gpio";
+ 	};
+ 
+@@ -235,68 +276,62 @@ power_button_pin: power-button-pin {
+ 		marvell,function = "gpio";
+ 	};
+ 
+-	backup_led_pin: backup-led-pin {
+-		marvell,pins = "mpp63";
+-		marvell,function = "gpio";
+-	};
+-
+-	power_led_pin: power-led-pin {
+-		marvell,pins = "mpp64";
++	reset_button_pin: reset-button-pin {
++		marvell,pins = "mpp65";
+ 		marvell,function = "gpio";
+ 	};
+ 
+-	reset_button_pin: reset-button-pin {
+-		marvell,pins = "mpp65";
++	poweroff_pin: poweroff-pin {
++		marvell,pins = "mpp60";
+ 		marvell,function = "gpio";
+ 	};
+ };
+ 
+ &nand_controller {
++	compatible = "marvell,armada370-nand", "marvell,pxa3xx-nand";
+ 	status = "okay";
+ 
+-	nand@0 {
+-		reg = <0>;
+-		label = "pxa3xx_nand-0";
+-		nand-rb = <0>;
+-		marvell,nand-keep-config;
+-		nand-on-flash-bbt;
+-
+-		/* Use Hardware BCH ECC */
+-		nand-ecc-strength = <4>;
+-		nand-ecc-step-size = <512>;
+-
+-		partitions {
+-			compatible = "fixed-partitions";
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-
+-			partition@0 {
+-				label = "u-boot";
+-				reg = <0x0000000 0x180000>;  /* 1.5MB */
+-				read-only;
+-			};
++	label = <&nand_controller>;
++	nand-rb = <0>;
++	marvell,nand-keep-config;
++	nand-on-flash-bbt;
+ 
+-			partition@180000 {
+-				label = "u-boot-env";
+-				reg = <0x180000 0x20000>;    /* 128KB */
+-				read-only;
+-			};
++	/* Use Hardware BCH ECC */
++	nand-ecc-strength = <4>;
++	nand-ecc-step-size = <512>;
+ 
+-			partition@200000 {
+-				label = "uImage";
+-				reg = <0x0200000 0x600000>;    /* 6MB */
+-			};
++	partitions {
++		compatible = "fixed-partitions";
++		#address-cells = <1>;
++		#size-cells = <1>;
+ 
+-			partition@800000 {
+-				label = "minirootfs";
+-				reg = <0x0800000 0x400000>;    /* 4MB */
+-			};
++		partition@0 {
++			label = "bootloader";
++			reg = <0x0 0x400000>;		 /* 4MB */
++			//read-only;
++		};
+ 
+-			/* Last MB is for the BBT, i.e. not writable */
+-			partition@c00000 {
+-				label = "ubifs";
+-				reg = <0x0c00000 0x7400000>; /* 116MB */
+-			};
++		partition@0x400000 {
++			label = "environment";
++			reg = <0x400000 0x80000>;    /* 0.5MB */
++			//read-only;
+ 		};
++
++		backend_state_nand: partition@0x480000 {
++			label = "state";
++			reg = <0x480000 0x80000>;    /* 0.5MB */
++		};
++
++		partition@0x500000 {
++			label = "kernel";
++			reg = <0x500000 0x1400000>;    /* 20MB */
++		};
++
++		partition@0x1900000 {
++			label = "minirootfs";
++			reg = <0x1900000 0x6000000>;    /* 100MB */
++		};
++
++		/* Last MB is for the BBT, i.e. not writable */
+ 	};
+-};
++};
 \ No newline at end of file
+diff --git a/images/Makefile.mvebu b/images/Makefile.mvebu
+index 1741f0e9a5..106a302cfa 100644
+--- a/images/Makefile.mvebu
++++ b/images/Makefile.mvebu
+@@ -37,10 +37,9 @@ image-$(CONFIG_MACH_NETGEAR_RN102) += barebox-netgear-rn102.img
+ FILE_barebox-netgear-rn102-2nd.img = start_netgear_rn102.pblb
+ image-$(CONFIG_MACH_NETGEAR_RN102) += barebox-netgear-rn102-2nd.img
+ 
+-FLAGS_start_netgear_rn104.pblb.mvebu1img = -d 0x600000 -e 0x6e0000
+ BOOTSRC_start_netgear_rn104.pblb.mvebu1img = nand
+ BINHDR_start_netgear_rn104.pblb.mvebu1img = $(board)/netgear-rn104/binary.0
+-FLAGS_start_netgear_rn104.pblb.mvebu1img = -B 0x20000:1
++FLAGS_start_netgear_rn104.pblb.mvebu1img = -B 0x20000:1 -d 0x0 -e 0x0
+ FILE_barebox-netgear-rn104.img = start_netgear_rn104.pblb.mvebu1img
+ pblb-$(CONFIG_MACH_NETGEAR_RN104) += start_netgear_rn104
+ image-$(CONFIG_MACH_NETGEAR_RN104) += barebox-netgear-rn104.img
 
 -- 
 2.47.3
