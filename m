@@ -1,113 +1,82 @@
-Delivery-date: Sat, 01 Aug 2026 14:20:03 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Sun, 02 Aug 2026 15:17:39 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wq8h7-005BR3-03
+	id 1wqW4Q-005Xag-33
 	for lore@lore.pengutronix.de;
-	Sat, 01 Aug 2026 14:20:03 +0200
+	Sun, 02 Aug 2026 15:17:39 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id EF5B62008B7
-	for <lore@pengutronix.de>; Sat, 01 Aug 2026 14:20:00 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 54EE12006B6
+	for <lore@pengutronix.de>; Sun, 02 Aug 2026 15:17:39 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="MJ/qK0cd";
-	dkim=pass header.d=foxmail.com header.s=s201512 header.b=fOydk0Q8;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=NKyOMB0o;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pWuNohTc;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
-	dmarc=pass (policy=none) header.from=foxmail.com
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Date:Subject:Cc:To:From:Message-ID:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=UmOSy1NeCVxXZo3kqtnnQmJNKwGeOsJmtdV0/0uPzQw=; b=MJ/qK0cdBdKpeM5pNM3I5KNJOk
-	+vYY6BBKD53G70vcqvOL4oTro3uSZkSiHuLV/Y1fQr9I91vTS6gsMqukOP5Na/IjBg+ejKTSJodRJ
-	36VSvVM2EldJ14mg0ucBRJm7dOiwbRKgLdq09qH9iaD/0kst47q7VLP9SJvH7VpYjkpkwkcPrASdD
-	87deqA+3FXfP2uXD8k+OI/SPh8HmeOSzEpv2ooUu/FEirKg6k5DTlTvTexnRi+ncGW+WFIRlIrEuI
-	Wki3pmf7zrL9xiUdcVSMrRGpD5OvZbmUvXL1cs8EasCWcQpbq1HGCGbHOjEIl/7Sm9996oM24QPeF
-	jYjGpUYg==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Reply-To:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:
+	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Subject:Date:From:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=WW1GuiBi90IoF7Xu3DiiOdTYskuOMq8qROycU0Z3VOE=; b=NKyOMB0oiSUVIIFyzxHQUF0PM4
+	NwL41g7NrodDDJPtHKO6YjyBr1okGK+f4qYbJnJlhugLi032WK4V9kwx5NK35UAotq8ciZ1BS+UEA
+	odBJX5JEYZRZvq2MfVV0zvXRJO1DiybVYKafakYHpkwy6Sx3JFayymWQhnGgCom9Ba7x0U6dVDct1
+	doK7z+qCYoclyM/qfB0hEMbmajRJoTlYathGoN7vudFFEXRq3+vJL1T2Etnh0ooR4k2Ey/xXpjcgI
+	3NC6i9DZ+87/2kCuJrKHj/8dRPyjcdHYaqUcfcsq6AXFnLA/GtIUy6nttAeaui1HzaT+B/a8vbvWi
+	vbUHM8Xw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wq8fp-0000000EdxH-0kFJ;
-	Sat, 01 Aug 2026 12:18:41 +0000
-Received: from out203-205-221-236.mail.qq.com ([203.205.221.236])
+	id 1wqW3B-0000000Fex3-3RC0;
+	Sun, 02 Aug 2026 13:16:21 +0000
+Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wq8fl-0000000Edwj-2z7S
+	id 1wqW3A-0000000FeuI-08FW
 	for barebox@lists.infradead.org;
-	Sat, 01 Aug 2026 12:18:39 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1785586708;
-	bh=UmOSy1NeCVxXZo3kqtnnQmJNKwGeOsJmtdV0/0uPzQw=;
-	h=From:To:Cc:Subject:Date;
-	b=fOydk0Q8e3ZOdo0ULaif0MlFaKHD/VD4lDGMYBWzehGeTOJFldlv8h7xWOeb9l6QD
-	 78jEWfzBmRkkw6pnkiXifsztVMIcFTYoZn+vhKqPeeE+g0QX8DYnqG0tjpgnFWnGE0
-	 l8sfp9NoIyca3tSZBbLmkT+fd6yG0+TIMPNpiTlY=
-Received: from MACBOOKPro.localdomain ([49.77.218.122])
-	by newxmesmtplogicsvrszc50-0.qq.com (NewEsmtp) with SMTP
-	id 49A318F1; Sat, 01 Aug 2026 20:18:26 +0800
-X-QQ-mid: xmsmtpt1785586706tb7ro4820
-Message-ID: <tencent_DD27DC34878B1D3783E35CF6A02E85C9D20A@qq.com>
-X-QQ-XMAILINFO: Mj/iAmGmt8LdZuMVRm1B21jwusXoes39535lGt6YI5mWiDy2UlG9ls7Uuinmf/
-	 vdPkhp1ny+BZjRSwuqQ/OFSudbFzeFRiRzDi8sRhsN85we3TZsepRrzEam1HcCtakEGqWhCXb8wL
-	 z1mxQ2K7ddbyZtQqvDJ3owjq4O5eI+ID3kkeUyBMbqi4q8WqHF4cDogMwFd8i+gz7BDqBeMRAPjo
-	 2igQejbzQbkY9mQfw5Y+9eBal69I5b/O9CLsVl0Nm0QUlRBVjiHUEkOmUbrMvnR97Srd4CbuJ6D7
-	 4ytOaj0U81+XkRvj7SfZPj0ZEqb7cxmP6e9f6aicLg3ugckOAKlMLQL97l2gHryp4NAVKzmHv5Bg
-	 qiAWauc7ND17c35ESAYGwXAP2Zdz0v82bI9+o5LLRz5uGZqDAUFfIPO0irAawDGFgkf0pv+I3SZZ
-	 uPkjoU2fuxIIV2xtjof7COlIr1ffTglpopQhDNd1d+ItlgRd4CsgEpEBa41YugzlSzjRQFSyu3w0
-	 bxkBF3x+rjZfxMg+yhdeAQkalUWPR+zTDzdC10zDssRwU+8iQcHhkIaoEgKcH+mHgZbMbWsueS6a
-	 CJlnlgBnteuY1g1kl9G0FpkAX1ILC5Z9CPEMWGetIC42BEo3L1mNeyuwb6RJJnShkJ5rXGzcmsPC
-	 Yu6zMGZ3s+03s6O7MciwgV7LB6WgR2dfE7TUryGR4Tlp7VKbYcr+LLA8CtelJm2FjacJZFQtPSbS
-	 IEsl5Tcqx4DdgBxFyDnpA9Dokq0AXgPQRsokMeMqYWSJVu9jPsMRC9L9MVK/DBYmbAQXj05X2OdD
-	 pp3UgEC8eKmW1C3+Q0nTwNFjdStvwB6oboeAaVjUsnFZswnaQHRbVjh7ZseaxvUEyVF+3fpKw+ET
-	 n13h+zhIw3H5NeW9LEvyCRDBeDAAbqeLUl2rW043N/U6py4N7L5dljz5b++Spa2tvGJkG0+BFufP
-	 lNFj5MvvnlvTCrJRMBAIh6tq/3zZ4bd69UMRimSb30PgKweEGzDAu6bqX2xdFbFwDuoSX0DfqaEW
-	 rycwgmQIQl6Rhg1HBLqcJ+geeWySChowW1YVvgqagieqhRIf9YJzbi3nz5Mzpw5x8DFwK7JJ1v5w
-	 oZpZFMowS1RAH8DjQaseErUtYC38E+KY5ZLuiU83YX+nNUmTdo0uXfzLieK0ux/ROJbL3DRXMRaA
-	 ZfRQd6XiZpCepkxaD8zKUat/c/
-X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
-From: zhengxiaojun <zheng.xiaojun@foxmail.com>
-To: barebox@lists.infradead.org
-Cc: zhengxiaojun <zheng.xiaojun@foxmail.com>
-Subject: [PATCH] net: designware_eqs: set upper 32bit address for DMA descriptors to support 64-bit addressing
-Date: Sat,  1 Aug 2026 20:17:48 +0800
-X-OQ-MSGID: <20260801121748.35294-1-zheng.xiaojun@foxmail.com>
-X-Mailer: git-send-email 2.43.0
+	Sun, 02 Aug 2026 13:16:20 +0000
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 77F2543DB2;
+	Sun,  2 Aug 2026 13:16:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5E04BC2BCFC;
+	Sun,  2 Aug 2026 13:16:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1785676579;
+	bh=874U3p4HSpxoZE2vb3ML4/aIpMXlz/o4rvCQj0PLtJ4=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=pWuNohTciANnS7GVAHCbS/Kc0sC3HoWjNTw6DhuuLFiMleBMug8Yu4n1bCH26SUGc
+	 HD8xf88cdpzwjLTApe5W6ad/4zqw0aw8h8lsvEYW9yjy5RNyWF3oX9QwMVwuqHvChS
+	 xcWQHPV868lhH6/CXyF+jsKRNq+M5X4i4G9X2edB16XhPO5LwNHlXPaO2k/9NxiUGr
+	 jGnM0DUVhbNWxhCq7QLP06ZPQNKK6SIBF+pOyiEU66cMa7gdBt/PFJq/STL7yPNv26
+	 jP1+09EIhcSoo4S9afIxd3OW7ddrX93FMxvwVtkyktM07yzxyECIz94jLUDgCLkFfq
+	 UPmaJ7Up/eSGw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4DDDAC55162;
+	Sun,  2 Aug 2026 13:16:19 +0000 (UTC)
+From: Luca Lauro via B4 Relay <devnull+famlauro93l.gmail.com@kernel.org>
+Date: Sun, 02 Aug 2026 15:16:25 +0200
+Subject: [PATCH v3 09/15] ata: ahci: add PCI AHCI and Marvell 9170
+ controller support
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260801_051838_073951_1079D14C 
-X-CRM114-Status: GOOD (  10.70  )
-X-Spam-Score: -2.1 (--)
-X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
- has NOT identified this incoming email as spam.  The original
- message has been attached to this so you can view it or label
- similar future email.  If you have any questions, see
- the administrator of that system for details.
- 
- Content preview:  Signed-off-by: zhengxiaojun --- drivers/net/designware_eqos.c
-    | 29 +++++++++++++++++++ 1 file changed, 19 insertions(+), 10 deletions(-)
-    diff --git a/drivers/net/designware_eqos.c b/drivers/net/designware_eqos.c
-    index a6e9d8677f..332dc7eb73 100644 --- a/drivers/net/designware_eqos.c +++
-    b/drivers/net/designware_eqos.c @@ -17,6 +17,7 @@ [...] 
- 
- Content analysis details:   (-2.1 points, 5.0 required)
- 
-  pts rule name              description
- ---- ---------------------- --------------------------------------------------
-  0.0 SPF_HELO_NONE          SPF: HELO does not publish an SPF Record
- -0.0 SPF_PASS               SPF: sender matches SPF record
- -0.1 DKIM_VALID_EF          Message has a valid DKIM or DK signature from
-                             envelope-from domain
-  0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
- -0.1 DKIM_VALID_AU          Message has a valid DKIM or DK signature from author's
-                             domain
- -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
- -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
-                             [score: 0.0000]
-  0.0 FREEMAIL_FROM          Sender email is commonly abused enduser mail provider
-                             [zheng.xiaojun(at)foxmail.com]
- -0.0 HELO_STATIC_HOST       Relay HELO'd using static hostname
- -0.0 DMARC_PASS             DMARC pass policy
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260802-rn102-rn104-series-v3-9-f7685a279fb5@gmail.com>
+References: <20260802-rn102-rn104-series-v3-0-f7685a279fb5@gmail.com>
+In-Reply-To: <20260802-rn102-rn104-series-v3-0-f7685a279fb5@gmail.com>
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ "open list:BAREBOX" <barebox@lists.infradead.org>
+Cc: Luca Lauro <famlauro93l@gmail.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785676613; l=3138;
+ i=famlauro93l@gmail.com; s=20260723; h=from:subject:message-id;
+ bh=yte79XZArVVOMu3MuERqR75S8BT0xmmnVsSEQoqX19Q=;
+ b=tC/SsauP3auSky6d9vDWLXleFtlgq1xGFRaQ0cbMqLYLYaCN05c7FJRM150mG1SX/zYOGU8U3
+ WKqsVObUovqCMWT+maI/eTMtt34TBn6xbJaj+/7zjTrEvWdbavxcjvI
+X-Developer-Key: i=famlauro93l@gmail.com; a=ed25519;
+ pk=OAJlcD69ugQCl99Vy6w+Aeu+ZUb1IVGcz1Ijxo6Ch78=
+X-Endpoint-Received: by B4 Relay for famlauro93l@gmail.com/20260723 with
+ auth_id=892
+X-Original-From: Luca Lauro <famlauro93l@gmail.com>
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -119,144 +88,171 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Reply-To: famlauro93l@gmail.com
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-0.11 / 15.00];
-	SEM_URIBL(3.50)[foxmail.com:email,foxmail.com:dkim];
-	BAYES_HAM(-3.00)[99.99%];
-	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	RCVD_UNAUTH_PBL(2.00)[];
-	R_MISSING_CHARSET(0.50)[];
+X-Spamd-Result: default: False [-6.91 / 15.00];
+	DWL_DNSWL_MED(-4.00)[infradead.org:dkim,kernel.org:dkim];
+	BAYES_HAM(-3.00)[100.00%];
+	FREEMAIL_REPLYTO_NEQ_FROM(2.00)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,foxmail.com:s=s201512];
-	MAILLIST(-0.20)[mailman];
+	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
-	BAD_REP_POLICIES(0.10)[];
+	MAILLIST(-0.20)[mailman];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,kernel.org:s=k20201202];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FREEMAIL_FROM(0.00)[foxmail.com];
+	TO_DN_ALL(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
+	FORGED_SENDER(0.00)[devnull@kernel.org,barebox-bounces@lists.infradead.org];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	ARC_NA(0.00)[];
-	FREEMAIL_CC(0.00)[foxmail.com];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	RECEIVED_SPAMHAUS_PBL(0.00)[49.77.218.122:received];
-	NEURAL_HAM(-0.00)[-1.000];
-	FROM_NEQ_ENVFROM(0.00)[zheng.xiaojun@foxmail.com,barebox-bounces@lists.infradead.org];
+	FREEMAIL_REPLYTO(0.00)[gmail.com];
+	TAGGED_FROM(0.00)[lore=pengutronix.de,famlauro93l.gmail.com];
+	FREEMAIL_CC(0.00)[gmail.com];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	R_SPF_ALLOW(0.00)[+mx:c];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	DMARC_POLICY_ALLOW(0.00)[foxmail.com,none];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,foxmail.com:+];
-	FORGED_SENDER_MAILLIST(0.00)[]
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,kernel.org:+];
+	RCPT_COUNT_THREE(0.00)[3];
+	HAS_REPLYTO(0.00)[famlauro93l@gmail.com]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: EF5B62008B7
-X-Stat-Signature: ifyx5noxc38s3br7swzw5q1psnnj3emn
+X-Rspamd-Queue-Id: 54EE12006B6
+X-Stat-Signature: n83f9smpca4k9xfeka5dk5xrs1wg3wqn
 
-Signed-off-by: zhengxiaojun <zheng.xiaojun@foxmail.com>
+From: Luca Lauro <famlauro93l@gmail.com>
+
+Barebox previously supported only memory-mapped AHCI controllers.
+Some devices expose their AHCI controller through PCI BARs, such as the
+Marvell 9170 controller found in Netgear RN102/RN104 NAS devices,
+requiring a dedicated probing path and MMIO mapping.
+This patch extends the barebox AHCI driver with full support for
+PCI-based AHCI controllers, adding:
+
+- A PCI probe path that enables AHCI initialization via
+pci_enable_device(), pci_iomap() and ahci_add_host().
+
+- A small device list to keep track of PCI AHCI instances.
+
+Changes are based on the upstream Linux driver, with some adaptations.
+
+Signed-off-by: Luca Lauro <famlauro93l@gmail.com>
 ---
- drivers/net/designware_eqos.c | 29 +++++++++++++++++++----------
- 1 file changed, 19 insertions(+), 10 deletions(-)
+ drivers/ata/ahci.c | 54 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ drivers/ata/ahci.h |  1 +
+ 2 files changed, 55 insertions(+)
 
-diff --git a/drivers/net/designware_eqos.c b/drivers/net/designware_eqos.c
-index a6e9d8677f..332dc7eb73 100644
---- a/drivers/net/designware_eqos.c
-+++ b/drivers/net/designware_eqos.c
-@@ -17,6 +17,7 @@
- #include <linux/iopoll.h>
- #include <linux/time.h>
+diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+index 819dc37b3e..0ac1a9dead 100644
+--- a/drivers/ata/ahci.c
++++ b/drivers/ata/ahci.c
+@@ -19,6 +19,7 @@
+ #include <disks.h>
+ #include <ata_drive.h>
  #include <linux/sizes.h>
-+#include <linux/bitfield.h>
++#include <linux/pci.h>
+ #include <clock.h>
  
- #include "designware_eqos.h"
+ #include "ahci.h"
+@@ -47,6 +48,51 @@
+ #define ahci_debug(ahci, fmt, arg...) \
+ 	dev_dbg(ahci->dev, fmt, ##arg)
  
-@@ -416,6 +417,7 @@ static int eqos_start(struct eth_device *edev)
- 	u32 val, tx_fifo_sz, rx_fifo_sz, tqs, rqs, pbl;
- 	unsigned long last_rx_rf_desc;
- 	unsigned long rate;
-+	dma_addr_t dma_addr;
- 	u32 mode_set;
- 	int ret;
- 	int i;
-@@ -632,13 +634,15 @@ static int eqos_start(struct eth_device *edev)
- 		writel(EQOS_DESC3_BUF1V | EQOS_DESC3_OWN, &rx_rf_desc->des3);
- 	}
- 
--	writel(0, &eqos->dma_regs->ch0_txdesc_list_haddress);
--	writel((ulong)eqos->tx_descs, &eqos->dma_regs->ch0_txdesc_list_address);
-+	dma_addr = (dma_addr_t)eqos->tx_descs;
-+	writel(upper_32_bits(dma_addr), &eqos->dma_regs->ch0_txdesc_list_haddress);
-+	writel(lower_32_bits(dma_addr), &eqos->dma_regs->ch0_txdesc_list_address);
- 	writel(EQOS_DESCRIPTORS_TX - 1,
- 	       &eqos->dma_regs->ch0_txdesc_ring_length);
- 
--	writel(0, &eqos->dma_regs->ch0_rxdesc_list_haddress);
--	writel((ulong)eqos->rx_descs, &eqos->dma_regs->ch0_rxdesc_list_address);
-+	dma_addr = (dma_addr_t)eqos->rx_descs;
-+	writel(upper_32_bits(dma_addr), &eqos->dma_regs->ch0_rxdesc_list_haddress);
-+	writel(lower_32_bits(dma_addr), &eqos->dma_regs->ch0_rxdesc_list_address);
- 	writel(EQOS_DESCRIPTORS_RX - 1,
- 	       &eqos->dma_regs->ch0_rxdesc_ring_length);
- 
-@@ -720,8 +724,8 @@ static int eqos_send(struct eth_device *edev, void *packet, int length)
- 	if (dma_mapping_error(edev->parent, dma))
- 		return -EFAULT;
- 
--	tx_desc->des0 = (unsigned long)dma;
--	tx_desc->des1 = 0;
-+	tx_desc->des0 = lower_32_bits(dma);
-+	tx_desc->des1 = upper_32_bits(dma);
- 	tx_desc->des2 = length;
- 	/*
- 	 * Make sure the compiler doesn't reorder the _OWN write below, before
-@@ -780,9 +784,10 @@ static void eqos_recv(struct eth_device *edev)
- 
- 	/* Read Format RX descriptor */
- 	rx_rf_desc = &eqos->rx_descs[eqos->rx_currdescnum];
--	rx_rf_desc->des0 = dma;
--	rx_rf_desc->des1 = 0;
-+	rx_rf_desc->des0 = lower_32_bits(dma);
-+	rx_rf_desc->des1 = upper_32_bits(dma);
- 	rx_rf_desc->des2 = 0;
++#ifndef PCI_VENDOR_ID_MARVELL_EXT
++#define PCI_VENDOR_ID_MARVELL_EXT 0x1b4b
++#endif
 +
- 	/*
- 	 * Make sure that if HW sees the _OWN write below, it will see all the
- 	 * writes to the rest of the descriptor too.
-@@ -827,7 +832,8 @@ static int eqos_init_resources(struct eqos *eqos)
- 			goto err_free_rx_bufs;
- 		}
++static LIST_HEAD(ahci_devices);
++
++static const struct pci_device_id ahci_pci_tbl[] = {
++	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x9170) },
++	{ 0, }
++};
++
++static int ahci_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++{
++	struct ahci_device *ahci;
++	void __iomem *mmio;
++	int ret;
++
++	dev_info(&pdev->dev, "ahci: PCI probe %04x:%04x rev %02x\n",
++			pdev->vendor, pdev->device, pdev->revision);
++
++	ret = pci_enable_device(pdev);
++	if (ret)
++		return ret;
++
++	pci_set_master(pdev);
++
++	mmio = pci_iomap(pdev, 5);
++	if (!mmio)
++		return -ENODEV;
++
++	ahci = xzalloc(sizeof(*ahci));
++	ahci->dev = &pdev->dev;
++	ahci->mmio_base = mmio;
++	pdev->dev.priv = ahci;
++
++	ret = ahci_add_host(ahci);
++	if (ret) {
++		free(ahci);
++		pdev->dev.priv = NULL;
++		return ret;
++	}
++
++	return 0;
++}
++
+ struct ahci_cmd_hdr {
+ 	u32	opts;
+ 	u32	status;
+@@ -635,6 +681,7 @@ int ahci_add_host(struct ahci_device *ahci)
+ 	tmp = ahci_ioread(ahci, HOST_CTL);
  
--		rx_rf_desc->des0 = dma;
-+		rx_rf_desc->des0 = lower_32_bits(dma);
-+		rx_rf_desc->des1 = upper_32_bits(dma);
- 		eqos->dma_rx_buf[i] = dma;
+ 	ahci->dev->detect = ahci_detect;
++	list_add(&ahci->list, &ahci_devices);
  
- 		p += EQOS_MAX_PACKET_SIZE;
-@@ -942,13 +948,16 @@ int eqos_probe(struct device *dev, const struct eqos_ops *ops, void *priv)
- 
- void eqos_remove(struct device *dev)
- {
-+	dma_addr_t	dma;
- 	struct eqos *eqos = dev->priv;
- 
- 	eth_unregister(&eqos->netdev);
- 
- 	mdiobus_unregister(&eqos->miibus);
- 
--	dma_free(phys_to_virt(eqos->rx_descs[0].des0));
-+	dma = eqos->rx_descs[0].des1;
-+	dma = (dma << 32) + eqos->rx_descs[0].des0;
-+	dma_free(phys_to_virt(dma));
- 	dma_free_coherent(DMA_DEVICE_BROKEN,
- 			  eqos->tx_descs, 0, EQOS_DESCRIPTORS_SIZE);
+ 	return 0;
  }
+@@ -674,6 +721,13 @@ static __maybe_unused struct of_device_id ahci_dt_ids[] = {
+ };
+ MODULE_DEVICE_TABLE(of, ahci_dt_ids);
+ 
++static struct pci_driver ahci_pci_driver = {
++	.name = "ahci-pci",
++	.id_table = ahci_pci_tbl,
++	.probe = ahci_pci_probe,
++};
++device_pci_driver(ahci_pci_driver);
++
+ static struct driver ahci_driver = {
+ 	.name   = "ahci",
+ 	.probe  = ahci_probe,
+diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
+index 196bde73c2..d2a19f4648 100644
+--- a/drivers/ata/ahci.h
++++ b/drivers/ata/ahci.h
+@@ -184,6 +184,7 @@ struct ahci_port {
+ };
+ 
+ struct ahci_device {
++	struct list_head list;
+ 	struct device		*dev;
+ 	struct ahci_port	ports[AHCI_MAX_PORTS];
+ 	u32			n_ports;
+
 -- 
-2.43.0
+2.47.3
+
 
 
 
