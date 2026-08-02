@@ -1,17 +1,17 @@
-Delivery-date: Sun, 02 Aug 2026 15:17:42 +0200
+Delivery-date: Sun, 02 Aug 2026 15:19:09 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wqW4T-005XbT-14
+	id 1wqW5t-005XdP-07
 	for lore@lore.pengutronix.de;
-	Sun, 02 Aug 2026 15:17:42 +0200
+	Sun, 02 Aug 2026 15:19:09 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id BED6C201230
-	for <lore@pengutronix.de>; Sun, 02 Aug 2026 15:17:41 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 7267C20077D
+	for <lore@pengutronix.de>; Sun, 02 Aug 2026 15:19:09 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="agJKwMe/";
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="SGmI/040";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=OJCor8Mu;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RwSiIRMl;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -20,58 +20,57 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=e1mt6npw62ZqFPZSxLOWULcKRyP2hYlgFM5dVo+KrVg=; b=agJKwMe/NlJd88n9kAX+X/UKTj
-	ydjIdFzUm2ygUx7IhP0ulvhhwiiBAjd9b5m8NTKCDzNXbAQxK1PWiwan70IUFyG33faa9iONcrSBi
-	DisWpcdXC4u5VcZxykgJ5VkT0Nqasow5x+fY8f9Nb88yO69lvzntFD4cm+YOq404bJhBe4NyFL2WR
-	wMj96OsIl8SaoLcwX3DOBZLZf8ky5im+aTBepXcefZGvpaZ31zA/w/1noRPFBeW7l8N2e3F45xQEG
-	Pkqly4o57tb4rtzobN+vw1QauUm67aKLwommbLXY5RZmzV8Epd+sWueZKUOD1GW/Mc7t1CeECTqbh
-	xbXnnBDw==;
+	bh=QnyHJjaCgFXWEQmVWSHHd9C5jWsmjgfsLpw5KP5RmNA=; b=OJCor8Muq9iIZ76ibNzwzw79Qt
+	9tOw/XEc5OR5lnFSAPATV+lFkFFNnNtBA5cpj3ZjiCgrtH5+IoowzrA88eU0Dgp1GeE4IxFQ14n2y
+	DpUxGamYk+gekkhCMDd9hCiKThJ75EyYbkq97aBWpbeprcwsxl18ig9HRQhvDNy4cTuLF+Vidj3JR
+	87bSDtkxFso3YENbcNt756efJU+uFezLN1nvXvd8OHS9jRLjK/F8+5/9XtvIaJxrNTWaQ03zcLfNe
+	mN/+Yo5NTXlDUjxmjAhFx06QmYRRfQ2DJphccX4dXjfyxrBOhHcxQoOqpuVwZ9fZ9qJ30zhddBLEM
+	5Q4bR3cQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wqW3C-0000000FexU-0XMt;
-	Sun, 02 Aug 2026 13:16:22 +0000
-Received: from sea.source.kernel.org ([172.234.252.31])
+	id 1wqW3B-0000000FewK-1oJm;
+	Sun, 02 Aug 2026 13:16:21 +0000
+Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wqW3A-0000000FeuL-0MWb
+	id 1wqW39-0000000FeuC-46Sd
 	for barebox@lists.infradead.org;
 	Sun, 02 Aug 2026 13:16:20 +0000
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C1CDB44FF5;
+	by sea.source.kernel.org (Postfix) with ESMTP id 853B143DE5;
 	Sun,  2 Aug 2026 13:16:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A51E9C2BCFD;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 6C04AC2BCFB;
 	Sun,  2 Aug 2026 13:16:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1785676579;
-	bh=GqCS6bfpkxlbnmgpQkRIEjOEdSOiAvi1/fhtCu5bMwg=;
+	bh=j9I5tBceE35W9i9O31RRaUClz/3Qhgkp6I/xynUt1xw=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=SGmI/040vV5VBYm3drfO/4czTrbvb27RBKuEvjpDtIaIw9/nam0199BRqPLnp5HKx
-	 wrkOxyTxGtoffrhO39qEz8Pj72oAur65eA4RIpO2qPny4+brEbdMdeFWy6NbNxItDy
-	 xNSHC8KPo3Qocbb7Ep9NoMM5rzbyMfIm8Em6QYXL7GoVriaSJuv9oiKGzVcqtUdTAc
-	 /wbK5/msl513DsD49pzxdRricJChxiHNyKE/B40mQpPD9uxGGmBUAdmUXtBoKAIwfy
-	 aSUU8mEzzrDNwQOtCqG268NMJ9AD2e8jcoSd2KAm9xvmLdIpP3OvdK2aMZYzLeBZk/
-	 arHBkcFAiz1TA==
+	b=RwSiIRMlTowxIBSDr2Jzv00/wQxyVnG2FhuaStsldxzG+6svd2hVPLcYbOYF/JADh
+	 Tlv528GSV9gl1HtGs8VHHkgehBJV2Lxkeh6Te5WDbsrBG+Jl90GGa928NE+kZ4K+If
+	 aa3hwXH/SRfqn9FkNdT57zRi0UTTx5B5ThkLDFpabcnIc8WKr5dmt5jn674yN8cSWl
+	 0ADB5MCbwHTs3VHYqdZ5dgijIZR751C1N29DE3mvMrjfK7BAplTSAMncRs9x7EwuBx
+	 XjRq26l17kgRgAFNdmOtinoy6aC5VnSknhF9Cbfp9LF8etv2/ieZjNeEdO6c8UYkHh
+	 69Dh9BgT44V7A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 950B6C55180;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5BAB3C55171;
 	Sun,  2 Aug 2026 13:16:19 +0000 (UTC)
 From: Luca Lauro via B4 Relay <devnull+famlauro93l.gmail.com@kernel.org>
-Date: Sun, 02 Aug 2026 15:16:30 +0200
-Subject: [PATCH v3 14/15] ata: ahci: add shutdown helpers for AHCI
- controllers
+Date: Sun, 02 Aug 2026 15:16:26 +0200
+Subject: [PATCH v3 10/15] ata: ahci: fix zero-length DMA handling
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260802-rn102-rn104-series-v3-14-f7685a279fb5@gmail.com>
+Message-Id: <20260802-rn102-rn104-series-v3-10-f7685a279fb5@gmail.com>
 References: <20260802-rn102-rn104-series-v3-0-f7685a279fb5@gmail.com>
 In-Reply-To: <20260802-rn102-rn104-series-v3-0-f7685a279fb5@gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  "open list:BAREBOX" <barebox@lists.infradead.org>
 Cc: Luca Lauro <famlauro93l@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785676614; l=2392;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785676613; l=2309;
  i=famlauro93l@gmail.com; s=20260723; h=from:subject:message-id;
- bh=BMPMiscMovgAgnONTNzG4eiPp/a1cSuATP636hFCgHQ=;
- b=7r1BPPOcIB8vegNh/e3KWFQbk+RuqlmKS1PzXEZXX1nzgevJy14y+c18jHtXKxBNVfyWf9KL+
- 9PLm31seOLKAuJamxGNSUcGB65UhMHSYxh+x/Dnl/6OQfoFNgUOFzME
+ bh=H3FIyPrwhPocGpvGlE6A0RopME4zzlYfDWjMA9l1u8k=;
+ b=CvRG2ZduBRPuqAGB2uXyIqd5e2bsrb7DaoV2W1WCe3Llzqk7pvmm7IEodLEkGvuR7kqlCQDsr
+ 5KvXedDj3mtDEo16OSwjGgRTtSN9TYQCZx2oQNhL24joYzRcazb6e90
 X-Developer-Key: i=famlauro93l@gmail.com; a=ed25519;
  pk=OAJlcD69ugQCl99Vy6w+Aeu+ZUb1IVGcz1Ijxo6Ch78=
 X-Endpoint-Received: by B4 Relay for famlauro93l@gmail.com/20260723 with
@@ -91,7 +90,7 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Reply-To: famlauro93l@gmail.com
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Spamd-Result: default: False [-6.91 / 15.00];
-	DWL_DNSWL_MED(-4.00)[kernel.org:dkim,infradead.org:dkim];
+	DWL_DNSWL_MED(-4.00)[infradead.org:dkim,kernel.org:dkim];
 	BAYES_HAM(-3.00)[99.99%];
 	FREEMAIL_REPLYTO_NEQ_FROM(2.00)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
@@ -126,98 +125,87 @@ X-Spamd-Result: default: False [-6.91 / 15.00];
 	HAS_REPLYTO(0.00)[famlauro93l@gmail.com]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: BED6C201230
-X-Stat-Signature: zo3ajk55hsjyaofi6buyd5s5dxkkx93e
+X-Rspamd-Queue-Id: 7267C20077D
+X-Stat-Signature: yg4skp3oy6ed64zucarpy8wm1wju3d9d
 
 From: Luca Lauro <famlauro93l@gmail.com>
 
-Introduce helper functions to stop the DMA engine and FIS receive engine
-before shutdown. These helpers mirror the libata shutdown sequence and
-ensure that no AHCI activity is in progress when the system powers off.
+ata: ahci: fix zero-length DMA handling
+
+Commands without a data buffer must not trigger DMA setup. The previous
+code unconditionally programmed PRDT entries and attempted DMA mapping
+even when buf_len was zero, leading to invalid PRD tables and spurious
+DMA operations.
+
+This patch ensures that DMA mapping, PRDT setup and unmapping are only
+performed when buf_len > 0.
 
 Signed-off-by: Luca Lauro <famlauro93l@gmail.com>
 ---
- drivers/ata/ahci.c | 60 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+ drivers/ata/ahci.c | 33 ++++++++++++++++++---------------
+ 1 file changed, 18 insertions(+), 15 deletions(-)
 
 diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index a9a3f43f21..e9e73069c1 100644
+index 0ac1a9dead..a080de236e 100644
 --- a/drivers/ata/ahci.c
 +++ b/drivers/ata/ahci.c
-@@ -21,6 +21,7 @@
- #include <linux/sizes.h>
- #include <linux/pci.h>
- #include <clock.h>
-+#include <poweroff.h>
+@@ -198,30 +198,32 @@ static int ahci_io(struct ahci_port *ahci_port, u8 *fis, int fis_len, void *rbuf
+ 		const void *wbuf, int buf_len)
+ {
+ 	u32 opts;
+-	int sg_count;
++	int sg_count = 0;
+ 	int ret;
+-	void *buf;
+-	dma_addr_t buf_dma;
+-	enum dma_data_direction dma_dir;
++	void *buf = NULL;
++	dma_addr_t buf_dma = 0;
++	enum dma_data_direction dma_dir = DMA_NONE;
  
- #include "ahci.h"
+ 	if (!ahci_link_ok(ahci_port, 1))
+ 		return -EIO;
  
-@@ -683,6 +684,65 @@ static int ahci_probe(struct device *dev)
+-	if (wbuf) {
+-		buf = (void *)wbuf;
+-		dma_dir = DMA_TO_DEVICE;
+-	} else {
+-		buf = rbuf;
+-		dma_dir = DMA_FROM_DEVICE;
+-	}
++	if (buf_len > 0) {
++		if (wbuf) {
++			buf = (void *)wbuf;
++			dma_dir = DMA_TO_DEVICE;
++		} else {
++			buf = rbuf;
++			dma_dir = DMA_FROM_DEVICE;
++		}
+ 
+-	buf_dma = dma_map_single(ahci_port->ahci->dev, buf, buf_len, dma_dir);
++		buf_dma = dma_map_single(ahci_port->ahci->dev, buf, buf_len, dma_dir);
++		sg_count = ahci_fill_sg(ahci_port, buf_dma, buf_len);
++	}
+ 
+ 	memcpy(ahci_port->cmd_tbl, fis, fis_len);
+ 
+-	sg_count = ahci_fill_sg(ahci_port, buf_dma, buf_len);
+ 	opts = (fis_len >> 2) | (sg_count << 16);
+-	if (wbuf)
++	if (wbuf && buf_len > 0)
+ 		opts |= CMD_LIST_OPTS_WRITE;
+ 	ahci_fill_cmd_slot(ahci_port, opts);
+ 
+@@ -230,7 +232,8 @@ static int ahci_io(struct ahci_port *ahci_port, u8 *fis, int fis_len, void *rbuf
+ 	ret = wait_on_timeout(WAIT_DATAIO,
+ 			(ahci_port_read(ahci_port, PORT_CMD_ISSUE) & 0x1) == 0);
+ 
+-	dma_unmap_single(ahci_port->ahci->dev, buf_dma, buf_len, dma_dir);
++	if (buf_len > 0)
++		dma_unmap_single(ahci_port->ahci->dev, buf_dma, buf_len, dma_dir);
+ 
  	return ret;
  }
- 
-+/* -------------------------------- */
-+/*		AHCI shutdown helpers		*/
-+/* -------------------------------- */
-+
-+/* Stop DMA engine (clear START, wait LIST_ON=0) */
-+static int ahci_stop_engine(struct ahci_port *port)
-+{
-+	u32 cmd;
-+
-+	cmd = ahci_port_read(port, PORT_CMD);
-+
-+	/* Already stopped? */
-+	if (!(cmd & (PORT_CMD_START | PORT_CMD_LIST_ON)))
-+		return 0;
-+
-+	/* Clear START */
-+	cmd &= ~PORT_CMD_START;
-+	ahci_port_write_f(port, PORT_CMD, cmd);
-+
-+	/* Wait for LIST_ON to clear */
-+	return wait_on_timeout(500 * MSECOND,
-+		!(ahci_port_read(port, PORT_CMD) & PORT_CMD_LIST_ON));
-+}
-+
-+/* Stop FIS receive engine (clear FIS_RX, wait FIS_ON=0) */
-+static int ahci_stop_fis_rx(struct ahci_port *port)
-+{
-+	u32 cmd;
-+
-+	cmd = ahci_port_read(port, PORT_CMD);
-+	cmd &= ~PORT_CMD_FIS_RX;
-+	ahci_port_write_f(port, PORT_CMD, cmd);
-+
-+	/* Wait for FIS_ON to clear */
-+	return wait_on_timeout(1000 * MSECOND,
-+		!(ahci_port_read(port, PORT_CMD) & PORT_CMD_FIS_ON));
-+}
-+
-+/* Stop all ports (libata_pci_shutdown_one equivalent) */
-+static void __maybe_unused ahci_shutdown_host(struct ahci_device *ahci)
-+{
-+	int i, n_ports;
-+
-+	n_ports = max_t(int, ahci->n_ports, fls(ahci->port_map));
-+
-+	for (i = 0; i < n_ports; i++) {
-+		struct ahci_port *port = &ahci->ports[i];
-+
-+		if (!(ahci->port_map & (1 << i)))
-+			continue;
-+
-+		/* Stop DMA engine */
-+		ahci_stop_engine(port);
-+
-+		/* Stop FIS receive engine */
-+		ahci_stop_fis_rx(port);
-+	}
-+}
-+
- /* Issue FLUSH EXT + STANDBY IMMEDIATE */
- static void ahci_port_shutdown(struct ahci_port *port)
- {
 
 -- 
 2.47.3
