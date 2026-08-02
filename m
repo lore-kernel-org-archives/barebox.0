@@ -1,76 +1,80 @@
 Delivery-date: Sun, 02 Aug 2026 15:21:25 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wqW84-005Xg5-1x
+	id 1wqW84-005XgF-2Q
 	for lore@lore.pengutronix.de;
 	Sun, 02 Aug 2026 15:21:25 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id A6D80201230
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id D50852016E3
 	for <lore@pengutronix.de>; Sun, 02 Aug 2026 15:21:24 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=UD0Jh3lX;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OCNnfQGW;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=1kFFpMVd;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="YZhp/K2l";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Reply-To:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:
-	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Subject:Date:From:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=6RR/gM2UXaZOwO0QWHeeFRTIhTqrR2scpwx2hWIuY1o=; b=UD0Jh3lXn+SJV1UplfwFJqoo5d
-	dj0YfXIUUiS1k9yg08Pq3QBIBMfRBht+t91lShs9kZ8IlVtC/fJ3su6CnnrRFbnU4rftgit8LOfG5
-	EemwLWPs81OghByjYo0zLk1JVl5RdJNfonQxeeupAyUPJyBLWDp31r64XeytbNnFXiS42r88EcY0i
-	+JE2PrhoekstqS7HWLEj4yIgI0nuMsmYtJu3vd85NlVsQOO3DJjBSjfM+yF1/G0e78pX94M9PNpmp
-	WDLhpIGp+uhXPV+OfQvJIrgZzGDJSr1mXSss/q3gmhAGdmlbET5T+MySZOM09o/67UDkADZ/wmram
-	ZR11zt/g==;
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	From:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=h+cUBlY8veBJpspgOj8fb8jVHsuSm0ZUbkSdhP2eDQg=; b=1kFFpMVdsPDW/vyw8bXvnzg+6y
+	2dQIep045JC5y8HruX5Ihmv96uHmRyhQXzqlokRRb4zX0AOLpT2cCRfM6DI8k1FshfaHSzF7Pu9Kv
+	IUVpwSkMUdOZrf4ilxPAzVxvvr0IX9y8obM8cXauCsKiZfR09lfCEwoJas1+wCW8xbhFJZ1tcto+b
+	iIakHxHSO8GLfF+y2RL7U/PRzyzpGS13xY/azLmyw18r47Snkfvoa4xE4CWuuyxB9+UDtuvR/kUtI
+	oQsoZPRF/M9pgdOeO2U7kWIrsIkzig9pEbFxs9OQx5W1QGE2n7cYpRx8LRkEI3FUSHv5JrVCdVCfR
+	i+bgvFZA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wqW3B-0000000Fewd-2fkc;
-	Sun, 02 Aug 2026 13:16:21 +0000
+	id 1wqW3A-0000000FevM-2cAA;
+	Sun, 02 Aug 2026 13:16:20 +0000
 Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wqW3A-0000000FeuJ-02Fo
+	id 1wqW39-0000000Fetl-2hpT
 	for barebox@lists.infradead.org;
-	Sun, 02 Aug 2026 13:16:20 +0000
+	Sun, 02 Aug 2026 13:16:19 +0000
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A27CD43EDB;
+	by sea.source.kernel.org (Postfix) with ESMTP id 0B7CB40696;
 	Sun,  2 Aug 2026 13:16:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8947AC2BCFB;
-	Sun,  2 Aug 2026 13:16:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DA4D2C19425;
+	Sun,  2 Aug 2026 13:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1785676579;
-	bh=FxRrUewhBz+cfOaGk5bZFtY92r0O3E2gpAzDkdQu5Xs=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=OCNnfQGWDBJTOyX2nhCBurytdEY0OChgEqQ5vQBH14vvNAMLmGP7KRQoR5b0iETao
-	 vAUbOAry9C6C9ySEK2TPb/g/7UKtaUBIAeYGmmHR1nzq10DtvwTre2KAvPJpidn7E+
-	 AVKnvV48QMUKAoy5ABZduzCIIggTqAKPRm4HDc9VPDZm5GeMRZhPCu3gqRZ4war8EQ
-	 hOEGOT9YZbvEyYfD4Hu7gCcTbD4B3ipWoPkyqYmh73L751ceNHfoPa1iL9gx/vyAkJ
-	 /+98uFpyh17GE3fvoJfzGDXwwM0Q2jtSYreO5ZyiQkvylGekd+sHb1ddtGtHcly0X3
-	 lJAZO1zfX9bQQ==
+	s=k20201202; t=1785676578;
+	bh=LmiGkzBFnVrjE+essPAZ9Fwjyu54plXBA9CNDLfWgmU=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=YZhp/K2lpTXS2jozt/UgIyQwGfcr0AAQ7+avMrM6MEYZVVzPPvi03bGnV14mmmfko
+	 slJxNxfma+h6bZkIlZnbMJ8xUH1iLcWFfftW0p7HLnO4XgovFBW2ZliAFTm+88b1Ru
+	 KeTi0ixD6oYJ+DnBmrm1GfmFLamqk4ZAfwT0nYc/0LkyNQmcbX5bhYXeuY8Ite4EtD
+	 JGte0aZkJaEJLwhkvf2O4cIWOC2TiLK48pc70Arv7WRvLcA8Zwvpt3wl27uNsvuD72
+	 +gshR5JjthFbN1a1aAo7RN4Kfj0ENy0lIDu2d0iPV6MSefvrAgDjUdSYxWh8QRAk3l
+	 5cT8DDKNByMEA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 775C4C55175;
-	Sun,  2 Aug 2026 13:16:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B6A8EC55175;
+	Sun,  2 Aug 2026 13:16:18 +0000 (UTC)
 From: Luca Lauro via B4 Relay <devnull+famlauro93l.gmail.com@kernel.org>
-Date: Sun, 02 Aug 2026 15:16:28 +0200
-Subject: [PATCH v3 12/15] ata: ahci: improve AHCI port bring-up sequence
+Subject: [PATCH v3 00/15] ARM: mvebu: add Netgear RN102/RN104 support and
+ related drivers
+Date: Sun, 02 Aug 2026 15:16:16 +0200
+Message-Id: <20260802-rn102-rn104-series-v3-0-f7685a279fb5@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260802-rn102-rn104-series-v3-12-f7685a279fb5@gmail.com>
-References: <20260802-rn102-rn104-series-v3-0-f7685a279fb5@gmail.com>
-In-Reply-To: <20260802-rn102-rn104-series-v3-0-f7685a279fb5@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIACBDb2oC/32NQQ7CIBREr9KwFgPUUurKexgXBT4txlIDlWia3
+ l1oN10YN5O8ZObNjAJ4CwGdixl5iDbY0SUoDwVSfes6wFYnRowwTmpWYu8oYWue8LbFmnMBkjS
+ aGIPS8OnB2Pcqvd42Di95BzVlU270Nkyj/6yvkebe34NIMcE1b4RmlTaC80s3tPZxVOOA8kFke
+ 4X4qWBJ0UJJTVXJWiqxVyzL8gXbpu45CQEAAA==
+X-Change-ID: 20260723-rn102-rn104-series-d668eb09d0ff
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  "open list:BAREBOX" <barebox@lists.infradead.org>
 Cc: Luca Lauro <famlauro93l@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785676613; l=7135;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785676613; l=4441;
  i=famlauro93l@gmail.com; s=20260723; h=from:subject:message-id;
- bh=6kzDDNMpIXgqUtyt14q3Lj35MT1iqXYy/UAoYVNMToY=;
- b=HMLAf/nfFCF9Al97lH8mp3aSFGvGIAzfaXto7pOehCbP8MGUDaub74nlZUkeVTFp5ww/PMCkE
- psys3KqOgh5Cg8oozsZCAp3aQ0WHgqQzX4SeJnvdNJVrOsC5pJOe42i
+ bh=LmiGkzBFnVrjE+essPAZ9Fwjyu54plXBA9CNDLfWgmU=;
+ b=tTMOXYCQYugCzl95+ncpiDBSQyrHCVXkpBOiDkKGSrIz53tpMZyGh8mXpGlyZw7L+7OaWG7RD
+ bIb3b1WRyw8CcNqSwb1USdFW9xj/H+eplOx6lyQNQaddFjS8rEYkd2v
 X-Developer-Key: i=famlauro93l@gmail.com; a=ed25519;
  pk=OAJlcD69ugQCl99Vy6w+Aeu+ZUb1IVGcz1Ijxo6Ch78=
 X-Endpoint-Received: by B4 Relay for famlauro93l@gmail.com/20260723 with
@@ -91,7 +95,7 @@ Reply-To: famlauro93l@gmail.com
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Spamd-Result: default: False [-6.91 / 15.00];
 	DWL_DNSWL_MED(-4.00)[infradead.org:dkim,kernel.org:dkim];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	FREEMAIL_REPLYTO_NEQ_FROM(2.00)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
@@ -125,220 +129,103 @@ X-Spamd-Result: default: False [-6.91 / 15.00];
 	HAS_REPLYTO(0.00)[famlauro93l@gmail.com]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: A6D80201230
-X-Stat-Signature: pqnk6a1iknt1of7dzyj61k665exkxidt
+X-Rspamd-Queue-Id: D50852016E3
+X-Stat-Signature: sz3srjzt14kfmyphta8to5prkmurmy7r
 
-From: Luca Lauro <famlauro93l@gmail.com>
+This series adds full barebox support for the Netgear RN102 and RN104
+NAS platforms based on the Marvell Armada 370 SoC. Both devices share
+the same hardware architecture, differing mainly in the number of drive
+bays and board‑level integration.
 
-The existing code only attempted a partial port disable and relied on
-spin-up and link-up paths that are not reliable on some platforms like
-Marvell 9170-based systems; which require a stricter and more complete
-port initialization sequence than the generic AHCI specification.
+The series introduces:
+ - lowlevel initialization code for RN102 and RN104
+ - board support files and environment integration
+ - barebox‑specific device tree overlays for both platforms
+ - image generation support and defconfig updates
+ - fan controller subsystem and G76x driver
+ - fan control command and Kconfig/Makefile integration
+ - Marvell‑specific EHCI host controller driver
+ - USB/EHCI fixes
+ - ATA/AHCI improvements
 
-This patch improves the port bring-up sequence by:
-- fully disabling the port and waiting for FR/CR to clear
-- clearing PORT_SCR_ERR before initialization
-- issuing a COMRESET and waiting for PHY readiness
-- programming both 32-bit and 64-bit base address registers
-- enabling FIS receive and port start in the correct order
-- waiting for device readiness via TFDATA
-- removing obsolete spin-up, ICC and link-up logic
+The goal is to provide complete bootloader support for these NAS
+devices, enabling reliable initialization of storage, USB, fan control,
+and board‑specific peripherals. The patches have been tested on RN102.
+
+Changes in v3:
+ - cleaned up whitespace and indentation issues
+ - squashed fan command integration into a single commit
+ - removed noisy or unrelated changes
+ - improved commit messages and structure
+
+Link to v2:
+https://patch.msgid.link/20260728-rn102-rn104-series-v2-0-ae31f55b7bc8@gmail.com
 
 Signed-off-by: Luca Lauro <famlauro93l@gmail.com>
+
 ---
- drivers/ata/ahci.c | 144 +++++++++++++++++------------------------------------
- 1 file changed, 47 insertions(+), 97 deletions(-)
+Luca Lauro (15):
+      ARM: mvebu: add Netgear RN102 support
+      ARM: mvebu: enable RN102 in mvebu_defconfig
+      ARM: mvebu: improve Netgear RN104 support
+      ARM: mvebu: rename PUTC_LL to MVEBU_PUTC_LL
+      drivers: fan: add fan subsystem, core API and G76x fan controller driver
+      commands: add fan control command
+      usb: ehci: add Marvell EHCI host controller driver
+      usb: ehci: initialize periodic_queue_dma
+      ata: ahci: add PCI AHCI and Marvell 9170 controller support
+      ata: ahci: fix zero-length DMA handling
+      ata: ahci: add helper for ATA commands without data
+      ata: ahci: improve AHCI port bring-up sequence
+      ata: ahci: add FLUSH EXT and STANDBY IMMEDIATE support during shutdown
+      ata: ahci: add shutdown helpers for AHCI controllers
+      ata: ahci: cleanup legacy code and remove unused paths
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 09d37720c2..2504f4d19a 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -342,20 +342,37 @@ static int ahci_init_port(struct ahci_port *ahci_port)
- 	int ret;
- 
- 	/* make sure port is not active */
--	val = ahci_port_read(ahci_port, PORT_CMD);
--	if (val & (PORT_CMD_LIST_ON | PORT_CMD_FIS_ON | PORT_CMD_FIS_RX | PORT_CMD_START)) {
--		ahci_port_debug(ahci_port, "Port is active. Deactivating.\n");
--		val &= ~(PORT_CMD_LIST_ON | PORT_CMD_FIS_ON |
--			 PORT_CMD_FIS_RX | PORT_CMD_START);
--		ahci_port_write(ahci_port, PORT_CMD, val);
--
--		/*
--		 * spec says 500 msecs for each bit, so
--		 * this is slightly incorrect.
--		 */
--		mdelay(500);
-+	cmd = ahci_port_read(ahci_port, PORT_CMD);
-+	cmd &= ~(PORT_CMD_START | PORT_CMD_FIS_RX | PORT_CMD_FIS_ON |
-+			PORT_CMD_LIST_ON | PORT_CMD_SPIN_UP);
-+	ahci_port_write_f(ahci_port, PORT_CMD, cmd);
-+
-+	/* Wait for FR=0 and CR=0 */
-+	ret = wait_on_timeout(SECOND,
-+		!(ahci_port_read(ahci_port, PORT_CMD) &
-+			(PORT_CMD_FIS_ON | PORT_CMD_LIST_ON)));
-+	if (ret)
-+		dev_warn(ahci_port->ahci->dev, "timeout waiting for port disable\n");
-+
-+	/* Clear errors */
-+	val = ahci_port_read(ahci_port, PORT_SCR_ERR);
-+	if (val)
-+		ahci_port_write(ahci_port, PORT_SCR_ERR, val);
-+
-+	/* COMRESET: write DET=1 then DET=0 */
-+	ahci_port_write(ahci_port, PORT_SCR_CTL, 1);
-+	udelay(1000);
-+	ahci_port_write(ahci_port, PORT_SCR_CTL, 0);
-+
-+	/* Wait for PHY ready */
-+	ret = wait_on_timeout(SECOND,
-+		(ahci_port_read(ahci_port, PORT_SCR_STAT) & PORT_SCR_STAT_DET) == 0x3);
-+	if (ret) {
-+		ahci_port_info(ahci_port, "PHY not ready after COMRESET\n");
-+		return -ETIMEDOUT;
- 	}
- 
-+	/* Allocate DMA memory */
- 	mem = dma_alloc_coherent(DMA_DEVICE_BROKEN,
- 				 AHCI_PORT_PRIV_DMA_SZ, &mem_dma);
- 	if (!mem) {
-@@ -369,9 +386,6 @@ static int ahci_init_port(struct ahci_port *ahci_port)
- 	ahci_port->cmd_slot = mem;
- 	ahci_port->cmd_slot_dma = mem_dma;
- 
--	ahci_port_debug(ahci_port, "cmd_slot = 0x%p (0x%pad)\n",
--			ahci_port->cmd_slot, &ahci_port->cmd_slot_dma);
--
- 	/*
- 	 * Second item: Received-FIS area
- 	 */
-@@ -384,104 +398,40 @@ static int ahci_init_port(struct ahci_port *ahci_port)
- 	 */
- 	ahci_port->cmd_tbl = mem + AHCI_CMD_LIST_SZ + AHCI_RX_FIS_SZ;
- 	ahci_port->cmd_tbl_dma = mem_dma + AHCI_CMD_LIST_SZ + AHCI_RX_FIS_SZ;
--
--	ahci_port_debug(ahci_port, "cmd_tbl = 0x%p (0x%pad)\n",
--			ahci_port->cmd_tbl, &ahci_port->cmd_tbl_dma);
--
- 	ahci_port->cmd_tbl_sg = ahci_port->cmd_tbl + AHCI_CMD_TBL_HDR_SZ;
- 
--	ahci_port_write_f(ahci_port, PORT_LST_ADDR, lower_32_bits(ahci_port->cmd_slot_dma));
-+	/* Program command list + FIS base addresses */
-+	ahci_port_write_f(ahci_port, PORT_LST_ADDR,
-+		lower_32_bits(ahci_port->cmd_slot_dma));
- 	if (ahci_port->ahci->cap & HOST_CAP_64)
--		ahci_port_write_f(ahci_port, PORT_LST_ADDR_HI, upper_32_bits(ahci_port->cmd_slot_dma));
--	ahci_port_write_f(ahci_port, PORT_FIS_ADDR, lower_32_bits(ahci_port->rx_fis_dma));
-+		ahci_port_write_f(ahci_port, PORT_LST_ADDR_HI,
-+			upper_32_bits(ahci_port->cmd_slot_dma));
-+
-+	ahci_port_write_f(ahci_port, PORT_FIS_ADDR,
-+		lower_32_bits(ahci_port->rx_fis_dma));
- 	if (ahci_port->ahci->cap & HOST_CAP_64)
--		ahci_port_write_f(ahci_port, PORT_FIS_ADDR_HI, upper_32_bits(ahci_port->rx_fis_dma));
-+		ahci_port_write_f(ahci_port, PORT_FIS_ADDR_HI,
-+			upper_32_bits(ahci_port->rx_fis_dma));
- 
--	/*
--	 * Add the spinup command to whatever mode bits may
--	 * already be on in the command register.
--	 */
-+	/* Enable FIS receive engine */
- 	cmd = ahci_port_read(ahci_port, PORT_CMD);
- 	cmd |= PORT_CMD_FIS_RX;
--	cmd |= PORT_CMD_SPIN_UP;
--	cmd |= PORT_CMD_ICC_ACTIVE;
- 	ahci_port_write_f(ahci_port, PORT_CMD, cmd);
- 
--	mdelay(10);
--
--	cmd = ahci_port_read(ahci_port, PORT_CMD);
-+	/* Enable port start */
- 	cmd |= PORT_CMD_START;
- 	ahci_port_write_f(ahci_port, PORT_CMD, cmd);
- 
--	/*
--	 * Bring up SATA link.
--	 * SATA link bringup time is usually less than 1 ms; only very
--	 * rarely has it taken between 1-2 ms. Never seen it above 2 ms.
--	 */
--	ret = wait_on_timeout(WAIT_LINKUP,
--			(ahci_port_read(ahci_port, PORT_SCR_STAT) & PORT_SCR_STAT_DET) == 0x3);
--	if (ret) {
--		ahci_port_info(ahci_port, "SATA link timeout\n");
--		ret = -ETIMEDOUT;
--		goto err_init;
--	}
--
--	ahci_port_info(ahci_port, "SATA link ok\n");
--
--	/* Clear error status */
--	val = ahci_port_read(ahci_port, PORT_SCR_ERR);
--	if (val)
--		ahci_port_write(ahci_port, PORT_SCR_ERR, val);
--
--	ahci_port_info(ahci_port, "Spinning up device...\n");
--
-+	/* Wait for device ready (TFDATA not BUSY) */
- 	ret = wait_on_timeout(WAIT_SPINUP,
--			((ahci_port_read(ahci_port, PORT_TFDATA) &
--			 (ATA_STATUS_BUSY | ATA_STATUS_DRQ)) == 0) ||
--			((ahci_port_read(ahci_port, PORT_SCR_STAT) &
--			 PORT_SCR_STAT_DET) == 1));
-+			!(ahci_port_read(ahci_port, PORT_TFDATA) &
-+			(ATA_STATUS_BUSY | ATA_STATUS_DRQ)));
- 	if (ret) {
--		ahci_port_info(ahci_port, "timeout.\n");
--		ret = -ENODEV;
--		goto err_init;
--	}
--
--	if ((ahci_port_read(ahci_port, PORT_SCR_STAT) & PORT_SCR_STAT_DET) == 1) {
--		ahci_port_info(ahci_port, "down.\n");
--		ret = -ENODEV;
--		goto err_init;
-+		ahci_port_info(ahci_port, "device not ready\n");
-+		return -ENODEV;
- 	}
- 
--	ahci_port_info(ahci_port, "ok.\n");
--
--	val = ahci_port_read(ahci_port, PORT_SCR_ERR);
--
--	ahci_port_write(ahci_port, PORT_SCR_ERR, val);
--
--	/* ack any pending irq events for this port */
--	val = ahci_port_read(ahci_port, PORT_IRQ_STAT);
--	if (val)
--		ahci_port_write(ahci_port, PORT_IRQ_STAT, val);
--
--	ahci_iowrite(ahci_port->ahci, HOST_IRQ_STAT, 1 << ahci_port->num);
--
--	/* set irq mask (enables interrupts) */
--	ahci_port_write(ahci_port, PORT_IRQ_MASK, DEF_PORT_IRQ);
--
--	/* register linkup ports */
--	val = ahci_port_read(ahci_port, PORT_SCR_STAT);
--
--	ahci_port_debug(ahci_port, "status: 0x%08x\n", val);
--
--	if ((val & PORT_SCR_STAT_DET) == 0x3)
--		return 0;
--
--	ret = -ENODEV;
--
--err_init:
--	dma_free_coherent(DMA_DEVICE_BROKEN,
--			  mem, mem_dma, AHCI_PORT_PRIV_DMA_SZ);
--	return ret;
-+	return 0;
- }
- 
- static int ahci_port_start(struct ata_port *ata_port)
+ arch/arm/boards/Makefile                   |    1 +
+ arch/arm/boards/netgear-rn102/Makefile     |    4 +
+ arch/arm/boards/netgear-rn102/board.c      |  243 ++++++
+ arch/arm/boards/netgear-rn102/lowlevel.c   |   58 ++
+ arch/arm/boards/netgear-rn104/Makefile     |    1 +
+ arch/arm/boards/netgear-rn104/board.c      |  182 +++++
+ arch/arm/boards/netgear-rn104/lowlevel.c   |   37 +-
+ arch/arm/configs/mvebu_defconfig           |    1 +
+ arch/arm/dts/Makefile                      |    1 +
+ arch/arm/dts/armada-370-rn102-bb.dts       |   82 ++
+ arch/arm/dts/armada-370-rn104-bb.dts       |   73 +-
+ arch/arm/mach-mvebu/Kconfig                |    4 +
+ commands/Kconfig                           |    7 +
+ commands/Makefile                          |    2 +
+ commands/fan.c                             |  286 +++++++
+ drivers/Kconfig                            |    1 +
+ drivers/Makefile                           |    1 +
+ drivers/ata/ahci.c                         |  429 ++++++----
+ drivers/ata/ahci.h                         |    1 +
+ drivers/fan/Kconfig                        |   35 +
+ drivers/fan/Makefile                       |    8 +
+ drivers/fan/fan.c                          |  180 +++++
+ drivers/fan/i2c_fan_controllers/Kconfig    |    6 +
+ drivers/fan/i2c_fan_controllers/Makefile   |    5 +
+ drivers/fan/i2c_fan_controllers/g76x.c     | 1185 ++++++++++++++++++++++++++++
+ drivers/fan/other_fan_controllers/Kconfig  |    7 +
+ drivers/fan/other_fan_controllers/Makefile |    3 +
+ drivers/fan/spi_fan_controllers/Kconfig    |    1 +
+ drivers/fan/spi_fan_controllers/Makefile   |    3 +
+ drivers/usb/host/Kconfig                   |    7 +
+ drivers/usb/host/Makefile                  |   13 +-
+ drivers/usb/host/ehci-hcd.c                |    7 +-
+ drivers/usb/host/ehci-marvell.c            |  228 ++++++
+ images/Makefile.mvebu                      |   13 +-
+ include/fan/fan.h                          |   94 +++
+ include/fan/i2c_fan_controllers/g76x.h     |   37 +
+ include/mach/mvebu/debug_ll.h              |    2 +-
+ 37 files changed, 3064 insertions(+), 184 deletions(-)
+---
+base-commit: f9cc366e5b67680473e4ab7837eeb27bf1b5a567
+change-id: 20260723-rn102-rn104-series-d668eb09d0ff
 
--- 
-2.47.3
+Best regards,
+--  
+Luca Lauro <famlauro93l@gmail.com>
 
 
 
