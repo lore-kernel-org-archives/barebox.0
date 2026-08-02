@@ -3,15 +3,15 @@ Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wqW4S-005XbD-1X
+	id 1wqW4T-005XbS-0p
 	for lore@lore.pengutronix.de;
 	Sun, 02 Aug 2026 15:17:41 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id E3156201106
-	for <lore@pengutronix.de>; Sun, 02 Aug 2026 15:17:40 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id ADC39201106
+	for <lore@pengutronix.de>; Sun, 02 Aug 2026 15:17:41 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="Fb/kU834";
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sjVwNjyx;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=fzs95aYF;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HzORTD4f;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -20,57 +20,57 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=famCJqTNMwM6sf7V4OQoKOM0UdjXpm6S7hjmBBuNYcI=; b=Fb/kU834s1KvwatioNSUSd8R3I
-	5eshhdrytTjR73a2OxXTKI0rS5ygQ9+FSQgC+QWZZoyQSJF9OEGOTau8wecWbU0dgCrwKbl+BRLp9
-	ynZD3/pGavwIpgquJq1mtLmhXkAq8dxqlyLGbwiE3XT81hSYZIWuOnzVh2bHESXOc2J2DQwd8/USm
-	05uF1f2Aq+1xtaV2Kl24iNWncVfXRBXBSLqrqHJnqsVLZglxDkXpCb6nJLprZAo9moyQwAAdqAY5y
-	Mo1w/sCcGd2QQfIvNjj4ZpxBe8coxtiY+9jp7jdxG7pHpo6C5tJ4nXG3oomGvW63o9F4tZg+WzGNA
-	BXkSnSQg==;
+	bh=VPDsNj6XiPKA446dtosnC4UTj4tkSUhTx6cCgdT2sao=; b=fzs95aYFAxs7FRDVOWvvKHyxeE
+	ztkm+u8LoTzs6ecQPQmZ5DIO9RO+pB/+5Ntsda3N8oInG7AqhN+HUuO4KhYLFTlUQz+hONNyX+red
+	bhGwrC+bDsFyy6AhaljWoWuQmbCxbZBj26eWvDBBn4/E5sxeMJMxsX4NPD+aQg/FRXKW+ZTphv4pg
+	pvSA1rLJloJczTa5FSKKayBDY0wFY0PWYXnAXz/g+aLBkqMZaYQd2a+9nqPdkKtMav71mvu3qJb35
+	KMHYZyZ3KUJXelpfHesRJwOH0/mU4ADRMv2YRKK8CE0uOhQL4VfACH0IbwV5RbHOYpTVW2tEhG5zL
+	kb1Bl+mw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wqW3A-0000000Feuv-1ofF;
+	id 1wqW3A-0000000FevH-29Tw;
 	Sun, 02 Aug 2026 13:16:20 +0000
-Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
+Received: from sea.source.kernel.org ([172.234.252.31])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wqW39-0000000Fetp-2hmM
+	id 1wqW39-0000000Fetn-2qsb
 	for barebox@lists.infradead.org;
 	Sun, 02 Aug 2026 13:16:19 +0000
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 305B143C80;
+	by sea.source.kernel.org (Postfix) with ESMTP id 1B7BC43489;
 	Sun,  2 Aug 2026 13:16:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1377FC2BCFC;
-	Sun,  2 Aug 2026 13:16:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id F22D2C2BCF4;
+	Sun,  2 Aug 2026 13:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1785676579;
-	bh=8kdfkYmvc6Rba6DyBG3r+S/2TNVvMQlAhH+j+Go9Ps8=;
+	bh=Cq9SkQIQbVcxA021WRQOa2zvZ/VuUKoKZ/LI+cZZ0Jc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=sjVwNjyxF/LcGl6nLIShnQeAmj9X0FfvxpUAvHco6TUNj+69FBCYj8sy3SdxIuz8D
-	 T9zsk5Ht2QKFxkUj2ov/doZ3PTQ20BCIfJyzC9zZGwkSnBMvMTMGaoaFMQvC+fubSC
-	 TaEjnfasXhnbf33+AcirkpOm9N5wlhLBIPCKPd0ahc50GHyUnzEbTV9w8pelx5r6TE
-	 /Ut6QKL4y9t9VX2GVh7ZsePPgTvjFq6qVMwlZCYpCmj78+PzWGSrZdiZXshF6oYOJ5
-	 MCAef/TKy9VomHe/nL/s5Lu4o/qsEHALNEXP2qRsQRYqmHM8iy9Gp59kxuBQhLISEW
-	 GZeAb8NJ6s/JA==
+	b=HzORTD4fQPG49cL+YSOVlBHJqp+iknr98KplE5uW2Q2kZSQ1MIqujEg4GOYctYtRa
+	 L5bbQXEvZXGuDQ/9Pd/oC5ir+vKXmV8NXF1EVIIs0br4RfbT/0ATipe/chOGDDydwu
+	 yotlngeRt5W0ifha/8qzoLVx6ufncKMgsrsXbQc/UqTc1CIiXKzgEkuec0WEU6JmWe
+	 rS3Fw2vGpPq/+mx3XIphw5DgjsRoKF9BAAQ3iqorPpr/pE/Vry4qpnRihXpK55vQKq
+	 xSTwKXIxoCluE68S5EiPmpJlHGG9EJq7+C4ZwTTX6YNRxhUmDOrec1BEF4pzrToZLf
+	 CCOR5gFaABq4Q==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F2ADDC55180;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D5938C55177;
 	Sun,  2 Aug 2026 13:16:18 +0000 (UTC)
 From: Luca Lauro via B4 Relay <devnull+famlauro93l.gmail.com@kernel.org>
-Date: Sun, 02 Aug 2026 15:16:20 +0200
-Subject: [PATCH v3 04/15] ARM: mvebu: rename PUTC_LL to MVEBU_PUTC_LL
+Date: Sun, 02 Aug 2026 15:16:18 +0200
+Subject: [PATCH v3 02/15] ARM: mvebu: enable RN102 in mvebu_defconfig
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260802-rn102-rn104-series-v3-4-f7685a279fb5@gmail.com>
+Message-Id: <20260802-rn102-rn104-series-v3-2-f7685a279fb5@gmail.com>
 References: <20260802-rn102-rn104-series-v3-0-f7685a279fb5@gmail.com>
 In-Reply-To: <20260802-rn102-rn104-series-v3-0-f7685a279fb5@gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  "open list:BAREBOX" <barebox@lists.infradead.org>
 Cc: Luca Lauro <famlauro93l@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1785676613; l=1088;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1785676613; l=550;
  i=famlauro93l@gmail.com; s=20260723; h=from:subject:message-id;
- bh=/5V7fuKugqpi3D+fGP52vhlNoamQA7hEofVWrbSmDoo=;
- b=fXiJsyOAfwyUScWz8NvaLVW0yuIxCc/+q3ZIp6HQaLaFT/V30qnKOO0XtbUzYpzAxzEXHZJyN
- myKAbb6qEXuBa56cgDV7MI/o3MJ2TB7QSRdOLodOJjWPFj3uQihHr8m
+ bh=seD/gFydukKnJDD7V1GwLtTGZdYR6KcS8BRuLYyWVbU=;
+ b=4aLvGBLtDFVmg0qtiFJyr6YGxtMMourr2aCGkgMhYB/Ibk68k3DHsTLMspPcgkLodlQ1udgYa
+ UzRP2XdsDc9D+YvURvdS5DR5dHBtjQ6o3ddg0My3TN+McO8wn7aSaXl
 X-Developer-Key: i=famlauro93l@gmail.com; a=ed25519;
  pk=OAJlcD69ugQCl99Vy6w+Aeu+ZUb1IVGcz1Ijxo6Ch78=
 X-Endpoint-Received: by B4 Relay for famlauro93l@gmail.com/20260723 with
@@ -91,7 +91,7 @@ Reply-To: famlauro93l@gmail.com
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Spamd-Result: default: False [-6.91 / 15.00];
 	DWL_DNSWL_MED(-4.00)[infradead.org:dkim,kernel.org:dkim];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	FREEMAIL_REPLYTO_NEQ_FROM(2.00)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
@@ -125,38 +125,27 @@ X-Spamd-Result: default: False [-6.91 / 15.00];
 	HAS_REPLYTO(0.00)[famlauro93l@gmail.com]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: E3156201106
-X-Stat-Signature: fiwc1adpcj8s5sshxzygq3askpiisfbh
+X-Rspamd-Queue-Id: ADC39201106
+X-Stat-Signature: 1om8zq6noj8hcszkbmhn9h7pcytykx4d
 
 From: Luca Lauro <famlauro93l@gmail.com>
 
-The name PUTC_LL is used by multiple architectures in barebox for their
-early low-level UART output helpers. Since these functions differ between
-SoCs and are defined in architecture-specific debug_ll headers, using the
-same global name can lead to collisions or accidental overrides when
-including multiple debug_ll headers.
-
-To avoid such namespace conflicts and to make the origin of the function
-explicit, rename the mvebu-specific PUTC_LL to MVEBU_PUTC_LL.
-
 Signed-off-by: Luca Lauro <famlauro93l@gmail.com>
 ---
- include/mach/mvebu/debug_ll.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/configs/mvebu_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/mach/mvebu/debug_ll.h b/include/mach/mvebu/debug_ll.h
-index cf08776d4f..cd81b27e39 100644
---- a/include/mach/mvebu/debug_ll.h
-+++ b/include/mach/mvebu/debug_ll.h
-@@ -15,7 +15,7 @@
- 
- #define EARLY_UART	UARTn_BASE(CONFIG_MVEBU_CONSOLE_UART)
- 
--static inline void PUTC_LL(char c)
-+static inline void MVEBU_PUTC_LL(char c)
- {
- 	/* Wait until there is space in the FIFO */
- 	while (!(readl(EARLY_UART + UART_LSR) & LSR_THRE))
+diff --git a/arch/arm/configs/mvebu_defconfig b/arch/arm/configs/mvebu_defconfig
+index 91dd23e1c8..a13b153f9f 100644
+--- a/arch/arm/configs/mvebu_defconfig
++++ b/arch/arm/configs/mvebu_defconfig
+@@ -1,5 +1,6 @@
+ CONFIG_ARCH_MVEBU=y
+ CONFIG_MACH_GLOBALSCALE_MIRABOX=y
++CONFIG_MACH_NETGEAR_RN102=y
+ CONFIG_MACH_NETGEAR_RN104=y
+ CONFIG_MACH_LENOVO_IX4_300D=y
+ CONFIG_MACH_MARVELL_ARMADA_XP_DB=y
 
 -- 
 2.47.3
