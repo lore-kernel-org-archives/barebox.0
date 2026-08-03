@@ -1,16 +1,16 @@
-Delivery-date: Mon, 03 Aug 2026 23:54:34 +0200
+Delivery-date: Mon, 03 Aug 2026 23:57:27 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wr0cD-0060RU-1Z
+	id 1wr0f0-0060TW-1v
 	for lore@lore.pengutronix.de;
-	Mon, 03 Aug 2026 23:54:34 +0200
+	Mon, 03 Aug 2026 23:57:27 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id BE3652002FE
-	for <lore@pengutronix.de>; Mon, 03 Aug 2026 23:54:29 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id EEF44200C03
+	for <lore@pengutronix.de>; Mon, 03 Aug 2026 23:57:22 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="F+X/llJa";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=BDlF5KMg;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,47 +19,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:Content-Type:In-Reply-To:To:Subject:From:Reply-To:
 	MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
-	bh=fxNb2NuSWmRmJxJs8dbThRERg5TCk52cW6gY8eXQb44=; b=F+X/llJa9i00dLHEK+4PLI6sXW
-	gWT86CYHWSiDKNy56ROWxspor1CNPzuaedWVpxivchXwRduHToFAp2QKnPz4TQ4YnRYvwJd9FwtHT
-	XLwHdE4tfuXnwoMZVSlQKt/rScOMJR6YFdVAlDyKtapx5tIBvm8SFnCVm8bbNJOf4M5nSOokxmlAh
-	po4AwprjliAMFfjPCHGfgczg0MreEewa8LBPX1MN3+I4CtLouhjk1Csxd9ZaNGbtlyJ/dwomkBvkG
-	blWkmXLoYSaSSjjjSZLFT2CJDNZ7x0219GiqoasY3yRz5lNlH2WapwXzlUzTiKtodG+sZ9Zx8hiXg
-	i1ugaHjA==;
+	bh=AqkvyvxOXskrTXY1qlLw5S6l3BvDh5Lh/58jX8RHNzE=; b=BDlF5KMgqIks69WWTbZDz0y9nb
+	vboRc/vwARotpyAdXfVb4ZWUDoB7NJWFOmwj67Y79yTe/r4MB4BypEeo8ua8goKBbwJRGS9BGrZK8
+	WL7/5YV8uxXuyRsvc1XhS8KDe2GC52YxKGd70wjy8JMhB3Mh76Gro7sIDuAf47FVZruvdWyENRjJd
+	sUd/oojbwZ7kuaQ7tE6s1IskpjPw/EDYSBPuoDdrxaDAGgTtrCkrIcqnkP4q7kW6kLSf2K3Tx1S0O
+	8p+HuWqoJHrTOaqFcAjjqzvsv28j8DmmYK5Y9CZ0vR1/IP4yPbJrT2r4iFHxvYW0+OIRK/fvl+dk5
+	RQy4TgYQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wr0ai-00000000YeI-2F3v;
-	Mon, 03 Aug 2026 21:53:00 +0000
+	id 1wr0dj-00000000ZSY-2yME;
+	Mon, 03 Aug 2026 21:56:07 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wr0ae-00000000Ydj-3NPv
+	id 1wr0dg-00000000ZS4-1Xvu
 	for barebox@lists.infradead.org;
-	Mon, 03 Aug 2026 21:52:58 +0000
+	Mon, 03 Aug 2026 21:56:06 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 9CDB62002FE;
-	Mon, 03 Aug 2026 23:52:50 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 880AC2002FE;
+	Mon, 03 Aug 2026 23:55:58 +0200 (CEST)
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1wr0aY-002lCV-1n;
-	Mon, 03 Aug 2026 23:52:50 +0200
+	id 1wr0da-002lCj-1R;
+	Mon, 03 Aug 2026 23:55:58 +0200
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1wr0aY-00000007wHp-1vsL;
-	Mon, 03 Aug 2026 23:52:50 +0200
+	id 1wr0da-00000007wJ8-1ScK;
+	Mon, 03 Aug 2026 23:55:58 +0200
 From: "Sascha Hauer" <s.hauer@pengutronix.de>
-Subject: Re: [PATCH v3 13/15] ata: ahci: add FLUSH EXT and STANDBY IMMEDIATE
- support during shutdown
+Subject: Re: [PATCH v3 14/15] ata: ahci: add shutdown helpers for AHCI
+ controllers
 To: "Luca Lauro via B4 Relay" <devnull+famlauro93l.gmail.com@kernel.org>
-In-Reply-To: <20260802-rn102-rn104-series-v3-13-f7685a279fb5@gmail.com>
+In-Reply-To: <20260802-rn102-rn104-series-v3-14-f7685a279fb5@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 03 Aug 2026 21:52:50 +0000
-Message-Id: <E1wr0aY-00000007wHp-1vsL@pty.whiteo.stw.pengutronix.de>
+Date: Mon, 03 Aug 2026 21:55:58 +0000
+Message-Id: <E1wr0da-00000007wJ8-1ScK@pty.whiteo.stw.pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260803_145257_023844_D702F1E5 
-X-CRM114-Status: GOOD (  23.99  )
+X-CRM114-CacheID: sfid-20260803_145604_557888_F6C36AEF 
+X-CRM114-Status: GOOD (  21.93  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -68,8 +68,8 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  the administrator of that system for details.
  
  Content preview:  On 2026-08-02 15:16, Luca Lauro via B4 Relay wrote: > From:
-    Luca Lauro <famlauro93l@gmail.com> > > Some AHCI controllers require ATA
-   FLUSH EXT and STANDBY IMMEDIATE to be > issued before poweroff to e [...] 
+    Luca Lauro <famlauro93l@gmail.com> > > Introduce helper functions to stop
+    the DMA engine and FIS receive engine > before shutdown. These hel [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -134,17 +134,15 @@ X-Spamd-Result: default: False [-3.01 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: BE3652002FE
-X-Stat-Signature: aaabgyb9nwchcicjoebhhdtfitr4s1xn
+X-Rspamd-Queue-Id: EEF44200C03
+X-Stat-Signature: inyp6bn6te3wexgfiu86gychs18j7zom
 
 On 2026-08-02 15:16, Luca Lauro via B4 Relay wrote:
 > From: Luca Lauro <famlauro93l@gmail.com>
 >=20
-> Some AHCI controllers require ATA FLUSH EXT and STANDBY IMMEDIATE to be
-> issued before poweroff to ensure data integrity and proper device
-> shutdown. This patch introduces ahci_port_shutdown(), which sends these
-> commands using ahci_ata_nodata(), and integrates it into a new AHCI
-> poweroff handler.
+> Introduce helper functions to stop the DMA engine and FIS receive engine
+> before shutdown. These helpers mirror the libata shutdown sequence and
+> ensure that no AHCI activity is in progress when the system powers off.
 >=20
 > Signed-off-by: Luca Lauro <famlauro93l@gmail.com>
 > ---
@@ -153,95 +151,86 @@ On 2026-08-02 15:16, Luca Lauro via B4 Relay wrote:
 >  1 file changed, 60 insertions(+)
 >=20
 > diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-> index 2504f4d19a..a9a3f43f21 100644
+> index a9a3f43f21..e9e73069c1 100644
 > --- a/drivers/ata/ahci.c
 > +++ b/drivers/ata/ahci.c
-> @@ -48,6 +48,9 @@
->  #define ahci_debug(ahci, fmt, arg...) \
->  	dev_dbg(ahci->dev, fmt, ##arg)
+> @@ -21,6 +21,7 @@
+>  #include <linux/sizes.h>
+>  #include <linux/pci.h>
+>  #include <clock.h>
+> +#include <poweroff.h>
 > =20
-> +#define ATA_CMD_FLUSH_EXT 0xEA
-> +#define ATA_CMD_STANDBYNOW1 0xE0
-> +
->  #ifndef PCI_VENDOR_ID_MARVELL_EXT
->  #define PCI_VENDOR_ID_MARVELL_EXT 0x1b4b
->  #endif
-> @@ -680,6 +683,63 @@ static int ahci_probe(struct device *dev)
+>  #include "ahci.h"
+> =20
+> @@ -683,6 +684,65 @@ static int ahci_probe(struct device *dev)
 >  	return ret;
 >  }
 > =20
-> +/* Issue FLUSH EXT + STANDBY IMMEDIATE */
-> +static void ahci_port_shutdown(struct ahci_port *port)
+> +/* -------------------------------- */
+> +/*		AHCI shutdown helpers		*/
+> +/* -------------------------------- */
+> +
+> +/* Stop DMA engine (clear START, wait LIST_ON=3D0) */
+> +static int ahci_stop_engine(struct ahci_port *port)
 > +{
-> +	if (!port->cmd_tbl || !port->cmd_slot)
-> +		return;
+> +	u32 cmd;
 > +
-> +	if (!ahci_link_ok(port, 0))
-> +		return;
+> +	cmd =3D ahci_port_read(port, PORT_CMD);
 > +
-> +	if (ahci_ata_nodata(port, ATA_CMD_FLUSH_EXT, 0))
-> +		ahci_port_info(port, "FLUSH EXT failed\n");
+> +	/* Already stopped? */
+> +	if (!(cmd & (PORT_CMD_START | PORT_CMD_LIST_ON)))
+> +		return 0;
 > +
-> +	if (ahci_ata_nodata(port, ATA_CMD_STANDBYNOW1, 0))
-> +		ahci_port_info(port, "STANDBY IMMEDIATE failed\n");
+> +	/* Clear START */
+> +	cmd &=3D ~PORT_CMD_START;
+> +	ahci_port_write_f(port, PORT_CMD, cmd);
+> +
+> +	/* Wait for LIST_ON to clear */
+> +	return wait_on_timeout(500 * MSECOND,
+> +		!(ahci_port_read(port, PORT_CMD) & PORT_CMD_LIST_ON));
 > +}
 > +
-> +/* Full poweroff sequence */
-> +static void ahci_poweroff(struct poweroff_handler *handler, unsigned lon=
-g flags)
+> +/* Stop FIS receive engine (clear FIS_RX, wait FIS_ON=3D0) */
+> +static int ahci_stop_fis_rx(struct ahci_port *port)
 > +{
-> +	struct ahci_device *ahci;
+> +	u32 cmd;
+> +
+> +	cmd =3D ahci_port_read(port, PORT_CMD);
+> +	cmd &=3D ~PORT_CMD_FIS_RX;
+> +	ahci_port_write_f(port, PORT_CMD, cmd);
+> +
+> +	/* Wait for FIS_ON to clear */
+> +	return wait_on_timeout(1000 * MSECOND,
+> +		!(ahci_port_read(port, PORT_CMD) & PORT_CMD_FIS_ON));
+> +}
+> +
+> +/* Stop all ports (libata_pci_shutdown_one equivalent) */
+> +static void __maybe_unused ahci_shutdown_host(struct ahci_device *ahci)
+> +{
 > +	int i, n_ports;
 > +
-> +	list_for_each_entry(ahci, &ahci_devices, list) {
+> +	n_ports =3D max_t(int, ahci->n_ports, fls(ahci->port_map));
 > +
-> +		if (!ahci->mmio_base)
+> +	for (i =3D 0; i < n_ports; i++) {
+> +		struct ahci_port *port =3D &ahci->ports[i];
+> +
+> +		if (!(ahci->port_map & (1 << i)))
 > +			continue;
 > +
-> +		/* FLUSH + STANDBY on all active ports */
-> +		n_ports =3D max_t(int, ahci->n_ports, fls(ahci->port_map));
+> +		/* Stop DMA engine */
+> +		ahci_stop_engine(port);
 > +
-> +		for (i =3D 0; i < n_ports; i++) {
-> +			struct ahci_port *port =3D &ahci->ports[i];
-> +
-> +			if (!(ahci->port_map & (1 << i)))
-> +				continue;
-> +
-> +			ahci_port_shutdown(port);
-> +		}
-> +
-> +		/* (optional) shutsown controller after commands
-> +		* ahci_shutdown_host(ahci);
-> +		*/
+> +		/* Stop FIS receive engine */
+> +		ahci_stop_fis_rx(port);
 > +	}
 > +}
-> +
-> +static struct poweroff_handler ahci_po_handler =3D {
-> +	.poweroff =3D ahci_poweroff,
-> +	.priority =3D 200,   /* higher than gpio-poweroff */
-> +};
-> +
-> +static int ahci_register_poweroff(void)
-> +{
-> +	poweroff_handler_register(&ahci_po_handler);
 
-A poweroff handler is the thing that actually powers off the system,
-i.e. the gpio-poweroff handler toggles the GPIO that cuts the power to
-the system.
-
-You are looking for something to hook into poweroff_machine() and we
-currently don't have anything for this.
-
-We might want to call shutdown_barebox() before calling
-poweroff_machine(). That way you could hook into the struct
-driver->remove function. That would mean though that the ahci port
-shutdown would also be called before starting Linux. If you do not want
-that we could introduce some flag indicating the shutdown reason
-(poweroff vs. start Linux)
+This only adds unused code. If this is used in another patch, please
+move it there.
 
 Sascha
 
---=20
+--
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
