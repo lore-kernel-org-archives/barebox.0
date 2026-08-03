@@ -1,16 +1,16 @@
-Delivery-date: Mon, 03 Aug 2026 23:29:44 +0200
+Delivery-date: Mon, 03 Aug 2026 23:34:39 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wr0EC-00608B-07
+	id 1wr0Iw-0060BT-2d
 	for lore@lore.pengutronix.de;
-	Mon, 03 Aug 2026 23:29:44 +0200
+	Mon, 03 Aug 2026 23:34:39 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 68F59200BB4
-	for <lore@pengutronix.de>; Mon, 03 Aug 2026 23:29:40 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 377222006B6
+	for <lore@pengutronix.de>; Mon, 03 Aug 2026 23:34:35 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=t9ilxZf5;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=MSKHHPMw;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,46 +19,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:Content-Type:In-Reply-To:To:Subject:From:Reply-To:
 	MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
-	bh=6t1SLA0032v/TnK3C5APJpX0f4uVHkt7+pIDKzczISI=; b=t9ilxZf5Obd0NuMdwwd/UQMUFD
-	Matu6/8Wu8GRyIYoCLfuXHXzMMrFFznqV21D8gIN6dz73Q50IVQBP/J5n/g3zzstV5B00fjE3Ec/+
-	1mp5xP3lKw0eSUqZmFGOmbi1y4jEop3nwrF520QjJ7s1opKlG3W92qzKA99ihqiJUsgEPoziBbTHI
-	IfegwfWgCiW+1dnMsNXj2aJOG256qatWBuiQBeUKmk8S8M56V5HUNEQWIrn3OHCzgLyXobB66r3DB
-	ai5tBJnihLStMM57QZFa4iM3bL560TOCZZyj6Zd+1oq6CQS/e//L2Z+9ftAY+onlAaQ53loU3hMEe
-	NaqfpfCA==;
+	bh=CsbszNqsxYWSU6e4zPJxgBiRhxNiZsRwbzp3ELnHGWQ=; b=MSKHHPMwqckbhdZfWFIhZv0YYn
+	7+EkmziXtxvq2gG5rvVhGQKnxplgLnJUkgNUzuJIo5tF8uxyDy+dPyp1QNQ+DLFLxfIBgU/a9HBbp
+	4ydzMDmhGmXB8UGryFtjYT8zUayi9puk13KR6Rl5Nofu/tqqcxXaniFnqf6AUlyUzgfL9WxkyY06D
+	/riKtbFRoae0oWDTUSraK5ckGzzvUvkzfhbPZnp4s3sKn7vJ0Gj1t3NOgJ7zyTvEuDxbWhj1hU/5g
+	pLKumUtZYfUn7up0Qc7JVmOAARIFqibGdqiDb0mMInacqriJvqYJhOHaMAlv39rcSrM7ZmFcxM/5P
+	On5J6IPQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wr0CX-00000000Y0i-15pj;
-	Mon, 03 Aug 2026 21:28:01 +0000
+	id 1wr0HZ-00000000Y9D-3SOW;
+	Mon, 03 Aug 2026 21:33:13 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wr0CS-00000000Y0J-1tLg
+	id 1wr0HW-00000000Y8s-0Kok
 	for barebox@lists.infradead.org;
-	Mon, 03 Aug 2026 21:27:58 +0000
+	Mon, 03 Aug 2026 21:33:12 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 705B52002FE;
-	Mon, 03 Aug 2026 23:27:49 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 0CA772006B4;
+	Mon, 03 Aug 2026 23:33:04 +0200 (CEST)
 Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1wr0CL-002l67-1E;
-	Mon, 03 Aug 2026 23:27:49 +0200
+	id 1wr0HP-002l6c-38;
+	Mon, 03 Aug 2026 23:33:03 +0200
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1wr0CL-00000007wAC-1B67;
-	Mon, 03 Aug 2026 23:27:49 +0200
+	id 1wr0HP-00000007wC4-3fVV;
+	Mon, 03 Aug 2026 23:33:03 +0200
 From: "Sascha Hauer" <s.hauer@pengutronix.de>
-Subject: Re: [PATCH v3 08/15] usb: ehci: initialize periodic_queue_dma
+Subject: Re: [PATCH v3 09/15] ata: ahci: add PCI AHCI and Marvell 9170
+ controller support
 To: "Luca Lauro via B4 Relay" <devnull+famlauro93l.gmail.com@kernel.org>
-In-Reply-To: <20260802-rn102-rn104-series-v3-8-f7685a279fb5@gmail.com>
+In-Reply-To: <20260802-rn102-rn104-series-v3-9-f7685a279fb5@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 03 Aug 2026 21:27:45 +0000
-Message-Id: <E1wr0CL-00000007wAC-1B67@pty.whiteo.stw.pengutronix.de>
+Date: Mon, 03 Aug 2026 21:33:03 +0000
+Message-Id: <E1wr0HP-00000007wC4-3fVV@pty.whiteo.stw.pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260803_142756_733136_AB4936F3 
-X-CRM114-Status: GOOD (  18.50  )
+X-CRM114-CacheID: sfid-20260803_143310_290595_FB4FD2FC 
+X-CRM114-Status: GOOD (  18.44  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -67,8 +68,8 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  the administrator of that system for details.
  
  Content preview:  On 2026-08-02 15:16, Luca Lauro via B4 Relay wrote: > From:
-    Luca Lauro <famlauro93l@gmail.com> > > Store the DMA address of the periodic
-    queue head in > ehci->periodic_queue_dma. Without this initiali [...] 
+    Luca Lauro <famlauro93l@gmail.com> > > Barebox previously supported only
+   memory-mapped AHCI controllers. > Some devices expose their AHCI co [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -93,7 +94,7 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Cc: =?utf-8?b?b3BlbiBsaXN0OkJB?= =?utf-8?b?UkVCT1g=?= <barebox@lists.infradead.org>, Luca Lauro <famlauro93l@gmail.com>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Spamd-Result: default: False [-3.01 / 15.00];
-	BAYES_HAM(-3.00)[100.00%];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	MISSING_MIME_VERSION(2.00)[];
 	CC_EXCESS_BASE64(1.50)[];
@@ -133,50 +134,60 @@ X-Spamd-Result: default: False [-3.01 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 68F59200BB4
-X-Stat-Signature: 4pjhso5z5s91e4q6ssdycembty6so394
+X-Rspamd-Queue-Id: 377222006B6
+X-Stat-Signature: dkg7ad9f6nbzhnudr3j9oq8b15srbsqm
 
 On 2026-08-02 15:16, Luca Lauro via B4 Relay wrote:
 > From: Luca Lauro <famlauro93l@gmail.com>
 >=20
-> Store the DMA address of the periodic queue head in
-> ehci->periodic_queue_dma. Without this initialization the periodic
-> schedule may reference an invalid address.
+> Barebox previously supported only memory-mapped AHCI controllers.
+> Some devices expose their AHCI controller through PCI BARs, such as the
+> Marvell 9170 controller found in Netgear RN102/RN104 NAS devices,
+> requiring a dedicated probing path and MMIO mapping.
+> This patch extends the barebox AHCI driver with full support for
+> PCI-based AHCI controllers, adding:
+>=20
+> - A PCI probe path that enables AHCI initialization via
+> pci_enable_device(), pci_iomap() and ahci_add_host().
+>=20
+> - A small device list to keep track of PCI AHCI instances.
+>=20
+> Changes are based on the upstream Linux driver, with some adaptations.
 >=20
 > Signed-off-by: Luca Lauro <famlauro93l@gmail.com>
 > ---
->  drivers/usb/host/ehci-hcd.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
+>  drivers/ata/ahci.c | 54 ++++++++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  drivers/ata/ahci.h |  1 +
+>  2 files changed, 55 insertions(+)
 >=20
-> diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-> index 51b9e52a4f..a4832bb3ff 100644
-> --- a/drivers/usb/host/ehci-hcd.c
-> +++ b/drivers/usb/host/ehci-hcd.c
-> @@ -897,6 +897,8 @@ static int ehci_init(struct usb_host *host)
->  	periodic->qt_next =3D cpu_to_hc32(QT_NEXT_TERMINATE);
->  	periodic->qt_altnext =3D cpu_to_hc32(QT_NEXT_TERMINATE);
+> diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
+> index 819dc37b3e..0ac1a9dead 100644
+> --- a/drivers/ata/ahci.c
+> +++ b/drivers/ata/ahci.c
+> @@ -19,6 +19,7 @@
+>  #include <disks.h>
+>  #include <ata_drive.h>
+>  #include <linux/sizes.h>
+> +#include <linux/pci.h>
+>  #include <clock.h>
 > =20
-> +	ehci->periodic_queue_dma =3D ehci_qh_dma(ehci, periodic);
-> +
->  	/*
->  	 * Step 2: Setup frame-list: Every microframe, USB tries the same list.
->  	 *         In particular, device specifications on polling frequency
-> @@ -1442,11 +1444,14 @@ static int ehci_probe(struct device *dev)
->  	if (ret)
->  		return ret;
+>  #include "ahci.h"
+> @@ -47,6 +48,51 @@
+>  #define ahci_debug(ahci, fmt, arg...) \
+>  	dev_dbg(ahci->dev, fmt, ##arg)
 > =20
-> -	ret =3D clk_bulk_get_all_enabled(dev, &clks);
-> +	ret =3D clk_bulk_get_all(dev, &clks);
->  	if (ret < 0)
->  		return ret;
-> =20
->  	num_clocks =3D ret;
-> +	ret =3D clk_bulk_enable(num_clocks, clks);
-> +	if (ret)
-> +		return ret;
+> +#ifndef PCI_VENDOR_ID_MARVELL_EXT
+> +#define PCI_VENDOR_ID_MARVELL_EXT 0x1b4b
+> +#endif
 
-This looks unrelated to this patch. Does this change make any
-difference?
+This is defined in include/linux/pci_ids.h already. Please use it.
+
+> +
+> +static LIST_HEAD(ahci_devices);
+
+This list is only added to, but not used here. If it's used in a later
+patch please move this there.
 
 Sascha
 
