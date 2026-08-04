@@ -1,16 +1,16 @@
-Delivery-date: Tue, 04 Aug 2026 07:43:23 +0200
+Delivery-date: Tue, 04 Aug 2026 07:45:36 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wr7vu-0067Vi-1Q
+	id 1wr7y4-0067XN-0W
 	for lore@lore.pengutronix.de;
-	Tue, 04 Aug 2026 07:43:23 +0200
+	Tue, 04 Aug 2026 07:45:36 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id DB1662006B6
-	for <lore@pengutronix.de>; Tue, 04 Aug 2026 07:43:22 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 95790200734
+	for <lore@pengutronix.de>; Tue, 04 Aug 2026 07:45:36 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=Yw0ImO1t;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=WYvZiM21;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,50 +19,51 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=LhEljcIvmL0IJWaA8kMIRaqGxhq5WJW2QLPd/GV+3WY=; b=Yw0ImO1t8tzXXDLsqc8ZUnD2Rn
-	0ZzY5OxSI3taXRrZaG2XwrCUj27pXjv5mGQTQNigCQjr58ZvpyQlFzCtPeteSsxDQqnh68uK/0iZB
-	2YAHauBHCfd6x3h0iuC4vpmb8eo5OatBiCqzkwtRh87xIqmff0CtVlE4kcSromPXqx+B8cpslFX60
-	BDM1xmEinYa09RMlSo0Waf6eTfCobihzyLgXH+ZgKvVlQcbxoF+mLECWU5R1R8APOX7oqWqHnVHJq
-	VFfNs+jd29nH/td/K0TTHVXBPLJtC8QxklIMgcKtH22GF3nLDz8Z33jKJRhJBwyDsuHCMlkS8QpUB
-	9o/kBIaQ==;
+	bh=JmEOTB9kCuhHcocf2kjCpGPEgSBLsO7xE0Um/hFspgs=; b=WYvZiM210+YpRKmthBOimlz86Q
+	esZjnWdpt4DfxrYCrH9b2RF2s7yXv2fmOQe27dlEuHPWTcyAqzNM9S9tKU/8yVimoeql2Pdqdzt/w
+	tngz5JxeWiu0sUSFKONV0rc9GbJ+wdWX/w8nSlH/lrpyDHd0ogN5op3USayRbxKbg7pdgGR9gxKUG
+	7We5wzagY4aG1rhOq2Ge0Y9+ffCvgrYxhXE34DZX8lM43yszqYr8QbwfBNAkbRgoi2e1aTrOcMW2w
+	rfvL1tF7Kvd4A1ytpfINF5M90Yvvg9dnX+WiM2Z1K6eHTIjf3s78L18OqD0JPVVUlY0pRs0wLxmg6
+	oKsCys7w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wr7ua-000000013ft-3CiZ;
-	Tue, 04 Aug 2026 05:42:00 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1wr7wy-0000000142L-167O;
+	Tue, 04 Aug 2026 05:44:28 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wr7uX-000000013fK-0K26
+	id 1wr7wu-0000000141L-1OkX
 	for barebox@lists.infradead.org;
-	Tue, 04 Aug 2026 05:41:59 +0000
+	Tue, 04 Aug 2026 05:44:26 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id E1FF92006B6;
-	Tue, 04 Aug 2026 07:41:52 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 9F985200082;
+	Tue, 04 Aug 2026 07:44:22 +0200 (CEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wr7uS-002oY8-2j;
-	Tue, 04 Aug 2026 07:41:52 +0200
+	id 1wr7ws-002oYY-1q;
+	Tue, 04 Aug 2026 07:44:22 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wr7uS-00000003Zj6-3Hth;
-	Tue, 04 Aug 2026 07:41:52 +0200
+	id 1wr7ws-00000003Ztk-29Gw;
+	Tue, 04 Aug 2026 07:44:22 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Fabian Pflug <f.pflug@pengutronix.de>
-In-Reply-To: <20260729134757.2694248-1-f.pflug@pengutronix.de>
-References: <20260729134757.2694248-1-f.pflug@pengutronix.de>
-Subject: Re: [PATCH] ARM: boards: i.MX93: use kernel dts
-Message-Id: <178582211277.852279.7255351289438493945.b4-ty@pengutronix.de>
-Date: Tue, 04 Aug 2026 07:41:52 +0200
+To: barebox@lists.infradead.org, zhengxiaojun <zheng.xiaojun@foxmail.com>
+In-Reply-To: <tencent_DD27DC34878B1D3783E35CF6A02E85C9D20A@qq.com>
+References: <tencent_DD27DC34878B1D3783E35CF6A02E85C9D20A@qq.com>
+Subject: Re: [PATCH] net: designware_eqs: set upper 32bit address for DMA
+ descriptors to support 64-bit addressing
+Message-Id: <178582226250.852937.10649336309703151610.b4-ty@pengutronix.de>
+Date: Tue, 04 Aug 2026 07:44:22 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260803_224157_274345_CF100A52 
-X-CRM114-Status: UNSURE (   5.36  )
+X-CRM114-CacheID: sfid-20260803_224424_533470_409A728D 
+X-CRM114-Status: UNSURE (   3.44  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -71,9 +72,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Wed, 29 Jul 2026 15:47:57 +0200, Fabian Pflug wrote: >
-    All the information are in the kernel dts now and can be included from >
-   there. > > Applied, thanks! [1/1] ARM: boards: i.MX93: use kernel dts https://git.pengutronix.de/cgit/barebox/commit/?id=63277454ed06
+ Content preview:  On Sat, 01 Aug 2026 20:17:48 +0800, zhengxiaojun wrote: >
+    Applied, thanks! [1/1] net: designware_eqs: set upper 32bit address for DMA
+    descriptors to support 64-bit addressing https://git.pengutronix.de/cgit/barebox/commit/?id=00513597fa83
     (link may not be stable) 
  
  Content analysis details:   (-1.9 points, 5.0 required)
@@ -102,20 +103,22 @@ X-Spamd-Result: default: False [-6.71 / 15.00];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received];
-	R_SPF_ALLOW(-0.20)[+mx:c];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MAILLIST(-0.20)[mailman];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	RCVD_IN_DNSWL_LOW(-0.10)[2a0a:edc0:0:c01:1d::a2:received];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	ARC_NA(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
+	FREEMAIL_TO(0.00)[lists.infradead.org,foxmail.com];
+	DMARC_NA(0.00)[pengutronix.de];
+	TO_DN_SOME(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
-	TO_DN_SOME(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
@@ -127,20 +130,18 @@ X-Spamd-Result: default: False [-6.71 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: DB1662006B6
-X-Stat-Signature: tja5dwisi996dghcg8z5ah9irfeubg97
+X-Rspamd-Queue-Id: 95790200734
+X-Stat-Signature: uucf5ydan5y5ej7dq6ioux7xd34yzkka
 
 
-On Wed, 29 Jul 2026 15:47:57 +0200, Fabian Pflug wrote:
-> All the information are in the kernel dts now and can be included from
-> there.
+On Sat, 01 Aug 2026 20:17:48 +0800, zhengxiaojun wrote:
 > 
-> 
+
 
 Applied, thanks!
 
-[1/1] ARM: boards: i.MX93: use kernel dts
-      https://git.pengutronix.de/cgit/barebox/commit/?id=63277454ed06 (link may not be stable)
+[1/1] net: designware_eqs: set upper 32bit address for DMA descriptors to support 64-bit addressing
+      https://git.pengutronix.de/cgit/barebox/commit/?id=00513597fa83 (link may not be stable)
 
 Best regards,
 -- 
