@@ -1,16 +1,16 @@
-Delivery-date: Wed, 05 Aug 2026 16:22:47 +0200
+Delivery-date: Wed, 05 Aug 2026 16:23:23 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wrcW6-006ekV-2E
+	id 1wrcWg-006elK-2s
 	for lore@lore.pengutronix.de;
-	Wed, 05 Aug 2026 16:22:47 +0200
+	Wed, 05 Aug 2026 16:23:23 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 086AA20194D
-	for <lore@pengutronix.de>; Wed, 05 Aug 2026 16:22:43 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 3B8842006E0
+	for <lore@pengutronix.de>; Wed, 05 Aug 2026 16:23:19 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=qCG7byjM;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=L1DY4vD5;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,51 +19,49 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=oPHGXfy8CuX50gUhhn5YCniEtKbhQmWtaXOArLog4S4=; b=qCG7byjMMbZS7lWmJdxGfDvNbg
-	drfPcQ4dL3JU0TX+W6GyReOXhbDPqKMxg5Qm1sJ9qFc6A8pLeJ1dituDrM1zFNe7k4jWBrKZiDFLf
-	ZJ5HwNXNXRqsMds2S91ZqC6XaqBaahPv0yN6s0o7ckYyIcn+NJUZoldMJ3rkl6QIvmLymCUQR2WVY
-	M8wEdEFxy36RhMOQiXmMxwNuKWw4W3fF4y3CD9hxoHiAUTpSvMe/dQchUeUh8AmxjhImpW4uPqeIA
-	yNkInM2tp38tmY1W9X1Y2vObZO1ElzXY9iqBNb5Yp5FDHEDQo6AnqR24F+P7NBVzSe6MXQcU/xEGD
-	V9c+QzsA==;
+	bh=/w/NJaVicpxhyHFETcAEFt4BsrP1JWWPcbuy7K35b3g=; b=L1DY4vD5la7GJWnAvNey82TG6E
+	Eq+rS4Ij7kOCMXGNvFtZGl+Mu0TZ8z8nZYgDg+b+caw/X8jlxMo2mWax/n5kKn7KxYXkGUqo5kDr+
+	I3Ka5N4kBjpdkO8aHxoh2aJ1ir+knlAzAEhidFsM0Dt5ddVuJQC+p1zuZiOb/l2MNnLczWDZnWrwF
+	ZY53B6dFb40LluSrdc6hOuX7HzYkn3+2fr0EK3cjCRaXRTbp5Ctlf6HjAADtoChUMtCGtSG23QkQS
+	rAE4H7ynQoF54nhFRo/RV6GFg7KArwFZHUVH129v0y4cRnz4Rn4r5tyrC5SM96UWopOw5W1QHapdT
+	sk/Ryc6w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wrcUb-000000044SY-48dS;
-	Wed, 05 Aug 2026 14:21:13 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1wrcVO-000000044VX-0t5O;
+	Wed, 05 Aug 2026 14:22:02 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wrcUY-000000044SD-2NK0
+	id 1wrcVK-000000044VD-3tHX
 	for barebox@lists.infradead.org;
-	Wed, 05 Aug 2026 14:21:12 +0000
+	Wed, 05 Aug 2026 14:22:01 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 7974720182F;
-	Wed, 05 Aug 2026 16:21:04 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B981A2006E0;
+	Wed, 05 Aug 2026 16:21:52 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wrcUS-0037Z6-1L;
-	Wed, 05 Aug 2026 16:21:04 +0200
+	id 1wrcVE-0037ZK-2A;
+	Wed, 05 Aug 2026 16:21:52 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wrcUS-0000000G8DY-1HBv;
-	Wed, 05 Aug 2026 16:21:04 +0200
+	id 1wrcVE-0000000G8Il-2Pk0;
+	Wed, 05 Aug 2026 16:21:52 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Thomas Bonnefille <thomas.bonnefille@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	=?UTF-8?q?Miqu=C3=A8l=20Raynal?= <miquel.raynal@bootlin.com>,
+Cc: zhengxiaojun <zheng.xiaojun@foxmail.com>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH] fixup! sandbox: enable keytoc in hosttools_defconfig
-Date: Wed,  5 Aug 2026 16:20:02 +0200
-Message-ID: <20260805142055.3844660-1-a.fatoum@pengutronix.de>
+Subject: [PATCH] fixup! net: designware_eqs: set upper 32bit address for DMA descriptors to support 64-bit addressing
+Date: Wed,  5 Aug 2026 16:21:43 +0200
+Message-ID: <20260805142143.3845127-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260805_072110_788562_4E56876C 
-X-CRM114-Status: UNSURE (   8.70  )
+X-CRM114-CacheID: sfid-20260805_072159_110888_CEC03E19 
+X-CRM114-Status: UNSURE (   9.21  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -72,10 +70,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  ci: musl-tools: disable KEYTOC as it depends on OpenSSL The
-    OpenSSL we ship in the CI container is built against glibc and so compiling
-    keytoc against musl in it is currently not possible. Fix the CI breakage
-   by disable KEYTOC, but only for the Github workflow. 
+ Content preview:  net: designware_eqos: fix left shift count >= width of type
+    CI builds with -Werror, including -Werror=shift-count-overflow, which fails
+    for STM32MP enabled platform that use EQOS on a 32-bit platform. 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -98,7 +95,8 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-5.21 / 15.00];
+X-Spamd-Result: default: False [-1.41 / 15.00];
+	SEM_URIBL(3.50)[foxmail.com:email];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	MID_CONTAINS_FROM(1.00)[];
@@ -106,61 +104,63 @@ X-Spamd-Result: default: False [-5.21 / 15.00];
 	R_MISSING_CHARSET(0.50)[];
 	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:1101:1d::54:received,2607:7c80:54:3::133:from];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
-	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
-	RCVD_IN_DNSWL_LOW(-0.10)[2a0a:edc0:0:c01:1d::a2:received];
 	MIME_GOOD(-0.10)[text/plain];
+	RCVD_IN_DNSWL_LOW(-0.10)[2a0a:edc0:0:c01:1d::a2:received];
+	BAD_REP_POLICIES(0.10)[];
 	HAS_LIST_UNSUB(-0.01)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	DMARC_NA(0.00)[pengutronix.de];
-	ARC_NA(0.00)[];
 	TO_DN_SOME(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
 	MIME_TRACE(0.00)[0:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	ARC_NA(0.00)[];
+	SUBJECT_HAS_EXCLAIM(0.00)[];
+	FREEMAIL_CC(0.00)[foxmail.com,pengutronix.de];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	R_SPF_ALLOW(0.00)[+mx:c];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	SUBJECT_HAS_EXCLAIM(0.00)[];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 086AA20194D
-X-Stat-Signature: wijqbs3kgiqqjggu7paij1m1wghh16kj
+X-Rspamd-Queue-Id: 3B8842006E0
+X-Stat-Signature: 11ggx5bjss91mwbhh8niwhi3cmqbp9zi
 
-ci: musl-tools: disable KEYTOC as it depends on OpenSSL
+net: designware_eqos: fix left shift count >= width of type
 
-The OpenSSL we ship in the CI container is built against glibc and so
-compiling keytoc against musl in it is currently not possible.
+CI builds with -Werror, including -Werror=shift-count-overflow, which
+fails for STM32MP enabled platform that use EQOS on a 32-bit platform.
 
-Fix the CI breakage by disable KEYTOC, but only for the Github workflow.
+As des1 will have always been programmed to zero on a 32-bit platform,
+we can just suppress the warning with a cast.
 
+Cc: zhengxiaojun <zheng.xiaojun@foxmail.com>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-Patch is not yet on master branch, so this could be simply squashed.
+ drivers/net/designware_eqos.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- .github/workflows/musl-tools.yml | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/.github/workflows/musl-tools.yml b/.github/workflows/musl-tools.yml
-index 52cdd184ade3..d85328bc3f3c 100644
---- a/.github/workflows/musl-tools.yml
-+++ b/.github/workflows/musl-tools.yml
-@@ -34,6 +34,10 @@ jobs:
-         m () { make -j$(nproc) CC=musl-gcc LD=musl-gcc HOSTCC=musl-gcc HOSTLD=musl-ld "$@"; }
+diff --git a/drivers/net/designware_eqos.c b/drivers/net/designware_eqos.c
+index 332dc7eb7366..4011b006dd70 100644
+--- a/drivers/net/designware_eqos.c
++++ b/drivers/net/designware_eqos.c
+@@ -955,8 +955,8 @@ void eqos_remove(struct device *dev)
  
-         m ${{matrix.defconfig}}
-+
-+        # CI image ships OpenSSL development files only for glibc
-+        scripts/config --disable KEYTOC
-+
-         m scripts/
+ 	mdiobus_unregister(&eqos->miibus);
  
-         test -n "$(musl-ldd scripts/imx/imx-usb-loader${{matrix.suffix}} 2>/dev/null | grep musl)"
+-	dma = eqos->rx_descs[0].des1;
+-	dma = (dma << 32) + eqos->rx_descs[0].des0;
++	dma = (u64)eqos->rx_descs[0].des1 << 32;
++	dma |= eqos->rx_descs[0].des0;
+ 	dma_free(phys_to_virt(dma));
+ 	dma_free_coherent(DMA_DEVICE_BROKEN,
+ 			  eqos->tx_descs, 0, EQOS_DESCRIPTORS_SIZE);
 -- 
 2.47.3
 
