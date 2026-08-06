@@ -1,67 +1,65 @@
-Delivery-date: Thu, 06 Aug 2026 13:30:13 +0200
+Delivery-date: Thu, 06 Aug 2026 15:01:58 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wrwIe-000AMO-2M
+	id 1wrxjR-000BXi-2u
 	for lore@lore.pengutronix.de;
-	Thu, 06 Aug 2026 13:30:13 +0200
+	Thu, 06 Aug 2026 15:01:58 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 553D9201FA9
-	for <lore@pengutronix.de>; Thu, 06 Aug 2026 13:30:13 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 6DD5E2020F5
+	for <lore@pengutronix.de>; Thu, 06 Aug 2026 15:01:54 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=u9HUQV15;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=idp36+ik;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=qNFgcmDqHDok7PhefzYKKvTvdzCIR/E12Z0HTENeIS4=; b=u9HUQV152G0C+DnfjKnxK9LQ8n
-	tGOreQi7ntP3dYLKOnG0mxmDASV2O6a2fGpm51U8dPH0z3KkNtsXeNpPYc9DonIkCzPIXk1KZSe4Q
-	NXgCtVUjXizbkyQsqaN02FBXDhtlCNSbc4BEic5SZrIc+mTCTY6N+LM7yQvaXmzVTonznEpfs45rP
-	UPSRpzerJshX7MTlHUXJ9Fsy5yIDfXs+/0SjWJCvKomjuMoFPIZYH42JROQvikkQEZ7GHIUtfL/+9
-	+AFRc/GsObdKegGoD7J3A+B6s6sxoC7dDI26LuSjmzmSbHIuuYy6aCXuIe0ZAE6g6hRiVKHDVoae1
-	H7UpVqHA==;
+	bh=A1XITBJmN6AuJhUf5dxrT84+3LNf6sj4gQ7a5qoCndI=; b=idp36+ik6j2YHtA+IM8kkhnlq0
+	XxRt+WhGF1ZbGHg11cJjSdf6DzNexvgQRg2y4GcHYBFNuRrSQVJmqlsWLhasPZzstRylekizUT4tI
+	QYuQ2LmMQBX4WCG7xYy5bjZ4Ia9ZxiyjySuehpYGWI083w1Y/zYYCdNb//X11LFX7tHCy2PaE1cZ8
+	X08s+1+OxVowMLe4jBeyrLuv7Cnc3B5T3JQ1j+DCr+OXZaBDeKLqecDB9OG73m4fESe4TniQgDkzR
+	sf03rY4+6RUwa9P+d45wyImaJnMtxhsOl2M0EiHI8+6TypEYCZ3jn3bmYrW5KB6EAuMFsCk/Wpz0S
+	nLeHFq4w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wrwHM-00000005eQ3-2NJf;
-	Thu, 06 Aug 2026 11:28:52 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1wrxho-00000005pzs-3Xjg;
+	Thu, 06 Aug 2026 13:00:16 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wrwHJ-00000005eOj-18Tc
+	id 1wrxhl-00000005pzQ-1cdH
 	for barebox@lists.infradead.org;
-	Thu, 06 Aug 2026 11:28:51 +0000
+	Thu, 06 Aug 2026 13:00:15 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id CCE222000DC;
-	Thu, 06 Aug 2026 13:28:46 +0200 (CEST)
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id D0B8320127A;
+	Thu, 06 Aug 2026 15:00:04 +0200 (CEST)
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wrwHG-00056k-2P;
-	Thu, 06 Aug 2026 13:28:46 +0200
-Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wrwHG-0000000G2ZJ-2e1m;
-	Thu, 06 Aug 2026 13:28:46 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH master 1/3] test: kvx: add Labgrid env YAML for generic_defconfig
-Date: Thu,  6 Aug 2026 13:28:01 +0200
-Message-ID: <20260806112845.3822400-1-a.fatoum@pengutronix.de>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wrxhc-0005oP-2V;
+	Thu, 06 Aug 2026 15:00:04 +0200
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wrxhc-00000008F6X-2e37;
+	Thu, 06 Aug 2026 15:00:04 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] net: designware: eqos: keep virtual RX buffer address around
+Date: Thu,  6 Aug 2026 15:00:03 +0200
+Message-ID: <20260806130003.1964184-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260806_042849_455574_0D17B848 
-X-CRM114-Status: UNSURE (   8.09  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260806_060013_583935_7F34B120 
+X-CRM114-Status: GOOD (  12.46  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -69,11 +67,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  We build for kvx in CI, but we don't yet include qemu-system-kvx.
-    To simplify at least manual testing, add a generic_defconfig.yaml that correctly
-    configures QEMU to be able to start barebox. Signed-off-by: Ahmad Fatoum
-   <a.fatoum@pengutronix.de> --- test/kvx/generic_defconfig.yaml | 17 +++++++++++++++++
-    1 file changed, 17 insertions(+) create mode 100644 test/kvx/generic_defconfig.yaml
+ Content preview:  To free up the RX buffers in the remove and error paths we
+    need their virtual address. Instead of reading back the physical address
+   back from the descriptor ring and throwing phys_to_virt() at it, jus [...]
     
  
  Content analysis details:   (-1.9 points, 5.0 required)
@@ -98,73 +94,95 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 553D9201FA9
-X-Stat-Signature: b8gpmrr5fbidtb6kzf83kz9omgda4jdk
+X-Rspamd-Queue-Id: 6DD5E2020F5
+X-Stat-Signature: 6k1bd7diad51e1gby5oqe35yt3zfuc4p
 X-Spamd-Result: default: False [-6.21 / 15.00];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	MID_CONTAINS_FROM(1.00)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::54:received];
+	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received];
 	R_SPF_ALLOW(-0.20)[+mx:c];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MAILLIST(-0.20)[mailman];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MIME_GOOD(-0.10)[text/plain];
 	RCVD_IN_DNSWL_LOW(-0.10)[2a0a:edc0:0:c01:1d::a2:received];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
+	ARC_NA(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_ONE(0.00)[1];
+	TO_DN_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[]
+	FORGED_RECIPIENTS_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 
-We build for kvx in CI, but we don't yet include qemu-system-kvx.
-To simplify at least manual testing, add a generic_defconfig.yaml
-that correctly configures QEMU to be able to start barebox.
+To free up the RX buffers in the remove and error paths we need their
+virtual address. Instead of reading back the physical address back from
+the descriptor ring and throwing phys_to_virt() at it, just keep the
+virtual address returned from dma_alloc() around and use that directly.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- test/kvx/generic_defconfig.yaml | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
- create mode 100644 test/kvx/generic_defconfig.yaml
+ drivers/net/designware_eqos.c | 6 ++++--
+ drivers/net/designware_eqos.h | 1 +
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/test/kvx/generic_defconfig.yaml b/test/kvx/generic_defconfig.yaml
-new file mode 100644
-index 000000000000..66b5bb308564
---- /dev/null
-+++ b/test/kvx/generic_defconfig.yaml
-@@ -0,0 +1,17 @@
-+targets:
-+  main:
-+    drivers:
-+      QEMUDriver:
-+        qemu_bin: qemu-system-kvx
-+        machine: mppa-coolidge
-+        memory: 512M
-+        kernel: barebox
-+        display: qemu-default
-+      BareboxDriver:
-+        prompt: 'barebox@[^:]+:[^ ]+ '
-+        bootstring: 'commandline:'
-+      BareboxTestStrategy: {}
-+images:
-+  barebox: !template "$LG_BUILDDIR/barebox"
-+imports:
-+  -  ../strategy.py
+diff --git a/drivers/net/designware_eqos.c b/drivers/net/designware_eqos.c
+index a6e9d8677f..78e52c68b1 100644
+--- a/drivers/net/designware_eqos.c
++++ b/drivers/net/designware_eqos.c
+@@ -817,6 +817,8 @@ static int eqos_init_resources(struct eqos *eqos)
+ 	if (!p)
+ 		goto err_free_desc;
+ 
++	eqos->rx_bufs = p;
++
+ 	for (i = 0; i < EQOS_DESCRIPTORS_RX; i++) {
+ 		struct eqos_desc *rx_rf_desc = &eqos->rx_descs[i];
+ 		dma_addr_t dma;
+@@ -836,7 +838,7 @@ static int eqos_init_resources(struct eqos *eqos)
+ 	return 0;
+ 
+ err_free_rx_bufs:
+-	dma_free(phys_to_virt(eqos->rx_descs[0].des0));
++	dma_free(eqos->rx_bufs);
+ err_free_desc:
+ 	dma_free_coherent(DMA_DEVICE_BROKEN,
+ 			  descs, 0, EQOS_DESCRIPTORS_SIZE);
+@@ -948,7 +950,7 @@ void eqos_remove(struct device *dev)
+ 
+ 	mdiobus_unregister(&eqos->miibus);
+ 
+-	dma_free(phys_to_virt(eqos->rx_descs[0].des0));
++	dma_free(eqos->rx_bufs);
+ 	dma_free_coherent(DMA_DEVICE_BROKEN,
+ 			  eqos->tx_descs, 0, EQOS_DESCRIPTORS_SIZE);
+ }
+diff --git a/drivers/net/designware_eqos.h b/drivers/net/designware_eqos.h
+index 9f2fc2fe6d..96b6fa71c8 100644
+--- a/drivers/net/designware_eqos.h
++++ b/drivers/net/designware_eqos.h
+@@ -54,6 +54,7 @@ struct eqos {
+ 
+ 	struct eqos_desc *tx_descs, *rx_descs;
+ 	dma_addr_t dma_rx_buf[EQOS_DESCRIPTORS_RX];
++	void *rx_bufs;
+ 
+ 	void __iomem *regs;
+ 	struct eqos_mac_regs __iomem *mac_regs;
 -- 
 2.47.3
 
