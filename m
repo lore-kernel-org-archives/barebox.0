@@ -1,68 +1,67 @@
-Delivery-date: Thu, 06 Aug 2026 13:30:10 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Thu, 06 Aug 2026 13:30:13 +0200
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wrwIb-000ALx-1w
+	id 1wrwIe-000AMO-2M
 	for lore@lore.pengutronix.de;
-	Thu, 06 Aug 2026 13:30:10 +0200
+	Thu, 06 Aug 2026 13:30:13 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 54CB52000DC
-	for <lore@pengutronix.de>; Thu, 06 Aug 2026 13:30:08 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 553D9201FA9
+	for <lore@pengutronix.de>; Thu, 06 Aug 2026 13:30:13 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=zTK7k9h8;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=u9HUQV15;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=wivPoQ/M38WrrNOkTF2nu0s0+qZ5Jt5zzbPDpCDA3rI=; b=zTK7k9h8U56V/pdV3wrA5Qtegk
-	fzqwbKAdMB2J3fv/JQ/sggN4CgQ18obpumiImyC/Ha7R3W9/qjS/nnp9dg6bH+rEACXs0USUbwvlT
-	NKNoR8+xj3dqUKHiIZNFkBgCSo+AA81D+kjFS5LVTJwYAh5J0OrUh5qubDdYdhx3OpZrrObKypcoo
-	naVdrVUDlOTlwTMZ/dSl5Cn9nprjXhHp2JYiycLRdmmYG98tz3P8G2v+7jXz+GbKMnfZup1Rw34TY
-	bhBhxVll/BQeK2LcmvJkYDmhSZV8e/cNaPQtMiViAQXG98Tqmwk+EbkZG2lcMUdHEfAzUwqQB2xp9
-	miN4HYdA==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=qNFgcmDqHDok7PhefzYKKvTvdzCIR/E12Z0HTENeIS4=; b=u9HUQV152G0C+DnfjKnxK9LQ8n
+	tGOreQi7ntP3dYLKOnG0mxmDASV2O6a2fGpm51U8dPH0z3KkNtsXeNpPYc9DonIkCzPIXk1KZSe4Q
+	NXgCtVUjXizbkyQsqaN02FBXDhtlCNSbc4BEic5SZrIc+mTCTY6N+LM7yQvaXmzVTonznEpfs45rP
+	UPSRpzerJshX7MTlHUXJ9Fsy5yIDfXs+/0SjWJCvKomjuMoFPIZYH42JROQvikkQEZ7GHIUtfL/+9
+	+AFRc/GsObdKegGoD7J3A+B6s6sxoC7dDI26LuSjmzmSbHIuuYy6aCXuIe0ZAE6g6hRiVKHDVoae1
+	H7UpVqHA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wrwHM-00000005ePw-25fa;
+	id 1wrwHM-00000005eQ3-2NJf;
 	Thu, 06 Aug 2026 11:28:52 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wrwHJ-00000005eOi-187I
+	id 1wrwHJ-00000005eOj-18Tc
 	for barebox@lists.infradead.org;
 	Thu, 06 Aug 2026 11:28:51 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id D0F57200F84;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id CCE222000DC;
 	Thu, 06 Aug 2026 13:28:46 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wrwHG-00056l-2V;
+	id 1wrwHG-00056k-2P;
 	Thu, 06 Aug 2026 13:28:46 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wrwHG-0000000G2ZJ-2pqE;
+	id 1wrwHG-0000000G2ZJ-2e1m;
 	Thu, 06 Aug 2026 13:28:46 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH master 2/3] kvx: select DEAD_CODE_DATA_ELIMINATION
-Date: Thu,  6 Aug 2026 13:28:02 +0200
-Message-ID: <20260806112845.3822400-2-a.fatoum@pengutronix.de>
+Subject: [PATCH master 1/3] test: kvx: add Labgrid env YAML for generic_defconfig
+Date: Thu,  6 Aug 2026 13:28:01 +0200
+Message-ID: <20260806112845.3822400-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260806112845.3822400-1-a.fatoum@pengutronix.de>
-References: <20260806112845.3822400-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260806_042849_455756_9D58ABDF 
-X-CRM114-Status: GOOD (  12.14  )
+X-CRM114-CacheID: sfid-20260806_042849_455574_0D17B848 
+X-CRM114-Status: UNSURE (   8.09  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -70,10 +69,12 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  We have code that depends on unreferenced functions being
-   dropped, because otherwise they would lead to linker errors as they themself
-    reference functions that aren't included in the build. To make such code
-   not break the kvx build, enable linker garbage collection for it. 
+ Content preview:  We build for kvx in CI, but we don't yet include qemu-system-kvx.
+    To simplify at least manual testing, add a generic_defconfig.yaml that correctly
+    configures QEMU to be able to start barebox. Signed-off-by: Ahmad Fatoum
+   <a.fatoum@pengutronix.de> --- test/kvx/generic_defconfig.yaml | 17 +++++++++++++++++
+    1 file changed, 17 insertions(+) create mode 100644 test/kvx/generic_defconfig.yaml
+    
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -97,16 +98,16 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 54CB52000DC
-X-Stat-Signature: fqi65jbsea9wxc8sznmsw6hdyhyki4g5
+X-Rspamd-Queue-Id: 553D9201FA9
+X-Stat-Signature: b8gpmrr5fbidtb6kzf83kz9omgda4jdk
 X-Spamd-Result: default: False [-6.21 / 15.00];
-	BAYES_HAM(-3.00)[100.00%];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	MID_CONTAINS_FROM(1.00)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:1101:1d::54:received,2607:7c80:54:3::133:from];
+	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::54:received];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MAILLIST(-0.20)[mailman];
@@ -131,85 +132,39 @@ X-Spamd-Result: default: False [-6.21 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 
-We have code that depends on unreferenced functions being dropped,
-because otherwise they would lead to linker errors as they themself
-reference functions that aren't included in the build.
-
-To make such code not break the kvx build, enable linker garbage
-collection for it.
-
-To make this work two changes are needed in addition:
-
-- exact .text, .data and .bss matches changed to prefix matches
-  as we want to merge the new subsections
-
-- kvx_start is identified as the entry point, so linker garbage
-  collection knows from where to check reachability
-
-A search for `section' in arch/kvx and drivers/soc/kvx shows that the
-only custom sections are .exception and .startup, so we should have all
-our bases covered.
-
-It has been verified that barebox running in QEMU still reaches its shell
-with this change applied.
+We build for kvx in CI, but we don't yet include qemu-system-kvx.
+To simplify at least manual testing, add a generic_defconfig.yaml
+that correctly configures QEMU to be able to start barebox.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/kvx/Kconfig           | 1 +
- arch/kvx/cpu/barebox.lds.S | 7 ++++---
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ test/kvx/generic_defconfig.yaml | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+ create mode 100644 test/kvx/generic_defconfig.yaml
 
-diff --git a/arch/kvx/Kconfig b/arch/kvx/Kconfig
-index bbbec6471f06..14109c3cfcb7 100644
---- a/arch/kvx/Kconfig
-+++ b/arch/kvx/Kconfig
-@@ -22,6 +22,7 @@ config KVX
- 	select OFDEVICE
- 	select PARTITION
- 	select RESET_SOURCE
-+	select LD_DEAD_CODE_DATA_ELIMINATION
- 	default y
- 
- config 64BIT
-diff --git a/arch/kvx/cpu/barebox.lds.S b/arch/kvx/cpu/barebox.lds.S
-index b05c1f36e595..99a73ea0f7cc 100644
---- a/arch/kvx/cpu/barebox.lds.S
-+++ b/arch/kvx/cpu/barebox.lds.S
-@@ -8,6 +8,7 @@
- #include <asm/barebox.lds.h>
- 
- OUTPUT_FORMAT("elf64-kvx")
-+ENTRY(kvx_start)
- 
- SECTIONS
- {
-@@ -15,7 +16,7 @@ SECTIONS
- 	.text ALIGN(4) : {
- 		*(.startup);
- 		_stext = .;
--		*(.text)
-+		*(.text*)
- 	}
- 
- 	/* Exception vector must be aligned on a huge frontier */
-@@ -59,7 +60,7 @@ SECTIONS
- 	.data ALIGN(4): {
- 		sdata = .;
- 		_sdata = .;
--		*(.data)
-+		*(.data*)
- 		. = ALIGN(8);
- 		__stack_end = .;
- 		. += CONFIG_STACK_SIZE;
-@@ -79,7 +80,7 @@ SECTIONS
- 	.bss ALIGN(16):
- 	{
- 		__bss_start = .;
--		*(.bss)
-+		*(.bss*)
- 		. = ALIGN(16);
- 		__bss_stop = .;
- 	}
+diff --git a/test/kvx/generic_defconfig.yaml b/test/kvx/generic_defconfig.yaml
+new file mode 100644
+index 000000000000..66b5bb308564
+--- /dev/null
++++ b/test/kvx/generic_defconfig.yaml
+@@ -0,0 +1,17 @@
++targets:
++  main:
++    drivers:
++      QEMUDriver:
++        qemu_bin: qemu-system-kvx
++        machine: mppa-coolidge
++        memory: 512M
++        kernel: barebox
++        display: qemu-default
++      BareboxDriver:
++        prompt: 'barebox@[^:]+:[^ ]+ '
++        bootstring: 'commandline:'
++      BareboxTestStrategy: {}
++images:
++  barebox: !template "$LG_BUILDDIR/barebox"
++imports:
++  -  ../strategy.py
 -- 
 2.47.3
 
