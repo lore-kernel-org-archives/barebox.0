@@ -1,102 +1,85 @@
-Delivery-date: Wed, 05 Aug 2026 21:26:02 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Thu, 06 Aug 2026 13:08:21 +0200
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wrhFZ-006jCC-2q
+	id 1wrvxU-000A52-1p
 	for lore@lore.pengutronix.de;
-	Wed, 05 Aug 2026 21:26:02 +0200
+	Thu, 06 Aug 2026 13:08:21 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id D3C1B201FB3
-	for <lore@pengutronix.de>; Wed, 05 Aug 2026 21:25:57 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 26677200F83
+	for <lore@pengutronix.de>; Thu, 06 Aug 2026 13:08:21 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=1sHCcu69;
-	dkim=fail ("headers rsa verify failed") header.d=kelvaneos.eu header.s=x header.b="aAR/hjXO";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=Ij+veqY4;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:In-Reply-To:To:
-	References:Date:Subject:Mime-Version:Content-Transfer-Encoding:Content-Type:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Qa9NomsmC+Ezk18NSvnSWHFenj/xgbhLOf4m+DAMQ1A=; b=1sHCcu69pS2OdRlRrleEeP0hKL
-	NhN3e7RjICwj6LBgXCMqpVHuKTFGq5a9epruL/OV+aWrB7w9Bzc7jJoOEHihUa6vfwzg/WgNxh57U
-	QUbVaqKGcvmQ1Om5RIzfCAERWKUt2xRxYmXOpGahrNlBSfOBzld7EtqfxBbxjHAg9OVwKCIUCbiP0
-	GPe0XS5y3wGnVMOXrN98rZ4k5NLjax9BHm2eo3UhtYfGXhPCZMNY3tCy7EY254w4N9c7gfMQvAA3q
-	w366VrF4uBfEBRkb4jhsavETteQ+ZeRRJi6pHMAXUsJGR0ZoNmJ2DRIFsRvAseV1TXkm+nYXw2KUO
-	pzMCYTLg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=JUCvBFjOAUcgyX2PFRYbxUF0OEBo1v032vgZprWdh3k=; b=Ij+veqY4ZHpDhf5DcVNwn0oHlz
+	j6MupSaWh/1Nuxg7w8qtAvyieK3Nm4QOdNDCcupoHexy2qiBtz37wCId07wPXObxDQhcuazO/kM+z
+	L0nppNQrXpKI8NaVQ25VkcdLioorLUc0pUs9vR6a94N16EWwSFYiMeY+vESmXc0JneNDrQGwI9LKV
+	DQ8RZGIVxB5W3VKzjg10CTddcOh8qLo2x9h9M5Qwo3n2LuPSX8iHfRvIPJj9uArgJGxcsKqCk0FIX
+	1z8+RON7L/YTRx/Bp27qToUcSTUoA0bzMGjDT+CxxsBBS5pe2H5NiC6AxeZm72hWUH+OK4iJL8SyS
+	yqXOmucQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wrhE6-00000004T1N-2PXk;
-	Wed, 05 Aug 2026 19:24:30 +0000
-Received: from mail-108-mta80.mxroute.com ([136.175.108.80])
+	id 1wrvwH-00000005cEG-2kPV;
+	Thu, 06 Aug 2026 11:07:05 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wrhE4-00000004T0w-3PCg
+	id 1wrvwE-00000005cDL-0otz
 	for barebox@lists.infradead.org;
-	Wed, 05 Aug 2026 19:24:29 +0000
-Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta80.mxroute.com (ZoneMTA) with ESMTPSA id 19fd3624c5e000c8ef.001
- for <barebox@lists.infradead.org>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Wed, 05 Aug 2026 19:24:22 +0000
-X-Zone-Loop: 03697975688fdf1b80be73ae1181b3079d418b7d63e9
-X-Originating-IP: [136.175.111.3]
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=kelvaneos.eu; s=x; h=Message-Id:In-Reply-To:To:References:Date:Subject:
-	Mime-Version:Content-Transfer-Encoding:Content-Type:From:Sender:Reply-To:Cc:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Qa9NomsmC+Ezk18NSvnSWHFenj/xgbhLOf4m+DAMQ1A=; b=aAR/hjXOV2HkuwDOqzwc0UoGPe
-	WdU7TyVO8qGz1UxneRAMQxeDsefjnY4ViiYqVCMRFL/kuVUg3W8nAqduZOFM+9XqCimWjquW9aGb3
-	jYvSIZLog2E4BE4I98qM+gzKked+rtPM0Y76vVmplYhWx7XtnmeG38pGmnNeIJW6w1qOFwR3GQI2+
-	RIY1RBRsZ/WIh71HVqt0Ax+e3abMwUF5Do2UmUw+RC2VYWck1YTcB7Wqd4KYdgf++QMm+ZBKKhFAq
-	6433Mnx15qWFui5Kg+f1oWB2zjU2CaZekn5Ez0ax7PngkJ+vBrnWO+qPDTAxodfxIshCtmN8zDmiC
-	fwZ/eSiA==;
-From: Raymond | KelvaneOS <raymond@kelvaneos.eu>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: 7bit
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.700.51.1.1\))
-Subject: Re: barebox,state on the EFI payload: boot-disk binding and state.dtb
- trust
-Date: Wed, 5 Aug 2026 21:24:05 +0200
-References: <146164AA-62BF-40AC-A83B-83F9D36CF356@kelvaneos.eu>
- <341dc25a-de7e-4b51-a4e6-21986085c318@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
- barebox@lists.infradead.org
-In-Reply-To: <341dc25a-de7e-4b51-a4e6-21986085c318@pengutronix.de>
-Message-Id: <F58F461D-507C-4355-B53A-3AB6AC67AEB9@kelvaneos.eu>
-X-Authenticated-Id: raymond@kelvaneos.eu
+	Thu, 06 Aug 2026 11:07:04 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 2ECBB2000DC;
+	Thu, 06 Aug 2026 13:07:00 +0200 (CEST)
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1wrvwC-00051J-09;
+	Thu, 06 Aug 2026 13:07:00 +0200
+Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1wrvwB-0000000Fmfi-3w74;
+	Thu, 06 Aug 2026 13:06:59 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: [PATCH] efi: payload: gracefully handle OOM in initrd allocation
+Date: Thu,  6 Aug 2026 13:06:55 +0200
+Message-ID: <20260806110658.3761972-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260805_122428_942768_67DA9C07 
-X-CRM114-Status: GOOD (  22.08  )
-X-Spam-Score: -2.1 (--)
+X-CRM114-CacheID: sfid-20260806_040702_384166_A6F50209 
+X-CRM114-Status: UNSURE (   8.94  )
+X-CRM114-Notice: Please train this message.
+X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
  message has been attached to this so you can view it or label
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Hello Ahmad, > Patches are most certainly welcome, but merely
-    adding aliases won't cut > it as this logic relies on both barebox and Linux
-    using device trees > that unambiguously identify the boot devices. > > Do
-    [...] 
+ Content preview:  An initrd can get quite big, so we should not assume that
+   this an infallible allocation and instead propagate any OOM error code. Signed-off-by:
+    Ahmad Fatoum <a.fatoum@pengutronix.de> --- efi/payload/handover.c | 8 +++++++-
+    1 file changed, 7 insertions(+), 1 deletion(-) 
  
- Content analysis details:   (-2.1 points, 5.0 required)
+ Content analysis details:   (-1.9 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
  -0.0 SPF_PASS               SPF: sender matches SPF record
-  0.0 SPF_HELO_NONE          SPF: HELO does not publish an SPF Record
- -0.1 DKIM_VALID_EF          Message has a valid DKIM or DK signature from
-                             envelope-from domain
-  0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
- -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
- -0.1 DKIM_VALID_AU          Message has a valid DKIM or DK signature from author's
-                             domain
+ -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
  -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
                              [score: 0.0000]
   0.0 DMARC_MISSING          Missing DMARC policy
@@ -112,133 +95,70 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-5.91 / 15.00];
+X-Rspamd-Server: mx1
+X-Rspamd-Queue-Id: 26677200F83
+X-Stat-Signature: tuiggosc6f3ei19on61w119whyrfwrt6
+X-Spamd-Result: default: False [-6.21 / 15.00];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	MV_CASE(0.50)[];
+	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
+	MID_CONTAINS_FROM(1.00)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
+	R_MISSING_CHARSET(0.50)[];
+	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::54:received];
 	R_SPF_ALLOW(-0.20)[+mx:c];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MAILLIST(-0.20)[mailman];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
 	MIME_GOOD(-0.10)[text/plain];
+	RCVD_IN_DNSWL_LOW(-0.10)[2a0a:edc0:0:c01:1d::a2:received];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
-	DMARC_NA(0.00)[kelvaneos.eu];
-	ARC_NA(0.00)[];
-	FORGED_SENDER(0.00)[raymond@kelvaneos.eu,barebox-bounces@lists.infradead.org];
 	TO_DN_SOME(0.00)[];
-	SUSPICIOUS_AUTH_ORIGIN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
-	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_REJECT(0.00)[kelvaneos.eu:s=x];
-	RCVD_IN_DNSWL_NONE(0.00)[136.175.111.3:received];
-	PREVIOUSLY_DELIVERED(0.00)[barebox@lists.infradead.org];
-	HAS_XOIP(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[raymond@kelvaneos.eu,barebox-bounces@lists.infradead.org];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,kelvaneos.eu:-];
+	ARC_NA(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_MIXED(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[lists.infradead.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: D3C1B201FB3
-X-Stat-Signature: xd84pjeozscqtps1yxmeughhmwbog3bo
 
-Hello Ahmad,
+An initrd can get quite big, so we should not assume that this an
+infallible allocation and instead propagate any OOM error code.
 
-> Patches are most certainly welcome, but merely adding aliases won't cut
-> it as this logic relies on both barebox and Linux using device trees
-> that unambiguously identify the boot devices.
->
-> Do you have a scheme in mind on how to detect the boot medium in x86
-> Linux without depending on a UUID stored to the medium?
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ efi/payload/handover.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-You are right; adding alias stems alone does not establish a shared
-device identity. Sorry, that suggestion was incomplete.
+diff --git a/efi/payload/handover.c b/efi/payload/handover.c
+index bef726ae303c..544fdfb3c6ad 100644
+--- a/efi/payload/handover.c
++++ b/efi/payload/handover.c
+@@ -146,7 +146,13 @@ static int do_bootm_efi(struct image_data *data)
+ 			ret = -errno;
+ 			goto err_free;
+ 		}
+-		initrd = xmemalign(PAGE_SIZE, PAGE_ALIGN(size));
++		initrd = memalign(PAGE_SIZE, PAGE_ALIGN(size));
++		if (!initrd) {
++			free(tmp);
++			ret = -ENOMEM;
++			goto err_free;
++		}
++
+ 		memcpy(initrd, tmp, size);
+ 		memset(initrd + size, 0, PAGE_ALIGN(size) - size);
+ 		free(tmp);
+-- 
+2.47.3
 
-I was also imprecise about UUIDs: the requirement is to avoid a
-per-installation PARTUUID in the build input, not to avoid runtime GPT
-identifiers.
-
-The patch I have in mind would resolve
-efi_loaded_image->device_handle to the corresponding whole-disk cdev,
-enumerate state-type partitions on that disk, require exactly one, and
-fix the selected partition's runtime identity into the internal DT
-exported through the EFI variable you propose below.
-
-A non-block-backed/GPT origin or a match count other than one is an
-error. The resolver would not scan other disks or select the first
-match; KelvaneOS would treat the error as fatal rather than continue
-with default state.
-
-Linux would consume the fixed-up description and would not need to
-reconstruct the EFI device hierarchy.
-
-> Are you going to authenticate the state via HMAC?
-
-Yes. HMAC itself is not an x86 issue. The unresolved part is provisioning
-a protected shared secret to both barebox and the Linux writer.
-
-The dt-utils provider I found is tied to CAAM/blob_gen. A key file on
-the medium would work functionally but would not meet the offline
-tampering threat model. Is a new secret-provider abstraction in
-dt-utils the preferred direction for x86?
-
-This is separate from trusting state.dtb: that description selects the
-backend, layout and algo, so it can redirect the state or remove HMAC
-before the state is authenticated.
-
-> We are fuzzing the DT parser because it's used for FIT images, but we
-> indeed didn't so far we treat the state layout definition as untrusted
-> input.
-
-My concern is the valid-input case: a well-formed replacement can still
-change those semantics.
-
-> On device-tree enabled systems, barebox fixed it up into the kernel
-> device tree. As we only support UEFI boot on x86, we could achieve
-> something similar via volatile EFI variables with runtime access:
->
-> barebox already sets LoaderTimeInitUSec or LoaderFirmwareInfo, so we can
-> pass the device tree similarly under the barebox GUID.
->
-> How about:
->
-> - barebox includes an empty device tree by default
-> - CONFIG_EXTERNAL_DTS_FRAGMENTS can be used to add the state layout
-> definition from outside the build
-> - barebox simply passes its internal DT in flattened form via the EFI
-> variable
-
-Yes, that addresses the layout issue cleanly. I had missed
-CONFIG_EXTERNAL_DTS_FRAGMENTS as the built-in source; thanks.
-
-For the Secure Boot configuration, the external ESP state.dtb must not
-remain an alternative source when a built-in state description is
-present. Would you prefer the built-in state node to suppress that path
-automatically, or a separate Kconfig guard?
-
-I would keep the HMAC key-provider work separate from the EFI disk
-binding and DT handoff.
-
-> Are you going to use UKI profiles? If so, I could collect some thoughts
-> on how to make this more ergonomic.
-
-We will use signed UKIs. Profiles are under evaluation; the A/B
-generations themselves will remain separate UKIs. Your thoughts would
-be very welcome.
-
-Thanks,
-Raymond Zwarts
 
 
