@@ -1,16 +1,16 @@
-Delivery-date: Thu, 06 Aug 2026 15:08:45 +0200
+Delivery-date: Thu, 06 Aug 2026 15:09:41 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wrxq0-000BdZ-1Y
+	id 1wrxqu-000Bqf-0a
 	for lore@lore.pengutronix.de;
-	Thu, 06 Aug 2026 15:08:45 +0200
+	Thu, 06 Aug 2026 15:09:40 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 097062020FE
-	for <lore@pengutronix.de>; Thu, 06 Aug 2026 15:08:41 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id AFC10200F4F
+	for <lore@pengutronix.de>; Thu, 06 Aug 2026 15:09:36 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=UtIRQAl1;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="ljJP/pMO";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,51 +19,51 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ieFzkdZ3xxTt7WYk0UbQKRf4Tfj0f0Z0Dyb3FlYIa8c=; b=UtIRQAl1z0Xq3ZyJSISNCjWvxL
-	+KgwEkSs1oswfDZ9mhIb9xRWo4r916ki+vL5jqQrt9tcFMzcSv1svHJhsW8nKkjRPebRAc9gem7Vf
-	OUFRd0/eLG/lpSZRzWFJiKyutCh9YwT6o69v2ga/5KKjXqfgOEgE43HBRIyxFt089M8erEKpBj5No
-	FDd8u6GfChgzXwC55b75JkJ6GBqGEo8IVdozQBODvVeMIPvr8GHDGjJ6y9vSz9wHv86Pu1sZYJECO
-	dwUBspG3wK4y+wvGTS1m5D8EY6lA78zdag5GNsD0yubbH3GjLYy3PUpt+1hfk+XV5aBm/P/sXHdXV
-	yI+XNxCg==;
+	bh=kbKhLmwZHsF8d+BpDp97LOzCGJ8sue8zRRCih9LyNyQ=; b=ljJP/pMOeBk3sLX/PTpiKCvaBf
+	2QWJoGAa4TGfZMgo6wa63HkOVgdl09GBaM71sTjAcmbN3n5YK0ma2BKB0tH+MRBUuUxQGYNPfXN4+
+	N8iH4Qfa/tZoG3/pc2o2oIcwR13kpcxDel2bTR4ZF7wBKxxKszwGfWx/imukahNZtlgee6+0Nkkbg
+	mQXQ96IAg4B2Fn6OEG7LjaXOpxE87e1QicYgP9rc+3a34K7PLzFh0VozppxsCDn1qVa9OrGt4k67f
+	u7twXSJylyzbYQQk1DPZTGL58NcB7r7ovB3w7QB+Sq2KFGdOLvANZbHnZc4O8t4rRjYKINPmYmYtK
+	/8QvydQA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wrxoa-00000005qsG-1Pvh;
-	Thu, 06 Aug 2026 13:07:16 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1wrxq9-00000005qzH-26uC;
+	Thu, 06 Aug 2026 13:08:53 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wrxoW-00000005qrv-1V5G
+	id 1wrxq6-00000005qyg-27WP
 	for barebox@lists.infradead.org;
-	Thu, 06 Aug 2026 13:07:14 +0000
+	Thu, 06 Aug 2026 13:08:51 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id DEE45201FAA;
-	Thu, 06 Aug 2026 15:07:05 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id AD5D1200F4F;
+	Thu, 06 Aug 2026 15:08:44 +0200 (CEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wrxoP-00065E-2h;
-	Thu, 06 Aug 2026 15:07:05 +0200
+	id 1wrxq0-00065L-21;
+	Thu, 06 Aug 2026 15:08:44 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wrxoP-00000009Mf2-3Hk3;
-	Thu, 06 Aug 2026 15:07:05 +0200
+	id 1wrxq0-00000009ezV-2PZE;
+	Thu, 06 Aug 2026 15:08:44 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260806110658.3761972-1-a.fatoum@pengutronix.de>
-References: <20260806110658.3761972-1-a.fatoum@pengutronix.de>
-Subject: Re: [PATCH] efi: payload: gracefully handle OOM in initrd
- allocation
-Message-Id: <178602162578.2230182.3946651143555991502.b4-ty@pengutronix.de>
-Date: Thu, 06 Aug 2026 15:07:05 +0200
+In-Reply-To: <20260806112845.3822400-1-a.fatoum@pengutronix.de>
+References: <20260806112845.3822400-1-a.fatoum@pengutronix.de>
+Subject: Re: [PATCH master 1/3] test: kvx: add Labgrid env YAML for
+ generic_defconfig
+Message-Id: <178602172457.2302237.7052432766863500306.b4-ty@pengutronix.de>
+Date: Thu, 06 Aug 2026 15:08:44 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260806_060712_550184_931E4807 
-X-CRM114-Status: UNSURE (   4.80  )
+X-CRM114-CacheID: sfid-20260806_060850_699255_D6B94DB0 
+X-CRM114-Status: UNSURE (   5.32  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -72,10 +72,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Thu, 06 Aug 2026 13:06:55 +0200, Ahmad Fatoum wrote: >
-    An initrd can get quite big, so we should not assume that this an > infallible
-    allocation and instead propagate any OOM error code. > > Applied, thanks!
-    
+ Content preview:  On Thu, 06 Aug 2026 13:28:01 +0200, Ahmad Fatoum wrote: >
+    We build for kvx in CI, but we don't yet include qemu-system-kvx. > To simplify
+    at least manual testing, add a generic_defconfig.yaml > that [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -99,14 +98,14 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 097062020FE
-X-Stat-Signature: peq714m5eou88mh87yy4d95khpzb8azq
-X-Spamd-Result: default: False [-7.71 / 15.00];
-	BAYES_HAM(-3.00)[99.99%];
+X-Rspamd-Queue-Id: AFC10200F4F
+X-Stat-Signature: c1x6hdm3x6prqfa3hqshtzxeoa67or7j
+X-Spamd-Result: default: False [-7.70 / 15.00];
+	BAYES_HAM(-2.99)[99.95%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received];
+	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:1101:1d::28:received,2607:7c80:54:3::133:from];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MAILLIST(-0.20)[mailman];
@@ -133,16 +132,21 @@ X-Spamd-Result: default: False [-7.71 / 15.00];
 X-Rspamd-Action: no action
 
 
-On Thu, 06 Aug 2026 13:06:55 +0200, Ahmad Fatoum wrote:
-> An initrd can get quite big, so we should not assume that this an
-> infallible allocation and instead propagate any OOM error code.
+On Thu, 06 Aug 2026 13:28:01 +0200, Ahmad Fatoum wrote:
+> We build for kvx in CI, but we don't yet include qemu-system-kvx.
+> To simplify at least manual testing, add a generic_defconfig.yaml
+> that correctly configures QEMU to be able to start barebox.
 > 
 > 
 
 Applied, thanks!
 
-[1/1] efi: payload: gracefully handle OOM in initrd allocation
-      https://git.pengutronix.de/cgit/barebox/commit/?id=4ca87477ca95 (link may not be stable)
+[1/3] test: kvx: add Labgrid env YAML for generic_defconfig
+      https://git.pengutronix.de/cgit/barebox/commit/?id=1962405c8e44 (link may not be stable)
+[2/3] kvx: select DEAD_CODE_DATA_ELIMINATION
+      https://git.pengutronix.de/cgit/barebox/commit/?id=b78c544281da (link may not be stable)
+[3/3] dma: fix dma_realloc_coherent compile-time error on kvx
+      https://git.pengutronix.de/cgit/barebox/commit/?id=23acc2f11182 (link may not be stable)
 
 Best regards,
 -- 
