@@ -1,17 +1,17 @@
-Delivery-date: Thu, 06 Aug 2026 16:53:50 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Thu, 06 Aug 2026 16:55:34 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wrzTh-000DFs-35
+	id 1wrzVN-000DHO-0v
 	for lore@lore.pengutronix.de;
-	Thu, 06 Aug 2026 16:53:50 +0200
+	Thu, 06 Aug 2026 16:55:34 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 7981C20127A
-	for <lore@pengutronix.de>; Thu, 06 Aug 2026 16:53:46 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id CC1FE20127A
+	for <lore@pengutronix.de>; Thu, 06 Aug 2026 16:55:29 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=dYwcsrMz;
-	dkim=pass header.d=bootlin.com header.s=dkim header.b=oYipkPFh;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=zLHc9b7w;
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=NbrTkPlJ;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=pass (policy=reject) header.from=bootlin.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -20,44 +20,44 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:To:From:Subject:Cc:Message-Id:Date:Content-Type:
 	Mime-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=IZrv6ykLsrujkRSijyV+XE7KejkYWCztj1J4uAZjO+Q=; b=dYwcsrMzxPzFCufW05tur3FBDI
-	IJJuJWu8k17PCr81WJpCcpSNMkcHjz2wrax0YdWGF6lVgpkBC7jw968+KMAnVetoZctFVxTSp6VyU
-	Xy/L+/YYPsLJ+zkl6EavM8N1dnj7BFJm0jnKGbghQN9ovp+DHeKcYfhLDfBAEnmHSdQDjq7Bal6yu
-	9BZg1DxWAKd7kioDtRT0josyBGAweasQAPwJBRaP1QbLLdkrhTZDjrGosZtRtygon46bZzHGUq3Kl
-	JzSJd4mCocI+bcB+qUg9SIw3DOkmuS8TOOJELsYgrLPA+qezfVsMvJA5oTwxBRxkpDd44ckk496d6
-	k7TRcUHg==;
+	bh=gk/tHeYyLoGLeoDhsl1kHoioraqE6nF6MXXApT9E+DM=; b=zLHc9b7wpDYMfbeinnoqKq3a7B
+	XBNll1UuDRU13gIVLN71Xop0DhvVJ5cJRCFt8NmN8+/UKm08/PEwc8Pj/kTxzhCu2a+TlYnQgc6Kx
+	PxwS7YPB8GkIaa8ubBCKlaMcDmTxtHmNH7zkdckv0hPZG3w3UEv9uFc03LQ+xl9vLq6FIM/NbSjHe
+	WyrW3b1ItUADrlSA34uJstiabfywhQwuIzvfp9t+Y+G4ybx/B/2NiMFbGZGiIC+VKQlOEjfbGTBua
+	60EF8c9RxmxAoWOouW09fRDjc6172g8BVCL70HEHo79A6ExfBCSq8H447XBti+mJWzpjSXoGbbEVL
+	KX0PF5aQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wrzSI-000000062DY-3YEV;
-	Thu, 06 Aug 2026 14:52:22 +0000
+	id 1wrzU1-000000062Qw-0OMB;
+	Thu, 06 Aug 2026 14:54:09 +0000
 Received: from smtpout-03.galae.net ([185.246.85.4])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wrzSF-000000062Cq-3uuD
+	id 1wrzTy-000000062QX-2DrS
 	for barebox@lists.infradead.org;
-	Thu, 06 Aug 2026 14:52:22 +0000
+	Thu, 06 Aug 2026 14:54:07 +0000
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id C879B4E41118;
-	Thu,  6 Aug 2026 14:52:13 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id EA1DF4E41118;
+	Thu,  6 Aug 2026 14:54:04 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 97285602B8;
-	Thu,  6 Aug 2026 14:52:13 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 532F211C36573;
-	Thu,  6 Aug 2026 16:52:10 +0200 (CEST)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id A32D0602B8;
+	Thu,  6 Aug 2026 14:54:04 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1E24C11C36581;
+	Thu,  6 Aug 2026 16:54:02 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1786027933; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1786028044; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=IZrv6ykLsrujkRSijyV+XE7KejkYWCztj1J4uAZjO+Q=;
-	b=oYipkPFhea7cNLxB+5VE9qANLkfpd4Mmtg1xsutSzsJYcysS9ozXXeLYRE6OTdI7MjOnDr
-	82a6PzXELozLeYjY4vOaPMW+QVLLG/7m3QbsEnN7LnyM+4gGDX05ggXxiCwtOvKReggySt
-	cnEzMGzM6F9VeRSLYUs3OI5Ge7ltMg+wAtN/YJucvd8noqIgLjbH3MA/X50TdBV01kUnmr
-	rwEhPz+9cn4qBQlchI5Qx8tfSoe3uIUeSk5oqXdqBLMCaT9AEFMu5J+LjJ5Pz8sEAywxSJ
-	1Vlh9N7KnTMLrBkRqsNmJXrWvg0jv6CqYwEczKvFozZdWTXGlnAntdx/L4v7Vw==
+	bh=gk/tHeYyLoGLeoDhsl1kHoioraqE6nF6MXXApT9E+DM=;
+	b=NbrTkPlJNQyx7wks7S3uJob+lYJmcPwFLSncOofpr3YX1F6mcRAoXlm/FL/aSdjTC1W/QO
+	W1tu2Pcitclxf6P3AnORd3TmLLQaJmXMYXwQ0fWTw9SglNvq2TmppaKR0ZDWvWtW9ZpYT4
+	mPzSrHp22Qs461iCjkCVELIqfvH/iikK+Wyg3PEixzZDRdCKt/LzhJ/KNRYtbP4Efwoton
+	IMyDisc/RpB5mzJUW7d0gO1SGfqvFV4P9nCXw9wspBgXfhkqqa8Nq6MZoQiyQG82+ya+mS
+	mX4uZgtqGvUlWI1QBgT+P30dtFzd3hCmow6WPQbsivN+YZ7KdMX6oG3HkQUe7A==
 Mime-Version: 1.0
 Content-Type: multipart/signed;
- boundary=287d9d9ce388f278e165b9c0ad3318d31d1d6d7fb1b63c7bdf5542ec40a3;
+ boundary=4ff98ee0ac03efe60ff8bd29b7ae7fa017cc4079f4bc6f95b064aa9e5af6;
  micalg=pgp-sha512; protocol="application/pgp-signature"
-Date: Thu, 06 Aug 2026 16:52:10 +0200
-Message-Id: <DKHY283ZF4K3.2VAB9S9SYRY0I@bootlin.com>
+Date: Thu, 06 Aug 2026 16:54:02 +0200
+Message-Id: <DKHY3NV8AO2V.3OMMA1DPRQY54@bootlin.com>
 Cc: "Thomas Bonnefille" <thomas.bonnefille@bootlin.com>, "Thomas Petazzoni"
  <thomas.petazzoni@bootlin.com>, =?utf-8?q?Miqu=C3=A8l_Raynal?=
  <miquel.raynal@bootlin.com>
@@ -72,8 +72,8 @@ References: <20260805142055.3844660-1-a.fatoum@pengutronix.de>
 In-Reply-To: <178602149493.2137018.3077110729485180750.b4-ty@pengutronix.de>
 X-Last-TLS-Session-Version: TLSv1.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260806_075220_127023_3A3CBAA8 
-X-CRM114-Status: UNSURE (   8.64  )
+X-CRM114-CacheID: sfid-20260806_075406_710575_F723E25B 
+X-CRM114-Status: UNSURE (   8.26  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -115,8 +115,8 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 7981C20127A
-X-Stat-Signature: f85gecucct8h7b8u8zcrw1k1k5px75xa
+X-Rspamd-Queue-Id: CC1FE20127A
+X-Stat-Signature: sywi4syduodgh57rsj8cqjez1dopzehg
 X-Spamd-Result: default: False [-9.51 / 15.00];
 	BAYES_HAM(-3.00)[99.99%];
 	SIGNED_PGP(-2.00)[];
@@ -153,7 +153,7 @@ X-Spamd-Result: default: False [-9.51 / 15.00];
 	RCPT_COUNT_FIVE(0.00)[6]
 X-Rspamd-Action: no action
 
---287d9d9ce388f278e165b9c0ad3318d31d1d6d7fb1b63c7bdf5542ec40a3
+--4ff98ee0ac03efe60ff8bd29b7ae7fa017cc4079f4bc6f95b064aa9e5af6
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
 
@@ -169,28 +169,27 @@ On Thu Aug 6, 2026 at 3:04 PM CEST, Sascha Hauer wrote:
 >>=20
 >> Fix the CI breakage by disable KEYTOC, but only for the Github workflow.
 
-I=E2=80=99ve successfully compiled OpenSSL against musl in a modified versi=
-on of
-the barebox-ci container and can now compile keytoc in it. This approach
-would help detect build errors for keytoc + musl earlier.=20
-
+I=E2=80=99ve successfully compiled OpenSSL against musl in a revised versio=
+n of the
+barebox-ci container and can now compile keytoc in it. This approach would
+help detect build errors for keytoc + musl earlier.=20
 Would this be acceptable for Barebox?
 
 > [...]
 
 Best regards,
 
---287d9d9ce388f278e165b9c0ad3318d31d1d6d7fb1b63c7bdf5542ec40a3
+--4ff98ee0ac03efe60ff8bd29b7ae7fa017cc4079f4bc6f95b064aa9e5af6
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTQT2V0EKPIM2RnVpHcsfBJI7PEOgUCanSfnAAKCRDcsfBJI7PE
-Ov8vAP4oZWFay9fceSuVy/Ho19oY43ZhfVIvnnljTuUD9jDCsQEAty1kN4T1bvtI
-6g0S5wuKiwG7UUe0Fu6qVxr5b5jtqQw=
-=vGWI
+iHUEABYKAB0WIQTQT2V0EKPIM2RnVpHcsfBJI7PEOgUCanSgCwAKCRDcsfBJI7PE
+OijXAQDBJde+/3USwJ8Llq2gZMGa5t2kYG5/SoNAsXLC9rvFlAD+O3Si4Y6SP3GV
+GNW2209G09mePggbQv/0b7TgEI6lJQc=
+=5PHV
 -----END PGP SIGNATURE-----
 
---287d9d9ce388f278e165b9c0ad3318d31d1d6d7fb1b63c7bdf5542ec40a3--
+--4ff98ee0ac03efe60ff8bd29b7ae7fa017cc4079f4bc6f95b064aa9e5af6--
 
 
