@@ -1,16 +1,16 @@
-Delivery-date: Tue, 11 Aug 2026 12:13:40 +0200
+Delivery-date: Tue, 11 Aug 2026 12:14:29 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wtjUJ-001wff-2i
+	id 1wtjV6-001wgX-33
 	for lore@lore.pengutronix.de;
-	Tue, 11 Aug 2026 12:13:40 +0200
+	Tue, 11 Aug 2026 12:14:29 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 69466201889
-	for <lore@pengutronix.de>; Tue, 11 Aug 2026 12:13:40 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 84F6C2006E0
+	for <lore@pengutronix.de>; Tue, 11 Aug 2026 12:14:29 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=HWoyy2e0;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=uma3uh5G;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,44 +19,43 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+k7381LcKC4cZXEUoUs0Z2gjiDa//H0RsSEdBPFtIIg=; b=HWoyy2e04sDR+1BG2B/fBFNId+
-	6x5oxGV9syDKIZ4Q3NbDpX9gqDmAX/0BAWbJ3GZdeS7cdfdcqrn+aDFBKHUJrDZznpfM9M6nEsp7f
-	+Qd9g79idlMVyaWzSl0M8xYeyTK2u8WMHVdKf6ulGDQXA8cdXqvDcdgYLcWGnjulCH3FEq7Pk4zee
-	6xxGGZc/GvnsCSYqWPbIgypgA7RZO/bWCvMZ+xniFiscSoVLidWrN4McUZmk8KkzvpyAUYX9MIZyV
-	xS2eHmxcLKnizB/dK+IXe2x6rWbQgTB36M0BAWFpcVcj+fo2ugmQZ3jLqP981m6AVNl1i5H/Ejeeg
-	uTTkpQsQ==;
+	bh=meIfZllAOb8wyxNAf3+hqha+bI70AFSKmBrKEvEj6Wo=; b=uma3uh5Gao0BsigrxaKGeV+IOF
+	zVswg8idE/j4mNi56OGG5228QCvhicdPC/rqDkbbCCcQiEPK3fmrUROGNNsJOF0CVHlILqxOUKU8w
+	r750p9qY50PALJv4q3ML/GZVbXKg+/irxSEy8nGgPFxl0O03UpjN/YXmflMQ3/pEEYnYTad/oTbhm
+	z421Jo2KANy8dCGxHn1SxdN2jJYLZ3fWFlGdFabTT1TpYo7krSf4GceB25bwLedOt0v/7uiSXzN22
+	4BKHPxEeeN1tebmRZLMkcvKC/0Zbmons4i1xbIjBF/ZQtwLfvH5GPLKBsjGBgHCCrmGckvmOBsRHS
+	AqbHzXGA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wtjTt-0000000Dp6Q-2ivs;
-	Tue, 11 Aug 2026 10:13:13 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1wtjTx-0000000Dp76-0E92;
+	Tue, 11 Aug 2026 10:13:17 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wtjTq-0000000Dp4b-0ife
+	id 1wtjTq-0000000Dp4a-0puq
 	for barebox@lists.infradead.org;
-	Tue, 11 Aug 2026 10:13:12 +0000
+	Tue, 11 Aug 2026 10:13:13 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 3C6FB201949;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 2D2AE2017F3;
 	Tue, 11 Aug 2026 12:13:06 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1wtjTm-000vvt-0H;
+	id 1wtjTm-000vvu-0E;
 	Tue, 11 Aug 2026 12:13:06 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1wtjTl-00000004RKN-4AWC;
+	id 1wtjTl-00000004RKN-4B17;
 	Tue, 11 Aug 2026 12:13:05 +0200
 From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Date: Tue, 11 Aug 2026 12:13:06 +0200
-Subject: [PATCH v2 2/3] ARM: lib32: pbl: implement get_time_ns and
- is_timeout
+Date: Tue, 11 Aug 2026 12:13:07 +0200
+Subject: [PATCH v2 3/3] pbl: introduce HAS_PBL_CLOCKSOURCE marker
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260811-feature-pbl-get-time-ns-v2-2-754ee021b19d@pengutronix.de>
+Message-Id: <20260811-feature-pbl-get-time-ns-v2-3-754ee021b19d@pengutronix.de>
 References: <20260811-feature-pbl-get-time-ns-v2-0-754ee021b19d@pengutronix.de>
 In-Reply-To: <20260811-feature-pbl-get-time-ns-v2-0-754ee021b19d@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -64,9 +63,8 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
 Cc: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 X-Mailer: b4 0.15.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260811_031310_373551_A772F54C 
-X-CRM114-Status: UNSURE (   9.87  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260811_031310_407543_8ACF45F7 
+X-CRM114-Status: GOOD (  10.93  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -74,9 +72,11 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  ARMv7-A cores can implement the optional 64bit wide generic
-    timer CNTPCT[1]. If it is present we can use it to implement the get_time_ns
-    and is_timeout helpers which in turn enable the whole read_poll [...] 
+ Content preview:  This finally enables the usage of the polled timeout functions
+    in the barebox pbl with real timeouts for supported architectures. Currently
+    only ARMv7 and AARCH64 are enabled. Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+    --- arch/arm/cpu/Kconfig | 2 ++ arch/arm/lib32/Makefile | 2 +- include/linux/iopoll.h
+    | 2 +- pbl/Kconfig | 3 +++ 4 files changed, 7 insertion [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -101,9 +101,9 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: 5z3z8sxidh5yufrw76f9o3nuuzfpzj39
+X-Stat-Signature: qm58k4t9q6iwixk6bkjtwnkxoi6ryw69
 X-Spamd-Result: default: False [-7.71 / 15.00];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
@@ -134,49 +134,80 @@ X-Spamd-Result: default: False [-7.71 / 15.00];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 69466201889
+X-Rspamd-Queue-Id: 84F6C2006E0
 
-ARMv7-A cores can implement the optional 64bit wide generic timer
-CNTPCT[1]. If it is present we can use it to implement the get_time_ns
-and is_timeout helpers which in turn enable the whole read_poll_timeout
-class of functions in the PBL. As it is guaranteed that the timer won't
-wrap for 40 years no overflow handling is necessary.
-
-[1]: See "ARM Architecture Reference Manual ARMv7-A and ARMv7-R edition
-(rev C.d)", Chapter B8 "The Generic Timer"
+This finally enables the usage of the polled timeout functions in the
+barebox pbl with real timeouts for supported architectures. Currently
+only ARMv7 and AARCH64 are enabled.
 
 Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 ---
- arch/arm/lib32/arm_architected_timer.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ arch/arm/cpu/Kconfig    | 2 ++
+ arch/arm/lib32/Makefile | 2 +-
+ include/linux/iopoll.h  | 2 +-
+ pbl/Kconfig             | 3 +++
+ 4 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/lib32/arm_architected_timer.c b/arch/arm/lib32/arm_architected_timer.c
-index 54eca13f8b..75f74cbc15 100644
---- a/arch/arm/lib32/arm_architected_timer.c
-+++ b/arch/arm/lib32/arm_architected_timer.c
-@@ -10,8 +10,21 @@ void arm_architected_timer_udelay(unsigned long us)
- 	unsigned long long ticks, cntfrq = get_cntfrq();
- 	unsigned long long start = get_cntpct();
+diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+index 47c116ea98..684c7eade9 100644
+--- a/arch/arm/cpu/Kconfig
++++ b/arch/arm/cpu/Kconfig
+@@ -82,6 +82,7 @@ config CPU_V7
+ 	bool "Generic ARMv7 support"
+ 	depends on 32BIT
+ 	select CPU_32v7
++	select HAS_PBL_CLOCKSOURCE if !CPU_32v4T && !CPU_32v5 && !CPU_32v6
  
--	ticks = DIV_ROUND_DOWN_ULL((us * cntfrq), 1000000);
-+	ticks = DIV_ROUND_DOWN_ULL((us * cntfrq), MSECOND);
+ config CPU_V7VE
+ 	bool "ARMv7 Virtualization Extensions Support"
+@@ -135,6 +136,7 @@ config CPU_32v7
+ config CPU_64v8
+ 	bool
+ 	select CPU_64
++	select HAS_PBL_CLOCKSOURCE
  
- 	while ((long)(start + ticks - get_cntpct()) > 0)
- 		;
- }
+ comment "processor features"
+ 
+diff --git a/arch/arm/lib32/Makefile b/arch/arm/lib32/Makefile
+index 67c4f16f76..796ea6c742 100644
+--- a/arch/arm/lib32/Makefile
++++ b/arch/arm/lib32/Makefile
+@@ -34,7 +34,7 @@ extra-y += barebox.lds
+ pbl-y	+= lib1funcs.o
+ pbl-y	+= ashldi3.o
+ pbl-y	+= div0.o
+-pbl-$(CONFIG_CPU_32v7)	+= arm_architected_timer.o
++pbl-$(CONFIG_HAS_PBL_CLOCKSOURCE)	+= arm_architected_timer.o
+ CFLAGS_arm_architected_timer.o := -march=armv7-a
+ 
+ obj-pbl-y	+= setjmp.o
+diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
+index a6fade2a11..d86069f348 100644
+--- a/include/linux/iopoll.h
++++ b/include/linux/iopoll.h
+@@ -12,7 +12,7 @@
+ #include <clock.h>
+ #include <pbl.h>
+ 
+-#if IN_PROPER
++#if IN_PROPER || IS_ENABLED(CONFIG_HAS_PBL_CLOCKSOURCE)
+ # define read_poll_get_time_ns()	get_time_ns()
+ # define read_poll_is_timeout(s, t)	is_timeout(s, t)
+ #else
+diff --git a/pbl/Kconfig b/pbl/Kconfig
+index 63f29cd613..e5fe5328d2 100644
+--- a/pbl/Kconfig
++++ b/pbl/Kconfig
+@@ -43,6 +43,9 @@ config PBL_SINGLE_IMAGE
+ 	depends on !HAVE_PBL_MULTI_IMAGES
+ 	default y
+ 
++config HAS_PBL_CLOCKSOURCE
++	bool
 +
-+uint64_t get_time_ns(void)
-+{
-+	return get_cntpct() * SECOND / get_cntfrq();
-+}
-+
-+int is_timeout(uint64_t start, uint64_t time_offset_ns)
-+{
-+	if ((int64_t)(start + time_offset_ns - get_time_ns()) < 0)
-+		return 1;
-+	else
-+		return 0;
-+}
+ if PBL_IMAGE
+ 
+ config USE_COMPRESSED_DTB
 
 -- 
 2.47.3
