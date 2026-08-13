@@ -1,17 +1,17 @@
-Delivery-date: Thu, 13 Aug 2026 17:29:05 +0200
+Delivery-date: Thu, 13 Aug 2026 17:29:06 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wuXMe-002img-3C
+	id 1wuXMf-002in5-36
 	for lore@lore.pengutronix.de;
-	Thu, 13 Aug 2026 17:29:05 +0200
+	Thu, 13 Aug 2026 17:29:06 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 8D1802020E5
-	for <lore@pengutronix.de>; Thu, 13 Aug 2026 17:29:01 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 2CF01201FC9
+	for <lore@pengutronix.de>; Thu, 13 Aug 2026 17:29:02 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=C2JplhVg;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L7WAydTi;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=Jylwjftl;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X2HmqbmC;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -20,58 +20,58 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=6nCLh5s8QRbduMzyTnG7r1W3tVMo3ci87Yvtky8EN3U=; b=C2JplhVg72TZJf7ylp37YP/G1i
-	0gSsGnFuk+JJggllFR0gvqkX4D2U0edogHneIV3nv5wAFV4eo8IMWJMtejEr+kUPROe3NaZPrTuFI
-	ShrpaWJwnhdfN97GrvVKZH1CGU3HvK9MYFkf+49U0+WLv0Zod60ZcbH40bmojAVoS6GFfhIk9gUWb
-	LDMFYZBmYoXYXaEWJ0/DCMERHC827fqIkvtLg2kO6x/FJr8NVeuX/cE689q+EuJuoBIK4LlVdsu3H
-	BvKWFBSUSa8D1osU2WsEYQL0tVZuZjydKYZBV+ua0UNTotunV+cSbn+RAip0VQC59ZMYOqVxyMVH7
-	3M+vdl6A==;
+	bh=kayEwksiTS3UZV1VkQNd0sUfYlUeZQmvZlNB/1E04J0=; b=JylwjftluzYVxIc14qbiqNJwyL
+	msqeLHpBMw9sIf4+8jKUpVMC9ZR/B1JnqimsQUmpdsgg4XrmhMzQTTDxRb8fPsPq9cktWzOY0kBU1
+	nLpnUtqOdk7pBPUhbqLNHOWzO+5DamtMVbTpVcnSyrIJ2OSvN1plEkkoO5zMbNEdIUNlkStByn4II
+	d872oYgPrn+UV1nEV+b316NsrC/jUiXH12psKqqoZb6H87SgV+ArFmSUZgb0gJ7yTbpZvZOzy2MHv
+	9KrTtmBTh0JARicfCK5KYoEFAppwvqZnik0wZ0NFEvvYs++l3nDk3Hgrp79KzsdG+xcM6l/92gNaK
+	wEh3XJIQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wuXKD-000000010ZR-1FfE;
-	Thu, 13 Aug 2026 15:26:33 +0000
+	id 1wuXK9-000000010W0-3FrY;
+	Thu, 13 Aug 2026 15:26:29 +0000
 Received: from sea.source.kernel.org ([172.234.252.31])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wuXK8-000000010TT-0RA5
+	id 1wuXK6-000000010T9-3fI3
 	for barebox@lists.infradead.org;
-	Thu, 13 Aug 2026 15:26:28 +0000
+	Thu, 13 Aug 2026 15:26:27 +0000
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B3BEB43850;
+	by sea.source.kernel.org (Postfix) with ESMTP id 9ECA04304A;
 	Thu, 13 Aug 2026 15:26:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9A3B3C2BCFA;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8528BC2BCFC;
 	Thu, 13 Aug 2026 15:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1786634786;
-	bh=uqh4MWbPyHYP2eRf1CyrJifhrgFU/A1713ZGN/C5ao8=;
+	bh=JHsmaiI7vIHpnN0Y6GqNnU5gLeewxxuixQrg+XE9DAI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=L7WAydTimjzlpK43LYWhSKUT+jdraYvwE099HcmwZSpysdvQ4v0tK4nsmb2HLZEgf
-	 r8XxTWuAdgwFjgFz3//Pq01k1LtFAlh+hfScdGDutd0Mvu1RRDW6fusrPFHyNYnv/x
-	 e19yV1l+96V0uc8waFCnHPvlR4Edv8qpbBHzI3Tu/YFA9C8CnLF+VuAeY1mwvvDhTs
-	 rYetA06fP8LGi/EWH1ur8JljKiVXKHzNPBIc6EuKE404qPU/2XPvznB+RYDIGdOv9n
-	 0hq8DVt2ZQppdESB0teI+62ZrVKUySrz4uKKrqrPI7Z1stiuhu0L+vsxL9lwVfqyGH
-	 MnP3Y7+NyS14w==
+	b=X2HmqbmCZ7DDFVsjbcEiFnXpogvhql2GJ8U9q2+6DtlNz3e8hoFAHilIz87qqLb4Q
+	 ojFMBVuvrsUvRwLRRrt55sx6vBCPO8PkUntbnCEeGYzBqvcwhov7B+MyRH4twvxWrc
+	 8/a5pqYZREBMlWaIfY34mPTnqECw6I9EpGlPJ7RM4hAEor7Gj1CCw282+Fp62Omt0l
+	 tH465cUaMuBRd1oHhmdleHkQ6Hs9XhRBTW6lEd9ckUUBFVI9MhjzX5vanoQQuov5wx
+	 kRRdWBYlcd8HN4ppesFGcbohFzTEBpnkRZzShkHHM/8DK8qj4UATzHm6/F5oL9dRJL
+	 YK0uJfFFSon9Q==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A239C5DF6A;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 74DA3C5CFCF;
 	Thu, 13 Aug 2026 15:26:26 +0000 (UTC)
 From: Luca Lauro via B4 Relay <devnull+famlauro93l.gmail.com@kernel.org>
-Date: Thu, 13 Aug 2026 17:26:29 +0200
-Subject: [PATCH v4 09/14] ata: ahci: add PCI AHCI and Marvell 9170
- controller support
+Date: Thu, 13 Aug 2026 17:26:27 +0200
+Subject: [PATCH v4 07/14] usb: ehci: add Marvell EHCI host controller
+ driver
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260813-rn102-rn104-series-v4-9-f932ac63efa0@gmail.com>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20260813-rn102-rn104-series-v4-7-f932ac63efa0@gmail.com>
 References: <20260813-rn102-rn104-series-v4-0-f932ac63efa0@gmail.com>
 In-Reply-To: <20260813-rn102-rn104-series-v4-0-f932ac63efa0@gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  "open list:BAREBOX" <barebox@lists.infradead.org>
 Cc: Luca Lauro <famlauro93l@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786634824; l=3034;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786634824; l=8439;
  i=famlauro93l@gmail.com; s=20260723; h=from:subject:message-id;
- bh=A4ugrv46pB1faIhK+VC7D6/Kfdt2bOARz2Sq0q/XHQs=;
- b=/PJEzic3ZLU79Rd8v8o8n5m4pTmT1SMkZ4A/TXdGkFIiQXc+TwjnkIrs08Ea9OiUBssjeJD/e
- yMIMwI2l7UnCogeI1ilZwYQOrguMp4vvoiesCZN5MQdoz9loRMfWMGC
+ bh=PMKtRXfaGcd7T+RC96fzTds8pTTje8r1sML8k7YwexA=;
+ b=T8aF1U8OuPtATh8MavL+C1A1E1ZKHKMC8s30BBdNDeNkM48wWix6PEmF2PMCKnzdt5sblnKEy
+ VdyjwpNo1mTCd1trJFiF7G2lZx9IxBywx4Uj/IqhgFtrX+6v+VoX7Ia
 X-Developer-Key: i=famlauro93l@gmail.com; a=ed25519;
  pk=OAJlcD69ugQCl99Vy6w+Aeu+ZUb1IVGcz1Ijxo6Ch78=
 X-Endpoint-Received: by B4 Relay for famlauro93l@gmail.com/20260723 with
@@ -92,7 +92,7 @@ Reply-To: famlauro93l@gmail.com
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: rg3j57rdcwk4ugj3j75iyqjscww8udi4
+X-Stat-Signature: pm1s4tzy9iahgcbd6a7kydspnkec6gsf
 X-Spamd-Result: default: False [-7.91 / 15.00];
 	DWL_DNSWL_MED(-4.00)[infradead.org:dkim,kernel.org:dkim];
 	BAYES_HAM(-3.00)[100.00%];
@@ -109,14 +109,14 @@ X-Spamd-Result: default: False [-7.91 / 15.00];
 	TO_DN_ALL(0.00)[];
 	FREEMAIL_REPLYTO(0.00)[gmail.com];
 	FORWARDED(0.00)[barebox@lists.infradead.org];
-	FORGED_SENDER(0.00)[devnull@kernel.org,barebox-bounces@lists.infradead.org];
+	ARC_NA(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	ARC_NA(0.00)[];
+	FORGED_SENDER(0.00)[devnull@kernel.org,barebox-bounces@lists.infradead.org];
 	MIME_TRACE(0.00)[0:+];
 	TAGGED_FROM(0.00)[lore=pengutronix.de,famlauro93l.gmail.com];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,kernel.org:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,barebox-bounces@lists.infradead.org];
@@ -125,126 +125,292 @@ X-Spamd-Result: default: False [-7.91 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,kernel.org:+];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
 	HAS_REPLYTO(0.00)[famlauro93l@gmail.com]
-X-Rspamd-Queue-Id: 8D1802020E5
+X-Rspamd-Queue-Id: 2CF01201FC9
 
 From: Luca Lauro <famlauro93l@gmail.com>
 
-Barebox previously supported only memory-mapped AHCI controllers.
-Some devices expose their AHCI controller through PCI BARs, such as the
-Marvell 9170 controller found in Netgear RN102/RN104 NAS devices,
-requiring a dedicated probing path and MMIO mapping.
-This patch extends the barebox AHCI driver with full support for
-PCI-based AHCI controllers, adding:
-
-- A PCI probe path that enables AHCI initialization via
-pci_enable_device(), pci_iomap() and ahci_add_host().
-
-- A small device list to keep track of PCI AHCI instances.
-
-Changes are based on the upstream Linux driver, with some adaptations.
-
 Signed-off-by: Luca Lauro <famlauro93l@gmail.com>
 ---
- drivers/ata/ahci.c | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
- drivers/ata/ahci.h |  1 +
- 2 files changed, 50 insertions(+)
+ drivers/usb/host/Kconfig        |   7 ++
+ drivers/usb/host/Makefile       |  13 +--
+ drivers/usb/host/ehci-marvell.c | 228 ++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 242 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index 819dc37b3e..fd27da40f2 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -19,6 +19,8 @@
- #include <disks.h>
- #include <ata_drive.h>
- #include <linux/sizes.h>
-+#include <linux/pci.h>
-+#include <linux/pci_ids.h>
- #include <clock.h>
+diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
+index 58f276cdb4..8e46eca8a3 100644
+--- a/drivers/usb/host/Kconfig
++++ b/drivers/usb/host/Kconfig
+@@ -22,6 +22,13 @@ config USB_EHCI_ZYNQ
+ 	help
+ 	  Enable support for Zynq on-chip EHCI USB controller
  
- #include "ahci.h"
-@@ -47,6 +49,45 @@
- #define ahci_debug(ahci, fmt, arg...) \
- 	dev_dbg(ahci->dev, fmt, ##arg)
- 
-+static const struct pci_device_id ahci_pci_tbl[] = {
-+	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL_EXT, 0x9170) },
-+	{ 0, }
++config USB_EHCI_MARVELL
++	bool "Marvell USB EHCI driver"
++	depends on ARCH_MVEBU
++	depends on USB_EHCI
++	help
++	  Enable support for Marvell USB EHCI controller
++
+ config USB_OHCI
+ 	bool "OHCI driver"
+ 	depends on !MMU && HAS_DMA
+diff --git a/drivers/usb/host/Makefile b/drivers/usb/host/Makefile
+index cbddfbe923..5442d44e60 100644
+--- a/drivers/usb/host/Makefile
++++ b/drivers/usb/host/Makefile
+@@ -1,8 +1,9 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-obj-$(CONFIG_USB_EHCI)		+= ehci-hcd.o
+-obj-$(CONFIG_USB_EHCI_OMAP)	+= ehci-omap.o
++obj-$(CONFIG_USB_EHCI)			+= ehci-hcd.o
++obj-$(CONFIG_USB_EHCI_OMAP)		+= ehci-omap.o
+ obj-$(CONFIG_USB_EHCI_ATMEL)	+= ehci-atmel.o
+-obj-$(CONFIG_USB_EHCI_ZYNQ)	+= ehci-zynq.o
+-obj-$(CONFIG_USB_OHCI)		+= ohci-hcd.o
+-obj-$(CONFIG_USB_OHCI_AT91)	+= ohci-at91.o
+-obj-$(CONFIG_USB_XHCI)		+= xhci.o xhci-mem.o xhci-ring.o
++obj-$(CONFIG_USB_EHCI_ZYNQ)		+= ehci-zynq.o
++obj-$(CONFIG_USB_EHCI_MARVELL)	+= ehci-marvell.o
++obj-$(CONFIG_USB_OHCI)			+= ohci-hcd.o
++obj-$(CONFIG_USB_OHCI_AT91)		+= ohci-at91.o
++obj-$(CONFIG_USB_XHCI)			+= xhci.o xhci-mem.o xhci-ring.o
+diff --git a/drivers/usb/host/ehci-marvell.c b/drivers/usb/host/ehci-marvell.c
+new file mode 100644
+index 0000000000..97123558d1
+--- /dev/null
++++ b/drivers/usb/host/ehci-marvell.c
+@@ -0,0 +1,228 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Marvell Orion / Kirkwood / Armada EHCI host controller for barebox
++ *
++ * Ported from the modern U-Boot ehci-marvell.c implementation and
++ * adapted to the barebox ehci_register() model.
++ */
++
++/*#define DEBUG*/
++
++#include <common.h>
++#include <driver.h>
++#include <init.h>
++#include <io.h>
++#include <of.h>
++#include <linux/usb/usb.h>
++#include <linux/usb/ehci.h>
++#include <linux/mbus.h>
++
++#include "ehci.h"
++
++#define USB_WINDOW_CTRL(i)			(0x320 + ((i) << 4))
++#define USB_WINDOW_BASE(i)			(0x324 + ((i) << 4))
++#define USB_TARGET_DRAM				0x0
++
++#define USB2_SBUSCFG_OFF			0x90
++
++#define USB_SBUSCFG_BAWR_OFF		0x6
++#define USB_SBUSCFG_BARD_OFF		0x3
++#define USB_SBUSCFG_AHBBRST_OFF		0x0
++
++#define USB_SBUSCFG_BAWR_ALIGN_64B	0x4
++#define USB_SBUSCFG_BARD_ALIGN_64B	0x4
++#define USB_SBUSCFG_AHBBRST_INCR16	0x7
++
++/* AC5 special window mapping (taken from U-Boot) */
++#define USB_TO_DRAM_TARGET_ID		0x2
++#define USB_TO_DRAM_ATTR_ID			0x0
++#define USB_DRAM_BASE				0x00000000
++#define USB_DRAM_SIZE				0xfff	/* do not exceed the source address space */
++
++/*
++ * Private state for this Marvell EHCI instance.
++ * The driver only needs the pointer to struct ehci_host.
++ */
++struct marvell_ehci {
++	struct ehci_host *ehci;
++	void __iomem *base;
++	struct device *dev;
++	u32 dram_bus_base;
 +};
 +
-+static int ahci_pci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
++static void marvell_ehci_sbuscfg_fixup(void __iomem *base)
 +{
-+	struct ahci_device *ahci;
-+	void __iomem *mmio;
-+	int ret;
++	/*
++	 * SBUSCFG: Control for the AMBA system bus interface:
++	 * BAWR = BARD = 4 : Align rd/wr bursts packets larger than 64 bytes
++	 * AHBBRST = 7	 : Align AHB burst for packets larger than 64 bytes
++	 */
++	writel((USB_SBUSCFG_BAWR_ALIGN_64B << USB_SBUSCFG_BAWR_OFF) |
++			(USB_SBUSCFG_BARD_ALIGN_64B << USB_SBUSCFG_BARD_OFF) |
++			(USB_SBUSCFG_AHBBRST_INCR16 << USB_SBUSCFG_AHBBRST_OFF),
++			base + USB2_SBUSCFG_OFF);
++}
 +
-+	dev_info(&pdev->dev, "ahci: PCI probe %04x:%04x rev %02x\n",
-+			pdev->vendor, pdev->device, pdev->revision);
++/*
++ * Program the USB → DRAM decoding windows using MBUS information.
++ * For AC5, replicate the special 0x0..USB_DRAM_SIZE mapping.
++ */
++static void marvell_usb_brg_adrdec_setup(struct marvell_ehci *priv)
++{
++	const struct mbus_dram_target_info *dram;
++	void __iomem *base = priv->base;
++	int i;
 +
-+	ret = pci_enable_device(pdev);
-+	if (ret)
-+		return ret;
++	dev_info(priv->dev, "USB adrdec setup: ENTER\n");
 +
-+	pci_set_master(pdev);
-+
-+	mmio = pci_iomap(pdev, 5);
-+	if (!mmio)
-+		return -ENODEV;
-+
-+	ahci = xzalloc(sizeof(*ahci));
-+	ahci->dev = &pdev->dev;
-+	ahci->mmio_base = mmio;
-+	pdev->dev.priv = ahci;
-+
-+	ret = ahci_add_host(ahci);
-+	if (ret) {
-+		free(ahci);
-+		pdev->dev.priv = NULL;
-+		return ret;
++	dram = mvebu_mbus_dram_info();
++	if (!dram) {
++		dev_err(priv->dev, "no MBUS DRAM info\n");
++		return;
 +	}
++
++	for (i = 0; i < 4; i++) {
++		writel(0, base + USB_WINDOW_CTRL(i));
++		writel(0, base + USB_WINDOW_BASE(i));
++	}
++
++	if (priv->dev->of_node &&
++		of_device_is_compatible(priv->dev->of_node, "marvell,ac5-ehci")) {
++		/* map DRAM as seen by USB at address 0x0 (as done in U-Boot) */
++		writel((USB_DRAM_SIZE << 16) |
++				(USB_TO_DRAM_ATTR_ID << 8) |
++				(USB_TO_DRAM_TARGET_ID << 4) | 1,
++				base + USB_WINDOW_CTRL(0));
++		writel(USB_DRAM_BASE, base + USB_WINDOW_BASE(0));
++
++		dev_dbg(priv->dev,
++			"AC5 decoding windows: ctrl=0x%08x base=0x%08x\n",
++			readl(base + USB_WINDOW_CTRL(0)),
++			readl(base + USB_WINDOW_BASE(0)));
++	} else {
++		/* generic mvebu case: one window per each DRAM chip-select */
++
++		for (i = 0; i < dram->num_cs; i++) {
++			const struct mbus_dram_window *cs = dram->cs + i;
++
++			/* Write size, attributes and target id to control register */
++			writel(((cs->size - 1) & 0xffff0000) |
++					(cs->mbus_attr << 8) |
++					(dram->mbus_dram_target_id << 4) | 1,
++					base + USB_WINDOW_CTRL(i));
++
++			/* Write base address to base register */
++			writel(cs->base, base + USB_WINDOW_BASE(i));
++		}
++	}
++
++	for (i = 0; i < 4; i++) {
++		u32 ctrl = readl(base + USB_WINDOW_CTRL(i));
++		u32 winb = readl(base + USB_WINDOW_BASE(i));
++		dev_info(priv->dev, "WIN%d: CTRL=0x%08x BASE=0x%08x\n", i, ctrl, winb);
++	}
++}
++
++/*
++ * Initialization hook called by ehci-hcd.c before starting the host.
++ * Only the bridge address decoding is performed here.
++ */
++static int marvell_ehci_init(void *drvdata)
++{
++	struct marvell_ehci *priv = drvdata;
++
++	marvell_usb_brg_adrdec_setup(priv);
++
++	writel((USB_SBUSCFG_BAWR_ALIGN_64B << USB_SBUSCFG_BAWR_OFF) |
++		(USB_SBUSCFG_BARD_ALIGN_64B << USB_SBUSCFG_BARD_OFF) |
++		(USB_SBUSCFG_AHBBRST_INCR16 << USB_SBUSCFG_AHBBRST_OFF),
++		priv->base + 0x100 + 0x90);
++	mdelay(50);
++
++	/*
++	* The SBUSCFG programming (BAWR/BARD/AHBBRST) in U-Boot is only
++	* required for SoCs without hlock (e.g. Armada3700).
++	* It is currently omitted; if needed in the future, a dedicated
++	* post_init or EHCI core hook can be added.
++	*/
++
++	dev_dbg(priv->dev, "marvell_ehci_init done\n");
 +
 +	return 0;
 +}
 +
- struct ahci_cmd_hdr {
- 	u32	opts;
- 	u32	status;
-@@ -635,6 +676,7 @@ int ahci_add_host(struct ahci_device *ahci)
- 	tmp = ahci_ioread(ahci, HOST_CTL);
- 
- 	ahci->dev->detect = ahci_detect;
-+	list_add(&ahci->list, &ahci_devices);
- 
- 	return 0;
- }
-@@ -674,6 +716,13 @@ static __maybe_unused struct of_device_id ahci_dt_ids[] = {
- };
- MODULE_DEVICE_TABLE(of, ahci_dt_ids);
- 
-+static struct pci_driver ahci_pci_driver = {
-+	.name = "ahci-pci",
-+	.id_table = ahci_pci_tbl,
-+	.probe = ahci_pci_probe,
-+};
-+device_pci_driver(ahci_pci_driver);
++static int marvell_ehci_probe(struct device *dev)
++{
++	struct marvell_ehci *priv;
++	struct resource *iores;
++	struct ehci_data data = {};
++	void __iomem *base;
++	struct ehci_host *ehci;
 +
- static struct driver ahci_driver = {
- 	.name   = "ahci",
- 	.probe  = ahci_probe,
-diff --git a/drivers/ata/ahci.h b/drivers/ata/ahci.h
-index 196bde73c2..d2a19f4648 100644
---- a/drivers/ata/ahci.h
-+++ b/drivers/ata/ahci.h
-@@ -184,6 +184,7 @@ struct ahci_port {
- };
- 
- struct ahci_device {
-+	struct list_head list;
- 	struct device		*dev;
- 	struct ahci_port	ports[AHCI_MAX_PORTS];
- 	u32			n_ports;
++	priv = xzalloc(sizeof(*priv));
++	priv->dev = dev;
++	dev->priv = priv;
++
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores))
++		return PTR_ERR(iores);
++
++	base = IOMEM(iores->start);
++	priv->base = base;
++
++	/*
++	* On Marvell controllers the EHCI block starts at offset 0x100
++	* from the USB base address.
++	*/
++	data.hccr = base + 0x100;
++
++	u32 capbase = readl(data.hccr);			/* HC_CAPBASE */
++	u8 caplength = capbase & 0xff;			/* CAPLENGTH */
++
++	data.hcor = (void __iomem *)((u8 *)data.hccr + caplength);
++
++	dev_info(dev, "EHCI probe: base=%p hccr=%p hcor=%p\n",
++			base, data.hccr, data.hcor);
++
++	dev_info(dev, "EHCI CAPBASE=0x%08x CAPLENGTH=0x%02x\n",
++			capbase, caplength);
++
++	data.init = marvell_ehci_init;
++	data.drvdata = priv;
++
++	if (of_device_is_compatible(dev->of_node, "marvell,armada-3700-ehci"))
++		marvell_ehci_sbuscfg_fixup(base);
++
++	dev_dbg(dev, "marvell_ehci_probe: done\n");
++
++	ehci = ehci_register(dev, &data);
++	if (IS_ERR(ehci))
++		return PTR_ERR(ehci);
++
++	priv->ehci = ehci;
++
++	return 0;
++}
++
++static void marvell_ehci_remove(struct device *dev)
++{
++	struct marvell_ehci *priv = dev->priv;
++
++	if (priv && priv->ehci)
++		ehci_unregister(priv->ehci);
++}
++
++static const struct of_device_id marvell_ehci_dt_ids[] = {
++	{ .compatible = "marvell,orion-ehci" },
++	{ .compatible = "marvell,armada-3700-ehci" },
++	{ .compatible = "marvell,ac5-ehci" },
++	{ /* sentinel */ }
++};
++
++static struct driver marvell_ehci_driver = {
++	.name			= "marvell-ehci",
++	.probe			= marvell_ehci_probe,
++	.remove			= marvell_ehci_remove,
++	.of_compatible	= DRV_OF_COMPAT(marvell_ehci_dt_ids),
++};
++device_platform_driver(marvell_ehci_driver);
 
 -- 
 2.47.3
