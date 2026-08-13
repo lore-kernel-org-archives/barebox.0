@@ -1,17 +1,17 @@
-Delivery-date: Thu, 13 Aug 2026 17:28:35 +0200
+Delivery-date: Thu, 13 Aug 2026 17:28:40 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wuXMA-002ijm-1b
+	id 1wuXMF-002ik8-2i
 	for lore@lore.pengutronix.de;
-	Thu, 13 Aug 2026 17:28:35 +0200
+	Thu, 13 Aug 2026 17:28:40 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id F1FFF201ED5
-	for <lore@pengutronix.de>; Thu, 13 Aug 2026 17:28:30 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id D77E1201EBF
+	for <lore@pengutronix.de>; Thu, 13 Aug 2026 17:28:35 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=iOIARH3S;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XxAByt+e;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=CoieChN5;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kpBiO3ds;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -20,58 +20,57 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
 	Subject:Date:From:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qBY+VzqHZiEmPjoFoxw4A1MxBf+RhBsE6Hd5GsokJPk=; b=iOIARH3SVckjBHwk2nW1J1lhHK
-	Zjk+6vEytRhMDf624K6O85/G9b/cmG7viWXacVin161fjTqv8UDxnSSkVaY9Auauv5FArl6ohCiEn
-	eRq/QIroOzM5NdjDqKaH3ZKFb/sT9e+zqG+p/MJK+mNsrxDQY3sjlTUgrNTKg/I4BxQC2Y9HpeQzN
-	8SD69Y/hNWY+njijbUAunETwGLRzMcx1/JXzZwlr3rUpGB9IY/W3JPO8z+5k+lqpqxE9KoVdU7yrg
-	5RHbgDOemxKKd1RnBYKJOk6BdDL8cwqzrVOUv23/HlwhbzckIp8smicmvlAOwn5DSTuEO3z1b5cnQ
-	O/TjTltQ==;
+	bh=Jmd1ckFyR4HPaLqMGsuHl75iOpbrZceovkGNkR4PEBE=; b=CoieChN5x6yZ+r9a++GQZ1mnIp
+	xABjP50y7uPNTFMPgXQxd6UbgUj3PeOIij7xg3fZmhu7mlIp8pqRC2O900XAftLAR09dE15cY32oD
+	LxYfo2RKJQFeoHhX7AjYDxQEjofft+vb5YEHLxVV39PO6GD+SrieEOR8koAZyPAZ0CJ70I2pYcCT2
+	mpp1afEfLqCi4LQzNyZTmWwYktyW0C76cVlog//tbNS7lLtlj2SPtZIJUBrzVe3CLxNJPLmiYLVUl
+	qpggc+bGKIcE7S1peK1ZyvULRcdpiFa8S67Pi48BBQOmpwnOtZR3TTJ0PSH4q0w3QKoL2dpZtZV5f
+	fCzjV8LQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wuXKC-000000010Xv-3Pun;
-	Thu, 13 Aug 2026 15:26:32 +0000
-Received: from sea.source.kernel.org ([2600:3c0a:e001:78e:0:1991:8:25])
+	id 1wuXKB-000000010W7-1M5l;
+	Thu, 13 Aug 2026 15:26:31 +0000
+Received: from sea.source.kernel.org ([172.234.252.31])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wuXK8-000000010TO-0ORD
+	id 1wuXK6-000000010T8-3fI7
 	for barebox@lists.infradead.org;
-	Thu, 13 Aug 2026 15:26:28 +0000
+	Thu, 13 Aug 2026 15:26:27 +0000
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CC99443924;
+	by sea.source.kernel.org (Postfix) with ESMTP id 9664E423BF;
 	Thu, 13 Aug 2026 15:26:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AF783C2BCFD;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7C462C2BCFA;
 	Thu, 13 Aug 2026 15:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1786634786;
-	bh=dayYaCYoT8/XPL7dtOvTmngFtTqIi+MVYJCCk6ggW/8=;
+	bh=UTUCXrKMc2GzE7om+aCvN5p7T0abcNhV2BXapatdJ2U=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=XxAByt+eDYZNux8QPoabuLQbs8I8CRZX5Pe/62Xrt2E/tkQdvn6jsKnrVdbOPf3/U
-	 CSXOLGYDpuMak424Tc9vHmbO+wqwWO9gaEwXCExR5VFDQzkcP3nTwFLY8ddCJoIpMH
-	 9bOXjF04w54/WOBtr2pFoa9fKOGZVSrrOUKSXujTsFEw7Nel9FEDkDSO+oELNxEMnu
-	 7Ke7y6IFO3SA6gOjL7wfQbdrltTKQnE/XJCmk0/Sbju4yLAY2X0PEWQkb+RqAL4a80
-	 JWkzIVQprpk/oFnk6CtRzte2bMv11836DEoPkMVn9CtlwEdK5memoGoP2zc2FX9ucF
-	 uCM/tM4tGaLEQ==
+	b=kpBiO3dsrVkUyw98ut2zM+pNpcE3ovK6wM6CkdZXbJ7jAyM9spjzrVPve1eXNoPbL
+	 Qfj6aP3b3x3H/6+8YU9nSXCMU/UdUSiHXd3RwW3s8eCgsIilkxuRhruguHHA/VuVHi
+	 LNMm/eCFzLnJp0zyNECiHcy3rsKcAN0YnrvVr+820AKApmjBUdUuxd2bS0bG0ziFwX
+	 RpAHsY2AFnOnaB6MSVizEdQJIE2lq9aF6RPOa1ecOUvQLfb9GZg2H6dBA5dDfQS5Ma
+	 zdAjo91Q5Q3FJeUO1EONKjIV6HNszcD7HXZO//in7wx0e0T0RWA7kU7iP1T+9wSl6F
+	 5/k7jQt7yJrRA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F69AC5DF67;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A5C8C5DF64;
 	Thu, 13 Aug 2026 15:26:26 +0000 (UTC)
 From: Luca Lauro via B4 Relay <devnull+famlauro93l.gmail.com@kernel.org>
-Date: Thu, 13 Aug 2026 17:26:31 +0200
-Subject: [PATCH v4 11/14] ata: ahci: add helper for ATA commands without
- data
+Date: Thu, 13 Aug 2026 17:26:26 +0200
+Subject: [PATCH v4 06/14] commands: add fan control command
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260813-rn102-rn104-series-v4-11-f932ac63efa0@gmail.com>
+Message-Id: <20260813-rn102-rn104-series-v4-6-f932ac63efa0@gmail.com>
 References: <20260813-rn102-rn104-series-v4-0-f932ac63efa0@gmail.com>
 In-Reply-To: <20260813-rn102-rn104-series-v4-0-f932ac63efa0@gmail.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  "open list:BAREBOX" <barebox@lists.infradead.org>
 Cc: Luca Lauro <famlauro93l@gmail.com>
 X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786634824; l=1078;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786634824; l=12962;
  i=famlauro93l@gmail.com; s=20260723; h=from:subject:message-id;
- bh=nKzXH/Y6AGkhbhnItPtbi0KFSU18JUvmkP8cAFWyWVQ=;
- b=2pk/mbAPAu39xRx4gEFfTn2L0n90fP0oh1gFG221xRDeNZhUGpk9SZdwbb97oOjPTnGARJcpN
- KamHeCLAWl4Dv9suLTDE6Rl/wNFU66xa7lu1DMOXoxqDN2QYkCN9GYX
+ bh=Vx+EBxJNOF0R9x/bZxWmoZX0N9e3iS2sDuPQD/S/D/U=;
+ b=vLcxBCSULd13vtiQfC/ZIDw6Zc0ZdDrzYVSuFmlQSgjWHWmo3tttHFUewLOpxNvwCDN95aKVc
+ SF8/iCoLI9rDf/6J++c8Gnz82v/0MV0OG08XF/euZu5+3NOUhKXfTkm
 X-Developer-Key: i=famlauro93l@gmail.com; a=ed25519;
  pk=OAJlcD69ugQCl99Vy6w+Aeu+ZUb1IVGcz1Ijxo6Ch78=
 X-Endpoint-Received: by B4 Relay for famlauro93l@gmail.com/20260723 with
@@ -92,10 +91,10 @@ Reply-To: famlauro93l@gmail.com
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: ggiputw3c4j6a7q8g71crzy6d811m595
+X-Stat-Signature: 75jqksfhxui8ajbhwogh5aaui9grgk61
 X-Spamd-Result: default: False [-7.91 / 15.00];
 	DWL_DNSWL_MED(-4.00)[kernel.org:dkim,infradead.org:dkim];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	FREEMAIL_REPLYTO_NEQ_FROM(2.00)[];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	DMARC_POLICY_ALLOW(-0.50)[kernel.org,quarantine];
@@ -109,14 +108,14 @@ X-Spamd-Result: default: False [-7.91 / 15.00];
 	TO_DN_ALL(0.00)[];
 	FREEMAIL_REPLYTO(0.00)[gmail.com];
 	FORWARDED(0.00)[barebox@lists.infradead.org];
-	FORGED_SENDER(0.00)[devnull@kernel.org,barebox-bounces@lists.infradead.org];
+	ARC_NA(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	ARC_NA(0.00)[];
+	FORGED_SENDER(0.00)[devnull@kernel.org,barebox-bounces@lists.infradead.org];
 	MIME_TRACE(0.00)[0:+];
 	TAGGED_FROM(0.00)[lore=pengutronix.de,famlauro93l.gmail.com];
 	REPLYTO_DOM_NEQ_FROM_DOM(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,kernel.org:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[devnull@kernel.org,barebox-bounces@lists.infradead.org];
@@ -125,49 +124,342 @@ X-Spamd-Result: default: False [-7.91 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,kernel.org:+];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
 	HAS_REPLYTO(0.00)[famlauro93l@gmail.com]
-X-Rspamd-Queue-Id: F1FFF201ED5
+X-Rspamd-Queue-Id: D77E1201EBF
 
 From: Luca Lauro <famlauro93l@gmail.com>
 
-Introduce ahci_ata_nodata(), a small wrapper that prepares a FIS and
-submits an AHCI command without PRDT entries or DMA setup. This avoids
-duplicating zero-length handling logic across callers and simplifies
-ATA command submission paths.
-
 Signed-off-by: Luca Lauro <famlauro93l@gmail.com>
 ---
- drivers/ata/ahci.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ commands/Kconfig  |   7 ++
+ commands/Makefile |   2 +
+ commands/fan.c    | 286 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 295 insertions(+)
 
-diff --git a/drivers/ata/ahci.c b/drivers/ata/ahci.c
-index ea2df31515..1175d76881 100644
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -233,6 +233,21 @@ static int ahci_io(struct ahci_port *ahci_port, u8 *fis, int fis_len, void *rbuf
- 	return ret;
- }
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 297c89b4b5..d661f0eaab 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -2337,6 +2337,13 @@ config CMD_RKSECURE
+ 	  The rksecure command allows to retrieve information about and enable
+ 	  secure boot for Rockchip rk3588 SoCs.
  
-+static int ahci_ata_nodata(struct ahci_port *ahci, u8 command, u8 feature)
++config CMD_FAN
++	bool
++	depends on FAN
++	prompt "fan command"
++	help
++	  Control and monitor target fans.
++
+ # end Hardware manipulation commands
+ endmenu
+ 
+diff --git a/commands/Makefile b/commands/Makefile
+index 2563efb12f..227c40b3f5 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -173,4 +173,6 @@ obj-$(CONFIG_CMD_DMSETUP)	+= dmsetup.o
+ obj-$(CONFIG_CMD_VERITYSETUP)	+= veritysetup.o
+ obj-$(CONFIG_CMD_SCONFIG)	+= sconfig.o
+ obj-$(CONFIG_CMD_RKSECURE)	+= rksecure.o
++obj-$(CONFIG_CMD_FAN)		+= fan.o
++
+ UBSAN_SANITIZE_ubsan.o := y
+diff --git a/commands/fan.c b/commands/fan.c
+new file mode 100644
+index 0000000000..613b4ac101
+--- /dev/null
++++ b/commands/fan.c
+@@ -0,0 +1,286 @@
++#include <common.h>
++#include <command.h>
++#include <complete.h>
++#include <errno.h>
++#include <fan/fan.h>
++
++static int do_fan(int argc, char *argv[])
 +{
-+	u8 fis[20] = {
-+		0x27,        /* Host to device FIS */
-+		1 << 7,      /* Command FIS */
-+		command,     /* Command */
-+		feature,     /* Features */
-+	};
++	struct fan_device *fan;
++	char buf[32];
++	unsigned long val;
++	int ret = 0;
 +
-+	if (!ahci_link_ok(ahci, 0))
++
++	if (argc < 3) {
++		return COMMAND_ERROR_USAGE;
++	}
++
++	fan = fan_device_find(argv[2]);
++	if (IS_ERR(fan)) {
++		printf("Device not found: %s\n", argv[2]);
++		return PTR_ERR(fan);
++	}
++	if (!fan->ops) {
++		printf("Fan driver ops not initialized\n");
 +		return -ENODEV;
++	}
 +
-+	return ahci_io(ahci, fis, sizeof(fis), NULL, NULL, 0);
++	if (!strcmp(argv[1], "get")) {
++		if (argc == 4) {
++			if (!strcmp(argv[3], "startv") && fan->ops->get_fan_startv) {
++				ret = fan->ops->get_fan_startv(fan->dev, buf);
++				printf("Fan startup voltage mode: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "gearmult") && fan->ops->get_gear_multiplier) {
++				ret = fan->ops->get_gear_multiplier(fan->dev, buf);
++				printf("Gear multiplier: %s\n", ret >= 0 ? buf : "N/A");
++}
++			else if (!strcmp(argv[3], "outmode") && fan->ops->get_output_mode) {
++				ret = fan->ops->get_output_mode(fan->dev, buf);
++				printf("Output mode: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "ppr") && fan->ops->get_fan_ppr) {
++				ret = fan->ops->get_fan_ppr(fan->dev, buf);
++				printf("Pulses per revolution: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "pwmpol") && fan->ops->get_pwm_polarity) {
++				ret = fan->ops->get_pwm_polarity(fan->dev, buf);
++				printf("PWM polarity: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "clkfreq") && fan->ops->get_clk_freq) {
++				ret = fan->ops->get_clk_freq(fan->dev, buf);
++				printf("Clock frequency: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "clkdiv") && fan->ops->get_clk_div) {
++				ret = fan->ops->get_clk_div(fan->dev, buf);
++				printf("Clock divider: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "ctrlmode") && fan->ops->get_control_mode) {
++				ret = fan->ops->get_control_mode(fan->dev, buf);
++				printf("Control mode: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "outmode") && fan->ops->get_output_mode) {
++				ret = fan->ops->get_output_mode(fan->dev, buf);
++				printf("Output mode: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "oocdet") && fan->ops->get_ooc_detection) {
++				ret = fan->ops->get_ooc_detection(fan->dev, buf);
++				printf("Out of control detection: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "faultdet") && fan->ops->get_failure_detection) {
++				ret = fan->ops->get_failure_detection(fan->dev, buf);
++				printf("Failure detection: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "oocstate") && fan->ops->get_ooc_state) {
++				ret = fan->ops->get_ooc_state(fan->dev, buf);
++				printf("Fan out of control state: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "faultstate") && fan->ops->get_failure_state) {
++				ret = fan->ops->get_failure_state(fan->dev, buf);
++				printf("Fan failure state: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "speed") && fan->ops->get_fan_speed) {
++				ret = fan->ops->get_fan_speed(fan->dev, buf);
++				printf("Fan speed: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "rpm") && fan->ops->get_fan_rpm) {
++				ret = fan->ops->get_fan_rpm(fan->dev, buf);
++				printf("Fan rpm: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "level") && fan->ops->get_fan_level) {
++				ret = fan->ops->get_fan_level(fan->dev, buf);
++				printf("Fan level: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "all")) {
++				if (fan->ops->get_fan_startv) {
++					ret = fan->ops->get_fan_startv(fan->dev, buf);
++					printf("Fan startup voltage mode: %s\n", ret >= 0 ? buf : "N/A");
++				}
++				if (fan->ops->get_gear_multiplier) {
++					ret = fan->ops->get_gear_multiplier(fan->dev, buf);
++					printf("Gear multiplier: %s\n", ret >= 0 ? buf : "N/A");
++				}
++				if (fan->ops->get_fan_ppr) {
++					ret = fan->ops->get_fan_ppr(fan->dev, buf);
++					printf("Pulses per revolution: %s\n", ret >= 0 ? buf : "N/A");
++				}
++				if (fan->ops->get_pwm_polarity) {
++					ret = fan->ops->get_pwm_polarity(fan->dev, buf);
++					printf("PWM polarity: %s\n", ret >= 0 ? buf : "N/A");
++				}
++				if (fan->ops->get_clk_freq) {
++					ret = fan->ops->get_clk_freq(fan->dev, buf);
++					printf("Clock frequency: %s\n", ret >= 0 ? buf : "N/A");
++				}
++				if (fan->ops->get_clk_div) {
++					ret = fan->ops->get_clk_div(fan->dev, buf);
++					printf("Clock divider: %s\n", ret >= 0 ? buf : "N/A");
++				}
++				if (fan->ops->get_control_mode) {
++					ret = fan->ops->get_control_mode(fan->dev, buf);
++					printf("Control mode: %s\n", ret >= 0 ? buf : "N/A");
++				}
++				if (fan->ops->get_output_mode) {
++					ret = fan->ops->get_output_mode(fan->dev, buf);
++					printf("Output mode: %s\n", ret >= 0 ? buf : "N/A");
++				}
++				if (fan->ops->get_ooc_detection) {
++					ret = fan->ops->get_ooc_detection(fan->dev, buf);
++					printf("Out of control detection: %s\n", ret >= 0 ? buf : "N/A");
++				}
++				if (fan->ops->get_failure_detection) {
++					ret = fan->ops->get_failure_detection(fan->dev, buf);
++					printf("Failure detection: %s\n", ret >= 0 ? buf : "N/A");
++				}
++				if (fan->ops->get_failure_state) {
++					ret = fan->ops->get_failure_state(fan->dev, buf);
++					printf("Fan failure state: %s\n", ret >= 0 ? buf : "N/A");
++				}
++				if (fan->ops->get_ooc_state) {
++					ret = fan->ops->get_ooc_state(fan->dev, buf);
++					printf("Fan out of control state: %s\n", ret >= 0 ? buf : "N/A");
++				}
++				if (fan->ops->get_fan_speed) {
++					ret = fan->ops->get_fan_speed(fan->dev, buf);
++					printf("Fan speed: %s\n", ret >= 0 ? buf : "N/A");
++				}
++				if (fan->ops->get_fan_rpm) {
++					ret = fan->ops->get_fan_rpm(fan->dev, buf);
++					printf("Fan rpm: %s\n", ret >= 0 ? buf : "N/A");
++				}
++				if (fan->ops->get_fan_level) {
++					ret = fan->ops->get_fan_level(fan->dev, buf);
++					printf("Fan level: %s\n", ret >= 0 ? buf : "N/A");
++				}
++			}
++			else {
++				printf("Invalid parameter: %s\n", argv[3]);
++				return COMMAND_ERROR_USAGE;
++			}
++		}
++		else {
++			printf("Invalid number of arguments for %s cmd\n", argv[1]);
++			return COMMAND_ERROR_USAGE;
++		}
++	}
++	else if (!strcmp(argv[1], "set")) {
++		if (argc == 5) {
++			val = simple_strtoul(argv[4], NULL, 10);
++			snprintf(buf, sizeof(buf), "%lu", val);
++
++			if (!strcmp(argv[3], "startv") && fan->ops->set_fan_startv) {
++				ret = fan->ops->set_fan_startv(fan->dev, val);
++				printf("Fan startup voltage set to: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "gearmult") && fan->ops->set_gear_multiplier) {
++				ret = fan->ops->set_gear_multiplier(fan->dev, val);
++				printf("Gear multiplier set to: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "ppr") && fan->ops->set_fan_ppr) {
++				ret = fan->ops->set_fan_ppr(fan->dev, val);
++				printf("Pulses per revolution set to: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "pwmpol") && fan->ops->set_pwm_polarity) {
++				ret = fan->ops->set_pwm_polarity(fan->dev, val);
++				printf("PWM polarity set to: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "clkfreq") && fan->ops->set_clk_freq) {
++				ret = fan->ops->set_clk_freq(fan->dev, val);
++				printf("Clock frequency set to: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "clkdiv") && fan->ops->set_clk_div) {
++				ret = fan->ops->set_clk_div(fan->dev, val);
++				printf("Clock divider set to: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "ctrlmode") && fan->ops->set_control_mode) {
++				ret = fan->ops->set_control_mode(fan->dev, val);
++				printf("Control mode set to: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "outmode") && fan->ops->set_output_mode) {
++				ret = fan->ops->set_output_mode(fan->dev, val);
++				printf("Output mode set to: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "ooc") && fan->ops->set_ooc_detection) {
++				ret = fan->ops->set_ooc_detection(fan->dev, val);
++				printf("Out of control detection set to: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "fault") && fan->ops->set_failure_detection) {
++				ret = fan->ops->set_failure_detection(fan->dev, val);
++				printf("Failure detection set to: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "speed") && fan->ops->set_fan_speed) {
++				ret = fan->ops->set_fan_speed(fan->dev, val);
++				printf("Fan speed set to: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "rpm") && fan->ops->set_fan_rpm) {
++				ret = fan->ops->set_fan_rpm(fan->dev, val);
++				printf("Fan rpm set to: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else if (!strcmp(argv[3], "level") && fan->ops->set_fan_level) {
++				ret = fan->ops->set_fan_level(fan->dev, val);
++				printf("Fan level set to: %s\n", ret >= 0 ? buf : "N/A");
++			}
++			else {
++				printf("Invalid parameter: %s\n", argv[3]);
++				return COMMAND_ERROR_USAGE;
++			}
++		}
++		else {
++			printf("Invalid number of arguments for %s cmd\n", argv[1]);
++			return COMMAND_ERROR_USAGE;
++		}
++	}
++	else if (!strcmp(argv[1], "init")) {
++		if (argc == 3) {
++			if (fan->ops->fan_init) {
++				ret = fan->ops->fan_init(fan->dev);
++				printf("Fan initialization: %s\n", ret >= 0 ? "successful" : "N/A");
++			}
++		}
++		else {
++			printf("Invalid number of arguments for %s cmd\n", argv[1]);
++			return COMMAND_ERROR_USAGE;
++		}
++	}
++	else {
++			printf("Invalid cmd: %s\n", argv[1]);
++			return COMMAND_ERROR_USAGE;
++	}
++
++	return ret;
 +}
 +
- /*
-  * SCSI INQUIRY command operation.
-  */
++BAREBOX_CMD_HELP_START(fan)
++BAREBOX_CMD_HELP_TEXT("cmd options:\n")
++BAREBOX_CMD_HELP_OPT("get", "get fan parameter")
++BAREBOX_CMD_HELP_OPT("set", "set fan parameter")
++BAREBOX_CMD_HELP_OPT("init", "initialize fan")
++
++BAREBOX_CMD_HELP_TEXT("\nparameter options:\n")
++BAREBOX_CMD_HELP_OPT("outmode", "fan controller ouptut mode [0 (adc)|1 (pwm)]")
++BAREBOX_CMD_HELP_OPT("clkdiv", "fan controller prescaler value [1|2|4|8]")
++BAREBOX_CMD_HELP_OPT("clkfreq", "input clock frequency (Hz)")
++BAREBOX_CMD_HELP_OPT("ppr", "fan tachometer pulses per revolution [2|4]")
++BAREBOX_CMD_HELP_OPT("ctrlmode", "fan control mode [0 (open-loop)|1 (closed-loop)]")
++BAREBOX_CMD_HELP_OPT("speed", "fan speed register value [0:255]")
++BAREBOX_CMD_HELP_OPT("rpm", "fan rpm [0:(max fan rpm)]")
++BAREBOX_CMD_HELP_OPT("level", "fan speed percentage [0:100]")
++BAREBOX_CMD_HELP_OPT("startv", "fan startup voltage [0|1|2|3]")
++BAREBOX_CMD_HELP_OPT("gearmult", "gear multiplier [0|1|2]")
++BAREBOX_CMD_HELP_OPT("pwmpol", "PWM polarity [0 (positive)|1 (negative)]")
++BAREBOX_CMD_HELP_OPT("faultdet", "enable/disable failure detection [0|1]")
++BAREBOX_CMD_HELP_OPT("oocdet", "enable/disable out-of-control detection [0|1]")
++BAREBOX_CMD_HELP_OPT("fault", "fan failure flag [0 (ok)|1 (fault)]")
++BAREBOX_CMD_HELP_OPT("ooc", "fan out of control flag [1 (ok):0 (ooc)]")
++BAREBOX_CMD_HELP_OPT("all", "print all fan parameters")
++BAREBOX_CMD_HELP_TEXT("\n")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(fan)
++	.cmd		= do_fan,
++	BAREBOX_CMD_DESC("fan management")
++	BAREBOX_CMD_OPTS("<cmd> <devpath> <parameter> [value]")
++	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
++	BAREBOX_CMD_HELP(cmd_fan_help)
++BAREBOX_CMD_END
+\ No newline at end of file
 
 -- 
 2.47.3
