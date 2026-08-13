@@ -1,68 +1,69 @@
 Delivery-date: Thu, 13 Aug 2026 10:16:04 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wuQbb-002cP7-1j
+	id 1wuQbb-002cPI-2T
 	for lore@lore.pengutronix.de;
 	Thu, 13 Aug 2026 10:16:04 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id C720E201EBF
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 02586201898
 	for <lore@pengutronix.de>; Thu, 13 Aug 2026 10:16:03 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=jQY9wfXT;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=qEcqbD4V;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=bXEvMQnYVdYi/KlGJ3Y6GDQu+fS08NYYnSMdiJ75QAc=; b=jQY9wfXT/V2hGX5SqBER0NiEPu
-	9MPoXfyssMYX/9fUynQoi4t7AZjlETgtg3LSamtxStiML2sDaBD3MXAnzxCAsOSfTE5CyxK4qUEVI
-	dyTZZwgb8IJnCpYxbeqZIAnnjwDhOKw+L+gczNyxlNjDga1R5f/Grzh9z5VQVHS1KzrzuloFFxOd5
-	gmB1w0b7D4loJP0YKpuvME0ndAswzDcm4ykx1g17zVJrbCZGiW7vH4Qg41jeUivyF/jehNEQsw3hb
-	Oe5QSAOvPz83h2ceWyJkWIvajRQqdOp8Fo72DOqyVbnzE9EZmPAA0bLvgDYljsnKtY2TJtITe0xxI
-	GLOh30Dg==;
+	bh=S6FvZ25JS4fEdScThmmkdPJL2Wuux+HfjHr/Q3bpvqk=; b=qEcqbD4VkVY55THt9bUUrSp2os
+	EJ0QR9eBHsqxo3rfLfOlHvjFOX4T33vjnChhdegvINx7BVyqYGjrveHANOdkcHAbboW8XBYRbkpF5
+	qI6SMeHPhSVlQXXkyaWEkriLhRFOVuw8gpPeZJljDcxZRkdqka+Tg1lPqhIKwQkPdsnddpwyDGVcl
+	H9o92VZBmTKplt3re9P3jowvUb//C/pMOVGgQEjquSXUscdI9K2ZU4C8SQ8U+UGztcn5hT5Jrey3V
+	QHFhQza2i42IsNTiywJpH2qMml+osteMDaxGvvbKrYVHmrs9co8X0Dtu2uGom/HfaFEu8oiYXLDWl
+	lBrJxXNQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wuQaU-000000006Eb-2EBg;
+	id 1wuQaU-000000006Eq-3X2M;
 	Thu, 13 Aug 2026 08:14:54 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wuQaP-000000006Bf-0wHT
+	id 1wuQaP-000000006Bc-0nkh
 	for barebox@lists.infradead.org;
-	Thu, 13 Aug 2026 08:14:52 +0000
+	Thu, 13 Aug 2026 08:14:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id D639C201EDC;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C6EED201EC9;
 	Thu, 13 Aug 2026 10:14:45 +0200 (CEST)
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1wuQaL-001Fmr-1v;
+	id 1wuQaL-001Fml-1p;
 	Thu, 13 Aug 2026 10:14:45 +0200
 Received: from ore by dude04 with local (Exim 4.98.2)
 	(envelope-from <ore@pengutronix.de>)
-	id 1wuQaL-00000007spa-1xNc;
+	id 1wuQaL-00000007spO-1o3R;
 	Thu, 13 Aug 2026 10:14:45 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: robert.marko@sartura.hr,
 	Oleksij Rempel <o.rempel@pengutronix.de>
-Subject: [PATCH v2 8/9] spi: atmel-quadspi: add Microchip LAN966X / LAN969X support
-Date: Thu, 13 Aug 2026 10:14:38 +0200
-Message-ID: <20260813081444.1879009-9-o.rempel@pengutronix.de>
+Subject: [PATCH v2 5/9] pinctrl: ocelot: port Microsemi/Microchip Ocelot pinctrl from Linux
+Date: Thu, 13 Aug 2026 10:14:35 +0200
+Message-ID: <20260813081444.1879009-6-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260813081444.1879009-1-o.rempel@pengutronix.de>
 References: <20260813081444.1879009-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260813_011449_422020_7B47A7F9 
-X-CRM114-Status: GOOD (  19.66  )
+X-CRM114-CacheID: sfid-20260813_011449_531770_26713EB5 
+X-CRM114-Status: GOOD (  18.07  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -70,9 +71,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Match the LAN966X QSPI variant and run a slightly different
-    init sequence (LAN966x max speed 100 MHz, dedicated DLYBS/DLYCS values, write-protection
-    unlock key). Allow building on ARCH_MICROCHIP and C [...] 
+ Content preview:  Port drivers/pinctrl/pinctrl-ocelot.c from the Linux kernel
+    as a pinmux + GPIO controller for the Microsemi/Microchip Ocelot SoC family.
+    The drop is reduced to the LAN969X (lan9691) subset that barebo [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -97,227 +98,677 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: ik7subj9pkhuutk1tcba9n789y7oiwqz
-X-Spamd-Result: default: False [-6.01 / 15.00];
+X-Stat-Signature: sg8imxqct3a5jc4tcmb7k988ke9d5xdf
+X-Spamd-Result: default: False [-6.51 / 15.00];
 	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	MID_CONTAINS_FROM(1.00)[];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
-	RCVD_IN_DNSWL_LOW(-0.10)[2a0a:edc0:0:c01:1d::a2:received];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
 	MIME_GOOD(-0.10)[text/plain];
+	RCVD_IN_DNSWL_LOW(-0.10)[2a0a:edc0:0:c01:1d::a2:received];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	DMARC_NA(0.00)[pengutronix.de];
 	ARC_NA(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	RCPT_COUNT_THREE(0.00)[3];
+	TO_DN_SOME(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[o.rempel@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	DKIM_TRACE(0.00)[lists.infradead.org:+];
 	RCVD_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: C720E201EBF
+X-Rspamd-Queue-Id: 02586201898
 
-Match the LAN966X QSPI variant and run a slightly different init
-sequence (LAN966x max speed 100 MHz, dedicated DLYBS/DLYCS values,
-write-protection unlock key). Allow building on ARCH_MICROCHIP and
-COMPILE_TEST in addition to ARCH_AT91.
+Port drivers/pinctrl/pinctrl-ocelot.c from the Linux kernel as a
+pinmux + GPIO controller for the Microsemi/Microchip Ocelot SoC
+family. The drop is reduced to the LAN969X (lan9691) subset that
+barebox needs to bring the board up; the other SoC variants are
+dropped to keep the file reviewable. Identifier and structure layout
+are kept compatible with Linux so future feature backports stay
+mechanical.
+
+Ported from Linux drivers/pinctrl/pinctrl-ocelot.c at tag v7.1-rc7
 
 Assisted-by: Claude-Code:claude-opus-5
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
-Link to v1: https://lore.barebox.org/barebox/20260612055930.635833-9-o.rempel@pengutronix.de/
+Link to v1: https://lore.barebox.org/barebox/20260612055930.635833-5-o.rempel@pengutronix.de/
 
 Changes v2:
-- no changes
+- add SPDX-Comment: Origin-URL: tag pointing at the Linux source file
+  and the exact commit it was taken from (Sascha Hauer)
 ---
- drivers/spi/Kconfig         |   2 +-
- drivers/spi/atmel-quadspi.c | 105 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 106 insertions(+), 1 deletion(-)
+ drivers/pinctrl/Kconfig          |  10 +
+ drivers/pinctrl/Makefile         |   1 +
+ drivers/pinctrl/pinctrl-ocelot.c | 575 +++++++++++++++++++++++++++++++
+ 3 files changed, 586 insertions(+)
+ create mode 100644 drivers/pinctrl/pinctrl-ocelot.c
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 1af2b107ecec..57ac02c82091 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -24,7 +24,7 @@ config DRIVER_SPI_ATMEL
- 
- config SPI_ATMEL_QUADSPI
- 	tristate "Atmel Quad SPI Controller"
--	depends on ARCH_AT91
-+	depends on ARCH_AT91 || ARCH_MICROCHIP || COMPILE_TEST
- 	depends on SPI_MEM
+diff --git a/drivers/pinctrl/Kconfig b/drivers/pinctrl/Kconfig
+index 1d237db106ba..8cb6e2efebdf 100644
+--- a/drivers/pinctrl/Kconfig
++++ b/drivers/pinctrl/Kconfig
+@@ -111,6 +111,16 @@ config PINCTRL_STM32
  	help
- 	  This enables support for the Quad SPI controller in master mode.
-diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-index b6b5f9ad9e55..d1018aadf20e 100644
---- a/drivers/spi/atmel-quadspi.c
-+++ b/drivers/spi/atmel-quadspi.c
-@@ -52,6 +52,7 @@
- #define QSPI_VERSION 0x00FC  /* Version Register */
+ 	  Pinmux and GPIO controller found on STM32 family
  
- #define SAMA7G5_QSPI0_MAX_SPEED_HZ	200000000
-+#define LAN966x_QSPI0_MAX_SPEED_HZ	100000000
- #define SAMA7G5_QSPI1_SDR_MAX_SPEED_HZ	133000000
- 
- /* Bitfields in QSPI_CR (Control Register) */
-@@ -210,6 +211,11 @@
- #define QSPI_WPMR_WPKEY_MASK            GENMASK(31, 8)
- #define QSPI_WPMR_WPKEY(wpkey)          (((wpkey) << 8) & QSPI_WPMR_WPKEY_MASK)
- 
-+/* Used by the LAN966X-style init sequence */
-+#define QSPI_DLYBS			0x2
-+#define QSPI_DLYCS			0x7
-+#define QSPI_WPKEY			0x515350
++config PINCTRL_OCELOT
++	bool "Pinctrl driver for the Microsemi Ocelot family of SoCs"
++	depends on OFDEVICE
++	select GPIOLIB
++	help
++	  Pinmux + GPIO controller driver for the Microsemi/Microchip Ocelot
++	  family. Currently implements the LAN969X (lan9691) subset matched
++	  with the same identifiers as Linux's drivers/pinctrl/pinctrl-ocelot.c
++	  so future Linux patches backport with minimal churn.
 +
- /* Bitfields in QSPI_WPSR (Write Protection Status Register) */
- #define QSPI_WPSR_WPVS                  BIT(0)
- #define QSPI_WPSR_WPVSRC_MASK           GENMASK(15, 8)
-@@ -250,6 +256,7 @@ struct atmel_qspi_caps {
- 	bool has_gclk;
- 	bool has_ricr;
- 	bool octal;
-+	bool has_lan966x;
- };
+ source "drivers/pinctrl/sunxi/Kconfig"
+ endif
  
- struct atmel_qspi_ops;
-@@ -883,6 +890,91 @@ static int atmel_qspi_sama7g5_init(struct atmel_qspi *aq)
- 	return ret;
- }
+diff --git a/drivers/pinctrl/Makefile b/drivers/pinctrl/Makefile
+index 3bc718d35539..6dd11c0d64b0 100644
+--- a/drivers/pinctrl/Makefile
++++ b/drivers/pinctrl/Makefile
+@@ -14,6 +14,7 @@ obj-$(CONFIG_PINCTRL_TEGRA30) += pinctrl-tegra30.o
+ obj-$(CONFIG_PINCTRL_TEGRA_XUSB) += pinctrl-tegra-xusb.o
+ obj-$(CONFIG_PINCTRL_VF610) += pinctrl-vf610.o
+ obj-$(CONFIG_PINCTRL_STM32) += pinctrl-stm32.o
++obj-$(CONFIG_PINCTRL_OCELOT) += pinctrl-ocelot.o
  
-+static int lan966x_qspi_init(struct atmel_qspi *aq)
+ obj-$(CONFIG_ARCH_MVEBU) += mvebu/
+ obj-$(CONFIG_ARCH_SUNXI) += sunxi/
+diff --git a/drivers/pinctrl/pinctrl-ocelot.c b/drivers/pinctrl/pinctrl-ocelot.c
+new file mode 100644
+index 000000000000..6b74411938de
+--- /dev/null
++++ b/drivers/pinctrl/pinctrl-ocelot.c
+@@ -0,0 +1,575 @@
++// SPDX-License-Identifier: (GPL-2.0-only OR MIT)
++// SPDX-Comment: Origin-URL: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/pinctrl/pinctrl-ocelot.c?id=b7e5ac83cb16f7ffd11dc23736f84276602100ed
++/*
++ * Microchip ocelot family pinmux driver — LAN969X subset.
++ *
++ * Copyright (c) 2017 Microsemi Corporation
++ * Copyright (c) 2025 Microchip Technology Inc.
++ *
++ * Ported from Linux drivers/pinctrl/pinctrl-ocelot.c. Identifiers, struct
++ * layouts, and pin/function tables are kept aligned with Linux so future
++ * fixes can be backported with minimal context churn.
++ */
++
++#include <common.h>
++#include <init.h>
++#include <driver.h>
++#include <gpio.h>
++#include <io.h>
++#include <of.h>
++#include <pinctrl.h>
++#include <linux/bitfield.h>
++#include <linux/bitops.h>
++#include <linux/regmap.h>
++
++#define OCELOT_FUNC_PER_PIN	4
++
++/* GPIO standard registers - byte offsets, identical to Linux. REG/REG_ALT
++ * scale these by info->stride to step over the 32-bit-bank groups.
++ */
++#define OCELOT_GPIO_OUT_SET	0x0
++#define OCELOT_GPIO_OUT_CLR	0x4
++#define OCELOT_GPIO_OUT		0x8
++#define OCELOT_GPIO_IN		0xc
++#define OCELOT_GPIO_OE		0x10
++#define OCELOT_GPIO_INTR	0x14
++#define OCELOT_GPIO_INTR_ENA	0x18
++#define OCELOT_GPIO_INTR_IDENT	0x1c
++#define OCELOT_GPIO_ALT0	0x20
++#define OCELOT_GPIO_ALT1	0x24
++#define OCELOT_GPIO_SD_MAP	0x28
++
++/*
++ * Function enum — LAN969X subset of Linux's full enum, kept in Linux's
++ * ordering. Other SoCs' FUNC_* entries are intentionally omitted; add
++ * them when porting more SoCs.
++ */
++enum {
++	FUNC_CAN0_a,
++	FUNC_CAN0_b,
++	FUNC_CAN1,
++	FUNC_CLKMON,
++	FUNC_NONE,
++	FUNC_FAN,
++	FUNC_FC,
++	FUNC_FC_SHRD,
++	FUNC_FUSA,
++	FUNC_GPIO,
++	FUNC_IRQ0,
++	FUNC_IRQ1,
++	FUNC_IRQ3,
++	FUNC_IRQ4,
++	FUNC_MIIM,
++	FUNC_MIIM_Sa,
++	FUNC_MIIM_IRQ,
++	FUNC_PCIE_PERST,
++	FUNC_PTPSYNC_0,
++	FUNC_PTPSYNC_1,
++	FUNC_PTPSYNC_2,
++	FUNC_PTPSYNC_3,
++	FUNC_PTPSYNC_4,
++	FUNC_PTPSYNC_5,
++	FUNC_PTPSYNC_6,
++	FUNC_PTPSYNC_7,
++	FUNC_QSPI1,
++	FUNC_R,
++	FUNC_SD,
++	FUNC_SFP_SD,
++	FUNC_SGPIO_a,
++	FUNC_SYNCE,
++	FUNC_TWI,
++	FUNC_USB_POWER,
++	FUNC_USB2PHY_RST,
++	FUNC_USB_OVER_DETECT,
++	FUNC_USB_ULPI,
++	FUNC_EMMC_SD,
++	FUNC_MAX
++};
++
++static const char *const ocelot_function_names[] = {
++	[FUNC_CAN0_a]		= "can0_a",
++	[FUNC_CAN0_b]		= "can0_b",
++	[FUNC_CAN1]		= "can1",
++	[FUNC_CLKMON]		= "clkmon",
++	[FUNC_NONE]		= "none",
++	[FUNC_FAN]		= "fan",
++	[FUNC_FC]		= "fc",
++	[FUNC_FC_SHRD]		= "fc_shrd",
++	[FUNC_FUSA]		= "fusa",
++	[FUNC_GPIO]		= "gpio",
++	[FUNC_IRQ0]		= "irq0",
++	[FUNC_IRQ1]		= "irq1",
++	[FUNC_IRQ3]		= "irq3",
++	[FUNC_IRQ4]		= "irq4",
++	[FUNC_MIIM]		= "miim",
++	[FUNC_MIIM_Sa]		= "miim_slave_a",
++	[FUNC_MIIM_IRQ]		= "miim_irq",
++	[FUNC_PCIE_PERST]	= "pcie_perst",
++	[FUNC_PTPSYNC_0]	= "ptpsync_0",
++	[FUNC_PTPSYNC_1]	= "ptpsync_1",
++	[FUNC_PTPSYNC_2]	= "ptpsync_2",
++	[FUNC_PTPSYNC_3]	= "ptpsync_3",
++	[FUNC_PTPSYNC_4]	= "ptpsync_4",
++	[FUNC_PTPSYNC_5]	= "ptpsync_5",
++	[FUNC_PTPSYNC_6]	= "ptpsync_6",
++	[FUNC_PTPSYNC_7]	= "ptpsync_7",
++	[FUNC_QSPI1]		= "qspi1",
++	[FUNC_R]		= "reserved",
++	[FUNC_SD]		= "sd",
++	[FUNC_SFP_SD]		= "sfp_sd",
++	[FUNC_SGPIO_a]		= "sgpio_a",
++	[FUNC_SYNCE]		= "synce",
++	[FUNC_TWI]		= "twi",
++	[FUNC_USB_POWER]	= "usb_power",
++	[FUNC_USB2PHY_RST]	= "usb2phy_rst",
++	[FUNC_USB_OVER_DETECT]	= "usb_over_detect",
++	[FUNC_USB_ULPI]		= "usb_ulpi",
++	[FUNC_EMMC_SD]		= "emmc_sd",
++};
++
++struct ocelot_pin_caps {
++	unsigned int pin;
++	unsigned char functions[OCELOT_FUNC_PER_PIN];
++	unsigned char a_functions[OCELOT_FUNC_PER_PIN];	/* Additional functions */
++};
++
++struct ocelot_pin_desc {
++	unsigned int number;
++	const char *name;
++	struct ocelot_pin_caps *drv_data;
++};
++
++#define LAN969X_P(p, f0, f1, f2, f3, f4, f5, f6, f7)           \
++static struct ocelot_pin_caps lan969x_pin_##p = {              \
++	.pin = p,                                              \
++	.functions = {                                         \
++		FUNC_##f0, FUNC_##f1, FUNC_##f2,               \
++		FUNC_##f3                                      \
++	},                                                     \
++	.a_functions = {                                       \
++		FUNC_##f4, FUNC_##f5, FUNC_##f6,               \
++		FUNC_##f7                                      \
++	},                                                     \
++}
++
++/* Pinmuxing table taken from data sheet */
++/*        Pin   FUNC0      FUNC1   FUNC2         FUNC3                  FUNC4     FUNC5      FUNC6        FUNC7 */
++LAN969X_P(0,    GPIO,      IRQ0,   FC_SHRD,      PCIE_PERST,            NONE,     NONE,      NONE,        R);
++LAN969X_P(1,    GPIO,      IRQ1,   FC_SHRD,       USB_POWER,            NONE,     NONE,      NONE,        R);
++LAN969X_P(2,    GPIO,        FC,      NONE,            NONE,            NONE,     NONE,      NONE,        R);
++LAN969X_P(3,    GPIO,        FC,      NONE,            NONE,            NONE,     NONE,      NONE,        R);
++LAN969X_P(4,    GPIO,        FC,      NONE,            NONE,            NONE,     NONE,      NONE,        R);
++LAN969X_P(5,    GPIO,   SGPIO_a,      NONE,          CLKMON,            NONE,     NONE,      NONE,        R);
++LAN969X_P(6,    GPIO,   SGPIO_a,      NONE,          CLKMON,            NONE,     NONE,      NONE,        R);
++LAN969X_P(7,    GPIO,   SGPIO_a,      NONE,          CLKMON,            NONE,     NONE,      NONE,        R);
++LAN969X_P(8,    GPIO,   SGPIO_a,      NONE,          CLKMON,            NONE,     NONE,      NONE,        R);
++LAN969X_P(9,    GPIO,      MIIM,   MIIM_Sa,          CLKMON,            NONE,     NONE,      NONE,        R);
++LAN969X_P(10,   GPIO,      MIIM,   MIIM_Sa,          CLKMON,            NONE,     NONE,      NONE,        R);
++LAN969X_P(11,   GPIO,  MIIM_IRQ,   MIIM_Sa,          CLKMON,            NONE,     NONE,      NONE,        R);
++LAN969X_P(12,   GPIO,      IRQ3,   FC_SHRD,     USB2PHY_RST,            NONE,     NONE,      NONE,        R);
++LAN969X_P(13,   GPIO,      IRQ4,   FC_SHRD, USB_OVER_DETECT,            NONE,     NONE,      NONE,        R);
++LAN969X_P(14,   GPIO,   EMMC_SD,     QSPI1,              FC,            NONE,     NONE,      NONE,        R);
++LAN969X_P(15,   GPIO,   EMMC_SD,     QSPI1,              FC,            NONE,     NONE,      NONE,        R);
++LAN969X_P(16,   GPIO,   EMMC_SD,     QSPI1,              FC,            NONE,     NONE,      NONE,        R);
++LAN969X_P(17,   GPIO,   EMMC_SD,     QSPI1,       PTPSYNC_0,       USB_POWER,     NONE,      NONE,        R);
++LAN969X_P(18,   GPIO,   EMMC_SD,     QSPI1,       PTPSYNC_1,     USB2PHY_RST,     NONE,      NONE,        R);
++LAN969X_P(19,   GPIO,   EMMC_SD,     QSPI1,       PTPSYNC_2, USB_OVER_DETECT,     NONE,      NONE,        R);
++LAN969X_P(20,   GPIO,   EMMC_SD,      NONE,         FC_SHRD,            NONE,     NONE,      NONE,        R);
++LAN969X_P(21,   GPIO,   EMMC_SD,      NONE,         FC_SHRD,            NONE,     NONE,      NONE,        R);
++LAN969X_P(22,   GPIO,   EMMC_SD,      NONE,         FC_SHRD,            NONE,     NONE,      NONE,        R);
++LAN969X_P(23,   GPIO,   EMMC_SD,      NONE,         FC_SHRD,            NONE,     NONE,      NONE,        R);
++LAN969X_P(24,   GPIO,   EMMC_SD,      NONE,            NONE,            NONE,     NONE,      NONE,        R);
++LAN969X_P(25,   GPIO,       FAN,      FUSA,          CAN0_a,           QSPI1,     NONE,      NONE,        R);
++LAN969X_P(26,   GPIO,       FAN,      FUSA,          CAN0_a,           QSPI1,     NONE,      NONE,        R);
++LAN969X_P(27,   GPIO,     SYNCE,        FC,            MIIM,           QSPI1,     NONE,      NONE,        R);
++LAN969X_P(28,   GPIO,     SYNCE,        FC,            MIIM,           QSPI1,     NONE,      NONE,        R);
++LAN969X_P(29,   GPIO,     SYNCE,        FC,        MIIM_IRQ,           QSPI1,     NONE,      NONE,        R);
++LAN969X_P(30,   GPIO, PTPSYNC_0,  USB_ULPI,         FC_SHRD,           QSPI1,     NONE,      NONE,        R);
++LAN969X_P(31,   GPIO, PTPSYNC_1,  USB_ULPI,         FC_SHRD,            NONE,     NONE,      NONE,        R);
++LAN969X_P(32,   GPIO, PTPSYNC_2,  USB_ULPI,         FC_SHRD,            NONE,     NONE,      NONE,        R);
++LAN969X_P(33,   GPIO,        SD,  USB_ULPI,         FC_SHRD,            NONE,     NONE,      NONE,        R);
++LAN969X_P(34,   GPIO,        SD,  USB_ULPI,            CAN1,         FC_SHRD,     NONE,      NONE,        R);
++LAN969X_P(35,   GPIO,        SD,  USB_ULPI,            CAN1,         FC_SHRD,     NONE,      NONE,        R);
++LAN969X_P(36,   GPIO,        SD,  USB_ULPI,      PCIE_PERST,         FC_SHRD,     NONE,      NONE,        R);
++LAN969X_P(37,   GPIO,        SD,  USB_ULPI,          CAN0_b,            NONE,     NONE,      NONE,        R);
++LAN969X_P(38,   GPIO,        SD,  USB_ULPI,          CAN0_b,            NONE,     NONE,      NONE,        R);
++LAN969X_P(39,   GPIO,        SD,  USB_ULPI,            MIIM,            NONE,     NONE,      NONE,        R);
++LAN969X_P(40,   GPIO,        SD,  USB_ULPI,            MIIM,            NONE,     NONE,      NONE,        R);
++LAN969X_P(41,   GPIO,        SD,  USB_ULPI,        MIIM_IRQ,            NONE,     NONE,      NONE,        R);
++LAN969X_P(42,   GPIO, PTPSYNC_3,      CAN1,            NONE,            NONE,     NONE,      NONE,        R);
++LAN969X_P(43,   GPIO, PTPSYNC_4,      CAN1,            NONE,            NONE,     NONE,      NONE,        R);
++LAN969X_P(44,   GPIO, PTPSYNC_5,    SFP_SD,            NONE,            NONE,     NONE,      NONE,        R);
++LAN969X_P(45,   GPIO, PTPSYNC_6,    SFP_SD,            NONE,            NONE,     NONE,      NONE,        R);
++LAN969X_P(46,   GPIO, PTPSYNC_7,    SFP_SD,            NONE,            NONE,     NONE,      NONE,        R);
++LAN969X_P(47,   GPIO,      NONE,    SFP_SD,            NONE,            NONE,     NONE,      NONE,        R);
++LAN969X_P(48,   GPIO,      NONE,    SFP_SD,            NONE,            NONE,     NONE,      NONE,        R);
++LAN969X_P(49,   GPIO,      NONE,    SFP_SD,            NONE,            NONE,     NONE,      NONE,        R);
++LAN969X_P(50,   GPIO,      NONE,    SFP_SD,            NONE,            NONE,     NONE,      NONE,        R);
++LAN969X_P(51,   GPIO,      NONE,    SFP_SD,            NONE,            NONE,     NONE,      NONE,        R);
++LAN969X_P(52,   GPIO,       FAN,    SFP_SD,            NONE,            NONE,     NONE,      NONE,        R);
++LAN969X_P(53,   GPIO,       FAN,    SFP_SD,            NONE,            NONE,     NONE,      NONE,        R);
++LAN969X_P(54,   GPIO,     SYNCE,        FC,            NONE,            NONE,     NONE,      NONE,        R);
++LAN969X_P(55,   GPIO,     SYNCE,        FC,            NONE,            NONE,     NONE,      NONE,        R);
++LAN969X_P(56,   GPIO,     SYNCE,        FC,            NONE,            NONE,     NONE,      NONE,        R);
++LAN969X_P(57,   GPIO,    SFP_SD,   FC_SHRD,             TWI,       PTPSYNC_3,     NONE,      NONE,        R);
++LAN969X_P(58,   GPIO,    SFP_SD,   FC_SHRD,             TWI,       PTPSYNC_4,     NONE,      NONE,        R);
++LAN969X_P(59,   GPIO,    SFP_SD,   FC_SHRD,             TWI,       PTPSYNC_5,     NONE,      NONE,        R);
++LAN969X_P(60,   GPIO,    SFP_SD,   FC_SHRD,             TWI,       PTPSYNC_6,     NONE,      NONE,        R);
++LAN969X_P(61,   GPIO,      MIIM,   FC_SHRD,             TWI,            NONE,     NONE,      NONE,        R);
++LAN969X_P(62,   GPIO,      MIIM,   FC_SHRD,             TWI,            NONE,     NONE,      NONE,        R);
++LAN969X_P(63,   GPIO,  MIIM_IRQ,   FC_SHRD,             TWI,            NONE,     NONE,      NONE,        R);
++LAN969X_P(64,   GPIO,        FC,   FC_SHRD,             TWI,            NONE,     NONE,      NONE,        R);
++LAN969X_P(65,   GPIO,        FC,   FC_SHRD,             TWI,            NONE,     NONE,      NONE,        R);
++LAN969X_P(66,   GPIO,        FC,   FC_SHRD,             TWI,            NONE,     NONE,      NONE,        R);
++
++#define LAN969X_PIN(n) {                                       \
++	.number = n,                                           \
++	.name = "GPIO_"#n,                                     \
++	.drv_data = &lan969x_pin_##n                           \
++}
++
++static const struct ocelot_pin_desc lan969x_pins[] = {
++	LAN969X_PIN(0),  LAN969X_PIN(1),  LAN969X_PIN(2),  LAN969X_PIN(3),
++	LAN969X_PIN(4),  LAN969X_PIN(5),  LAN969X_PIN(6),  LAN969X_PIN(7),
++	LAN969X_PIN(8),  LAN969X_PIN(9),  LAN969X_PIN(10), LAN969X_PIN(11),
++	LAN969X_PIN(12), LAN969X_PIN(13), LAN969X_PIN(14), LAN969X_PIN(15),
++	LAN969X_PIN(16), LAN969X_PIN(17), LAN969X_PIN(18), LAN969X_PIN(19),
++	LAN969X_PIN(20), LAN969X_PIN(21), LAN969X_PIN(22), LAN969X_PIN(23),
++	LAN969X_PIN(24), LAN969X_PIN(25), LAN969X_PIN(26), LAN969X_PIN(27),
++	LAN969X_PIN(28), LAN969X_PIN(29), LAN969X_PIN(30), LAN969X_PIN(31),
++	LAN969X_PIN(32), LAN969X_PIN(33), LAN969X_PIN(34), LAN969X_PIN(35),
++	LAN969X_PIN(36), LAN969X_PIN(37), LAN969X_PIN(38), LAN969X_PIN(39),
++	LAN969X_PIN(40), LAN969X_PIN(41), LAN969X_PIN(42), LAN969X_PIN(43),
++	LAN969X_PIN(44), LAN969X_PIN(45), LAN969X_PIN(46), LAN969X_PIN(47),
++	LAN969X_PIN(48), LAN969X_PIN(49), LAN969X_PIN(50), LAN969X_PIN(51),
++	LAN969X_PIN(52), LAN969X_PIN(53), LAN969X_PIN(54), LAN969X_PIN(55),
++	LAN969X_PIN(56), LAN969X_PIN(57), LAN969X_PIN(58), LAN969X_PIN(59),
++	LAN969X_PIN(60), LAN969X_PIN(61), LAN969X_PIN(62), LAN969X_PIN(63),
++	LAN969X_PIN(64), LAN969X_PIN(65), LAN969X_PIN(66),
++};
++
++struct ocelot_pinctrl_desc {
++	const char *name;
++	const struct ocelot_pin_desc *pins;
++	unsigned int npins;
++};
++
++struct ocelot_pinctrl {
++	struct device *dev;
++	struct pinctrl_device pctl;
++	struct gpio_chip gpio_chip;
++	struct regmap *map;
++	struct regmap *pincfg;
++	const struct ocelot_pinctrl_desc *desc;
++	u8 stride;
++	u8 altm_stride;
++};
++
++#define to_ocelot_pctl(pdev) container_of(pdev, struct ocelot_pinctrl, pctl)
++#define to_ocelot_gpio(gc)   container_of(gc,   struct ocelot_pinctrl, gpio_chip)
++
++static const struct ocelot_pinctrl_desc lan969x_desc = {
++	.name = "lan969x-pinctrl",
++	.pins = lan969x_pins,
++	.npins = ARRAY_SIZE(lan969x_pins),
++};
++
++/*
++ * Register stride: each ALT0/ALT1/ALT2 group of pin-mux bits spans
++ * (info->stride) 32-bit words to cover all pins; the LAN969X 78-pin layout
++ * also uses altm_stride == stride.
++ */
++#define REG(r, info, p) ((r) * (info)->stride + (4 * ((p) / 32)))
++#define REG_ALT(msb, info, p) \
++	(OCELOT_GPIO_ALT0 * (info)->stride + 4 * ((msb) + ((info)->altm_stride * ((p) / 32))))
++
++static int ocelot_pin_function_idx(struct ocelot_pinctrl *info,
++				   unsigned int pin, unsigned int function)
 +{
-+	u32 val;
-+	int ret;
++	struct ocelot_pin_caps *p = info->desc->pins[pin].drv_data;
++	int i;
 +
-+	atmel_qspi_write(QSPI_CR_DLLOFF, aq, QSPI_CR);
-+
-+	ret = readl_poll_timeout(aq->regs + QSPI_SR2, val,
-+				 !(val & QSPI_SR2_DLOCK),
-+				 ATMEL_QSPI_TIMEOUT);
-+	if (ret) {
-+		dev_err(aq->ctlr.dev, "QSPI_SR2_DLOCK not cleared\n");
-+		return ret;
++	for (i = 0; i < OCELOT_FUNC_PER_PIN; i++) {
++		if (function == p->functions[i])
++			return i;
++		if (function == p->a_functions[i])
++			return i + OCELOT_FUNC_PER_PIN;
 +	}
 +
-+	ret = clk_set_rate(aq->gclk, aq->target_max_speed_hz);
-+	if (ret) {
-+		dev_err(aq->ctlr.dev, "Failed to set generic clock rate.\n");
-+		return ret;
-+	}
++	return -1;
++}
 +
-+	ret = clk_prepare_enable(aq->gclk);
-+	if (ret) {
-+		dev_err(aq->ctlr.dev, "Failed to enable generic clock.\n");
-+		return ret;
-+	}
++/* 3-bit pinmux encoding across ALT0/ALT1/ALT2, used by LAN966X and LAN969X. */
++static int lan969x_pinmux_set_mux(struct ocelot_pinctrl *info,
++				  unsigned int group, unsigned int selector)
++{
++	struct ocelot_pin_caps *pin = info->desc->pins[group].drv_data;
++	unsigned int p = pin->pin % 32;
++	int f;
 +
-+	/* DLL on + stop calibration; wait for DLOCK */
-+	atmel_qspi_write(QSPI_CR_DLLON | QSPI_CR_STPCAL, aq, QSPI_CR);
-+	ret = readl_poll_timeout(aq->regs + QSPI_SR2, val,
-+				 (val & QSPI_SR2_DLOCK),
-+				 ATMEL_QSPI_TIMEOUT);
-+	if (ret) {
-+		dev_err(aq->ctlr.dev, "QSPI_SR2_DLOCK not set\n");
-+		return ret;
-+	}
++	f = ocelot_pin_function_idx(info, group, selector);
++	if (f < 0)
++		return -EINVAL;
 +
-+	/* Disable then soft-reset, synchronizing each step */
-+	atmel_qspi_write(QSPI_CR_QSPIDIS, aq, QSPI_CR);
-+	ret = atmel_qspi_reg_sync(aq);
-+	if (ret)
-+		return ret;
-+
-+	atmel_qspi_write(QSPI_CR_SWRST, aq, QSPI_CR);
-+	ret = atmel_qspi_reg_sync(aq);
-+	if (ret)
-+		return ret;
-+
-+	/* Disable write protection */
-+	atmel_qspi_write(QSPI_WPMR_WPKEY(QSPI_WPKEY), aq, QSPI_WPMR);
-+
-+	/* LAN966X variant lacks pad-calibration; just DLL-on + STPCAL again. */
-+	atmel_qspi_write(QSPI_CR_DLLON | QSPI_CR_STPCAL, aq, QSPI_CR);
-+	ret = readl_poll_timeout(aq->regs + QSPI_SR2, val,
-+				 (val & QSPI_SR2_DLOCK),
-+				 ATMEL_QSPI_TIMEOUT);
-+	if (ret) {
-+		dev_err(aq->ctlr.dev, "QSPI_SR2_DLOCK not set (post-WPMR)\n");
-+		return ret;
-+	}
-+
-+	/* Serial Memory Mode, with chip-select delay */
-+	atmel_qspi_write(QSPI_MR_SMM | QSPI_MR_DLYCS(QSPI_DLYCS), aq, QSPI_MR);
-+	aq->mr = QSPI_MR_SMM;
-+
-+	/* Apply DLYBS in SCR */
-+	atmel_qspi_write(QSPI_SCR_DLYBS(QSPI_DLYBS), aq, QSPI_SCR);
-+
-+	ret = atmel_qspi_update_config(aq);
-+	if (ret)
-+		return ret;
-+
-+	/* Enable the controller and wait for it to come up */
-+	atmel_qspi_write(QSPI_CR_QSPIEN, aq, QSPI_CR);
-+	ret = readl_poll_timeout(aq->regs + QSPI_SR2, val,
-+				 val & QSPI_SR2_QSPIENS,
-+				 ATMEL_QSPI_TIMEOUT);
-+	if (ret) {
-+		dev_err(aq->ctlr.dev, "QSPI_SR2_QSPIENS not set\n");
-+		return ret;
-+	}
++	/*
++	 * f is encoded on three bits.
++	 * bit 0 of f goes in BIT(pin) of ALT[0], bit 1 of f goes in BIT(pin) of
++	 * ALT[1], bit 2 of f goes in BIT(pin) of ALT[2]
++	 * Note: ALT0/ALT1/ALT2 are organized specially for 78 gpio targets
++	 */
++	regmap_update_bits(info->map, REG_ALT(0, info, pin->pin),
++			   BIT(p), f << p);
++	regmap_update_bits(info->map, REG_ALT(1, info, pin->pin),
++			   BIT(p), (f >> 1) << p);
++	regmap_update_bits(info->map, REG_ALT(2, info, pin->pin),
++			   BIT(p), (f >> 2) << p);
 +
 +	return 0;
 +}
 +
- static int atmel_qspi_sama7g5_setup(struct spi_device *spi)
- {
- 	struct atmel_qspi *aq = spi_controller_get_devdata(spi->controller);
-@@ -890,6 +982,9 @@ static int atmel_qspi_sama7g5_setup(struct spi_device *spi)
- 	/* The controller can communicate with a single peripheral device (target). */
- 	aq->target_max_speed_hz = spi->max_speed_hz;
- 
-+	if (aq->caps->has_lan966x)
-+		return lan966x_qspi_init(aq);
++/* ----- GPIO ops ----- */
 +
- 	return atmel_qspi_sama7g5_init(aq);
- }
- 
-@@ -1112,6 +1207,12 @@ static __maybe_unused const struct atmel_qspi_caps atmel_sama7g5_qspi_caps = {
- 	.has_gclk = true,
- };
- 
-+static __maybe_unused const struct atmel_qspi_caps atmel_lan966x_qspi_caps = {
-+	.max_speed_hz = LAN966x_QSPI0_MAX_SPEED_HZ,
-+	.has_gclk = true,
-+	.has_lan966x = true,
++static int ocelot_gpio_get(struct gpio_chip *chip, unsigned int offset)
++{
++	struct ocelot_pinctrl *info = to_ocelot_gpio(chip);
++	unsigned int val;
++
++	regmap_read(info->map, REG(OCELOT_GPIO_IN, info, offset), &val);
++
++	return !!(val & BIT(offset % 32));
++}
++
++static int ocelot_gpio_set(struct gpio_chip *chip, unsigned int offset,
++			   int value)
++{
++	struct ocelot_pinctrl *info = to_ocelot_gpio(chip);
++
++	if (value)
++		regmap_write(info->map, REG(OCELOT_GPIO_OUT_SET, info, offset),
++			     BIT(offset % 32));
++	else
++		regmap_write(info->map, REG(OCELOT_GPIO_OUT_CLR, info, offset),
++			     BIT(offset % 32));
++
++	return 0;
++}
++
++static int ocelot_gpio_get_direction(struct gpio_chip *chip,
++				     unsigned int offset)
++{
++	struct ocelot_pinctrl *info = to_ocelot_gpio(chip);
++	unsigned int val;
++
++	regmap_read(info->map, REG(OCELOT_GPIO_OE, info, offset), &val);
++
++	/* GPIOF_DIR_OUT == 0, GPIOF_DIR_IN == 1 */
++	return (val & BIT(offset % 32)) ? 0 : 1;
++}
++
++static int ocelot_gpio_direction_input(struct gpio_chip *chip,
++				       unsigned int offset)
++{
++	struct ocelot_pinctrl *info = to_ocelot_gpio(chip);
++	unsigned int pin = BIT(offset % 32);
++
++	regmap_update_bits(info->map, REG(OCELOT_GPIO_OE, info, offset),
++			   pin, 0);
++
++	return 0;
++}
++
++static int ocelot_gpio_direction_output(struct gpio_chip *chip,
++					unsigned int offset, int value)
++{
++	struct ocelot_pinctrl *info = to_ocelot_gpio(chip);
++	unsigned int pin = BIT(offset % 32);
++
++	if (value)
++		regmap_write(info->map, REG(OCELOT_GPIO_OUT_SET, info, offset),
++			     pin);
++	else
++		regmap_write(info->map, REG(OCELOT_GPIO_OUT_CLR, info, offset),
++			     pin);
++
++	regmap_update_bits(info->map, REG(OCELOT_GPIO_OE, info, offset),
++			   pin, pin);
++
++	return 0;
++}
++
++static struct gpio_ops ocelot_gpio_ops = {
++	.direction_input = ocelot_gpio_direction_input,
++	.direction_output = ocelot_gpio_direction_output,
++	.get_direction = ocelot_gpio_get_direction,
++	.get = ocelot_gpio_get,
++	.set = ocelot_gpio_set,
 +};
 +
- static __maybe_unused const struct of_device_id atmel_qspi_dt_ids[] = {
- 	{
- 		.compatible = "atmel,sama5d2-qspi",
-@@ -1129,6 +1230,10 @@ static __maybe_unused const struct of_device_id atmel_qspi_dt_ids[] = {
- 		.compatible = "microchip,sama7g5-qspi",
- 		.data = &atmel_sama7g5_qspi_caps,
- 	},
-+	{
-+		.compatible = "microchip,lan966x-qspi",
-+		.data = &atmel_lan966x_qspi_caps,
-+	},
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, atmel_qspi_dt_ids);
++/* ----- pinctrl ops ----- */
++
++static int ocelot_lookup_function(const char *name)
++{
++	int i;
++
++	for (i = 0; i < FUNC_MAX; i++) {
++		if (ocelot_function_names[i] &&
++		    strcmp(name, ocelot_function_names[i]) == 0)
++			return i;
++	}
++	return -1;
++}
++
++static int ocelot_lookup_pin(struct ocelot_pinctrl *info, const char *name)
++{
++	unsigned int i;
++
++	for (i = 0; i < info->desc->npins; i++)
++		if (strcmp(info->desc->pins[i].name, name) == 0)
++			return i;
++	return -1;
++}
++
++static int ocelot_pinctrl_set_state(struct pinctrl_device *pdev,
++				    struct device_node *np)
++{
++	struct ocelot_pinctrl *info = to_ocelot_pctl(pdev);
++	const char *func_name;
++	const char **pin_names;
++	int func, ret, n, i;
++
++	ret = of_property_read_string(np, "function", &func_name);
++	if (ret < 0)
++		return 0;
++
++	func = ocelot_lookup_function(func_name);
++	if (func < 0) {
++		dev_err(pdev->dev, "unknown function %s\n", func_name);
++		return -EINVAL;
++	}
++
++	n = of_property_count_strings(np, "pins");
++	if (n <= 0)
++		return 0;
++
++	pin_names = xzalloc(n * sizeof(*pin_names));
++	ret = of_property_read_string_array(np, "pins", pin_names, n);
++	if (ret < 0)
++		goto out;
++
++	for (i = 0; i < n; i++) {
++		int idx = ocelot_lookup_pin(info, pin_names[i]);
++
++		if (idx < 0) {
++			dev_err(pdev->dev, "unknown pin %s\n", pin_names[i]);
++			ret = -EINVAL;
++			goto out;
++		}
++		ret = lan969x_pinmux_set_mux(info, idx, func);
++		if (ret < 0) {
++			dev_err(pdev->dev,
++				"failed to set pin %s to function %s\n",
++				pin_names[i], func_name);
++			goto out;
++		}
++	}
++	ret = 0;
++out:
++	free(pin_names);
++	return ret;
++}
++
++static struct pinctrl_ops ocelot_pinctrl_ops = {
++	.set_state = ocelot_pinctrl_set_state,
++};
++
++/* ----- probe ----- */
++
++static const struct regmap_config ocelot_pinctrl_regmap_config = {
++	.reg_bits = 32,
++	.val_bits = 32,
++	.reg_stride = 4,
++};
++
++static int ocelot_pinctrl_probe(struct device *dev)
++{
++	struct ocelot_pinctrl *info;
++	const struct ocelot_pinctrl_desc *desc;
++	struct resource *iores;
++	void __iomem *base;
++	int ret;
++
++	desc = device_get_match_data(dev);
++	if (!desc)
++		return -EINVAL;
++
++	info = xzalloc(sizeof(*info));
++	info->dev = dev;
++	info->desc = desc;
++	info->stride = 1 + (desc->npins - 1) / 32;
++	info->altm_stride = info->stride;
++
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores)) {
++		ret = PTR_ERR(iores);
++		goto err_free;
++	}
++	base = IOMEM(iores->start);
++
++	info->map = regmap_init_mmio(dev, base, &ocelot_pinctrl_regmap_config);
++	if (IS_ERR(info->map)) {
++		ret = PTR_ERR(info->map);
++		goto err_free;
++	}
++
++	/* PINCFG resource (optional). */
++	iores = dev_request_mem_resource(dev, 1);
++	if (!IS_ERR(iores)) {
++		void __iomem *pincfg_base = IOMEM(iores->start);
++
++		info->pincfg = regmap_init_mmio(dev, pincfg_base,
++						&ocelot_pinctrl_regmap_config);
++		if (IS_ERR(info->pincfg))
++			info->pincfg = NULL;
++	}
++
++	info->pctl.dev = dev;
++	info->pctl.ops = &ocelot_pinctrl_ops;
++	info->pctl.base = 0;
++	info->pctl.npins = desc->npins;
++	ret = pinctrl_register(&info->pctl);
++	if (ret) {
++		dev_err(dev, "failed to register pinctrl: %d\n", ret);
++		goto err_free;
++	}
++
++	info->gpio_chip.dev = dev;
++	info->gpio_chip.base = -1;
++	info->gpio_chip.ngpio = desc->npins;
++	info->gpio_chip.ops = &ocelot_gpio_ops;
++	ret = gpiochip_add(&info->gpio_chip);
++	if (ret) {
++		dev_err(dev, "failed to register gpio chip: %d\n", ret);
++		pinctrl_unregister(&info->pctl);
++		goto err_free;
++	}
++
++	dev_info(dev, "%s registered: %u pins\n", desc->name, desc->npins);
++	return 0;
++
++err_free:
++	free(info);
++	return ret;
++}
++
++static const struct of_device_id ocelot_pinctrl_of_match[] = {
++	{ .compatible = "microchip,lan9691-pinctrl", .data = &lan969x_desc },
++	{ /* sentinel */ }
++};
++MODULE_DEVICE_TABLE(of, ocelot_pinctrl_of_match);
++
++static struct driver ocelot_pinctrl_driver = {
++	.name = "ocelot-pinctrl",
++	.probe = ocelot_pinctrl_probe,
++	.of_compatible = DRV_OF_COMPAT(ocelot_pinctrl_of_match),
++};
++coredevice_platform_driver(ocelot_pinctrl_driver);
 -- 
 2.47.3
 
