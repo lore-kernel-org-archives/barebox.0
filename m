@@ -1,16 +1,16 @@
-Delivery-date: Sun, 16 Aug 2026 20:02:32 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Sun, 16 Aug 2026 20:02:34 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wvfBn-003pji-2d
+	id 1wvfBp-003pkN-39
 	for lore@lore.pengutronix.de;
-	Sun, 16 Aug 2026 20:02:32 +0200
+	Sun, 16 Aug 2026 20:02:34 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 69D91201B9A
-	for <lore@pengutronix.de>; Sun, 16 Aug 2026 20:02:32 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 93897201D09
+	for <lore@pengutronix.de>; Sun, 16 Aug 2026 20:02:34 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=qMsH8Dyx;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=y9auBC3H;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,58 +19,58 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=NHdB5McSgDDyzghIcx853Gl2yfiXWR5396VP1PajqLw=; b=qMsH8DyxY5iLfTTerkERh7vzpY
-	uexDeG2QmSsDLqiM78Oqhasw/HXObZep6VTPHQ6hHsBWqVBULeiihQLhJ4BJE+ZzoFfN5C8IwBCyH
-	5s2f9A/bV3wgzzvDbG6ff6c6CGNTaxP3csvMFZUMOsUpS8GCrNrwxUZd4xQj9bbVEgEG4WGVPLtvW
-	5a1royyez7RibVF5rqQwtbXTnLzvLItNlkw+S3qaP8ESu9Pz1gHPOw9PytiSe47jq+Gkm5YlIi8dS
-	zANKbI9RMBrIxDkFcK0bf90vfzrWgbegj38Npa9elUHIoe1wBRKvp5BSEBW+T4tARFEdQDoJzt5Sp
-	VROhWEew==;
+	bh=52vSyTZkJ0SGYEBVeTG1QboOfCabAX7nKGG4juHdNhY=; b=y9auBC3HoB6CYKeGO0WB3qAMb5
+	wCQobA9OgqGRPm1wzcaROOxzpjC4O8zx58iToW0uXJKkrqFxIsFI9SDj9ZINwF/fz02AIK4LJ4Wgn
+	v4FOupj/dggtSqB/5ig/eDL9GIojzvV6mLtAy7+eLAJYo0SpDs+F2vW44/dmlP//lV2Ccer/mW3q9
+	sipDsbVL7M7Ujd2s7l18wZbFsJiauIg3PacLNSRkPoSYPEtm2vRvZ8B+vKfVgkG7+B5vJcu7V2GjS
+	dtUpoiUCAH3beGNo7pf4wnYe60fw62Ci3+OIIKS1XKXZKsKQWVlt3Scv2tJbuHegs28EBVCwgVZF7
+	/gm/VLFw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wvfBT-00000004xZ9-0Qlw;
-	Sun, 16 Aug 2026 18:02:11 +0000
+	id 1wvfBS-00000004xY4-2e14;
+	Sun, 16 Aug 2026 18:02:10 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wvfBN-00000004xNm-19BU
+	id 1wvfBM-00000004xNQ-3Iir
 	for barebox@lists.infradead.org;
-	Sun, 16 Aug 2026 18:02:07 +0000
+	Sun, 16 Aug 2026 18:02:06 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B68962021DA;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 72A3B201B02;
 	Sun, 16 Aug 2026 20:01:59 +0200 (CEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wvfBH-001osB-29;
+	id 1wvfBH-001orz-1F;
 	Sun, 16 Aug 2026 20:01:59 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wvf5u-00000003pGc-15zh;
+	id 1wvf5u-00000003pGc-14Qv;
 	Sun, 16 Aug 2026 19:56:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 16 Aug 2026 19:56:34 +0200
-Subject: [PATCH 14/27] serial: pxa: provide the Linux console name
+Date: Sun, 16 Aug 2026 19:56:31 +0200
+Subject: [PATCH 11/27] mtd: nand: mrvl_nfc: do not report a command timeout
+ as an error
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260816-pxa3xx-v1-14-f3c3d7a6c43f@pengutronix.de>
+Message-Id: <20260816-pxa3xx-v1-11-f3c3d7a6c43f@pengutronix.de>
 References: <20260816-pxa3xx-v1-0-f3c3d7a6c43f@pengutronix.de>
 In-Reply-To: <20260816-pxa3xx-v1-0-f3c3d7a6c43f@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786902986; l=908;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786902986; l=1776;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=tv2FWBhkCZvuolu5hCtdeZNmbdPvq5jkBqH49bIbkeE=;
- b=0vvnMspp4SyO4vbRrt9XYFAB6vI0UXYbqw80oKwGpmgi7TJm/oy2k62yywNc2Z7rUzOBt6JaM
- JzZ6gGNXUsqC0Xxs5eNIfunuUrdj1TbkMSPJxVBPfOqsSElYOUJtAXm
+ bh=9M7RXhSl7bZF6GZ9Jq1wU04dceTLnwUZAE3oH4TiRpk=;
+ b=pSHmI/PsDFkYuGBeEFsCiOM4fKQ2sTKBW8cdW56EzKdbDFqI2w9L/EXvt6dC+Z0McSIGbIl6h
+ zzU/BPstNQ2D1M1DNXRgONFrT3/FufFbQtkAYNe5mQv0W3UqIb7tNWh
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260816_110205_494481_0549E984 
-X-CRM114-Status: UNSURE (   8.40  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260816_110205_013363_9CB77B95 
+X-CRM114-Status: GOOD (  12.60  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -78,9 +78,11 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Without linux_console_name console_set_stdoutpath() returns
-    early and never creates global.linux.bootargs.console, so the console= option
-    has to be passed to Linux manually. The PXA UARTs are ttyS in [...] 
+ Content preview:  Identifying the chip prints mrvl_nand ...: Waiting end of
+   command 0th 236 timeout, \ ndsr=0x00000800 ndcr=0x10041fff once on every boot.
+    Command 236 is 0xEC, NAND_CMD_PARAM: the nand layer asks for the ONFI parameter
+    page to find out whether the chip is ONFI at all, the controller never raises
+    CS0_CMDD for it - NDSR [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -105,7 +107,7 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: 8mntdm8y3fjbp78qax9wx1su4wx4sdmj
+X-Stat-Signature: nfycwrxzwe4wwmrqbegaxajfzpcn5ir3
 X-Spamd-Result: default: False [-7.71 / 15.00];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
@@ -136,33 +138,46 @@ X-Spamd-Result: default: False [-7.71 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 69D91201B9A
+X-Rspamd-Queue-Id: 93897201D09
 
-Without linux_console_name console_set_stdoutpath() returns early and
-never creates global.linux.bootargs.console, so the console= option has
-to be passed to Linux manually. The PXA UARTs are ttyS in Linux.
+Identifying the chip prints
 
-No linux_earlycon_name is set as the Linux PXA UART driver does not
-register an earlycon.
+  mrvl_nand ...: Waiting end of command 0th 236 timeout, \
+      ndsr=0x00000800 ndcr=0x10041fff
+
+once on every boot. Command 236 is 0xEC, NAND_CMD_PARAM: the nand layer
+asks for the ONFI parameter page to find out whether the chip is ONFI at
+all, the controller never raises CS0_CMDD for it - NDSR reads back
+FLASH_RDY alone - and the wait times out. The layer above then finds no
+parameter page, falls back to identifying the chip from its id bytes,
+and everything from there on works.
+
+So this is a capability probe coming back negative, not a failure.
+Nothing acts on it either: mrvl_nand_wait_cmd_done() has no return
+value. Print it as a debug message.
+
+Whether NAND_CMD_PARAM can be made to complete on this controller is a
+separate question; this only stops the answer from looking like a fault.
 
 Assisted-by: Claude Opus 5
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/serial/serial_pxa.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/mtd/nand/raw/nand_mrvl_nfc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/serial/serial_pxa.c b/drivers/serial/serial_pxa.c
-index bc792d62a5..f2926bcd7a 100644
---- a/drivers/serial/serial_pxa.c
-+++ b/drivers/serial/serial_pxa.c
-@@ -181,6 +181,7 @@ static int pxa_serial_probe(struct device *dev)
- 	cdev->getc = pxa_serial_getc;
- 	cdev->flush = pxa_serial_flush;
- 	cdev->setbrg = pxa_serial_setbaudrate;
-+	cdev->linux_console_name = "ttyS";
- 
- 	console_register(cdev);
- 
+diff --git a/drivers/mtd/nand/raw/nand_mrvl_nfc.c b/drivers/mtd/nand/raw/nand_mrvl_nfc.c
+index b1532dbf1b..a5e30db669 100644
+--- a/drivers/mtd/nand/raw/nand_mrvl_nfc.c
++++ b/drivers/mtd/nand/raw/nand_mrvl_nfc.c
+@@ -813,7 +813,7 @@ static void mrvl_nand_wait_cmd_done(struct mrvl_nand_host *host,
+ 	wait_on_timeout(host->chip.legacy.chip_delay * USECOND,
+ 			(nand_readl(host, NDSR) & mask) == mask);
+ 	if ((nand_readl(host, NDSR) & mask) != mask) {
+-		dev_err(host->dev, "Waiting end of command %dth %d timeout, ndsr=0x%08x ndcr=0x%08x\n",
++		dev_dbg(host->dev, "Waiting end of command %dth %d timeout, ndsr=0x%08x ndcr=0x%08x\n",
+ 			nb_done++, command, nand_readl(host, NDSR),
+ 			nand_readl(host, NDCR));
+ 	}
 
 -- 
 2.47.3
