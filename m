@@ -1,16 +1,16 @@
 Delivery-date: Sun, 16 Aug 2026 20:02:29 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wvfBk-003phd-1f
+	id 1wvfBk-003pho-2E
 	for lore@lore.pengutronix.de;
 	Sun, 16 Aug 2026 20:02:29 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id C401E201BAA
-	for <lore@pengutronix.de>; Sun, 16 Aug 2026 20:02:28 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 4BEB6201B9A
+	for <lore@pengutronix.de>; Sun, 16 Aug 2026 20:02:29 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=KGwsEy7O;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=yBPNSssh;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,58 +19,58 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=CUCvryHsoGkpnZxwp8noOpaxNzPxy7Xp7yGebFYlvUM=; b=KGwsEy7O2Pj0/v0Xt/9PAXkigJ
-	WlozEHUAbbTObKECxA+iF9d4CyJrIf8jTMN/1cm70zEqBlfEDVESMQyD+ZHX7zjwjINchunYHvR8/
-	YL7LCXsHfFmwsNzNU99n0pRhBKGWdxn4tnn9qQkUR4hEMKVR2dVmtUSiKg46Q98G+etk6Ddq/hIRc
-	CqVESiA4EojT/nr1ByWHtSZg3qBw4MdQ0YBNaQolOKhaWbutf64Vl6r2ZGG3vYIy3Y2j1rCGWbSC1
-	pSIZ6FYhB6DXSthXtX19/Bi++9JR9EWbcEXNbtVURzBLWJzUJ4hxKyHU6GecExP36JW5IMLeUjsas
-	Rxrk4fxQ==;
+	bh=Q2zmeKXjw1tVbOcnNntjLqN5uJI7tltrWa7uKytQBMM=; b=yBPNSsshK7u2UnsyYL1gSLZZmC
+	ei8vcxg9IOXTHHLXGGcUUeYqSFfGnNH4C1Fzr1ue9AD8j/Z92UEZ4OeDct/hxzbHGIls0AVwYQyYy
+	SqUg8lDxLN7AWrRySKTGg1Iuq6n6XH6TDBwoyg3lKakmePDJ6BG/bqhsHmV4U0pO6TUmcXwQhlScA
+	xVS74EZ7HfyyM8xaPNLj/HYis7fCun3K0IUUO0J1F9GTpafzwuw6BhX3s9rqHMWw5xpjvpGGgImMx
+	shkzobeSds9/pobNauqNlk2swDnZmiMrPGB0FmrbLs5Jdkg2x1/43eRZLcJkY5Osz8oTgPrBHHKZT
+	tu605+2A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wvfBT-00000004xZw-1MiN;
-	Sun, 16 Aug 2026 18:02:11 +0000
+	id 1wvfBM-00000004xO0-1L7i;
+	Sun, 16 Aug 2026 18:02:04 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wvfBM-00000004xN8-0g3I
+	id 1wvfBI-00000004xLW-1Bwi
 	for barebox@lists.infradead.org;
-	Sun, 16 Aug 2026 18:02:08 +0000
+	Sun, 16 Aug 2026 18:02:02 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 1A501201DE4;
-	Sun, 16 Aug 2026 20:01:59 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B3276201CD3;
+	Sun, 16 Aug 2026 20:01:58 +0200 (CEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wvfBH-001orj-05;
-	Sun, 16 Aug 2026 20:01:59 +0200
+	id 1wvfBG-001orT-25;
+	Sun, 16 Aug 2026 20:01:58 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wvf5u-00000003pGc-13xI;
+	id 1wvf5u-00000003pGc-17oa;
 	Sun, 16 Aug 2026 19:56:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 16 Aug 2026 19:56:30 +0200
-Subject: [PATCH 10/27] mtd: nand: mrvl_nfc: keep the ready latch across a
- STATUS command
+Date: Sun, 16 Aug 2026 19:56:37 +0200
+Subject: [PATCH 17/27] ARM: pxa: let the board select the SoC
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260816-pxa3xx-v1-10-f3c3d7a6c43f@pengutronix.de>
+Message-Id: <20260816-pxa3xx-v1-17-f3c3d7a6c43f@pengutronix.de>
 References: <20260816-pxa3xx-v1-0-f3c3d7a6c43f@pengutronix.de>
 In-Reply-To: <20260816-pxa3xx-v1-0-f3c3d7a6c43f@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786902986; l=3726;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786902986; l=1052;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=JLK/Mw3lBOeA9Uxa/1il5ztCSKQMKsLeOlZYu9mtCuI=;
- b=+SdjGDDKzyxgpXTxkc3CafPkCRLtjhJvyM+NLpkHWjRWGmWBs5eLL1lA9HDXx1Iqq48cgCr4R
- LfGrMTvhWLoCVSrqdWYC5BUFNprPcaca54VASBFSjq8YTJtHvVp7kdp
+ bh=kkJgvL6hF5QbKYb/NxkUCBS+BoYRrr9A4KGPMlU2o8Q=;
+ b=hTQRkvb6BW2W97v7n2htS3SARNUM9XPTFkizL1mNWO8/YmEh6FzwoIL6D0Mv6a2A0Ad6ZSZC6
+ aVnHbpAJ/5MC2WLzM8Gw0pVKpbrtuZjJmmnXrlaWaWccWCjdn+naEKj
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260816_110204_418112_8CAE5093 
-X-CRM114-Status: GOOD (  17.65  )
+X-CRM114-CacheID: sfid-20260816_110200_476695_B4E50B47 
+X-CRM114-Status: UNSURE (   9.25  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -78,12 +78,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Every block erase and every page program took 400ms, so writing
-    a bootloader image to NAND took minutes. That 400ms is nand_wait()'s timeout,
-    hit in full every single time. NDSR's per-chipselect ready bits latch the
-    flash's busy-to-ready transition rather than reporting its current level,
-    and nand_wait() polls them through mrvl_nand_ready() to find out when an
-   erase or a [...] 
+ Content preview:  The PXA port had a user visible "PXA Processor" choice to
+   pick the SoC, independently of the board being built. That is the last remnant
+    of the one-SoC-per-build era and does not scale to multiple boa [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -108,13 +105,13 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: uoyd6h6cq3orxsccq3oq4pri3kgw49yz
-X-Spamd-Result: default: False [-7.64 / 15.00];
-	BAYES_HAM(-2.93)[99.72%];
+X-Stat-Signature: byadjxozxy6eegkwz4ih73xp89gpfydy
+X-Spamd-Result: default: False [-7.71 / 15.00];
+	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received];
+	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:1101:1d::28:received,2607:7c80:54:3::133:from];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MAILLIST(-0.20)[mailman];
 	R_SPF_ALLOW(-0.20)[+mx:c];
@@ -139,90 +136,45 @@ X-Spamd-Result: default: False [-7.64 / 15.00];
 	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: C401E201BAA
+X-Rspamd-Queue-Id: 4BEB6201B9A
 
-Every block erase and every page program took 400ms, so writing a
-bootloader image to NAND took minutes. That 400ms is nand_wait()'s
-timeout, hit in full every single time.
+The PXA port had a user visible "PXA Processor" choice to pick the SoC,
+independently of the board being built. That is the last remnant of the
+one-SoC-per-build era and does not scale to multiple boards.
 
-NDSR's per-chipselect ready bits latch the flash's busy-to-ready
-transition rather than reporting its current level, and nand_wait()
-polls them through mrvl_nand_ready() to find out when an erase or a
-program has finished. It issues a STATUS command before it starts
-polling, though, and every command clears NDSR on its way through
-mrvl_nand_start() - so the transition it was about to wait for was gone
-before it ever looked. It never saw a ready chip, ran its timeout out,
-and only then fell through to read the status byte. That last read is
-correct, which is why this showed up as NAND writes being unusably slow
-rather than as an error.
-
-Keep the ready bits across a STATUS command, and go on clearing them for
-the commands that make the flash busy in the first place, so what
-nand_wait() observes is that command's own completion.
-
-Measured on a Raumfeld speaker (PXA303, 128KiB erase blocks): a block
-erase goes from 400ms to under a millisecond and a 128KiB write from
-25.6s to 28ms. Reads were never affected.
+Make the SoC symbols invisible and have the board select them instead,
+like all other ARM architectures do. Also add the PXA300 and PXA310
+symbols, which had no equivalent in the choice.
 
 Assisted-by: Claude Opus 5
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/nand/raw/nand_mrvl_nfc.c | 25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ arch/arm/mach-pxa/Kconfig | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/nand_mrvl_nfc.c b/drivers/mtd/nand/raw/nand_mrvl_nfc.c
-index ebb1fd81fb..b1532dbf1b 100644
---- a/drivers/mtd/nand/raw/nand_mrvl_nfc.c
-+++ b/drivers/mtd/nand/raw/nand_mrvl_nfc.c
-@@ -472,8 +472,9 @@ static unsigned int mrvl_datasize(struct mrvl_nand_host *host)
-  * We enable all the interrupt at the same time, and
-  * let mrvl_nand_irq to handle all logic.
-  */
--static void mrvl_nand_start(struct mrvl_nand_host *host)
-+static void mrvl_nand_start(struct mrvl_nand_host *host, unsigned command)
- {
-+	uint32_t ndsr_clear = NDSR_MASK;
- 	uint32_t ndcr;
+diff --git a/arch/arm/mach-pxa/Kconfig b/arch/arm/mach-pxa/Kconfig
+index 738fa7d9bb..5bc99f1f83 100644
+--- a/arch/arm/mach-pxa/Kconfig
++++ b/arch/arm/mach-pxa/Kconfig
+@@ -6,13 +6,17 @@ if ARCH_PXA
  
- 	if (host->hwflags & HWFLAGS_ECC_BCH) {
-@@ -503,9 +504,27 @@ static void mrvl_nand_start(struct mrvl_nand_host *host)
- 	ndcr &= ~NDCR_ND_RUN;
- 	ndcr |= NDCR_INT_MASK;
+ config ARCH_PXA3XX
+ 	bool
+-	default y
+ 	select CPU_XSC3
+ 	select HAVE_CLK
+ 	select COMMON_CLK
+ 	select COMMON_CLK_OF_PROVIDER
  
-+	/*
-+	 * NDSR's per-chipselect ready bits latch the flash's busy-to-ready
-+	 * transition, they do not report its current level. nand_wait() polls
-+	 * them through mrvl_nand_ready() to find out when an erase or a page
-+	 * program has finished - but it issues a STATUS command first, and
-+	 * clearing the latch here would wipe the very transition it is about
-+	 * to wait for. It would then never see a ready chip and spend its
-+	 * full 400ms timeout on every block erase and every page program
-+	 * before falling through to read the status byte, which is why this
-+	 * only ever showed up as NAND writes being unusably slow rather than
-+	 * as an error.
-+	 *
-+	 * So leave the latch alone for STATUS, and keep clearing it for the
-+	 * commands that make the flash busy in the first place.
-+	 */
-+	if (command == NAND_CMD_STATUS)
-+		ndsr_clear &= ~(NDSR_RDY | NDSR_FLASH_RDY);
++config ARCH_PXA300
++	bool
++	select ARCH_PXA3XX
 +
- 	/* clear status bits and run */
- 	nand_writel(host, NDCR, ndcr);
--	nand_writel(host, NDSR, NDSR_MASK);
-+	nand_writel(host, NDSR, ndsr_clear);
- 	nand_writel(host, NDCR, ndcr | NDCR_ND_RUN);
+ config ARCH_PXA310
+ 	bool
++	select ARCH_PXA3XX
  
- 	if (wait_on_timeout(host->chip.legacy.chip_delay * USECOND,
-@@ -817,7 +836,7 @@ static void mrvl_nand_cmdfunc(struct nand_chip *chip, unsigned command,
- 
- 	prepare_start_command(host, command);
- 	if (prepare_set_command(host, command, 0, column, page_addr)) {
--		mrvl_nand_start(host);
-+		mrvl_nand_start(host, command);
- 		mrvl_data_stage(host);
- 		mrvl_nand_wait_cmd_done(host, command);
- 	}
+ endif
 
 -- 
 2.47.3
