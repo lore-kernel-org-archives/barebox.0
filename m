@@ -1,116 +1,76 @@
-Delivery-date: Fri, 14 Aug 2026 10:44:00 +0200
+Delivery-date: Sun, 16 Aug 2026 19:57:16 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wunWC-002zRA-07
+	id 1wvf6g-003pbY-2V
 	for lore@lore.pengutronix.de;
-	Fri, 14 Aug 2026 10:44:00 +0200
+	Sun, 16 Aug 2026 19:57:16 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 4B2D8201DE4
-	for <lore@pengutronix.de>; Fri, 14 Aug 2026 10:44:00 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id E916A201B02
+	for <lore@pengutronix.de>; Sun, 16 Aug 2026 19:57:14 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=G9M72ReO;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=a2r+Vt4o;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
-	arc=pass ("google.com:s=arc-20260327:i=1")
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=lUIUmBUo;
+	dmarc=none;
+	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
-	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=nHpCbQYHHXm1z5l04PFWSYPC+eA7JNsZmwYCSmfxIi4=; b=G9M72ReOV9zHi3Oi781I4Fm4pU
-	4ud9RgOhfVWE0wVXklEmLTwupE7LBl5y2bpsuQDl3dxIbLBM2SR9RTIdOMT6nv6I2e9LiriGjqqa9
-	mqonbCWng5YSv5nW7RSzMZVUR5Bdfm3lqAS+9jd72w96BhGxYp9KEkcmwaiuqsP9ubgtd1O7VObrA
-	xlOjFIN2zztIOAkiGRk7LKyZwtWt2ITkBOBmYmpOH7WXy+8FZrqFJ0RYWURDPGUT+OjT2WVwyzm5k
-	pGBIy/keCDv4tkBLk1YqXoCYLZv9VjUb98U4pMCsszfrDJT+1qa/JuUYukjhIkXQvO6kbBcQOt50m
-	o2DaCkkQ==;
+	bh=iJTH/lr8GSb0A+4yfZ1n5lK3x7tXiV1zh+bDSTkvQIg=; b=lUIUmBUodSMttAwr3Lo+73F+hs
+	jzRPw2Zc7pLsgjtNVsSkR0rIPYVabwT/KaBsC9Mp6Na/otFRnHmeXL793j+p6+RP1CkKmhJlfS+R2
+	1uONVq+VxXUqOW/CFGmzwUajNGKHdOF/QqX4QRDqLN0Vt78asNTnU82I0n1K9nL57Vb/86KQOZcVy
+	QNPWho1Z3Fva/eI5kQkfnuSfsAAWLVWn1hEXM1cbqOVo37ju9ravCrFeOU3U0Y8Kx5N9sk4sh/f12
+	fJB4ZhU9yYEmYoQO3ntKgm6GJ5aRr6XKBST6SisWyeddAVkCZ613ytW15sR90xkHCCNC3F1MQWS/o
+	pqCT4rkw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wunUs-00000002IzU-2J1z;
-	Fri, 14 Aug 2026 08:42:38 +0000
-Received: from mail-pj1-x1035.google.com ([2607:f8b0:4864:20::1035])
+	id 1wvf66-00000004wgK-3ddh;
+	Sun, 16 Aug 2026 17:56:38 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wunUo-00000002Iyj-1j3I
+	id 1wvf64-00000004wdY-0oHI
 	for barebox@lists.infradead.org;
-	Fri, 14 Aug 2026 08:42:35 +0000
-Received: by mail-pj1-x1035.google.com with SMTP id 98e67ed59e1d1-38fdeaed181so1071011a91.1
-        for <barebox@lists.infradead.org>; Fri, 14 Aug 2026 01:42:33 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1786696953; cv=none;
-        d=google.com; s=arc-20260327;
-        b=lLppFjFR5dm+2CUeZejfoVjcUkmiw2ZVRxUWByN6NRXMOi7O13DDBlgTBkSODU8dfR
-         4UaYDanzeBjswoQnL8L6biCNNJEcQXkFtxaQdorUEaW3g562MUfToakbaKQ7c/epyQRv
-         xBJDHnKRNbqRjul9qPcEB4qVyXwQ8U/pE48FEKG6pfKiW7+JQ0wrUnU8Jk12vb1iW+b/
-         4uOEF8D5hwKqq6x+X6oTrE2JnuA+pljQM1oRs+pHlL0+SflHBMPYnPOL6ym4KdEUVjeM
-         Hvow5nUhQ1NpSiPFACZNrhR0IaD+N2jDNkPoE1d7QleOAfVIkkEiUOMXGBEXgJbZO2Zt
-         8lqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=nHpCbQYHHXm1z5l04PFWSYPC+eA7JNsZmwYCSmfxIi4=;
-        fh=vM2vRr44yOjyRdmzXzSi6lSzuq2Z1E6KH1Rw/zd25II=;
-        b=L9L8DMZX+YTzuGn32yFTooFajsSfGJ51Ku0MUplUYf9hV8HKIbsQ+uCXG1Njw49c9N
-         5K4ZQW2xg7IbZxRXIACpMX7pjBL63SG/Z+dFj4ktl4pC3klVxldJ8Enp4IFbTVE+Fg+c
-         Ie6QoDrDC5VOYm7+Ojg0RuXI84zBJSlBDI0fDizM4jeK1cItHy1GYCr6DaIThGLd8+7V
-         DkMJ9af1MdN89TxOWHeLYbMIak1+rkn5/9wgLPYFGI09eTP1rT0VC/KBA+9TXeOI2VhM
-         chd4mg41TieMsx9kIvaPNYSHrOIeZjeoXJkNzCV7gLcG5fCbrhsDtmDYFP/5743aN/VK
-         KAqg==;
-        darn=lists.infradead.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1786696953; x=1787301753; darn=lists.infradead.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=nHpCbQYHHXm1z5l04PFWSYPC+eA7JNsZmwYCSmfxIi4=;
-        b=a2r+Vt4oRQ4ixE7lUq4afAeZDj7JWTM+TgzveUxlF69QpRNU0kGN+WuU5+jfyx1/t1
-         odNiiJ9TYtkMDGEdtRiAyUh7XYX8EGDdAdqc9yBZdj5D4VcsA/2yKAW2A0mYmWJc2D8o
-         Rnj114zipuXCflNnZ4bM3FXW7RYBshE/E3ycR999q/J199OXQKZrr8JP5/39Lx3lwTLV
-         XRo5lsSrIaQukS+2GcfQ3gKgnIfXGczwXDPBa7DpQMR3EOXl9Agx+U0dWKbZ1SqBcCdd
-         4ZvaRyUnCLOLHTHOTLJ6QndOCf4Aojh3IynCyYrWAVGatHPlQzCoxcgKZZuu5dFsD+zp
-         LMBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1786696953; x=1787301753;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=nHpCbQYHHXm1z5l04PFWSYPC+eA7JNsZmwYCSmfxIi4=;
-        b=LO41xNTOuuxMrTyIFY0o27Yjd9HFjd0xbN6Wqbb6QlpFZPRbPf5a+15kCcvP6k0jru
-         sfgo5/9rBmXM1rsGRB085fWCajClNTtl5C76ks5qtVlrEw56b+JG2lF6/83DUS9etS4b
-         BV5uzm1KGgVP0fXoUq0t80j+Il5YjOWYYYQ2llzjG+MFqn0mej5gtOdtJEYP/SNydjDS
-         UxQUlBdEPOHmw3dKFYYeRWfU53wFSoDkXSNRzyhtCUijtHLIKOnuoiLyBJSohzcl2R4C
-         y8AOL9ZCGyTj9wSVRONsVVdDWx6WAYUXCpSb63NgZWFbFWCMRFMdoiysTn1aGCCkTFj2
-         zBaw==
-X-Gm-Message-State: AOJu0YxIF0wFJZxbNxJVTjzhwpmG50GJF4XwS1qMLGvYGYUVYrc3i4/J
-	kYggu/DCahOqRXiic3Qebj/n54qNSnEk+pBCUYLfAeiEGBFcIQSfQJHYs8y7sOqsTWiSErq6q+M
-	vUBicno/tm4hBYxbN6Xo3syhx2itTVIJfYg==
-X-Gm-Gg: AR+sD10FvdD+dAIqTrAPJnoirZoYQsO/Oqkf220vtRe4Z2rr8BuQ4fB65gJS9SZjH+I
-	j/PXFjHB8gHDxegVeIDCG962v7KDybXrZJAh6C3JzCTyZ0YEO/2CT94TtwpzFulmC2HuE894kZU
-	hYIJbZw4nfu/hNtvH/k2n10lBUY6z6kHYyQp9vCoWAuknhu7B8wekK0QUpi9807JsDM1Tzcrb0R
-	nr/0TY3Lm0k7df9KKUjL4J6waD/Sw91cW/+gvvBGdWppcyScsYcnVb7WqLWNtVkydkZpgdYe740
-	KuP3R4qd8wjfFZPKjnJ3aPDHEIENZvU04EEP8HYN48oxYR/68817+uyp
-X-Received: by 2002:a17:90b:4fc1:b0:38e:2524:724f with SMTP id
- 98e67ed59e1d1-3933b8f143fmr4917862a91.12.1786696953179; Fri, 14 Aug 2026
- 01:42:33 -0700 (PDT)
+	Sun, 16 Aug 2026 17:56:37 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id A9339201EA9;
+	Sun, 16 Aug 2026 19:56:26 +0200 (CEST)
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wvf5u-001oeW-1H;
+	Sun, 16 Aug 2026 19:56:26 +0200
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wvf5u-00000003pGc-12we;
+	Sun, 16 Aug 2026 19:56:26 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Sun, 16 Aug 2026 19:56:29 +0200
+Subject: [PATCH 09/27] mtd: nand: nand_mrvl_nfc: support the
+ nand-controller bindings
 MIME-Version: 1.0
-References: <CAP1tNvRw3xWZCs3KUFMH7=9f7s8Op8-5hQUCFiFE8LY+mcp+VQ@mail.gmail.com>
- <6a7d6747.1bdbcb37.263332.61abSMTPIN_ADDED_MISSING@mx.google.com> <CAP1tNvT7fBV90WAoXNwuhXes=j--ZshKdJxbOe5_HmMGWmwn_w@mail.gmail.com>
-In-Reply-To: <CAP1tNvT7fBV90WAoXNwuhXes=j--ZshKdJxbOe5_HmMGWmwn_w@mail.gmail.com>
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Fri, 14 Aug 2026 11:42:20 +0300
-X-Gm-Features: AUfX_mztkzpfEoBS-ThDl5dVUl1vitDOFm3P0PxOrJWoT7RwfRyaermgjGWyCIo
-Message-ID: <CAP1tNvRLYGdbNX_uK2bqHAOSqPDydYPi25fULCVTXop7VB227w@mail.gmail.com>
-Subject: Re: RK3588 optee question
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260816-pxa3xx-v1-9-f3c3d7a6c43f@pengutronix.de>
+References: <20260816-pxa3xx-v1-0-f3c3d7a6c43f@pengutronix.de>
+In-Reply-To: <20260816-pxa3xx-v1-0-f3c3d7a6c43f@pengutronix.de>
+To: BAREBOX <barebox@lists.infradead.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786902986; l=4229;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=Pj1g0QWMVmSgxiMdG4JuOiqOtAuS6NPwVbvfGoc7Lgk=;
+ b=FWyhdNAu3nFA8w3fmnsVzhoDf7VddO+shMAMupdcCrlQ0xLj5FEENB6qdOLzbTXRlS1UfSK9K
+ IyJ5MM0weu1CqOi5HR+4hqnxSmVTtgYn0wNu9Nf+kofJx8AUoEKiAB1
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260814_014234_454905_5720E93A 
-X-CRM114-Status: GOOD (  17.40  )
+X-CRM114-CacheID: sfid-20260816_105636_439673_80EC4510 
+X-CRM114-Status: GOOD (  19.01  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -118,36 +78,19 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Update: Issue with RK3588 resolved by adding SPD=opteed to
-    the TF-A build command line пт, 14 авг. 2026 г. в 09:49, Alexander
-    Shiyan : > > Hello, Sascha. > > With CONFIG_SCRATCH_SIZE=0x100000 compiles
-    fine. > > Now about the current errors, one build is used for two images
-   for > [...] 
+ Content preview:  The driver only knows the deprecated "marvell,pxa3xx-nand"
+    and "marvell,armada370-nand" compatibles, where the chip properties are in
+    the controller node. The upstream device trees use the newer "...- [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
- -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/, no
-                             trust
-                             [2607:f8b0:4864:20:0:0:0:1035 listed in]
-                             [list.dnswl.org]
  -0.0 SPF_PASS               SPF: sender matches SPF record
-  0.0 SPF_HELO_NONE          SPF: HELO does not publish an SPF Record
-  0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
- -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
- -0.1 DKIM_VALID_EF          Message has a valid DKIM or DK signature from
-                             envelope-from domain
- -0.1 DKIM_VALID_AU          Message has a valid DKIM or DK signature from author's
-                             domain
+ -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
  -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
                              [score: 0.0000]
-  0.0 FREEMAIL_FROM          Sender email is commonly abused enduser mail provider
-                             [eagle.alexander923(at)gmail.com]
-  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends in
-                             digit
-                             [eagle.alexander923(at)gmail.com]
- -0.0 DMARC_PASS             DMARC pass policy
+  0.0 DMARC_MISSING          Missing DMARC policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -162,119 +105,171 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: ry4yb1n1d1ugoibkzp1on7u5ehjneqmh
-X-Spamd-Result: default: False [-8.91 / 15.00];
-	BAYES_HAM(-3.00)[100.00%];
+X-Stat-Signature: w65bm46yephn7191a8ky6xp98p8gmj3j
+X-Spamd-Result: default: False [-7.71 / 15.00];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	ARC_ALLOW(-1.00)[google.com:s=arc-20260327:i=1];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,gmail.com:s=20251104];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MAILLIST(-0.20)[mailman];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
+	RCVD_IN_DNSWL_LOW(-0.10)[2a0a:edc0:0:c01:1d::a2:received];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER(0.00)[eaglealexander923@gmail.com,barebox-bounces@lists.infradead.org];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
-	RCVD_COUNT_THREE(0.00)[3];
-	DWL_DNSWL_NONE(0.00)[gmail.com:dkim];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	MIME_TRACE(0.00)[0:+];
-	PREVIOUSLY_DELIVERED(0.00)[barebox@lists.infradead.org];
-	TO_DN_ALL(0.00)[];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_ALL(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_ONE(0.00)[1];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,gmail.com:+];
-	MISSING_XM_UA(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[eaglealexander923@gmail.com,barebox-bounces@lists.infradead.org];
-	RCVD_IN_DNSWL_NONE(0.00)[2607:f8b0:4864:20::1035:received];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 4B2D8201DE4
+X-Rspamd-Queue-Id: E916A201B02
 
-Update:
+The driver only knows the deprecated "marvell,pxa3xx-nand" and
+"marvell,armada370-nand" compatibles, where the chip properties are in
+the controller node. The upstream device trees use the newer
+"...-nand-controller" bindings, where the chip lives in a child node
+along with its partitions.
 
-Issue with RK3588 resolved by adding SPD=3Dopteed to the TF-A build command=
- line
+Add the new compatibles and read the chip properties from the child
+node. Handing that node to the NAND core via nand_set_flash_node() is
+what makes the generic properties and the partitions below it work at
+all: mtd_get_of_node() otherwise falls back to the parent, which is the
+controller node.
 
-=D0=BF=D1=82, 14 =D0=B0=D0=B2=D0=B3. 2026=E2=80=AF=D0=B3. =D0=B2 09:49, Ale=
-xander Shiyan <eagle.alexander923@gmail.com>:
->
-> Hello, Sascha.
->
-> With CONFIG_SCRATCH_SIZE=3D0x100000 compiles fine.
->
-> Now about the current errors, one build is used for two images for
-> RK3568 and RK3588.
->
-> RK3568, Rockchip BL31, tee.bin from OPTEE_OS:
-> arm-scmi firmware:scmi.of: SCMI Protocol v2.0 'rockchip:' Firmware versio=
-n 0x0
-> optee: smc_abi: probing for conduit method.
-> optee: smc_abi: revision 4.10 (5c827bf3bc358e9a)
-> psci psci.of: detected version 1.1
->
-> RK3588, open source TF-A, tee.bin from OPTEE_OS:
-> arm-scmi firmware:scmi.of: SCMI Protocol v2.0 'rockchip:' Firmware versio=
-n 0x0
-> optee: smc_abi: probing for conduit method.
-> WARNING: optee: smc_abi: api uid mismatch
-> ERROR: optee firmware:optee.of: probe failed: Invalid argument
->
-> Switching to a configuration using Rockchip BL31 with the TEE/OPTEE optio=
-ns
-> currently enabled results in a constant restart of DDR init code, meaning=
- the
-> code never reaches BL31...
->
-> What else can I watch?
->
-> Thanks!
->
->
-> =D1=87=D1=82, 13 =D0=B0=D0=B2=D0=B3. 2026=E2=80=AF=D0=B3. =D0=B2 09:42, S=
-ascha Hauer <s.hauer@pengutronix.de>:
-> >
-> > On 2026-08-12 17:44, Alexander Shiyan wrote:
-> > > Hello Sascha.
-> > >
-> > > After enabling CONFIG_ARCH_ROCKCHIP_ATF_PASS_FDT=3Dy the following bu=
-ild
-> > > errors occur:
-> > >
-> > > CC [P]  arch/arm/mach-rockchip/rk3588.pbl.o
-> > > In file included from include/linux/array_size.h:6,
-> > > from include/linux/kernel.h:6,
-> > > from /home/ARM64/barebox/arch/arm/include/asm/barebox-arm.h:17,
-> > > from include/mach/rockchip/bootrom.h:9,
-> > > from arch/arm/mach-rockchip/bootrom.c:2:
-> > > include/linux/build_bug.h:100:41: error: static assertion failed:
-> > > "sizeof(structrockchip_scratch_space) <=3D CONFIG_SCRATCH_SIZE"
-> >
-> > Set CONFIG_SCRATCH_SIZE=3D0x100000
-> >
-> > Seems we have to look into it to get a sane default.
-> >
-> > Sascha
-> >
-> > --
-> > Pengutronix e.K.                           |                           =
-  |
-> > Steuerwalder Str. 21                       | http://www.pengutronix.de/=
-  |
-> > 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0  =
-  |
-> > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-555=
-5 |
-> >
-> >
+Assisted-by: Claude Opus 5
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mtd/nand/raw/nand_mrvl_nfc.c | 69 ++++++++++++++++++++++++++++++------
+ 1 file changed, 58 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/mtd/nand/raw/nand_mrvl_nfc.c b/drivers/mtd/nand/raw/nand_mrvl_nfc.c
+index 6f3fb57062..ebb1fd81fb 100644
+--- a/drivers/mtd/nand/raw/nand_mrvl_nfc.c
++++ b/drivers/mtd/nand/raw/nand_mrvl_nfc.c
+@@ -132,6 +132,12 @@
+ 
+ struct mrvl_nand_variant {
+ 	unsigned int	hwflags;
++	/*
++	 * True for the "nand-controller" bindings, where the chip properties
++	 * live in per chip select child nodes instead of in the controller
++	 * node itself.
++	 */
++	bool		chip_subnodes;
+ };
+ 
+ struct mrvl_nand_host {
+@@ -288,7 +294,26 @@ static const struct mrvl_nand_variant armada370_variant = {
+ 	.hwflags	= HWFLAGS_ECC_BCH | HWFLAGS_HAS_NDCB3,
+ };
+ 
++static const struct mrvl_nand_variant pxa3xx_controller_variant = {
++	.hwflags	= 0,
++	.chip_subnodes	= true,
++};
++
++static const struct mrvl_nand_variant armada370_controller_variant = {
++	.hwflags	= HWFLAGS_ECC_BCH | HWFLAGS_HAS_NDCB3,
++	.chip_subnodes	= true,
++};
++
+ static struct of_device_id mrvl_nand_dt_ids[] = {
++	{
++		.compatible = "marvell,pxa3xx-nand-controller",
++		.data = &pxa3xx_controller_variant,
++	},
++	{
++		.compatible = "marvell,armada370-nand-controller",
++		.data = &armada370_controller_variant,
++	},
++	/* Deprecated bindings, the chip properties are in the controller node */
+ 	{
+ 		.compatible = "marvell,pxa3xx-nand",
+ 		.data = &pxa3xx_variant,
+@@ -1199,33 +1224,55 @@ static struct mrvl_nand_host *alloc_nand_resource(struct device *dev)
+ static int mrvl_nand_probe_dt(struct mrvl_nand_host *host)
+ {
+ 	struct device_node *np = host->dev->of_node;
+-	const struct of_device_id *match;
+ 	const struct mrvl_nand_variant *variant;
++	struct device_node *chip_np;
+ 
+ 	if (!IS_ENABLED(CONFIG_OFTREE) || host->dev->platform_data)
+ 		return 0;
+ 
+-	match = of_match_node(mrvl_nand_dt_ids, np);
+-	if (!match)
++	variant = device_get_match_data(host->dev);
++	if (!variant)
+ 		return -EINVAL;
+-	variant = match->data;
+ 
+-	if (of_get_property(np, "marvell,nand-keep-config", NULL))
+-		host->keep_config = 1;
++	host->hwflags = variant->hwflags;
++
+ 	of_property_read_u32(np, "num-cs", &host->num_cs);
+-	if (of_get_nand_on_flash_bbt(np))
++
++	/*
++	 * With the "nand-controller" bindings the chip lives in a child node
++	 * of the controller. Only a single chip is supported, so take the
++	 * first one. The deprecated bindings have the chip properties in the
++	 * controller node itself.
++	 */
++	if (variant->chip_subnodes) {
++		chip_np = of_get_next_available_child(np, NULL);
++		if (!chip_np) {
++			dev_err(host->dev, "no chip node found\n");
++			return -ENODEV;
++		}
++	} else {
++		chip_np = np;
++	}
++
++	/*
++	 * Hand the chip node to the NAND core so that the generic properties
++	 * and the partitions below it are evaluated.
++	 */
++	nand_set_flash_node(&host->chip, chip_np);
++
++	if (of_get_property(chip_np, "marvell,nand-keep-config", NULL))
++		host->keep_config = 1;
++	if (of_get_nand_on_flash_bbt(chip_np))
+ 		host->flash_bbt = 1;
+ 
+-	host->ecc_strength = of_get_nand_ecc_strength(np);
++	host->ecc_strength = of_get_nand_ecc_strength(chip_np);
+ 	if (host->ecc_strength < 0)
+ 		host->ecc_strength = 0;
+ 
+-	host->ecc_step = of_get_nand_ecc_step_size(np);
++	host->ecc_step = of_get_nand_ecc_step_size(chip_np);
+ 	if (host->ecc_step < 0)
+ 		host->ecc_step = 0;
+ 
+-	host->hwflags = variant->hwflags;
+-
+ 	return 0;
+ }
+ 
+
+-- 
+2.47.3
+
 
 
