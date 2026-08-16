@@ -1,76 +1,73 @@
-Delivery-date: Sun, 16 Aug 2026 20:13:23 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Sun, 16 Aug 2026 20:13:49 +0200
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wvfMJ-003qOJ-0E
+	id 1wvfMi-003qOw-27
 	for lore@lore.pengutronix.de;
-	Sun, 16 Aug 2026 20:13:23 +0200
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id B1562201CD3
-	for <lore@pengutronix.de>; Sun, 16 Aug 2026 20:13:23 +0200 (CEST)
+	Sun, 16 Aug 2026 20:13:49 +0200
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 5BB83201BAA
+	for <lore@pengutronix.de>; Sun, 16 Aug 2026 20:13:48 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=qXmdYHMw;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=MPssvhMX;
 	dmarc=none;
-	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 198.137.202.133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
+	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=XAzh5416jaWLR3VbFp4N30rPtGtLRHLCoOX63Y2bTQQ=; b=qXmdYHMwlL+xReKvPkprEUXKvJ
-	1FWNSRPjgnW8z/3WAgx+rBfYMhhsGoTGBKtfpo+oO7bzHhIgvbEaUiY5j0LfQBJvEabKbWC/9pduZ
-	CbeFH+3PzvMdXrvnvu/WAgYH+KNgNmzQMRil+AuFrz0cisSWjYB81C7gdx2EhHweKFp6zeFcHhshZ
-	VXOEIPkC+7+9FGKafM4zvDPEbzvWgZ3ubWJQWWDgZqmyZLNj5ZhFkvbNZeILLmVigge2r1OfLggJ/
-	h5lRMNmviVGXN0xhcqD9ai15E5tc1qatzi+6DgQvN0o11Qb5/usoJb9TFcZgZKpopuPDus2MnYHqt
-	78JIC/GQ==;
+	bh=Uum0Q9SnT6R4CXoOVlGfzNX+mF6PtjDKF5gJ2EGxNtE=; b=MPssvhMXWVZC125DCVUUbgfm5R
+	ciKeRKPf8/lbwvZFNUwrTKLWeaVEil2jVRCFShJpikdoA4j5zNtC7X984P9T2ESetUh125wzIROQY
+	utlDtZ7WYYIsf9H6AcNvBZaLWYgv6o4qmryF/LHRwjgoONFv8mVFFDKP4pHDwH2IxNj0xV6I+GqXZ
+	d1v8eFMeZvkmcyYJxZOwydiYkKY29VqsrzQ8jEW0ittzqZA3peC28rZStq2vYUwQKchXXXo5T18DO
+	X+lqdnBkgajWxF9BFEddsqOwXckDgSqQD2XdOgFtJDGMc7XD9tsoodzIv4dR4fgJaox7GTEgbkuw9
+	AwGPJKKg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wvfBP-00000004xS1-1vlH;
-	Sun, 16 Aug 2026 18:02:07 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1wvf6B-00000004wkS-3qwn;
+	Sun, 16 Aug 2026 17:56:43 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wvfBL-00000004xN0-2lrP
+	id 1wvf64-00000004wda-104q
 	for barebox@lists.infradead.org;
-	Sun, 16 Aug 2026 18:02:04 +0000
+	Sun, 16 Aug 2026 17:56:40 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id DE791201D09;
-	Sun, 16 Aug 2026 20:01:58 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 95C9F201D0E;
+	Sun, 16 Aug 2026 19:56:26 +0200 (CEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wvfBG-001orb-2g;
-	Sun, 16 Aug 2026 20:01:58 +0200
+	id 1wvf5u-001oeQ-1E;
+	Sun, 16 Aug 2026 19:56:26 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wvf5u-00000003pGc-1CD0;
+	id 1wvf5u-00000003pGc-0szg;
 	Sun, 16 Aug 2026 19:56:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Sun, 16 Aug 2026 19:56:45 +0200
-Subject: [PATCH 25/27] ARM: pxa: reset straight away and without
- complaining
+Date: Sun, 16 Aug 2026 19:56:21 +0200
+Subject: [PATCH 01/27] ARM: pxa: remove PXA25x and PXA27x support
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260816-pxa3xx-v1-25-f3c3d7a6c43f@pengutronix.de>
+Message-Id: <20260816-pxa3xx-v1-1-f3c3d7a6c43f@pengutronix.de>
 References: <20260816-pxa3xx-v1-0-f3c3d7a6c43f@pengutronix.de>
 In-Reply-To: <20260816-pxa3xx-v1-0-f3c3d7a6c43f@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1786902986; l=2523;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1786902985; l=115973;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=VS/Xo9Y7M0P8W55T7+ZCs1PoI/qEKOSjF/WkK1tsyXk=;
- b=UEbfsv+paO5myLGKPvft6U66Kwlt8sv90VHLZFHfhCscAvw/3hmgUKnQrvIHZs0dlq0hORIHS
- MiR0LWJJ7rTB2pvGO73Nj7e1a0+JJjmbFPyV5e06XWLFNLHGGUefnsI
+ bh=zkj5qkS+6JxWmcG9uGclqWNBA1HDDfzIBZdUxbqFHjA=;
+ b=bQ82Qo1pcwZQ7gEtKNhyvlTMlcdcK/zXbq4bQftSbhP8Brtg//a8jTJvOo9EAy0Y2sCspuOsl
+ Ap655lkybP4Ccjyzu1i0M72hhnCDmn+XIv9Vse9b6axa+H8KuJ0In25
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260816_110203_874471_D851E7BC 
-X-CRM114-Status: GOOD (  17.95  )
+X-Spam-Note: CRM114 run bypassed due to message size (114208 bytes)
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -78,9 +75,12 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Two things made a working reset look like a failure. It waited
-    113ms for the watchdog match, and it spent them inside hang(), which prints
-    "### ERROR ### Please RESET the board ###" - so a reset annou [...] 
+ Content preview:  No board in tree selects ARCH_PXA25X or ARCH_PXA27X, so none
+    of this code is reachable, let alone tested. Remove it rather than carry
+   it along through the PXA cleanup. Gone with it: - The SoC support itself:
+   mfp-pxa2xx.c, pxa2xx.c, the two speed-*.c and the PXA25x/27x half of sleep.S,
+    which was wrapped in a #if on the two symbols and had no caller anywhere.
+    
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -105,13 +105,13 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: n1symtmwci7pifbgzuwhfiokr3atud33
+X-Stat-Signature: u88jbrdni8g97a45eqjx4pn4cfjcpss8
 X-Spamd-Result: default: False [-7.71 / 15.00];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:1101:1d::28:received,198.137.202.133:from];
+	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MAILLIST(-0.20)[mailman];
 	R_SPF_ALLOW(-0.20)[+mx:c];
@@ -134,75 +134,3542 @@ X-Spamd-Result: default: False [-7.71 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:7247, ipnet:198.137.202.0/24, country:US];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: B1562201CD3
+X-Rspamd-Queue-Id: 5BB83201BAA
 
-Two things made a working reset look like a failure. It waited 113ms for
-the watchdog match, and it spent them inside hang(), which prints
-"### ERROR ### Please RESET the board ###" - so a reset announced itself
-as a board that needs one.
+No board in tree selects ARCH_PXA25X or ARCH_PXA27X, so none of this code
+is reachable, let alone tested. Remove it rather than carry it along
+through the PXA cleanup.
 
-There is no reason to wait. Park the counter just below the match instead
-of computing the match from the counter: both writes are absolute, so the
-match is still ahead whenever the second one lands, and the margin no
-longer has to cover the store that sets it up. 16 ticks is about 5us at
-this part's 3.25MHz. Computing it the other way round has to guess that
-margin, and losing the race costs a full 32bit wrap of the counter rather
-than a retry.
+Gone with it:
 
-Then spin quietly rather than calling hang().
+- The SoC support itself: mfp-pxa2xx.c, pxa2xx.c, the two speed-*.c and
+  the PXA25x/27x half of sleep.S, which was wrapped in a #if on the two
+  symbols and had no caller anywhere.
+
+- pxa27x_udc, the only driver that depended on ARCH_PXA27X and could
+  therefore never be built either.
+
+- The documentation for the Phytec phyCORE-PXA270, whose defconfig was
+  removed long ago and which points at it.
+
+- __gpio_is_occupied(), which had no user at all, and the PXA26x variant
+  of __gpio_is_inverted(), which was guarded by a CONFIG_CPU_PXA26x that
+  does not exist.
+
+Drivers that depend on ARCH_PXA2XX but are not inherently PXA2xx -- pwm
+and mci -- are left alone here. They become unselectable, which is
+honest: they do not build for PXA3xx yet. Both are fixed up in the course
+of the clk conversion.
 
 Assisted-by: Claude Opus 5
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-pxa/common.c | 25 +++++++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
+ Documentation/boards/pxa/Phytec-phyCORE-PXA270.rst |    6 -
+ arch/arm/mach-pxa/Kconfig                          |   31 +-
+ arch/arm/mach-pxa/Makefile                         |    5 +-
+ arch/arm/mach-pxa/mfp-pxa2xx.c                     |  191 ---
+ arch/arm/mach-pxa/pxa2xx.c                         |   69 -
+ arch/arm/mach-pxa/sleep.S                          |   28 -
+ arch/arm/mach-pxa/speed-pxa25x.c                   |   54 -
+ arch/arm/mach-pxa/speed-pxa27x.c                   |   54 -
+ drivers/mci/pxamci.c                               |   16 +-
+ drivers/usb/gadget/Kconfig                         |    7 -
+ drivers/usb/gadget/udc/Makefile                    |    1 -
+ drivers/usb/gadget/udc/pxa27x_udc.c                | 1469 --------------------
+ drivers/usb/gadget/udc/pxa27x_udc.h                |  380 -----
+ include/mach/pxa/gpio.h                            |   30 -
+ include/mach/pxa/hardware.h                        |   18 -
+ include/mach/pxa/mfp-pxa27x.h                      |  472 -------
+ include/mach/pxa/mfp-pxa2xx.h                      |  135 --
+ include/mach/pxa/pxa-regs.h                        |   12 -
+ include/mach/pxa/pxa25x-regs.h                     |    8 -
+ include/mach/pxa/pxa27x-regs.h                     |    8 -
+ include/mach/pxa/pxa2xx-regs.h                     |  273 ----
+ include/mach/pxa/udc_pxa2xx.h                      |   28 -
+ 22 files changed, 9 insertions(+), 3286 deletions(-)
 
-diff --git a/arch/arm/mach-pxa/common.c b/arch/arm/mach-pxa/common.c
-index fea570c5fa..d76167438a 100644
---- a/arch/arm/mach-pxa/common.c
-+++ b/arch/arm/mach-pxa/common.c
-@@ -27,6 +27,13 @@
- #define OWER_WME	(1 << 0)	/* Watch-dog Match Enable */
- #define OSSR_M3		(1 << 3)	/* Match status channel 3 */
+diff --git a/Documentation/boards/pxa/Phytec-phyCORE-PXA270.rst b/Documentation/boards/pxa/Phytec-phyCORE-PXA270.rst
+deleted file mode 100644
+index 23b2829fa8..0000000000
+--- a/Documentation/boards/pxa/Phytec-phyCORE-PXA270.rst
++++ /dev/null
+@@ -1,6 +0,0 @@
+-Phytec phyCORE-PXA270
+-=====================
+-
+-Building the bootloader image for this target is covered by the ``phytec-phycore-pxa270_defconfig``.
+-
+-Use the corresponding ``barebox.bin`` file for this target.
+diff --git a/arch/arm/mach-pxa/Kconfig b/arch/arm/mach-pxa/Kconfig
+index 53becd51d4..3a58736d2d 100644
+--- a/arch/arm/mach-pxa/Kconfig
++++ b/arch/arm/mach-pxa/Kconfig
+@@ -4,33 +4,14 @@ if ARCH_PXA
  
-+/*
-+ * Where to park the counter, and how far below the match to park it. The
-+ * counter runs at 3.25MHz on PXA3xx, so 16 ticks is around 5us.
-+ */
-+#define RESET_MATCH	0x1000
-+#define RESET_MARGIN	16
-+
- static void __noreturn pxa_restart_soc(struct restart_handler *rst,
- 				       unsigned long flags)
- {
-@@ -36,9 +43,23 @@ static void __noreturn pxa_restart_soc(struct restart_handler *rst,
- 	/* Initialize the watchdog and let it fire */
- 	writel(OWER_WME, OWER);
- 	writel(OSSR_M3, OSSR);
--	writel(readl(OSCR) + 368640, OSMR3);  /* ... in 100 ms */
+ # ----------------------------------------------------------
  
--	hang();
-+	/*
-+	 * Set the match, then put the counter just below it. Both writes are
-+	 * absolute, so the match is still ahead of the counter whenever the
-+	 * second one lands - unlike computing the match from the counter,
-+	 * which has to leave enough margin for its own store to get there and
-+	 * misses a whole 32bit wrap of the counter if it does not.
-+	 */
-+	writel(RESET_MATCH, OSMR3);
-+	writel(RESET_MATCH - RESET_MARGIN, OSCR);
-+
-+	/*
-+	 * A few microseconds out. Deliberately not hang(), which complains
-+	 * about a board needing a reset while it is being reset.
-+	 */
-+	for (;;)
-+		;
+-config ARCH_PXA2XX
+-	bool
+-	select CPU_XSCALE
+-
+ config ARCH_PXA3XX
+-       bool
+-       select CPU_XSC3
+-       select HAVE_CLK
+-       select COMMON_CLK
++	bool
++	default y
++	select CPU_XSC3
++	select HAVE_CLK
++	select COMMON_CLK
+ 
+ config ARCH_PXA310
+-       bool
+-
+-choice
+-	prompt "Intel/Marvell PXA Processor"
+-
+-config ARCH_PXA25X
+-	bool "PXA25x"
+-	select ARCH_PXA2XX
+-
+-config ARCH_PXA27X
+-	bool "PXA27x"
+-	select ARCH_PXA2XX
+-
+-config ARCH_PXA3XX
+-	bool "PXA3xx"
+-
+-endchoice
++	bool
+ 
+ endif
+diff --git a/arch/arm/mach-pxa/Makefile b/arch/arm/mach-pxa/Makefile
+index 9249c8fe14..fbcc4b8859 100644
+--- a/arch/arm/mach-pxa/Makefile
++++ b/arch/arm/mach-pxa/Makefile
+@@ -1,12 +1,9 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ 
+ obj-y += clocksource.o
++obj-y += sleep.o
+ obj-y += common.o
+ obj-y += gpio.o
+ obj-y += devices.o
+-obj-y += sleep.o
+ 
+-obj-$(CONFIG_ARCH_PXA2XX) += mfp-pxa2xx.o pxa2xx.o
+-obj-$(CONFIG_ARCH_PXA25X) += speed-pxa25x.o
+-obj-$(CONFIG_ARCH_PXA27X) += speed-pxa27x.o
+ obj-$(CONFIG_ARCH_PXA3XX) += speed-pxa3xx.o mfp-pxa3xx.o pxa3xx.o
+diff --git a/arch/arm/mach-pxa/mfp-pxa2xx.c b/arch/arm/mach-pxa/mfp-pxa2xx.c
+deleted file mode 100644
+index aca46c45b3..0000000000
+--- a/arch/arm/mach-pxa/mfp-pxa2xx.c
++++ /dev/null
+@@ -1,191 +0,0 @@
+-/*
+- *  linux/arch/arm/mach-pxa/mfp-pxa2xx.c
+- *
+- *  PXA2xx pin mux configuration support
+- *
+- *  The GPIOs on PXA2xx can be configured as one of many alternate
+- *  functions, this is by concept samilar to the MFP configuration
+- *  on PXA3xx,  what's more important, the low power pin state and
+- *  wakeup detection are also supported by the same framework.
+- *
+- *  This program is free software; you can redistribute it and/or modify
+- *  it under the terms of the GNU General Public License version 2 as
+- *  published by the Free Software Foundation.
+- */
+-
+-#include <common.h>
+-#include <errno.h>
+-#include <init.h>
+-
+-#include <mach/pxa/gpio.h>
+-#include <mach/pxa/hardware.h>
+-#include <mach/pxa/mfp-pxa2xx.h>
+-#include <mach/pxa/pxa-regs.h>
+-
+-#define PGSR(x)		__REG2(0x40F00020, (x) << 2)
+-#define __GAFR(u, x)	__REG2((u) ? 0x40E00058 : 0x40E00054, (x) << 3)
+-#define GAFR_L(x)	__GAFR(0, x)
+-#define GAFR_U(x)	__GAFR(1, x)
+-
+-struct gpio_desc {
+-	unsigned	valid:1;
+-	unsigned	dir_inverted:1;
+-	unsigned long	config;
+-};
+-
+-static struct gpio_desc gpio_desc[MFP_PIN_GPIO127 + 1];
+-
+-static unsigned long gpdr_lpm[4];
+-
+-static int __mfp_config_gpio(unsigned gpio, unsigned long c)
+-{
+-	unsigned long gafr, mask = GPIO_bit(gpio);
+-	int bank = gpio_to_bank(gpio);
+-	int uorl = !!(gpio & 0x10); /* GAFRx_U or GAFRx_L ? */
+-	int shft = (gpio & 0xf) << 1;
+-	int fn = MFP_AF(c);
+-	int is_out = (c & MFP_DIR_OUT) ? 1 : 0;
+-
+-	if (fn > 3)
+-		return -EINVAL;
+-
+-	/* alternate function and direction at run-time */
+-	gafr = (uorl == 0) ? GAFR_L(bank) : GAFR_U(bank);
+-	gafr = (gafr & ~(0x3 << shft)) | (fn << shft);
+-
+-	if (uorl == 0)
+-		GAFR_L(bank) = gafr;
+-	else
+-		GAFR_U(bank) = gafr;
+-
+-	if (is_out ^ gpio_desc[gpio].dir_inverted)
+-		GPDR(gpio) |= mask;
+-	else
+-		GPDR(gpio) &= ~mask;
+-
+-	/* alternate function and direction at low power mode */
+-	switch (c & MFP_LPM_STATE_MASK) {
+-	case MFP_LPM_DRIVE_HIGH:
+-		PGSR(bank) |= mask;
+-		is_out = 1;
+-		break;
+-	case MFP_LPM_DRIVE_LOW:
+-		PGSR(bank) &= ~mask;
+-		is_out = 1;
+-		break;
+-	case MFP_LPM_DEFAULT:
+-		break;
+-	default:
+-		/* warning and fall through, treat as MFP_LPM_DEFAULT */
+-		pr_warning("%s: GPIO%d: unsupported low power mode\n",
+-				__func__, gpio);
+-		break;
+-	}
+-
+-	if (is_out ^ gpio_desc[gpio].dir_inverted)
+-		gpdr_lpm[bank] |= mask;
+-	else
+-		gpdr_lpm[bank] &= ~mask;
+-
+-	return 0;
+-}
+-
+-static inline int __mfp_validate(int mfp)
+-{
+-	int gpio = mfp_to_gpio(mfp);
+-
+-	if ((mfp > MFP_PIN_GPIO127) || !gpio_desc[gpio].valid) {
+-		pr_warning("%s: GPIO%d is invalid pin\n", __func__, gpio);
+-		return -1;
+-	}
+-
+-	return gpio;
+-}
+-
+-void pxa2xx_mfp_config(unsigned long *mfp_cfgs, int num)
+-{
+-	unsigned long *c;
+-	int i, gpio;
+-
+-	for (i = 0, c = mfp_cfgs; i < num; i++, c++) {
+-
+-		gpio = __mfp_validate(MFP_PIN(*c));
+-		if (gpio < 0)
+-			continue;
+-
+-		gpio_desc[gpio].config = *c;
+-		__mfp_config_gpio(gpio, *c);
+-	}
+-}
+-
+-void pxa2xx_mfp_set_lpm(int mfp, unsigned long lpm)
+-{
+-	unsigned long c;
+-	int gpio;
+-
+-	gpio = __mfp_validate(mfp);
+-	if (gpio < 0)
+-		return;
+-
+-	c = gpio_desc[gpio].config;
+-	c = (c & ~MFP_LPM_STATE_MASK) | lpm;
+-	__mfp_config_gpio(gpio, c);
+-}
+-
+-static void __init pxa25x_mfp_init(void)
+-{
+-	int i;
+-
+-	for (i = 0; i <= pxa_last_gpio; i++)
+-		gpio_desc[i].valid = 1;
+-
+-	/* PXA26x has additional 4 GPIOs (86/87/88/89) which has the
+-	 * direction bit inverted in GPDR2. See PXA26x DM 4.1.1.
+-	 */
+-	for (i = 86; i <= pxa_last_gpio; i++)
+-		gpio_desc[i].dir_inverted = 1;
+-}
+-
+-static void __init pxa27x_mfp_init(void)
+-{
+-	int i;
+-
+-	for (i = 0; i <= pxa_last_gpio; i++) {
+-		/*
+-		 * skip GPIO2, 5, 6, 7, 8, they are not
+-		 * valid pins allow configuration
+-		 */
+-		if (i == 2 || i == 5 || i == 6 || i == 7 || i == 8)
+-			continue;
+-
+-		gpio_desc[i].valid = 1;
+-	}
+-}
+-
+-static int __init pxa2xx_mfp_init(void)
+-{
+-	int i;
+-
+-	if (!cpu_is_pxa2xx())
+-		return 0;
+-
+-	if (cpu_is_pxa25x()) {
+-		pxa_init_gpio(0, 84);
+-		pxa25x_mfp_init();
+-	}
+-
+-	if (cpu_is_pxa27x()) {
+-		pxa_init_gpio(2, 120);
+-		pxa27x_mfp_init();
+-	}
+-
+-	/* clear RDH bit to enable GPIO receivers after reset/sleep exit */
+-	PSSR = PSSR_RDH;
+-
+-	/* initialize gafr_run[], pgsr_lpm[] from existing values */
+-	for (i = 0; i <= gpio_to_bank(pxa_last_gpio); i++)
+-		gpdr_lpm[i] = GPDR(i * 32);
+-
+-	return 0;
+-}
+-postcore_initcall(pxa2xx_mfp_init);
+diff --git a/arch/arm/mach-pxa/pxa2xx.c b/arch/arm/mach-pxa/pxa2xx.c
+deleted file mode 100644
+index ee50dca7a9..0000000000
+--- a/arch/arm/mach-pxa/pxa2xx.c
++++ /dev/null
+@@ -1,69 +0,0 @@
+-/*
+- * (C) Copyright 2014 Robert Jarzmik <robert.jarzmik@free.fr>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- */
+-
+-#include <common.h>
+-#include <init.h>
+-#include <poweroff.h>
+-#include <reset_source.h>
+-#include <mach/pxa/hardware.h>
+-#include <mach/pxa/pxa-regs.h>
+-
+-extern void pxa_suspend(int mode);
+-
+-static int pxa_detect_reset_source(void)
+-{
+-	u32 reg = RCSR;
+-
+-	/*
+-	 * Order is important, as many bits can be set together
+-	 */
+-	if (reg & RCSR_GPR)
+-		reset_source_set(RESET_RST);
+-	else if (reg & RCSR_WDR)
+-		reset_source_set(RESET_WDG);
+-	else if (reg & RCSR_HWR)
+-		reset_source_set(RESET_POR);
+-	else if (reg & RCSR_SMR)
+-		reset_source_set(RESET_WKE);
+-	else
+-		reset_source_set(RESET_UKWN);
+-
+-	return 0;
+-}
+-
+-void pxa_clear_reset_source(void)
+-{
+-	RCSR = RCSR_GPR | RCSR_SMR | RCSR_WDR | RCSR_HWR;
+-}
+-
+-static void __noreturn pxa2xx_poweroff(struct poweroff_handler *handler,
+-				       unsigned long flags)
+-{
+-	shutdown_barebox();
+-
+-	/* Clear last reset source */
+-	pxa_clear_reset_source();
+-	pxa_suspend(PWRMODE_DEEPSLEEP);
+-	unreachable();
+-}
+-
+-static int pxa2xx_init(void)
+-{
+-	poweroff_handler_register_fn(pxa2xx_poweroff);
+-
+-	pxa_detect_reset_source();
+-
+-	return 0;
+-}
+-device_initcall(pxa2xx_init);
+diff --git a/arch/arm/mach-pxa/sleep.S b/arch/arm/mach-pxa/sleep.S
+index 3d12dc54de..7bf08275ef 100644
+--- a/arch/arm/mach-pxa/sleep.S
++++ b/arch/arm/mach-pxa/sleep.S
+@@ -14,40 +14,12 @@
+ #include <linux/linkage.h>
+ #include <asm/assembler.h>
+ #include <mach/pxa/hardware.h>
+-#include <mach/pxa/pxa2xx-regs.h>
+ 
+ #define MDREFR_KDIV	0x200a4000	// all banks
+ #define CCCR_SLEEP	0x00000107	// L=7 2N=2 A=0 PPDIS=0 CPDIS=0
+ #define UNCACHED_PHYS_0	0
+ 		.text
+ 
+-#if (defined CONFIG_ARCH_PXA27X || defined CONFIG_ARCH_PXA25X)
+-/*
+- * pxa27x_finish_suspend()
+- *
+- * Forces CPU into sleep state.
+- *
+- * r0 = value for PWRMODE M field for desired sleep state
+- */
+-ENTRY(pxa_suspend)
+-	@ Put the processor to sleep
+-	@ (also workaround for sighting 28071)
+-
+-	@ prepare value for sleep mode
+-	mov	r1, r0				@ sleep mode
+-
+-	@ Intel PXA270 Specification Update notes problems sleeping
+-	@ with core operating above 91 MHz
+-	@ (see Errata 50, ...processor does not exit from sleep...)
+-	ldr	r6, =CCCR
+-	ldr	r8, [r6]		@ keep original value for resume
+-
+-	ldr	r7, =CCCR_SLEEP		@ prepare CCCR sleep value
+-	mov	r0, #0x2		@ prepare value for CLKCFG
+-
+-	@ align execution to a cache line
+-	b	pxa_cpu_do_suspend
+-#endif
+ 
+ 
+ 	.ltorg
+diff --git a/arch/arm/mach-pxa/speed-pxa25x.c b/arch/arm/mach-pxa/speed-pxa25x.c
+deleted file mode 100644
+index de3d5c251c..0000000000
+--- a/arch/arm/mach-pxa/speed-pxa25x.c
++++ /dev/null
+@@ -1,54 +0,0 @@
+-/*
+- * clock.h - implementation of the PXA clock functions
+- *
+- * Copyright (C) 2014 Robert Jarzmik <robert.jarzmik@free.fr>
+- *
+- * This file is released under the GPLv2
+- *
+- */
+-
+-#include <common.h>
+-#include <mach/pxa/clock.h>
+-#include <mach/pxa/pxa-regs.h>
+-
+-/* Crystal clock: 13MHz */
+-#define BASE_CLK	13000000
+-
+-unsigned long pxa_get_uartclk(void)
+-{
+-	return 14857000;
+-}
+-
+-unsigned long pxa_get_mmcclk(void)
+-{
+-	return 19500000;
+-}
+-
+-/*
+- * Return the current LCD clock frequency in units of 10kHz as
+- */
+-static unsigned int pxa_get_lcdclk_10khz(void)
+-{
+-	unsigned long ccsr;
+-	unsigned int l, L, k, K;
+-
+-	ccsr = CCSR;
+-
+-	l = ccsr & 0x1f;
+-	k = (l <= 7) ? 1 : (l <= 16) ? 2 : 4;
+-
+-	L = l * BASE_CLK;
+-	K = L / k;
+-
+-	return (K / 10000);
+-}
+-
+-unsigned long pxa_get_lcdclk(void)
+-{
+-	return pxa_get_lcdclk_10khz() * 10000;
+-}
+-
+-unsigned long pxa_get_pwmclk(void)
+-{
+-	return BASE_CLK;
+-}
+diff --git a/arch/arm/mach-pxa/speed-pxa27x.c b/arch/arm/mach-pxa/speed-pxa27x.c
+deleted file mode 100644
+index 5441dc3d70..0000000000
+--- a/arch/arm/mach-pxa/speed-pxa27x.c
++++ /dev/null
+@@ -1,54 +0,0 @@
+-/*
+- * clock.h - implementation of the PXA clock functions
+- *
+- * Copyright (C) 2010 by Marc Kleine-Budde <mkl@pengutronix.de>
+- *
+- * This file is released under the GPLv2
+- *
+- */
+-
+-#include <common.h>
+-#include <mach/pxa/clock.h>
+-#include <mach/pxa/pxa-regs.h>
+-
+-/* Crystal clock: 13MHz */
+-#define BASE_CLK	13000000
+-
+-unsigned long pxa_get_uartclk(void)
+-{
+-	return 14857000;
+-}
+-
+-unsigned long pxa_get_mmcclk(void)
+-{
+-	return 19500000;
+-}
+-
+-/*
+- * Return the current LCD clock frequency in units of 10kHz as
+- */
+-static unsigned int pxa_get_lcdclk_10khz(void)
+-{
+-	unsigned long ccsr;
+-	unsigned int l, L, k, K;
+-
+-	ccsr = CCSR;
+-
+-	l = ccsr & 0x1f;
+-	k = (l <= 7) ? 1 : (l <= 16) ? 2 : 4;
+-
+-	L = l * BASE_CLK;
+-	K = L / k;
+-
+-	return (K / 10000);
+-}
+-
+-unsigned long pxa_get_lcdclk(void)
+-{
+-	return pxa_get_lcdclk_10khz() * 10000;
+-}
+-
+-unsigned long pxa_get_pwmclk(void)
+-{
+-	return BASE_CLK;
+-}
+diff --git a/drivers/mci/pxamci.c b/drivers/mci/pxamci.c
+index f337ea48ef..1f2aaf2031 100644
+--- a/drivers/mci/pxamci.c
++++ b/drivers/mci/pxamci.c
+@@ -216,20 +216,8 @@ static int pxamci_cmd_response(struct pxamci_host *host, struct mci_cmd *cmd)
+ 	stat = mmc_readl(MMC_STAT);
+ 	if (stat & STAT_TIME_OUT_RESPONSE)
+ 		return -ETIMEDOUT;
+-	if (stat & STAT_RES_CRC_ERR && cmd->resp_type & MMC_RSP_CRC) {
+-		/*
+-		 * workaround for erratum #42:
+-		 * Intel PXA27x Family Processor Specification Update Rev 001
+-		 * A bogus CRC error can appear if the msb of a 136 bit
+-		 * response is a one.
+-		 */
+-		if (cpu_is_pxa27x() && cmd->resp_type & MMC_RSP_136 &&
+-		    cmd->response[0] & 0x80000000)
+-			pr_debug("ignoring CRC from command %d - *risky*\n",
+-				 cmd->cmdidx);
+-		else
+-			return -EILSEQ;
+-	}
++	if (stat & STAT_RES_CRC_ERR && cmd->resp_type & MMC_RSP_CRC)
++		return -EILSEQ;
+ 
+ 	return 0;
  }
+diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
+index 517255f477..365238930c 100644
+--- a/drivers/usb/gadget/Kconfig
++++ b/drivers/usb/gadget/Kconfig
+@@ -24,13 +24,6 @@ config USB_GADGET_DRIVER_AT91
+ 	default y
+ 	select USB_GADGET_DUALSPEED
  
- static int restart_register_feature(void)
+-config USB_GADGET_DRIVER_PXA27X
+-	bool
+-	prompt "PXA27x gadget driver"
+-	depends on ARCH_PXA27X
+-	default y
+-	select USB_GADGET_DUALSPEED
+-
+ config USB_GADGET_AUTOSTART
+ 	bool
+ 	default y
+diff --git a/drivers/usb/gadget/udc/Makefile b/drivers/usb/gadget/udc/Makefile
+index 6e79e80cfa..db5f5faaa7 100644
+--- a/drivers/usb/gadget/udc/Makefile
++++ b/drivers/usb/gadget/udc/Makefile
+@@ -4,4 +4,3 @@ obj-$(CONFIG_USB_GADGET) += core.o
+ 
+ obj-$(CONFIG_USB_GADGET_DRIVER_ARC) += fsl_udc.o
+ obj-$(CONFIG_USB_GADGET_DRIVER_AT91) += at91_udc.o
+-obj-$(CONFIG_USB_GADGET_DRIVER_PXA27X) += pxa27x_udc.o
+diff --git a/drivers/usb/gadget/udc/pxa27x_udc.c b/drivers/usb/gadget/udc/pxa27x_udc.c
+deleted file mode 100644
+index 20148f4878..0000000000
+--- a/drivers/usb/gadget/udc/pxa27x_udc.c
++++ /dev/null
+@@ -1,1469 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Handles the Intel 27x USB Device Controller (UDC)
+- *
+- * Inspired by original driver by Frank Becker, David Brownell, and others.
+- * Copyright (C) 2008 Robert Jarzmik
+- *
+- * Taken from linux-2.6 kernel and adapted to barebox.
+- */
+-#include <common.h>
+-#include <errno.h>
+-#include <clock.h>
+-#include <io.h>
+-#include <gpio.h>
+-#include <init.h>
+-
+-#include <linux/usb/ch9.h>
+-#include <linux/usb/gadget.h>
+-
+-#include "pxa27x_udc.h"
+-#include <mach/pxa/udc_pxa2xx.h>
+-#include <mach/pxa/pxa-regs.h>
+-
+-#define	DRIVER_VERSION	"2008-04-18"
+-#define	DRIVER_DESC	"PXA 27x USB Device Controller driver"
+-
+-static const char driver_name[] = "pxa27x_udc";
+-static struct pxa_udc *the_controller;
+-
+-static void handle_ep(struct pxa_ep *ep);
+-
+-static int is_match_usb_pxa(struct udc_usb_ep *udc_usb_ep, struct pxa_ep *ep,
+-		int config, int interface, int altsetting)
+-{
+-	if (usb_endpoint_num(&udc_usb_ep->desc) != ep->addr)
+-		return 0;
+-	if (usb_endpoint_dir_in(&udc_usb_ep->desc) != ep->dir_in)
+-		return 0;
+-	if (usb_endpoint_type(&udc_usb_ep->desc) != ep->type)
+-		return 0;
+-	if ((ep->config != config) || (ep->interface != interface)
+-			|| (ep->alternate != altsetting))
+-		return 0;
+-	return 1;
+-}
+-
+-static struct pxa_ep *find_pxa_ep(struct pxa_udc *udc,
+-		struct udc_usb_ep *udc_usb_ep)
+-{
+-	int i;
+-	struct pxa_ep *ep;
+-	int cfg = udc->config;
+-	int iface = udc->last_interface;
+-	int alt = udc->last_alternate;
+-
+-	if (udc_usb_ep == &udc->udc_usb_ep[0])
+-		return &udc->pxa_ep[0];
+-
+-	for (i = 1; i < NR_PXA_ENDPOINTS; i++) {
+-		ep = &udc->pxa_ep[i];
+-		if (is_match_usb_pxa(udc_usb_ep, ep, cfg, iface, alt))
+-			return ep;
+-	}
+-	return NULL;
+-}
+-
+-static void update_pxa_ep_matches(struct pxa_udc *udc)
+-{
+-	int i;
+-	struct udc_usb_ep *udc_usb_ep;
+-
+-	for (i = 1; i < NR_USB_ENDPOINTS; i++) {
+-		udc_usb_ep = &udc->udc_usb_ep[i];
+-		if (udc_usb_ep->pxa_ep)
+-			udc_usb_ep->pxa_ep = find_pxa_ep(udc, udc_usb_ep);
+-	}
+-}
+-
+-static void pio_irq_enable(struct pxa_ep *ep)
+-{
+-	struct pxa_udc *udc = ep->dev;
+-	int index = EPIDX(ep);
+-	u32 udcicr0 = udc_readl(udc, UDCICR0);
+-	u32 udcicr1 = udc_readl(udc, UDCICR1);
+-
+-	if (index < 16)
+-		udc_writel(udc, UDCICR0, udcicr0 | (3 << (index * 2)));
+-	else
+-		udc_writel(udc, UDCICR1, udcicr1 | (3 << ((index - 16) * 2)));
+-}
+-
+-static void pio_irq_disable(struct pxa_ep *ep)
+-{
+-	struct pxa_udc *udc = ep->dev;
+-	int index = EPIDX(ep);
+-	u32 udcicr0 = udc_readl(udc, UDCICR0);
+-	u32 udcicr1 = udc_readl(udc, UDCICR1);
+-
+-	if (index < 16)
+-		udc_writel(udc, UDCICR0, udcicr0 & ~(3 << (index * 2)));
+-	else
+-		udc_writel(udc, UDCICR1, udcicr1 & ~(3 << ((index - 16) * 2)));
+-}
+-
+-static inline void udc_set_mask_UDCCR(struct pxa_udc *udc, int mask)
+-{
+-	u32 udccr = udc_readl(udc, UDCCR);
+-	udc_writel(udc, UDCCR,
+-			(udccr & UDCCR_MASK_BITS) | (mask & UDCCR_MASK_BITS));
+-}
+-
+-static inline void udc_clear_mask_UDCCR(struct pxa_udc *udc, int mask)
+-{
+-	u32 udccr = udc_readl(udc, UDCCR);
+-	udc_writel(udc, UDCCR,
+-			(udccr & UDCCR_MASK_BITS) & ~(mask & UDCCR_MASK_BITS));
+-}
+-
+-static inline void ep_write_UDCCSR(struct pxa_ep *ep, int mask)
+-{
+-	if (is_ep0(ep))
+-		mask |= UDCCSR0_ACM;
+-	udc_ep_writel(ep, UDCCSR, mask);
+-}
+-
+-static int ep_count_bytes_remain(struct pxa_ep *ep)
+-{
+-	if (ep->dir_in)
+-		return -EOPNOTSUPP;
+-	return udc_ep_readl(ep, UDCBCR) & 0x3ff;
+-}
+-
+-static int ep_is_empty(struct pxa_ep *ep)
+-{
+-	int ret;
+-
+-	if (!is_ep0(ep) && ep->dir_in)
+-		return -EOPNOTSUPP;
+-	if (is_ep0(ep))
+-		ret = !(udc_ep_readl(ep, UDCCSR) & UDCCSR0_RNE);
+-	else
+-		ret = !(udc_ep_readl(ep, UDCCSR) & UDCCSR_BNE);
+-	return ret;
+-}
+-
+-static int ep_is_full(struct pxa_ep *ep)
+-{
+-	if (is_ep0(ep))
+-		return udc_ep_readl(ep, UDCCSR) & UDCCSR0_IPR;
+-	if (!ep->dir_in)
+-		return -EOPNOTSUPP;
+-	return !(udc_ep_readl(ep, UDCCSR) & UDCCSR_BNF);
+-}
+-
+-static int epout_has_pkt(struct pxa_ep *ep)
+-{
+-	if (!is_ep0(ep) && ep->dir_in)
+-		return -EOPNOTSUPP;
+-	if (is_ep0(ep))
+-		return udc_ep_readl(ep, UDCCSR) & UDCCSR0_OPC;
+-	return udc_ep_readl(ep, UDCCSR) & UDCCSR_PC;
+-}
+-
+-static void set_ep0state(struct pxa_udc *udc, int state)
+-{
+-	struct pxa_ep *ep = &udc->pxa_ep[0];
+-	char *old_stname = EP0_STNAME(udc);
+-
+-	udc->ep0state = state;
+-	ep_dbg(ep, "state=%s->%s, udccsr0=0x%03x, udcbcr=%d\n", old_stname,
+-		EP0_STNAME(udc), udc_ep_readl(ep, UDCCSR),
+-		udc_ep_readl(ep, UDCBCR));
+-}
+-
+-static void ep0_idle(struct pxa_udc *dev)
+-{
+-	set_ep0state(dev, WAIT_FOR_SETUP);
+-}
+-
+-static __init void pxa_ep_setup(struct pxa_ep *ep)
+-{
+-	u32 new_udccr;
+-
+-	new_udccr = ((ep->config << UDCCONR_CN_S) & UDCCONR_CN)
+-		| ((ep->interface << UDCCONR_IN_S) & UDCCONR_IN)
+-		| ((ep->alternate << UDCCONR_AISN_S) & UDCCONR_AISN)
+-		| ((EPADDR(ep) << UDCCONR_EN_S) & UDCCONR_EN)
+-		| ((EPXFERTYPE(ep) << UDCCONR_ET_S) & UDCCONR_ET)
+-		| ((ep->dir_in) ? UDCCONR_ED : 0)
+-		| ((ep->fifo_size << UDCCONR_MPS_S) & UDCCONR_MPS)
+-		| UDCCONR_EE;
+-
+-	udc_ep_writel(ep, UDCCR, new_udccr);
+-}
+-
+-static __init void pxa_eps_setup(struct pxa_udc *dev)
+-{
+-	unsigned int i;
+-
+-	dev_dbg(dev->dev, "%s: dev=%p\n", __func__, dev);
+-
+-	for (i = 1; i < NR_PXA_ENDPOINTS; i++)
+-		pxa_ep_setup(&dev->pxa_ep[i]);
+-}
+-
+-static struct usb_request *pxa_ep_alloc_request(struct usb_ep *_ep)
+-{
+-	struct pxa27x_request *req;
+-
+-	req = xzalloc(sizeof *req);
+-
+-	INIT_LIST_HEAD(&req->queue);
+-	req->in_use = 0;
+-	req->udc_usb_ep = container_of(_ep, struct udc_usb_ep, usb_ep);
+-
+-	return &req->req;
+-}
+-
+-static void pxa_ep_free_request(struct usb_ep *_ep, struct usb_request *_req)
+-{
+-	struct pxa27x_request *req;
+-
+-	req = container_of(_req, struct pxa27x_request, req);
+-	WARN_ON(!list_empty(&req->queue));
+-	kfree(req);
+-}
+-
+-static void ep_add_request(struct pxa_ep *ep, struct pxa27x_request *req)
+-{
+-	if (unlikely(!req))
+-		return;
+-	ep_vdbg(ep, "req:%p, lg=%d, udccsr=0x%03x\n", req,
+-		req->req.length, udc_ep_readl(ep, UDCCSR));
+-
+-	req->in_use = 1;
+-	list_add_tail(&req->queue, &ep->queue);
+-	pio_irq_enable(ep);
+-}
+-
+-static void ep_del_request(struct pxa_ep *ep, struct pxa27x_request *req)
+-{
+-	if (unlikely(!req))
+-		return;
+-	ep_vdbg(ep, "req:%p, lg=%d, udccsr=0x%03x\n", req,
+-		req->req.length, udc_ep_readl(ep, UDCCSR));
+-
+-	list_del_init(&req->queue);
+-	req->in_use = 0;
+-	if (!is_ep0(ep) && list_empty(&ep->queue))
+-		pio_irq_disable(ep);
+-}
+-
+-static void req_done(struct pxa_ep *ep, struct pxa27x_request *req, int status)
+-{
+-	ep_del_request(ep, req);
+-	if (likely(req->req.status == -EINPROGRESS))
+-		req->req.status = status;
+-	else
+-		status = req->req.status;
+-
+-	if (status && status != -ESHUTDOWN)
+-		ep_dbg(ep, "complete req %p stat %d len %u/%u\n",
+-			&req->req, status,
+-			req->req.actual, req->req.length);
+-
+-	req->req.complete(&req->udc_usb_ep->usb_ep, &req->req);
+-}
+-
+-static void ep_end_out_req(struct pxa_ep *ep, struct pxa27x_request *req)
+-{
+-	req_done(ep, req, 0);
+-}
+-
+-static void ep0_end_out_req(struct pxa_ep *ep, struct pxa27x_request *req)
+-{
+-	set_ep0state(ep->dev, OUT_STATUS_STAGE);
+-	ep_end_out_req(ep, req);
+-	ep0_idle(ep->dev);
+-}
+-
+-static void ep_end_in_req(struct pxa_ep *ep, struct pxa27x_request *req)
+-{
+-	req_done(ep, req, 0);
+-}
+-
+-static void ep0_end_in_req(struct pxa_ep *ep, struct pxa27x_request *req)
+-{
+-	set_ep0state(ep->dev, IN_STATUS_STAGE);
+-	ep_end_in_req(ep, req);
+-}
+-
+-static void nuke(struct pxa_ep *ep, int status)
+-{
+-	struct pxa27x_request	*req;
+-
+-	while (!list_empty(&ep->queue)) {
+-		req = list_entry(ep->queue.next, struct pxa27x_request, queue);
+-		req_done(ep, req, status);
+-	}
+-}
+-
+-static int read_packet(struct pxa_ep *ep, struct pxa27x_request *req)
+-{
+-	u32 *buf;
+-	int bytes_ep, bufferspace, count, i;
+-
+-	bytes_ep = ep_count_bytes_remain(ep);
+-	bufferspace = req->req.length - req->req.actual;
+-
+-	buf = (u32 *)(req->req.buf + req->req.actual);
+-
+-	if (likely(!ep_is_empty(ep)))
+-		count = min(bytes_ep, bufferspace);
+-	else /* zlp */
+-		count = 0;
+-
+-	for (i = count; i > 0; i -= 4)
+-		*buf++ = udc_ep_readl(ep, UDCDR);
+-	req->req.actual += count;
+-
+-	ep_write_UDCCSR(ep, UDCCSR_PC);
+-
+-	return count;
+-}
+-
+-static int write_packet(struct pxa_ep *ep, struct pxa27x_request *req,
+-			unsigned int max)
+-{
+-	int length, count, remain, i;
+-	u32 *buf;
+-	u8 *buf_8;
+-
+-	buf = (u32 *)(req->req.buf + req->req.actual);
+-
+-	length = min(req->req.length - req->req.actual, max);
+-	req->req.actual += length;
+-
+-	remain = length & 0x3;
+-	count = length & ~(0x3);
+-	for (i = count; i > 0 ; i -= 4)
+-		udc_ep_writel(ep, UDCDR, *buf++);
+-
+-	buf_8 = (u8 *)buf;
+-	for (i = remain; i > 0; i--)
+-		udc_ep_writeb(ep, UDCDR, *buf_8++);
+-
+-	ep_vdbg(ep, "length=%d+%d, udccsr=0x%03x\n", count, remain,
+-		udc_ep_readl(ep, UDCCSR));
+-
+-	return length;
+-}
+-
+-static int read_fifo(struct pxa_ep *ep, struct pxa27x_request *req)
+-{
+-	int count, is_short, completed = 0;
+-
+-	while (epout_has_pkt(ep)) {
+-		count = read_packet(ep, req);
+-
+-		is_short = (count < ep->fifo_size);
+-		ep_dbg(ep, "read udccsr:%03x, count:%d bytes%s req %p %d/%d\n",
+-			udc_ep_readl(ep, UDCCSR), count, is_short ? "/S" : "",
+-			&req->req, req->req.actual, req->req.length);
+-
+-		/* completion */
+-		if (is_short || req->req.actual == req->req.length) {
+-			completed = 1;
+-			break;
+-		}
+-		/* finished that packet.  the next one may be waiting... */
+-	}
+-	return completed;
+-}
+-
+-static int write_fifo(struct pxa_ep *ep, struct pxa27x_request *req)
+-{
+-	unsigned max;
+-	int count, is_short, is_last = 0, completed = 0, totcount = 0;
+-	u32 udccsr;
+-
+-	max = ep->fifo_size;
+-	do {
+-		is_short = 0;
+-
+-		udccsr = udc_ep_readl(ep, UDCCSR);
+-		if (udccsr & UDCCSR_PC) {
+-			ep_vdbg(ep, "Clearing Transmit Complete, udccsr=%x\n",
+-				udccsr);
+-			ep_write_UDCCSR(ep, UDCCSR_PC);
+-		}
+-		if (udccsr & UDCCSR_TRN) {
+-			ep_vdbg(ep, "Clearing Underrun on, udccsr=%x\n",
+-				udccsr);
+-			ep_write_UDCCSR(ep, UDCCSR_TRN);
+-		}
+-
+-		count = write_packet(ep, req, max);
+-		totcount += count;
+-
+-		/* last packet is usually short (or a zlp) */
+-		if (unlikely(count < max)) {
+-			is_last = 1;
+-			is_short = 1;
+-		} else {
+-			if (likely(req->req.length > req->req.actual)
+-					|| req->req.zero)
+-				is_last = 0;
+-			else
+-				is_last = 1;
+-			/* interrupt/iso maxpacket may not fill the fifo */
+-			is_short = unlikely(max < ep->fifo_size);
+-		}
+-
+-		if (is_short)
+-			ep_write_UDCCSR(ep, UDCCSR_SP);
+-
+-		/* requests complete when all IN data is in the FIFO */
+-		if (is_last) {
+-			completed = 1;
+-			break;
+-		}
+-	} while (!ep_is_full(ep));
+-
+-	ep_dbg(ep, "wrote count:%d bytes%s%s, left:%d req=%p\n",
+-			totcount, is_last ? "/L" : "", is_short ? "/S" : "",
+-			req->req.length - req->req.actual, &req->req);
+-
+-	return completed;
+-}
+-
+-static int read_ep0_fifo(struct pxa_ep *ep, struct pxa27x_request *req)
+-{
+-	int count, is_short, completed = 0;
+-
+-	while (epout_has_pkt(ep)) {
+-		count = read_packet(ep, req);
+-		ep_write_UDCCSR(ep, UDCCSR0_OPC);
+-
+-		is_short = (count < ep->fifo_size);
+-		ep_dbg(ep, "read udccsr:%03x, count:%d bytes%s req %p %d/%d\n",
+-			udc_ep_readl(ep, UDCCSR), count, is_short ? "/S" : "",
+-			&req->req, req->req.actual, req->req.length);
+-
+-		if (is_short || req->req.actual >= req->req.length) {
+-			completed = 1;
+-			break;
+-		}
+-	}
+-
+-	return completed;
+-}
+-
+-static int write_ep0_fifo(struct pxa_ep *ep, struct pxa27x_request *req)
+-{
+-	unsigned	count;
+-	int		is_last, is_short;
+-
+-	count = write_packet(ep, req, EP0_FIFO_SIZE);
+-
+-	is_short = (count < EP0_FIFO_SIZE);
+-	is_last = ((count == 0) || (count < EP0_FIFO_SIZE));
+-
+-	/* Sends either a short packet or a 0 length packet */
+-	if (unlikely(is_short))
+-		ep_write_UDCCSR(ep, UDCCSR0_IPR);
+-
+-	ep_dbg(ep, "in %d bytes%s%s, %d left, req=%p, udccsr0=0x%03x\n",
+-		count, is_short ? "/S" : "", is_last ? "/L" : "",
+-		req->req.length - req->req.actual,
+-		&req->req, udc_ep_readl(ep, UDCCSR));
+-
+-	return is_last;
+-}
+-
+-static int pxa_ep_queue(struct usb_ep *_ep, struct usb_request *_req)
+-{
+-	struct udc_usb_ep	*udc_usb_ep;
+-	struct pxa_ep		*ep;
+-	struct pxa27x_request	*req;
+-	struct pxa_udc		*dev;
+-	int			rc = 0;
+-	int			is_first_req;
+-	unsigned		length;
+-
+-	req = container_of(_req, struct pxa27x_request, req);
+-	udc_usb_ep = container_of(_ep, struct udc_usb_ep, usb_ep);
+-
+-	if (unlikely(!_req || !_req->complete || !_req->buf))
+-		return -EINVAL;
+-
+-	if (unlikely(!_ep))
+-		return -EINVAL;
+-
+-	dev = udc_usb_ep->dev;
+-	ep = udc_usb_ep->pxa_ep;
+-	if (unlikely(!ep))
+-		return -EINVAL;
+-
+-	dev = ep->dev;
+-	if (unlikely(!dev->driver || dev->gadget.speed == USB_SPEED_UNKNOWN)) {
+-		ep_dbg(ep, "bogus device state\n");
+-		return -ESHUTDOWN;
+-	}
+-
+-	/* iso is always one packet per request, that's the only way
+-	 * we can report per-packet status.  that also helps with dma.
+-	 */
+-	if (unlikely(EPXFERTYPE_is_ISO(ep)
+-			&& req->req.length > ep->fifo_size))
+-		return -EMSGSIZE;
+-
+-	is_first_req = list_empty(&ep->queue);
+-	ep_dbg(ep, "queue req %p(first=%s), len %d buf %p\n",
+-			_req, is_first_req ? "yes" : "no",
+-			_req->length, _req->buf);
+-
+-	if (!ep->enabled) {
+-		_req->status = -ESHUTDOWN;
+-		rc = -ESHUTDOWN;
+-		goto out_locked;
+-	}
+-
+-	if (req->in_use) {
+-		ep_err(ep, "refusing to queue req %p (already queued)\n", req);
+-		goto out_locked;
+-	}
+-
+-	length = _req->length;
+-	_req->status = -EINPROGRESS;
+-	_req->actual = 0;
+-
+-	ep_add_request(ep, req);
+-
+-	if (is_ep0(ep)) {
+-		switch (dev->ep0state) {
+-		case WAIT_ACK_SET_CONF_INTERF:
+-			if (length == 0) {
+-				ep_end_in_req(ep, req);
+-			} else {
+-				ep_err(ep, "got a request of %d bytes while"
+-					"in state WAIT_ACK_SET_CONF_INTERF\n",
+-					length);
+-				ep_del_request(ep, req);
+-				rc = -EL2HLT;
+-			}
+-			ep0_idle(ep->dev);
+-			break;
+-		case IN_DATA_STAGE:
+-			if (!ep_is_full(ep))
+-				if (write_ep0_fifo(ep, req))
+-					ep0_end_in_req(ep, req);
+-			break;
+-		case OUT_DATA_STAGE:
+-			if ((length == 0) || !epout_has_pkt(ep))
+-				if (read_ep0_fifo(ep, req))
+-					ep0_end_out_req(ep, req);
+-			break;
+-		default:
+-			ep_err(ep, "odd state %s to send me a request\n",
+-				EP0_STNAME(ep->dev));
+-			ep_del_request(ep, req);
+-			rc = -EL2HLT;
+-			break;
+-		}
+-	} else {
+-		handle_ep(ep);
+-	}
+-
+-out:
+-	return rc;
+-out_locked:
+-	goto out;
+-}
+-
+-static int pxa_ep_dequeue(struct usb_ep *_ep, struct usb_request *_req)
+-{
+-	struct pxa_ep		*ep;
+-	struct udc_usb_ep	*udc_usb_ep;
+-	struct pxa27x_request	*req;
+-	int			rc = -EINVAL;
+-
+-	if (!_ep)
+-		return rc;
+-	udc_usb_ep = container_of(_ep, struct udc_usb_ep, usb_ep);
+-	ep = udc_usb_ep->pxa_ep;
+-	if (!ep || is_ep0(ep))
+-		return rc;
+-
+-	/* make sure it's actually queued on this endpoint */
+-	list_for_each_entry(req, &ep->queue, queue) {
+-		if (&req->req == _req) {
+-			rc = 0;
+-			break;
+-		}
+-	}
+-
+-	if (!rc)
+-		req_done(ep, req, -ECONNRESET);
+-	return rc;
+-}
+-
+-static int pxa_ep_set_halt(struct usb_ep *_ep, int value)
+-{
+-	struct pxa_ep		*ep;
+-	struct udc_usb_ep	*udc_usb_ep;
+-	int rc;
+-
+-
+-	if (!_ep)
+-		return -EINVAL;
+-	udc_usb_ep = container_of(_ep, struct udc_usb_ep, usb_ep);
+-	ep = udc_usb_ep->pxa_ep;
+-	if (!ep || is_ep0(ep))
+-		return -EINVAL;
+-
+-	if (value == 0) {
+-		/*
+-		 * This path (reset toggle+halt) is needed to implement
+-		 * SET_INTERFACE on normal hardware.  but it can't be
+-		 * done from software on the PXA UDC, and the hardware
+-		 * forgets to do it as part of SET_INTERFACE automagic.
+-		 */
+-		ep_dbg(ep, "only host can clear halt\n");
+-		return -EROFS;
+-	}
+-
+-	rc = -EAGAIN;
+-	if (ep->dir_in	&& (ep_is_full(ep) || !list_empty(&ep->queue)))
+-		goto out;
+-
+-	/* FST, FEF bits are the same for control and non control endpoints */
+-	rc = 0;
+-	ep_write_UDCCSR(ep, UDCCSR_FST | UDCCSR_FEF);
+-	if (is_ep0(ep))
+-		set_ep0state(ep->dev, STALL);
+-
+-out:
+-	return rc;
+-}
+-
+-static int pxa_ep_fifo_status(struct usb_ep *_ep)
+-{
+-	struct pxa_ep		*ep;
+-	struct udc_usb_ep	*udc_usb_ep;
+-
+-	if (!_ep)
+-		return -ENODEV;
+-	udc_usb_ep = container_of(_ep, struct udc_usb_ep, usb_ep);
+-	ep = udc_usb_ep->pxa_ep;
+-	if (!ep || is_ep0(ep))
+-		return -ENODEV;
+-
+-	if (ep->dir_in)
+-		return -EOPNOTSUPP;
+-	if (ep->dev->gadget.speed == USB_SPEED_UNKNOWN || ep_is_empty(ep))
+-		return 0;
+-	else
+-		return ep_count_bytes_remain(ep) + 1;
+-}
+-
+-static void pxa_ep_fifo_flush(struct usb_ep *_ep)
+-{
+-	struct pxa_ep		*ep;
+-	struct udc_usb_ep	*udc_usb_ep;
+-
+-	if (!_ep)
+-		return;
+-	udc_usb_ep = container_of(_ep, struct udc_usb_ep, usb_ep);
+-	ep = udc_usb_ep->pxa_ep;
+-	if (!ep || is_ep0(ep))
+-		return;
+-
+-	if (unlikely(!list_empty(&ep->queue)))
+-		ep_dbg(ep, "called while queue list not empty\n");
+-	ep_dbg(ep, "called\n");
+-
+-	/* for OUT, just read and discard the FIFO contents. */
+-	if (!ep->dir_in) {
+-		while (!ep_is_empty(ep))
+-			udc_ep_readl(ep, UDCDR);
+-	} else {
+-		/* most IN status is the same, but ISO can't stall */
+-		ep_write_UDCCSR(ep,
+-				UDCCSR_PC | UDCCSR_FEF | UDCCSR_TRN
+-				| (EPXFERTYPE_is_ISO(ep) ? 0 : UDCCSR_SST));
+-	}
+-}
+-
+-static int pxa_ep_enable(struct usb_ep *_ep,
+-	const struct usb_endpoint_descriptor *desc)
+-{
+-	struct pxa_ep		*ep;
+-	struct udc_usb_ep	*udc_usb_ep;
+-	struct pxa_udc		*udc;
+-
+-	if (!_ep || !desc)
+-		return -EINVAL;
+-
+-	udc_usb_ep = container_of(_ep, struct udc_usb_ep, usb_ep);
+-	if (udc_usb_ep->pxa_ep) {
+-		ep = udc_usb_ep->pxa_ep;
+-		ep_warn(ep, "usb_ep %s already enabled, doing nothing\n",
+-			_ep->name);
+-	} else {
+-		ep = find_pxa_ep(udc_usb_ep->dev, udc_usb_ep);
+-	}
+-
+-	if (!ep || is_ep0(ep)) {
+-		dev_err(udc_usb_ep->dev->dev,
+-			"unable to match pxa_ep for ep %s\n",
+-			_ep->name);
+-		return -EINVAL;
+-	}
+-
+-	if ((desc->bDescriptorType != USB_DT_ENDPOINT)
+-			|| (ep->type != usb_endpoint_type(desc))) {
+-		ep_err(ep, "type mismatch\n");
+-		return -EINVAL;
+-	}
+-
+-	if (ep->fifo_size < le16_to_cpu(desc->wMaxPacketSize)) {
+-		ep_err(ep, "bad maxpacket\n");
+-		return -ERANGE;
+-	}
+-
+-	udc_usb_ep->pxa_ep = ep;
+-	udc = ep->dev;
+-
+-	if (!udc->driver || udc->gadget.speed == USB_SPEED_UNKNOWN) {
+-		ep_err(ep, "bogus device state\n");
+-		return -ESHUTDOWN;
+-	}
+-
+-	ep->enabled = 1;
+-
+-	/* flush fifo (mostly for OUT buffers) */
+-	pxa_ep_fifo_flush(_ep);
+-
+-	ep_dbg(ep, "enabled\n");
+-	return 0;
+-}
+-
+-static int pxa_ep_disable(struct usb_ep *_ep)
+-{
+-	struct pxa_ep		*ep;
+-	struct udc_usb_ep	*udc_usb_ep;
+-
+-	if (!_ep)
+-		return -EINVAL;
+-
+-	udc_usb_ep = container_of(_ep, struct udc_usb_ep, usb_ep);
+-	ep = udc_usb_ep->pxa_ep;
+-	if (!ep || is_ep0(ep) || !list_empty(&ep->queue))
+-		return -EINVAL;
+-
+-	ep->enabled = 0;
+-	nuke(ep, -ESHUTDOWN);
+-
+-	pxa_ep_fifo_flush(_ep);
+-	udc_usb_ep->pxa_ep = NULL;
+-
+-	ep_dbg(ep, "disabled\n");
+-	return 0;
+-}
+-
+-static struct usb_ep_ops pxa_ep_ops = {
+-	.enable		= pxa_ep_enable,
+-	.disable	= pxa_ep_disable,
+-
+-	.alloc_request	= pxa_ep_alloc_request,
+-	.free_request	= pxa_ep_free_request,
+-
+-	.queue		= pxa_ep_queue,
+-	.dequeue	= pxa_ep_dequeue,
+-
+-	.set_halt	= pxa_ep_set_halt,
+-	.fifo_status	= pxa_ep_fifo_status,
+-	.fifo_flush	= pxa_ep_fifo_flush,
+-};
+-
+-static void dplus_pullup(struct pxa_udc *udc, int on)
+-{
+-	if (on) {
+-		if (udc->mach->gpio_pullup > 0)
+-			gpio_set_value(udc->mach->gpio_pullup,
+-				       !udc->mach->gpio_pullup_inverted);
+-		if (udc->mach->udc_command)
+-			udc->mach->udc_command(PXA2XX_UDC_CMD_CONNECT);
+-	} else {
+-		if (udc->mach->gpio_pullup > 0)
+-			gpio_set_value(udc->mach->gpio_pullup,
+-				       udc->mach->gpio_pullup_inverted);
+-		if (udc->mach->udc_command)
+-			udc->mach->udc_command(PXA2XX_UDC_CMD_DISCONNECT);
+-	}
+-	udc->pullup_on = on;
+-}
+-
+-/**
+- * pxa_udc_get_frame - Returns usb frame number
+- * @_gadget: usb gadget
+- */
+-static int pxa_udc_get_frame(struct usb_gadget *_gadget)
+-{
+-	struct pxa_udc *udc = to_gadget_udc(_gadget);
+-
+-	return udc_readl(udc, UDCFNR) & 0x7ff;
+-}
+-
+-static int pxa_udc_wakeup(struct usb_gadget *_gadget)
+-{
+-	struct pxa_udc *udc = to_gadget_udc(_gadget);
+-
+-	/* host may not have enabled remote wakeup */
+-	if ((udc_readl(udc, UDCCR) & UDCCR_DWRE) == 0)
+-		return -EHOSTUNREACH;
+-	udc_set_mask_UDCCR(udc, UDCCR_UDR);
+-	return 0;
+-}
+-
+-static void udc_enable(struct pxa_udc *udc);
+-static void udc_disable(struct pxa_udc *udc);
+-
+-static int should_enable_udc(struct pxa_udc *udc)
+-{
+-	int put_on;
+-
+-	put_on = ((udc->pullup_on) && (udc->driver));
+-	put_on &= udc->vbus_sensed;
+-	return put_on;
+-}
+-
+-static int should_disable_udc(struct pxa_udc *udc)
+-{
+-	int put_off;
+-
+-	put_off = ((!udc->pullup_on) || (!udc->driver));
+-	put_off |= !udc->vbus_sensed;
+-	return put_off;
+-}
+-
+-static int pxa_udc_pullup(struct usb_gadget *_gadget, int is_active)
+-{
+-	struct pxa_udc *udc = to_gadget_udc(_gadget);
+-
+-	if ((udc->mach->gpio_pullup < 0) && !udc->mach->udc_command)
+-		return -EOPNOTSUPP;
+-
+-	dplus_pullup(udc, is_active);
+-
+-	if (should_enable_udc(udc))
+-		udc_enable(udc);
+-	if (should_disable_udc(udc))
+-		udc_disable(udc);
+-	return 0;
+-}
+-
+-static int pxa_udc_vbus_session(struct usb_gadget *_gadget, int is_active)
+-{
+-	struct pxa_udc *udc = to_gadget_udc(_gadget);
+-
+-	udc->vbus_sensed = is_active;
+-	if (should_enable_udc(udc))
+-		udc_enable(udc);
+-	if (should_disable_udc(udc))
+-		udc_disable(udc);
+-
+-	return 0;
+-}
+-
+-static int pxa_udc_start(struct usb_gadget *gadget, struct usb_gadget_driver *driver);
+-static int pxa_udc_stop(struct usb_gadget *gadget);
+-static void pxa_udc_gadget_poll(struct usb_gadget *gadget);
+-
+-static const struct usb_gadget_ops pxa_udc_ops = {
+-	.get_frame	= pxa_udc_get_frame,
+-	.wakeup		= pxa_udc_wakeup,
+-	.pullup		= pxa_udc_pullup,
+-	.vbus_session	= pxa_udc_vbus_session,
+-	.udc_start	= pxa_udc_start,
+-	.udc_stop	= pxa_udc_stop,
+-	.udc_poll	= pxa_udc_gadget_poll,
+-};
+-
+-static void usb_clk_enable(void)
+-{
+-	CKEN |= CKEN_USB;
+-}
+-
+-static void usb_clk_disable(void)
+-{
+-	CKEN &= ~CKEN_USB;
+-}
+-
+-static void udc_disable(struct pxa_udc *udc)
+-{
+-	if (!udc->enabled)
+-		return;
+-
+-	udc_writel(udc, UDCICR0, 0);
+-	udc_writel(udc, UDCICR1, 0);
+-
+-	udc_clear_mask_UDCCR(udc, UDCCR_UDE);
+-	usb_clk_disable();
+-
+-	ep0_idle(udc);
+-	udc->gadget.speed = USB_SPEED_UNKNOWN;
+-
+-	udc->enabled = 0;
+-}
+-
+-static __init void udc_init_data(struct pxa_udc *dev)
+-{
+-	int i;
+-	struct pxa_ep *ep;
+-
+-	/* device/ep0 records init */
+-	INIT_LIST_HEAD(&dev->gadget.ep_list);
+-	INIT_LIST_HEAD(&dev->gadget.ep0->ep_list);
+-	dev->udc_usb_ep[0].pxa_ep = &dev->pxa_ep[0];
+-	ep0_idle(dev);
+-
+-	/* PXA endpoints init */
+-	for (i = 0; i < NR_PXA_ENDPOINTS; i++) {
+-		ep = &dev->pxa_ep[i];
+-
+-		ep->enabled = is_ep0(ep);
+-		INIT_LIST_HEAD(&ep->queue);
+-	}
+-
+-	/* USB endpoints init */
+-	for (i = 1; i < NR_USB_ENDPOINTS; i++) {
+-		list_add_tail(&dev->udc_usb_ep[i].usb_ep.ep_list,
+-				&dev->gadget.ep_list);
+-		usb_ep_set_maxpacket_limit(&dev->udc_usb_ep[i].usb_ep,
+-					   dev->udc_usb_ep[i].usb_ep.maxpacket);
+-	}
+-}
+-
+-static void udc_enable(struct pxa_udc *udc)
+-{
+-	if (udc->enabled)
+-		return;
+-
+-	udc_writel(udc, UDCICR0, 0);
+-	udc_writel(udc, UDCICR1, 0);
+-	udc_clear_mask_UDCCR(udc, UDCCR_UDE);
+-
+-	usb_clk_enable();
+-
+-	ep0_idle(udc);
+-	udc->gadget.speed = USB_SPEED_FULL;
+-	memset(&udc->stats, 0, sizeof(udc->stats));
+-
+-	udc_set_mask_UDCCR(udc, UDCCR_UDE);
+-	ep_write_UDCCSR(&udc->pxa_ep[0], UDCCSR0_ACM);
+-	udelay(2);
+-	if (udc_readl(udc, UDCCR) & UDCCR_EMCE)
+-		dev_err(udc->dev, "Configuration errors, udc disabled\n");
+-
+-	/*
+-	 * Caller must be able to sleep in order to cope with startup transients
+-	 */
+-	mdelay(100);
+-
+-	/* enable suspend/resume and reset irqs */
+-	udc_writel(udc, UDCICR1,
+-			UDCICR1_IECC | UDCICR1_IERU
+-			| UDCICR1_IESU | UDCICR1_IERS);
+-
+-	pio_irq_enable(&udc->pxa_ep[0]);
+-	udc->enabled = 1;
+-}
+-
+-static int pxa_udc_start(struct usb_gadget *gadget, struct usb_gadget_driver *driver)
+-{
+-	struct pxa_udc *udc = the_controller;
+-
+-	/* first hook up the driver ... */
+-	udc->driver = driver;
+-
+-	dev_dbg(udc->dev, "registered gadget function '%s'\n",
+-		driver->function);
+-
+-	if (should_enable_udc(udc))
+-		udc_enable(udc);
+-	return 0;
+-}
+-
+-static void stop_activity(struct pxa_udc *udc)
+-{
+-	int i;
+-
+-	udc->gadget.speed = USB_SPEED_UNKNOWN;
+-
+-	for (i = 0; i < NR_USB_ENDPOINTS; i++)
+-		pxa_ep_disable(&udc->udc_usb_ep[i].usb_ep);
+-}
+-
+-static int pxa_udc_stop(struct usb_gadget *gadget)
+-{
+-	struct pxa_udc *udc = the_controller;
+-
+-	if (!udc)
+-		return -ENODEV;
+-
+-	stop_activity(udc);
+-	udc_disable(udc);
+-
+-	udc->driver = NULL;
+-
+-	/*
+-	dev_info(udc->dev, "unregistered gadget driver '%s'\n",
+-		 driver->driver.name);
+-	*/
+-	return 0;
+-}
+-
+-static void handle_ep0_ctrl_req(struct pxa_udc *udc,
+-				struct pxa27x_request *req)
+-{
+-	struct pxa_ep *ep = &udc->pxa_ep[0];
+-	union {
+-		struct usb_ctrlrequest	r;
+-		u32			word[2];
+-	} u;
+-	int i;
+-	int have_extrabytes = 0;
+-
+-	nuke(ep, -EPROTO);
+-
+-	/*
+-	 * In the PXA320 manual, in the section about Back-to-Back setup
+-	 * packets, it describes this situation.  The solution is to set OPC to
+-	 * get rid of the status packet, and then continue with the setup
+-	 * packet. Generalize to pxa27x CPUs.
+-	 */
+-	if (epout_has_pkt(ep) && (ep_count_bytes_remain(ep) == 0))
+-		ep_write_UDCCSR(ep, UDCCSR0_OPC);
+-
+-	/* read SETUP packet */
+-	for (i = 0; i < 2; i++) {
+-		if (unlikely(ep_is_empty(ep)))
+-			goto stall;
+-		u.word[i] = udc_ep_readl(ep, UDCDR);
+-	}
+-
+-	have_extrabytes = !ep_is_empty(ep);
+-	while (!ep_is_empty(ep)) {
+-		i = udc_ep_readl(ep, UDCDR);
+-		ep_err(ep, "wrong to have extra bytes for setup : 0x%08x\n", i);
+-	}
+-
+-	ep_dbg(ep, "SETUP %02x.%02x v%04x i%04x l%04x\n",
+-		u.r.bRequestType, u.r.bRequest,
+-		le16_to_cpu(u.r.wValue), le16_to_cpu(u.r.wIndex),
+-		le16_to_cpu(u.r.wLength));
+-	if (unlikely(have_extrabytes))
+-		goto stall;
+-
+-	if (u.r.bRequestType & USB_DIR_IN)
+-		set_ep0state(udc, IN_DATA_STAGE);
+-	else
+-		set_ep0state(udc, OUT_DATA_STAGE);
+-
+-	/* Tell UDC to enter Data Stage */
+-	ep_write_UDCCSR(ep, UDCCSR0_SA | UDCCSR0_OPC);
+-
+-	i = udc->driver->setup(&udc->gadget, &u.r);
+-	if (i < 0)
+-		goto stall;
+-out:
+-	return;
+-stall:
+-	ep_dbg(ep, "protocol STALL, udccsr0=%03x err %d\n",
+-		udc_ep_readl(ep, UDCCSR), i);
+-	ep_write_UDCCSR(ep, UDCCSR0_FST | UDCCSR0_FTF);
+-	set_ep0state(udc, STALL);
+-	goto out;
+-}
+-
+-static void handle_ep0(struct pxa_udc *udc, int fifo_irq, int opc_irq)
+-{
+-	u32			udccsr0;
+-	struct pxa_ep		*ep = &udc->pxa_ep[0];
+-	struct pxa27x_request	*req = NULL;
+-	int			completed = 0;
+-
+-	if (!list_empty(&ep->queue))
+-		req = list_entry(ep->queue.next, struct pxa27x_request, queue);
+-
+-	udccsr0 = udc_ep_readl(ep, UDCCSR);
+-	ep_dbg(ep, "state=%s, req=%p, udccsr0=0x%03x, udcbcr=%d, irq_msk=%x\n",
+-		EP0_STNAME(udc), req, udccsr0, udc_ep_readl(ep, UDCBCR),
+-		(fifo_irq << 1 | opc_irq));
+-
+-	if (udccsr0 & UDCCSR0_SST) {
+-		ep_dbg(ep, "clearing stall status\n");
+-		nuke(ep, -EPIPE);
+-		ep_write_UDCCSR(ep, UDCCSR0_SST);
+-		ep0_idle(udc);
+-	}
+-
+-	if (udccsr0 & UDCCSR0_SA) {
+-		nuke(ep, 0);
+-		set_ep0state(udc, SETUP_STAGE);
+-	}
+-
+-	switch (udc->ep0state) {
+-	case WAIT_FOR_SETUP:
+-		/*
+-		 * Hardware bug : beware, we cannot clear OPC, since we would
+-		 * miss a potential OPC irq for a setup packet.
+-		 * So, we only do ... nothing, and hope for a next irq with
+-		 * UDCCSR0_SA set.
+-		 */
+-		break;
+-	case SETUP_STAGE:
+-		udccsr0 &= UDCCSR0_CTRL_REQ_MASK;
+-		if (likely(udccsr0 == UDCCSR0_CTRL_REQ_MASK))
+-			handle_ep0_ctrl_req(udc, req);
+-		break;
+-	case IN_DATA_STAGE:			/* GET_DESCRIPTOR */
+-		if (epout_has_pkt(ep))
+-			ep_write_UDCCSR(ep, UDCCSR0_OPC);
+-		if (req && !ep_is_full(ep))
+-			completed = write_ep0_fifo(ep, req);
+-		if (completed)
+-			ep0_end_in_req(ep, req);
+-		break;
+-	case OUT_DATA_STAGE:			/* SET_DESCRIPTOR */
+-		if (epout_has_pkt(ep) && req)
+-			completed = read_ep0_fifo(ep, req);
+-		if (completed)
+-			ep0_end_out_req(ep, req);
+-		break;
+-	case STALL:
+-		ep_write_UDCCSR(ep, UDCCSR0_FST);
+-		break;
+-	case IN_STATUS_STAGE:
+-		/*
+-		 * Hardware bug : beware, we cannot clear OPC, since we would
+-		 * miss a potential PC irq for a setup packet.
+-		 * So, we only put the ep0 into WAIT_FOR_SETUP state.
+-		 */
+-		if (opc_irq)
+-			ep0_idle(udc);
+-		break;
+-	case OUT_STATUS_STAGE:
+-	case WAIT_ACK_SET_CONF_INTERF:
+-		ep_warn(ep, "should never get in %s state here!!!\n",
+-				EP0_STNAME(ep->dev));
+-		ep0_idle(udc);
+-		break;
+-	}
+-}
+-
+-static void handle_ep(struct pxa_ep *ep)
+-{
+-	struct pxa27x_request	*req;
+-	int completed;
+-	u32 udccsr;
+-	int is_in = ep->dir_in;
+-	int loop = 0;
+-
+-	do {
+-		completed = 0;
+-		udccsr = udc_ep_readl(ep, UDCCSR);
+-
+-		if (likely(!list_empty(&ep->queue)))
+-			req = list_entry(ep->queue.next,
+-					struct pxa27x_request, queue);
+-		else
+-			req = NULL;
+-
+-		ep_dbg(ep, "req:%p, udccsr 0x%03x loop=%d\n",
+-				req, udccsr, loop++);
+-
+-		if (unlikely(udccsr & (UDCCSR_SST | UDCCSR_TRN)))
+-			udc_ep_writel(ep, UDCCSR,
+-					udccsr & (UDCCSR_SST | UDCCSR_TRN));
+-		if (!req)
+-			break;
+-
+-		if (unlikely(is_in)) {
+-			if (likely(!ep_is_full(ep)))
+-				completed = write_fifo(ep, req);
+-		} else {
+-			if (likely(epout_has_pkt(ep)))
+-				completed = read_fifo(ep, req);
+-		}
+-
+-		if (completed) {
+-			if (is_in)
+-				ep_end_in_req(ep, req);
+-			else
+-				ep_end_out_req(ep, req);
+-		}
+-	} while (completed);
+-
+-	return;
+-}
+-
+-static void pxa27x_change_configuration(struct pxa_udc *udc, int config)
+-{
+-	struct usb_ctrlrequest req ;
+-
+-	dev_dbg(udc->dev, "config=%d\n", config);
+-
+-	udc->config = config;
+-	udc->last_interface = 0;
+-	udc->last_alternate = 0;
+-
+-	req.bRequestType = 0;
+-	req.bRequest = USB_REQ_SET_CONFIGURATION;
+-	req.wValue = config;
+-	req.wIndex = 0;
+-	req.wLength = 0;
+-
+-	set_ep0state(udc, WAIT_ACK_SET_CONF_INTERF);
+-	udc->driver->setup(&udc->gadget, &req);
+-}
+-
+-static void __maybe_unused pxa27x_change_interface(struct pxa_udc *udc, int iface, int alt)
+-{
+-	struct usb_ctrlrequest  req;
+-
+-	dev_dbg(udc->dev, "interface=%d, alternate setting=%d\n", iface, alt);
+-
+-	udc->last_interface = iface;
+-	udc->last_alternate = alt;
+-
+-	req.bRequestType = USB_RECIP_INTERFACE;
+-	req.bRequest = USB_REQ_SET_INTERFACE;
+-	req.wValue = alt;
+-	req.wIndex = iface;
+-	req.wLength = 0;
+-
+-	set_ep0state(udc, WAIT_ACK_SET_CONF_INTERF);
+-	ep_write_UDCCSR(&udc->pxa_ep[0], UDCCSR0_AREN);
+-	udc->driver->setup(&udc->gadget, &req);
+-}
+-
+-static void irq_handle_data(struct pxa_udc *udc)
+-{
+-	int i;
+-	struct pxa_ep *ep;
+-	u32 udcisr0 = udc_readl(udc, UDCISR0) & UDCCISR0_EP_MASK;
+-	u32 udcisr1 = udc_readl(udc, UDCISR1) & UDCCISR1_EP_MASK;
+-
+-	if (udcisr0 & UDCISR_INT_MASK) {
+-		udc_writel(udc, UDCISR0, UDCISR_INT(0, UDCISR_INT_MASK));
+-		handle_ep0(udc, !!(udcisr0 & UDCICR_FIFOERR),
+-				!!(udcisr0 & UDCICR_PKTCOMPL));
+-	}
+-
+-	udcisr0 >>= 2;
+-	for (i = 1; udcisr0 != 0 && i < 16; udcisr0 >>= 2, i++) {
+-		if (!(udcisr0 & UDCISR_INT_MASK))
+-			continue;
+-
+-		udc_writel(udc, UDCISR0, UDCISR_INT(i, UDCISR_INT_MASK));
+-
+-		WARN_ON(i >= ARRAY_SIZE(udc->pxa_ep));
+-		if (i < ARRAY_SIZE(udc->pxa_ep)) {
+-			ep = &udc->pxa_ep[i];
+-			if (ep->enabled)
+-				handle_ep(ep);
+-		}
+-	}
+-
+-	for (i = 16; udcisr1 != 0 && i < 24; udcisr1 >>= 2, i++) {
+-		udc_writel(udc, UDCISR1, UDCISR_INT(i - 16, UDCISR_INT_MASK));
+-		if (!(udcisr1 & UDCISR_INT_MASK))
+-			continue;
+-
+-		WARN_ON(i >= ARRAY_SIZE(udc->pxa_ep));
+-		if (i < ARRAY_SIZE(udc->pxa_ep)) {
+-			ep = &udc->pxa_ep[i];
+-			if (ep->enabled)
+-				handle_ep(ep);
+-		}
+-	}
+-
+-}
+-
+-static void irq_udc_suspend(struct pxa_udc *udc)
+-{
+-	udc_writel(udc, UDCISR1, UDCISR1_IRSU);
+-
+-	if (udc->gadget.speed != USB_SPEED_UNKNOWN
+-			&& udc->driver && udc->driver->suspend)
+-		udc->driver->suspend(&udc->gadget);
+-	ep0_idle(udc);
+-}
+-
+-static void irq_udc_resume(struct pxa_udc *udc)
+-{
+-	udc_writel(udc, UDCISR1, UDCISR1_IRRU);
+-
+-	if (udc->gadget.speed != USB_SPEED_UNKNOWN
+-			&& udc->driver && udc->driver->resume)
+-		udc->driver->resume(&udc->gadget);
+-}
+-
+-static void irq_udc_reconfig(struct pxa_udc *udc)
+-{
+-	unsigned config, interface, alternate, config_change;
+-	u32 udccr = udc_readl(udc, UDCCR);
+-
+-	udc_writel(udc, UDCISR1, UDCISR1_IRCC);
+-
+-	config = (udccr & UDCCR_ACN) >> UDCCR_ACN_S;
+-	config_change = (config != udc->config);
+-	if (config_change)
+-		update_pxa_ep_matches(udc);
+-	udc_set_mask_UDCCR(udc, UDCCR_SMAC);
+-	ep_write_UDCCSR(&udc->pxa_ep[0], UDCCSR0_AREN);
+-
+-	pxa27x_change_configuration(udc, config);
+-	interface = (udccr & UDCCR_AIN) >> UDCCR_AIN_S;
+-	alternate = (udccr & UDCCR_AAISN) >> UDCCR_AAISN_S;
+-
+-	/*
+-	 * barebox specific: do not call change interface, as change_config has
+-	 * already setup the gadget.
+-	 * pxa27x_change_interface(udc, interface, alternate);
+-	 */
+-}
+-
+-static void irq_udc_reset(struct pxa_udc *udc)
+-{
+-	u32 udccr = udc_readl(udc, UDCCR);
+-	struct pxa_ep *ep = &udc->pxa_ep[0];
+-
+-	dev_info(udc->dev, "USB reset\n");
+-	udc_writel(udc, UDCISR1, UDCISR1_IRRS);
+-
+-	if ((udccr & UDCCR_UDA) == 0) {
+-		dev_dbg(udc->dev, "USB reset start\n");
+-		stop_activity(udc);
+-	}
+-	udc->gadget.speed = USB_SPEED_FULL;
+-
+-	nuke(ep, -EPROTO);
+-	ep_write_UDCCSR(ep, UDCCSR0_FTF | UDCCSR0_OPC);
+-	ep0_idle(udc);
+-}
+-
+-static void pxa_udc_gadget_poll(struct usb_gadget *gadget)
+-{
+-	struct pxa_udc *udc = to_gadget_udc(gadget);
+-	u32 udcisr0 = udc_readl(udc, UDCISR0);
+-	u32 udcisr1 = udc_readl(udc, UDCISR1);
+-	u32 udccr = udc_readl(udc, UDCCR);
+-	u32 udcisr1_spec;
+-
+-	udc->vbus_sensed = udc->mach->udc_is_connected();
+-	if (should_enable_udc(udc))
+-		udc_enable(udc);
+-	if (should_disable_udc(udc)) {
+-		stop_activity(udc);
+-		udc_disable(udc);
+-	}
+-
+-	if (!udc->enabled)
+-		return;
+-
+-	dev_dbg(udc->dev, "Interrupt, UDCISR0:0x%08x, UDCISR1:0x%08x, "
+-		"UDCCR:0x%08x\n", udcisr0, udcisr1, udccr);
+-
+-	udcisr1_spec = udcisr1 & 0xf8000000;
+-	if (unlikely(udcisr1_spec & UDCISR1_IRSU))
+-		irq_udc_suspend(udc);
+-	if (unlikely(udcisr1_spec & UDCISR1_IRRU))
+-		irq_udc_resume(udc);
+-	if (unlikely(udcisr1_spec & UDCISR1_IRCC))
+-		irq_udc_reconfig(udc);
+-	if (unlikely(udcisr1_spec & UDCISR1_IRRS))
+-		irq_udc_reset(udc);
+-
+-	if ((udcisr0 & UDCCISR0_EP_MASK) | (udcisr1 & UDCCISR1_EP_MASK))
+-		irq_handle_data(udc);
+-}
+-
+-static struct pxa_udc memory = {
+-	.gadget = {
+-		.ops		= &pxa_udc_ops,
+-		.ep0		= &memory.udc_usb_ep[0].usb_ep,
+-		.name		= driver_name,
+-	},
+-
+-	.udc_usb_ep = {
+-		USB_EP_CTRL,
+-		USB_EP_OUT_BULK(1),
+-		USB_EP_IN_BULK(2),
+-		USB_EP_IN_ISO(3),
+-		USB_EP_OUT_ISO(4),
+-		USB_EP_IN_INT(5),
+-	},
+-
+-	.pxa_ep = {
+-		PXA_EP_CTRL,
+-		/* Endpoints for gadget zero */
+-		PXA_EP_OUT_BULK(1, 1, 3, 0, 0),
+-		PXA_EP_IN_BULK(2,  2, 3, 0, 0),
+-		/* Endpoints for ether gadget, file storage gadget */
+-		PXA_EP_OUT_BULK(3, 1, 1, 0, 0),
+-		PXA_EP_IN_BULK(4,  2, 1, 0, 0),
+-		PXA_EP_IN_ISO(5,   3, 1, 0, 0),
+-		PXA_EP_OUT_ISO(6,  4, 1, 0, 0),
+-		PXA_EP_IN_INT(7,   5, 1, 0, 0),
+-		/* Endpoints for RNDIS, serial */
+-		PXA_EP_OUT_BULK(8, 1, 2, 0, 0),
+-		PXA_EP_IN_BULK(9,  2, 2, 0, 0),
+-		PXA_EP_IN_INT(10,  5, 2, 0, 0),
+-		/*
+-		 * All the following endpoints are only for completion.  They
+-		 * won't never work, as multiple interfaces are really broken on
+-		 * the pxa.
+-		*/
+-		PXA_EP_OUT_BULK(11, 1, 2, 1, 0),
+-		PXA_EP_IN_BULK(12,  2, 2, 1, 0),
+-		/* Endpoint for CDC Ether */
+-		PXA_EP_OUT_BULK(13, 1, 1, 1, 1),
+-		PXA_EP_IN_BULK(14,  2, 1, 1, 1),
+-	}
+-};
+-
+-static int __init pxa_udc_probe(struct device *dev)
+-{
+-	struct resource *iores;
+-	struct pxa_udc *udc = &memory;
+-	int gpio, ret;
+-
+-	iores = dev_request_mem_resource(dev, 0);
+-	if (IS_ERR(iores))
+-		return PTR_ERR(iores);
+-	udc->regs = IOMEM(iores->start);
+-
+-	udc->dev = dev;
+-	udc->mach = dev->platform_data;
+-
+-	gpio = udc->mach->gpio_pullup;
+-	if (gpio >= 0) {
+-		gpio_direction_output(gpio,
+-				      udc->mach->gpio_pullup_inverted);
+-	}
+-
+-	udc->vbus_sensed = 0;
+-
+-	the_controller = udc;
+-	udc_init_data(udc);
+-	pxa_eps_setup(udc);
+-
+-	ret = usb_add_gadget_udc_release(dev, &udc->gadget, NULL);
+-	if (ret)
+-		return ret;
+-
+-	return 0;
+-}
+-
+-#define pxa27x_clear_otgph()   do {} while (0)
+-
+-static struct driver udc_driver = {
+-	.name		= "pxa27x-udc",
+-	.probe		= pxa_udc_probe,
+-};
+-device_platform_driver(udc_driver);
+diff --git a/drivers/usb/gadget/udc/pxa27x_udc.h b/drivers/usb/gadget/udc/pxa27x_udc.h
+deleted file mode 100644
+index 80a93cdcf9..0000000000
+--- a/drivers/usb/gadget/udc/pxa27x_udc.h
++++ /dev/null
+@@ -1,380 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+-/*
+- * linux/drivers/usb/gadget/pxa27x_udc.h
+- * Intel PXA27x on-chip full speed USB device controller
+- *
+- * Inspired by original driver by Frank Becker, David Brownell, and others.
+- * Copyright (C) 2008 Robert Jarzmik
+- *
+- * Taken from linux-2.6 kernel and adapted to barebox.
+- */
+-
+-#ifndef __LINUX_USB_GADGET_PXA27X_H
+-#define __LINUX_USB_GADGET_PXA27X_H
+-
+-/*
+- * Register definitions
+- */
+-/* Offsets */
+-#define UDCCR		0x0000		/* UDC Control Register */
+-#define UDCICR0		0x0004		/* UDC Interrupt Control Register0 */
+-#define UDCICR1		0x0008		/* UDC Interrupt Control Register1 */
+-#define UDCISR0		0x000C		/* UDC Interrupt Status Register 0 */
+-#define UDCISR1		0x0010		/* UDC Interrupt Status Register 1 */
+-#define UDCFNR		0x0014		/* UDC Frame Number Register */
+-#define UDCOTGICR	0x0018		/* UDC On-The-Go interrupt control */
+-#define UP2OCR		0x0020		/* USB Port 2 Output Control register */
+-#define UP3OCR		0x0024		/* USB Port 3 Output Control register */
+-#define UDCCSRn(x)	(0x0100 + ((x)<<2)) /* UDC Control/Status register */
+-#define UDCBCRn(x)	(0x0200 + ((x)<<2)) /* UDC Byte Count Register */
+-#define UDCDRn(x)	(0x0300 + ((x)<<2)) /* UDC Data Register  */
+-#define UDCCRn(x)	(0x0400 + ((x)<<2)) /* UDC Control Register */
+-
+-#define UDCCR_OEN	(1 << 31)	/* On-the-Go Enable */
+-#define UDCCR_AALTHNP	(1 << 30)	/* A-device Alternate Host Negotiation
+-					   Protocol Port Support */
+-#define UDCCR_AHNP	(1 << 29)	/* A-device Host Negotiation Protocol
+-					   Support */
+-#define UDCCR_BHNP	(1 << 28)	/* B-device Host Negotiation Protocol
+-					   Enable */
+-#define UDCCR_DWRE	(1 << 16)	/* Device Remote Wake-up Enable */
+-#define UDCCR_ACN	(0x03 << 11)	/* Active UDC configuration Number */
+-#define UDCCR_ACN_S	11
+-#define UDCCR_AIN	(0x07 << 8)	/* Active UDC interface Number */
+-#define UDCCR_AIN_S	8
+-#define UDCCR_AAISN	(0x07 << 5)	/* Active UDC Alternate Interface
+-					   Setting Number */
+-#define UDCCR_AAISN_S	5
+-#define UDCCR_SMAC	(1 << 4)	/* Switch Endpoint Memory to Active
+-					   Configuration */
+-#define UDCCR_EMCE	(1 << 3)	/* Endpoint Memory Configuration
+-					   Error */
+-#define UDCCR_UDR	(1 << 2)	/* UDC Resume */
+-#define UDCCR_UDA	(1 << 1)	/* UDC Active */
+-#define UDCCR_UDE	(1 << 0)	/* UDC Enable */
+-
+-#define UDCICR_INT(n, intr) (((intr) & 0x03) << (((n) & 0x0F) * 2))
+-#define UDCICR1_IECC	(1 << 31)	/* IntEn - Configuration Change */
+-#define UDCICR1_IESOF	(1 << 30)	/* IntEn - Start of Frame */
+-#define UDCICR1_IERU	(1 << 29)	/* IntEn - Resume */
+-#define UDCICR1_IESU	(1 << 28)	/* IntEn - Suspend */
+-#define UDCICR1_IERS	(1 << 27)	/* IntEn - Reset */
+-#define UDCICR_FIFOERR	(1 << 1)	/* FIFO Error interrupt for EP */
+-#define UDCICR_PKTCOMPL	(1 << 0)	/* Packet Complete interrupt for EP */
+-#define UDCICR_INT_MASK	(UDCICR_FIFOERR | UDCICR_PKTCOMPL)
+-
+-#define UDCISR_INT(n, intr) (((intr) & 0x03) << (((n) & 0x0F) * 2))
+-#define UDCISR1_IRCC	(1 << 31)	/* IntReq - Configuration Change */
+-#define UDCISR1_IRSOF	(1 << 30)	/* IntReq - Start of Frame */
+-#define UDCISR1_IRRU	(1 << 29)	/* IntReq - Resume */
+-#define UDCISR1_IRSU	(1 << 28)	/* IntReq - Suspend */
+-#define UDCISR1_IRRS	(1 << 27)	/* IntReq - Reset */
+-#define UDCISR_INT_MASK	(UDCICR_FIFOERR | UDCICR_PKTCOMPL)
+-
+-#define UDCOTGICR_IESF	(1 << 24)	/* OTG SET_FEATURE command recvd */
+-#define UDCOTGICR_IEXR	(1 << 17)	/* Extra Transceiver Interrupt
+-					   Rising Edge Interrupt Enable */
+-#define UDCOTGICR_IEXF	(1 << 16)	/* Extra Transceiver Interrupt
+-					   Falling Edge Interrupt Enable */
+-#define UDCOTGICR_IEVV40R (1 << 9)	/* OTG Vbus Valid 4.0V Rising Edge
+-					   Interrupt Enable */
+-#define UDCOTGICR_IEVV40F (1 << 8)	/* OTG Vbus Valid 4.0V Falling Edge
+-					   Interrupt Enable */
+-#define UDCOTGICR_IEVV44R (1 << 7)	/* OTG Vbus Valid 4.4V Rising Edge
+-					   Interrupt Enable */
+-#define UDCOTGICR_IEVV44F (1 << 6)	/* OTG Vbus Valid 4.4V Falling Edge
+-					   Interrupt Enable */
+-#define UDCOTGICR_IESVR	(1 << 5)	/* OTG Session Valid Rising Edge
+-					   Interrupt Enable */
+-#define UDCOTGICR_IESVF	(1 << 4)	/* OTG Session Valid Falling Edge
+-					   Interrupt Enable */
+-#define UDCOTGICR_IESDR	(1 << 3)	/* OTG A-Device SRP Detect Rising
+-					   Edge Interrupt Enable */
+-#define UDCOTGICR_IESDF	(1 << 2)	/* OTG A-Device SRP Detect Falling
+-					   Edge Interrupt Enable */
+-#define UDCOTGICR_IEIDR	(1 << 1)	/* OTG ID Change Rising Edge
+-					   Interrupt Enable */
+-#define UDCOTGICR_IEIDF	(1 << 0)	/* OTG ID Change Falling Edge
+-					   Interrupt Enable */
+-
+-/* Host Port 2 field bits */
+-#define UP2OCR_CPVEN	(1 << 0)	/* Charge Pump Vbus Enable */
+-#define UP2OCR_CPVPE	(1 << 1)	/* Charge Pump Vbus Pulse Enable */
+-					/* Transceiver enablers */
+-#define UP2OCR_DPPDE	(1 << 2)	/*   D+ Pull Down Enable */
+-#define UP2OCR_DMPDE	(1 << 3)	/*   D- Pull Down Enable */
+-#define UP2OCR_DPPUE	(1 << 4)	/*   D+ Pull Up Enable */
+-#define UP2OCR_DMPUE	(1 << 5)	/*   D- Pull Up Enable */
+-#define UP2OCR_DPPUBE	(1 << 6)	/*   D+ Pull Up Bypass Enable */
+-#define UP2OCR_DMPUBE	(1 << 7)	/*   D- Pull Up Bypass Enable */
+-#define UP2OCR_EXSP	(1 << 8)	/* External Transceiver Speed Control */
+-#define UP2OCR_EXSUS	(1 << 9)	/* External Transceiver Speed Enable */
+-#define UP2OCR_IDON	(1 << 10)	/* OTG ID Read Enable */
+-#define UP2OCR_HXS	(1 << 16)	/* Transceiver Output Select */
+-#define UP2OCR_HXOE	(1 << 17)	/* Transceiver Output Enable */
+-#define UP2OCR_SEOS	(1 << 24)	/* Single-Ended Output Select */
+-
+-#define UDCCSR0_ACM	(1 << 9)	/* Ack Control Mode */
+-#define UDCCSR0_AREN	(1 << 8)	/* Ack Response Enable */
+-#define UDCCSR0_SA	(1 << 7)	/* Setup Active */
+-#define UDCCSR0_RNE	(1 << 6)	/* Receive FIFO Not Empty */
+-#define UDCCSR0_FST	(1 << 5)	/* Force Stall */
+-#define UDCCSR0_SST	(1 << 4)	/* Sent Stall */
+-#define UDCCSR0_DME	(1 << 3)	/* DMA Enable */
+-#define UDCCSR0_FTF	(1 << 2)	/* Flush Transmit FIFO */
+-#define UDCCSR0_IPR	(1 << 1)	/* IN Packet Ready */
+-#define UDCCSR0_OPC	(1 << 0)	/* OUT Packet Complete */
+-
+-#define UDCCSR_DPE	(1 << 9)	/* Data Packet Error */
+-#define UDCCSR_FEF	(1 << 8)	/* Flush Endpoint FIFO */
+-#define UDCCSR_SP	(1 << 7)	/* Short Packet Control/Status */
+-#define UDCCSR_BNE	(1 << 6)	/* Buffer Not Empty (IN endpoints) */
+-#define UDCCSR_BNF	(1 << 6)	/* Buffer Not Full (OUT endpoints) */
+-#define UDCCSR_FST	(1 << 5)	/* Force STALL */
+-#define UDCCSR_SST	(1 << 4)	/* Sent STALL */
+-#define UDCCSR_DME	(1 << 3)	/* DMA Enable */
+-#define UDCCSR_TRN	(1 << 2)	/* Tx/Rx NAK */
+-#define UDCCSR_PC	(1 << 1)	/* Packet Complete */
+-#define UDCCSR_FS	(1 << 0)	/* FIFO needs service */
+-
+-#define UDCCONR_CN	(0x03 << 25)	/* Configuration Number */
+-#define UDCCONR_CN_S	25
+-#define UDCCONR_IN	(0x07 << 22)	/* Interface Number */
+-#define UDCCONR_IN_S	22
+-#define UDCCONR_AISN	(0x07 << 19)	/* Alternate Interface Number */
+-#define UDCCONR_AISN_S	19
+-#define UDCCONR_EN	(0x0f << 15)	/* Endpoint Number */
+-#define UDCCONR_EN_S	15
+-#define UDCCONR_ET	(0x03 << 13)	/* Endpoint Type: */
+-#define UDCCONR_ET_S	13
+-#define UDCCONR_ET_INT	(0x03 << 13)	/*   Interrupt */
+-#define UDCCONR_ET_BULK	(0x02 << 13)	/*   Bulk */
+-#define UDCCONR_ET_ISO	(0x01 << 13)	/*   Isochronous */
+-#define UDCCONR_ET_NU	(0x00 << 13)	/*   Not used */
+-#define UDCCONR_ED	(1 << 12)	/* Endpoint Direction */
+-#define UDCCONR_MPS	(0x3ff << 2)	/* Maximum Packet Size */
+-#define UDCCONR_MPS_S	2
+-#define UDCCONR_DE	(1 << 1)	/* Double Buffering Enable */
+-#define UDCCONR_EE	(1 << 0)	/* Endpoint Enable */
+-
+-#define UDCCR_MASK_BITS (UDCCR_OEN | UDCCR_SMAC | UDCCR_UDR | UDCCR_UDE)
+-#define UDCCSR_WR_MASK	(UDCCSR_DME | UDCCSR_FST)
+-#define UDC_FNR_MASK	(0x7ff)
+-#define UDC_BCR_MASK	(0x3ff)
+-
+-/*
+- * UDCCR = UDC Endpoint Configuration Registers
+- * UDCCSR = UDC Control/Status Register for this EP
+- * UDCBCR = UDC Byte Count Remaining (contents of OUT fifo)
+- * UDCDR = UDC Endpoint Data Register (the fifo)
+- */
+-#define ofs_UDCCR(ep)	(UDCCRn(ep->idx))
+-#define ofs_UDCCSR(ep)	(UDCCSRn(ep->idx))
+-#define ofs_UDCBCR(ep)	(UDCBCRn(ep->idx))
+-#define ofs_UDCDR(ep)	(UDCDRn(ep->idx))
+-
+-/* Register access macros */
+-#define udc_ep_readl(ep, reg)	\
+-	readl((ep)->dev->regs + ofs_##reg(ep))
+-#define udc_ep_writel(ep, reg, value)	\
+-	writel((value), ep->dev->regs + ofs_##reg(ep))
+-#define udc_ep_readb(ep, reg)	\
+-	readb((ep)->dev->regs + ofs_##reg(ep))
+-#define udc_ep_writeb(ep, reg, value)	\
+-	writeb((value), ep->dev->regs + ofs_##reg(ep))
+-#define udc_readl(dev, reg)	\
+-	readl((dev)->regs + (reg))
+-#define udc_writel(udc, reg, value)	\
+-	writel((value), (udc)->regs + (reg))
+-
+-#define UDCCSR_MASK		(UDCCSR_FST | UDCCSR_DME)
+-#define UDCCISR0_EP_MASK	(~0)
+-#define UDCCISR1_EP_MASK	0xffff
+-#define UDCCSR0_CTRL_REQ_MASK	(UDCCSR0_OPC | UDCCSR0_SA | UDCCSR0_RNE)
+-
+-#define EPIDX(ep)	(ep->idx)
+-#define EPADDR(ep)	(ep->addr)
+-#define EPXFERTYPE(ep)	(ep->type)
+-#define EPNAME(ep)	(ep->name)
+-#define is_ep0(ep)	(!ep->idx)
+-#define EPXFERTYPE_is_ISO(ep) (EPXFERTYPE(ep) == USB_ENDPOINT_XFER_ISOC)
+-
+-/*
+- * Endpoint definition helpers
+- */
+-#define USB_EP_DEF(addr, bname, dir, type, maxpkt) \
+-{ .usb_ep = { .name = bname, .ops = &pxa_ep_ops, .maxpacket = maxpkt, }, \
+-  .desc = {	.bEndpointAddress = addr | (dir ? USB_DIR_IN : 0), \
+-		.bmAttributes = type, \
+-		.wMaxPacketSize = maxpkt, }, \
+-  .dev = &memory \
+-}
+-#define USB_EP_BULK(addr, bname, dir) \
+-	USB_EP_DEF(addr, bname, dir, USB_ENDPOINT_XFER_BULK, BULK_FIFO_SIZE)
+-#define USB_EP_ISO(addr, bname, dir) \
+-	USB_EP_DEF(addr, bname, dir, USB_ENDPOINT_XFER_ISOC, ISO_FIFO_SIZE)
+-#define USB_EP_INT(addr, bname, dir) \
+-	USB_EP_DEF(addr, bname, dir, USB_ENDPOINT_XFER_INT, INT_FIFO_SIZE)
+-#define USB_EP_IN_BULK(n)	USB_EP_BULK(n, "ep" #n "in-bulk", 1)
+-#define USB_EP_OUT_BULK(n)	USB_EP_BULK(n, "ep" #n "out-bulk", 0)
+-#define USB_EP_IN_ISO(n)	USB_EP_ISO(n,  "ep" #n "in-iso", 1)
+-#define USB_EP_OUT_ISO(n)	USB_EP_ISO(n,  "ep" #n "out-iso", 0)
+-#define USB_EP_IN_INT(n)	USB_EP_INT(n,  "ep" #n "in-int", 1)
+-#define USB_EP_CTRL		USB_EP_DEF(0,  "ep0", 0, 0, EP0_FIFO_SIZE)
+-
+-#define PXA_EP_DEF(_idx, _addr, dir, _type, maxpkt, _config, iface, altset) \
+-{ \
+-	.dev = &memory, \
+-	.name = "ep" #_idx, \
+-	.idx = _idx, .enabled = 0, \
+-	.dir_in = dir, .addr = _addr, \
+-	.config = _config, .interface = iface, .alternate = altset, \
+-	.type = _type, .fifo_size = maxpkt, \
+-}
+-#define PXA_EP_BULK(_idx, addr, dir, config, iface, alt) \
+-	PXA_EP_DEF(_idx, addr, dir, USB_ENDPOINT_XFER_BULK, BULK_FIFO_SIZE, \
+-		config, iface, alt)
+-#define PXA_EP_ISO(_idx, addr, dir, config, iface, alt) \
+-	PXA_EP_DEF(_idx, addr, dir, USB_ENDPOINT_XFER_ISOC, ISO_FIFO_SIZE, \
+-		config, iface, alt)
+-#define PXA_EP_INT(_idx, addr, dir, config, iface, alt) \
+-	PXA_EP_DEF(_idx, addr, dir, USB_ENDPOINT_XFER_INT, INT_FIFO_SIZE, \
+-		config, iface, alt)
+-#define PXA_EP_IN_BULK(i, adr, c, f, a)		PXA_EP_BULK(i, adr, 1, c, f, a)
+-#define PXA_EP_OUT_BULK(i, adr, c, f, a)	PXA_EP_BULK(i, adr, 0, c, f, a)
+-#define PXA_EP_IN_ISO(i, adr, c, f, a)		PXA_EP_ISO(i, adr, 1, c, f, a)
+-#define PXA_EP_OUT_ISO(i, adr, c, f, a)		PXA_EP_ISO(i, adr, 0, c, f, a)
+-#define PXA_EP_IN_INT(i, adr, c, f, a)		PXA_EP_INT(i, adr, 1, c, f, a)
+-#define PXA_EP_CTRL	PXA_EP_DEF(0, 0, 0, 0, EP0_FIFO_SIZE, 0, 0, 0)
+-
+-struct pxa27x_udc;
+-
+-struct stats {
+-	unsigned long in_ops;
+-	unsigned long out_ops;
+-	unsigned long in_bytes;
+-	unsigned long out_bytes;
+-	unsigned long irqs;
+-};
+-
+-/**
+- * struct udc_usb_ep - container of each usb_ep structure
+- * @usb_ep: usb endpoint
+- * @desc: usb descriptor, especially type and address
+- * @dev: udc managing this endpoint
+- * @pxa_ep: matching pxa_ep (cache of find_pxa_ep() call)
+- */
+-struct udc_usb_ep {
+-	struct usb_ep usb_ep;
+-	struct usb_endpoint_descriptor desc;
+-	struct pxa_udc *dev;
+-	struct pxa_ep *pxa_ep;
+-};
+-
+-struct pxa_ep {
+-	struct pxa_udc		*dev;
+-
+-	struct list_head	queue;
+-	unsigned		enabled:1;
+-
+-	unsigned		idx:5;
+-	char			*name;
+-
+-	/*
+-	 * Specific pxa endpoint data, needed for hardware initialization
+-	 */
+-	unsigned		dir_in:1;
+-	unsigned		addr:4;
+-	unsigned		config:2;
+-	unsigned		interface:3;
+-	unsigned		alternate:3;
+-	unsigned		fifo_size;
+-	unsigned		type;
+-};
+-
+-struct pxa27x_request {
+-	struct usb_request			req;
+-	struct udc_usb_ep			*udc_usb_ep;
+-	unsigned				in_use:1;
+-	struct list_head			queue;
+-};
+-
+-enum ep0_state {
+-	WAIT_FOR_SETUP,
+-	SETUP_STAGE,
+-	IN_DATA_STAGE,
+-	OUT_DATA_STAGE,
+-	IN_STATUS_STAGE,
+-	OUT_STATUS_STAGE,
+-	STALL,
+-	WAIT_ACK_SET_CONF_INTERF
+-};
+-
+-static char *ep0_state_name[] = {
+-	"WAIT_FOR_SETUP", "SETUP_STAGE", "IN_DATA_STAGE", "OUT_DATA_STAGE",
+-	"IN_STATUS_STAGE", "OUT_STATUS_STAGE", "STALL",
+-	"WAIT_ACK_SET_CONF_INTERF"
+-};
+-#define EP0_STNAME(udc) ep0_state_name[(udc)->ep0state]
+-
+-#define EP0_FIFO_SIZE	16U
+-#define BULK_FIFO_SIZE	64U
+-#define ISO_FIFO_SIZE	256U
+-#define INT_FIFO_SIZE	16U
+-
+-struct udc_stats {
+-	unsigned long	irqs_reset;
+-	unsigned long	irqs_suspend;
+-	unsigned long	irqs_resume;
+-	unsigned long	irqs_reconfig;
+-};
+-
+-#define NR_USB_ENDPOINTS (1 + 5)	/* ep0 + ep1in-bulk + .. + ep3in-iso */
+-#define NR_PXA_ENDPOINTS (1 + 14)	/* ep0 + epA + epB + .. + epX */
+-
+-struct pxa_udc {
+-	void __iomem				*regs;
+-	int					irq;
+-	struct clk				*clk;
+-	struct device				*dev;
+-
+-	struct usb_gadget			gadget;
+-	struct usb_gadget_driver		*driver;
+-	struct pxa2xx_udc_mach_info		*mach;
+-
+-	enum ep0_state				ep0state;
+-	struct udc_stats			stats;
+-
+-	struct udc_usb_ep			udc_usb_ep[NR_USB_ENDPOINTS];
+-	struct pxa_ep				pxa_ep[NR_PXA_ENDPOINTS];
+-
+-	unsigned				enabled:1;
+-	unsigned				pullup_on:1;
+-	unsigned				pullup_resume:1;
+-	unsigned				vbus_sensed:1;
+-	unsigned				config:2;
+-	unsigned				last_interface:3;
+-	unsigned				last_alternate:3;
+-
+-};
+-
+-static inline struct pxa_udc *to_gadget_udc(struct usb_gadget *gadget)
+-{
+-	return container_of(gadget, struct pxa_udc, gadget);
+-}
+-
+-/*
+- * Debugging/message support
+- */
+-#define ep_dbg(ep, fmt, arg...) \
+-	dev_dbg(ep->dev->dev, "%s:%s: " fmt, EPNAME(ep), __func__, ## arg)
+-#define ep_vdbg(ep, fmt, arg...) \
+-	dev_dbg(ep->dev->dev, "%s:%s: " fmt, EPNAME(ep), __func__, ## arg)
+-#define ep_err(ep, fmt, arg...) \
+-	dev_err(ep->dev->dev, "%s:%s: " fmt, EPNAME(ep), __func__, ## arg)
+-#define ep_info(ep, fmt, arg...) \
+-	dev_info(ep->dev->dev, "%s:%s: " fmt, EPNAME(ep), __func__, ## arg)
+-#define ep_warn(ep, fmt, arg...) \
+-	dev_warn(ep->dev->dev, "%s:%s:" fmt, EPNAME(ep), __func__, ## arg)
+-
+-#endif /* __LINUX_USB_GADGET_PXA27X_H */
+diff --git a/include/mach/pxa/gpio.h b/include/mach/pxa/gpio.h
+index 06e6f3e42b..2d169608d8 100644
+--- a/include/mach/pxa/gpio.h
++++ b/include/mach/pxa/gpio.h
+@@ -97,37 +97,7 @@
+ 
+ #define gpio_to_bank(gpio)	((gpio) >> 5)
+ 
+-#ifdef CONFIG_CPU_PXA26x
+-/* GPIO86/87/88/89 on PXA26x have their direction bits in GPDR2 inverted,
+- * as well as their Alternate Function value being '1' for GPIO in GAFRx.
+- */
+-static inline int __gpio_is_inverted(unsigned gpio)
+-{
+-	return cpu_is_pxa25x() && gpio > 85;
+-}
+-#else
+ static inline int __gpio_is_inverted(unsigned gpio) { return 0; }
+-#endif
+-
+-/*
+- * On PXA25x and PXA27x, GAFRx and GPDRx together decide the alternate
+- * function of a GPIO, and GPDRx cannot be altered once configured. It
+- * is attributed as "occupied" here (I know this terminology isn't
+- * accurate, you are welcome to propose a better one :-)
+- */
+-static inline int __gpio_is_occupied(unsigned gpio)
+-{
+-	if (cpu_is_pxa27x() || cpu_is_pxa25x()) {
+-		int af = (GAFR(gpio) >> ((gpio & 0xf) * 2)) & 0x3;
+-		int dir = GPDR(gpio) & GPIO_bit(gpio);
+-
+-		if (__gpio_is_inverted(gpio))
+-			return af != 1 || dir == 0;
+-		else
+-			return af != 0 || dir != 0;
+-	} else
+-		return GPDR(gpio) & GPIO_bit(gpio);
+-}
+ 
+ /*
+  * We handle the GPIOs by banks, each bank covers up to 32 GPIOs with
+diff --git a/include/mach/pxa/hardware.h b/include/mach/pxa/hardware.h
+index d968a11880..f2ac155166 100644
+--- a/include/mach/pxa/hardware.h
++++ b/include/mach/pxa/hardware.h
+@@ -10,24 +10,6 @@
+ #ifndef __MACH_HARDWARE_H
+ #define __MACH_HARDWARE_H
+ 
+-#ifdef CONFIG_ARCH_PXA2XX
+-#define cpu_is_pxa2xx()	(1)
+-#else
+-#define cpu_is_pxa2xx()	(0)
+-#endif
+-
+-#ifdef CONFIG_ARCH_PXA25X
+-#define cpu_is_pxa25x()	(1)
+-#else
+-#define cpu_is_pxa25x()	(0)
+-#endif
+-
+-#ifdef CONFIG_ARCH_PXA27X
+-#define cpu_is_pxa27x()	(1)
+-#else
+-#define cpu_is_pxa27x()	(0)
+-#endif
+-
+ #ifdef CONFIG_ARCH_PXA3XX
+ #define cpu_is_pxa3xx()	(1)
+ # ifdef CONFIG_ARCH_PXA320
+diff --git a/include/mach/pxa/mfp-pxa27x.h b/include/mach/pxa/mfp-pxa27x.h
+deleted file mode 100644
+index 6193a440cb..0000000000
+--- a/include/mach/pxa/mfp-pxa27x.h
++++ /dev/null
+@@ -1,472 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
+-
+-#ifndef __ASM_ARCH_MFP_PXA27X_H
+-#define __ASM_ARCH_MFP_PXA27X_H
+-
+-/*
+- * NOTE:  for those special-function bidirectional GPIOs, as described
+- * in the "PXA27x Developer's Manual" Section 24.4.2.1, only its input
+- * alternative is preserved, the direction is actually selected by the
+- * specific controller, and this should work in most cases.
+- */
+-
+-#include <mach/pxa/mfp-pxa2xx.h>
+-
+-/* Note: GPIO3/GPIO4 will be driven by Power I2C when PCFR/PI2C_EN
+- * bit is set, regardless of the GPIO configuration
+- */
+-#define GPIO3_GPIO		MFP_CFG_IN(GPIO3, AF0)
+-#define GPIO4_GPIO		MFP_CFG_IN(GPIO4, AF0)
+-
+-/* GPIO */
+-#define GPIO85_GPIO		MFP_CFG_IN(GPIO85, AF0)
+-#define GPIO86_GPIO		MFP_CFG_IN(GPIO86, AF0)
+-#define GPIO87_GPIO		MFP_CFG_IN(GPIO87, AF0)
+-#define GPIO88_GPIO		MFP_CFG_IN(GPIO88, AF0)
+-#define GPIO89_GPIO		MFP_CFG_IN(GPIO89, AF0)
+-#define GPIO90_GPIO		MFP_CFG_IN(GPIO90, AF0)
+-#define GPIO91_GPIO		MFP_CFG_IN(GPIO91, AF0)
+-#define GPIO92_GPIO		MFP_CFG_IN(GPIO92, AF0)
+-#define GPIO93_GPIO		MFP_CFG_IN(GPIO93, AF0)
+-#define GPIO94_GPIO		MFP_CFG_IN(GPIO94, AF0)
+-#define GPIO95_GPIO		MFP_CFG_IN(GPIO95, AF0)
+-#define GPIO96_GPIO		MFP_CFG_IN(GPIO96, AF0)
+-#define GPIO97_GPIO		MFP_CFG_IN(GPIO97, AF0)
+-#define GPIO98_GPIO		MFP_CFG_IN(GPIO98, AF0)
+-#define GPIO99_GPIO		MFP_CFG_IN(GPIO99, AF0)
+-#define GPIO100_GPIO		MFP_CFG_IN(GPIO100, AF0)
+-#define GPIO101_GPIO		MFP_CFG_IN(GPIO101, AF0)
+-#define GPIO102_GPIO		MFP_CFG_IN(GPIO102, AF0)
+-#define GPIO103_GPIO		MFP_CFG_IN(GPIO103, AF0)
+-#define GPIO104_GPIO		MFP_CFG_IN(GPIO104, AF0)
+-#define GPIO105_GPIO		MFP_CFG_IN(GPIO105, AF0)
+-#define GPIO106_GPIO		MFP_CFG_IN(GPIO106, AF0)
+-#define GPIO107_GPIO		MFP_CFG_IN(GPIO107, AF0)
+-#define GPIO108_GPIO		MFP_CFG_IN(GPIO108, AF0)
+-#define GPIO109_GPIO		MFP_CFG_IN(GPIO109, AF0)
+-#define GPIO110_GPIO		MFP_CFG_IN(GPIO110, AF0)
+-#define GPIO111_GPIO		MFP_CFG_IN(GPIO111, AF0)
+-#define GPIO112_GPIO		MFP_CFG_IN(GPIO112, AF0)
+-#define GPIO113_GPIO		MFP_CFG_IN(GPIO113, AF0)
+-#define GPIO114_GPIO		MFP_CFG_IN(GPIO114, AF0)
+-#define GPIO115_GPIO		MFP_CFG_IN(GPIO115, AF0)
+-#define GPIO116_GPIO		MFP_CFG_IN(GPIO116, AF0)
+-#define GPIO117_GPIO		MFP_CFG_IN(GPIO117, AF0)
+-#define GPIO118_GPIO		MFP_CFG_IN(GPIO118, AF0)
+-#define GPIO119_GPIO		MFP_CFG_IN(GPIO119, AF0)
+-#define GPIO120_GPIO		MFP_CFG_IN(GPIO120, AF0)
+-
+-/* Crystal and Clock Signals */
+-#define GPIO9_HZ_CLK		MFP_CFG_OUT(GPIO9,  AF1, DRIVE_LOW)
+-#define GPIO10_HZ_CLK		MFP_CFG_OUT(GPIO10, AF1, DRIVE_LOW)
+-#define GPIO11_48_MHz		MFP_CFG_OUT(GPIO11, AF3, DRIVE_LOW)
+-#define GPIO12_48_MHz		MFP_CFG_OUT(GPIO12, AF3, DRIVE_LOW)
+-#define GPIO13_CLK_EXT		MFP_CFG_IN(GPIO13, AF1)
+-
+-/* OS Timer Signals */
+-#define GPIO11_EXT_SYNC_0	MFP_CFG_IN(GPIO11, AF1)
+-#define GPIO12_EXT_SYNC_1	MFP_CFG_IN(GPIO12, AF1)
+-#define GPIO9_CHOUT_0		MFP_CFG_OUT(GPIO9,  AF3, DRIVE_LOW)
+-#define GPIO10_CHOUT_1		MFP_CFG_OUT(GPIO10, AF3, DRIVE_LOW)
+-#define GPIO11_CHOUT_0		MFP_CFG_OUT(GPIO11, AF1, DRIVE_LOW)
+-#define GPIO12_CHOUT_1		MFP_CFG_OUT(GPIO12, AF1, DRIVE_LOW)
+-
+-/* SDRAM and Static Memory I/O Signals */
+-#define GPIO20_nSDCS_2		MFP_CFG_OUT(GPIO20, AF1, DRIVE_HIGH)
+-#define GPIO21_nSDCS_3		MFP_CFG_OUT(GPIO21, AF1, DRIVE_HIGH)
+-#define GPIO15_nCS_1		MFP_CFG_OUT(GPIO15, AF2, DRIVE_HIGH)
+-#define GPIO78_nCS_2		MFP_CFG_OUT(GPIO78, AF2, DRIVE_HIGH)
+-#define GPIO79_nCS_3		MFP_CFG_OUT(GPIO79, AF2, DRIVE_HIGH)
+-#define GPIO80_nCS_4		MFP_CFG_OUT(GPIO80, AF2, DRIVE_HIGH)
+-#define GPIO33_nCS_5		MFP_CFG_OUT(GPIO33, AF2, DRIVE_HIGH)
+-
+-/* Miscellaneous I/O and DMA Signals */
+-#define GPIO21_DVAL_0		MFP_CFG_OUT(GPIO21, AF2, DRIVE_HIGH)
+-#define GPIO116_DVAL_0		MFP_CFG_OUT(GPIO116, AF1, DRIVE_HIGH)
+-#define GPIO33_DVAL_1		MFP_CFG_OUT(GPIO33, AF1, DRIVE_HIGH)
+-#define GPIO96_DVAL_1		MFP_CFG_OUT(GPIO96, AF2, DRIVE_HIGH)
+-#define GPIO18_RDY		MFP_CFG_IN(GPIO18, AF1)
+-#define GPIO20_DREQ_0		MFP_CFG_IN(GPIO20, AF1)
+-#define GPIO115_DREQ_0		MFP_CFG_IN(GPIO115, AF1)
+-#define GPIO80_DREQ_1		MFP_CFG_IN(GPIO80, AF1)
+-#define GPIO97_DREQ_1		MFP_CFG_IN(GPIO97, AF2)
+-#define GPIO85_DREQ_2		MFP_CFG_IN(GPIO85, AF2)
+-#define GPIO100_DREQ_2		MFP_CFG_IN(GPIO100, AF2)
+-
+-/* Alternate Bus Master Mode I/O Signals */
+-#define GPIO20_MBREQ		MFP_CFG_IN(GPIO20, AF2)
+-#define GPIO80_MBREQ		MFP_CFG_IN(GPIO80, AF2)
+-#define GPIO96_MBREQ		MFP_CFG_IN(GPIO96, AF2)
+-#define GPIO115_MBREQ		MFP_CFG_IN(GPIO115, AF3)
+-#define GPIO21_MBGNT		MFP_CFG_OUT(GPIO21, AF3, DRIVE_LOW)
+-#define GPIO33_MBGNT		MFP_CFG_OUT(GPIO33, AF3, DRIVE_LOW)
+-#define GPIO97_MBGNT		MFP_CFG_OUT(GPIO97, AF2, DRIVE_LOW)
+-#define GPIO116_MBGNT		MFP_CFG_OUT(GPIO116, AF3, DRIVE_LOW)
+-
+-/* PC CARD */
+-#define GPIO15_nPCE_1		MFP_CFG_OUT(GPIO15, AF1, DRIVE_HIGH)
+-#define GPIO85_nPCE_1		MFP_CFG_OUT(GPIO85, AF1, DRIVE_HIGH)
+-#define GPIO86_nPCE_1		MFP_CFG_OUT(GPIO86, AF1, DRIVE_HIGH)
+-#define GPIO102_nPCE_1		MFP_CFG_OUT(GPIO102, AF1, DRIVE_HIGH)
+-#define GPIO54_nPCE_2		MFP_CFG_OUT(GPIO54, AF2, DRIVE_HIGH)
+-#define GPIO78_nPCE_2		MFP_CFG_OUT(GPIO78, AF1, DRIVE_HIGH)
+-#define GPIO87_nPCE_2		MFP_CFG_IN(GPIO87, AF1)
+-#define GPIO55_nPREG		MFP_CFG_OUT(GPIO55, AF2, DRIVE_HIGH)
+-#define GPIO50_nPIOR		MFP_CFG_OUT(GPIO50, AF2, DRIVE_HIGH)
+-#define GPIO51_nPIOW		MFP_CFG_OUT(GPIO51, AF2, DRIVE_HIGH)
+-#define GPIO49_nPWE		MFP_CFG_OUT(GPIO49, AF2, DRIVE_HIGH)
+-#define GPIO48_nPOE		MFP_CFG_OUT(GPIO48, AF2, DRIVE_HIGH)
+-#define GPIO57_nIOIS16		MFP_CFG_IN(GPIO57, AF1)
+-#define GPIO56_nPWAIT		MFP_CFG_IN(GPIO56, AF1)
+-#define GPIO79_PSKTSEL		MFP_CFG_OUT(GPIO79, AF1, DRIVE_HIGH)
+-#define GPIO104_PSKTSEL		MFP_CFG_OUT(GPIO104, AF1, DRIVE_HIGH)
+-
+-/* I2C */
+-#define GPIO117_I2C_SCL		MFP_CFG_IN(GPIO117, AF1)
+-#define GPIO118_I2C_SDA		MFP_CFG_IN(GPIO118, AF1)
+-
+-/* FFUART */
+-#define GPIO9_FFUART_CTS	MFP_CFG_IN(GPIO9, AF3)
+-#define GPIO26_FFUART_CTS	MFP_CFG_IN(GPIO26, AF3)
+-#define GPIO35_FFUART_CTS	MFP_CFG_IN(GPIO35, AF1)
+-#define GPIO100_FFUART_CTS	MFP_CFG_IN(GPIO100, AF3)
+-#define GPIO10_FFUART_DCD	MFP_CFG_IN(GPIO10, AF1)
+-#define GPIO36_FFUART_DCD	MFP_CFG_IN(GPIO36, AF1)
+-#define GPIO33_FFUART_DSR	MFP_CFG_IN(GPIO33, AF2)
+-#define GPIO37_FFUART_DSR	MFP_CFG_IN(GPIO37, AF1)
+-#define GPIO38_FFUART_RI	MFP_CFG_IN(GPIO38, AF1)
+-#define GPIO89_FFUART_RI	MFP_CFG_IN(GPIO89, AF3)
+-#define GPIO19_FFUART_RXD	MFP_CFG_IN(GPIO19, AF3)
+-#define GPIO33_FFUART_RXD	MFP_CFG_IN(GPIO33, AF1)
+-#define GPIO34_FFUART_RXD	MFP_CFG_IN(GPIO34, AF1)
+-#define GPIO41_FFUART_RXD	MFP_CFG_IN(GPIO41, AF1)
+-#define GPIO53_FFUART_RXD	MFP_CFG_IN(GPIO53, AF1)
+-#define GPIO85_FFUART_RXD	MFP_CFG_IN(GPIO85, AF1)
+-#define GPIO96_FFUART_RXD	MFP_CFG_IN(GPIO96, AF3)
+-#define GPIO102_FFUART_RXD	MFP_CFG_IN(GPIO102, AF3)
+-#define GPIO16_FFUART_TXD	MFP_CFG_OUT(GPIO16, AF3, DRIVE_HIGH)
+-#define GPIO37_FFUART_TXD	MFP_CFG_OUT(GPIO37, AF3, DRIVE_HIGH)
+-#define GPIO39_FFUART_TXD	MFP_CFG_OUT(GPIO39, AF2, DRIVE_HIGH)
+-#define GPIO83_FFUART_TXD	MFP_CFG_OUT(GPIO83, AF2, DRIVE_HIGH)
+-#define GPIO99_FFUART_TXD	MFP_CFG_OUT(GPIO99, AF3, DRIVE_HIGH)
+-#define GPIO27_FFUART_RTS	MFP_CFG_OUT(GPIO27, AF3, DRIVE_HIGH)
+-#define GPIO41_FFUART_RTS	MFP_CFG_OUT(GPIO41, AF2, DRIVE_HIGH)
+-#define GPIO83_FFUART_RTS	MFP_CFG_OUT(GPIO83, AF3, DRIVE_HIGH)
+-#define GPIO98_FFUART_RTS	MFP_CFG_OUT(GPIO98, AF3, DRIVE_HIGH)
+-#define GPIO40_FFUART_DTR	MFP_CFG_OUT(GPIO40, AF2, DRIVE_HIGH)
+-#define GPIO82_FFUART_DTR	MFP_CFG_OUT(GPIO82, AF3, DRIVE_HIGH)
+-
+-/* BTUART */
+-#define GPIO44_BTUART_CTS	MFP_CFG_IN(GPIO44, AF1)
+-#define GPIO42_BTUART_RXD	MFP_CFG_IN(GPIO42, AF1)
+-#define GPIO45_BTUART_RTS	MFP_CFG_OUT(GPIO45, AF2, DRIVE_HIGH)
+-#define GPIO43_BTUART_TXD	MFP_CFG_OUT(GPIO43, AF2, DRIVE_HIGH)
+-
+-/* STUART */
+-#define GPIO46_STUART_RXD	MFP_CFG_IN(GPIO46, AF2)
+-#define GPIO47_STUART_TXD	MFP_CFG_OUT(GPIO47, AF1, DRIVE_HIGH)
+-
+-/* FICP */
+-#define GPIO42_FICP_RXD		MFP_CFG_IN(GPIO42, AF2)
+-#define GPIO46_FICP_RXD		MFP_CFG_IN(GPIO46, AF1)
+-#define GPIO43_FICP_TXD		MFP_CFG_OUT(GPIO43, AF1, DRIVE_HIGH)
+-#define GPIO47_FICP_TXD		MFP_CFG_OUT(GPIO47, AF2, DRIVE_HIGH)
+-
+-/* PWM 0/1/2/3 */
+-#define GPIO11_PWM2_OUT		MFP_CFG_OUT(GPIO11, AF2, DRIVE_LOW)
+-#define GPIO12_PWM3_OUT		MFP_CFG_OUT(GPIO12, AF2, DRIVE_LOW)
+-#define GPIO16_PWM0_OUT		MFP_CFG_OUT(GPIO16, AF2, DRIVE_LOW)
+-#define GPIO17_PWM1_OUT		MFP_CFG_OUT(GPIO17, AF2, DRIVE_LOW)
+-#define GPIO38_PWM1_OUT		MFP_CFG_OUT(GPIO38, AF3, DRIVE_LOW)
+-#define GPIO46_PWM2_OUT		MFP_CFG_OUT(GPIO46, AF2, DRIVE_LOW)
+-#define GPIO47_PWM3_OUT		MFP_CFG_OUT(GPIO47, AF3, DRIVE_LOW)
+-#define GPIO79_PWM2_OUT		MFP_CFG_OUT(GPIO79, AF3, DRIVE_LOW)
+-#define GPIO80_PWM3_OUT		MFP_CFG_OUT(GPIO80, AF3, DRIVE_LOW)
+-#define GPIO115_PWM1_OUT	MFP_CFG_OUT(GPIO115, AF3, DRIVE_LOW)
+-
+-/* AC97 */
+-#define GPIO31_AC97_SYNC	MFP_CFG_OUT(GPIO31, AF2, DRIVE_LOW)
+-#define GPIO94_AC97_SYNC	MFP_CFG_OUT(GPIO94, AF1, DRIVE_LOW)
+-#define GPIO30_AC97_SDATA_OUT	MFP_CFG_OUT(GPIO30, AF2, DRIVE_LOW)
+-#define GPIO93_AC97_SDATA_OUT	MFP_CFG_OUT(GPIO93, AF1, DRIVE_LOW)
+-#define GPIO45_AC97_SYSCLK	MFP_CFG_OUT(GPIO45, AF1, DRIVE_LOW)
+-#define GPIO89_AC97_SYSCLK	MFP_CFG_OUT(GPIO89, AF1, DRIVE_LOW)
+-#define GPIO98_AC97_SYSCLK	MFP_CFG_OUT(GPIO98, AF1, DRIVE_LOW)
+-#define GPIO95_AC97_nRESET	MFP_CFG_OUT(GPIO95, AF1, DRIVE_LOW)
+-#define GPIO113_AC97_nRESET	MFP_CFG_OUT(GPIO113, AF2, DRIVE_LOW)
+-#define GPIO28_AC97_BITCLK	MFP_CFG_IN(GPIO28, AF1)
+-#define GPIO29_AC97_SDATA_IN_0	MFP_CFG_IN(GPIO29, AF1)
+-#define GPIO116_AC97_SDATA_IN_0	MFP_CFG_IN(GPIO116, AF2)
+-#define GPIO99_AC97_SDATA_IN_1	MFP_CFG_IN(GPIO99, AF2)
+-
+-/* I2S */
+-#define GPIO28_I2S_BITCLK_IN	MFP_CFG_IN(GPIO28, AF2)
+-#define GPIO28_I2S_BITCLK_OUT	MFP_CFG_OUT(GPIO28, AF1, DRIVE_LOW)
+-#define GPIO29_I2S_SDATA_IN	MFP_CFG_IN(GPIO29, AF2)
+-#define GPIO30_I2S_SDATA_OUT	MFP_CFG_OUT(GPIO30, AF1, DRIVE_LOW)
+-#define GPIO31_I2S_SYNC		MFP_CFG_OUT(GPIO31, AF1, DRIVE_LOW)
+-#define GPIO113_I2S_SYSCLK	MFP_CFG_OUT(GPIO113, AF1, DRIVE_LOW)
+-
+-/* SSP 1 */
+-#define GPIO23_SSP1_SCLK	MFP_CFG_OUT(GPIO23, AF2, DRIVE_LOW)
+-#define GPIO29_SSP1_SCLK	MFP_CFG_IN(GPIO29, AF3)
+-#define GPIO27_SSP1_SYSCLK	MFP_CFG_OUT(GPIO27, AF1, DRIVE_LOW)
+-#define GPIO53_SSP1_SYSCLK	MFP_CFG_OUT(GPIO53, AF3, DRIVE_LOW)
+-#define GPIO24_SSP1_SFRM	MFP_CFG_IN(GPIO24, AF2)
+-#define GPIO28_SSP1_SFRM	MFP_CFG_IN(GPIO28, AF3)
+-#define GPIO25_SSP1_TXD		MFP_CFG_OUT(GPIO25, AF2, DRIVE_LOW)
+-#define GPIO57_SSP1_TXD		MFP_CFG_OUT(GPIO57, AF3, DRIVE_LOW)
+-#define GPIO26_SSP1_RXD		MFP_CFG_IN(GPIO26, AF1)
+-#define GPIO27_SSP1_SCLKEN	MFP_CFG_IN(GPIO27, AF2)
+-
+-/* SSP 2 */
+-#define GPIO19_SSP2_SCLK	MFP_CFG_IN(GPIO19, AF1)
+-#define GPIO22_SSP2_SCLK	MFP_CFG_IN(GPIO22, AF3)
+-#define GPIO29_SSP2_SCLK	MFP_CFG_OUT(GPIO29, AF3, DRIVE_LOW)
+-#define GPIO36_SSP2_SCLK	MFP_CFG_IN(GPIO36, AF2)
+-#define GPIO50_SSP2_SCLK	MFP_CFG_IN(GPIO50, AF3)
+-#define GPIO22_SSP2_SYSCLK	MFP_CFG_OUT(GPIO22, AF2, DRIVE_LOW)
+-#define GPIO14_SSP2_SFRM	MFP_CFG_IN(GPIO14, AF2)
+-#define GPIO37_SSP2_SFRM	MFP_CFG_IN(GPIO37, AF2)
+-#define GPIO87_SSP2_SFRM	MFP_CFG_OUT(GPIO87, AF3, DRIVE_LOW)
+-#define GPIO88_SSP2_SFRM	MFP_CFG_IN(GPIO88, AF3)
+-#define GPIO13_SSP2_TXD		MFP_CFG_OUT(GPIO13, AF1, DRIVE_LOW)
+-#define GPIO38_SSP2_TXD		MFP_CFG_OUT(GPIO38, AF2, DRIVE_LOW)
+-#define GPIO87_SSP2_TXD		MFP_CFG_OUT(GPIO87, AF1, DRIVE_LOW)
+-#define GPIO89_SSP2_TXD		MFP_CFG_OUT(GPIO89, AF3, DRIVE_LOW)
+-#define GPIO11_SSP2_RXD		MFP_CFG_IN(GPIO11, AF2)
+-#define GPIO29_SSP2_RXD		MFP_CFG_OUT(GPIO29, AF1, DRIVE_LOW)
+-#define GPIO40_SSP2_RXD		MFP_CFG_IN(GPIO40, AF1)
+-#define GPIO86_SSP2_RXD		MFP_CFG_IN(GPIO86, AF1)
+-#define GPIO88_SSP2_RXD		MFP_CFG_IN(GPIO88, AF2)
+-#define GPIO22_SSP2_EXTCLK	MFP_CFG_IN(GPIO22, AF1)
+-#define GPIO27_SSP2_EXTCLK	MFP_CFG_IN(GPIO27, AF1)
+-#define GPIO22_SSP2_SCLKEN	MFP_CFG_IN(GPIO22, AF2)
+-#define GPIO23_SSP2_SCLKEN	MFP_CFG_IN(GPIO23, AF2)
+-
+-/* SSP 3 */
+-#define GPIO34_SSP3_SCLK	MFP_CFG_IN(GPIO34, AF3)
+-#define GPIO40_SSP3_SCLK	MFP_CFG_OUT(GPIO40, AF3, DRIVE_LOW)
+-#define GPIO52_SSP3_SCLK	MFP_CFG_IN(GPIO52, AF2)
+-#define GPIO84_SSP3_SCLK	MFP_CFG_IN(GPIO84, AF1)
+-#define GPIO45_SSP3_SYSCLK	MFP_CFG_OUT(GPIO45, AF3, DRIVE_LOW)
+-#define GPIO35_SSP3_SFRM	MFP_CFG_IN(GPIO35, AF3)
+-#define GPIO39_SSP3_SFRM	MFP_CFG_IN(GPIO39, AF3)
+-#define GPIO83_SSP3_SFRM	MFP_CFG_IN(GPIO83, AF1)
+-#define GPIO35_SSP3_TXD		MFP_CFG_OUT(GPIO35, AF3, DRIVE_LOW)
+-#define GPIO38_SSP3_TXD		MFP_CFG_OUT(GPIO38, AF1, DRIVE_LOW)
+-#define GPIO81_SSP3_TXD		MFP_CFG_OUT(GPIO81, AF1, DRIVE_LOW)
+-#define GPIO41_SSP3_RXD		MFP_CFG_IN(GPIO41, AF3)
+-#define GPIO82_SSP3_RXD		MFP_CFG_IN(GPIO82, AF1)
+-#define GPIO89_SSP3_RXD		MFP_CFG_IN(GPIO89, AF1)
+-
+-/* MMC */
+-#define GPIO32_MMC_CLK		MFP_CFG_OUT(GPIO32, AF2, DRIVE_LOW)
+-#define GPIO92_MMC_DAT_0	MFP_CFG_IN(GPIO92, AF1)
+-#define GPIO109_MMC_DAT_1	MFP_CFG_IN(GPIO109, AF1)
+-#define GPIO110_MMC_DAT_2	MFP_CFG_IN(GPIO110, AF1)
+-#define GPIO111_MMC_DAT_3	MFP_CFG_IN(GPIO111, AF1)
+-#define GPIO112_MMC_CMD		MFP_CFG_IN(GPIO112, AF1)
+-
+-/* LCD */
+-#define GPIO58_LCD_LDD_0	MFP_CFG_OUT(GPIO58, AF2, DRIVE_LOW)
+-#define GPIO59_LCD_LDD_1	MFP_CFG_OUT(GPIO59, AF2, DRIVE_LOW)
+-#define GPIO60_LCD_LDD_2	MFP_CFG_OUT(GPIO60, AF2, DRIVE_LOW)
+-#define GPIO61_LCD_LDD_3	MFP_CFG_OUT(GPIO61, AF2, DRIVE_LOW)
+-#define GPIO62_LCD_LDD_4	MFP_CFG_OUT(GPIO62, AF2, DRIVE_LOW)
+-#define GPIO63_LCD_LDD_5	MFP_CFG_OUT(GPIO63, AF2, DRIVE_LOW)
+-#define GPIO64_LCD_LDD_6	MFP_CFG_OUT(GPIO64, AF2, DRIVE_LOW)
+-#define GPIO65_LCD_LDD_7	MFP_CFG_OUT(GPIO65, AF2, DRIVE_LOW)
+-#define GPIO66_LCD_LDD_8	MFP_CFG_OUT(GPIO66, AF2, DRIVE_LOW)
+-#define GPIO67_LCD_LDD_9	MFP_CFG_OUT(GPIO67, AF2, DRIVE_LOW)
+-#define GPIO68_LCD_LDD_10	MFP_CFG_OUT(GPIO68, AF2, DRIVE_LOW)
+-#define GPIO69_LCD_LDD_11	MFP_CFG_OUT(GPIO69, AF2, DRIVE_LOW)
+-#define GPIO70_LCD_LDD_12	MFP_CFG_OUT(GPIO70, AF2, DRIVE_LOW)
+-#define GPIO71_LCD_LDD_13	MFP_CFG_OUT(GPIO71, AF2, DRIVE_LOW)
+-#define GPIO72_LCD_LDD_14	MFP_CFG_OUT(GPIO72, AF2, DRIVE_LOW)
+-#define GPIO73_LCD_LDD_15	MFP_CFG_OUT(GPIO73, AF2, DRIVE_LOW)
+-#define GPIO86_LCD_LDD_16	MFP_CFG_OUT(GPIO86, AF2, DRIVE_LOW)
+-#define GPIO87_LCD_LDD_17	MFP_CFG_OUT(GPIO87, AF2, DRIVE_LOW)
+-#define GPIO74_LCD_FCLK		MFP_CFG_OUT(GPIO74, AF2, DRIVE_LOW)
+-#define GPIO75_LCD_LCLK		MFP_CFG_OUT(GPIO75, AF2, DRIVE_LOW)
+-#define GPIO76_LCD_PCLK		MFP_CFG_OUT(GPIO76, AF2, DRIVE_LOW)
+-#define GPIO77_LCD_BIAS		MFP_CFG_OUT(GPIO77, AF2, DRIVE_LOW)
+-#define GPIO14_LCD_VSYNC	MFP_CFG_IN(GPIO14, AF1)
+-#define GPIO19_LCD_CS		MFP_CFG_OUT(GPIO19, AF2, DRIVE_LOW)
+-
+-/* Keypad */
+-#define GPIO93_KP_DKIN_0	MFP_CFG_IN(GPIO93, AF1)
+-#define GPIO94_KP_DKIN_1	MFP_CFG_IN(GPIO94, AF1)
+-#define GPIO95_KP_DKIN_2	MFP_CFG_IN(GPIO95, AF1)
+-#define GPIO96_KP_DKIN_3	MFP_CFG_IN(GPIO96, AF1)
+-#define GPIO97_KP_DKIN_4	MFP_CFG_IN(GPIO97, AF1)
+-#define GPIO98_KP_DKIN_5	MFP_CFG_IN(GPIO98, AF1)
+-#define GPIO99_KP_DKIN_6	MFP_CFG_IN(GPIO99, AF1)
+-#define GPIO13_KP_KDIN_7	MFP_CFG_IN(GPIO13, AF2)
+-#define GPIO100_KP_MKIN_0	MFP_CFG_IN(GPIO100, AF1)
+-#define GPIO101_KP_MKIN_1	MFP_CFG_IN(GPIO101, AF1)
+-#define GPIO102_KP_MKIN_2	MFP_CFG_IN(GPIO102, AF1)
+-#define GPIO34_KP_MKIN_3	MFP_CFG_IN(GPIO34, AF2)
+-#define GPIO37_KP_MKIN_3	MFP_CFG_IN(GPIO37, AF3)
+-#define GPIO97_KP_MKIN_3	MFP_CFG_IN(GPIO97, AF3)
+-#define GPIO98_KP_MKIN_4	MFP_CFG_IN(GPIO98, AF3)
+-#define GPIO38_KP_MKIN_4	MFP_CFG_IN(GPIO38, AF2)
+-#define GPIO39_KP_MKIN_4	MFP_CFG_IN(GPIO39, AF1)
+-#define GPIO16_KP_MKIN_5	MFP_CFG_IN(GPIO16, AF1)
+-#define GPIO90_KP_MKIN_5	MFP_CFG_IN(GPIO90, AF1)
+-#define GPIO99_KP_MKIN_5	MFP_CFG_IN(GPIO99, AF3)
+-#define GPIO17_KP_MKIN_6	MFP_CFG_IN(GPIO17, AF1)
+-#define GPIO91_KP_MKIN_6	MFP_CFG_IN(GPIO91, AF1)
+-#define GPIO95_KP_MKIN_6	MFP_CFG_IN(GPIO95, AF3)
+-#define GPIO13_KP_MKIN_7	MFP_CFG_IN(GPIO13, AF3)
+-#define GPIO36_KP_MKIN_7	MFP_CFG_IN(GPIO36, AF3)
+-#define GPIO103_KP_MKOUT_0	MFP_CFG_OUT(GPIO103, AF2, DRIVE_HIGH)
+-#define GPIO104_KP_MKOUT_1	MFP_CFG_OUT(GPIO104, AF2, DRIVE_HIGH)
+-#define GPIO105_KP_MKOUT_2	MFP_CFG_OUT(GPIO105, AF2, DRIVE_HIGH)
+-#define GPIO106_KP_MKOUT_3	MFP_CFG_OUT(GPIO106, AF2, DRIVE_HIGH)
+-#define GPIO107_KP_MKOUT_4	MFP_CFG_OUT(GPIO107, AF2, DRIVE_HIGH)
+-#define GPIO108_KP_MKOUT_5	MFP_CFG_OUT(GPIO108, AF2, DRIVE_HIGH)
+-#define GPIO35_KP_MKOUT_6	MFP_CFG_OUT(GPIO35, AF2, DRIVE_HIGH)
+-#define GPIO22_KP_MKOUT_7	MFP_CFG_OUT(GPIO22, AF1, DRIVE_HIGH)
+-#define GPIO40_KP_MKOUT_6	MFP_CFG_OUT(GPIO40, AF1, DRIVE_HIGH)
+-#define GPIO41_KP_MKOUT_7	MFP_CFG_OUT(GPIO41, AF1, DRIVE_HIGH)
+-#define GPIO96_KP_MKOUT_6	MFP_CFG_OUT(GPIO96, AF3, DRIVE_HIGH)
+-
+-/* USB P3 */
+-#define GPIO10_USB_P3_5		MFP_CFG_IN(GPIO10, AF3)
+-#define GPIO11_USB_P3_1		MFP_CFG_IN(GPIO11, AF3)
+-#define GPIO30_USB_P3_2		MFP_CFG_OUT(GPIO30, AF3, DRIVE_LOW)
+-#define GPIO31_USB_P3_6		MFP_CFG_OUT(GPIO31, AF3, DRIVE_LOW)
+-#define GPIO56_USB_P3_4		MFP_CFG_OUT(GPIO56, AF1, DRIVE_LOW)
+-#define GPIO86_USB_P3_5		MFP_CFG_IN(GPIO86, AF3)
+-#define GPIO87_USB_P3_1		MFP_CFG_IN(GPIO87, AF3)
+-#define GPIO90_USB_P3_5		MFP_CFG_IN(GPIO90, AF2)
+-#define GPIO91_USB_P3_1		MFP_CFG_IN(GPIO91, AF2)
+-#define GPIO113_USB_P3_3	MFP_CFG_IN(GPIO113, AF3)
+-
+-/* USB P2 */
+-#define GPIO34_USB_P2_2		MFP_CFG_OUT(GPIO34, AF1, DRIVE_LOW)
+-#define GPIO35_USB_P2_1		MFP_CFG_IN(GPIO35, AF2)
+-#define GPIO36_USB_P2_4		MFP_CFG_OUT(GPIO36, AF1, DRIVE_LOW)
+-#define GPIO37_USB_P2_8		MFP_CFG_OUT(GPIO37, AF1, DRIVE_LOW)
+-#define GPIO38_USB_P2_3		MFP_CFG_IN(GPIO38, AF3)
+-#define GPIO39_USB_P2_6		MFP_CFG_OUT(GPIO39, AF1, DRIVE_LOW)
+-#define GPIO40_USB_P2_5		MFP_CFG_IN(GPIO40, AF3)
+-#define GPIO41_USB_P2_7		MFP_CFG_IN(GPIO41, AF2)
+-#define GPIO53_USB_P2_3		MFP_CFG_IN(GPIO53, AF2)
+-
+-/* USB Host Port 1/2 */
+-#define GPIO88_USBH1_PWR	MFP_CFG_IN(GPIO88, AF1)
+-#define GPIO89_USBH1_PEN	MFP_CFG_OUT(GPIO89, AF2, DRIVE_LOW)
+-#define GPIO119_USBH2_PWR	MFP_CFG_IN(GPIO119, AF1)
+-#define GPIO120_USBH2_PEN	MFP_CFG_OUT(GPIO120, AF2, DRIVE_LOW)
+-
+-/* QCI - default to Master Mode: CIF_FV/CIF_LV Direction In */
+-#define GPIO115_CIF_DD_3	MFP_CFG_IN(GPIO115, AF2)
+-#define GPIO116_CIF_DD_2	MFP_CFG_IN(GPIO116, AF1)
+-#define GPIO12_CIF_DD_7		MFP_CFG_IN(GPIO12, AF2)
+-#define GPIO17_CIF_DD_6		MFP_CFG_IN(GPIO17, AF2)
+-#define GPIO23_CIF_MCLK		MFP_CFG_OUT(GPIO23, AF1, DRIVE_LOW)
+-#define GPIO24_CIF_FV		MFP_CFG_IN(GPIO24, AF1)
+-#define GPIO25_CIF_LV		MFP_CFG_IN(GPIO25, AF1)
+-#define GPIO26_CIF_PCLK		MFP_CFG_IN(GPIO26, AF2)
+-#define GPIO27_CIF_DD_0		MFP_CFG_IN(GPIO27, AF3)
+-#define GPIO42_CIF_MCLK		MFP_CFG_OUT(GPIO42, AF3, DRIVE_LOW)
+-#define GPIO43_CIF_FV		MFP_CFG_IN(GPIO43, AF3)
+-#define GPIO44_CIF_LV		MFP_CFG_IN(GPIO44, AF3)
+-#define GPIO45_CIF_PCLK		MFP_CFG_IN(GPIO45, AF3)
+-#define GPIO47_CIF_DD_0		MFP_CFG_IN(GPIO47, AF1)
+-#define GPIO48_CIF_DD_5		MFP_CFG_IN(GPIO48, AF1)
+-#define GPIO50_CIF_DD_3		MFP_CFG_IN(GPIO50, AF1)
+-#define GPIO51_CIF_DD_2		MFP_CFG_IN(GPIO51, AF1)
+-#define GPIO52_CIF_DD_4		MFP_CFG_IN(GPIO52, AF1)
+-#define GPIO53_CIF_MCLK		MFP_CFG_OUT(GPIO53, AF2, DRIVE_LOW)
+-#define GPIO54_CIF_PCLK		MFP_CFG_IN(GPIO54, AF3)
+-#define GPIO55_CIF_DD_1		MFP_CFG_IN(GPIO55, AF1)
+-#define GPIO81_CIF_DD_0		MFP_CFG_IN(GPIO81, AF2)
+-#define GPIO82_CIF_DD_5		MFP_CFG_IN(GPIO82, AF3)
+-#define GPIO83_CIF_DD_4		MFP_CFG_IN(GPIO83, AF3)
+-#define GPIO84_CIF_FV		MFP_CFG_IN(GPIO84, AF3)
+-#define GPIO85_CIF_LV		MFP_CFG_IN(GPIO85, AF3)
+-#define GPIO90_CIF_DD_4		MFP_CFG_IN(GPIO90, AF3)
+-#define GPIO91_CIF_DD_5		MFP_CFG_IN(GPIO91, AF3)
+-#define GPIO93_CIF_DD_6		MFP_CFG_IN(GPIO93, AF2)
+-#define GPIO94_CIF_DD_5		MFP_CFG_IN(GPIO94, AF2)
+-#define GPIO95_CIF_DD_4		MFP_CFG_IN(GPIO95, AF2)
+-#define GPIO98_CIF_DD_0		MFP_CFG_IN(GPIO98, AF2)
+-#define GPIO103_CIF_DD_3	MFP_CFG_IN(GPIO103, AF1)
+-#define GPIO104_CIF_DD_2	MFP_CFG_IN(GPIO104, AF1)
+-#define GPIO105_CIF_DD_1	MFP_CFG_IN(GPIO105, AF1)
+-#define GPIO106_CIF_DD_9	MFP_CFG_IN(GPIO106, AF1)
+-#define GPIO107_CIF_DD_8	MFP_CFG_IN(GPIO107, AF1)
+-#define GPIO108_CIF_DD_7	MFP_CFG_IN(GPIO108, AF1)
+-#define GPIO114_CIF_DD_1	MFP_CFG_IN(GPIO114, AF1)
+-
+-/* Universal Subscriber ID Interface */
+-#define GPIO114_UVS0		MFP_CFG_OUT(GPIO114, AF2, DRIVE_LOW)
+-#define GPIO115_nUVS1		MFP_CFG_OUT(GPIO115, AF2, DRIVE_LOW)
+-#define GPIO116_nUVS2		MFP_CFG_OUT(GPIO116, AF2, DRIVE_LOW)
+-#define GPIO14_UCLK		MFP_CFG_OUT(GPIO14, AF3, DRIVE_LOW)
+-#define GPIO91_UCLK		MFP_CFG_OUT(GPIO91, AF2, DRIVE_LOW)
+-#define GPIO19_nURST		MFP_CFG_OUT(GPIO19, AF3, DRIVE_LOW)
+-#define GPIO90_nURST		MFP_CFG_OUT(GPIO90, AF2, DRIVE_LOW)
+-#define GPIO116_UDET		MFP_CFG_IN(GPIO116, AF3)
+-#define GPIO114_UEN		MFP_CFG_OUT(GPIO114, AF1, DRIVE_LOW)
+-#define GPIO115_UEN		MFP_CFG_OUT(GPIO115, AF1, DRIVE_LOW)
+-
+-/* Mobile Scalable Link (MSL) Interface */
+-#define GPIO81_BB_OB_DAT_0	MFP_CFG_OUT(GPIO81, AF2, DRIVE_LOW)
+-#define GPIO48_BB_OB_DAT_1	MFP_CFG_OUT(GPIO48, AF1, DRIVE_LOW)
+-#define GPIO50_BB_OB_DAT_2	MFP_CFG_OUT(GPIO50, AF1, DRIVE_LOW)
+-#define GPIO51_BB_OB_DAT_3	MFP_CFG_OUT(GPIO51, AF1, DRIVE_LOW)
+-#define GPIO52_BB_OB_CLK	MFP_CFG_OUT(GPIO52, AF1, DRIVE_LOW)
+-#define GPIO53_BB_OB_STB	MFP_CFG_OUT(GPIO53, AF1, DRIVE_LOW)
+-#define GPIO54_BB_OB_WAIT	MFP_CFG_IN(GPIO54, AF2)
+-#define GPIO82_BB_IB_DAT_0	MFP_CFG_IN(GPIO82, AF2)
+-#define GPIO55_BB_IB_DAT_1	MFP_CFG_IN(GPIO55, AF2)
+-#define GPIO56_BB_IB_DAT_2	MFP_CFG_IN(GPIO56, AF2)
+-#define GPIO57_BB_IB_DAT_3	MFP_CFG_IN(GPIO57, AF2)
+-#define GPIO83_BB_IB_CLK	MFP_CFG_IN(GPIO83, AF2)
+-#define GPIO84_BB_IB_STB	MFP_CFG_IN(GPIO84, AF2)
+-#define GPIO85_BB_IB_WAIT	MFP_CFG_OUT(GPIO85, AF2, DRIVE_LOW)
+-
+-/* Memory Stick Host Controller */
+-#define GPIO92_MSBS		MFP_CFG_OUT(GPIO92, AF2, DRIVE_LOW)
+-#define GPIO109_MSSDIO		MFP_CFG_IN(GPIO109, AF2)
+-#define GPIO112_nMSINS		MFP_CFG_IN(GPIO112, AF2)
+-#define GPIO32_MSSCLK		MFP_CFG_OUT(GPIO32, AF1, DRIVE_LOW)
+-
+-/* commonly used pin configurations */
+-#define GPIOxx_LCD_16BPP	\
+-	GPIO58_LCD_LDD_0,	\
+-	GPIO59_LCD_LDD_1,	\
+-	GPIO60_LCD_LDD_2,	\
+-	GPIO61_LCD_LDD_3,	\
+-	GPIO62_LCD_LDD_4,	\
+-	GPIO63_LCD_LDD_5,	\
+-	GPIO64_LCD_LDD_6,	\
+-	GPIO65_LCD_LDD_7,	\
+-	GPIO66_LCD_LDD_8,	\
+-	GPIO67_LCD_LDD_9,	\
+-	GPIO68_LCD_LDD_10,	\
+-	GPIO69_LCD_LDD_11,	\
+-	GPIO70_LCD_LDD_12,	\
+-	GPIO71_LCD_LDD_13,	\
+-	GPIO72_LCD_LDD_14,	\
+-	GPIO73_LCD_LDD_15
+-
+-#define GPIOxx_LCD_DSTN_16BPP	\
+-	GPIOxx_LCD_16BPP,	\
+-	GPIO74_LCD_FCLK,	\
+-	GPIO75_LCD_LCLK,	\
+-	GPIO76_LCD_PCLK
+-
+-#define GPIOxx_LCD_TFT_16BPP	\
+-	GPIOxx_LCD_16BPP,	\
+-	GPIO74_LCD_FCLK,	\
+-	GPIO75_LCD_LCLK,	\
+-	GPIO76_LCD_PCLK,	\
+-	GPIO77_LCD_BIAS
+-
+-extern int keypad_set_wake(unsigned int on);
+-#endif /* __ASM_ARCH_MFP_PXA27X_H */
+diff --git a/include/mach/pxa/mfp-pxa2xx.h b/include/mach/pxa/mfp-pxa2xx.h
+deleted file mode 100644
+index 00bae5e063..0000000000
+--- a/include/mach/pxa/mfp-pxa2xx.h
++++ /dev/null
+@@ -1,135 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
+-
+-#ifndef __ASM_ARCH_MFP_PXA2XX_H
+-#define __ASM_ARCH_MFP_PXA2XX_H
+-
+-#include <mach/pxa/mfp.h>
+-
+-/*
+- * the following MFP_xxx bit definitions in mfp.h are re-used for pxa2xx:
+- *
+- *  MFP_PIN(x)
+- *  MFP_AFx
+- *  MFP_LPM_DRIVE_{LOW, HIGH}
+- *  MFP_LPM_EDGE_x
+- *
+- * other MFP_x bit definitions will be ignored
+- *
+- * and adds the below two bits specifically for pxa2xx:
+- *
+- * bit     23 - Input/Output (PXA2xx specific)
+- * bit     24 - Wakeup Enable(PXA2xx specific)
+- */
+-
+-#define MFP_DIR_IN		(0x0 << 23)
+-#define MFP_DIR_OUT		(0x1 << 23)
+-#define MFP_DIR_MASK		(0x1 << 23)
+-#define MFP_DIR(x)		(((x) >> 23) & 0x1)
+-
+-#define MFP_LPM_CAN_WAKEUP	(0x1 << 24)
+-#define WAKEUP_ON_EDGE_RISE	(MFP_LPM_CAN_WAKEUP | MFP_LPM_EDGE_RISE)
+-#define WAKEUP_ON_EDGE_FALL	(MFP_LPM_CAN_WAKEUP | MFP_LPM_EDGE_FALL)
+-#define WAKEUP_ON_EDGE_BOTH	(MFP_LPM_CAN_WAKEUP | MFP_LPM_EDGE_BOTH)
+-
+-/* specifically for enabling wakeup on keypad GPIOs */
+-#define WAKEUP_ON_LEVEL_HIGH	(MFP_LPM_CAN_WAKEUP)
+-
+-#define MFP_CFG_IN(pin, af)		\
+-	((MFP_CFG_DEFAULT & ~(MFP_AF_MASK | MFP_DIR_MASK)) |\
+-	 (MFP_PIN(MFP_PIN_##pin) | MFP_##af | MFP_DIR_IN))
+-
+-/* NOTE:  pins configured as output _must_ provide a low power state,
+- * and this state should help to minimize the power dissipation.
+- */
+-#define MFP_CFG_OUT(pin, af, state)	\
+-	((MFP_CFG_DEFAULT & ~(MFP_AF_MASK | MFP_DIR_MASK | MFP_LPM_STATE_MASK)) |\
+-	 (MFP_PIN(MFP_PIN_##pin) | MFP_##af | MFP_DIR_OUT | MFP_LPM_##state))
+-
+-/* Common configurations for pxa25x and pxa27x
+- *
+- * Note: pins configured as GPIO are always initialized to input
+- * so not to cause any side effect
+- */
+-#define GPIO0_GPIO	MFP_CFG_IN(GPIO0, AF0)
+-#define GPIO1_GPIO	MFP_CFG_IN(GPIO1, AF0)
+-#define GPIO9_GPIO	MFP_CFG_IN(GPIO9, AF0)
+-#define GPIO10_GPIO	MFP_CFG_IN(GPIO10, AF0)
+-#define GPIO11_GPIO	MFP_CFG_IN(GPIO11, AF0)
+-#define GPIO12_GPIO	MFP_CFG_IN(GPIO12, AF0)
+-#define GPIO13_GPIO	MFP_CFG_IN(GPIO13, AF0)
+-#define GPIO14_GPIO	MFP_CFG_IN(GPIO14, AF0)
+-#define GPIO15_GPIO	MFP_CFG_IN(GPIO15, AF0)
+-#define GPIO16_GPIO	MFP_CFG_IN(GPIO16, AF0)
+-#define GPIO17_GPIO	MFP_CFG_IN(GPIO17, AF0)
+-#define GPIO18_GPIO	MFP_CFG_IN(GPIO18, AF0)
+-#define GPIO19_GPIO	MFP_CFG_IN(GPIO19, AF0)
+-#define GPIO20_GPIO	MFP_CFG_IN(GPIO20, AF0)
+-#define GPIO21_GPIO	MFP_CFG_IN(GPIO21, AF0)
+-#define GPIO22_GPIO	MFP_CFG_IN(GPIO22, AF0)
+-#define GPIO23_GPIO	MFP_CFG_IN(GPIO23, AF0)
+-#define GPIO24_GPIO	MFP_CFG_IN(GPIO24, AF0)
+-#define GPIO25_GPIO	MFP_CFG_IN(GPIO25, AF0)
+-#define GPIO26_GPIO	MFP_CFG_IN(GPIO26, AF0)
+-#define GPIO27_GPIO	MFP_CFG_IN(GPIO27, AF0)
+-#define GPIO28_GPIO	MFP_CFG_IN(GPIO28, AF0)
+-#define GPIO29_GPIO	MFP_CFG_IN(GPIO29, AF0)
+-#define GPIO30_GPIO	MFP_CFG_IN(GPIO30, AF0)
+-#define GPIO31_GPIO	MFP_CFG_IN(GPIO31, AF0)
+-#define GPIO32_GPIO	MFP_CFG_IN(GPIO32, AF0)
+-#define GPIO33_GPIO	MFP_CFG_IN(GPIO33, AF0)
+-#define GPIO34_GPIO	MFP_CFG_IN(GPIO34, AF0)
+-#define GPIO35_GPIO	MFP_CFG_IN(GPIO35, AF0)
+-#define GPIO36_GPIO	MFP_CFG_IN(GPIO36, AF0)
+-#define GPIO37_GPIO	MFP_CFG_IN(GPIO37, AF0)
+-#define GPIO38_GPIO	MFP_CFG_IN(GPIO38, AF0)
+-#define GPIO39_GPIO	MFP_CFG_IN(GPIO39, AF0)
+-#define GPIO40_GPIO	MFP_CFG_IN(GPIO40, AF0)
+-#define GPIO41_GPIO	MFP_CFG_IN(GPIO41, AF0)
+-#define GPIO42_GPIO	MFP_CFG_IN(GPIO42, AF0)
+-#define GPIO43_GPIO	MFP_CFG_IN(GPIO43, AF0)
+-#define GPIO44_GPIO	MFP_CFG_IN(GPIO44, AF0)
+-#define GPIO45_GPIO	MFP_CFG_IN(GPIO45, AF0)
+-#define GPIO46_GPIO	MFP_CFG_IN(GPIO46, AF0)
+-#define GPIO47_GPIO	MFP_CFG_IN(GPIO47, AF0)
+-#define GPIO48_GPIO	MFP_CFG_IN(GPIO48, AF0)
+-#define GPIO49_GPIO	MFP_CFG_IN(GPIO49, AF0)
+-#define GPIO50_GPIO	MFP_CFG_IN(GPIO50, AF0)
+-#define GPIO51_GPIO	MFP_CFG_IN(GPIO51, AF0)
+-#define GPIO52_GPIO	MFP_CFG_IN(GPIO52, AF0)
+-#define GPIO53_GPIO	MFP_CFG_IN(GPIO53, AF0)
+-#define GPIO54_GPIO	MFP_CFG_IN(GPIO54, AF0)
+-#define GPIO55_GPIO	MFP_CFG_IN(GPIO55, AF0)
+-#define GPIO56_GPIO	MFP_CFG_IN(GPIO56, AF0)
+-#define GPIO57_GPIO	MFP_CFG_IN(GPIO57, AF0)
+-#define GPIO58_GPIO	MFP_CFG_IN(GPIO58, AF0)
+-#define GPIO59_GPIO	MFP_CFG_IN(GPIO59, AF0)
+-#define GPIO60_GPIO	MFP_CFG_IN(GPIO60, AF0)
+-#define GPIO61_GPIO	MFP_CFG_IN(GPIO61, AF0)
+-#define GPIO62_GPIO	MFP_CFG_IN(GPIO62, AF0)
+-#define GPIO63_GPIO	MFP_CFG_IN(GPIO63, AF0)
+-#define GPIO64_GPIO	MFP_CFG_IN(GPIO64, AF0)
+-#define GPIO65_GPIO	MFP_CFG_IN(GPIO65, AF0)
+-#define GPIO66_GPIO	MFP_CFG_IN(GPIO66, AF0)
+-#define GPIO67_GPIO	MFP_CFG_IN(GPIO67, AF0)
+-#define GPIO68_GPIO	MFP_CFG_IN(GPIO68, AF0)
+-#define GPIO69_GPIO	MFP_CFG_IN(GPIO69, AF0)
+-#define GPIO70_GPIO	MFP_CFG_IN(GPIO70, AF0)
+-#define GPIO71_GPIO	MFP_CFG_IN(GPIO71, AF0)
+-#define GPIO72_GPIO	MFP_CFG_IN(GPIO72, AF0)
+-#define GPIO73_GPIO	MFP_CFG_IN(GPIO73, AF0)
+-#define GPIO74_GPIO	MFP_CFG_IN(GPIO74, AF0)
+-#define GPIO75_GPIO	MFP_CFG_IN(GPIO75, AF0)
+-#define GPIO76_GPIO	MFP_CFG_IN(GPIO76, AF0)
+-#define GPIO77_GPIO	MFP_CFG_IN(GPIO77, AF0)
+-#define GPIO78_GPIO	MFP_CFG_IN(GPIO78, AF0)
+-#define GPIO79_GPIO	MFP_CFG_IN(GPIO79, AF0)
+-#define GPIO80_GPIO	MFP_CFG_IN(GPIO80, AF0)
+-#define GPIO81_GPIO	MFP_CFG_IN(GPIO81, AF0)
+-#define GPIO82_GPIO	MFP_CFG_IN(GPIO82, AF0)
+-#define GPIO83_GPIO	MFP_CFG_IN(GPIO83, AF0)
+-#define GPIO84_GPIO	MFP_CFG_IN(GPIO84, AF0)
+-
+-extern void pxa2xx_mfp_config(unsigned long *mfp_cfgs, int num);
+-extern void pxa2xx_mfp_set_lpm(int mfp, unsigned long lpm);
+-extern int gpio_set_wake(unsigned int gpio, unsigned int on);
+-#endif /* __ASM_ARCH_MFP_PXA2XX_H */
+diff --git a/include/mach/pxa/pxa-regs.h b/include/mach/pxa/pxa-regs.h
+index 55bfae67be..24b39f5e60 100644
+--- a/include/mach/pxa/pxa-regs.h
++++ b/include/mach/pxa/pxa-regs.h
+@@ -20,18 +20,6 @@
+ # define __REG2(x, y)	((x) + (y))
+ #endif
+ 
+-#ifdef CONFIG_ARCH_PXA2XX
+-#include <mach/pxa/pxa2xx-regs.h>
+-#endif
+-
+-#if defined(CONFIG_ARCH_PXA27X)
+-#include <mach/pxa/pxa27x-regs.h>
+-#elif defined(CONFIG_ARCH_PXA3XX)
+ #include <mach/pxa/pxa3xx-regs.h>
+-#elif defined(CONFIG_ARCH_PXA25X)
+-#include <mach/pxa/pxa25x-regs.h>
+-#else
+-#error "unknown PXA soc type"
+-#endif
+ 
+ #endif	/* !__MACH_PXA_REGS_H */
+diff --git a/include/mach/pxa/pxa25x-regs.h b/include/mach/pxa/pxa25x-regs.h
+deleted file mode 100644
+index f9cbe50007..0000000000
+--- a/include/mach/pxa/pxa25x-regs.h
++++ /dev/null
+@@ -1,8 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
+-
+-#ifndef __MACH_PXA25X_REGS
+-#define __MACH_PXA25X_REGS
+-
+-/* this file intentionally left blank */
+-
+-#endif	/* !__MACH_PXA25X_REGS */
+diff --git a/include/mach/pxa/pxa27x-regs.h b/include/mach/pxa/pxa27x-regs.h
+deleted file mode 100644
+index a97538d012..0000000000
+--- a/include/mach/pxa/pxa27x-regs.h
++++ /dev/null
+@@ -1,8 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
+-
+-#ifndef __MACH_PXA27X_REGS
+-#define __MACH_PXA27X_REGS
+-
+-/* this file intentionally left blank */
+-
+-#endif	/* !__MACH_PXA27X_REGS */
+diff --git a/include/mach/pxa/pxa2xx-regs.h b/include/mach/pxa/pxa2xx-regs.h
+deleted file mode 100644
+index 9e5aeb467d..0000000000
+--- a/include/mach/pxa/pxa2xx-regs.h
++++ /dev/null
+@@ -1,273 +0,0 @@
+-/*
+- *  arch/arm/mach-pxa/include/mach/pxa2xx-regs.h
+- *
+- *  Taken from pxa-regs.h by Russell King
+- *
+- *  Author:	Nicolas Pitre
+- *  Copyright:	MontaVista Software Inc.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License version 2 as
+- * published by the Free Software Foundation.
+- */
+-
+-#ifndef __PXA2XX_REGS_H
+-#define __PXA2XX_REGS_H
+-
+-#include <mach/pxa/hardware.h>
+-
+-/*
+- * PXA Chip selects
+- */
+-#define PXA_CS0_PHYS	0x00000000
+-#define PXA_CS1_PHYS	0x04000000
+-#define PXA_CS2_PHYS	0x08000000
+-#define PXA_CS3_PHYS	0x0C000000
+-#define PXA_CS4_PHYS	0x10000000
+-#define PXA_CS5_PHYS	0x14000000
+-
+-/*
+- * Memory controller
+- */
+-#define MDCNFG_OFFSET	0x00000000
+-#define MDREFR_OFFSET	0x00000004
+-#define MSC0_OFFSET	0x00000008
+-#define MSC1_OFFSET	0x0000000C
+-#define MSC2_OFFSET	0x00000010
+-#define MECR_OFFSET	0x00000014
+-#define SXCNFG_OFFSET	0x0000001C
+-#define FLYCNFG_OFFSET	0x00000020
+-#define MCMEM0_OFFSET	0x00000028
+-#define MCMEM1_OFFSET	0x0000002C
+-#define MCATT0_OFFSET	0x00000030
+-#define MCATT1_OFFSET	0x00000034
+-#define MCIO0_OFFSET	0x00000038
+-#define MCIO1_OFFSET	0x0000003C
+-#define MDMRS_OFFSET	0x00000040
+-
+-#define MDCNFG		__REG(0x48000000)  /* SDRAM Configuration Register 0 */
+-#define MDREFR		__REG(0x48000004)  /* SDRAM Refresh Control Register */
+-#define MSC0		__REG(0x48000008)  /* Static Memory Control Register 0 */
+-#define MSC1		__REG(0x4800000C)  /* Static Memory Control Register 1 */
+-#define MSC2		__REG(0x48000010)  /* Static Memory Control Register 2 */
+-#define MECR		__REG(0x48000014)  /* Expansion Memory (PCMCIA/Compact Flash) Bus Configuration */
+-#define SXLCR		__REG(0x48000018)  /* LCR value to be written to SDRAM-Timing Synchronous Flash */
+-#define SXCNFG		__REG(0x4800001C)  /* Synchronous Static Memory Control Register */
+-#define FLYCNFG		__REG(0x48000020)  /* Flycnfg Register */
+-#define SXMRS		__REG(0x48000024)  /* MRS value to be written to Synchronous Flash or SMROM */
+-#define MCMEM0		__REG(0x48000028)  /* Card interface Common Memory Space Socket 0 Timing */
+-#define MCMEM1		__REG(0x4800002C)  /* Card interface Common Memory Space Socket 1 Timing */
+-#define MCATT0		__REG(0x48000030)  /* Card interface Attribute Space Socket 0 Timing Configuration */
+-#define MCATT1		__REG(0x48000034)  /* Card interface Attribute Space Socket 1 Timing Configuration */
+-#define MCIO0		__REG(0x48000038)  /* Card interface I/O Space Socket 0 Timing Configuration */
+-#define MCIO1		__REG(0x4800003C)  /* Card interface I/O Space Socket 1 Timing Configuration */
+-#define MDMRS		__REG(0x48000040)  /* MRS value to be written to SDRAM */
+-#define BOOT_DEF	__REG(0x48000044)  /* Read-Only Boot-Time Register. Contains BOOT_SEL and PKG_SEL */
+-
+-/*
+- * More handy macros for PCMCIA
+- *
+- * Arg is socket number
+- */
+-#define MCMEM(s)	__REG2(0x48000028, (s)<<2 )  /* Card interface Common Memory Space Socket s Timing */
+-#define MCATT(s)	__REG2(0x48000030, (s)<<2 )  /* Card interface Attribute Space Socket s Timing Configuration */
+-#define MCIO(s)		__REG2(0x48000038, (s)<<2 )  /* Card interface I/O Space Socket s Timing Configuration */
+-
+-/* MECR register defines */
+-#define MECR_NOS	(1 << 0)	/* Number Of Sockets: 0 -> 1 sock, 1 -> 2 sock */
+-#define MECR_CIT	(1 << 1)	/* Card Is There: 0 -> no card, 1 -> card inserted */
+-
+-#define MDCNFG_DE0	(1 << 0)	/* SDRAM Bank 0 Enable */
+-#define MDCNFG_DE1	(1 << 1)	/* SDRAM Bank 1 Enable */
+-#define MDCNFG_DE2	(1 << 16)	/* SDRAM Bank 2 Enable */
+-#define MDCNFG_DE3	(1 << 17)	/* SDRAM Bank 3 Enable */
+-
+-#define MDREFR_K0DB4	(1 << 29)	/* SDCLK0 Divide by 4 Control/Status */
+-#define MDREFR_K2FREE	(1 << 25)	/* SDRAM Free-Running Control */
+-#define MDREFR_K1FREE	(1 << 24)	/* SDRAM Free-Running Control */
+-#define MDREFR_K0FREE	(1 << 23)	/* SDRAM Free-Running Control */
+-#define MDREFR_SLFRSH	(1 << 22)	/* SDRAM Self-Refresh Control/Status */
+-#define MDREFR_APD	(1 << 20)	/* SDRAM/SSRAM Auto-Power-Down Enable */
+-#define MDREFR_K2DB2	(1 << 19)	/* SDCLK2 Divide by 2 Control/Status */
+-#define MDREFR_K2RUN	(1 << 18)	/* SDCLK2 Run Control/Status */
+-#define MDREFR_K1DB2	(1 << 17)	/* SDCLK1 Divide by 2 Control/Status */
+-#define MDREFR_K1RUN	(1 << 16)	/* SDCLK1 Run Control/Status */
+-#define MDREFR_E1PIN	(1 << 15)	/* SDCKE1 Level Control/Status */
+-#define MDREFR_K0DB2	(1 << 14)	/* SDCLK0 Divide by 2 Control/Status */
+-#define MDREFR_K0RUN	(1 << 13)	/* SDCLK0 Run Control/Status */
+-#define MDREFR_E0PIN	(1 << 12)	/* SDCKE0 Level Control/Status */
+-
+-/*
+- * Power Manager
+- */
+-
+-#define PMCR		__REG(0x40F00000)  /* Power Manager Control Register */
+-#define PSSR		__REG(0x40F00004)  /* Power Manager Sleep Status Register */
+-#define PSPR		__REG(0x40F00008)  /* Power Manager Scratch Pad Register */
+-#define PWER		__REG(0x40F0000C)  /* Power Manager Wake-up Enable Register */
+-#define PRER		__REG(0x40F00010)  /* Power Manager GPIO Rising-Edge Detect Enable Register */
+-#define PFER		__REG(0x40F00014)  /* Power Manager GPIO Falling-Edge Detect Enable Register */
+-#define PEDR		__REG(0x40F00018)  /* Power Manager GPIO Edge Detect Status Register */
+-#define PCFR		__REG(0x40F0001C)  /* Power Manager General Configuration Register */
+-#define PGSR0		__REG(0x40F00020)  /* Power Manager GPIO Sleep State Register for GP[31-0] */
+-#define PGSR1		__REG(0x40F00024)  /* Power Manager GPIO Sleep State Register for GP[63-32] */
+-#define PGSR2		__REG(0x40F00028)  /* Power Manager GPIO Sleep State Register for GP[84-64] */
+-#define PGSR3		__REG(0x40F0002C)  /* Power Manager GPIO Sleep State Register for GP[118-96] */
+-#define RCSR		__REG(0x40F00030)  /* Reset Controller Status Register */
+-
+-#define PSLR		__REG(0x40F00034)	/* Power Manager Sleep Config Register */
+-#define PSTR		__REG(0x40F00038)	/* Power Manager Standby Config Register */
+-#define PSNR		__REG(0x40F0003C)	/* Power Manager Sense Config Register */
+-#define PVCR		__REG(0x40F00040)	/* Power Manager VoltageControl Register */
+-#define PKWR		__REG(0x40F00050)	/* Power Manager KB Wake-up Enable Reg */
+-#define PKSR		__REG(0x40F00054)	/* Power Manager KB Level-Detect Register */
+-#define PCMD(x)	__REG2(0x40F00080, (x)<<2)
+-#define PCMD0	__REG(0x40F00080 + 0 * 4)
+-#define PCMD1	__REG(0x40F00080 + 1 * 4)
+-#define PCMD2	__REG(0x40F00080 + 2 * 4)
+-#define PCMD3	__REG(0x40F00080 + 3 * 4)
+-#define PCMD4	__REG(0x40F00080 + 4 * 4)
+-#define PCMD5	__REG(0x40F00080 + 5 * 4)
+-#define PCMD6	__REG(0x40F00080 + 6 * 4)
+-#define PCMD7	__REG(0x40F00080 + 7 * 4)
+-#define PCMD8	__REG(0x40F00080 + 8 * 4)
+-#define PCMD9	__REG(0x40F00080 + 9 * 4)
+-#define PCMD10	__REG(0x40F00080 + 10 * 4)
+-#define PCMD11	__REG(0x40F00080 + 11 * 4)
+-#define PCMD12	__REG(0x40F00080 + 12 * 4)
+-#define PCMD13	__REG(0x40F00080 + 13 * 4)
+-#define PCMD14	__REG(0x40F00080 + 14 * 4)
+-#define PCMD15	__REG(0x40F00080 + 15 * 4)
+-#define PCMD16	__REG(0x40F00080 + 16 * 4)
+-#define PCMD17	__REG(0x40F00080 + 17 * 4)
+-#define PCMD18	__REG(0x40F00080 + 18 * 4)
+-#define PCMD19	__REG(0x40F00080 + 19 * 4)
+-#define PCMD20	__REG(0x40F00080 + 20 * 4)
+-#define PCMD21	__REG(0x40F00080 + 21 * 4)
+-#define PCMD22	__REG(0x40F00080 + 22 * 4)
+-#define PCMD23	__REG(0x40F00080 + 23 * 4)
+-#define PCMD24	__REG(0x40F00080 + 24 * 4)
+-#define PCMD25	__REG(0x40F00080 + 25 * 4)
+-#define PCMD26	__REG(0x40F00080 + 26 * 4)
+-#define PCMD27	__REG(0x40F00080 + 27 * 4)
+-#define PCMD28	__REG(0x40F00080 + 28 * 4)
+-#define PCMD29	__REG(0x40F00080 + 29 * 4)
+-#define PCMD30	__REG(0x40F00080 + 30 * 4)
+-#define PCMD31	__REG(0x40F00080 + 31 * 4)
+-
+-#define PCMD_MBC	(1<<12)
+-#define PCMD_DCE	(1<<11)
+-#define PCMD_LC	(1<<10)
+-/* FIXME:  PCMD_SQC need be checked.   */
+-#define PCMD_SQC	(3<<8)	/* currently only bit 8 is changeable,
+-				   bit 9 should be 0 all day. */
+-#define PVCR_VCSA	(0x1<<14)
+-#define PVCR_CommandDelay (0xf80)
+-#define PCFR_PI2C_EN	(0x1 << 6)
+-
+-#define PSSR_OTGPH	(1 << 6)	/* OTG Peripheral control Hold */
+-#define PSSR_RDH	(1 << 5)	/* Read Disable Hold */
+-#define PSSR_PH		(1 << 4)	/* Peripheral Control Hold */
+-#define PSSR_STS	(1 << 3)	/* Standby Mode Status */
+-#define PSSR_VFS	(1 << 2)	/* VDD Fault Status */
+-#define PSSR_BFS	(1 << 1)	/* Battery Fault Status */
+-#define PSSR_SSS	(1 << 0)	/* Software Sleep Status */
+-
+-#define PSLR_SL_ROD	(1 << 20)	/* Sleep-Mode/Depp-Sleep Mode nRESET_OUT Disable */
+-
+-#define PCFR_RO		(1 << 15)	/* RDH Override */
+-#define PCFR_PO		(1 << 14)	/* PH Override */
+-#define PCFR_GPROD	(1 << 12)	/* GPIO nRESET_OUT Disable */
+-#define PCFR_L1_EN	(1 << 11)	/* Sleep Mode L1 converter Enable */
+-#define PCFR_FVC	(1 << 10)	/* Frequency/Voltage Change */
+-#define PCFR_DC_EN	(1 << 7)	/* Sleep/deep-sleep DC-DC Converter Enable */
+-#define PCFR_PI2CEN	(1 << 6)	/* Enable PI2C controller */
+-#define PCFR_GPR_EN	(1 << 4)	/* nRESET_GPIO Pin Enable */
+-#define PCFR_DS		(1 << 3)	/* Deep Sleep Mode */
+-#define PCFR_FS		(1 << 2)	/* Float Static Chip Selects */
+-#define PCFR_FP		(1 << 1)	/* Float PCMCIA controls */
+-#define PCFR_OPDE	(1 << 0)	/* 3.6864 MHz oscillator power-down enable */
+-
+-#define RCSR_GPR	(1 << 3)	/* GPIO Reset */
+-#define RCSR_SMR	(1 << 2)	/* Sleep Mode */
+-#define RCSR_WDR	(1 << 1)	/* Watchdog Reset */
+-#define RCSR_HWR	(1 << 0)	/* Hardware Reset */
+-
+-#define PWER_GPIO(Nb)	(1 << Nb)	/* GPIO [0..15] wake-up enable     */
+-#define PWER_GPIO0	PWER_GPIO(0)	/* GPIO  [0] wake-up enable        */
+-#define PWER_GPIO1	PWER_GPIO(1)	/* GPIO  [1] wake-up enable        */
+-#define PWER_GPIO2	PWER_GPIO(2)	/* GPIO  [2] wake-up enable        */
+-#define PWER_GPIO3	PWER_GPIO(3)	/* GPIO  [3] wake-up enable        */
+-#define PWER_GPIO4	PWER_GPIO(4)	/* GPIO  [4] wake-up enable        */
+-#define PWER_GPIO5	PWER_GPIO(5)	/* GPIO  [5] wake-up enable        */
+-#define PWER_GPIO6	PWER_GPIO(6)	/* GPIO  [6] wake-up enable        */
+-#define PWER_GPIO7	PWER_GPIO(7)	/* GPIO  [7] wake-up enable        */
+-#define PWER_GPIO8	PWER_GPIO(8)	/* GPIO  [8] wake-up enable        */
+-#define PWER_GPIO9	PWER_GPIO(9)	/* GPIO  [9] wake-up enable        */
+-#define PWER_GPIO10	PWER_GPIO(10)	/* GPIO [10] wake-up enable        */
+-#define PWER_GPIO11	PWER_GPIO(11)	/* GPIO [11] wake-up enable        */
+-#define PWER_GPIO12	PWER_GPIO(12)	/* GPIO [12] wake-up enable        */
+-#define PWER_GPIO13	PWER_GPIO(13)	/* GPIO [13] wake-up enable        */
+-#define PWER_GPIO14	PWER_GPIO(14)	/* GPIO [14] wake-up enable        */
+-#define PWER_GPIO15	PWER_GPIO(15)	/* GPIO [15] wake-up enable        */
+-#define PWER_RTC	0x80000000	/* RTC alarm wake-up enable        */
+-
+-/*
+- * PXA2xx specific Core clock definitions
+- */
+-#define CCCR		__REG(0x41300000)  /* Core Clock Configuration Register */
+-#define CCSR		__REG(0x4130000C)  /* Core Clock Status Register */
+-#define CKEN		__REG(0x41300004)  /* Clock Enable Register */
+-#define OSCC		__REG(0x41300008)  /* Oscillator Configuration Register */
+-
+-#define CCCR_N_MASK	0x0380	/* Run Mode Frequency to Turbo Mode Frequency Multiplier */
+-#define CCCR_M_MASK	0x0060	/* Memory Frequency to Run Mode Frequency Multiplier */
+-#define CCCR_L_MASK	0x001f	/* Crystal Frequency to Memory Frequency Multiplier */
+-#define CCCR_CPDIS	(1 << 31)
+-#define CCCR_PPDIS	(1 << 30)
+-#define CCCR_LCD26	(1 << 27)
+-#define CCCR_PLL_EARLY	(1 << 26)
+-#define CCCR_A		(1 << 25)
+-
+-#define CKEN_AC97CONF   (1 << 31)    /* AC97 Controller Configuration */
+-#define CKEN_CAMERA	(1 << 24)	/* Camera Interface Clock Enable */
+-#define CKEN_SSP1	(1 << 23)	/* SSP1 Unit Clock Enable */
+-#define CKEN_MEMC	(1 << 22)	/* Memory Controller Clock Enable */
+-#define CKEN_MEMSTK	(1 << 21)	/* Memory Stick Host Controller */
+-#define CKEN_IM		(1 << 20)	/* Internal Memory Clock Enable */
+-#define CKEN_KEYPAD	(1 << 19)	/* Keypad Interface Clock Enable */
+-#define CKEN_USIM	(1 << 18)	/* USIM Unit Clock Enable */
+-#define CKEN_MSL	(1 << 17)	/* MSL Unit Clock Enable */
+-#define CKEN_LCD	(1 << 16)	/* LCD Unit Clock Enable */
+-#define CKEN_PWRI2C	(1 << 15)	/* PWR I2C Unit Clock Enable */
+-#define CKEN_I2C	(1 << 14)	/* I2C Unit Clock Enable */
+-#define CKEN_FICP	(1 << 13)	/* FICP Unit Clock Enable */
+-#define CKEN_MMC	(1 << 12)	/* MMC Unit Clock Enable */
+-#define CKEN_USB	(1 << 11)	/* USB Unit Clock Enable */
+-#define CKEN_ASSP	(1 << 10)	/* ASSP (1 << SSP3) Clock Enable */
+-#define CKEN_USBHOST	(1 << 10)	/* USB Host Unit Clock Enable */
+-#define CKEN_OSTIMER	(1 << 9)	/* OS Timer Unit Clock Enable */
+-#define CKEN_NSSP	(1 << 9)	/* NSSP (1 << SSP2) Clock Enable */
+-#define CKEN_I2S	(1 << 8)	/* I2S Unit Clock Enable */
+-#define CKEN_BTUART	(1 << 7)	/* BTUART Unit Clock Enable */
+-#define CKEN_FFUART	(1 << 6)	/* FFUART Unit Clock Enable */
+-#define CKEN_STUART	(1 << 5)	/* STUART Unit Clock Enable */
+-#define CKEN_HWUART	(1 << 4)	/* HWUART Unit Clock Enable */
+-#define CKEN_SSP3	(1 << 4)	/* SSP3 Unit Clock Enable */
+-#define CKEN_SSP	(1 << 3)	/* SSP Unit Clock Enable */
+-#define CKEN_SSP2	(1 << 3)	/* SSP2 Unit Clock Enable */
+-#define CKEN_AC97	(1 << 2)	/* AC97 Unit Clock Enable */
+-#define CKEN_PWM1	(1 << 1)	/* PWM1 Clock Enable */
+-#define CKEN_PWM0	(1 << 0)	/* PWM0 Clock Enable */
+-
+-#define OSCC_OON	(1 << 1)	/* 32.768kHz OON (write-once only bit) */
+-#define OSCC_OOK	(1 << 0)	/* 32.768kHz OOK (read-only bit) */
+-
+-/* PWRMODE register M field values */
+-
+-#define PWRMODE_IDLE		0x1
+-#define PWRMODE_STANDBY		0x2
+-#define PWRMODE_SLEEP		0x3
+-#define PWRMODE_DEEPSLEEP	0x7
+-
+-#endif
+diff --git a/include/mach/pxa/udc_pxa2xx.h b/include/mach/pxa/udc_pxa2xx.h
+deleted file mode 100644
+index 1ddfa7b797..0000000000
+--- a/include/mach/pxa/udc_pxa2xx.h
++++ /dev/null
+@@ -1,28 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
+-
+-/*
+- * arch/arm/mach-pxa/include/mach/udc_pxa2xx.h
+- *
+- * This supports machine-specific differences in how the PXA2xx
+- * USB Device Controller (UDC) is wired.
+- *
+- * It is set in linux/arch/arm/mach-pxa/<machine>.c or in
+- * linux/arch/mach-ixp4xx/<machine>.c and used in
+- * the probe routine of linux/drivers/usb/gadget/pxa2xx_udc.c
+- */
+-
+-struct pxa2xx_udc_mach_info {
+-	int  (*udc_is_connected)(void);		/* do we see host? */
+-	void (*udc_command)(int cmd);
+-#define	PXA2XX_UDC_CMD_CONNECT		0	/* let host see us */
+-#define	PXA2XX_UDC_CMD_DISCONNECT	1	/* so host won't see us */
+-
+-	/* Boards following the design guidelines in the developer's manual,
+-	 * with on-chip GPIOs not Lubbock's weird hardware, can have a sane
+-	 * VBUS IRQ and omit the methods above.  Store the GPIO number
+-	 * here.  Note that sometimes the signals go through inverters...
+-	 */
+-	bool	gpio_pullup_inverted;
+-	int	gpio_pullup;			/* high == pullup activated */
+-};
+-
 
 -- 
 2.47.3
