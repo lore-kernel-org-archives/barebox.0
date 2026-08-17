@@ -1,101 +1,90 @@
-Delivery-date: Mon, 17 Aug 2026 09:53:22 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Mon, 17 Aug 2026 10:48:37 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wvs9o-0043VY-26
+	id 1wvt1I-0044TM-1r
 	for lore@lore.pengutronix.de;
-	Mon, 17 Aug 2026 09:53:22 +0200
+	Mon, 17 Aug 2026 10:48:37 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id D96A520075B
-	for <lore@pengutronix.de>; Mon, 17 Aug 2026 09:53:20 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 2B5A6200444
+	for <lore@pengutronix.de>; Mon, 17 Aug 2026 10:48:37 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=m799wQy+;
-	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=A+XtCxrr;
-	dkim=fail ("headers rsa verify failed") header.d=ku-gbr.de header.s=x header.b="p raWTrN";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=RDLzv2pX;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-ID:Date:
-	Content-Transfer-Encoding:Content-Type:In-Reply-To:To:Subject:From:Reply-To:
-	MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:List-Owner;
-	bh=xhEsMiGv6UFCnrdNh4iv4K80pcAl53C2f8nqrCeZiso=; b=m799wQy+s5QfKPDGET3736Sgyy
-	6OQkg9t32psoFBVEdzmp9QBVY4sTud/oZzEfoUFc+bFB+tHc9DnS1zTOIwVld1UGpsByOuOe4U7Xv
-	bN/YEH32J8flTs750t0f9vKk+RAK5Ptrl8DjODC4Lq7N1yzRTYr+Kp2CPYa25nXueanYp2loE/73/
-	xFmpPZOI6WAomaWKSgNt9YN0umwdfKLtPwDeeXt6QdKsTJ6X35c/VVDFXmLgXIC/pc08Cc76cDT8H
-	e3ZrrQVhabjoYN0HICpvw+r9B++EoOEOhhV0KzmBEWYCO0xyCcQtXBlgJ2yqwdkB1xNJOAdakn2Sk
-	fq52uJ6w==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=0KpzcNLLd89jhlFxzUns96IVq+yIGluYU1n9j0bxVEw=; b=RDLzv2pXZjwMWI
+	PRPbIu73bNPo9gtesFlCjUdBSr7FHxCM8EWpPGtkmJmqOflw495/Z4sNpw0oIXZ4OS1PDIzsm12UE
+	IoqDh73JwzmvZNsoqoi74nqj4XkKCfdChXLZnObgVQzC+ZfXMKCmNhH0PZcwfCbNgBHRfwYZbwTag
+	sPmE6E72ctmu6ufMoFdxUsDIXxSs9MXhsRYKdecYGWfbN5PbWhp9N9FGpKL/ZpoObVkeWM6qM9l+a
+	dtCF1Wj+BJkgz/Mi5smTJE+OdS4pg+Aoi4AP26D/oYQ/K6uy+VFg9R7p8/6sy5138+QUn7tH23lOq
+	AADhQ3drfXulunxR1+zg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wvs8b-00000005bNz-3JsX;
-	Mon, 17 Aug 2026 07:52:05 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	id 1wvt0A-00000005j8H-3rSW;
+	Mon, 17 Aug 2026 08:47:26 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wvs8a-00000005bNC-1Jkm
-	for barebox@bombadil.infradead.org;
-	Mon, 17 Aug 2026 07:52:04 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Message-ID:Date:
-	Content-Transfer-Encoding:Content-Type:In-Reply-To:Cc:To:Subject:From:Sender:
-	Reply-To:MIME-Version:Content-ID:Content-Description:References;
-	bh=xhEsMiGv6UFCnrdNh4iv4K80pcAl53C2f8nqrCeZiso=; b=A+XtCxrrdLo8dYUZXlO89+qwYM
-	X4yBpVzdz3LEmZaOimEqoeOJ0nXM67gGJhWzGB5Ufhn1DuW7x8qPMIVKWwyhcgj2dWpBg7pneSCIZ
-	1CPTt6i2gQfxo1tKxdvXGPM4+xYJu//Cs5NCtC5jJqKnnhK82mil5+jMFrOWbpW7uGUnS/aQaQZpc
-	7aXCe+IS+SKyvkYkkai4cJELDwJW759bXd3Sh35A6HjNqc1E/ba5ZhdlsX24BfRkUZzCedAAfZXyG
-	p8Ny3Aeqhf0AEK17ecsJvauFLqKoO3Nghq0ZuvXC3jmmsUND1naVOe3rqbTI2ix/gTgbFG6egEBBo
-	VPEJgzWQ==;
-Received: from mail.ku-gbr.de ([2a02:790:4:9::dead])
-	by desiato.infradead.org with esmtps (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1wvs8V-00000000asf-3HbC
+	id 1wvt03-00000005j4e-3rGe
 	for barebox@lists.infradead.org;
-	Mon, 17 Aug 2026 07:52:01 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=ku-gbr.de;
-	s=x; h=Message-ID:Date:Content-Transfer-Encoding:Content-Type:In-Reply-To:Cc:
-	To:Subject:From:Sender:Reply-To:MIME-Version:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:
-	List-Owner:List-Archive; bh=xhEsMiGv6UFCnrdNh4iv4K80pcAl53C2f8nqrCeZiso=; b=p
-	raWTrNhOOG4kjvs3XH/9oNIxkzMmkP0wck/q8MGE0kwm0edHNZIFHGG2kc2tuIk/QYdmRL9kW5zs1
-	JtRCStoL7u9bNhhTSZZNmkN1KO+LXrL7eOMGrf0n6IJY/OVbtO0lobs68nNYmYRpz/CFh+WTqasa9
-	bS6rn/vTkhEUR59mhOhBErLD/nT41rCXCR+qQ8V202y7ZeHuOQwgiELd3TObT1zoweLymqH2NhnGz
-	cIAoEh3F8KBQiRQ0H4Aqy7D9kCzxYoq+g6AV6evkglJyiV1Yeu9yqM8Vx04U479lfmk1TcC8HUUE9
-	mGlJiSDfH0pwUfYVJ3zA7QxiN2VzNouHA==;
-Received: from [2a02:560:5d1c:bd00:9ebf:dff:fe00:fdb5] (port=46830 helo=[127.0.0.1])
-	by mail.ku-gbr.de with esmtpsa (Exim 4.96 #2 (Debian))
-	id 1wvs81-00GOzc-1k;
-	Mon, 17 Aug 2026 09:51:29 +0200
-From: "Sascha Hauer" <s.hauer@pengutronix.de>
-Subject: Re: [PATCH v4 01/14] ARM: mvebu: add Netgear RN102 support
-To: "Luca Lauro via B4 Relay" <devnull+famlauro93l.gmail.com@kernel.org>
-In-Reply-To: <20260813-rn102-rn104-series-v4-1-f932ac63efa0@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 17 Aug 2026 07:51:28 +0000
-Message-ID: <E1wvs81-00GOzc-1k@pengutronix.de>
-X-ACL-Warn: Adding Message-ID header because it is missing!
+	Mon, 17 Aug 2026 08:47:23 +0000
+Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <f.pflug@pengutronix.de>)
+	id 1wvszz-0000IK-EB; Mon, 17 Aug 2026 10:47:15 +0200
+From: Fabian Pflug <f.pflug@pengutronix.de>
+Subject: [PATCH v2 0/5] Add support for USB-EFI devices in EFI Playload
+Date: Mon, 17 Aug 2026 10:47:04 +0200
+Message-Id: <20260817-v2026-06-0-topic-efi_usb-v2-0-3d45c1782ccc@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIjKgmoC/42NwQ6CMBBEf4Xs2Zp21SKe/A9DjIUF9tKSFhoM4
+ d9d+AKTPcybyc6skCgyJXgUK0TKnDh4ATwV0Awf35PiVhhQo9V3gyrvSmk5NYWRG0Udv+fkFJI
+ r7dU466wGeR+jJMtR/aqFB05TiN9jKZvd/aM0G7GqFm/lpcGqQ/McyffzFIPn5dwS1Nu2/QAUn
+ ozGxQAAAA==
+X-Change-ID: 20260812-v2026-06-0-topic-efi_usb-2eb7641b6b60
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>
+Cc: Fabian Pflug <f.pflug@pengutronix.de>
+X-Mailer: b4 0.14.3
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::5c
+X-SA-Exim-Mail-From: f.pflug@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260817_085200_100235_6B69F4DE 
-X-CRM114-Status: GOOD (  23.44  )
-X-Spam-Score: 0.0 (/)
-X-Spam-Report: Spam detection software, running on the system "desiato.infradead.org",
+X-CRM114-CacheID: sfid-20260817_014719_976746_7C88F966 
+X-CRM114-Status: GOOD (  11.10  )
+X-Spam-Score: -1.9 (-)
+X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
  message has been attached to this so you can view it or label
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On 2026-08-13 17:26, Luca Lauro via B4 Relay wrote: > + filetype_kwbimage_v1);
-    > + > + return 0; > +} > + > +static const struct of_device_id rn102_of_match[]
-    = { > + { .compatible = "netgear,rn102" } [...] 
+ Content preview:  When running as EFI payload, barebox does not have control
+    over the USB bus, but instead the BIOS will have enumerated and set up devices.
+    The UEFI will also expose an API to access the devices, with one handle per
+    USB interface. This driver will create an USB-Host per device and initialize
+    the device and pass it onto barebox for driver [...] 
  
- Content analysis details:   (0.0 points, 5.0 required)
+ Content analysis details:   (-1.9 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
+ -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/, no
+                             trust
+                             [2a0a:edc0:2:b01:1d:0:0:104 listed in]
+                             [list.dnswl.org]
+ -0.0 SPF_PASS               SPF: sender matches SPF record
   0.0 SPF_HELO_NONE          SPF: HELO does not publish an SPF Record
-  0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
- -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
+ -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
+                             [score: 0.0000]
   0.0 DMARC_MISSING          Missing DMARC policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -108,149 +97,92 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: =?utf-8?b?b3BlbiBsaXN0OkJB?= =?utf-8?b?UkVCT1g=?= <barebox@lists.infradead.org>, ukleinek@kernel.org, Luca Lauro <famlauro93l@gmail.com>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: 5nbqumiz8sin4jfnyyzxwcmo1u5yszks
-X-Spamd-Result: default: False [-2.61 / 15.00];
+X-Stat-Signature: d3gmo7s987tfx4sp8abgdrrcm4qw6qbg
+X-Spamd-Result: default: False [-7.51 / 15.00];
 	BAYES_HAM(-3.00)[99.99%];
-	MISSING_MIME_VERSION(2.00)[];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	SUSPICIOUS_RECIPS(1.50)[];
-	CC_EXCESS_BASE64(1.50)[];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2001:8b0:10b:1:d65d:64ff:fe57:4e05:received,2607:7c80:54:3::133:from];
-	R_SPF_ALLOW(-0.20)[+mx:c];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
+	RCVD_IN_DNSWL_LOW(-0.10)[2a0a:edc0:0:1101:1d::5c:received];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_RECIPIENTS(0.00)[m:devnull+famlauro93l.gmail.com@kernel.org,m:barebox@lists.infradead.org,m:ukleinek@kernel.org,m:famlauro93l@gmail.com,m:devnull@kernel.org,s:lore@pengutronix.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	DMARC_NA(0.00)[pengutronix.de];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_MIXED(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FORWARDED(0.00)[barebox@bombadil.infradead.org];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_CC(0.00)[lists.infradead.org,kernel.org,gmail.com];
-	R_DKIM_REJECT(0.00)[infradead.org:s=desiato.20200630,ku-gbr.de:s=x];
-	NEURAL_HAM(-0.00)[-1.000];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FROM_HAS_DN(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,infradead.org:-,ku-gbr.de:-];
-	TAGGED_RCPT(0.00)[famlauro93l.gmail.com];
-	RCPT_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
+	RCVD_COUNT_THREE(0.00)[3];
+	ARC_NA(0.00)[];
+	FORGED_SENDER(0.00)[f.pflug@pengutronix.de,barebox-bounces@lists.infradead.org];
+	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	TO_DN_ALL(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[f.pflug@pengutronix.de,barebox-bounces@lists.infradead.org];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	MISSING_XM_UA(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	RCVD_IN_DNSWL_NONE(0.00)[2a0a:edc0:2:b01:1d::104:received];
+	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: D96A520075B
+X-Rspamd-Queue-Id: 2B5A6200444
 
-On 2026-08-13 17:26, Luca Lauro via B4 Relay wrote:
-> +					 filetype_kwbimage_v1);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct of_device_id rn102_of_match[] =3D {
-> +	{ .compatible =3D "netgear,rn102" },
+When running as EFI payload, barebox does not have control over the USB
+bus, but instead the BIOS will have enumerated and set up devices.
 
-How is the driver probed? The string "netgear,rn102" is in no dts.
-Unless I am missing something this should be "netgear,readynas-102".
+The UEFI will also expose an API to access the devices, with one handle
+per USB interface.
+This driver will create an USB-Host per device and initialize the device
+and pass it onto barebox for driver initialization, allowing all
+usb-devices to be used.
 
-Same for the rn104 patch.
+This might lead to problems where USB-Storage is handled as an USB
+device as well as UEFI Block IO Storage, therefore it is not added to
+efi_defconfig by default.
 
-> +/*
-> + * NOTE:
-> + * armada_370_xp_barebox_entry() cannot be used here because the
-> + * upstream SDRAM size detection for Armada 370-XP misinterprets
-> + * the DDR_SIZE_CSn registers on this board and reports an incorrect
-> + * memory size (256MB instead of 512MB on RN102).
-> + *
-> + * Until the generic detection code is fixed, we compute the SDRAM
-> + * size manually using the DDR_SIZE_CSn values.
-> + */
-> +static unsigned long armada_370_xp_memory_find(void)
-> +{
-> +	unsigned long mem_size =3D 0;
-> +
-> +	for (int cs =3D 0; cs < 4; cs++) {
-> +		u32 ctrl =3D readl(ARMADA_370_XP_SDRAM_BASE + DDR_SIZE_CSn(cs));
-> +
-> +		/* Skip non-enabled CS */
-> +		if ((ctrl & DDR_SIZE_ENABLED) !=3D DDR_SIZE_ENABLED)
-> +			continue;
-> +
-> +		mem_size +=3D (ctrl | ~DDR_SIZE_MASK) + 1;
-> +	}
-> +
-> +	return mem_size;
-> +}
+Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
+---
+Changes in v2:
+- fixed wrong type in header for get_string_descriptor
+- add missing free to string buffer
+- use 16bit data type for string buffer
+- include the first byte of string buffer
+- renamed num_langs to table_size and made usage clearer
+- Link to v1: https://lore.barebox.org/barebox/20260812-v2026-06-0-topic-efi_usb-v1-0-9d2573c29f21@pengutronix.de
 
-The only difference I can spot here between this function and the
-existing variant in arch/arm/mach-mvebu/common.c is:
+---
+Fabian Pflug (5):
+      efi: usb: add header for usb-efi
+      usb: core: make usb_set_maxpacket_ep public
+      drivers: usb: host: efi: add efi io driver
+      efi: guid: add guid for usb host controller 2
+      test: x86: add test for uefi usb io
 
-#define  DDR_SIZE_MASK                       0xff000000
+ drivers/usb/core/usb.c             |  12 +-
+ drivers/usb/core/usb.h             |   2 +
+ drivers/usb/host/Kconfig           |  11 ++
+ drivers/usb/host/Makefile          |   1 +
+ drivers/usb/host/efi-io-protocol.c | 326 +++++++++++++++++++++++++++++++++++++
+ efi/guid.c                         |   2 +
+ include/efi/guid.h                 |   4 +
+ include/efi/protocol/usb.h         |  66 ++++++++
+ test/x86/pc@efi_defconfig.yaml     |   9 +-
+ 9 files changed, 422 insertions(+), 11 deletions(-)
+---
+base-commit: 87f49b49fdd06c0de492bd2c1cd6b8c93e393029
+change-id: 20260812-v2026-06-0-topic-efi_usb-2eb7641b6b60
 
-whereas the common.c variant uses:
-
-#define ARMADA_370_XP_DDR_SIZE_MASK     0xffff0000
-
-The latter goes down to this:
-
-> commit 7351b6b5c59c7a280787998006f39a5cd3a2f18b
-> Author: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-> Date:   Tue Jun 13 00:37:49 2017 +0200
->
->     ARM: mvebu: fix size mask for RAM window
->   =20
->     The size field in the window control register occupies bits 31:16. So
->     adapt ARMADA_370_XP_DDR_SIZE_MASK accordingly. This fixes detection of
->     RAM chips smaller than 32 MiB and so probably doesn't affect any
->     supported machine.
->   =20
->     Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
->     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
->
-> diff --git a/arch/arm/mach-mvebu/common.c b/arch/arm/mach-mvebu/common.c
-> index 06bfb72615..fa971da11e 100644
-> --- a/arch/arm/mach-mvebu/common.c
-> +++ b/arch/arm/mach-mvebu/common.c
-> @@ -47,7 +47,7 @@
->  #define ARMADA_370_XP_SDRAM_BASE       (IOMEM(MVEBU_REMAP_INT_REG_BASE) =
-+ 0x20000)
->  #define ARMADA_370_XP_DDR_SIZE_CSn(n)  (0x184 + ((n) * 0x8))
->  #define ARMADA_370_XP_DDR_SIZE_ENABLED BIT(0)
-> -#define ARMADA_370_XP_DDR_SIZE_MASK    0xff000000
-> +#define ARMADA_370_XP_DDR_SIZE_MASK    0xffff0000
->=20
->  /*
->   * Marvell MVEBU SoC id and revision can be read from any PCIe
-
-@Uwe, Where did you get that information from. Could it be that we
-should just revert this one given that it seems to be untested on your
-side?
-
-> +
-> +&nand_controller {
-> +	compatible =3D "marvell,armada370-nand", "marvell,pxa3xx-nand";
-> +	status =3D "okay";
-
-These two properties are already in the upstream dts files, please drop.
-
-Sascha
-
+Best regards,
+-- 
+Fabian Pflug <f.pflug@pengutronix.de>
 
 
 
