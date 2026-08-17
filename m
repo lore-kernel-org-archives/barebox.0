@@ -1,16 +1,16 @@
-Delivery-date: Mon, 17 Aug 2026 16:20:00 +0200
+Delivery-date: Mon, 17 Aug 2026 17:15:44 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wvyBz-0049ru-2R
+	id 1wvz3v-004AoW-0i
 	for lore@lore.pengutronix.de;
-	Mon, 17 Aug 2026 16:20:00 +0200
+	Mon, 17 Aug 2026 17:15:44 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 53E8C2003DE
-	for <lore@pengutronix.de>; Mon, 17 Aug 2026 16:20:00 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 93AA7201B9A
+	for <lore@pengutronix.de>; Mon, 17 Aug 2026 17:15:43 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=Qw8NNxkB;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=vqi1MvWq;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,43 +19,43 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=haUgqqCJt9FBZt+ZX8Aci06IzvXrqzRnIeZbxdWKhtM=; b=Qw8NNxkBKESQ7pNb7u7/3C+oxy
-	4MZFiLMWs0ksySCD6ELJPIpdWxKR+T4PlNKLWLavELpe6OcDwVPZnoTccGdferV2mlSKEjmUV+z4o
-	viTbBnxiUuuAqRvME0IsCecL9tE2IwBJeJMbk+gyikOygc5yi0OYH9gWEtA/Aposqg7nAbXOuxV1k
-	iyUyTVUmyGKRWr4MSYXpWQXZ3wsjnAu709GwdDpLQ8G6GIWtvX5p6pyQ15o5OxdeMDIKIeL3Cmws5
-	Hf7RjyiH3Lruw42w/igmWZe2tokrBQOfeLULV+uVEmW0Jym5LlCoex4wr+2VqtXoVrJGH3S5ilMZs
-	d7oHF81Q==;
+	bh=NCgjIdR0DN8XFbQud4e7+vvik+SzKgaCfIat1327Cig=; b=vqi1MvWqNpNElg7pDzSilt2M5Z
+	N/xGy98U1tjikz3qX9PgU9vVsmfO3pqous91cnT8ulaX5WBwI0RuW+Xpeqlw+iF4RGnf1Tfdm2kUO
+	e6e65NwAAn6WofFMqtE+3OvHiupGr+sJnFKOFuDK+I9f4rIAFCISwyQnhk3Yf305J54KL8vvY07z9
+	b49pLFeexS0fk4HWYPOByloD5rZlTb4T1jBEb4YnfRuqnZ0DerR08M5lCSnW+qSj696w+WXULb+mV
+	DSII/u1uehgHXmO7lKTPG46IN7fcEKaSTPC0s/wUas3YgW4Ug7YidRA3KXjxlEliIC0thWMvrUmBZ
+	8CJ6uICg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wvxu3-00000006G4N-1LTH;
-	Mon, 17 Aug 2026 14:01:27 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1wvxu5-00000006G5o-1f6S;
+	Mon, 17 Aug 2026 14:01:29 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wvxty-00000006G17-2HWO
+	id 1wvxu1-00000006G2d-4898
 	for barebox@lists.infradead.org;
-	Mon, 17 Aug 2026 14:01:25 +0000
+	Mon, 17 Aug 2026 14:01:27 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C3BE5200444;
-	Mon, 17 Aug 2026 16:01:18 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 03742202210;
+	Mon, 17 Aug 2026 16:01:19 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1wvxtu-001xrp-2A;
+	id 1wvxtu-001xrv-2T;
 	Mon, 17 Aug 2026 16:01:18 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1wvxtu-0000000F1aR-2RcT;
+	id 1wvxtu-0000000F1aR-2a6k;
 	Mon, 17 Aug 2026 16:01:18 +0200
 From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Date: Mon, 17 Aug 2026 16:01:12 +0200
-Subject: [PATCH v3 1/8] RISC-V: setup_c: avoid clearing BSS twice
+Date: Mon, 17 Aug 2026 16:01:18 +0200
+Subject: [PATCH v3 7/8] ARM64: enable PBL_CLOCKSOURCE compatibility
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260817-feature-pbl-get-time-ns-v3-1-9874c1438855@pengutronix.de>
+Message-Id: <20260817-feature-pbl-get-time-ns-v3-7-9874c1438855@pengutronix.de>
 References: <20260817-feature-pbl-get-time-ns-v3-0-9874c1438855@pengutronix.de>
 In-Reply-To: <20260817-feature-pbl-get-time-ns-v3-0-9874c1438855@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -63,9 +63,8 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
 Cc: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 X-Mailer: b4 0.15.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260817_070122_744242_2C06B77D 
-X-CRM114-Status: UNSURE (   7.86  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260817_070126_179205_EC7384E3 
+X-CRM114-Status: GOOD (  13.83  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -73,11 +72,11 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  This commit duplicates what is already implemented for ARM(64)[1].
-    Currently setup_c() isn't called twice but might be in the future. [1]: 11c389397c
-    ("ARM: setup_c: avoid clearing BSS twice") Signed-off-by: Stefan Kerkmann
-    <s.kerkmann@pengutronix.de> --- arch/riscv/lib/setupc.S | 19 ++++++++++++++++++-
-    1 file changed, 18 insertions(+), 1 deletion(-) 
+ Content preview:  All ARMv8-A cores implement the 64bit wide generic timer CNTPCT[1].
+    If the architected timer driver is enabled the barebox PBL automatically
+   is PBL_CLOCKSOURCE compatible. The setup of the PBL clocksource is implemented
+    in the newly added PBL constructors which are called at the end of setup_c.
+    There is one catch though: 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -102,9 +101,9 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: 35n66e4f3pn3srrkw4hs3nq41ju5cant
+X-Stat-Signature: s65wy9a8y7tffu9aukfq3bok6gi6whkb
 X-Spamd-Result: default: False [-7.71 / 15.00];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
@@ -135,54 +134,99 @@ X-Spamd-Result: default: False [-7.71 / 15.00];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 53E8C2003DE
+X-Rspamd-Queue-Id: 93AA7201B9A
 
-This commit duplicates what is already implemented for ARM(64)[1].
-Currently setup_c() isn't called twice but might be in the future.
+All ARMv8-A cores implement the 64bit wide generic timer CNTPCT[1]. If
+the architected timer driver is enabled the barebox PBL automatically is
+PBL_CLOCKSOURCE compatible.
 
-[1]: 11c389397c ("ARM: setup_c: avoid clearing BSS twice")
+The setup of the PBL clocksource is implemented in the newly added PBL
+constructors which are called at the end of setup_c. There is one catch
+though:
+
+The CNTFRQ_EL0 register[2] must be programmed by the bootrom, barebox or
+the tf-a before the `arm_arch_timer_init` call. A later
+re-initialization is also possible by calling `arm_arch_timer_init`
+again.
+
+[1]: See "ARM Architecture Reference Manual for A-profile architecture
+(rev L.a)", chapter D12 "The Generic Timer in AArch64 state"
+[2]: See "ARM Architecture Reference Manual for A-profile architecture
+(rev L.a)", chapter D12.1.2.1 "Initializing and reading the system
+effective frequency"
 
 Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 ---
- arch/riscv/lib/setupc.S | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ arch/arm/lib64/Makefile      |  3 ++-
+ arch/arm/lib64/clocksource.c | 10 ++++++++++
+ arch/arm/lib64/delay.c       | 19 -------------------
+ drivers/clocksource/Kconfig  |  1 +
+ 4 files changed, 13 insertions(+), 20 deletions(-)
 
-diff --git a/arch/riscv/lib/setupc.S b/arch/riscv/lib/setupc.S
-index 423de4181e..5370e8a48e 100644
---- a/arch/riscv/lib/setupc.S
-+++ b/arch/riscv/lib/setupc.S
-@@ -10,13 +10,30 @@
-  */
- .section .text.setup_c
- ENTRY(setup_c)
-+	addi	sp, sp, -SZREG * 2
-+	REG_S	ra, SZREG(sp)
-+	lla	a0, bss_cleared
-+	lw	a1, 0(a0)
-+	bnez	a1, zeroed
- 	lla	a0, __bss_start
- 	li	a1, 0
- 	lla	a2, __bss_stop
- 	sub	a2, a2, a0
--	j	__memset
-+	jal	__memset
-+	lla	a0, bss_cleared
-+	li	a1, 1
-+	sw	a1, 0(a0)
-+zeroed:
-+	REG_L	ra, SZREG(sp)
-+	addi	sp, sp, SZREG * 2
-+	ret
- ENDPROC(setup_c)
- 
-+.section .data.bss_cleared
-+.balign 4
-+bss_cleared:
-+	.word 	0
+diff --git a/arch/arm/lib64/Makefile b/arch/arm/lib64/Makefile
+index f28cf81ab3..218de68a54 100644
+--- a/arch/arm/lib64/Makefile
++++ b/arch/arm/lib64/Makefile
+@@ -10,4 +10,5 @@ obj-pbl-y   += runtime-offset.o
+ obj-pbl-y   += setjmp.o
+ obj-pbl-y   += reloc.o
+ obj-y += io.o
+-pbl-y	+= div0.o delay.o
++pbl-$(CONFIG_CLOCKSOURCE_ARM_ARCHITECTED_TIMER)	+= clocksource.o
++pbl-y	+= div0.o
+diff --git a/arch/arm/lib64/clocksource.c b/arch/arm/lib64/clocksource.c
+new file mode 100644
+index 0000000000..f992be09b8
+--- /dev/null
++++ b/arch/arm/lib64/clocksource.c
+@@ -0,0 +1,10 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +
- /*
-  * void relocate_to_adr(unsigned long targetadr)
-  *
++#include <debug_ll.h>
++#include <asm/hardware/arm_architected_timer.h>
++
++__attribute__((constructor)) static void init_arch_clock(void)
++{
++	if (arm_arch_timer_init(0))
++		puts_ll("Failed to setup architected timer\n");
++}
+diff --git a/arch/arm/lib64/delay.c b/arch/arm/lib64/delay.c
+deleted file mode 100644
+index 78eab33f8d..0000000000
+--- a/arch/arm/lib64/delay.c
++++ /dev/null
+@@ -1,19 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-
+-#include <asm/system.h>
+-#include <clock.h>
+-#include <common.h>
+-
+-void udelay(unsigned long us)
+-{
+-	unsigned long cntfrq = get_cntfrq();
+-	unsigned long ticks = (us * cntfrq) / 1000000;
+-	unsigned long start = get_cntpct();
+-
+-	while ((long)(start + ticks - get_cntpct()) > 0);
+-}
+-
+-void mdelay(unsigned long ms)
+-{
+-	udelay(ms * 1000);
+-}
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index 5ee83d2b38..6cf68d8be4 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -79,6 +79,7 @@ config CLOCKSOURCE_ARM_ARCHITECTED_TIMER
+ 	bool "ARM architected timer clock source" if COMPILE_TEST
+ 	default y
+ 	depends on ARM && (CPU_64v8 || CPU_V7)
++	select PBL_CLOCKSOURCE if CPU_64v8
+ 
+ config CLOCKSOURCE_ARM_GLOBAL_TIMER
+ 	bool "ARM global timer clock source" if COMPILE_TEST
 
 -- 
 2.47.3
