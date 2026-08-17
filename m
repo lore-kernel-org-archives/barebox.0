@@ -1,16 +1,16 @@
 Delivery-date: Mon, 17 Aug 2026 10:48:38 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wvt1J-0044Tt-1T
+	id 1wvt1J-0044Tv-1g
 	for lore@lore.pengutronix.de;
 	Mon, 17 Aug 2026 10:48:38 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id ACA5B20128B
-	for <lore@pengutronix.de>; Mon, 17 Aug 2026 10:48:37 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 22B20201544
+	for <lore@pengutronix.de>; Mon, 17 Aug 2026 10:48:38 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=J6u1pOJ6;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=UDO+blSK;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,32 +19,32 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=NQqAwgd36OPHQqhaRRiT4hlt9OBPPbyn81f0bc8YHMk=; b=J6u1pOJ6GzVOLLq86L5GNMO8op
-	RltRHU9KGGL/8BmW+RjlA/BJiwhymwTIH/Ea1TEFZvNx0lkBcfQOv/vUW29LOTDURVn8noyy+2ZZ2
-	TmcZqMIdYWeh6bmX0MDUQkf/Crb/Oo+5YukfgViJSS4WalIzlbxEJ1rZYM55W+yCbl4W+ERYbe/qg
-	TuWWsMVZARph3fd/WzvtGNeySY60Mnv4c70KNsV1eBKO9juQ67ksatk97RF85cjHtoE5k0LisavhL
-	AmPmWvl9phbq2RVAAM/B3548uTiUrk3gU1VTFmZVDO5HpTop7qdx3bhauIwJ7h1uo/mltTt0DfXHd
-	7+HaPEdw==;
+	bh=irTeO19rVRQkOgSUo0RTFeknDArk/Vby2xqgS/5Fb38=; b=UDO+blSK/jFEydfqHmLUju39iN
+	mkh2oLsKNEDq1C/jO9+b77XLs3Po/dVRJVRf1wiQEW6FTT2T+wX0w2aFbAQ1YBq5futMfw3QrEaOn
+	7An9M3A0zTeLsEtJR5gFbsMlbspfHdXH2O6Pu1ZmHZB14S+tMQNJIks0VubH344h/dhUesWdAzZW0
+	D2srddy7Us0MKZf10k8eOGjW0jfxpFD6YBc5N5VcmEoXMWiwFTsYrrbBaop7BqKbztMQQ3C39Z3I/
+	b+wZc4PVZENeXlcHNobjMUpQ7QbiODX4ruAvOq04CNVvv9oRGEldm5mVSs2HBGEc8jDojTCV833dV
+	IwJsTgRQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wvt0B-00000005j8S-08Yp;
-	Mon, 17 Aug 2026 08:47:27 +0000
+	id 1wvt08-00000005j7G-2NaK;
+	Mon, 17 Aug 2026 08:47:24 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wvt03-00000005j4h-3xUd
+	id 1wvt03-00000005j4g-3uwY
 	for barebox@lists.infradead.org;
-	Mon, 17 Aug 2026 08:47:24 +0000
+	Mon, 17 Aug 2026 08:47:23 +0000
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <f.pflug@pengutronix.de>)
-	id 1wvszz-0000IK-HG; Mon, 17 Aug 2026 10:47:15 +0200
+	id 1wvszz-0000IK-FC; Mon, 17 Aug 2026 10:47:15 +0200
 From: Fabian Pflug <f.pflug@pengutronix.de>
-Date: Mon, 17 Aug 2026 10:47:07 +0200
-Subject: [PATCH v2 3/5] drivers: usb: host: efi: add efi io driver
+Date: Mon, 17 Aug 2026 10:47:05 +0200
+Subject: [PATCH v2 1/5] efi: usb: add header for usb-efi
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260817-v2026-06-0-topic-efi_usb-v2-3-3d45c1782ccc@pengutronix.de>
+Message-Id: <20260817-v2026-06-0-topic-efi_usb-v2-1-3d45c1782ccc@pengutronix.de>
 References: <20260817-v2026-06-0-topic-efi_usb-v2-0-3d45c1782ccc@pengutronix.de>
 In-Reply-To: <20260817-v2026-06-0-topic-efi_usb-v2-0-3d45c1782ccc@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -55,8 +55,8 @@ X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::5c
 X-SA-Exim-Mail-From: f.pflug@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260817_014720_286886_C228D013 
-X-CRM114-Status: GOOD (  27.18  )
+X-CRM114-CacheID: sfid-20260817_014720_014096_E2F91A1C 
+X-CRM114-Status: GOOD (  10.03  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -64,9 +64,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  The driver is based on [1] with one "host" controller per
-   device. The host controller will hopefully not have any sub-devices and only
-    have the one root device, which functions as the only device need [...] 
+ Content preview:  Convert the spec in [1] to a header, that is useable for barebox.
+    The async headers are not defined, since it is currently not planned to support
+    async in addition to sync. [1] https://uefi.org/specs/UEFI/2.11/17_Protocols_USB_Support.html
+    
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -95,9 +96,9 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: kzhr3yurmxn3iwmu7qojaqdemkq9haxe
+X-Stat-Signature: 8rk85pzw9uwrpgtm3ddtsiprwjfws8ro
 X-Spamd-Result: default: False [-7.51 / 15.00];
-	BAYES_HAM(-3.00)[100.00%];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
@@ -110,11 +111,11 @@ X-Spamd-Result: default: False [-7.51 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	DMARC_NA(0.00)[pengutronix.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	ARC_NA(0.00)[];
 	FORWARDED(0.00)[barebox@lists.infradead.org];
 	RCVD_COUNT_THREE(0.00)[3];
-	ARC_NA(0.00)[];
 	FORGED_SENDER(0.00)[f.pflug@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	TO_DN_ALL(0.00)[];
@@ -128,409 +129,95 @@ X-Spamd-Result: default: False [-7.51 / 15.00];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: ACA5B20128B
+X-Rspamd-Queue-Id: 22B20201544
 
-The driver is based on [1] with one "host" controller per device.
-The host controller will hopefully not have any sub-devices and only
-have the one root device, which functions as the only device needed and
-registered for.
+Convert the spec in [1] to a header, that is useable for barebox.
+The async headers are not defined, since it is currently not planned to
+support async in addition to sync.
 
-[1] https://uefi.org/specs/UEFI/2.11/17_Protocols_USB_Support.html#usb-driver-model
+[1] https://uefi.org/specs/UEFI/2.11/17_Protocols_USB_Support.html
 
 Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 
 ---
 v2:
-- add missing free to string buffer
-- use 16bit data type for string buffer
-- include the first byte of string buffer
-- renamed num_langs to table_size and made usage clearer
+- Fixed wrong type in header for get_string_descriptor
 ---
- drivers/usb/host/Kconfig           |  11 ++
- drivers/usb/host/Makefile          |   1 +
- drivers/usb/host/efi-io-protocol.c | 317 +++++++++++++++++++++++++++++++++++++
- efi/guid.c                         |   1 +
- include/efi/guid.h                 |   1 +
- 5 files changed, 331 insertions(+)
+ include/efi/protocol/usb.h | 66 ++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 66 insertions(+)
 
-diff --git a/drivers/usb/host/Kconfig b/drivers/usb/host/Kconfig
-index 58f276cdb4..66e320d163 100644
---- a/drivers/usb/host/Kconfig
-+++ b/drivers/usb/host/Kconfig
-@@ -22,6 +22,17 @@ config USB_EHCI_ZYNQ
- 	help
- 	  Enable support for Zynq on-chip EHCI USB controller
- 
-+config USB_EFI_IO_PROTOCOL
-+	bool "EFI USB I/O Protocol"
-+	depends on EFI_PAYLOAD
-+	depends on USB_HOST
-+	help
-+	  Enable support for usb devices, initialized by the UEFI BIOS.
-+	  Use this with caution, as devices may afterwards have multiple drivers.
-+	  For example can a USB-Stick be treated as an IO Blockdevice by UEFI and
-+	  have a driver for it, but can also be initiated as a USB-Storage device,
-+	  which could lead to errors in handling the USB-Device.
-+
- config USB_OHCI
- 	bool "OHCI driver"
- 	depends on !MMU && HAS_DMA
-diff --git a/drivers/usb/host/Makefile b/drivers/usb/host/Makefile
-index cbddfbe923..4f77680fc7 100644
---- a/drivers/usb/host/Makefile
-+++ b/drivers/usb/host/Makefile
-@@ -6,3 +6,4 @@ obj-$(CONFIG_USB_EHCI_ZYNQ)	+= ehci-zynq.o
- obj-$(CONFIG_USB_OHCI)		+= ohci-hcd.o
- obj-$(CONFIG_USB_OHCI_AT91)	+= ohci-at91.o
- obj-$(CONFIG_USB_XHCI)		+= xhci.o xhci-mem.o xhci-ring.o
-+obj-$(CONFIG_USB_EFI_IO_PROTOCOL)	+= efi-io-protocol.o
-diff --git a/drivers/usb/host/efi-io-protocol.c b/drivers/usb/host/efi-io-protocol.c
+diff --git a/include/efi/protocol/usb.h b/include/efi/protocol/usb.h
 new file mode 100644
-index 0000000000..8207d33dcf
+index 0000000000..78953a4fa7
 --- /dev/null
-+++ b/drivers/usb/host/efi-io-protocol.c
-@@ -0,0 +1,317 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <efi/payload.h>
-+#include <efi/payload/init.h>
-+#include <efi/payload/driver.h>
-+#include <efi/protocol/usb.h>
-+#include <efi/error.h>
++++ b/include/efi/protocol/usb.h
+@@ -0,0 +1,66 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
 +
-+#include "../core/usb.h"
++#ifndef __EFI_PROTOCOL_USB_H_
++#define __EFI_PROTOCOL_USB_H_
 +
-+struct efi_usb_io_priv {
-+	struct efi_usb_io_protocol *protocol;
-+	struct device *dev;
-+	struct usb_host host;
++#include <efi/types.h>
++#include <linux/usb/usb.h>
++
++enum efi_usb_data_direction {
++	EFI_USB_DATA_IN,
++	EFI_USB_DATA_OUT,
++	EFI_USB_NO_DATA
 +};
 +
-+#define usb_dev_to_efi_priv(ptr) \
-+	container_of(ptr->host, struct efi_usb_io_priv, host)
++//
++// Error code for USB Transfer Results
++//
++#define EFI_USB_NOERROR 0x0000
++#define EFI_USB_ERR_NOTEXECUTE 0x0001
++#define EFI_USB_ERR_STALL 0x0002
++#define EFI_USB_ERR_BUFFER 0x0004
++#define EFI_USB_ERR_BABBLE 0x0008
++#define EFI_USB_ERR_NAK 0x0010
++#define EFI_USB_ERR_CRC 0x0020
++#define EFI_USB_ERR_TIMEOUT 0x0040
++#define EFI_USB_ERR_BITSTUFF 0x0080
++#define EFI_USB_ERR_SYSTEM 0x0100
 +
-+static int efi_usb_error_check(efi_status_t efiret, int status)
-+{
-+	if (efiret == EFI_DEVICE_ERROR) {
-+		if (status & EFI_USB_ERR_TIMEOUT)
-+			return -ETIMEDOUT;
-+		if (status & EFI_USB_ERR_STALL)
-+			return -ETIMEDOUT;
-+		if (status & EFI_USB_ERR_NAK)
-+			return -EPROTO;
-+		if (status & EFI_USB_ERR_BUFFER)
-+			return -EINVAL;
-+		if (status & EFI_USB_ERR_NOTEXECUTE)
-+			return -EIO;
-+		if (status & EFI_USB_ERR_BABBLE)
-+			return -EIO;
-+		if (status & EFI_USB_ERR_CRC)
-+			return -EIO;
-+		if (status & EFI_USB_ERR_BITSTUFF)
-+			return -EIO;
-+		if (status & EFI_USB_ERR_SYSTEM)
-+			return -EIO;
-+	}
-+
-+	if (EFI_ERROR(efiret))
-+		return -efi_errno(efiret);
-+
-+	return 0;
-+}
-+
-+static int efi_usb_control_msg(struct usb_device *dev, unsigned long pipe,
-+			       void *buffer, int length,
-+			       struct devrequest *setup, int timeout)
-+{
-+	struct efi_usb_io_priv *priv = usb_dev_to_efi_priv(dev);
-+	enum efi_usb_data_direction direction;
-+	efi_status_t efiret;
-+	efi_uintn_t efi_timeout = timeout;
-+	u32 status;
-+
-+	if (usb_pipein(pipe))
-+		direction = EFI_USB_DATA_IN;
-+	else
-+		direction = EFI_USB_DATA_OUT;
-+	if (length == 0)
-+		direction = EFI_USB_NO_DATA;
-+
-+	efiret = priv->protocol->control_transfer(priv->protocol, setup,
-+						  direction, efi_timeout,
-+						  buffer, length, &status);
-+
-+	dev->status = status; // dev-status is a long, status is u32
-+	dev->act_len = length;
-+
-+	return efi_usb_error_check(efiret, status);
-+}
-+
-+static int efi_usb_bulk_msg(struct usb_device *dev, unsigned long pipe,
-+			    void *buffer, int length, int timeout)
-+{
-+	struct efi_usb_io_priv *priv = usb_dev_to_efi_priv(dev);
-+	efi_uintn_t efi_length = length;
-+	efi_status_t efiret;
-+	u32 status;
-+
-+	u8 epnum = usb_pipeendpoint(pipe) | (usb_pipein(pipe) << 7);
-+
-+	efiret = priv->protocol->bulk_transfer(priv->protocol, epnum, buffer,
-+					       &efi_length, timeout, &status);
-+
-+	dev->status = status;
-+	dev->act_len = efi_length;
-+
-+	return efi_usb_error_check(efiret, status);
-+}
-+
-+static int efi_usb_int_msg(struct usb_device *dev, unsigned long pipe,
-+			   void *buffer, int length,
-+			   int __always_unused interval)
-+{
-+	struct efi_usb_io_priv *priv = usb_dev_to_efi_priv(dev);
-+	efi_status_t efiret;
-+	u32 status;
-+	efi_uintn_t efi_length = length;
-+
-+	u8 epnum = usb_pipeendpoint(pipe) | (usb_pipein(pipe) << 7);
-+
-+	efiret = priv->protocol->sync_interrupt_transfer(
-+		priv->protocol, epnum, buffer, &efi_length, 100, &status);
-+
-+	dev->status = status;
-+	dev->act_len = efi_length;
-+
-+	return efi_usb_error_check(efiret, status);
-+}
-+
-+static int efi_get_usb_string(struct efi_usb_io_protocol *protocol, u16 lang_id,
-+			      int index, char *buf, size_t size)
-+{
-+	wchar_t *efi_name;
-+	efi_status_t efiret;
-+	unsigned int u, idx;
-+
-+	memset(buf, 0, size);
-+
-+	if (!index)
-+		return 0;
-+
-+	efiret = protocol->get_string_descriptor(protocol, lang_id, index,
-+						 &efi_name);
-+	if (EFI_ERROR(efiret))
-+		return -efi_errno(efiret);
-+
-+	size--; /* leave room for trailing NULL char in output buffer */
-+	for (idx = 0, u = 0;; u++) {
-+		if (idx >= size)
-+			break;
-+		if (efi_name[u] & 0xff00) /* high byte */
-+			buf[idx++] = '?'; /* non-ASCII character */
-+		else if (efi_name[u])
-+			buf[idx++] = efi_name[u] & 0xff;
-+		else
-+			break;
-+	}
-+	buf[idx] = 0;
-+	BS->free_pool(efi_name);
-+
-+	return 0;
-+}
-+
-+static int create_usb_device(struct efi_usb_io_priv *priv)
-+{
-+	struct usb_host *host = &priv->host;
-+	struct usb_device *dev;
-+	efi_status_t efiret;
-+	struct usb_interface *interface;
-+	int err;
-+	u16 *lang_ids;
-+	u16 table_size;
-+
-+	dev = usb_alloc_new_device();
-+	dev->host = host;
-+
-+	dev_set_name(&dev->dev, "usb%d", dev->host->busnum);
-+	dev->dev.id = DEVICE_ID_SINGLE;
-+
-+	efiret = priv->protocol->get_device_descriptor(priv->protocol,
-+						       dev->descriptor);
-+	if (EFI_ERROR(efiret)) {
-+		err = -efi_errno(efiret);
-+		goto out_err;
-+	}
-+
-+	switch (dev->descriptor->bMaxPacketSize0) {
-+	case 8:
-+		dev->maxpacketsize = PACKET_SIZE_8;
-+		break;
-+	case 16:
-+		dev->maxpacketsize = PACKET_SIZE_16;
-+		break;
-+	case 32:
-+		dev->maxpacketsize = PACKET_SIZE_32;
-+		break;
-+	case 64:
-+		dev->maxpacketsize = PACKET_SIZE_64;
-+		break;
-+	}
-+
-+	// There is only the possibility to access the current active configuration
-+	// and not set the configuration.
-+	// https://uefi.org/specs/UEFI/2.11/17_Protocols_USB_Support.html#efi-usb-io-protocol-usbgetconfigdescriptor
-+	efiret = priv->protocol->get_config_descriptor(priv->protocol,
-+						       &dev->config.desc);
-+	if (EFI_ERROR(efiret)) {
-+		err = -efi_errno(efiret);
-+		goto out_err;
-+	}
-+
-+	// UEFI has by definition only one interface per config
-+	// https://uefi.org/specs/UEFI/2.11/17_Protocols_USB_Support.html#efi-usb-io-protocol-usbgetinterfacedescriptor
-+	dev->config.no_of_if = 1;
-+	interface = &dev->config.interface[0];
-+
-+	efiret = priv->protocol->get_interface_descriptor(priv->protocol,
-+							  &interface->desc);
-+	if (EFI_ERROR(efiret)) {
-+		err = -efi_errno(efiret);
-+		goto out_err;
-+	}
-+
-+	interface->no_of_ep = interface->desc.bNumEndpoints;
-+
-+	if (interface->no_of_ep > USB_MAXENDPOINTS) {
-+		err = -EPROTO;
-+		goto out_err;
-+	}
-+
-+	for (int i = 0; i < interface->no_of_ep; i++) {
-+		efiret = priv->protocol->get_endpoint_descriptor(
-+			priv->protocol, i, &interface->ep_desc[i]);
-+		if (EFI_ERROR(efiret))
-+			return -efi_errno(efiret);
-+		usb_set_maxpacket_ep(dev, &interface->ep_desc[i]);
-+	}
-+
-+	efiret = priv->protocol->get_supported_languages(priv->protocol,
-+							 &lang_ids, &table_size);
-+	if (EFI_ERROR(efiret)) {
-+		err = -efi_errno(efiret);
-+		goto out_err;
-+	}
-+
-+	/* table size is given in bytes, not entries */
-+	if (table_size < sizeof(*lang_ids)) {
-+		err = -EPROTO;
-+		goto out_err;
-+	}
-+
-+	dev->string_langid = lang_ids[0];
-+	dev->have_langid = true;
-+
-+	dev_info(&dev->dev, "new device: Mfr=%d, Product=%d, SerialNumber=%d\n",
-+		 dev->descriptor->iManufacturer, dev->descriptor->iProduct,
-+		 dev->descriptor->iSerialNumber);
-+
-+	err = efi_get_usb_string(priv->protocol, dev->string_langid,
-+				 dev->descriptor->iManufacturer, dev->mf,
-+				 sizeof(dev->mf));
-+	if (err)
-+		goto out_err;
-+	err = efi_get_usb_string(priv->protocol, dev->string_langid,
-+				 dev->descriptor->iProduct, dev->prod,
-+				 sizeof(dev->prod));
-+	if (err)
-+		goto out_err;
-+	err = efi_get_usb_string(priv->protocol, dev->string_langid,
-+				 dev->descriptor->iSerialNumber, dev->serial,
-+				 sizeof(dev->serial));
-+	if (err)
-+		goto out_err;
-+
-+	dev_info(&dev->dev, "Bus %03d Device %03d: ID %04x:%04x %s\n",
-+		 dev->host->busnum, dev->devnum, dev->descriptor->idVendor,
-+		 dev->descriptor->idProduct, dev->prod);
-+
-+	err = register_device(&dev->dev);
-+	if (err) {
-+		dev_err(&dev->dev, "Failed to register device: %pe\n",
-+			ERR_PTR(err));
-+		goto out_err;
-+	}
-+
-+	// register as root device for host
-+	host->root_dev = dev;
-+
-+	return 0;
-+
-+out_err:
-+	dev_err(&dev->dev, "Failed to create UEFI-USB-IO device: %pe\n",
-+		ERR_PTR(err));
-+	usb_free_device(dev);
-+	return err;
-+}
-+
-+static int efi_usb_io_probe(struct efi_device *efidev)
-+{
-+	struct device *dev = &efidev->dev;
-+	struct efi_usb_io_priv *priv;
-+	struct usb_host *host;
-+
-+	priv = xzalloc(sizeof(*priv));
-+
-+	BS->handle_protocol(efidev->handle, &efi_usb_io_protocol_guid,
-+			    (void **)&priv->protocol);
-+	if (!priv->protocol)
-+		return -ENODEV;
-+
-+	dev->priv = priv;
-+	priv->dev = dev;
-+
-+	// EFI has one device per probe, which now needs its own host controller,
-+	// since there is no shared host controller resource.
-+
-+	host = &priv->host;
-+	host->submit_int_msg = efi_usb_int_msg;
-+	host->submit_control_msg = efi_usb_control_msg;
-+	host->submit_bulk_msg = efi_usb_bulk_msg;
-+	usb_register_host(host);
-+
-+	return create_usb_device(priv);
-+}
-+
-+static struct efi_driver efi_usb_io_driver = {
-+	.driver = {
-+		.name  = "efi-usb-io-protocol",
-+	},
-+	.probe = efi_usb_io_probe,
-+	.guid = EFI_USB_IO_PROTOCOL_GUID,
++struct efi_usb_io_protocol {
++	efi_status_t(EFIAPI *control_transfer)(
++		struct efi_usb_io_protocol *this, struct devrequest *request,
++		enum efi_usb_data_direction direction, u32 timeout, void *data,
++		efi_uintn_t length, u32 *status);
++	efi_status_t(EFIAPI *bulk_transfer)(struct efi_usb_io_protocol *this,
++					    u8 device_endpoint, void *data,
++					    efi_uintn_t *length,
++					    efi_uintn_t timeout, u32 *status);
++	void *usb_io_async_interrupt_transfer;
++	efi_status_t(EFIAPI *sync_interrupt_transfer)(
++		struct efi_usb_io_protocol *this, u8 device_endpoint,
++		void *data, efi_uintn_t *length, efi_uintn_t timeout,
++		u32 *status);
++	void *efi_usb_io_isochronous_transfer;
++	void *efi_usb_io_async_isochronous_transfer;
++	efi_status_t(EFIAPI *get_device_descriptor)(
++		struct efi_usb_io_protocol *this,
++		struct usb_device_descriptor *desc);
++	efi_status_t(EFIAPI *get_config_descriptor)(
++		struct efi_usb_io_protocol *this,
++		struct usb_config_descriptor *desc);
++	efi_status_t(EFIAPI *get_interface_descriptor)(
++		struct efi_usb_io_protocol *this,
++		struct usb_interface_descriptor *desc);
++	efi_status_t(EFIAPI *get_endpoint_descriptor)(
++		struct efi_usb_io_protocol *this, u8 index,
++		struct usb_endpoint_descriptor *desc);
++	efi_status_t(EFIAPI *get_string_descriptor)(
++		struct efi_usb_io_protocol *this, u16 lang_id, u8 string_id,
++		wchar_t **desc);
++	efi_status_t(EFIAPI *get_supported_languages)(
++		struct efi_usb_io_protocol *this, u16 **lang_id_table,
++		u16 *table_size);
++	efi_status_t(EFIAPI *port_reset)(struct efi_usb_io_protocol *this);
 +};
-+device_efi_driver(efi_usb_io_driver);
-diff --git a/efi/guid.c b/efi/guid.c
-index 8853829d21..f438783fc1 100644
---- a/efi/guid.c
-+++ b/efi/guid.c
-@@ -15,6 +15,7 @@ efi_guid_t efi_null_guid = EFI_NULL_GUID;
- efi_guid_t efi_global_variable_guid = EFI_GLOBAL_VARIABLE_GUID;
- const efi_guid_t efi_guid_image_security_database = EFI_IMAGE_SECURITY_DATABASE_GUID;
- efi_guid_t efi_block_io_protocol_guid = EFI_BLOCK_IO_PROTOCOL_GUID;
-+efi_guid_t efi_usb_io_protocol_guid = EFI_USB_IO_PROTOCOL_GUID;
- efi_guid_t efi_rng_protocol_guid = EFI_RNG_PROTOCOL_GUID;
- efi_guid_t efi_barebox_vendor_guid = EFI_BAREBOX_VENDOR_GUID;
- efi_guid_t efi_file_store_vars_guid = EFI_FILE_STORE_VARS_GUID;
-diff --git a/include/efi/guid.h b/include/efi/guid.h
-index 202300c74a..7d75842b04 100644
---- a/include/efi/guid.h
-+++ b/include/efi/guid.h
-@@ -27,6 +27,7 @@ extern efi_guid_t efi_null_guid;
- extern efi_guid_t efi_global_variable_guid;
- extern const efi_guid_t efi_guid_image_security_database;
- extern efi_guid_t efi_block_io_protocol_guid;
-+extern efi_guid_t efi_usb_io_protocol_guid;
- extern efi_guid_t efi_rng_protocol_guid;
- extern efi_guid_t efi_barebox_vendor_guid;
- extern efi_guid_t efi_file_store_vars_guid;
++
++#endif
 
 -- 
 2.47.3
