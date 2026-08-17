@@ -1,16 +1,16 @@
-Delivery-date: Mon, 17 Aug 2026 10:48:38 +0200
+Delivery-date: Mon, 17 Aug 2026 10:48:40 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wvt1J-0044U7-25
+	id 1wvt1L-0044Up-0h
 	for lore@lore.pengutronix.de;
-	Mon, 17 Aug 2026 10:48:38 +0200
+	Mon, 17 Aug 2026 10:48:40 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 406AB200444
-	for <lore@pengutronix.de>; Mon, 17 Aug 2026 10:48:38 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id CEF69201514
+	for <lore@pengutronix.de>; Mon, 17 Aug 2026 10:48:39 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=Zx6a4fBz;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="nbxoI/kr";
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,32 +19,32 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=iXNP9v6JSf80Li/2nInF1KcfyhF3Wymm6z+8X5MQnJI=; b=Zx6a4fBztPYVofHldmOYNqAz3a
-	ykfFdoS/AJjClDmbkPm/s36JHBX11rNk1beVssTuoJpFF66ze1v3pVxKvwnRXJXpus4Zc+3Zpm2PX
-	PWsWRvXVv/h+/boZz5/PvQI7wCFstuaCIowMs405XLFNOo7zIxXKk50dKGRToTd7alpfdcs4DrDyu
-	gLdmus1U/Nl5Q1/7BNHDNAqKmg2bMC7UeyCxrJsoztkUCJzcBuF0CutX2RaWGb4rJmLAEBmITbknc
-	GfMFTdtMuQT5RKo9UvEGwPeyXoDtcklHYBulQJ5HtakW6U89dse1NhQ109Us04H8OSp4cQSkWzCD3
-	wldKvcXA==;
+	bh=FIU2UNNQb36SG8pUrjhayB+hvXBbZsHbfQxVQ54E9c4=; b=nbxoI/krBK4N+cPxm8gyFJk3w6
+	SbkR3T1XENRhpiQKLJltrA97YGVV3c6QERjOJQONVl5NcTsjPPL6RLqUM3nJ+50xkY8adof0s40XW
+	x+/PrWt7cHX+JmxgW02qNYwubTFOLoW3qVaXv4XMiDYWY9WUf4cPl0RIXz9KZ86apzdhc6DSBUeyu
+	KkgmIhQiscDIexzeaP9FxDBh8eM9TGPyx3QzxKuKohEnV0n1RK35mVvqG3P7raja9FXzxk0n+a+Pu
+	Z6oF+4uCc3kvkeVeM+2OmbnHE6M1thklUrJqVDcVFG8fa2f2rc8AmAvzUertkuNjKxOIVIqlZBEca
+	npT+63SQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wvt08-00000005j77-23lq;
-	Mon, 17 Aug 2026 08:47:24 +0000
+	id 1wvt0A-00000005j8A-3RU4;
+	Mon, 17 Aug 2026 08:47:26 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wvt03-00000005j4f-3u6b
+	id 1wvt03-00000005j4i-3u6c
 	for barebox@lists.infradead.org;
 	Mon, 17 Aug 2026 08:47:23 +0000
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <f.pflug@pengutronix.de>)
-	id 1wvszz-0000IK-GG; Mon, 17 Aug 2026 10:47:15 +0200
+	id 1wvszz-0000IK-JP; Mon, 17 Aug 2026 10:47:15 +0200
 From: Fabian Pflug <f.pflug@pengutronix.de>
-Date: Mon, 17 Aug 2026 10:47:06 +0200
-Subject: [PATCH v2 2/5] usb: core: make usb_set_maxpacket_ep public
+Date: Mon, 17 Aug 2026 10:47:09 +0200
+Subject: [PATCH v2 5/5] test: x86: add test for uefi usb io
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260817-v2026-06-0-topic-efi_usb-v2-2-3d45c1782ccc@pengutronix.de>
+Message-Id: <20260817-v2026-06-0-topic-efi_usb-v2-5-3d45c1782ccc@pengutronix.de>
 References: <20260817-v2026-06-0-topic-efi_usb-v2-0-3d45c1782ccc@pengutronix.de>
 In-Reply-To: <20260817-v2026-06-0-topic-efi_usb-v2-0-3d45c1782ccc@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -55,8 +55,9 @@ X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::5c
 X-SA-Exim-Mail-From: f.pflug@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260817_014719_997906_56747F8C 
-X-CRM114-Status: GOOD (  13.35  )
+X-CRM114-CacheID: sfid-20260817_014720_003620_A0E4E435 
+X-CRM114-Status: UNSURE (   9.69  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -64,10 +65,11 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  The function will be used by the efi usb driver to set the
-    maxpackets per endpoint. Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
-    --- drivers/usb/core/usb.c | 12 ++ drivers/usb/core/usb.h | 2 ++ 2 files
-   changed, 4 insertions(+), 10 deletions(-) 
+ Content preview:  Check, that the EFI-USB-IO controller will create a USB Network
+    device in barebox. The device has currently no driver, but is available nevertheless.
+    Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de> --- drivers/usb/host/efi-io-protocol.c
+    | 15 ++++++++++++--- test/x86/pc@efi_defconfig.yaml | 9 ++++++++- 2 files
+    changed, 20 insertions(+), 4 delet [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -96,7 +98,7 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: qtnfa5pmcs8sjft8z7xraefmgyu5p5dz
+X-Stat-Signature: i9ku4ipk7p8394em79sfipma3rdbjbt3
 X-Spamd-Result: default: False [-7.51 / 15.00];
 	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
@@ -111,11 +113,11 @@ X-Spamd-Result: default: False [-7.51 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	DMARC_NA(0.00)[pengutronix.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	ARC_NA(0.00)[];
 	FORWARDED(0.00)[barebox@lists.infradead.org];
 	RCVD_COUNT_THREE(0.00)[3];
-	ARC_NA(0.00)[];
 	FORGED_SENDER(0.00)[f.pflug@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	TO_DN_ALL(0.00)[];
@@ -129,52 +131,85 @@ X-Spamd-Result: default: False [-7.51 / 15.00];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 406AB200444
+X-Rspamd-Queue-Id: CEF69201514
 
-The function will be used by the efi usb driver to set the maxpackets
-per endpoint.
+Check, that the EFI-USB-IO controller will create a USB Network device
+in barebox. The device has currently no driver, but is available
+nevertheless.
 
 Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 ---
- drivers/usb/core/usb.c | 12 ++----------
- drivers/usb/core/usb.h |  2 ++
- 2 files changed, 4 insertions(+), 10 deletions(-)
+ drivers/usb/host/efi-io-protocol.c | 15 ++++++++++++---
+ test/x86/pc@efi_defconfig.yaml     |  9 ++++++++-
+ 2 files changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-index ae87137447..ce10b71f40 100644
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -127,16 +127,8 @@ static int usb_set_configuration(struct usb_device *dev, int configuration)
- 		return res;
+diff --git a/drivers/usb/host/efi-io-protocol.c b/drivers/usb/host/efi-io-protocol.c
+index 8207d33dcf..fdd21f24a0 100644
+--- a/drivers/usb/host/efi-io-protocol.c
++++ b/drivers/usb/host/efi-io-protocol.c
+@@ -145,6 +145,16 @@ static int efi_get_usb_string(struct efi_usb_io_protocol *protocol, u16 lang_id,
+ 	return 0;
  }
  
--/* The routine usb_set_maxpacket_ep() is extracted from the loop of routine
-- * usb_set_maxpacket(), because the optimizer of GCC 4.x chokes on this routine
-- * when it is inlined in 1 single routine. What happens is that the register r3
-- * is used as loop-count 'i', but gets overwritten later on.
-- * This is clearly a compiler bug, but it is easier to workaround it here than
-- * to update the compiler (Occurs with at least several GCC 4.{1,2},x
-- * CodeSourcery compilers like e.g. 2007q3, 2008q1, 2008q3 lite editions on ARM)
-- */
--static void  noinline
--usb_set_maxpacket_ep(struct usb_device *dev, struct usb_endpoint_descriptor *ep)
-+void usb_set_maxpacket_ep(struct usb_device *dev,
-+			  struct usb_endpoint_descriptor *ep)
++static void print_usb_device_info(struct device *dev)
++{
++	struct usb_device *usb_dev = container_of(dev, struct usb_device, dev);
++
++	dev_info(dev, "Bus %03d Device %03d: ID %04x:%04x %s\n",
++		 usb_dev->host->busnum, usb_dev->devnum,
++		 usb_dev->descriptor->idVendor, usb_dev->descriptor->idProduct,
++		 usb_dev->prod);
++}
++
+ static int create_usb_device(struct efi_usb_io_priv *priv)
  {
- 	int b;
+ 	struct usb_host *host = &priv->host;
+@@ -256,9 +266,8 @@ static int create_usb_device(struct efi_usb_io_priv *priv)
+ 	if (err)
+ 		goto out_err;
  
-diff --git a/drivers/usb/core/usb.h b/drivers/usb/core/usb.h
-index 0d4f80c21d..b503e5b4a8 100644
---- a/drivers/usb/core/usb.h
-+++ b/drivers/usb/core/usb.h
-@@ -6,5 +6,7 @@ struct usb_device *usb_alloc_new_device(void);
- void usb_free_device(struct usb_device *dev);
- int usb_new_device(struct usb_device *dev);
- void usb_remove_device(struct usb_device *dev);
-+void usb_set_maxpacket_ep(struct usb_device *dev,
-+			  struct usb_endpoint_descriptor *ep);
+-	dev_info(&dev->dev, "Bus %03d Device %03d: ID %04x:%04x %s\n",
+-		 dev->host->busnum, dev->devnum, dev->descriptor->idVendor,
+-		 dev->descriptor->idProduct, dev->prod);
++	print_usb_device_info(&dev->dev);
++	devinfo_add(&dev->dev, print_usb_device_info);
  
- #endif /* __CORE_USB_H */
+ 	err = register_device(&dev->dev);
+ 	if (err) {
+diff --git a/test/x86/pc@efi_defconfig.yaml b/test/x86/pc@efi_defconfig.yaml
+index 2c077d5509..4feabb232d 100644
+--- a/test/x86/pc@efi_defconfig.yaml
++++ b/test/x86/pc@efi_defconfig.yaml
+@@ -8,7 +8,11 @@ targets:
+         memory: 1024M
+         kernel: barebox.efi
+         display: qemu-default
+-        extra_args: '-bios OVMF.fd'
++        extra_args: >
++          -bios OVMF.fd
++          -device qemu-xhci,id=xhci
++          -device usb-net,netdev=usb0,bus=xhci.0
++          -netdev user,id=usb0
+       BareboxDriver:
+         prompt: 'barebox@[^:]+:[^ ]+ '
+         bootstring: 'commandline:'
+@@ -16,6 +20,7 @@ targets:
+     features:
+       - pci
+     devices:
++      usb1: 'usb1: Bus 001 Device 000: ID 0525:a4a2 RNDIS/QEMU USB Network Device'
+       fb0: 'Type: primary'
+       fbconsole0: 'Parent: fb0'
+       wdog0: 'Parent: efi-wdt'
+@@ -25,6 +30,8 @@ targets:
+       acpi-APIC0: 'Signature: APIC (Multiple APIC Description Table)'
+     runner:
+       kconfig_add:
++        - CONFIG_USB_HOST=y
++        - CONFIG_USB_EFI_IO_PROTOCOL=y
+         - CONFIG_DRIVER_SERIAL_NS16550=y
+         - CONFIG_CONSOLE_ACTIVATE_FIRST=y # avoid duplicate output
+ images:
 
 -- 
 2.47.3
