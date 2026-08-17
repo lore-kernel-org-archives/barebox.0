@@ -3,53 +3,50 @@ Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wvt1I-0044TM-1r
+	id 1wvt1J-0044Tj-0a
 	for lore@lore.pengutronix.de;
 	Mon, 17 Aug 2026 10:48:37 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 2B5A6200444
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id C382A20153F
 	for <lore@pengutronix.de>; Mon, 17 Aug 2026 10:48:37 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=RDLzv2pX;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=dJZEFtZD;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=0KpzcNLLd89jhlFxzUns96IVq+yIGluYU1n9j0bxVEw=; b=RDLzv2pXZjwMWI
-	PRPbIu73bNPo9gtesFlCjUdBSr7FHxCM8EWpPGtkmJmqOflw495/Z4sNpw0oIXZ4OS1PDIzsm12UE
-	IoqDh73JwzmvZNsoqoi74nqj4XkKCfdChXLZnObgVQzC+ZfXMKCmNhH0PZcwfCbNgBHRfwYZbwTag
-	sPmE6E72ctmu6ufMoFdxUsDIXxSs9MXhsRYKdecYGWfbN5PbWhp9N9FGpKL/ZpoObVkeWM6qM9l+a
-	dtCF1Wj+BJkgz/Mi5smTJE+OdS4pg+Aoi4AP26D/oYQ/K6uy+VFg9R7p8/6sy5138+QUn7tH23lOq
-	AADhQ3drfXulunxR1+zg==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Q9bHxntNVXZezudT/OM6lUwj9dwtxmzM3PLntz3WMfo=; b=dJZEFtZD+f03xpjyz9KMU9ec3c
+	+eDk6nyHAuWISBj4p68ne0TSwIVmxSUxo3tCfBI42oZG7NJcHt/tiPB65MoNVFEVz1f1jbdILBhSi
+	TXkp3TmRmSu9MtceCKOlQ8Oe11PoHDjkWQPBU5jAEznv9zRkeRv5ZlHI3maxtEjD1GtV/TdKbq61g
+	LBxWI401RsS3Ii/EKcCbmJkaofKxPou2N0rCTlm37Ly+2bpLGyb6upRGceobGUKhgy5ZUKRQcOe1O
+	OAIBE3azCptwyGjXx8fy4DOf0d5IYS77zezdCi0XbulCbQya8H/OnnRWtC879VvyM9F4TVPJnUXb6
+	f/xS1vzg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wvt0A-00000005j8H-3rSW;
-	Mon, 17 Aug 2026 08:47:26 +0000
+	id 1wvt08-00000005j70-1bqE;
+	Mon, 17 Aug 2026 08:47:24 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wvt03-00000005j4e-3rGe
+	id 1wvt03-00000005j4j-3qsw
 	for barebox@lists.infradead.org;
-	Mon, 17 Aug 2026 08:47:23 +0000
+	Mon, 17 Aug 2026 08:47:22 +0000
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <f.pflug@pengutronix.de>)
-	id 1wvszz-0000IK-EB; Mon, 17 Aug 2026 10:47:15 +0200
+	id 1wvszz-0000IK-IP; Mon, 17 Aug 2026 10:47:15 +0200
 From: Fabian Pflug <f.pflug@pengutronix.de>
-Subject: [PATCH v2 0/5] Add support for USB-EFI devices in EFI Playload
-Date: Mon, 17 Aug 2026 10:47:04 +0200
-Message-Id: <20260817-v2026-06-0-topic-efi_usb-v2-0-3d45c1782ccc@pengutronix.de>
+Date: Mon, 17 Aug 2026 10:47:08 +0200
+Subject: [PATCH v2 4/5] efi: guid: add guid for usb host controller 2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIjKgmoC/42NwQ6CMBBEf4Xs2Zp21SKe/A9DjIUF9tKSFhoM4
- d9d+AKTPcybyc6skCgyJXgUK0TKnDh4ATwV0Awf35PiVhhQo9V3gyrvSmk5NYWRG0Udv+fkFJI
- r7dU466wGeR+jJMtR/aqFB05TiN9jKZvd/aM0G7GqFm/lpcGqQ/McyffzFIPn5dwS1Nu2/QAUn
- ozGxQAAAA==
-X-Change-ID: 20260812-v2026-06-0-topic-efi_usb-2eb7641b6b60
+Message-Id: <20260817-v2026-06-0-topic-efi_usb-v2-4-3d45c1782ccc@pengutronix.de>
+References: <20260817-v2026-06-0-topic-efi_usb-v2-0-3d45c1782ccc@pengutronix.de>
+In-Reply-To: <20260817-v2026-06-0-topic-efi_usb-v2-0-3d45c1782ccc@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Fabian Pflug <f.pflug@pengutronix.de>
@@ -58,8 +55,9 @@ X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::5c
 X-SA-Exim-Mail-From: f.pflug@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260817_014719_976746_7C88F966 
-X-CRM114-Status: GOOD (  11.10  )
+X-CRM114-CacheID: sfid-20260817_014719_978065_CA763A90 
+X-CRM114-Status: UNSURE (   7.38  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -67,11 +65,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  When running as EFI payload, barebox does not have control
-    over the USB bus, but instead the BIOS will have enumerated and set up devices.
-    The UEFI will also expose an API to access the devices, with one handle per
-    USB interface. This driver will create an USB-Host per device and initialize
-    the device and pass it onto barebox for driver [...] 
+ Content preview:  Taken from https://uefi.org/specs/UEFI/2.11/17_Protocols_USB_Support.html#usb2-host-controller-protocol
+    Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de> --- efi/guid.c | 1 +
+    include/efi/guid.h | 3 +++ 2 files changed, 4 insertions(+) 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -100,9 +96,9 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: d3gmo7s987tfx4sp8abgdrrcm4qw6qbg
+X-Stat-Signature: r5bmbuxdao8aq5qf355orey3gto9m38x
 X-Spamd-Result: default: False [-7.51 / 15.00];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
@@ -133,56 +129,45 @@ X-Spamd-Result: default: False [-7.51 / 15.00];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 2B5A6200444
+X-Rspamd-Queue-Id: C382A20153F
 
-When running as EFI payload, barebox does not have control over the USB
-bus, but instead the BIOS will have enumerated and set up devices.
-
-The UEFI will also expose an API to access the devices, with one handle
-per USB interface.
-This driver will create an USB-Host per device and initialize the device
-and pass it onto barebox for driver initialization, allowing all
-usb-devices to be used.
-
-This might lead to problems where USB-Storage is handled as an USB
-device as well as UEFI Block IO Storage, therefore it is not added to
-efi_defconfig by default.
+Taken from https://uefi.org/specs/UEFI/2.11/17_Protocols_USB_Support.html#usb2-host-controller-protocol
 
 Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 ---
-Changes in v2:
-- fixed wrong type in header for get_string_descriptor
-- add missing free to string buffer
-- use 16bit data type for string buffer
-- include the first byte of string buffer
-- renamed num_langs to table_size and made usage clearer
-- Link to v1: https://lore.barebox.org/barebox/20260812-v2026-06-0-topic-efi_usb-v1-0-9d2573c29f21@pengutronix.de
+ efi/guid.c         | 1 +
+ include/efi/guid.h | 3 +++
+ 2 files changed, 4 insertions(+)
 
----
-Fabian Pflug (5):
-      efi: usb: add header for usb-efi
-      usb: core: make usb_set_maxpacket_ep public
-      drivers: usb: host: efi: add efi io driver
-      efi: guid: add guid for usb host controller 2
-      test: x86: add test for uefi usb io
+diff --git a/efi/guid.c b/efi/guid.c
+index f438783fc1..568e1daa7d 100644
+--- a/efi/guid.c
++++ b/efi/guid.c
+@@ -100,6 +100,7 @@ const char *efi_guid_string(const efi_guid_t *g)
+ 	EFI_GUID_STRING(EFI_UGA_IO_PROTOCOL_GUID, "UGA Protocol", "EFI 1.1 UGA Protocol");
+ 	EFI_GUID_STRING(EFI_PCI_IO_PROTOCOL_GUID, "PCI IO Protocol", "EFI 1.1 PCI IO Protocol");
+ 	EFI_GUID_STRING(EFI_USB_IO_PROTOCOL_GUID, "USB IO Protocol", "EFI 1.0 USB IO Protocol");
++	EFI_GUID_STRING(EFI_USB2_HC_PROTOCOL_GUID, "USB HC2 Protocol", "EFI 1.0 USB Host Protocol");
+ 	EFI_GUID_STRING(EFI_FILE_INFO_GUID, "File Info", "EFI File Info");
+ 	EFI_GUID_STRING(EFI_FILE_SYSTEM_INFO_GUID, "Filesystem Info", "EFI FileSystem Info");
+ 	EFI_GUID_STRING(EFI_FILE_SYSTEM_VOLUME_LABEL_ID, "Filesystem Volume Label ID", "EFI FileSystem Volume Label ID");
+diff --git a/include/efi/guid.h b/include/efi/guid.h
+index 7d75842b04..3e8cff0373 100644
+--- a/include/efi/guid.h
++++ b/include/efi/guid.h
+@@ -121,6 +121,9 @@ extern const efi_guid_t efi_debug_image_info_table_guid;
+ #define EFI_USB_IO_PROTOCOL_GUID \
+     EFI_GUID(0x2B2F68D6, 0x0CD2, 0x44cf, 0x8E, 0x8B, 0xBB, 0xA2, 0x0B, 0x1B, 0x5B, 0x75)
+ 
++#define EFI_USB2_HC_PROTOCOL_GUID \
++    EFI_GUID(0x3e745226, 0x9818, 0x45b6, 0xa2, 0xac, 0xd7, 0xcd, 0x0e, 0x8b, 0xa2, 0xbc)
++
+ #define EFI_FILE_INFO_GUID \
+     EFI_GUID(  0x9576e92, 0x6d3f, 0x11d2, 0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b )
+ 
 
- drivers/usb/core/usb.c             |  12 +-
- drivers/usb/core/usb.h             |   2 +
- drivers/usb/host/Kconfig           |  11 ++
- drivers/usb/host/Makefile          |   1 +
- drivers/usb/host/efi-io-protocol.c | 326 +++++++++++++++++++++++++++++++++++++
- efi/guid.c                         |   2 +
- include/efi/guid.h                 |   4 +
- include/efi/protocol/usb.h         |  66 ++++++++
- test/x86/pc@efi_defconfig.yaml     |   9 +-
- 9 files changed, 422 insertions(+), 11 deletions(-)
----
-base-commit: 87f49b49fdd06c0de492bd2c1cd6b8c93e393029
-change-id: 20260812-v2026-06-0-topic-efi_usb-2eb7641b6b60
-
-Best regards,
 -- 
-Fabian Pflug <f.pflug@pengutronix.de>
+2.47.3
 
 
 
