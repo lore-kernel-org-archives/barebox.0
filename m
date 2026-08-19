@@ -1,16 +1,16 @@
-Delivery-date: Wed, 19 Aug 2026 09:53:34 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Wed, 19 Aug 2026 10:27:47 +0200
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wwb77-004nB0-2I
+	id 1wwbeE-004nmo-2a
 	for lore@lore.pengutronix.de;
-	Wed, 19 Aug 2026 09:53:34 +0200
+	Wed, 19 Aug 2026 10:27:47 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 0EF422020ED
-	for <lore@pengutronix.de>; Wed, 19 Aug 2026 09:53:34 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 66C5C20227F
+	for <lore@pengutronix.de>; Wed, 19 Aug 2026 10:27:47 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=yqLyXli8;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=Kcp5QHo0;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,45 +19,41 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Hxu6a4gbrAjPm70LwOFhFG2IXIEokK6HzzCbr+KvxwY=; b=yqLyXli8Oc2ST9OUXnNU0m2cwN
-	314dLwJzdUDzgOVdcaNWqhuk0tFEE/pNvbvOizb6IA5iaywRTJL+eAL++p1OOCAuxh5A2n4FEphFK
-	djWmbJ46svz+bha/0vPi787zBGUVUsgfKDyXBsiCESysjDLVUNBdPqd7pZg6KZAvgQRfLzHM4xuIY
-	3dQ/aqrQtDm+l3q1NwxSp714ji5r2ICfuSw4+yjBqXbs4ARzYU2lIRjzjfgoFidfZQ7q0a+h3gXCw
-	FC0Sae/iHYZzYdjqnb2x3kEV9TFush8q+srwogQURTc/9UEnGFqHT0gUvw17MbK5LjzNiPrrJAtlN
-	vUuB2WfQ==;
+	bh=jOtyeNcLo1IGDDRHhfzYy/vHTO2zrLl7fVH9DF3W1Rk=; b=Kcp5QHo07bw6LmGnu0pD5mkiNB
+	3UDDDljnQk+8O6ynylxlEIg8OCdVQ2YJZX1DqsoLFoFJBNvTk65/8eVbzASDposFRIzZXmwJq+e67
+	n7MRQhPCF0UTrDpREZ2k+hLGLDHfqr06QekTbbCbNKRqW07mZ/JxZKQSqPMZryiV0SDGCI3eNykYm
+	HDlOUAqSJkC6eKmLYijReB0xOnko550H2FislMD7dSt2VNHDoZ4M6FqeVojwLMFyBaElBK/nvPxDP
+	9h04SAfFsMurpaFMUy+nKpO0exHbR0wJ91Q8GeADL9cuDOhfg0i9c7vpwmkisouCskJLRnmWpJujn
+	dghhYy2Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wwb5w-00000009Exi-0xbv;
-	Wed, 19 Aug 2026 07:52:20 +0000
+	id 1wwbcy-00000009J5H-0OJc;
+	Wed, 19 Aug 2026 08:26:28 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wwb5r-00000009EwI-3qxI
+	id 1wwbcu-00000009J4w-3wy6
 	for barebox@lists.infradead.org;
-	Wed, 19 Aug 2026 07:52:18 +0000
+	Wed, 19 Aug 2026 08:26:27 +0000
 Received: from [0.0.0.0] (ptz.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::77])
 	(Authenticated sender: afa@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 4FA5E20128B;
-	Wed, 19 Aug 2026 09:52:11 +0200 (CEST)
-Message-ID: <15b91a93-4abf-4eb0-9152-a786bcae4e71@pengutronix.de>
-Date: Wed, 19 Aug 2026 09:52:11 +0200
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B3DF6200740;
+	Wed, 19 Aug 2026 10:26:22 +0200 (CEST)
+Message-ID: <db7b48bd-24d8-4249-92f8-fe38af5cb212@pengutronix.de>
+Date: Wed, 19 Aug 2026 10:26:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ci: container: build openssl against musl
-To: Thomas Bonnefille <thomas.bonnefille@bootlin.com>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- "open list:BAREBOX" <barebox@lists.infradead.org>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- =?UTF-8?Q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>,
- =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
-References: <20260811-add-openssl-musl-to-ci-v1-1-0ca5525f1775@bootlin.com>
+Subject: Re: iMX ddrphy_utils difference with U-boot
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Andrei Lalaev <andrey.lalaev@gmail.com>, barebox@lists.infradead.org
+References: <E1wZ30Z-00000006Gk9-35a3@pty.whiteo.stw.pengutronix.de>
 Content-Language: en-US, de-DE, de-BE
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260811-add-openssl-musl-to-ci-v1-1-0ca5525f1775@bootlin.com>
+In-Reply-To: <E1wZ30Z-00000006Gk9-35a3@pty.whiteo.stw.pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260819_005216_119501_14CDBB34 
-X-CRM114-Status: GOOD (  25.50  )
+X-CRM114-CacheID: sfid-20260819_012625_228199_8E31AA62 
+X-CRM114-Status: GOOD (  18.20  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -65,10 +61,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Hello Thomas, thanks for your patch! On 8/11/26 7:22 PM, Thomas
-    Bonnefille wrote: > Since 3c739b95ee ("sandbox: enable keytoc in hosttools_defconfig")
-    the > hosttools_defconfig also builds keytoc a tool required to inject >
-   cryptographic [...] 
+ Content preview:  Hi, On 6/15/26 10:49 AM, Sascha Hauer wrote: > On 2026-06-08
+    19:26, Ahmad Fatoum wrote: >> Hello Andrei, >> >> On 6/8/26 16:24, Andrei
+    Lalaev wrote: >>> Hi, >>> >>> I am moving an iMX8MP module from vendo [...]
+    
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -93,121 +89,92 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: ftbjiiem94icphaax7hbdz43m3ax8hr1
+X-Stat-Signature: 7xuk9jwdicq6be14hfeateao9cwqscim
 X-Spamd-Result: default: False [-7.51 / 15.00];
 	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	R_SPF_ALLOW(-0.20)[+mx:c];
-	MAILLIST(-0.20)[mailman];
 	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
-	MIME_GOOD(-0.10)[text/plain];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
+	MAILLIST(-0.20)[mailman];
 	RCVD_IN_DNSWL_LOW(-0.10)[2a0a:edc0:0:900:1d::77:received];
+	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	DMARC_NA(0.00)[pengutronix.de];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
-	ARC_NA(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
+	DMARC_NA(0.00)[pengutronix.de];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	FORGED_SENDER(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_ALL(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,lists.infradead.org];
 	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	RCPT_COUNT_FIVE(0.00)[6]
-X-Rspamd-Queue-Id: 0EF422020ED
+	FORGED_SENDER_MAILLIST(0.00)[]
+X-Rspamd-Queue-Id: 66C5C20227F
 
-Hello Thomas,
+Hi,
 
-thanks for your patch!
-
-On 8/11/26 7:22 PM, Thomas Bonnefille wrote:
-> Since 3c739b95ee ("sandbox: enable keytoc in hosttools_defconfig") the
-> hosttools_defconfig also builds keytoc a tool required to inject
-> cryptographic keys in a device tree.
-> This software needs openssl to be compiled. However, as barebox-ci is
-> using Debian as the base of its container, the openssl package given by
-> apt is compiled with the glibc.
+On 6/15/26 10:49 AM, Sascha Hauer wrote:
+> On 2026-06-08 19:26, Ahmad Fatoum wrote:
+>> Hello Andrei,
+>>
+>> On 6/8/26 16:24, Andrei Lalaev wrote:
+>>> Hi,
+>>>
+>>> I am moving an iMX8MP module from vendor U-Boot 2024.04 to Barebox 2025.02
+>>
+>> Sidenote: You'll probably want to use one of the still supported
+>> v2026.04 or v2026.06 releases.
+>>
+>>> and found a strange difference in the DDR training code:
+>>>
+>>>   vim drivers/ddr/imx/ddrphy_utils.c +94
+>>>
+>>> And the corresponding line in U-Boot:
+>>>
+>>>   vim drivers/ddr/imx/phy/ddrphy_utils.c +101
+>>>
+>>> Is there any chance that somebody knows/remembers why "return -1" was replaced with "hang()"?
+>>
+>> I can't speak for Sascha, but having looked at the code, I see no reason
+>> why not to propagate the error.
+>>
+>>> I couldn't find any explanation in the commits/mailing lists.
+>>
+>> My guess is that it wasn't anticipated that boards would handle
+>> the error gracefully to fall back to a different DDR init.
 > 
-> In order to compile keytoc with musl, build a version of openssl against
-> musl in the barebox-ci container.
-> 
-> Signed-off-by: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
-> ---
-> Hello, I added the support to build openssl against Musl, this fixes the
-> commit 3c739b9 in CI.
-> Another patch has been sent previously to fix this issue
-> (https://lore.kernel.org/barebox/20260805142055.3844660-1-a.fatoum@pengutronix.de/)
-> 
-> I didn't find it in the 'next' branch of the Github repository
-> (git.pengutronix.de seems down on my side) and I assumed it wasn't
-> applied so I didn't include a revert commit for it.
+> That's my guess as well. Note the callers of
+> imx8m_wait_ddrphy_training_complete() which is only a wrapper around
+> calling wait_ddrphy_training_complete() do not check the error code, so
+> when changing it back to return an error code we likely want to add
+> error checking where missing.
 
-When issues pop up while a patch is in next, fixes can be squashed into
-it. After a release, next is merged onto master, which experiences no
-rewriting of history.
+I just stumbled upon this patch:
+https://lore.kernel.org/all/20260819070758.51350-1-frieder@fris.de/
 
-My patch was squashed as can be seen when you look at next's
-.github/workflows/musl-tools.yml
-
-I will send a revert for my patch once this patch is applied and a new
-CI container has been rebuilt.
-
-> ---
->  test/Containerfile | 13 +++++++++++++
->  1 file changed, 13 insertions(+)
-> 
-> diff --git a/test/Containerfile b/test/Containerfile
-> index 296835d080..00f24a210f 100644
-> --- a/test/Containerfile
-> +++ b/test/Containerfile
-> @@ -118,4 +118,17 @@ ENV LLVM_SUFFIX=-${LLVM_VERSION}
->  RUN ln -Ts /usr/lib/llvm-${LLVM_VERSION}/lib/clang/${LLVM_VERSION}/lib/linux/ \
->             /usr/lib/llvm-${LLVM_VERSION}/lib/clang/${LLVM_VERSION}/lib/x86_64-pc-linux-gnu
->  
-> +ENV OPENSSL_VERSION=3.5.6
-> +ENV PKG_CONFIG_PATH=/opt/openssl-musl/lib64/pkgconfig
-> +RUN cd /tmp && \
-> +	wget https://github.com/openssl/openssl/releases/download/openssl-$OPENSSL_VERSION/openssl-$OPENSSL_VERSION.tar.gz && \
-> +	echo "deae7c80cba99c4b4f940ecadb3c3338b13cb77418409238e57d7f31f2a3b736 openssl-$OPENSSL_VERSION.tar.gz" | sha256sum --check --status && \
-> +	tar -xzf openssl-$OPENSSL_VERSION.tar.gz && \
-> +	cd openssl-$OPENSSL_VERSION && \
-> +	./Configure linux-x86_64 no-shared no-tests no-secure-memory no-afalgeng \
-> +		--prefix=/opt/openssl-musl --openssldir=/opt/openssl-musl/ssl CC=musl-gcc && \
-> +	make -j$(nproc) && make install_sw && \
-> +	ln -s /opt/openssl-musl/include/openssl /usr/include/x86_64-linux-musl && \
-> +	rm -rf /tmp/openssl-$OPENSSL_VERSION.tar.gz /tmp/openssl-$OPENSSL_VERSION
-
-I assume this doesn't increase container size too much, so this looks
-good to me:
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+If we start allowing ddr_cfg_phy to propagate this error, you'll likely
+want above patch as well.
 
 Cheers,
 Ahmad
 
-> +
->  USER barebox:barebox
 > 
-> ---
-> base-commit: 4705656eeeaba0dd3617b69172328daf4dbf9060
-> change-id: 20260806-add-openssl-musl-to-ci-f086904d4648
-> 
-> Best regards,
-> --  
-> Thomas Bonnefille <thomas.bonnefille@bootlin.com>
-> 
+> Sascha
 > 
 
 -- 
