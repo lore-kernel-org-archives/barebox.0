@@ -1,60 +1,60 @@
-Delivery-date: Wed, 19 Aug 2026 13:17:04 +0200
+Delivery-date: Wed, 19 Aug 2026 15:34:11 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wweI3-004qS0-1J
+	id 1wwgQl-004sQH-0M
 	for lore@lore.pengutronix.de;
-	Wed, 19 Aug 2026 13:17:04 +0200
+	Wed, 19 Aug 2026 15:34:11 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 00BDD20190E
-	for <lore@pengutronix.de>; Wed, 19 Aug 2026 13:17:04 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 515CD20240F
+	for <lore@pengutronix.de>; Wed, 19 Aug 2026 15:34:07 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=JsMS4KNk;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=HINUmCdh;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=AF0YqqRRarPpYNLwFc/2dy6oFIDTv5qS8ZyfYsZtuZI=; b=JsMS4KNk30QKBNnaU167XTWhLX
-	sD0UvR7FvO+D5SkM9+VbkzwrVSlbyhbjfKbQW0t42J9J0vjFh3bnHJRTVbLuUps371ILqAVwhBdyT
-	p6wMfDWrn9eAxXCpFwPqGFOYo+wGI9wnIMIBsRCV3b5IlXUEtQlcLUJKn3PjSoYU8+4kyfTbCs2Rs
-	+7yMNXaXUdkfSlJcm4KDdMIEJq+EAptL8hxiJiOOqyQi6geGPAHYhAgKtG4DB9ZVDt+/ydIN17z4j
-	WrdqFkcPnGECbkYMMgTIJavg2OTDekJ7ZORlZJnQWmQ5Xp4iU3C/c+QQRGl38QOJyXPbcAbv1XxzA
-	VgWF0zWw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
+	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:To:From:
+	Subject:Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=8XbTqycZHR3sn5W12KuseUuOft06y8aFR8dUGrhFjAE=; b=HINUmCdhh2kZZKFvwqZwBtXUDj
+	UV9ITtKgFCg6C144BSvC6GNlvb6Q8Hy9xIB6JqBoRjnYeqZaUzNA7Mr2wtqQatbAGRgruMuemgHbo
+	rCxMAC+Is8N1s4rsuuRw8F+2ZB2DKzzOhivPxIF5ciYMfMLfQnlAGVgrozTHaXInRBT4R9khtocEu
+	td/PInfY7s89M7sG6Atg+/ddoBNHPvy+GhdbuHZuhWqfIKISWr6ZE1dzm3lfjlkJAB9mIVpLwYFqL
+	OyNWyjiyNEGDp40NOph49RYEbk+Qzb9bJvlYOnl/efx/qab1OF3awqbjzWFauAmKuUycF3S+c9ATy
+	BTwD4A+A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wweHj-00000009eQS-15IO;
-	Wed, 19 Aug 2026 11:16:43 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1wwgPC-00000009sXN-2wMH;
+	Wed, 19 Aug 2026 13:32:34 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wweHf-00000009ePH-2wn8
+	id 1wwgP9-00000009sWr-22dT
 	for barebox@lists.infradead.org;
-	Wed, 19 Aug 2026 11:16:41 +0000
-Received: from [0.0.0.0] (ptz.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::77])
-	(Authenticated sender: afa@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id F0EF820190E;
-	Wed, 19 Aug 2026 13:16:37 +0200 (CEST)
-Message-ID: <adfd0175-d8cb-40a2-9f63-b1982682418c@pengutronix.de>
-Date: Wed, 19 Aug 2026 13:16:37 +0200
+	Wed, 19 Aug 2026 13:32:33 +0000
+Received: from [IPv6:2a0a:edc0:0:701:daff:4114:609c:7715] (unknown [IPv6:2a0a:edc0:0:701:daff:4114:609c:7715])
+	(Authenticated sender: fpg@pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 076E5200740;
+	Wed, 19 Aug 2026 15:32:24 +0200 (CEST)
+Message-ID: <712f43633accc86e3f16b4a1f04beef41cdeadd8.camel@pengutronix.de>
+Subject: Re: [PATCH v2 1/5] efi: usb: add header for usb-efi
+From: Fabian Pflug <f.pflug@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, Sascha Hauer
+	 <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
+Date: Wed, 19 Aug 2026 15:32:23 +0200
+In-Reply-To: <825db791-decf-448f-a1d0-8368d1f85add@pengutronix.de>
+References: <20260817-v2026-06-0-topic-efi_usb-v2-0-3d45c1782ccc@pengutronix.de>
+	 <20260817-v2026-06-0-topic-efi_usb-v2-1-3d45c1782ccc@pengutronix.de>
+	 <825db791-decf-448f-a1d0-8368d1f85add@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2-0+deb13u1 
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: iMX ddrphy_utils difference with U-boot
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Andrei Lalaev <andrey.lalaev@gmail.com>, barebox@lists.infradead.org
-References: <E1wZ30Z-00000006Gk9-35a3@pty.whiteo.stw.pengutronix.de>
- <db7b48bd-24d8-4249-92f8-fe38af5cb212@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <db7b48bd-24d8-4249-92f8-fe38af5cb212@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260819_041639_922408_F6BD1B41 
-X-CRM114-Status: GOOD (  18.74  )
+X-CRM114-CacheID: sfid-20260819_063231_676210_47060A66 
+X-CRM114-Status: GOOD (  21.18  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -62,9 +62,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On 8/19/26 10:26 AM, Ahmad Fatoum wrote: > Hi, > > On 6/15/26
-    10:49 AM, Sascha Hauer wrote: >> On 2026-06-08 19:26, Ahmad Fatoum wrote:
-    >>> Hello Andrei, >>> >>> On 6/8/26 16:24, Andrei Lalaev wrote: [...] 
+ Content preview:  Hey, On Wed, 2026-08-19 at 12:01 +0200, Ahmad Fatoum wrote:
+    > Hello, > > On 8/17/26 10:47 AM, Fabian Pflug wrote: > > Convert the spec
+    in [1] to a header, that is useable for barebox. > > The async headers [...]
+    
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -89,109 +90,161 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: dn8hqwrmz8ozyiomikwszuee8d7cr5h5
-X-Spamd-Result: default: False [-7.51 / 15.00];
+X-Stat-Signature: 9ee1mwztoqkrduduicksu6yhha5qjdtq
+X-Spamd-Result: default: False [-7.41 / 15.00];
 	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	MAILLIST(-0.20)[mailman];
-	R_SPF_ALLOW(-0.20)[+mx:c];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
-	RCVD_IN_DNSWL_LOW(-0.10)[2a0a:edc0:0:900:1d::77:received];
+	MAILLIST(-0.20)[mailman];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	ARC_NA(0.00)[];
-	FORGED_SENDER(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[f.pflug@pengutronix.de,barebox-bounces@lists.infradead.org];
 	DMARC_NA(0.00)[pengutronix.de];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[barebox@lists.infradead.org];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
-	FREEMAIL_CC(0.00)[gmail.com,lists.infradead.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[f.pflug@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_ALL(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 00BDD20190E
+X-Rspamd-Queue-Id: 515CD20240F
 
+Hey,
 
+On Wed, 2026-08-19 at 12:01 +0200, Ahmad Fatoum wrote:
+> Hello,
+>=20
+> On 8/17/26 10:47 AM, Fabian Pflug wrote:
+> > Convert the spec in [1] to a header, that is useable for barebox.
+> > The async headers are not defined, since it is currently not planned to
+> > support async in addition to sync.
+> >=20
+> > [1] https://uefi.org/specs/UEFI/2.11/17_Protocols_USB_Support.html
+>=20
+> Some nitpicks below. You don't need to resend for just those, but if you
+> are sending a v2, it would be good to address these as well.
+>=20
+> >=20
+> > Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
+>=20
+> Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>=20
+> >=20
+> > ---
+> > v2:
+> > - Fixed wrong type in header for get_string_descriptor
+> > ---
+> > =C2=A0include/efi/protocol/usb.h | 66 +++++++++++++++++++++++++++++++++=
++++++++++++++
+> > =C2=A01 file changed, 66 insertions(+)
+> >=20
+> > diff --git a/include/efi/protocol/usb.h b/include/efi/protocol/usb.h
+> > new file mode 100644
+> > index 0000000000..78953a4fa7
+> > --- /dev/null
+> > +++ b/include/efi/protocol/usb.h
+> > @@ -0,0 +1,66 @@
+> > +/* SPDX-License-Identifier: GPL-2.0-only */
+> > +
+> > +#ifndef __EFI_PROTOCOL_USB_H_
+> > +#define __EFI_PROTOCOL_USB_H_
+> > +
+> > +#include <efi/types.h>
+> > +#include <linux/usb/usb.h>
+>=20
+> Nitpick: I would drop this and just predeclare struct devrequest.
 
-On 8/19/26 10:26 AM, Ahmad Fatoum wrote:
-> Hi,
-> 
-> On 6/15/26 10:49 AM, Sascha Hauer wrote:
->> On 2026-06-08 19:26, Ahmad Fatoum wrote:
->>> Hello Andrei,
->>>
->>> On 6/8/26 16:24, Andrei Lalaev wrote:
->>>> Hi,
->>>>
->>>> I am moving an iMX8MP module from vendor U-Boot 2024.04 to Barebox 2025.02
->>>
->>> Sidenote: You'll probably want to use one of the still supported
->>> v2026.04 or v2026.06 releases.
->>>
->>>> and found a strange difference in the DDR training code:
->>>>
->>>>   vim drivers/ddr/imx/ddrphy_utils.c +94
->>>>
->>>> And the corresponding line in U-Boot:
->>>>
->>>>   vim drivers/ddr/imx/phy/ddrphy_utils.c +101
->>>>
->>>> Is there any chance that somebody knows/remembers why "return -1" was replaced with "hang()"?
->>>
->>> I can't speak for Sascha, but having looked at the code, I see no reason
->>> why not to propagate the error.
->>>
->>>> I couldn't find any explanation in the commits/mailing lists.
->>>
->>> My guess is that it wasn't anticipated that boards would handle
->>> the error gracefully to fall back to a different DDR init.
->>
->> That's my guess as well. Note the callers of
->> imx8m_wait_ddrphy_training_complete() which is only a wrapper around
->> calling wait_ddrphy_training_complete() do not check the error code, so
->> when changing it back to return an error code we likely want to add
->> error checking where missing.
-> 
-> I just stumbled upon this patch:
-> https://lore.kernel.org/all/20260819070758.51350-1-frieder@fris.de/
-> 
-> If we start allowing ddr_cfg_phy to propagate this error, you'll likely
-> want above patch as well.
+It is also
 
-Or maybe not. Just thought to let you know.
+struct usb_config_descriptor
+struct usb_device_descriptor
+struct usb_interface_descriptor
+struct usb_endpoint_descriptor
 
-Cheers,
-Ahmad
+>=20
+> > +
+> > +enum efi_usb_data_direction {
+> > +	EFI_USB_DATA_IN,
+> > +	EFI_USB_DATA_OUT,
+> > +	EFI_USB_NO_DATA
+> > +};
+> > +
+> > +//
+> > +// Error code for USB Transfer Results
+> > +//
+> > +#define EFI_USB_NOERROR 0x0000
+> > +#define EFI_USB_ERR_NOTEXECUTE 0x0001
+> > +#define EFI_USB_ERR_STALL 0x0002
+> > +#define EFI_USB_ERR_BUFFER 0x0004
+> > +#define EFI_USB_ERR_BABBLE 0x0008
+> > +#define EFI_USB_ERR_NAK 0x0010
+> > +#define EFI_USB_ERR_CRC 0x0020
+> > +#define EFI_USB_ERR_TIMEOUT 0x0040
+> > +#define EFI_USB_ERR_BITSTUFF 0x0080
+> > +#define EFI_USB_ERR_SYSTEM 0x0100
+>=20
+> Nitpick: Add some tabs between the macros and the values for indentation?
 
-> 
-> Cheers,
-> Ahmad
-> 
->>
->> Sascha
->>
-> 
+I could, but clang-format will remove the tabs. And I like to just call it =
+to format the rest and not have the hassle to
+revert formatting here.
 
--- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+/Fabian
 
+>=20
+> > +struct efi_usb_io_protocol {
+> > +	efi_status_t(EFIAPI *control_transfer)(
+> > +		struct efi_usb_io_protocol *this, struct devrequest *request,
+> > +		enum efi_usb_data_direction direction, u32 timeout, void *data,
+> > +		efi_uintn_t length, u32 *status);
+> > +	efi_status_t(EFIAPI *bulk_transfer)(struct efi_usb_io_protocol *this,
+> > +					=C2=A0=C2=A0=C2=A0 u8 device_endpoint, void *data,
+> > +					=C2=A0=C2=A0=C2=A0 efi_uintn_t *length,
+> > +					=C2=A0=C2=A0=C2=A0 efi_uintn_t timeout, u32 *status);
+> > +	void *usb_io_async_interrupt_transfer;
+> > +	efi_status_t(EFIAPI *sync_interrupt_transfer)(
+> > +		struct efi_usb_io_protocol *this, u8 device_endpoint,
+> > +		void *data, efi_uintn_t *length, efi_uintn_t timeout,
+> > +		u32 *status);
+> > +	void *efi_usb_io_isochronous_transfer;
+> > +	void *efi_usb_io_async_isochronous_transfer;
+> > +	efi_status_t(EFIAPI *get_device_descriptor)(
+> > +		struct efi_usb_io_protocol *this,
+> > +		struct usb_device_descriptor *desc);
+> > +	efi_status_t(EFIAPI *get_config_descriptor)(
+> > +		struct efi_usb_io_protocol *this,
+> > +		struct usb_config_descriptor *desc);
+> > +	efi_status_t(EFIAPI *get_interface_descriptor)(
+> > +		struct efi_usb_io_protocol *this,
+> > +		struct usb_interface_descriptor *desc);
+> > +	efi_status_t(EFIAPI *get_endpoint_descriptor)(
+> > +		struct efi_usb_io_protocol *this, u8 index,
+> > +		struct usb_endpoint_descriptor *desc);
+> > +	efi_status_t(EFIAPI *get_string_descriptor)(
+> > +		struct efi_usb_io_protocol *this, u16 lang_id, u8 string_id,
+> > +		wchar_t **desc);
+> > +	efi_status_t(EFIAPI *get_supported_languages)(
+> > +		struct efi_usb_io_protocol *this, u16 **lang_id_table,
+> > +		u16 *table_size);
+> > +	efi_status_t(EFIAPI *port_reset)(struct efi_usb_io_protocol *this);
+> > +};
+> > +
+> > +#endif
+> >=20
 
 
