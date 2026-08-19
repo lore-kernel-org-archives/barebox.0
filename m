@@ -1,89 +1,106 @@
-Delivery-date: Wed, 19 Aug 2026 11:27:39 +0200
+Delivery-date: Wed, 19 Aug 2026 11:41:21 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wwcaA-004okD-1u
+	id 1wwcnQ-004ot2-2x
 	for lore@lore.pengutronix.de;
-	Wed, 19 Aug 2026 11:27:39 +0200
+	Wed, 19 Aug 2026 11:41:21 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id CFCD6201EBE
-	for <lore@pengutronix.de>; Wed, 19 Aug 2026 11:27:38 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 2F36B20227F
+	for <lore@pengutronix.de>; Wed, 19 Aug 2026 11:41:21 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=FJgkxr0r;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=UsoIno0F;
+	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=bSnMqJl7;
+	dkim=fail ("headers rsa verify failed") header.d=ku-gbr.de header.s=x header.b=L73D+Abx;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=nSt8dE/mKBiZGseMaBwqc/bYFCYP0nYNTCM78/a66cY=; b=FJgkxr0rtO9XM/Y2QGUIMg2RsN
-	GG2lZdf9by9QGNi/cisC7xWgPng/3Ef85380Q9IOmjgTnyxGAU0AYrZCB1YVEQpHAzu3v0HJ8pEU0
-	UTX4B1EAtVTtKj0gX9MNsCs6W68ZkhqpP3OpCD9/0MJkpgQjBceP0tNnqtfnl37zEK/nFQZZ3ng8Y
-	Pv1svFcequas1iXVHwFfZeN/4+vMjGMXlzfVclRDxCygPUU+HidO3hEiNW2QXTNs4BJ0GU1sDqDuM
-	EXwNdy9ZsQm5w/Vz4P/f/E1WYXbX5CtodCpDqB4PgiWmIlIXW3KTJXslmjnsAP73b1tsYf5YkOIF9
-	5LcH8FMw==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Date:
+	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:To:Subject:From
+	:Message-ID:Reply-To:MIME-Version:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=aSZK7LBg2JVvwM8KsHbidwqufDr36LoaMCQpD9WxBUo=; b=UsoIno0FFA9dZJTHwd2mVE2Iwq
+	21q8lTtAgNfN3+wFbYh3ivgpd6BqHKoxVepXfoS7xMPyuxMr13QayK4l2InLwvleoEgLjVK6E23OO
+	H+AOYimgeQUe3CYcOb1nhFTT5U7C+qN0SbLzUHfr9OLDVvHn5cM23ZhVrMnFpKAOvJ3C1iAUWO6hg
+	YtJRM70zwoXqjCeYEaGuxkdwGKgpoxltJ3mT7fRL3AZdN+76JCcE14X+JN8DCqMYRZvdC5D1fukP4
+	JEvmAgOUJzCETD4r1taXZUie9oDbVB0KFQ68bu6R7wa/w6lPTezJ1Rvp3yOjZEeFBC00aPtbJ4JcR
+	9opC2t0A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wwcZ3-00000009PQF-1X7u;
-	Wed, 19 Aug 2026 09:26:29 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1wwcmH-00000009Qt6-1QGQ;
+	Wed, 19 Aug 2026 09:40:09 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wwcYz-00000009PPd-2LFo
+	id 1wwcmE-00000009Qse-34Cd
+	for barebox@bombadil.infradead.org;
+	Wed, 19 Aug 2026 09:40:07 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Date:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Cc:To:Subject:From:Message-ID:Sender:
+	Reply-To:MIME-Version:Content-ID:Content-Description;
+	bh=aSZK7LBg2JVvwM8KsHbidwqufDr36LoaMCQpD9WxBUo=; b=bSnMqJl7fM4lO5zxOSD4fTkf//
+	Z5S1lcDja7cDZMTFMlb1l8SxVYP+ul9EP4YcaH4bpk/Q4eOruLJh+UNLr0cJkmMNr8uTCn0HXsCk5
+	uNr79b2YCgnx6KfchY3XuSZS7Ougb3KLhMuZJ09lyzXPT8B35AHAcdPQoqJG5y8tQ5NgG814EIEF3
+	05LurP0lVI62Oq4DUqBo88Z/R6nftRefNkU84sIpMm+xlIlC7uD8XmDOhZ3UpX/ZpbSqGlLiQk3jk
+	Ja3WTwB8vlIh3pdBi7P/kjvGH9emcML+twbXtpwx8iIXuS10etX7KBY7JetQvI/63aHHhOCjYf3LU
+	gHxIJ2ig==;
+Received: from mail.ku-gbr.de ([2a02:790:4:9::dead])
+	by desiato.infradead.org with esmtps (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1wwcmB-00000002FSF-3WML
 	for barebox@lists.infradead.org;
-	Wed, 19 Aug 2026 09:26:27 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 1FE9920128B;
-	Wed, 19 Aug 2026 11:26:23 +0200 (CEST)
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wwcYx-002Gp7-09;
-	Wed, 19 Aug 2026 11:26:23 +0200
-Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wwcYw-00000007FXq-47tS;
-	Wed, 19 Aug 2026 11:26:22 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20260816-pxa3xx-v1-0-f3c3d7a6c43f@pengutronix.de>
-References: <20260816-pxa3xx-v1-0-f3c3d7a6c43f@pengutronix.de>
-Subject: Re: [PATCH 00/27] ARM: Add pxa3xx and Raumfeld Speaker support
-Message-Id: <178713158298.1727987.5252152791438927907.b4-ty@pengutronix.de>
-Date: Wed, 19 Aug 2026 11:26:22 +0200
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+	Wed, 19 Aug 2026 09:40:05 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=ku-gbr.de;
+	s=x; h=Date:Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Cc:
+	To:Subject:From:Message-ID:Sender:Reply-To:MIME-Version:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=aSZK7LBg2JVvwM8KsHbidwqufDr36LoaMCQpD9WxBUo=; b=L73D+AbxZ6oZ+Rg9Wa/msdOAt2
+	GTuKD1B0tFM7gqDwtce8H+fzGBHVGc5KYDMPzaUrXlAgaUCtayjhHt3CxZ7r1Eq9u9hWi2t6gxeJ4
+	JO5+jKmCKIpvLSS3pgwA2CQ3PbFubtLI7zc8f1GSM8mH5wuBaYH97NQBTS1juCtosPbVyf2eOEyro
+	QHTFLizZJapchbG6BSMU1LdJoL3e0JeC3C83eB/O7tCXmk7QN9hS/N7dtMZDZc25uB9wepDhWisGr
+	09xazBztLgbURUB9RMoHwXrUnBsx5O3e4iq+SEdA9nHqzpFlOvdkB41QLVQaXZen90tKyaj3Lt9Mz
+	tN7fN1aw==;
+Received: from [2a02:560:5dd5:4b00:9ebf:dff:fe00:fdb5] (port=52220 helo=[127.0.0.1])
+	by mail.ku-gbr.de with esmtpsa (Exim 4.96 #2 (Debian))
+	id 1wwclk-00Gvtx-1q;
+	Wed, 19 Aug 2026 11:39:36 +0200
+Message-ID: <eadca986-31ce-4ae7-b2e2-a3839b1af6d9@saschahauer.de>
+From: "Sascha Hauer" <sascha@saschahauer.de>
+Subject: Re: [PATCH v3 2/8] ARM/ARM64/RISC-V: pbl: add constructor support
+To: "Stefan Kerkmann" <s.kerkmann@pengutronix.de>
+In-Reply-To: <20260817-feature-pbl-get-time-ns-v3-2-9874c1438855@pengutronix.de>
+References: <20260817-feature-pbl-get-time-ns-v3-0-9874c1438855@pengutronix.de>
+ <20260817-feature-pbl-get-time-ns-v3-2-9874c1438855@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 19 Aug 2026 09:39:31 +0000
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260819_022625_774726_03CAA4BE 
-X-CRM114-Status: GOOD (  13.90  )
-X-Spam-Score: -1.9 (-)
-X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
+X-CRM114-CacheID: sfid-20260819_104004_048419_F583F11B 
+X-CRM114-Status: UNSURE (   5.59  )
+X-CRM114-Notice: Please train this message.
+X-Spam-Score: 0.0 (/)
+X-Spam-Report: Spam detection software, running on the system "desiato.infradead.org",
  has NOT identified this incoming email as spam.  The original
  message has been attached to this so you can view it or label
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Sun, 16 Aug 2026 19:56:20 +0200, Sascha Hauer wrote: >
-    This series drops unused for longer remnants of the PXA2xx support and >
-   adds device tree based PXA3xx support instead. The PXA2xx boards hav [...]
+ Content preview:  Hi Stefan, On 2026-08-17 16:01, Stefan Kerkmann wrote: > This
+    commit allows running functions marked with > __attribute__((constructor))[1]
+    automatically after the C environment is > setup in setup_c, which most [...]
     
  
- Content analysis details:   (-1.9 points, 5.0 required)
+ Content analysis details:   (0.0 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
- -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
- -0.0 SPF_PASS               SPF: sender matches SPF record
- -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
-                             [score: 0.0000]
+  0.0 SPF_HELO_NONE          SPF: HELO does not publish an SPF Record
+  0.0 SPF_NONE               SPF: sender does not publish an SPF Record
+ -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
+  0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
   0.0 DMARC_MISSING          Missing DMARC policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -96,115 +113,66 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: =?utf-8?b?b3BlbiBsaXN0OkJB?= =?utf-8?b?UkVCT1g=?= <barebox@lists.infradead.org>, Stefan Kerkmann <s.kerkmann@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: fi7w4fsm69w7s4znphcma3uhd4gmki3y
-X-Spamd-Result: default: False [-7.71 / 15.00];
-	BAYES_HAM(-3.00)[99.99%];
+X-Stat-Signature: 5ck7zat4egqaop796j58oq14ja7weof9
+X-Spamd-Result: default: False [-2.95 / 15.00];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
+	MISSING_MIME_VERSION(2.00)[];
+	BAYES_HAM(-1.84)[94.05%];
+	CC_EXCESS_BASE64(1.50)[];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:1101:1d::28:received,2607:7c80:54:3::133:from];
+	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2001:8b0:10b:1:d65d:64ff:fe57:4e05:received];
+	MAILLIST(-0.20)[mailman];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
-	MAILLIST(-0.20)[mailman];
-	RCVD_IN_DNSWL_LOW(-0.10)[2a0a:edc0:0:c01:1d::a2:received];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
-	DMARC_NA(0.00)[pengutronix.de];
-	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_ALL(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	DMARC_NA(0.00)[saschahauer.de];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORWARDED(0.00)[barebox@bombadil.infradead.org];
+	FORGED_SENDER(0.00)[sascha@saschahauer.de,barebox-bounces@lists.infradead.org];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,infradead.org:-,ku-gbr.de:-];
+	DKIM_MIXED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[sascha@saschahauer.de,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	R_DKIM_REJECT(0.00)[infradead.org:s=desiato.20200630,ku-gbr.de:s=x];
+	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	RCPT_COUNT_THREE(0.00)[3];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: CFCD6201EBE
+X-Rspamd-Queue-Id: 2F36B20227F
 
+Hi Stefan,
 
-On Sun, 16 Aug 2026 19:56:20 +0200, Sascha Hauer wrote:
-> This series drops unused for longer remnants of the PXA2xx support and
-> adds device tree based PXA3xx support instead. The PXA2xx boards have
-> been removed already earlier leaving the remaining SoC code unused.
-> Should anybody have interest in PXA2xx it should be straight forward
-> adding back based on the new device tree code.
-> 
-> The board supported with this series is a Raumfeld Speaker which I had
-> lying under my desk catching dust, but now serves me as a music player
-> again. The PXA3xx support is fairly complete:
-> 
-> [...]
+On 2026-08-17 16:01, Stefan Kerkmann wrote:
+> This commit allows running functions marked with
+> __attribute__((constructor))[1] automatically after the C environment is
+> setup in setup_c, which most likely will be early setup code shared
+> across SoCs/Arches in the PBL.
 
-Applied, thanks!
+This breaks hosttools_defconfig, sandbox_defconfig and targettools_defconfi=
+g with:
 
-[01/27] ARM: pxa: remove PXA25x and PXA27x support
-        https://git.pengutronix.de/cgit/barebox/commit/?id=fbf83af6624a (link may not be stable)
-[02/27] video: remove the PXA framebuffer driver
-        https://git.pengutronix.de/cgit/barebox/commit/?id=a2f81413c1b8 (link may not be stable)
-[03/27] ARM: cache: drive the XSC3 cache with the ARMv4 functions
-        https://git.pengutronix.de/cgit/barebox/commit/?id=81946d495a4b (link may not be stable)
-[04/27] mci: pxamci: get the clock from the clk API
-        https://git.pengutronix.de/cgit/barebox/commit/?id=b092d5603fb1 (link may not be stable)
-[05/27] pwm: pxa: get the clock from the clk API
-        https://git.pengutronix.de/cgit/barebox/commit/?id=ac8fbcec25d5 (link may not be stable)
-[06/27] serial: pxa: get the clock from the clk API
-        https://git.pengutronix.de/cgit/barebox/commit/?id=bea10f91081d (link may not be stable)
-[07/27] clk: pxa: add a device tree clock driver for PXA3xx
-        https://git.pengutronix.de/cgit/barebox/commit/?id=67746dc67853 (link may not be stable)
-[08/27] mtd: nand: nand_mrvl_nfc: honour marvell,nand-keep-config
-        https://git.pengutronix.de/cgit/barebox/commit/?id=6d6c443a4fbb (link may not be stable)
-[09/27] mtd: nand: nand_mrvl_nfc: support the nand-controller bindings
-        https://git.pengutronix.de/cgit/barebox/commit/?id=4e8b7516de1f (link may not be stable)
-[10/27] mtd: nand: mrvl_nfc: keep the ready latch across a STATUS command
-        https://git.pengutronix.de/cgit/barebox/commit/?id=c16739526aed (link may not be stable)
-[11/27] mtd: nand: mrvl_nfc: do not report a command timeout as an error
-        https://git.pengutronix.de/cgit/barebox/commit/?id=97505ef63828 (link may not be stable)
-[12/27] mci: pxamci: probe from the device tree
-        https://git.pengutronix.de/cgit/barebox/commit/?id=58ad9e48dbf8 (link may not be stable)
-[13/27] serial: pxa: add device tree support
-        https://git.pengutronix.de/cgit/barebox/commit/?id=b4ad4bc4203e (link may not be stable)
-[14/27] serial: pxa: provide the Linux console name
-        https://git.pengutronix.de/cgit/barebox/commit/?id=ecb4cebe15d6 (link may not be stable)
-[15/27] gpio: pxa: add a driver and switch the architecture to GPIOLIB
-        https://git.pengutronix.de/cgit/barebox/commit/?id=4d01bdd2023b (link may not be stable)
-[16/27] ARM: pxa: add DEBUG_LL support
-        https://git.pengutronix.de/cgit/barebox/commit/?id=7c984e8ae930 (link may not be stable)
-[17/27] ARM: pxa: let the board select the SoC
-        https://git.pengutronix.de/cgit/barebox/commit/?id=b7a78c72b332 (link may not be stable)
-[18/27] ARM: pxa: enable device tree support
-        https://git.pengutronix.de/cgit/barebox/commit/?id=642f2cc3b1cc (link may not be stable)
-[19/27] scripts: add pxa-image
-        https://git.pengutronix.de/cgit/barebox/commit/?id=bcfcce3499ed (link may not be stable)
-[20/27] ARM: pxa: add a NAND first stage loader
-        https://git.pengutronix.de/cgit/barebox/commit/?id=2e81de15f9c6 (link may not be stable)
-[21/27] filetype: detect PXA3xx NTIM images
-        https://git.pengutronix.de/cgit/barebox/commit/?id=7a1f2a4e787c (link may not be stable)
-[22/27] ARM: pxa: add a barebox update handler for NAND
-        https://git.pengutronix.de/cgit/barebox/commit/?id=772b16118429 (link may not be stable)
-[23/27] clocksource: add a driver for the PXA OS timer and its watchdog
-        https://git.pengutronix.de/cgit/barebox/commit/?id=f593d9fadebb (link may not be stable)
-[24/27] ARM: pxa: move over to MULTIARCH
-        https://git.pengutronix.de/cgit/barebox/commit/?id=27292387963d (link may not be stable)
-[25/27] ARM: pxa: reset straight away and without complaining
-        https://git.pengutronix.de/cgit/barebox/commit/?id=4c21b99c838f (link may not be stable)
-[26/27] ARM: pxa: add Raumfeld Speaker board support
-        https://git.pengutronix.de/cgit/barebox/commit/?id=74b245df5e0e (link may not be stable)
-[27/27] ARM: multi_v5_v6_defconfig: enable PXA support
-        https://git.pengutronix.de/cgit/barebox/commit/?id=f5e40b66cd3b (link may not be stable)
+/usr/bin/ld: pbl/ctors.pbl.o: in function `pbl_do_ctors':
+ctors.c:(.text.pbl_do_ctors+0x9): undefined reference to `__ctors_end'
+/usr/bin/ld: ctors.c:(.text.pbl_do_ctors+0x11): undefined reference to `__c=
+tors_start'
 
-Best regards,
--- 
-Sascha Hauer <s.hauer@pengutronix.de>
+Could you send a fixup?
 
 
 
