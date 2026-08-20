@@ -1,16 +1,16 @@
-Delivery-date: Thu, 20 Aug 2026 16:36:06 +0200
+Delivery-date: Thu, 20 Aug 2026 16:36:07 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wx3sE-005Fgg-09
+	id 1wx3sE-005Fh5-2u
 	for lore@lore.pengutronix.de;
-	Thu, 20 Aug 2026 16:36:06 +0200
+	Thu, 20 Aug 2026 16:36:07 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 829E120240E
-	for <lore@pengutronix.de>; Thu, 20 Aug 2026 16:36:02 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 6A520202442
+	for <lore@pengutronix.de>; Thu, 20 Aug 2026 16:36:03 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=MMuUxBA0;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=Tu0UtLu4;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,32 +19,32 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Bnxa+xwIpNEc6jaPBm+ilbHhZ3m9IKx2Pr34itWtm0o=; b=MMuUxBA09zDdkTcW0Hl/3OMacV
-	ABbWINTdNU3+YaSY37EksLSWkf7teOClwdioREybBmAu+PvPgVCR1LP65KDVDVWQ3lI6jf7EE5rgJ
-	rTXfrPaLp8S+QUu30z80Jjvdc11LuXspMhTAUXJowjXcK9nZNvUka0nnv6NyHU9+tAaEMhkK+cNM6
-	q6GPj4xibog8cnwNNDTdxXFrq+SoM3S/GgtMaUdVXK87FyNtSAXITccAikPzLWQnhqE7CyT6rSr8M
-	ZE67lIbxbkFNkBfuaDtEBG2bZ2RNaVKRKkq75XPp52wwQ5+fvSiKCyVPerpRZkVxGqY03yJXQf65d
-	aFbaQNiw==;
+	bh=r1B7wLIl4r6gna47J+KRy6xkuOYoa3VnRvdLReZ6UP8=; b=Tu0UtLu44Fonq7pe9JVGSLCUBp
+	0X6e9XeYdhowu3wvqfhj0f8PDmEjK4lLaKHeq6qeO87yNy/IGVHqI4oWwKXVvrE4KSFFk22a0dXkL
+	uitFxFl+3DdBdY2QDvBTBFGA8ixPz2CRRtjRhob+QuCqrW/uaiqxwEzSVZ3o9jyFafSyOE01rhDKC
+	J95q3JHEpyyxB4eED5nBcr0JQrWx03HYsB6LGuO8A5zYf5FPUPrPjaOUPCp3/NJWmMvQmjLzOhXmW
+	K6DRSLTkmDFUg2PaZRTtsz00uRTpePgfPNvoyuJPCMfuMZO5J8PZc/OP3R5qnWzv0Yt8PLmgMwnE1
+	rH9poJjA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wx3qj-0000000BiKH-2SgY;
+	id 1wx3qj-0000000BiJq-1eUU;
 	Thu, 20 Aug 2026 14:34:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wx3qc-0000000BiGt-0Nze
+	id 1wx3qc-0000000BiGv-0Ajj
 	for barebox@lists.infradead.org;
 	Thu, 20 Aug 2026 14:34:30 +0000
 Received: from dude06.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::5c])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <f.pflug@pengutronix.de>)
-	id 1wx3qW-0008Bx-LK; Thu, 20 Aug 2026 16:34:20 +0200
+	id 1wx3qW-0008Bx-MI; Thu, 20 Aug 2026 16:34:20 +0200
 From: Fabian Pflug <f.pflug@pengutronix.de>
-Date: Thu, 20 Aug 2026 16:34:16 +0200
-Subject: [PATCH v3 1/5] efi: usb: add header for usb-efi
+Date: Thu, 20 Aug 2026 16:34:17 +0200
+Subject: [PATCH v3 2/5] usb: core: make usb_set_maxpacket_ep public
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260820-v2026-06-0-topic-efi_usb-v3-1-faf0b9267966@pengutronix.de>
+Message-Id: <20260820-v2026-06-0-topic-efi_usb-v3-2-faf0b9267966@pengutronix.de>
 References: <20260820-v2026-06-0-topic-efi_usb-v3-0-faf0b9267966@pengutronix.de>
 In-Reply-To: <20260820-v2026-06-0-topic-efi_usb-v3-0-faf0b9267966@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -56,8 +56,8 @@ X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::5c
 X-SA-Exim-Mail-From: f.pflug@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260820_073426_193255_D6FD6FA4 
-X-CRM114-Status: GOOD (  10.45  )
+X-CRM114-CacheID: sfid-20260820_073426_087769_0B8314AC 
+X-CRM114-Status: GOOD (  13.53  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -65,10 +65,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Convert the spec in [1] to a header, that is useable for barebox.
-    The async headers are not defined, since it is currently not planned to support
-    async in addition to sync. [1] https://uefi.org/specs/UEFI/2.11/17_Protocols_USB_Support.html
-    
+ Content preview:  The function will be used by the efi usb driver to set the
+    maxpackets per endpoint. Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+    Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de> --- drivers/usb/core/usb.c
+    | 12 ++ drivers/usb/core/usb.h | 2 ++ 2 files changed, 4 i [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -97,9 +97,9 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: zgqw4b3s67bjued8ig3okmtixxikz4a4
+X-Stat-Signature: exhwsnab7atonpq7znxkgxa8a46pdc7f
 X-Spamd-Result: default: False [-7.51 / 15.00];
-	BAYES_HAM(-3.00)[100.00%];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
@@ -112,11 +112,11 @@ X-Spamd-Result: default: False [-7.51 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	DMARC_NA(0.00)[pengutronix.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FROM_HAS_DN(0.00)[];
+	ARC_NA(0.00)[];
 	FORWARDED(0.00)[barebox@lists.infradead.org];
 	RCVD_COUNT_THREE(0.00)[3];
-	ARC_NA(0.00)[];
 	FORGED_SENDER(0.00)[f.pflug@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	TO_DN_ALL(0.00)[];
@@ -130,102 +130,53 @@ X-Spamd-Result: default: False [-7.51 / 15.00];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 829E120240E
+X-Rspamd-Queue-Id: 6A520202442
 
-Convert the spec in [1] to a header, that is useable for barebox.
-The async headers are not defined, since it is currently not planned to
-support async in addition to sync.
-
-[1] https://uefi.org/specs/UEFI/2.11/17_Protocols_USB_Support.html
+The function will be used by the efi usb driver to set the maxpackets
+per endpoint.
 
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Fabian Pflug <f.pflug@pengutronix.de>
 ---
-v3:
-- predeclared header instead of including linux/usb/usb.h
-v2:
-- Fixed wrong type in header for get_string_descriptor
----
- include/efi/protocol/usb.h | 71 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 71 insertions(+)
+ drivers/usb/core/usb.c | 12 ++----------
+ drivers/usb/core/usb.h |  2 ++
+ 2 files changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/include/efi/protocol/usb.h b/include/efi/protocol/usb.h
-new file mode 100644
-index 0000000000..322e32c205
---- /dev/null
-+++ b/include/efi/protocol/usb.h
-@@ -0,0 +1,71 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
-+#ifndef __EFI_PROTOCOL_USB_H_
-+#define __EFI_PROTOCOL_USB_H_
-+
-+#include <efi/types.h>
-+
-+struct devrequest;
-+struct usb_device_descriptor;
-+struct usb_config_descriptor;
-+struct usb_interface_descriptor;
-+struct usb_endpoint_descriptor;
-+
-+enum efi_usb_data_direction {
-+	EFI_USB_DATA_IN,
-+	EFI_USB_DATA_OUT,
-+	EFI_USB_NO_DATA
-+};
-+
-+//
-+// Error code for USB Transfer Results
-+//
-+#define EFI_USB_NOERROR 0x0000
-+#define EFI_USB_ERR_NOTEXECUTE 0x0001
-+#define EFI_USB_ERR_STALL 0x0002
-+#define EFI_USB_ERR_BUFFER 0x0004
-+#define EFI_USB_ERR_BABBLE 0x0008
-+#define EFI_USB_ERR_NAK 0x0010
-+#define EFI_USB_ERR_CRC 0x0020
-+#define EFI_USB_ERR_TIMEOUT 0x0040
-+#define EFI_USB_ERR_BITSTUFF 0x0080
-+#define EFI_USB_ERR_SYSTEM 0x0100
-+
-+struct efi_usb_io_protocol {
-+	efi_status_t(EFIAPI *control_transfer)(
-+		struct efi_usb_io_protocol *this, struct devrequest *request,
-+		enum efi_usb_data_direction direction, u32 timeout, void *data,
-+		efi_uintn_t length, u32 *status);
-+	efi_status_t(EFIAPI *bulk_transfer)(struct efi_usb_io_protocol *this,
-+					    u8 device_endpoint, void *data,
-+					    efi_uintn_t *length,
-+					    efi_uintn_t timeout, u32 *status);
-+	void *usb_io_async_interrupt_transfer;
-+	efi_status_t(EFIAPI *sync_interrupt_transfer)(
-+		struct efi_usb_io_protocol *this, u8 device_endpoint,
-+		void *data, efi_uintn_t *length, efi_uintn_t timeout,
-+		u32 *status);
-+	void *efi_usb_io_isochronous_transfer;
-+	void *efi_usb_io_async_isochronous_transfer;
-+	efi_status_t(EFIAPI *get_device_descriptor)(
-+		struct efi_usb_io_protocol *this,
-+		struct usb_device_descriptor *desc);
-+	efi_status_t(EFIAPI *get_config_descriptor)(
-+		struct efi_usb_io_protocol *this,
-+		struct usb_config_descriptor *desc);
-+	efi_status_t(EFIAPI *get_interface_descriptor)(
-+		struct efi_usb_io_protocol *this,
-+		struct usb_interface_descriptor *desc);
-+	efi_status_t(EFIAPI *get_endpoint_descriptor)(
-+		struct efi_usb_io_protocol *this, u8 index,
-+		struct usb_endpoint_descriptor *desc);
-+	efi_status_t(EFIAPI *get_string_descriptor)(
-+		struct efi_usb_io_protocol *this, u16 lang_id, u8 string_id,
-+		wchar_t **desc);
-+	efi_status_t(EFIAPI *get_supported_languages)(
-+		struct efi_usb_io_protocol *this, u16 **lang_id_table,
-+		u16 *table_size);
-+	efi_status_t(EFIAPI *port_reset)(struct efi_usb_io_protocol *this);
-+};
-+
-+#endif
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index ae87137447..ce10b71f40 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -127,16 +127,8 @@ static int usb_set_configuration(struct usb_device *dev, int configuration)
+ 		return res;
+ }
+ 
+-/* The routine usb_set_maxpacket_ep() is extracted from the loop of routine
+- * usb_set_maxpacket(), because the optimizer of GCC 4.x chokes on this routine
+- * when it is inlined in 1 single routine. What happens is that the register r3
+- * is used as loop-count 'i', but gets overwritten later on.
+- * This is clearly a compiler bug, but it is easier to workaround it here than
+- * to update the compiler (Occurs with at least several GCC 4.{1,2},x
+- * CodeSourcery compilers like e.g. 2007q3, 2008q1, 2008q3 lite editions on ARM)
+- */
+-static void  noinline
+-usb_set_maxpacket_ep(struct usb_device *dev, struct usb_endpoint_descriptor *ep)
++void usb_set_maxpacket_ep(struct usb_device *dev,
++			  struct usb_endpoint_descriptor *ep)
+ {
+ 	int b;
+ 
+diff --git a/drivers/usb/core/usb.h b/drivers/usb/core/usb.h
+index 0d4f80c21d..b503e5b4a8 100644
+--- a/drivers/usb/core/usb.h
++++ b/drivers/usb/core/usb.h
+@@ -6,5 +6,7 @@ struct usb_device *usb_alloc_new_device(void);
+ void usb_free_device(struct usb_device *dev);
+ int usb_new_device(struct usb_device *dev);
+ void usb_remove_device(struct usb_device *dev);
++void usb_set_maxpacket_ep(struct usb_device *dev,
++			  struct usb_endpoint_descriptor *ep);
+ 
+ #endif /* __CORE_USB_H */
 
 -- 
 2.47.3
