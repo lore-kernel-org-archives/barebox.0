@@ -1,16 +1,16 @@
-Delivery-date: Wed, 19 Aug 2026 17:03:17 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Thu, 20 Aug 2026 09:01:10 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wwhoy-004tiZ-1U
+	id 1wwwlx-0058qU-2c
 	for lore@lore.pengutronix.de;
-	Wed, 19 Aug 2026 17:03:17 +0200
+	Thu, 20 Aug 2026 09:01:10 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id EB614201EB9
-	for <lore@pengutronix.de>; Wed, 19 Aug 2026 17:03:12 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 5E8ED201514
+	for <lore@pengutronix.de>; Thu, 20 Aug 2026 09:01:10 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=RxmrsFd6;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=DzI4CI6Y;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,38 +19,38 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:To:Subject:From
 	:Message-ID:Reply-To:MIME-Version:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=nhu5+j76ylTsnrByIanHMIYKK9OeTm0/gqDVvz5yuh8=; b=RxmrsFd6ffv2+3Hh3t/zYXrSH5
-	+tdC6oswn3pRtPXENYmN01XHHCPST4JphQ6uA1nMwwzfQnevvxq6DBj5wvJNy4XAcAHWY3P/uVn1h
-	wDNuTQ4gCb44MTGrNqgdSpmhhfpDNx1uksOv8oQ4GcDIeTFIonbS5y2kVOIwaeuRomLk5KOE14L5z
-	5AVYhlCfYZLBnM9arulP7Y/QrhDYZAYNwQzLIOXLBgsWcG23XBsYPJv+cLSqHlbTD6rfor08nu6xN
-	YfLgvKVoFX2jFGdbi0p2I0DYJTVbjEyFt32j7uSOenPmh/8kFlEzpM4xeRTYNijRoS8ElPRINGkmm
-	Q9J9xrZA==;
+	bh=TR2yJoUT5lXPGZjFZkWAg3eeWCdQ2Sc34pSi6Bpi/WA=; b=DzI4CI6Ym1cPOJbI/XnhkhmR8B
+	amlTo8Cnoz5vVWh9HY1x0mVsSknSI91yDjdkyHfkiawKy3JSYPQ1ehWIi9Mq2nk84pYMotBwO9YSp
+	sQr9DdxZ4yw2Tcx/mQ4iqmSmmJu+VO4b/5Dp4T2SqjhFTIaflWVzmrD4uBnKan2YkpybgnO0KuL0m
+	GsDO5UN38AEHh371flGQuycKX8wJWSgjcLqUli5naNmQPJCxGFlTh204xyxqmHHCOl1F0wjg0mDZt
+	1lOzmS1Q5LyHv4jOttXiXmVxVmyZXkJDuuEBOozZ/eaydjhf56HOI6pGge6tbc5IK9vn2YrCZKCHr
+	5iSZfKRQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wwhnT-0000000A2UY-0Gl3;
-	Wed, 19 Aug 2026 15:01:43 +0000
+	id 1wwwka-0000000Azez-0oYI;
+	Thu, 20 Aug 2026 06:59:44 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wwhnP-0000000A2U9-0hAG
+	id 1wwwkW-0000000Azdr-0PlH
 	for barebox@lists.infradead.org;
-	Wed, 19 Aug 2026 15:01:41 +0000
+	Thu, 20 Aug 2026 06:59:42 +0000
 Received: from [127.0.0.1] (unknown [IPv6:2a02:560:5dd5:4b00:9ebf:dff:fe00:fdb5])
 	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 06F83200C90;
-	Wed, 19 Aug 2026 17:01:33 +0200 (CEST)
-Message-ID: <0c26bfcc-deb4-400c-aa46-e20f839d4194@pengutronix.de>
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 3D001201514;
+	Thu, 20 Aug 2026 08:59:37 +0200 (CEST)
+Message-ID: <c6e810bb-66fa-4101-af55-3ada942ebe65@pengutronix.de>
 From: "Sascha Hauer" <s.hauer@pengutronix.de>
-Subject: Re: [PATCH 0/2] PBL: constructor fixes
-To: "Ahmad Fatoum" <a.fatoum@pengutronix.de>
-In-Reply-To: <f5d7e406-0e95-4da0-a0e2-208a4bddfdc4@pengutronix.de>
-References: <20260819-next-v1-0-c1a1a8b44d02@pengutronix.de>
- <f5d7e406-0e95-4da0-a0e2-208a4bddfdc4@pengutronix.de>
+Subject: Re: [PATCH v3 5/8] ARM: layerscape: re-init pbl clocksource
+To: "Stefan Kerkmann" <s.kerkmann@pengutronix.de>
+In-Reply-To: <20260817-feature-pbl-get-time-ns-v3-5-9874c1438855@pengutronix.de>
+References: <20260817-feature-pbl-get-time-ns-v3-0-9874c1438855@pengutronix.de>
+ <20260817-feature-pbl-get-time-ns-v3-5-9874c1438855@pengutronix.de>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Date: Wed, 19 Aug 2026 15:01:32 +0000
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 20 Aug 2026 06:59:36 +0000
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260819_080139_389176_4AD97E56 
-X-CRM114-Status: GOOD (  13.07  )
+X-CRM114-CacheID: sfid-20260819_235940_293627_F404B008 
+X-CRM114-Status: GOOD (  16.92  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -58,9 +58,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On 2026-08-19 16:16, Ahmad Fatoum wrote: > Hi, > > On 8/19/26
-    4:12 PM, Stefan Kerkmann wrote: > > Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-    > > --- > > Stefan Kerkmann (2): > > ARM/AR [...] 
+ Content preview:  On 2026-08-17 16:01, Stefan Kerkmann wrote: > After setting
+    the cntfrq the global PBL clocksource must be > re-initialized to function
+    correctly. > > Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutr [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -82,11 +82,11 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: =?utf-8?b?b3BlbiBsaXN0OkJBUkVCT1g=?= <barebox@lists.infradead.org>, Stefan Kerkmann <s.kerkmann@pengutronix.de>
+Cc: =?utf-8?b?b3BlbiBsaXN0OkJB?= =?utf-8?b?UkVCT1g=?= <barebox@lists.infradead.org>, Stefan Kerkmann <s.kerkmann@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: 1f49wopqrr533fwuh3cbjsxufoaxshnf
+X-Stat-Signature: hkbg6nmkwusftkyates16h4mp13i8kth
 X-Spamd-Result: default: False [-3.91 / 15.00];
 	BAYES_HAM(-3.00)[100.00%];
 	MISSING_MIME_VERSION(2.00)[];
@@ -121,31 +121,54 @@ X-Spamd-Result: default: False [-3.91 / 15.00];
 	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: EB614201EB9
+X-Rspamd-Queue-Id: 5E8ED201514
 
-On 2026-08-19 16:16, Ahmad Fatoum wrote:
-> Hi,
-> 
-> On 8/19/26 4:12 PM, Stefan Kerkmann wrote:
-> > Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-> > ---
-> > Stefan Kerkmann (2):
-> >       ARM/ARM64/RISC-V: pbl: guard constructor support
-> >       ARM64: setup_c: abi safe link register storage
-> 
-> if these are applied after what's in next, we would have intermittent
-> breakage when doing a bisect right?
-> 
-> I would suggest either turning these into fixups or just resend the
-> whole series.
+On 2026-08-17 16:01, Stefan Kerkmann wrote:
+> After setting the cntfrq the global PBL clocksource must be
+> re-initialized to function correctly.
+>=20
+> Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+> ---
+>  arch/arm/mach-layerscape/lowlevel-ls1028a.c | 6 +++++-
+>  arch/arm/mach-layerscape/lowlevel-ls1046a.c | 5 ++++-
+>  2 files changed, 9 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/arch/arm/mach-layerscape/lowlevel-ls1028a.c b/arch/arm/mach-=
+layerscape/lowlevel-ls1028a.c
+> index fd013b2b52..ed9284d55a 100644
+> --- a/arch/arm/mach-layerscape/lowlevel-ls1028a.c
+> +++ b/arch/arm/mach-layerscape/lowlevel-ls1028a.c
+> @@ -1,6 +1,7 @@
+>  // SPDX-License-Identifier: GPL-2.0+
+>  #include <common.h>
+>  #include <io.h>
+> +#include <asm/hardware/arm_architected_timer.h>
+>  #include <asm/syscounter.h>
+>  #include <asm/system.h>
+>  #include <mach/layerscape/errata.h>
+> @@ -35,8 +36,11 @@ static void ls1028a_timer_init(void)
+> =20
+>  void ls1028a_init_lowlevel(void)
+>  {
+> +	const uint64_t cntfrq =3D 25000000;
+> +
+>  	scfg_init(SCFG_ENDIANESS_LITTLE);
+> -	set_cntfrq(25000000);
+> +	set_cntfrq(cntfrq);
+> +	arm_arch_timer_init(cntfrq);
+>  	ls1028a_timer_init();
+>  	ls1028a_errata();
+>  }
 
-I just squashed them into the original commit. But next time, yes, you
-can send --fixup patches for patches in next.
+I had to squash this patch together with the next two to avoid
+intermediate compile breakage. Otherwise we get an undefined reference
+to clocksource_hz2mult().
 
-I just learned there's also --fixup=amend:<commit> for replacing the
-original commit message along with the fixup. There's even
---fixup=reword:<commit> for just rewording the commit message without
-changing the patch content.
+One thing that strikes me here is that first arm_arch_timer_init() is
+called and afterwards ls1028a_timer_init(). I have no idea what timer
+ls1028a_timer_init() initializes and if that has anything to do with
+the architected timer, but if it has the order should likely be the
+other way round.
 
 Sascha
 
