@@ -1,16 +1,16 @@
-Delivery-date: Thu, 20 Aug 2026 09:01:10 +0200
+Delivery-date: Thu, 20 Aug 2026 09:15:21 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wwwlx-0058qU-2c
+	id 1wwwzg-0059F0-1r
 	for lore@lore.pengutronix.de;
-	Thu, 20 Aug 2026 09:01:10 +0200
+	Thu, 20 Aug 2026 09:15:21 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 5E8ED201514
-	for <lore@pengutronix.de>; Thu, 20 Aug 2026 09:01:10 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id C89A6201B9A
+	for <lore@pengutronix.de>; Thu, 20 Aug 2026 09:15:20 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=DzI4CI6Y;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=SipeuyZ8;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,38 +19,39 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:To:Subject:From
 	:Message-ID:Reply-To:MIME-Version:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=TR2yJoUT5lXPGZjFZkWAg3eeWCdQ2Sc34pSi6Bpi/WA=; b=DzI4CI6Ym1cPOJbI/XnhkhmR8B
-	amlTo8Cnoz5vVWh9HY1x0mVsSknSI91yDjdkyHfkiawKy3JSYPQ1ehWIi9Mq2nk84pYMotBwO9YSp
-	sQr9DdxZ4yw2Tcx/mQ4iqmSmmJu+VO4b/5Dp4T2SqjhFTIaflWVzmrD4uBnKan2YkpybgnO0KuL0m
-	GsDO5UN38AEHh371flGQuycKX8wJWSgjcLqUli5naNmQPJCxGFlTh204xyxqmHHCOl1F0wjg0mDZt
-	1lOzmS1Q5LyHv4jOttXiXmVxVmyZXkJDuuEBOozZ/eaydjhf56HOI6pGge6tbc5IK9vn2YrCZKCHr
-	5iSZfKRQ==;
+	bh=BcCyjfXWsstQLhDG0THt6Z4FGHhOcp7qHGut+M5hbUc=; b=SipeuyZ8s+Vi56zOl99I3XzNeq
+	CkhNodEAPeUO9Jipolc7w7bcTQ3HfdU+OU9HMSCVOuGVeBViCdNwX8OyZeE4W356ESITx8IqX+PkA
+	yUpZ5Xl4Wz/QbuoZCaAamwbxuwl4ULfwGaF2MRpmfrLXiN4ix8PVzTIfGO9BNb0TJT4UdpBZmrrum
+	/EG0hWjozTYOfvnasLQCuKu3v5mdAjyV1E7WmwcwoDdplNbfhRMDnQXvNojpQW9NTNz/fMp/0TqaW
+	0sV3Nt/M0CpKSziClcWl1zj2XXXM4JsrZBdGpTka4P1/jzfQLsgP94BbxS65qtO00JxAtzBZRlXDC
+	GrWIfBUg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wwwka-0000000Azez-0oYI;
-	Thu, 20 Aug 2026 06:59:44 +0000
+	id 1wwwow-0000000B00v-3m94;
+	Thu, 20 Aug 2026 07:04:14 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wwwkW-0000000Azdr-0PlH
+	id 1wwwot-0000000B00Y-1xet
 	for barebox@lists.infradead.org;
-	Thu, 20 Aug 2026 06:59:42 +0000
+	Thu, 20 Aug 2026 07:04:13 +0000
 Received: from [127.0.0.1] (unknown [IPv6:2a02:560:5dd5:4b00:9ebf:dff:fe00:fdb5])
 	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 3D001201514;
-	Thu, 20 Aug 2026 08:59:37 +0200 (CEST)
-Message-ID: <c6e810bb-66fa-4101-af55-3ada942ebe65@pengutronix.de>
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id E230F2005C5;
+	Thu, 20 Aug 2026 09:04:07 +0200 (CEST)
+Message-ID: <a361d161-65c7-446d-bbbc-8e870923df9c@pengutronix.de>
 From: "Sascha Hauer" <s.hauer@pengutronix.de>
-Subject: Re: [PATCH v3 5/8] ARM: layerscape: re-init pbl clocksource
+Subject: Re: [PATCH v3 4/8] drivers: arm_architected_timer: refactor for pbl
+ compatibility
 To: "Stefan Kerkmann" <s.kerkmann@pengutronix.de>
-In-Reply-To: <20260817-feature-pbl-get-time-ns-v3-5-9874c1438855@pengutronix.de>
+In-Reply-To: <20260817-feature-pbl-get-time-ns-v3-4-9874c1438855@pengutronix.de>
 References: <20260817-feature-pbl-get-time-ns-v3-0-9874c1438855@pengutronix.de>
- <20260817-feature-pbl-get-time-ns-v3-5-9874c1438855@pengutronix.de>
+ <20260817-feature-pbl-get-time-ns-v3-4-9874c1438855@pengutronix.de>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Thu, 20 Aug 2026 06:59:36 +0000
+Date: Thu, 20 Aug 2026 07:04:07 +0000
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260819_235940_293627_F404B008 
-X-CRM114-Status: GOOD (  16.92  )
+X-CRM114-CacheID: sfid-20260820_000411_664912_6DAB6CC0 
+X-CRM114-Status: GOOD (  24.65  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -58,9 +59,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On 2026-08-17 16:01, Stefan Kerkmann wrote: > After setting
-    the cntfrq the global PBL clocksource must be > re-initialized to function
-    correctly. > > Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutr [...] 
+ Content preview:  On 2026-08-17 16:01, Stefan Kerkmann wrote: > All ARMv8-A
+   cores implement the 64bit wide generic timer CNTPCT[1]. Thus > the driver
+   is the candidate for all AARCH64 SoCs to implement > PBL_CLOCKSOURCE [...]
+    
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -86,7 +88,7 @@ Cc: =?utf-8?b?b3BlbiBsaXN0OkJB?= =?utf-8?b?UkVCT1g=?= <barebox@lists.infradead.o
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: hkbg6nmkwusftkyates16h4mp13i8kth
+X-Stat-Signature: n56ybeh4dbs3rft1xxtx4nim17ggf11a
 X-Spamd-Result: default: False [-3.91 / 15.00];
 	BAYES_HAM(-3.00)[100.00%];
 	MISSING_MIME_VERSION(2.00)[];
@@ -121,54 +123,112 @@ X-Spamd-Result: default: False [-3.91 / 15.00];
 	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 5E8ED201514
+X-Rspamd-Queue-Id: C89A6201B9A
 
 On 2026-08-17 16:01, Stefan Kerkmann wrote:
-> After setting the cntfrq the global PBL clocksource must be
-> re-initialized to function correctly.
+> All ARMv8-A cores implement the 64bit wide generic timer CNTPCT[1]. Thus
+> the driver is the candidate for all AARCH64 SoCs to implement
+> PBL_CLOCKSOURCE compatibilty.
+>=20
+> There is one catch though: the CNTFRQ_EL0 register[2] must be programmed
+> by the bootrom, barebox or the tf-a before the `arm_arch_timer_init`
+> call or the clocksource setup will return with -ENODEV. A later
+> re-initialization is also possible by calling `arm_arch_timer_init`
+> again.
+>=20
+> [1]: See "ARM Architecture Reference Manual for A-profile architecture
+> (rev L.a)", chapter D12 "The Generic Timer in AArch64 state"
+> [2]: See "ARM Architecture Reference Manual for A-profile architecture
+> (rev L.a)", chapter D12.1.2.1 "Initializing and reading the system
+> effective frequency"
 >=20
 > Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 > ---
->  arch/arm/mach-layerscape/lowlevel-ls1028a.c | 6 +++++-
->  arch/arm/mach-layerscape/lowlevel-ls1046a.c | 5 ++++-
->  2 files changed, 9 insertions(+), 2 deletions(-)
+>  .../include/asm/hardware/arm_architected_timer.h   | 21 ++++++++++++++++=
++++
+>  drivers/clocksource/Makefile                       |  2 +-
+>  drivers/clocksource/arm_architected_timer.c        | 24 ++++++++++++++--=
+------
+>  3 files changed, 38 insertions(+), 9 deletions(-)
 >=20
-> diff --git a/arch/arm/mach-layerscape/lowlevel-ls1028a.c b/arch/arm/mach-=
-layerscape/lowlevel-ls1028a.c
-> index fd013b2b52..ed9284d55a 100644
-> --- a/arch/arm/mach-layerscape/lowlevel-ls1028a.c
-> +++ b/arch/arm/mach-layerscape/lowlevel-ls1028a.c
-> @@ -1,6 +1,7 @@
->  // SPDX-License-Identifier: GPL-2.0+
->  #include <common.h>
->  #include <io.h>
-> +#include <asm/hardware/arm_architected_timer.h>
->  #include <asm/syscounter.h>
->  #include <asm/system.h>
->  #include <mach/layerscape/errata.h>
-> @@ -35,8 +36,11 @@ static void ls1028a_timer_init(void)
-> =20
->  void ls1028a_init_lowlevel(void)
->  {
-> +	const uint64_t cntfrq =3D 25000000;
+> diff --git a/arch/arm/include/asm/hardware/arm_architected_timer.h b/arch=
+/arm/include/asm/hardware/arm_architected_timer.h
+> new file mode 100644
+> index 0000000000..e0c1fd84fd
+> --- /dev/null
+> +++ b/arch/arm/include/asm/hardware/arm_architected_timer.h
+> @@ -0,0 +1,21 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
 > +
->  	scfg_init(SCFG_ENDIANESS_LITTLE);
-> -	set_cntfrq(25000000);
-> +	set_cntfrq(cntfrq);
-> +	arm_arch_timer_init(cntfrq);
->  	ls1028a_timer_init();
->  	ls1028a_errata();
->  }
+> +#ifndef __ASM_ARM_HARDWARE_ARCH_TIMER_H
+> +#define __ASM_ARM_HARDWARE_ARCH_TIMER_H
+> +
+> +#include <linux/types.h>
+> +
+> +/**
+> + * arm_arch_timer_init() - Initialize the ARM architected timer as global
+> + * clocksource
+> + * @cntfrq: The timer frequency, if zero the frequency is read from the
+> + *          CNTFRQ_EL0 register
+> + *
+> + * This function is meant to be called in a PBL constructor or in the dr=
+iver
+> + * probe function.
+> + *
+> + * Return: 0 on success, -ENODEV if the timer frequency can not be deter=
+mined
+> + */
+> +int arm_arch_timer_init(uint64_t cntfrq);
+> +
+> +#endif
+> diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
+> index dff8255650..0c92477247 100644
+> --- a/drivers/clocksource/Makefile
+> +++ b/drivers/clocksource/Makefile
+> @@ -13,7 +13,7 @@ obj-$(CONFIG_CLOCKSOURCE_ORION)   +=3D orion.o
+>  obj-$(CONFIG_CLOCKSOURCE_UEMD)    +=3D uemd.o
+>  obj-$(CONFIG_CLOCKSOURCE_ROCKCHIP)+=3D rk_timer.o
+>  obj-$(CONFIG_CLOCKSOURCE_ATMEL_PIT) +=3D timer-atmel-pit.o
+> -obj-$(CONFIG_CLOCKSOURCE_ARM_ARCHITECTED_TIMER) +=3D arm_architected_tim=
+er.o
+> +obj-pbl-$(CONFIG_CLOCKSOURCE_ARM_ARCHITECTED_TIMER) +=3D arm_architected=
+_timer.o
+>  ifneq ($(CONFIG_CPU_V8),y)
+>  CFLAGS_arm_architected_timer.o :=3D -march=3Darmv7-a
+>  endif
+> diff --git a/drivers/clocksource/arm_architected_timer.c b/drivers/clocks=
+ource/arm_architected_timer.c
+> index daced94c0e..ea5f5b8e05 100644
+> --- a/drivers/clocksource/arm_architected_timer.c
+> +++ b/drivers/clocksource/arm_architected_timer.c
+> @@ -9,6 +9,7 @@
+>  #include <linux/clk.h>
+>  #include <io.h>
+>  #include <asm/system.h>
+> +#include <asm/hardware/arm_architected_timer.h>
+> =20
+>  static uint64_t arm_arch_clocksource_read(void)
+>  {
+> @@ -22,22 +23,29 @@ static struct clocksource cs =3D {
+>  	.priority =3D 70,
+>  };
+> =20
+> -static int arm_arch_timer_probe(struct device *dev)
+> +int arm_arch_timer_init(uint64_t cntfrq)
+>  {
+> -	u32 cntfrq;
+> -	int ret;
+> -
+> -	/* Some platforms don't set CNTFRQ_EL0 before barebox */
+> -	ret =3D of_property_read_u32(dev->of_node, "clock-frequency", &cntfrq);
+> -
+> -	if (ret)
+> +	if (!cntfrq)
+>  		cntfrq =3D get_cntfrq();
 
-I had to squash this patch together with the next two to avoid
-intermediate compile breakage. Otherwise we get an undefined reference
-to clocksource_hz2mult().
-
-One thing that strikes me here is that first arm_arch_timer_init() is
-called and afterwards ls1028a_timer_init(). I have no idea what timer
-ls1028a_timer_init() initializes and if that has anything to do with
-the architected timer, but if it has the order should likely be the
-other way round.
+I wonder if we should just drop the cntfrq argument. All users call
+set_cntfrq() before calling this, so get_cntfrq() should return the
+correct value and we can rely on it.
 
 Sascha
 
