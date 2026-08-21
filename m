@@ -1,149 +1,77 @@
-Delivery-date: Thu, 20 Aug 2026 20:01:59 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Fri, 21 Aug 2026 11:17:46 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wx75S-005Iq3-1q
+	id 1wxLNh-005X1I-30
 	for lore@lore.pengutronix.de;
-	Thu, 20 Aug 2026 20:01:59 +0200
+	Fri, 21 Aug 2026 11:17:46 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id AFE51201D0E
-	for <lore@pengutronix.de>; Thu, 20 Aug 2026 20:01:54 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 2B91620190E
+	for <lore@pengutronix.de>; Fri, 21 Aug 2026 11:17:46 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=0PIt977h;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=hWEsUpJM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
-	arc=pass ("google.com:s=arc-20260327:i=1")
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=KoG9wZLg;
+	dmarc=none;
+	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
-	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=sEvX8LRYaTci1+Yw2VgOZaWFEHJcPwIIfxKvSRMy2KA=; b=0PIt977hVt2DsK6R+xl1RvMShB
-	82Zok0VuRtYJWcBDAsALyhVwFJw+HH13XPCSlDzv6cRE3B+BeQoUEfUe9x+6sQ5cyqyL9C6rDE3Bd
-	lBe7tAXWcaLlMs1QbH4qO0JkniYKcLlZXTEerZQx5WSiC+895NY/vZf0esHkDE3n4PuHr7kMkC7F1
-	PvylsPYrc/SUgcLRtmpc93zUR1zk18dWbAdSH60GHRUpfZugmiQl3PxVje42Z6/Rptxx7iq2TJ+l4
-	hhrupG317yRtHB56WBS+Em9kNa6BlsiXMaS897ijOjW8qeBxo5PxTPvMA4Z2rlNudz9CG58Dld7g+
-	9iigSe6Q==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Date:
+	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:To:Subject:From
+	:Message-ID:Reply-To:MIME-Version:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=vapLp5c+/hmLGf6Y6wH35PyMb5xGAOWCp7vYCREIGBk=; b=KoG9wZLg8eAIksuiGW1YiUln2w
+	8Ysb2ZefQ4gcTWQlLEKgOek3u4sEoOf5yaJy1aEAQ5N9bgYJ6BmPRAC2BlgGvQMPW61Cz3Vv95jWE
+	tEkq2eSDoSpuLLfKiDrHBF3GtCuZVTHlBUlyoMhJ1yWTqCl/K/HTitF9kjKP7gKxDkOWqeZSj9PJ9
+	hsM77CdaHE7XlqNsc+q4qPJY7PUDvbUBIhe0uR8l2di+KdfEhMh5jX9tvq+fTYI+Pi/uwtuKE35CS
+	KubwPjo4EwUQGqBtRTlcYiXz08ZA6qqtBvlmPeZqdyoZJ5a++wU0upojyecFewVAoUtt8dXBtMVT3
+	oDekgAkw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wx73q-0000000C0bk-247P;
-	Thu, 20 Aug 2026 18:00:18 +0000
-Received: from mail-ej1-x631.google.com ([2a00:1450:4864:20::631])
+	id 1wxLN7-0000000CuH6-2XKf;
+	Fri, 21 Aug 2026 09:17:09 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wx73n-0000000C0bQ-1bYP
+	id 1wxLN4-0000000CuGQ-0XIl
 	for barebox@lists.infradead.org;
-	Thu, 20 Aug 2026 18:00:17 +0000
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-c2020421077so17861666b.3
-        for <barebox@lists.infradead.org>; Thu, 20 Aug 2026 11:00:14 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1787248813; cv=none;
-        d=google.com; s=arc-20260327;
-        b=haQgJs6ELkUBysH2f0+Ka4doTW3BR2u4ss46YYPaWUL/uOn4JkHFu1UPTTxCZxRV9s
-         5fXUsJtfMxwX8MmvJJEhCwea6lO7w4eD04f8qSbJ9s9L8m7gTfmHGJk0g6eus/SuEN0m
-         LBOaCtN8XWjvYkqiiY7S4ghW51jYzPfLkk5p6X9XoQrsIzffitBsjrKpQw4Zo7/YcbTg
-         D0zD7XFXQ1B9GG4cueNTpoC6gfLZLooyoS5QczP2dVNuGDhHJo9yeblH4lFBJr+XW9pB
-         OWvEpxIvmT6bmsreSrj5J1y+fVVdz0otoYFTQkUnBpYOHH+1ISchDDkNRsQrC/pE6CC1
-         BCzg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=sEvX8LRYaTci1+Yw2VgOZaWFEHJcPwIIfxKvSRMy2KA=;
-        fh=gj9HfKjP5RuDk46nS9ZpVVPccHbZOMoo4Hptptqcx+E=;
-        b=X7bYQpf8nmPiUkZTu0QRzpwy/4iTswrep20sjVxzWvKhQQa++Z31Z4IKJ6dZ48IKQ1
-         D3xqnFwWQKS1ylcX+iTu/6Tih5Ad49TUPJvglpE9LotVM0NZ+iRCvlt82XQSP3MbXutN
-         Dn9VZOLNZQ/Iv+ejc4Oh7xchGnT5Jwh+QXMuUcpYe1qz9pjBq8rmqDzum5Foc3rJt2o9
-         XSMD137+nxZ7jTR816azawgteG7sLkh8t7/qShnWxOtQ3YHI8eDi5L/RdQqJ3xg7jYYJ
-         3ooXKiffcE0SwHP145cZSdR++Dj9CvRb9hFMxfMrfvrFqUvL9brNV1OOVab4UED9lMhK
-         mgCA==;
-        darn=lists.infradead.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787248813; x=1787853613; darn=lists.infradead.org;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
-         :date:message-id:reply-to:content-type;
-        bh=sEvX8LRYaTci1+Yw2VgOZaWFEHJcPwIIfxKvSRMy2KA=;
-        b=hWEsUpJMYrAJiclKc2Pl0LYNZX2KpIIW75wjaTSvFfXKXF8F8xdu4KK0iHMInWSShe
-         BClhMHiZpWlAEEKMY6boJcbHSbJgl2JoNJSSLxgbFMfAUPDAvjZQGdb0TmmyocVsFwB2
-         gBnsZfFCowkSXb1nIQ4cMfNMje09D36KBq6/FrPk3gjv1l+FBbix4dd3IZxSgyX3/TWs
-         xB2/DopKrTc3BeVbesVrlJaGBbi5XCvE8wqoY8izs9fZrM8Iigfb9ZhigoTDsmbSm7gw
-         zFNZygxZyS1IMNEmoN8cgpMJ4Kig0UWGhAOHq9aypyphPyTrFwQ8haVB/K8g8tnBIAfm
-         wlbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787248813; x=1787853613;
-        h=content-transfer-encoding:content-type:cc:to:subject:message-id
-         :date:from:in-reply-to:references:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=sEvX8LRYaTci1+Yw2VgOZaWFEHJcPwIIfxKvSRMy2KA=;
-        b=dPp9QaP5E3bzUR7d3MDMh3cId6hTRCSdDLNOl9l9fnPg53FjSIrUiknSBCO+St/y3l
-         ZvuTjmFJgLYLUAGGaPaYTQVcShwKm+vZDZgBhETaMhDCfz/Di6fURm0FvY9QJS35om5u
-         h+nxAcfoyvtmBeZpLTeFGJmp94iHDCZPtW84ZD/cqGX9HtBtYkSU4t5beX8u3su/YDCU
-         vkoxpYhMPSxPFN1BEK/JDWYhV8hlrtZi2T2oEb0UTsHUZcMycrfBPRnUFZW6CP8K8PdG
-         qbw4PazEctaNgYjczMX0Voy6Ufq0RS5Acg/OxLnXvrn3YCvlYlsOt3CPu8aOPHDhivO8
-         WlIQ==
-X-Forwarded-Encrypted: i=1; AHgh+RqFvJxDAo4r8QeHEPtEgLpfLvLdhMOprJgIbfKOE/tZbH/3B5A53RDT1jm0j8soDWci59BWb3up@lists.infradead.org
-X-Gm-Message-State: AOJu0YyYxQK3E2sfalx7n5vU1iIcSIE3ipk0loy8leRBl3EKJoNQuTy4
-	NlFisQ+TAO0QFGiBcdH/o0ndxeWn6r8EERbnqQNyKsuYoWj00RtcBezQDG0S8aRzDVtdW/6Wvfg
-	5q0gA625X1sXrihCbmepkCR46IwFA0qo=
-X-Gm-Gg: AR+sD102WsCWiGSyOolh0OwYyagR6wuX101nNy/4UjVy38IjzDjD/DUtWGNVdngS/GB
-	0WkZvvttqMo7UuOMKBFjLJVB5AFcczp8qAWDl4kgQGum1yGU/bWTqhNAULvL2GER4mUdshUAlNb
-	JebIPyjo0+H2WWYVxWV81sZSPZOFFo9AQIr7zGneh78tO4Kp5ZMFbStMv/jklxX/DrdEq2+xCJi
-	VumYWj1U7GISZdCoBsh2wJTgQOYvd0eGDrZShBWe05dZmYV+Revd1dlwPUeRzxU3p6CBec/TcDP
-	oyxCOkZAlsKTes+w5X1YB2RiAJG7SFoU8n+tpTYc7A==
-X-Received: by 2002:a17:907:6b0d:b0:c24:6505:8f66 with SMTP id
- a640c23a62f3a-c246a693337mr28001866b.13.1787248813317; Thu, 20 Aug 2026
- 11:00:13 -0700 (PDT)
-MIME-Version: 1.0
-References: <aoQYLq5MTUbqzQCg@monoceros> <6a85585d.5770c427.2e0747.7f3dSMTPIN_ADDED_MISSING@mx.google.com>
-In-Reply-To: <6a85585d.5770c427.2e0747.7f3dSMTPIN_ADDED_MISSING@mx.google.com>
-From: Luca Lauro <famlauro93l@gmail.com>
-Date: Thu, 20 Aug 2026 19:59:49 +0200
-X-Gm-Features: AcwNN1XGaIaTg8ttwhTzs4RC-q30OyR5-AV6f4BPwCETa6_N13B8Gf_aFwwMWk4
-Message-ID: <CANRe2WJY2P7u03Luwmt1_uk+wU8Ct-v=8nCShTfMJedYXQE=eQ@mail.gmail.com>
+	Fri, 21 Aug 2026 09:17:08 +0000
+Received: from [127.0.0.1] (unknown [IPv6:2a02:560:5dd5:4b00:9ebf:dff:fe00:fdb5])
+	(Authenticated sender: sha@pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 271722010D6;
+	Fri, 21 Aug 2026 11:17:02 +0200 (CEST)
+Message-ID: <4df2a9de-cc31-40ee-8328-a1db9f7aaa7a@pengutronix.de>
+From: "Sascha Hauer" <s.hauer@pengutronix.de>
 Subject: Re: [PATCH v4 01/14] ARM: mvebu: add Netgear RN102 support
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <ukleinek@kernel.org>, 
-	"open list:BAREBOX" <barebox@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+To: "Luca Lauro" <famlauro93l@gmail.com>
+In-Reply-To: <CANRe2W+Cp82qe+R_VNf_hXV+NRet+F63fq34pEw3FR-s4kw3zg@mail.gmail.com>
+References: <20260813-rn102-rn104-series-v4-1-f932ac63efa0@gmail.com>
+ <E1wvs81-00GOzc-1k@pengutronix.de>
+ <CANRe2W+Cp82qe+R_VNf_hXV+NRet+F63fq34pEw3FR-s4kw3zg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+Date: Fri, 21 Aug 2026 09:17:01 +0000
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260820_110015_474088_4CE90AC5 
-X-CRM114-Status: GOOD (  33.90  )
-X-Spam-Score: -2.1 (--)
+X-CRM114-CacheID: sfid-20260821_021706_340017_1EE1057B 
+X-CRM114-Status: GOOD (  37.48  )
+X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
  message has been attached to this so you can view it or label
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Il giorno mer 19 ago 2026 alle ore 09:16 Sascha Hauer ha scritto:
-    > > Hi Uwe, > > On 2026-08-18 10:44, Uwe Kleine-König wrote: > > > > > >
-    The only difference I can spot here between this function [...] 
+ Content preview:  On 2026-08-20 16:27, Luca Lauro wrote: > Hi Sascha, > > about
+    the NAND node: the upstream DTS does contain the NAND configuration > properties,
+    but they are placed inside the `nand@0` child node. Bare [...] 
  
- Content analysis details:   (-2.1 points, 5.0 required)
+ Content analysis details:   (-1.9 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
- -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/, no
-                             trust
-                             [2a00:1450:4864:20:0:0:0:631 listed in]
-                             [list.dnswl.org]
-  0.0 SPF_HELO_NONE          SPF: HELO does not publish an SPF Record
  -0.0 SPF_PASS               SPF: sender matches SPF record
-  0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
- -0.1 DKIM_VALID_EF          Message has a valid DKIM or DK signature from
-                             envelope-from domain
- -0.1 DKIM_VALID_AU          Message has a valid DKIM or DK signature from author's
-                             domain
- -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
+ -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
  -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
                              [score: 0.0000]
-  0.0 FREEMAIL_FROM          Sender email is commonly abused enduser mail provider
-                             [famlauro93l(at)gmail.com]
- -0.0 DMARC_PASS             DMARC pass policy
+  0.0 DMARC_MISSING          Missing DMARC policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -155,165 +83,188 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: =?utf-8?b?b3BlbiBsaXN0OkJBUkVCT1g=?= <barebox@lists.infradead.org>, ukleinek@kernel.org, Luca Lauro via B4 Relay <devnull+famlauro93l.gmail.com@kernel.org>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: uaworu49imw3untxoyhfhio4rzjjdh3z
-X-Spamd-Result: default: False [-8.91 / 15.00];
+X-Stat-Signature: xddr9b58zoxkjhhfimu4dftxr5tq5ws1
+X-Spamd-Result: default: False [-2.41 / 15.00];
 	BAYES_HAM(-3.00)[100.00%];
+	MISSING_MIME_VERSION(2.00)[];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
+	SUSPICIOUS_RECIPS(1.50)[];
+	CC_EXCESS_BASE64(1.50)[];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	ARC_ALLOW(-1.00)[google.com:s=arc-20260327:i=1];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
-	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
 	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,gmail.com:s=20251104];
+	R_SPF_ALLOW(-0.20)[+mx:c];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER(0.00)[famlauro93l@gmail.com,barebox-bounces@lists.infradead.org];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
-	DWL_DNSWL_NONE(0.00)[gmail.com:dkim];
+	FORGED_RECIPIENTS(0.00)[m:famlauro93l@gmail.com,m:barebox@lists.infradead.org,m:ukleinek@kernel.org,m:devnull+famlauro93l.gmail.com@kernel.org,m:devnull@kernel.org,s:lore@pengutronix.de];
 	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_FROM(0.00)[gmail.com];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
 	MIME_TRACE(0.00)[0:+];
-	TO_DN_ALL(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,gmail.com:+];
-	RCVD_IN_DNSWL_NONE(0.00)[2a00:1450:4864:20::631:received];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[barebox@lists.infradead.org];
-	FROM_NEQ_ENVFROM(0.00)[famlauro93l@gmail.com,barebox-bounces@lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	RCPT_COUNT_THREE(0.00)[4];
+	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	DBL_PROHIBIT(0.00)[0.0.0.0:email];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_RCPT(0.00)[famlauro93l.gmail.com];
 	MISSING_XM_UA(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: AFE51201D0E
+X-Rspamd-Queue-Id: 2B91620190E
 
-Il giorno mer 19 ago 2026 alle ore 09:16 Sascha Hauer
-<s.hauer@pengutronix.de> ha scritto:
->
-> Hi Uwe,
->
-> On 2026-08-18 10:44, Uwe Kleine-K=C3=B6nig wrote:
-> > >
-> > > The only difference I can spot here between this function and the
-> > > existing variant in arch/arm/mach-mvebu/common.c is:
-> > >
-> > > #define  DDR_SIZE_MASK                       0xff000000
-> > >
-> > > whereas the common.c variant uses:
-> > >
-> > > #define ARMADA_370_XP_DDR_SIZE_MASK     0xffff0000
+On 2026-08-20 16:27, Luca Lauro wrote:
+> Hi Sascha,
+>=20
+> about the NAND node: the upstream DTS does contain the NAND configuration
+> properties, but they are placed inside the `nand@0` child node. Barebox
+> pxa3xx-nand reads these properties from the controller node instead, so
+> the upstream layout is not sufficient for barebox to probe and configure
+> the NAND controller correctly.
+>=20
+> For this reason the overlay needs to replicate NAND configuration
+> properties in the controller node. Without them, barebox does not apply
+> settings and NAND doesn't work.
+>=20
+> The only part that is truly duplicated is `status =3D "okay"`, which I can
+> drop in v5.
+>=20
+> Thanks for the review.
+>=20
+> Il giorno lun 17 ago 2026 alle ore 09:51 Sascha Hauer <
+> s.hauer@pengutronix.de> ha scritto:
+>=20
+> > On 2026-08-13 17:26, Luca Lauro via B4 Relay wrote:
+> > > +                                      filetype_kwbimage_v1);
+> > > +
+> > > +     return 0;
+> > > +}
+> > > +
+> > > +static const struct of_device_id rn102_of_match[] =3D {
+> > > +     { .compatible =3D "netgear,rn102" },
 > >
-> > Apart from the different value, the latter name is the better one B-)
+> > How is the driver probed? The string "netgear,rn102" is in no dts.
+> > Unless I am missing something this should be "netgear,readynas-102".
 > >
-> > > The latter goes down to this:
-> > >
-> > > > commit 7351b6b5c59c7a280787998006f39a5cd3a2f18b
-> > > > Author: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-> > > > Date:   Tue Jun 13 00:37:49 2017 +0200
-> > > >
-> > > >     ARM: mvebu: fix size mask for RAM window
-> > > >
-> > > >     The size field in the window control register occupies bits 31:=
-16. So
-> > > >     adapt ARMADA_370_XP_DDR_SIZE_MASK accordingly. This fixes detec=
-tion of
-> > > >     RAM chips smaller than 32 MiB and so probably doesn't affect an=
-y
-> > > >     supported machine.
-> > > >
-> > > >     Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutron=
-ix.de>
-> > > >     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > >
-> > > > diff --git a/arch/arm/mach-mvebu/common.c b/arch/arm/mach-mvebu/com=
-mon.c
-> > > > index 06bfb72615..fa971da11e 100644
-> > > > --- a/arch/arm/mach-mvebu/common.c
-> > > > +++ b/arch/arm/mach-mvebu/common.c
-> > > > @@ -47,7 +47,7 @@
-> > > >  #define ARMADA_370_XP_SDRAM_BASE       (IOMEM(MVEBU_REMAP_INT_REG_=
-BASE) + 0x20000)
-> > > >  #define ARMADA_370_XP_DDR_SIZE_CSn(n)  (0x184 + ((n) * 0x8))
-> > > >  #define ARMADA_370_XP_DDR_SIZE_ENABLED BIT(0)
-> > > > -#define ARMADA_370_XP_DDR_SIZE_MASK    0xff000000
-> > > > +#define ARMADA_370_XP_DDR_SIZE_MASK    0xffff0000
-> > > >
-> > > >  /*
-> > > >   * Marvell MVEBU SoC id and revision can be read from any PCIe
-> > >
-> > > @Uwe, Where did you get that information from. Could it be that we
-> > > should just revert this one given that it seems to be untested on you=
-r
-> > > side?
+> > Same for the rn104 patch.
 > >
-> > 0xffff0000 is in line with
-> > https://datasheet.datasheetarchive.com/originals/crawler/marvell.com/00=
-2fa441a27967d992f905776d519926.pdf
-> > (page 630). So I'd expect that 0xffff0000 is correct, but I don't care
-> > much.
->
-> Page 630 describes the register at offset 0x20000. I think the correct
-> page to look at is 626 which describes 0x20184 aka ARMADA_370_XP_DDR_SIZE=
-_CSn(0).
->
-> That one has the window size in the upper 8 bit. Looks like we should
-> just revert 7351b6b5c59c. @Luca, does the SDRAM size detection work for
-> you with that patch reverted?
+> > > +/*
+> > > + * NOTE:
+> > > + * armada_370_xp_barebox_entry() cannot be used here because the
+> > > + * upstream SDRAM size detection for Armada 370-XP misinterprets
+> > > + * the DDR_SIZE_CSn registers on this board and reports an incorrect
+> > > + * memory size (256MB instead of 512MB on RN102).
+> > > + *
+> > > + * Until the generic detection code is fixed, we compute the SDRAM
+> > > + * size manually using the DDR_SIZE_CSn values.
+> > > + */
+> > > +static unsigned long armada_370_xp_memory_find(void)
+> > > +{
+> > > +     unsigned long mem_size =3D 0;
+> > > +
+> > > +     for (int cs =3D 0; cs < 4; cs++) {
+> > > +             u32 ctrl =3D readl(ARMADA_370_XP_SDRAM_BASE +
+> > DDR_SIZE_CSn(cs));
+> > > +
+> > > +             /* Skip non-enabled CS */
+> > > +             if ((ctrl & DDR_SIZE_ENABLED) !=3D DDR_SIZE_ENABLED)
+> > > +                     continue;
+> > > +
+> > > +             mem_size +=3D (ctrl | ~DDR_SIZE_MASK) + 1;
+> > > +     }
+> > > +
+> > > +     return mem_size;
+> > > +}
+> >
+> > The only difference I can spot here between this function and the
+> > existing variant in arch/arm/mach-mvebu/common.c is:
+> >
+> > #define  DDR_SIZE_MASK                       0xff000000
+> >
+> > whereas the common.c variant uses:
+> >
+> > #define ARMADA_370_XP_DDR_SIZE_MASK     0xffff0000
+> >
+> > The latter goes down to this:
+> >
+> > > commit 7351b6b5c59c7a280787998006f39a5cd3a2f18b
+> > > Author: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> > > Date:   Tue Jun 13 00:37:49 2017 +0200
+> > >
+> > >     ARM: mvebu: fix size mask for RAM window
+> > >
+> > >     The size field in the window control register occupies bits 31:16=
+. So
+> > >     adapt ARMADA_370_XP_DDR_SIZE_MASK accordingly. This fixes detecti=
+on
+> > of
+> > >     RAM chips smaller than 32 MiB and so probably doesn't affect any
+> > >     supported machine.
+> > >
+> > >     Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix=
+.de>
+> > >     Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > >
+> > > diff --git a/arch/arm/mach-mvebu/common.c b/arch/arm/mach-mvebu/commo=
+n.c
+> > > index 06bfb72615..fa971da11e 100644
+> > > --- a/arch/arm/mach-mvebu/common.c
+> > > +++ b/arch/arm/mach-mvebu/common.c
+> > > @@ -47,7 +47,7 @@
+> > >  #define ARMADA_370_XP_SDRAM_BASE       (IOMEM(MVEBU_REMAP_INT_REG_BA=
+SE)
+> > + 0x20000)
+> > >  #define ARMADA_370_XP_DDR_SIZE_CSn(n)  (0x184 + ((n) * 0x8))
+> > >  #define ARMADA_370_XP_DDR_SIZE_ENABLED BIT(0)
+> > > -#define ARMADA_370_XP_DDR_SIZE_MASK    0xff000000
+> > > +#define ARMADA_370_XP_DDR_SIZE_MASK    0xffff0000
+> > >
+> > >  /*
+> > >   * Marvell MVEBU SoC id and revision can be read from any PCIe
+> >
+> > @Uwe, Where did you get that information from. Could it be that we
+> > should just revert this one given that it seems to be untested on your
+> > side?
+> >
+> > > +
+> > > +&nand_controller {
+> > > +     compatible =3D "marvell,armada370-nand", "marvell,pxa3xx-nand";
+> > > +     status =3D "okay";
+> >
+> > These two properties are already in the upstream dts files, please drop.
 
-Hi Sascha,
+Could you retry on current -next? It contains
 
-I tested with kwboot on my RN102...
-SDRAM detection:
-With the generic lowlevel path (armada_370_xp_barebox_entry) the board
-does not reach the banner at all; independently from
-ARMADA_370_XP_DDR_SIZE_MASK value. With the previous
-workaround-based lowlevel code restored, the board boots reliably and
-reports the correct 512 MiB of DRAM. So at the moment I cannot verify
-the generic SDRAM detection on RN102 because the board does not boot
-with that path.
+fac937411f mtd: nand: nand_mrvl_nfc: support the nand-controller bindings
 
-GPIO / LED blink:
-Even with deep-probe enabled and with explicit
-of_device_ensure_probed_by_alias("gpio0"), "gpio1" and "gpio2", the
-GPIO blink logic cannot access the controller registers:
+which seems to fix that issue. At least that fixed the binding on my
+pxa3xx board.
 
-    WARNING: gpio0 regmap not available
+Sascha
 
-The mvebu GPIO controller is not a syscon device, so
-syscon_node_to_regmap() always returns an error. As a result, the blink
-logic cannot use regmap to access the GPIO registers, and the LEDs are
-not initialized in time during early disk power-on.
+--
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
-The previous implementation used direct MMIO access to the GPIO
-registers, which worked correctly on RN102/RN104, but was removed during
-the cleanup. Without either restoring that path or providing a regmap
-backend for the mvebu GPIO controller, the LED blink feature cannot
-function.
-
-Let me know which direction you prefer. I can restore the direct MMIO
-access for the blink logic if that is acceptable.
-
->
-> Sascha
->
-> --
-> Pengutronix e.K.                           |                             =
-|
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  =
-|
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    =
-|
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 =
-|
->
 
 
