@@ -1,95 +1,68 @@
-Delivery-date: Sun, 23 Aug 2026 15:20:26 +0200
+Delivery-date: Sun, 23 Aug 2026 20:14:01 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wy87d-006LoS-0M
+	id 1wyChj-006QK8-0e
 	for lore@lore.pengutronix.de;
-	Sun, 23 Aug 2026 15:20:25 +0200
+	Sun, 23 Aug 2026 20:14:01 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 5481D200F4F
-	for <lore@pengutronix.de>; Sun, 23 Aug 2026 15:20:25 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 49EFF2010D6
+	for <lore@pengutronix.de>; Sun, 23 Aug 2026 20:13:59 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=poXzMVdn;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=bRymZgyd;
-	dmarc=pass (policy=none) header.from=gmail.com;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=a0xDt2YD;
+	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=ul2tbkUbWh8aVuJ7jiCm0eSZWzIcUHxWto7RvMRPVGU=; b=poXzMVdnZfCBg8m5N2aFwD9a26
-	JV7+xWHJjh13L5NXB2+SVApUmydmpBBhAnyXSJq9ijlsK3YAmXs8NDX09oRwBFmsjF4NUn7oC96XW
-	n3JZvxQOyEGm3C9G+EDUZSWq3FQPIDzh54p9O1lovaLXxS7LJ0csblTPva4NjcZaN7pJyzHgI51Zp
-	eLYl93bmN15544alcHLyYn7eBGU+7WGpk9yQ5M5ti/NhI6aWD1mVKowbdyRUIU6P0kWIFdW+I948a
-	lnrVZZt5Yt+qtETheA/zYqyxfdvNdqDrNNDNjc+/9t7VSjKX2cSYUVYvdwN5LtP3bh4AkRymup9BB
-	kUmi1b7g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=JR7P1xIhmLliHSTj4iKX448Zv03u4gFVqvuv+10A4/0=; b=a0xDt2YDGkJLotjVltQuWmPVaf
+	blIUQuGkVpDgAYYAfVrWGldskdeMcOj+fqljpf1CxpEd8lPuQt0umQBBl6hAzH064y5zIRi3i7ady
+	Il4VO4qd+rluNAoSBEbZLtwrPjoINxUPy4PD5r/Jzd0h3DPvm/ffBnxmZVjLu5RpAN2PSG3e075Jw
+	LLd4JA9aRuMTq7xWmcAmvJ5IIi2RXwqXb/x2ivwQWUOP5U9RiFsaIJEvjiSlsel1k86BOVP1+wZyb
+	3FvZUvIB33B3yCWvj1IaSP+m0jODmLs91pIBHnPb2htJ/GqwbhUoe1J9KpoPFXSuR0JEDOp8PxXcF
+	VxTMfzUQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wy86H-0000000FO0U-0sCJ;
-	Sun, 23 Aug 2026 13:19:01 +0000
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+	id 1wyCaB-0000000FWKw-44JH;
+	Sun, 23 Aug 2026 18:06:11 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wy86E-0000000FNzl-44no
+	id 1wyCa7-0000000FWKZ-1Rgx
 	for barebox@lists.infradead.org;
-	Sun, 23 Aug 2026 13:19:00 +0000
-Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-4996f1ee4a4so16462595e9.2
-        for <barebox@lists.infradead.org>; Sun, 23 Aug 2026 06:18:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787491136; x=1788095936; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to:content-type;
-        bh=ul2tbkUbWh8aVuJ7jiCm0eSZWzIcUHxWto7RvMRPVGU=;
-        b=bRymZgydJDVuhSu9GzYcx6ZsR1ZepR2Zf811kskZLEFmS9QcUQhmyaPMGnwnu9qlUq
-         osNFDK2RjsXOjGiYfDjDPmYeYGDDT8breGAHFAkfV0+OxVI6Jvy2whlvaTwfqRKihNtF
-         5voXRF3k/37zm/uMdS5qc2/81I9DvJl3uVGaqjEX91mlXE0Jnmlty3x/D24OI2dRMHUV
-         cpTjBZdeCRWJOhhQ7bFUU7JBFwA/Q4Ge7EKE5+hOlgsIgOW9kh1OXmmHGPPbupVrcGjq
-         xqZi3kNNiT0r4h0Fumr1t8xsELXBH7Y6gOI1RYRghZLpEEYfsF0HbCkmUgR4qT8GVVAG
-         xBwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787491136; x=1788095936;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=ul2tbkUbWh8aVuJ7jiCm0eSZWzIcUHxWto7RvMRPVGU=;
-        b=G2Q2fRa6W9TFetRp01zp6GcuC/GWPPtg9u/vfQYdVFdaasvrTKySiDT77VMsJVL8oo
-         db0By7/xwP6PNb8wkMHlx+jBCdnzcuJEK0LRFr/rhjEY2SSAJ451O6QedMkoOIWcnHI6
-         DuXrL8yeBrEVtwQpavkkQ7njgH76fpTiTuYUbdxRJuCVAvY4ZhUfNaTJlqfp1QVlvyuo
-         NgXm8hCi4/ax71Cx5ZM76toinJOpO7ZkZ4aIxrcfSfqBHBKEjCh6cyDBtEpI1xl2srt1
-         /BdqcdRg9DTgSkhs56DJtLQJ/hsnormzdPc2+s8AFQbKajxEWeohyklNk4G8rCd2FXHM
-         5M9g==
-X-Gm-Message-State: AFuF++l3s+OR5x1ocbZIOiTXUoCmfAqZE+CYbSBYrDDcw3YP+fzYsOQo
-	P4vK0tjQb/UnkLuQkmoFDap1ZVX3jL9JJrchlRhizHX4N2m/TdURBYOwPSRg8g==
-X-Gm-Gg: AR+sD12T4g10A6HT717ru/SvDoIMvi+hs0AW2juL1RVT/lUmjEuSDAtBvtoRsvC6nDg
-	i9u4E6W8PXKAZu6QVOt6N9/NGpZJwDYItzrLD9iNbFdjPmmGLjjcSlELugqiDQuF90oERQ8HeTN
-	IqZ7H9a7qhiOL+5y/1E9tFb7/2whhlmhKdnM3YfaKVokBgmaV7VhWpgwj5QMNVrUmWQIrQMMkyn
-	sz0vBW3YyQhVqCIi4bUGgMs9ITA0P1aS3ewj07NDDEBs9zLOg4kzQgnAoZKuNlFTrz90Z+mzYNd
-	Rf4boUdvK/+pSBAgenJwb8RkZM5dfNOwUaDj5b9pSM2qUe+97nDNyzyZWFPSwCdcEv7X509WcD/
-	uA4lLb7Fh7cjtWC5v0pEkl7pduZEb2YJ4JeYZVXG8Sj7FyNkbHSfiTl33N+ptUwt5/KhewuOVqV
-	6cntdsMNBuGRAXi6x90/Dr7+QjSGm0TfRkcGKg03zj7zPbN1JQPBfyloXgKscZU//BwePXxfeuk
-	gRohur+OT2u3ylLiv7b2tRZ48SmnalRJoGnfv0sL0xO6X1JdilVVvqCimiswAKol6AlNGhNZq4g
-	6s9SDkLWeA==
-X-Received: by 2002:a05:600c:1387:b0:499:7a4f:d13d with SMTP id 5b1f17b1804b1-499b8313ad3mr181423465e9.4.1787491136227;
-        Sun, 23 Aug 2026 06:18:56 -0700 (PDT)
-Received: from CNCMK0001D007E ([213.195.92.95])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499c9019e99sm25393845e9.4.2026.08.23.06.18.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Aug 2026 06:18:55 -0700 (PDT)
-From: chalianis1@gmail.com
-To: s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org,
-	Chali Anis <chalianis1@gmail.com>
-Subject: [PATCH] efi: payload: apply barebox fixups to the devicetree passed to Linux
-Date: Sun, 23 Aug 2026 15:18:52 +0200
-Message-ID: <20260823131852.364978-1-chalianis1@gmail.com>
-X-Mailer: git-send-email 2.55.0
+	Sun, 23 Aug 2026 18:06:10 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 4B319201288;
+	Sun, 23 Aug 2026 20:06:02 +0200 (CEST)
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1wyCa2-002ySt-0R;
+	Sun, 23 Aug 2026 20:06:02 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.98.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1wyCa2-00000008Cgp-04Zz;
+	Sun, 23 Aug 2026 20:06:02 +0200
+Date: Sun, 23 Aug 2026 20:06:01 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Subject: Re: [PATCH] bootm: remove previously deprecated CONFIG_BOOTM_OPTEE
+Message-ID: <5wxqq4hhv3c4bp3sybong5egc7plsvqsaevo5p5xr5kvoeppod@w6ro3tjx3kbs>
+References: <20260805144855.3884397-1-a.fatoum@pengutronix.de>
+ <4f5f1e06-afc6-4b9a-8dd6-5cabf0a0e5c3@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4f5f1e06-afc6-4b9a-8dd6-5cabf0a0e5c3@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260823_061859_057698_79A4E9E1 
-X-CRM114-Status: GOOD (  19.30  )
+X-CRM114-CacheID: sfid-20260823_110607_696637_1546C9DC 
+X-CRM114-Status: GOOD (  40.41  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -97,35 +70,19 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  From: Chali Anis efi_load_fdt() never ran barebox's fixup/overlay
-    pipeline on the devicetree it handed to the kernel. When bootm.oftree was
-    set, the raw file bytes were extracted straight into EFI pages and installed
-    [...] 
+ Content preview:  On 26-08-21, Ahmad Fatoum wrote: > Hi, > > On 8/5/26 4:48
+   PM, Ahmad Fatoum wrote: > > Early loading of OP-TEE for 32-bit platforms was
+    added in 2020 shortly > > after initial (late) loading support wa [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
- -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/, no
-                             trust
-                             [2a00:1450:4864:20:0:0:0:332 listed in]
-                             [list.dnswl.org]
  -0.0 SPF_PASS               SPF: sender matches SPF record
-  0.0 SPF_HELO_NONE          SPF: HELO does not publish an SPF Record
-  0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
- -0.1 DKIM_VALID_EF          Message has a valid DKIM or DK signature from
-                             envelope-from domain
- -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
- -0.1 DKIM_VALID_AU          Message has a valid DKIM or DK signature from author's
-                             domain
+ -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
  -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
                              [score: 0.0000]
-  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends in
-                             digit
-                             [chalianis1(at)gmail.com]
-  0.0 FREEMAIL_FROM          Sender email is commonly abused enduser mail provider
-                             [chalianis1(at)gmail.com]
- -0.0 DMARC_PASS             DMARC pass policy
+  0.0 DMARC_MISSING          Missing DMARC policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -140,261 +97,709 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: x3uwwy5dgjpamsbhdc3xy7ymjxpk1nt6
-X-Spamd-Result: default: False [-6.41 / 15.00];
+X-Stat-Signature: g9daompqd3baeomzywj159u6z8ibdbym
+X-Spamd-Result: default: False [-7.01 / 15.00];
 	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	MID_CONTAINS_FROM(1.00)[];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,gmail.com:s=20251104];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
-	MAILLIST(-0.20)[mailman];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	R_SPF_ALLOW(-0.20)[+mx:c];
+	MAILLIST(-0.20)[mailman];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	RCVD_IN_DNSWL_LOW(-0.10)[2a0a:edc0:0:c01:1d::a2:received];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	DMARC_NA(0.00)[pengutronix.de];
 	ARC_NA(0.00)[];
-	DWL_DNSWL_NONE(0.00)[gmail.com:dkim];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[chalianis1@gmail.com,barebox-bounces@lists.infradead.org];
-	FREEMAIL_FROM(0.00)[gmail.com];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
-	FORGED_SENDER(0.00)[chalianis1@gmail.com,barebox-bounces@lists.infradead.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	RECEIVED_SPAMHAUS_PBL(0.00)[213.195.92.95:received];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	NEURAL_HAM(-0.00)[-1.000];
-	PREVIOUSLY_DELIVERED(0.00)[barebox@lists.infradead.org];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NO_DN(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,gmail.com:+];
+	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	FREEMAIL_CC(0.00)[lists.infradead.org,gmail.com];
-	RCVD_IN_DNSWL_NONE(0.00)[2a00:1450:4864:20::332:received];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[m.felsch@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_ALL(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER(0.00)[m.felsch@pengutronix.de,barebox-bounces@lists.infradead.org];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 5481D200F4F
+X-Rspamd-Queue-Id: 49EFF2010D6
 
-From: Chali Anis <chalianis1@gmail.com>
+On 26-08-21, Ahmad Fatoum wrote:
+> Hi,
+> 
+> On 8/5/26 4:48 PM, Ahmad Fatoum wrote:
+> > Early loading of OP-TEE for 32-bit platforms was added in 2020 shortly
+> > after initial (late) loading support was added in 2019.
+> > 
+> > CONFIG_BOOTM_OPTEE (practically OP-TEE in a FIT image alongside the
+> > kernel) has been documented as deprecated since 2025 as it greatly
+> > increases the trusted computing base by running all of barebox in
+> > secure monitor mode as opposed to only the prebootloader.
+> > 
+> > Additionally, a `tee =' key in the FIT is a barebox invention and the
+> > spec conforming way would be to reference the tee in the loadables
+> > property of a configuration.
+> > 
+> > For all these reasons, let's finally remove late loading.
+> > 
+> > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> 
+> Any objections?
 
-efi_load_fdt() never ran barebox's fixup/overlay pipeline on the
-devicetree it handed to the kernel. When bootm.oftree was set, the
-raw file bytes were extracted straight into EFI pages and installed
-as-is via loadable_extract_into_buf_full(); of_unflatten_dtb(),
-of_fix_tree() and of_flatten_dtb() were never called. When
-bootm.oftree was unset, the function just returned early, so there
-was no path at all for adopting (and fixing up) a devicetree already
-exposed by firmware. Either way, none of barebox's usual fixups --
-memory nodes, bootargs, state, overlays, and everything else hung
-off of_register_fixup() -- ever reached the tree Linux booted with.
+Not from my site. It's easier for new users if there is only one option
+which is the more secure one, therefore:
 
-Fix this for both sources: add efi_fdt_find() to locate the FDT
-firmware exposes via its EFI configuration table, and have
-efi_load_fdt() fall back to it when no bootm.oftree is set. Whichever
-tree is in play, unflatten it into data->of_root_node, run it through
-the standard bootm_set_pending_oftree_overlays()/of_fix_tree()
-sequence, reflatten it, and install the fixed-up result as the UEFI
-configuration table -- matching what every other barebox boot path
-already guarantees.
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
 
-While here, size the FDT allocation/free from the actual flattened
-tree instead of a fixed 2 MiB buffer, and reuse efi_fdt_find() in the
-existing efi_fdt_probe() initcall so both callers share one
-EFI-configuration-table lookup instead of duplicating it.
+Regards,
+  Marco
 
-Assisted-by: Claude Sonnet 5
-Signed-off-by: Chali Anis <chalianis1@gmail.com>
----
- efi/payload/bootm.c   | 58 +++++++++++++++++++++++++++++++++++--------
- efi/payload/fdt.c     | 34 +++++++++++++++++--------
- include/efi/payload.h | 10 ++++++++
- 3 files changed, 81 insertions(+), 21 deletions(-)
+> 
+> Cheers,
+> Ahmad
+> 
+> > ---
+> >  .../migration-guides/migration-master.rst     | 13 ++++
+> >  Documentation/user/optee.rst                  | 12 ++--
+> >  Documentation/user/security.rst               |  3 -
+> >  arch/arm/cpu/start.c                          |  3 -
+> >  arch/arm/include/asm/armlinux.h               |  2 +-
+> >  arch/arm/lib32/Makefile                       |  1 -
+> >  arch/arm/lib32/armlinux.c                     | 10 +--
+> >  arch/arm/lib32/bootm.c                        | 64 +------------------
+> >  arch/arm/lib32/bootu.c                        |  2 +-
+> >  arch/arm/lib32/bootz.c                        |  2 +-
+> >  arch/arm/lib32/start-kernel-optee.S           | 16 -----
+> >  commands/bootm.c                              | 11 +---
+> >  common/bootm-android-image.c                  |  1 -
+> >  common/bootm-fit.c                            | 31 ++-------
+> >  common/bootm.c                                | 20 ++----
+> >  drivers/tee/optee/Kconfig                     |  2 +-
+> >  include/bootm.h                               |  6 --
+> >  include/loadable.h                            |  6 +-
+> >  lib/loadable.c                                |  2 -
+> >  security/Kconfig                              | 18 ------
+> >  20 files changed, 38 insertions(+), 187 deletions(-)
+> >  delete mode 100644 arch/arm/lib32/start-kernel-optee.S
+> > 
+> > diff --git a/Documentation/migration-guides/migration-master.rst b/Documentation/migration-guides/migration-master.rst
+> > index e28a608e53e9..68f0ef65756b 100644
+> > --- a/Documentation/migration-guides/migration-master.rst
+> > +++ b/Documentation/migration-guides/migration-master.rst
+> > @@ -17,3 +17,16 @@ ARCH=arm64
+> >  Use of ``ARCH=arm`` for 64-bit ARM builds is deprecated and now emits
+> >  a warning. Users should change build scripts to use ``ARCH=arm64``
+> >  instead when targetting ARMv8.
+> > +
+> > +Removal of deprecated CONFIG_BOOTM_OPTEE
+> > +----------------------------------------
+> > +
+> > +The support for late loading of OP-TEE had been deprecated and ultimately
+> > +removed as it greatly increased the attack surface and was only supported
+> > +on 32-bit ARM systems.
+> > +
+> > +OP-TEE loading is now only supported
+> > +:ref:`in the prebootloader <optee_early_loading>`.
+> > +
+> > +For i.MX6 boards, this can be enabled by enabling
+> > +``CONFIG_FIRMWARE_IMX6_OPTEE``.
+> > diff --git a/Documentation/user/optee.rst b/Documentation/user/optee.rst
+> > index 88e651ddec57..975dcdc3dbac 100644
+> > --- a/Documentation/user/optee.rst
+> > +++ b/Documentation/user/optee.rst
+> > @@ -39,15 +39,11 @@ main barebox start function.
+> >  Before Linux start
+> >  ^^^^^^^^^^^^^^^^^^
+> >  
+> > -.. warning:: Late loading of OP-TEE is deprecated, greatly increases the
+> > -   attack surface and is only supported on 32-bit ARM systems.
+> > -   Systems should prefer early loading OP-TEE whenever possible.
+> > +The support for late loading of OP-TEE had been deprecated and ultimately
+> > +removed as it greatly increased the attack surface and was only supported
+> > +on 32-bit ARM systems.
+> > +OP-TEE loading is now only supported :ref:`in the prebootloader <optee_early_loading>`.
+> >  
+> > -Enable the `CONFIG_BOOTM_OPTEE` configuration variable and configure the
+> > -`CONFIG_OPTEE_SIZE` variable. This will reserve a memory area at the end
+> > -of memory for OP-TEE to run, usually Barebox would relocate itself there. To
+> > -load OP-TEE before the kernel is started, configure the global ``bootm.tee``
+> > -variable to point to a valid OPTEE v1 binary.
+> >  
+> >  Communication with OP-TEE
+> >  -------------------------
+> > diff --git a/Documentation/user/security.rst b/Documentation/user/security.rst
+> > index 94184ab8e893..f8cd6bd090f2 100644
+> > --- a/Documentation/user/security.rst
+> > +++ b/Documentation/user/security.rst
+> > @@ -69,9 +69,6 @@ Firmware) should happen as early as possible, i.e., within the barebox
+> >  barebox will run with elevated permission, which greatly increases the attack
+> >  surface.
+> >  
+> > -In concrete terms, the deprecated ``CONFIG_BOOTM_OPTEE`` option should be
+> > -disabled in favor of :ref:`loading OP-TEE early <optee_early_loading>`.
+> > -
+> >  Ensuring the kernel is verified
+> >  -------------------------------
+> >  
+> > diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+> > index 6a9941275c12..f9f380444f81 100644
+> > --- a/arch/arm/cpu/start.c
+> > +++ b/arch/arm/cpu/start.c
+> > @@ -192,9 +192,6 @@ __noreturn void barebox_non_pbl_start(unsigned long membase,
+> >  
+> >  	handoff_data_set(hd);
+> >  
+> > -	if (IS_ENABLED(CONFIG_BOOTM_OPTEE))
+> > -		of_add_reserve_entry(endmem - OPTEE_SIZE, endmem - 1);
+> > -
+> >  	pr_debug("starting barebox...\n");
+> >  
+> >  	start_barebox();
+> > diff --git a/arch/arm/include/asm/armlinux.h b/arch/arm/include/asm/armlinux.h
+> > index 871664824643..83813a5dce97 100644
+> > --- a/arch/arm/include/asm/armlinux.h
+> > +++ b/arch/arm/include/asm/armlinux.h
+> > @@ -63,6 +63,6 @@ struct image_data;
+> >  
+> >  void start_linux(void *adr, int swap, unsigned long initrd_address,
+> >  		 unsigned long initrd_size, void *oftree,
+> > -		 enum arm_security_state, void *optee);
+> > +		 enum arm_security_state);
+> >  
+> >  #endif /* __ARCH_ARMLINUX_H */
+> > diff --git a/arch/arm/lib32/Makefile b/arch/arm/lib32/Makefile
+> > index 67c4f16f76ad..5598ab386052 100644
+> > --- a/arch/arm/lib32/Makefile
+> > +++ b/arch/arm/lib32/Makefile
+> > @@ -3,7 +3,6 @@
+> >  obj-$(CONFIG_ARM_LINUX)	+= armlinux.o
+> >  obj-$(CONFIG_CMD_BOOTZ)	+= bootz.o
+> >  obj-$(CONFIG_BOOTM)     += bootm.o
+> > -obj-$(CONFIG_BOOTM_OPTEE) += start-kernel-optee.o
+> >  obj-$(CONFIG_CMD_BOOTU) += bootu.o
+> >  obj-$(CONFIG_BOOT_ATAGS) += atags.o
+> >  obj-y	+= div0.o
+> > diff --git a/arch/arm/lib32/armlinux.c b/arch/arm/lib32/armlinux.c
+> > index 6890d9cb6fda..8bb3c5f9c273 100644
+> > --- a/arch/arm/lib32/armlinux.c
+> > +++ b/arch/arm/lib32/armlinux.c
+> > @@ -28,11 +28,9 @@
+> >  #include <asm/secure.h>
+> >  #include <asm/boot.h>
+> >  
+> > -void start_kernel_optee(void *optee, void *kernel, void *oftree);
+> > -
+> >  void start_linux(void *adr, int swap, unsigned long initrd_address,
+> >  		 unsigned long initrd_size, void *oftree,
+> > -		 enum arm_security_state state, void *optee)
+> > +		 enum arm_security_state state)
+> >  {
+> >  	phys_addr_t params = 0;
+> >  	unsigned architecture;
+> > @@ -79,9 +77,5 @@ void start_linux(void *adr, int swap, unsigned long initrd_address,
+> >  		__asm__ __volatile__("mcr p15, 0, %0, c1, c0" :: "r" (reg));
+> >  	}
+> >  
+> > -	if (optee && IS_ENABLED(CONFIG_BOOTM_OPTEE)) {
+> > -		start_kernel_optee(optee, adr, oftree);
+> > -	} else {
+> > -		__jump_to_linux(adr, architecture, params);
+> > -	}
+> > +	__jump_to_linux(adr, architecture, params);
+> >  }
+> > diff --git a/arch/arm/lib32/bootm.c b/arch/arm/lib32/bootm.c
+> > index e94bb979eff9..e2a80ada788b 100644
+> > --- a/arch/arm/lib32/bootm.c
+> > +++ b/arch/arm/lib32/bootm.c
+> > @@ -21,7 +21,6 @@
+> >  #include <binfmt.h>
+> >  #include <restart.h>
+> >  #include <globalvar.h>
+> > -#include <tee/optee.h>
+> >  #include <asm/byteorder.h>
+> >  #include <asm/setup.h>
+> >  #include <asm/barebox-arm.h>
+> > @@ -149,54 +148,6 @@ static int get_kernel_addresses(size_t image_size,
+> >  	return 0;
+> >  }
+> >  
+> > -static int optee_verify_header_request_region(struct image_data *data, struct optee_header *hdr)
+> > -{
+> > -	int ret;
+> > -
+> > -	ret = optee_verify_header(hdr);
+> > -	if (ret < 0) {
+> > -		pr_err("Could not verify header: %pe", ERR_PTR(ret));
+> > -		return ret;
+> > -	}
+> > -
+> > -	data->tee_res = request_sdram_region("TEE", hdr->init_load_addr_lo, hdr->init_size,
+> > -					     MEMTYPE_RESERVED, MEMATTRS_RW_DEVICE);
+> > -	if (!data->tee_res)
+> > -		return -EINVAL;
+> > -
+> > -	return 0;
+> > -}
+> > -
+> > -static int bootm_load_tee(struct image_data *data)
+> > -{
+> > -	int ret;
+> > -	struct optee_header hdr;
+> > -
+> > -	if (!data->tee)
+> > -		return 0;
+> > -
+> > -	ret = loadable_extract_into_buf(data->tee, &hdr, sizeof(hdr), 0,
+> > -					LOADABLE_EXTRACT_PARTIAL);
+> > -	if (ret < 0)
+> > -		return ret;
+> > -
+> > -	ret = optee_verify_header_request_region(data, &hdr);
+> > -	if (ret < 0)
+> > -		return ret;
+> > -
+> > -	ret = loadable_extract_into_buf(data->tee, (void *)data->tee_res->start,
+> > -					hdr.init_size, sizeof(hdr), 0);
+> > -	if (ret < 0) {
+> > -		release_region(data->tee_res);
+> > -		return ret;
+> > -	}
+> > -
+> > -	printf("Loaded TEE image to %pa, size 0x%08x\n",
+> > -	       (void *)data->tee_res->start, hdr.init_size);
+> > -
+> > -	return 0;
+> > -}
+> > -
+> >  static int __do_bootm_linux(struct image_data *data, unsigned long free_mem,
+> >  			    int swap, void *fdt)
+> >  {
+> > @@ -204,7 +155,6 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem,
+> >  	unsigned long initrd_start = 0, initrd_size = 0, initrd_end = 0;
+> >  	const struct resource *initrd_res, *sdram;
+> >  	struct resource gap;
+> > -	void *tee;
+> >  	enum arm_security_state state = bootm_arm_security_state();
+> >  	void *fdt_load_address = NULL;
+> >  	int ret;
+> > @@ -259,13 +209,6 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem,
+> >  			return PTR_ERR(fdt_res);
+> >  	}
+> >  
+> > -	if (IS_ENABLED(CONFIG_BOOTM_OPTEE)) {
+> > -		ret = bootm_load_tee(data);
+> > -		if (ret)
+> > -			return ret;
+> > -	}
+> > -
+> > -
+> >  	if (bootm_verbose(data)) {
+> >  		printf("\nStarting kernel at 0x%08lx", kernel);
+> >  		if (initrd_size)
+> > @@ -291,13 +234,8 @@ static int __do_bootm_linux(struct image_data *data, unsigned long free_mem,
+> >  	if (ret)
+> >  		return ret;
+> >  
+> > -	if (data->tee_res)
+> > -		tee = (void *)data->tee_res->start;
+> > -	else
+> > -		tee = NULL;
+> > -
+> >  	start_linux((void *)kernel, swap, initrd_start, initrd_size,
+> > -		    fdt_load_address, state, tee);
+> > +		    fdt_load_address, state);
+> >  
+> >  	restart_machine(0);
+> >  
+> > diff --git a/arch/arm/lib32/bootu.c b/arch/arm/lib32/bootu.c
+> > index 4b0f495aea5f..f7b6ccc8c651 100644
+> > --- a/arch/arm/lib32/bootu.c
+> > +++ b/arch/arm/lib32/bootu.c
+> > @@ -36,7 +36,7 @@ static int do_bootu(int argc, char *argv[])
+> >  	if (ret)
+> >  		return ret;
+> >  
+> > -	start_linux(kernel, 0, 0, 0, oftree, ARM_STATE_SECURE, NULL);
+> > +	start_linux(kernel, 0, 0, 0, oftree, ARM_STATE_SECURE);
+> >  
+> >  	return 1;
+> >  }
+> > diff --git a/arch/arm/lib32/bootz.c b/arch/arm/lib32/bootz.c
+> > index 5aa762b4912d..97607e43a645 100644
+> > --- a/arch/arm/lib32/bootz.c
+> > +++ b/arch/arm/lib32/bootz.c
+> > @@ -120,7 +120,7 @@ static int do_bootz(int argc, char *argv[])
+> >  	if (ret)
+> >  		return ret;
+> >  
+> > -	start_linux(zimage, swap, 0, 0, oftree, ARM_STATE_SECURE, NULL);
+> > +	start_linux(zimage, swap, 0, 0, oftree, ARM_STATE_SECURE);
+> >  
+> >  	return 0;
+> >  
+> > diff --git a/arch/arm/lib32/start-kernel-optee.S b/arch/arm/lib32/start-kernel-optee.S
+> > deleted file mode 100644
+> > index 261ab39ba7a3..000000000000
+> > --- a/arch/arm/lib32/start-kernel-optee.S
+> > +++ /dev/null
+> > @@ -1,16 +0,0 @@
+> > -/* SPDX-License-Identifier: GPL-2.0-only */
+> > -
+> > -#include <linux/linkage.h>
+> > -
+> > -ENTRY(start_kernel_optee)
+> > -	/*
+> > -	 * r0 = optee
+> > -	 * r1 = kernel
+> > -	 * r2 = oftree
+> > -	 */
+> > -	mov r4, r0
+> > -	mov r0, #0
+> > -	mov lr, r1
+> > -	mov r1, #0
+> > -	bx r4
+> > -ENDPROC(start_kernel_optee)
+> > diff --git a/commands/bootm.c b/commands/bootm.c
+> > index 24bce5ce6b64..9ff4b218fd1f 100644
+> > --- a/commands/bootm.c
+> > +++ b/commands/bootm.c
+> > @@ -28,7 +28,7 @@
+> >  #include <magicvar.h>
+> >  #include <asm-generic/memory_layout.h>
+> >  
+> > -#define BOOTM_OPTS_COMMON "sca:e:vo:fdt:"
+> > +#define BOOTM_OPTS_COMMON "sca:e:vo:fd"
+> >  
+> >  #ifdef CONFIG_BOOTM_INITRD
+> >  #define BOOTM_OPTS BOOTM_OPTS_COMMON "L:r:"
+> > @@ -88,9 +88,6 @@ static int do_bootm(int argc, char *argv[])
+> >  		case 'd':
+> >  			data.dryrun = 1;
+> >  			break;
+> > -		case 't':
+> > -			data.tee_file = optarg;
+> > -			break;
+> >  		default:
+> >  			return COMMAND_ERROR_USAGE;
+> >  		}
+> > @@ -129,9 +126,6 @@ BAREBOX_CMD_HELP_OPT ("-e OFFS\t","entry point to the image relative to start (0
+> >  #ifdef CONFIG_OFTREE
+> >  BAREBOX_CMD_HELP_OPT ("-o DTB\t","specify open firmware device tree")
+> >  #endif
+> > -#ifdef CONFIG_BOOTM_OPTEE
+> > -BAREBOX_CMD_HELP_OPT ("-t TEE\t","specify TEE image")
+> > -#endif
+> >  #ifdef CONFIG_BOOTM_VERBOSE
+> >  BAREBOX_CMD_HELP_OPT ("-v\t","verbose")
+> >  #endif
+> > @@ -150,9 +144,6 @@ BAREBOX_CMD_START(bootm)
+> >  #endif
+> >  #ifdef CONFIG_BOOTM_VERBOSE
+> >  					  "v"
+> > -#endif
+> > -#ifdef CONFIG_BOOTM_OPTEE
+> > -					  "t"
+> >  #endif
+> >  					  "] IMAGE")
+> >  	BAREBOX_CMD_GROUP(CMD_GRP_BOOT)
+> > diff --git a/common/bootm-android-image.c b/common/bootm-android-image.c
+> > index 6acc41c3dd66..f48c97741528 100644
+> > --- a/common/bootm-android-image.c
+> > +++ b/common/bootm-android-image.c
+> > @@ -54,7 +54,6 @@ static int do_bootm_aimage(struct image_data *img_data)
+> >  	struct bootm_data bootm_data = {
+> >  		.oftree_file = img_data->oftree_file,
+> >  		.initrd_file = img_data->initrd_file,
+> > -		.tee_file = img_data->tee_file,
+> >  		.verbose = img_data->verbose,
+> >  		.verify = img_data->verify,
+> >  		.force = img_data->force,
+> > diff --git a/common/bootm-fit.c b/common/bootm-fit.c
+> > index 995bd7181223..f7742b871785 100644
+> > --- a/common/bootm-fit.c
+> > +++ b/common/bootm-fit.c
+> > @@ -87,30 +87,6 @@ static bool loadable_from_fit_oftree(struct image_data *data,
+> >  	return true;
+> >  }
+> >  
+> > -/*
+> > - * loadable_from_fit_tee() - create tee loadable from FIT
+> > - * @data:		image data context
+> > - * @fit:		handle of FIT image
+> > - * @config:		config to look up kernel in
+> > - *
+> > - * This creates a loadable for the first trusted execution environment
+> > - * in the config.
+> > - *
+> > - * Return: true if a TEE exists or
+> > - *         false otherwise.
+> > - */
+> > -static bool loadable_from_fit_tee(struct image_data *data,
+> > -				struct fit_handle *fit,
+> > -				void *config)
+> > -{
+> > -	if (!fit_has_image(fit, config, "tee"))
+> > -		return false;
+> > -
+> > -	loadable_release(&data->tee);
+> > -	data->tee = loadable_from_fit(fit, config, "tee", 0, LOADABLE_TEE);
+> > -	return true;
+> > -}
+> > -
+> >  static bool bootm_fit_config_valid(struct fit_handle *fit,
+> >  				   struct device_node *config)
+> >  {
+> > @@ -164,6 +140,12 @@ int bootm_open_fit(struct image_data *data, bool override)
+> >  		goto err;
+> >  	}
+> >  
+> > +	if (fit_has_image(fit, fit_config, "tee")) {
+> > +		pr_err("Late-loaded tee is insecure and no longer supported\n");
+> > +		ret = -ENOSYS;
+> > +		goto err;
+> > +	}
+> > +
+> >  	loadable_from_fit_os(data, fit, fit_config);
+> >  	if (override)
+> >  		data->is_override.os = true;
+> > @@ -171,7 +153,6 @@ int bootm_open_fit(struct image_data *data, bool override)
+> >  		data->is_override.initrd = true;
+> >  	if (loadable_from_fit_oftree(data, fit, fit_config) && override)
+> >  		data->is_override.oftree = true;
+> > -	loadable_from_fit_tee(data, fit, fit_config);
+> >  
+> >  	data->kernel_type = bootm_fit_update_os_header(data);
+> >  
+> > diff --git a/common/bootm.c b/common/bootm.c
+> > index de1b87fe2072..27da1a590bf1 100644
+> > --- a/common/bootm.c
+> > +++ b/common/bootm.c
+> > @@ -95,7 +95,6 @@ void bootm_data_init_defaults(struct bootm_data *data)
+> >  	data->os_address = UIMAGE_SOME_ADDRESS;
+> >  	data->os_entry = UIMAGE_SOME_ADDRESS;
+> >  	data->oftree_file = getenv_nonempty("global.bootm.oftree");
+> > -	data->tee_file = getenv_nonempty("global.bootm.tee");
+> >  	data->os_file = getenv_nonempty("global.bootm.image");
+> >  	getenv_ul("global.bootm.image.loadaddr", &data->os_address);
+> >  	if (IS_ENABLED(CONFIG_BOOTM_INITRD)) {
+> > @@ -117,7 +116,6 @@ void bootm_data_init_defaults(struct bootm_data *data)
+> >  void bootm_data_restore_defaults(const struct bootm_data *data)
+> >  {
+> >  	globalvar_set("bootm.oftree", data->oftree_file);
+> > -	globalvar_set("bootm.tee", data->tee_file);
+> >  	globalvar_set("bootm.image", data->os_file);
+> >  	pr_setenv("global.bootm.image.loadaddr", "0x%lx", data->os_address);
+> >  	if (IS_ENABLED(CONFIG_BOOTM_INITRD)) {
+> > @@ -495,12 +493,6 @@ static int bootm_open_files(struct image_data *data)
+> >  			return ret;
+> >  	}
+> >  
+> > -	if (data->tee_file) {
+> > -		data->tee = loadable_from_file(data->tee_file, LOADABLE_TEE);
+> > -		if (IS_ERR(data->tee))
+> > -			return PTR_ERR(data->tee);
+> > -	}
+> > -
+> >  	return 0;
+> >  }
+> >  
+> > @@ -545,13 +537,16 @@ struct image_data *bootm_boot_prep(const struct bootm_data *bootm_data)
+> >  		return ERR_PTR(-ENOENT);
+> >  	}
+> >  
+> > +	if (nonempty(globalvar_get("bootm.tee"))) {
+> > +		pr_err("Late-loaded tee is insecure and no longer supported\n");
+> > +		return ERR_PTR(-ENOSYS);
+> > +	}
+> > +
+> >  	data = xzalloc(sizeof(*data));
+> >  
+> >  	bootm_image_name_and_part(bootm_data->os_file, &data->os_file, &data->os_part);
+> >  	bootm_image_name_and_part(bootm_data->oftree_file, &data->oftree_file, &data->oftree_part);
+> >  	bootm_image_name_and_part(bootm_data->initrd_file, &data->initrd_file, &data->initrd_part);
+> > -	if (bootm_data->tee_file)
+> > -		data->tee_file = xstrdup(bootm_data->tee_file);
+> >  	data->verbose = bootm_data->verbose;
+> >  	data->verify = bootm_data->verify;
+> >  	data->force = bootm_data->force;
+> > @@ -581,7 +576,6 @@ struct image_data *bootm_boot_prep(const struct bootm_data *bootm_data)
+> >  		 */
+> >  		data->oftree_file = NULL;
+> >  		data->initrd_file = NULL;
+> > -		data->tee_file = NULL;
+> >  		if (data->image_type != filetype_fit) {
+> >  			pr_err("Signed boot and image is no FIT image, aborting\n");
+> >  			ret = -EINVAL;
+> > @@ -803,11 +797,9 @@ void bootm_boot_cleanup(struct image_data *data)
+> >  		of_del_reserve_entry(data->initrd_res->start, data->initrd_res->end);
+> >  	release_sdram_region(data->initrd_res);
+> >  	release_sdram_region(data->oftree_res);
+> > -	release_sdram_region(data->tee_res);
+> >  	loadable_release(&data->oftree);
+> >  	loadable_release(&data->initrd);
+> >  	loadable_release(&data->os);
+> > -	loadable_release(&data->tee);
+> >  	if (data->of_root_node)
+> >  		of_delete_node(data->of_root_node);
+> >  
+> > @@ -816,7 +808,6 @@ void bootm_boot_cleanup(struct image_data *data)
+> >  	free(data->os_file);
+> >  	free(data->oftree_file);
+> >  	free(data->initrd_file);
+> > -	free(data->tee_file);
+> >  	free(data);
+> >  }
+> >  
+> > @@ -921,7 +912,6 @@ BAREBOX_MAGICVAR(global.bootm.image.loadaddr, "bootm default boot image loadaddr
+> >  BAREBOX_MAGICVAR(global.bootm.initrd, "bootm default initrd");
+> >  BAREBOX_MAGICVAR(global.bootm.initrd.loadaddr, "bootm default initrd loadaddr");
+> >  BAREBOX_MAGICVAR(global.bootm.oftree, "bootm default oftree");
+> > -BAREBOX_MAGICVAR(global.bootm.tee, "bootm default tee image");
+> >  BAREBOX_MAGICVAR(global.bootm.dryrun, "bootm default dryrun level");
+> >  BAREBOX_MAGICVAR(global.bootm.verify, "bootm default verify level");
+> >  #ifdef CONFIG_EFI_LOADER
+> > diff --git a/drivers/tee/optee/Kconfig b/drivers/tee/optee/Kconfig
+> > index fcaca29a5df7..73e77d0559c4 100644
+> > --- a/drivers/tee/optee/Kconfig
+> > +++ b/drivers/tee/optee/Kconfig
+> > @@ -18,7 +18,7 @@ config OPTEE
+> >  	  For more information see: https://www.op-tee.org
+> >  
+> >  	  This driver doesn't actually load OP-TEE. For that see
+> > -	  CONFIG_BOOTM_OPTEE and PBL_OPTEE.
+> > +	  CONFIG_PBL_OPTEE.
+> >  
+> >  	  If unsure, say n here.
+> >  
+> > diff --git a/include/bootm.h b/include/bootm.h
+> > index 1a556e1e95b5..946713971eb5 100644
+> > --- a/include/bootm.h
+> > +++ b/include/bootm.h
+> > @@ -24,7 +24,6 @@ struct bootm_data {
+> >  	const char *os_file;
+> >  	const char *initrd_file;
+> >  	const char *oftree_file;
+> > -	const char *tee_file;
+> >  	const char *root_dev;
+> >  	const char *root_param;
+> >  	int verbose;
+> > @@ -130,11 +129,6 @@ struct image_data {
+> >  	 * it.
+> >  	 */
+> >  	void *os_header;
+> > -	char *tee_file;
+> > -	struct resource *tee_res;
+> > -
+> > -	/* Future default case: A generic loadable object */
+> > -	struct loadable *tee;
+> >  
+> >  	/* Type of OS image, e.g. filetype_fit or the same as kernel_type */
+> >  	enum filetype image_type;
+> > diff --git a/include/loadable.h b/include/loadable.h
+> > index 79b1579be291..9cc89ea4581c 100644
+> > --- a/include/loadable.h
+> > +++ b/include/loadable.h
+> > @@ -17,14 +17,12 @@ struct loadable;
+> >   * @LOADABLE_KERNEL: kernel image
+> >   * @LOADABLE_INITRD: initial ramdisk
+> >   * @LOADABLE_FDT: flattened device tree
+> > - * @LOADABLE_TEE: trusted execution environment
+> >   */
+> >  enum loadable_type {
+> >  	LOADABLE_UNSPECIFIED,
+> >  	LOADABLE_KERNEL,
+> >  	LOADABLE_INITRD,
+> >  	LOADABLE_FDT,
+> > -	LOADABLE_TEE,
+> >  };
+> >  
+> >  /**
+> > @@ -130,7 +128,7 @@ struct loadable_ops {
+> >  /**
+> >   * struct loadable - lazy-loadable boot component
+> >   * @name: descriptive name for debugging
+> > - * @type: type of component (kernel, initrd, fdt, tee)
+> > + * @type: type of component (kernel, initrd, fdt)
+> >   * @ops: operations for this loadable
+> >   * @priv: format-specific private data
+> >   * @info: cached metadata populated by get_info()
+> > @@ -139,7 +137,7 @@ struct loadable_ops {
+> >   * @chained_loadables: list of additional loadables chained to this one
+> >   * @list: list node for chained_loadables
+> >   *
+> > - * Represents something that can be loaded to RAM (kernel, initrd, fdt, tee).
+> > + * Represents something that can be loaded to RAM (kernel, initrd, fdt).
+> >   * Metadata can be queried without loading. Actual loading happens on extract
+> >   * or via mmap.
+> >   */
+> > diff --git a/lib/loadable.c b/lib/loadable.c
+> > index 65121a7dbf90..8c016c125d87 100644
+> > --- a/lib/loadable.c
+> > +++ b/lib/loadable.c
+> > @@ -31,8 +31,6 @@ const char *loadable_type_tostr(enum loadable_type type)
+> >  		return "initrd";
+> >  	case LOADABLE_FDT:
+> >  		return "fdt";
+> > -	case LOADABLE_TEE:
+> > -		return "tee";
+> >  	default:
+> >  		return NULL;
+> >  	}
+> > diff --git a/security/Kconfig b/security/Kconfig
+> > index b14803348b68..cb5cc2b92bc2 100644
+> > --- a/security/Kconfig
+> > +++ b/security/Kconfig
+> > @@ -156,24 +156,6 @@ config OPTEE_SHM_SIZE
+> >  	  mode supported by barebox anyway, but support needs to be enabled
+> >  	  in OP-TEE at compile-time.
+> >  
+> > -config BOOTM_OPTEE
+> > -	bool
+> > -	prompt "support booting OP-TEE"
+> > -	depends on BOOTM && ARM32
+> > -	select HAVE_OPTEE
+> > -	select HAS_INSECURE_DEFAULTS
+> > -	help
+> > -	  OP-TEE is a trusted execution environment (TEE). With this option
+> > -	  enabled barebox supports starting optee_os as part of the bootm command.
+> > -	  Instead of the kernel bootm starts the optee_os binary which then starts
+> > -	  the kernel in nonsecure mode. Pass the optee_os binary with the -t option
+> > -	  or in the global.bootm.tee variable.
+> > -
+> > -	  This mode of late loading OP-TEE just before the kernel is deprecated
+> > -	  in favor of early loading OP-TEE in the PBL (CONFIG_PBL_OPTEE).
+> > -	  Early-loading greatly reduces the attack surface and is the only mode
+> > -	  supported outside of ARMv7.
+> > -
+> >  config PBL_OPTEE
+> >  	bool "Enable OP-TEE early start"
+> >  	depends on ARM
+> 
+> -- 
+> Pengutronix e.K.                  |                             |
+> Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+> 
+> 
+> 
 
-diff --git a/efi/payload/bootm.c b/efi/payload/bootm.c
-index 2f9cc3cbf76b..094b2e9c6466 100644
---- a/efi/payload/bootm.c
-+++ b/efi/payload/bootm.c
-@@ -111,27 +111,59 @@ static int efi_load_ramdisk(struct image_data *data,
- static int efi_load_fdt(struct image_data *data, void **fdt)
- {
- 	efi_physical_addr_t mem;
-+	struct fdt_header *oftree;
-+	bool is_loadable = true;
- 	efi_status_t efiret;
-+	size_t size;
- 	void *vmem;
--	size_t bufsize = DIV_ROUND_UP(SZ_2M, EFI_PAGE_SIZE);
--	ssize_t ret;
-+	int ret;
-+
-+	if (!data->oftree) {
-+		/*
-+		 * No devicetree requested; fall back to the one provided by
-+		 * firmware (if any) so barebox's fixups still get applied to it.
-+		 */
-+		oftree = efi_fdt_find(&size);
-+		is_loadable = false;
-+	} else {
-+		oftree = loadable_extract(data->oftree, &size) ?: ERR_PTR(-ENODATA);
-+		if (IS_ERR(oftree))
-+			pr_warn("Failed to extract oftree\n");
-+	}
- 
--	if (!data->oftree)
-+	if (IS_ERR(oftree))
- 		return 0;
- 
-+	data->of_root_node = of_unflatten_dtb(oftree, size);
-+	if (IS_ERR(data->of_root_node)) {
-+		data->of_root_node = NULL;
-+		pr_err("unable to unflatten devicetree\n");
-+		return -EINVAL;
-+	}
-+
-+	if (is_loadable)
-+		free(oftree);
-+
-+	bootm_set_pending_oftree_overlays(data->oftree);
-+	of_fix_tree(data->of_root_node);
-+	bootm_clear_pending_oftree_overlays();
-+
-+	oftree = of_flatten_dtb(data->of_root_node);
-+	if (!oftree)
-+		return -EINVAL;
-+
-+	size = DIV_ROUND_UP(fdt_totalsize(oftree), EFI_PAGE_SIZE);
- 	efiret = BS->allocate_pages(EFI_ALLOCATE_ANY_PAGES, EFI_ACPI_RECLAIM_MEMORY,
--				    bufsize, &mem);
-+				    size, &mem);
- 	if (EFI_ERROR(efiret)) {
- 		pr_err("Failed to allocate pages for FDT: %s\n", efi_strerror(efiret));
--		return -efi_errno(efiret);
-+		ret = -efi_errno(efiret);
-+		goto free_oftree;
- 	}
- 
- 	vmem = efi_phys_to_virt(mem);
- 
--	ret = loadable_extract_into_buf_full(data->oftree, vmem,
--					     bufsize * EFI_PAGE_SIZE);
--	if (ret < 0)
--		goto free_efi_mem;
-+	memcpy(vmem, oftree, fdt_totalsize(oftree));
- 
- 	efiret = BS->install_configuration_table(&efi_fdt_guid, vmem);
- 	if (EFI_ERROR(efiret)) {
-@@ -140,11 +172,14 @@ static int efi_load_fdt(struct image_data *data, void **fdt)
- 		goto free_efi_mem;
- 	}
- 
-+	free(oftree);
- 	*fdt = vmem;
- 	return 0;
- 
- free_efi_mem:
--	BS->free_pages(mem, bufsize);
-+	BS->free_pages(mem, size);
-+free_oftree:
-+	free(oftree);
- 	return ret;
- }
- 
-@@ -153,8 +188,9 @@ static void efi_unload_fdt(void *fdt)
- 	if (!fdt)
- 		return;
- 
-+	size_t size = DIV_ROUND_UP(fdt_totalsize(fdt), EFI_PAGE_SIZE);
- 	BS->install_configuration_table(&efi_fdt_guid, NULL);
--	BS->free_pages(efi_virt_to_phys(fdt), DIV_ROUND_UP(SZ_2M, EFI_PAGE_SIZE));
-+	BS->free_pages(efi_virt_to_phys(fdt), size);
- }
- 
- static int do_bootm_efi_stub(struct image_data *data)
-diff --git a/efi/payload/fdt.c b/efi/payload/fdt.c
-index 9cdb32370f22..80e6a1fcec21 100644
---- a/efi/payload/fdt.c
-+++ b/efi/payload/fdt.c
-@@ -9,14 +9,14 @@
- #include <efi/payload/init.h>
- #include <efi/guid.h>
- 
--static int efi_fdt_probe(void)
-+void *efi_fdt_find(size_t *size)
- {
- 	struct efi_config_table *ect;
-+	*size = 0;
- 
- 	for_each_efi_config_table(ect) {
- 		struct fdt_header *oftree;
--		u32 magic, size;
--		int ret;
-+		u32 magic;
- 
- 		if (efi_guidcmp(ect->guid, EFI_DEVICE_TREE_GUID))
- 			continue;
-@@ -26,17 +26,31 @@ static int efi_fdt_probe(void)
- 
- 		if (magic != FDT_MAGIC) {
- 			pr_err("table has invalid magic 0x%08x\n", magic);
--			return -EILSEQ;
-+			return ERR_PTR(-EILSEQ);
- 		}
- 
--		size = be32_to_cpu(oftree->totalsize);
--		ret = write_file("/efi.dtb", oftree, size);
--		if (ret) {
--			pr_err("error saving /efi.dtb: %pe\n", ERR_PTR(ret));
--			return ret;
--		}
-+		*size = fdt_totalsize(oftree);
-+		return oftree;
-+	}
-+
-+	pr_warn("No FDT found in EFI configuration tables\n");
-+	return ERR_PTR(-ENODATA);
-+}
- 
-+static int efi_fdt_probe(void)
-+{
-+	struct fdt_header *oftree;
-+	size_t size;
-+	int ret;
-+
-+	oftree = efi_fdt_find(&size);
-+	if (IS_ERR(oftree) || !size)
- 		return 0;
-+
-+	ret = write_file("/efi.dtb", oftree, size);
-+	if (ret) {
-+		pr_err("error saving /efi.dtb: %pe\n", ERR_PTR(ret));
-+		return ret;
- 	}
- 
- 	return 0;
-diff --git a/include/efi/payload.h b/include/efi/payload.h
-index 381598ba59f2..8dc09dd5acdc 100644
---- a/include/efi/payload.h
-+++ b/include/efi/payload.h
-@@ -34,4 +34,14 @@ __attribute__((noreturn)) void efi_main(efi_handle_t, struct efi_system_table *)
- 	     t - efi_sys_table->tables < efi_sys_table->nr_tables; \
- 	     t++)
- 
-+#if IS_ENABLED(CONFIG_OFTREE)
-+void *efi_fdt_find(size_t *size);
-+#else
-+static inline void *efi_fdt_find(size_t *size)
-+{
-+	*size = 0;
-+	return NULL;
-+}
-+#endif
-+
- #endif
+-- 
+#gernperDu 
+#CallMeByMyFirstName
+
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-9    |
 
 
