@@ -1,68 +1,66 @@
 Delivery-date: Mon, 24 Aug 2026 09:31:20 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wyP9L-006cj2-10
+	id 1wyP9L-006cjN-2g
 	for lore@lore.pengutronix.de;
 	Mon, 24 Aug 2026 09:31:20 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 9A496201B02
-	for <lore@pengutronix.de>; Mon, 24 Aug 2026 09:31:19 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 01B4E200444
+	for <lore@pengutronix.de>; Mon, 24 Aug 2026 09:31:18 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=OMTdYqRM;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=0ubwSBQ+;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5Oq6JWXCsa/oHjoKzWlvFn3/Jv+r3AMYTTefCI/dm+s=; b=OMTdYqRMLixJvB66MyDrk8TWCo
-	+J89hNPlWDyP3JXauDrpW1RclBiQgjaa/SHA2dilTeYgjOr/2hg7DSTir3ASsRYVc5PH61DFZIhxW
-	sqkPeZRibSP9Ft7Uj8fIG+9uLD11ZaibcGlEIphpVQVY6nrSeBfT785tNdtcLEzaiRNIcrz5jZvD9
-	GZ994Sva29N/4nIDWt/yfmPO09B6Zjw4b9a0m2pwpP1W4KoJdTvwgswrJyr6/ih5gSj1G6bAGwZ1X
-	gizW8e/Q1KbWrZf1mFr/4LvwfrfAXGYj8c4szsegcKImmDIHzG2ZRC3arcn7WbRnIikM80G58UPka
-	8QvcHSpg==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=Dru5i68eo/vrliixlCKuyO6lIUYODU4SGqfmMjmfD9k=; b=0ubwSBQ+o+5A3gu4xegBnlX60R
+	GcrUnwzl81/CFdGmOyNEh1RdgET2KnB1LTtzx4mhgJTYP52alcoAioXXhFVdvN2hlyR4jBLRufw+/
+	kr83BKEYsy13OlfYHkaC9gzETqpfEmL1wODj+/LNm7prOUIpVFFQqiSY0CTmcNV0DHdlRuaQpiMCA
+	V3ewS8vAGthiRzYuZIaYVjc83v4uAzvDltUh8iU9n92t26W3yymIswRQNnBdzuX8F8CejtEhlgIyt
+	3t61N6PyUK96D2sTJ9uuyqoJiw3qGezZ9YKmdQH8k173hYteUMHlmHsf+YvM1vaDgxlsHE4TNSQXf
+	jyb0Rdvw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyP8H-0000000G55J-1Lgu;
-	Mon, 24 Aug 2026 07:30:13 +0000
+	id 1wyP8I-0000000G55n-2DN9;
+	Mon, 24 Aug 2026 07:30:14 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyP8E-0000000G53p-2Pts
+	id 1wyP8E-0000000G53n-2PPq
 	for barebox@lists.infradead.org;
-	Mon, 24 Aug 2026 07:30:11 +0000
+	Mon, 24 Aug 2026 07:30:12 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id E2F1D201AD4;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id DF86820190E;
 	Mon, 24 Aug 2026 09:30:08 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wyP8C-00346W-2V;
+	id 1wyP8C-00346V-2L;
 	Mon, 24 Aug 2026 09:30:08 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wyP8C-0000000Di4D-2plm;
+	id 1wyP8C-0000000Di4D-2dpD;
 	Mon, 24 Aug 2026 09:30:08 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Subject: [PATCH 2/4] efi: loader: map code-type page allocations executable
-Date: Mon, 24 Aug 2026 09:29:52 +0200
-Message-ID: <20260824073005.3267576-2-a.fatoum@pengutronix.de>
+Subject: [PATCH 1/4] ARM: lds: place EFI runtime code and data in separate PT_LOAD segments
+Date: Mon, 24 Aug 2026 09:29:51 +0200
+Message-ID: <20260824073005.3267576-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260824073005.3267576-1-a.fatoum@pengutronix.de>
-References: <20260824073005.3267576-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260824_003010_787522_5DB9FE8E 
-X-CRM114-Status: GOOD (  14.70  )
+X-CRM114-CacheID: sfid-20260824_003010_788228_83E3BC3D 
+X-CRM114-Status: GOOD (  10.60  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -70,10 +68,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> PE images are loaded
-    into EFI_LOADER_CODE pages allocated from conventional memory, which mmu_remap_memory_banks()
-    would map non-executable. The Linux arm64 EFI stub additionally relocates
-    the kernel [...] 
+ Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> EFI runtime services
+    support was added before barebox proper was made an ELF and back then it
+   proved too cumbersome to have two non-adjacent text areas for each of the
+   boot-time and run-time portions. 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -98,7 +96,7 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: twaw78maryy7yc9x8md9qwwz461om4oe
+X-Stat-Signature: frhygjr9uzguwyszc9osfmgna3jafc63
 X-Spamd-Result: default: False [-6.21 / 15.00];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
@@ -130,102 +128,145 @@ X-Spamd-Result: default: False [-6.21 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 9A496201B02
+X-Rspamd-Queue-Id: 01B4E200444
 
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-PE images are loaded into EFI_LOADER_CODE pages allocated from
-conventional memory, which mmu_remap_memory_banks() would map
-non-executable. The Linux arm64 EFI stub additionally relocates the
-kernel into an EFI_LOADER_CODE allocation of its own and jumps to it,
-so fixing this up at StartImage time only would not be enough.
+EFI runtime services support was added before barebox proper was made an
+ELF and back then it proved too cumbersome to have two non-adjacent text
+areas for each of the boot-time and run-time portions.
 
-Drop the erroneous comment and map executable pages RWX before handing
-them out and revert them to regular cached memory when they are freed.
+Now that barebox proper is an ELF, let's move the EFI runtime data and
+text each into its own segment with the appropriate segment flags, so
+pbl_mmu_setup_from_elf() can apply the correct protections.
+
+The runtime sections are also moved between rodata and data rather than
+at the end of the image: sections in a PT_LOAD must be contiguous, so in
+the old position .bss would have had to move into the efirt_data
+segment, inflating its p_memsz by all of barebox's bss, which would make
+a BSS worth of memory unusable by the running kernel.
+
+This does not yet introduce a functional change:
+without ARM_MMU_PERMISSIONS, all cached mappings remain RWX.
 
 Assisted-by: Claude:fable-5
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- efi/loader/boot.c   |  2 --
- efi/loader/memory.c | 30 ++++++++++++++++++++++++++++++
- 2 files changed, 30 insertions(+), 2 deletions(-)
+ arch/arm/lib32/barebox.lds.S      | 12 +++++++++---
+ arch/arm/lib64/barebox.lds.S      | 12 +++++++++---
+ include/asm-generic/barebox.lds.h |  6 ++++--
+ 3 files changed, 22 insertions(+), 8 deletions(-)
 
-diff --git a/efi/loader/boot.c b/efi/loader/boot.c
-index 53c8fc5ff938..d361a71a4dae 100644
---- a/efi/loader/boot.c
-+++ b/efi/loader/boot.c
-@@ -3132,8 +3132,6 @@ efi_status_t __efi_start_image(efi_handle_t image_handle,
- 
- 	pr_info("Starting EFI payload at %p\n", entry);
- 
--	// FIXME: we need the below if we enable CONFIG_ARM_MMU_PERMISSIONS...
--	// remap_range(info->image_base, info->image_size, MAP_ARCH(2));
- 	sync_caches_for_execution();
- 
- 	efi_set_variable_usec("LoaderTimeExecUSec", &efi_systemd_vendor_guid,
-diff --git a/efi/loader/memory.c b/efi/loader/memory.c
-index 8931cd1bab52..d35f124d381e 100644
---- a/efi/loader/memory.c
-+++ b/efi/loader/memory.c
-@@ -7,14 +7,35 @@
- #include <linux/sprintf.h>
- #include <efi/loader.h>
- #include <efi/error.h>
-+#include <efi/mode.h>
- #include <init.h>
- #include <memory.h>
-+#include <mmu.h>
- #include <linux/list_sort.h>
- #include <linux/sizes.h>
- #include <dma.h>
- 
- efi_uintn_t efi_memory_map_key;
- 
-+/*
-+ * EFI images and the code pages they allocate expect to be mapped RWX,
-+ * matching the attributes we advertise in the memory map for the code
-+ * memory types. The page tables set up from the ELF segments only cover
-+ * the barebox image itself, so allocations from conventional memory are
-+ * mapped non-executable when ARM_MMU_PERMISSIONS is enabled.
-+ */
-+static void efi_remap_pages(u64 addr, size_t size, maptype_t map_type)
-+{
-+	if (!arch_can_remap())
-+		return;
-+
-+	/* EFI_ALLOCATE_ADDRESS may pass through an unaligned address */
-+	if (!IS_ALIGNED(addr, PAGE_SIZE) || !IS_ALIGNED(size, PAGE_SIZE))
-+		return;
-+
-+	remap_range((void *)(uintptr_t)addr, size, map_type);
-+}
-+
- static efi_status_t find_pages_max(struct list_head *banks, size_t npages, size_t *page)
- {
- 	struct memory_bank *bank;
-@@ -199,6 +220,12 @@ efi_status_t efi_allocate_pages(enum efi_allocate_type type,
- 
- 	res->flags |= IORESOURCE_EFI_ALLOC;
- 
-+	if (memory_type == EFI_LOADER_CODE ||
-+	    memory_type == EFI_BOOT_SERVICES_CODE ||
-+	    memory_type == EFI_RUNTIME_SERVICES_CODE)
-+		efi_remap_pages(new_addr, npages << EFI_PAGE_SHIFT,
-+				MAP_CACHED_RWX);
-+
- 	*memory = new_addr;
- 	return EFI_SUCCESS;
+diff --git a/arch/arm/lib32/barebox.lds.S b/arch/arm/lib32/barebox.lds.S
+index 02db3b9790b7..e5ef2d045218 100644
+--- a/arch/arm/lib32/barebox.lds.S
++++ b/arch/arm/lib32/barebox.lds.S
+@@ -13,6 +13,10 @@ PHDRS
+ 	text PT_LOAD FLAGS(5);		/* PF_R | PF_X */
+ 	rodata PT_LOAD FLAGS(4);	/* PF_R */
+ 	dynamic PT_DYNAMIC FLAGS(4);	/* PF_R */
++#ifdef CONFIG_EFI_RUNTIME
++	efirt_text PT_LOAD FLAGS(5);	/* PF_R | PF_X */
++	efirt_data PT_LOAD FLAGS(6);	/* PF_R | PF_W */
++#endif
+ 	data PT_LOAD FLAGS(6);		/* PF_R | PF_W */
  }
-@@ -301,6 +328,9 @@ efi_status_t efi_free_pages(uint64_t memory, size_t pages)
- 	if (nfreed <= 0)
- 		return EFI_INVALID_PARAMETER;
  
-+	/* Revert a possible executable mapping of code-type allocations */
-+	efi_remap_pages(memory, size, MAP_CACHED);
+@@ -63,6 +67,9 @@ SECTIONS
+ 
+ 	__end_rodata = .;
+ 	_etext = .;
 +
- 	++efi_memory_map_key;
++	BAREBOX_EFI_RUNTIME
++
+ 	_sdata = .;
  
- 	return EFI_SUCCESS;
+ 	.data : { *(.data*) } :data
+@@ -73,8 +80,6 @@ SECTIONS
+ 
+ 	_edata = .;
+ 
+-	BAREBOX_EFI_RUNTIME
+-
+ 	.image_end : { *(.__image_end) } :data
+ 
+ 	. = ALIGN(4);
+@@ -94,4 +99,5 @@ SECTIONS
+ 	_barebox_image_size = __bss_start;
+ }
+ 
+-NOCROSSREFS_FROM(.efi_runtime)
++NOCROSSREFS_FROM(.efi_runtime.text)
++NOCROSSREFS_FROM(.efi_runtime.data)
+diff --git a/arch/arm/lib64/barebox.lds.S b/arch/arm/lib64/barebox.lds.S
+index 1dddd6d1a942..a06a078d4142 100644
+--- a/arch/arm/lib64/barebox.lds.S
++++ b/arch/arm/lib64/barebox.lds.S
+@@ -12,6 +12,10 @@ PHDRS
+ 	text PT_LOAD FLAGS(5);		/* PF_R | PF_X */
+ 	rodata PT_LOAD FLAGS(4);	/* PF_R */
+ 	dynamic PT_DYNAMIC FLAGS(4);	/* PF_R */
++#ifdef CONFIG_EFI_RUNTIME
++	efirt_text PT_LOAD FLAGS(5);	/* PF_R | PF_X */
++	efirt_data PT_LOAD FLAGS(6);	/* PF_R | PF_W */
++#endif
+ 	data PT_LOAD FLAGS(6);		/* PF_R | PF_W */
+ }
+ 
+@@ -43,14 +47,15 @@ SECTIONS
+ 
+ 	__end_rodata = .;
+ 	_etext = .;
++
++	BAREBOX_EFI_RUNTIME
++
+ 	_sdata = .;
+ 
+ 	.data : { *(.data*) } :data
+ 
+ 	_edata = .;
+ 
+-	BAREBOX_EFI_RUNTIME
+-
+ 	.image_end : { *(.__image_end) } :data
+ 
+ 	. = ALIGN(4);
+@@ -61,4 +66,5 @@ SECTIONS
+ 	_barebox_image_size = __bss_start;
+ }
+ 
+-NOCROSSREFS_FROM(.efi_runtime)
++NOCROSSREFS_FROM(.efi_runtime.text)
++NOCROSSREFS_FROM(.efi_runtime.data)
+diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
+index 008217e808cb..c672894ad502 100644
+--- a/include/asm-generic/barebox.lds.h
++++ b/include/asm-generic/barebox.lds.h
+@@ -157,7 +157,7 @@
+ #ifdef CONFIG_EFI_RUNTIME
+ #define BAREBOX_EFI_RUNTIME			\
+ 	. = ALIGN(4096);			\
+-	.efi_runtime : {			\
++	.efi_runtime.text : {			\
+ 		__efi_runtime_start = .;	\
+ 		__efi_runtime_text_start = .;	\
+ 		*(.efi_runtime.text*)		\
+@@ -166,12 +166,14 @@
+ 		*(.efi_runtime.rodata*)		\
+ 		__efi_runtime_rodata_stop = .;	\
+ 		. = ALIGN(4096);		\
++	} :efirt_text				\
++	.efi_runtime.data : {			\
+ 		__efi_runtime_data_start = .;	\
+ 		*(.efi_runtime.data*)		\
+ 		*(.efi_runtime.bss*)		\
+ 		__efi_runtime_data_stop = .;	\
+ 		__efi_runtime_stop = .;		\
+-	}					\
++	} :efirt_data				\
+ 	. = ALIGN(4096);
+ #else
+ #define BAREBOX_EFI_RUNTIME
 -- 
 2.47.3
 
