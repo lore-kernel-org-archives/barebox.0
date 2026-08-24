@@ -1,16 +1,16 @@
-Delivery-date: Mon, 24 Aug 2026 13:57:50 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Mon, 24 Aug 2026 14:01:33 +0200
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wyTJF-006gmX-2n
+	id 1wyTMq-006gp6-19
 	for lore@lore.pengutronix.de;
-	Mon, 24 Aug 2026 13:57:50 +0200
+	Mon, 24 Aug 2026 14:01:33 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 25D5C201917
-	for <lore@pengutronix.de>; Mon, 24 Aug 2026 13:57:50 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id EB9FD200062
+	for <lore@pengutronix.de>; Mon, 24 Aug 2026 14:01:32 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=KrslAHCN;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=Mqr9rh3D;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,50 +19,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=m6kwKtXlxgFq5QCaiFcqQpLQ/WpLrZsHUfMs5j9MZhU=; b=KrslAHCNr01KPerLLhLgfjhGaQ
-	UtnCOXaKJMFiwezf5oaeaB4/h83FbVbPcZeMhSDQxAn5UMCAxvXixzqX56NXN2RUWbwvSCAj9v52C
-	hD9CMbrja2YNZB5gVXoXeQJCimwE0wDhgU93G01AX++QrWeZBqznMhuIxbVO0E4376V6RB+308GfO
-	u8UZrZRo+j/e4zYSHRdbDg9JHovxIvrJljuspEBWsJmSgglc96tJhgVkixLFhdwq7jETS1wlDltQY
-	KoVygVr830IiqOjnhV0tGTdT+X8jnL3Fpi1cClq3uOmvEFMxuFadyEfZex/fzp6r4sA+Tm5kraIoe
-	yenLvbCw==;
+	bh=Zar07Ml9BFhGv+fGsAWDQS3TtI4XJthDcoKVzTWT1mM=; b=Mqr9rh3DZnF/hWy6fMLUYgmCxl
+	WG4kQ+vbyXUax0ymxWJtZlRZaiNxXc0Sdcp/MspR8dZ/sHS7L/8OofUJ/cHiMRdd6/Zw2XQvNWN4d
+	OguXg84tEJNayGCl90kI4q0qk2CBvjhQFrv4paAUzCPNrJ5PYe9iUQIrgx5e7R2jfPXjlcxqEwJUz
+	wwg10cME2RmrBnBgWRG8i1nLy0LEZGw/hSG0eadZE6hICh4uVuJTLrp5rABbcdKyqRe+3F3wEUd+u
+	jYWe+SFHsPgafin6fMyszqb3WKtFZG/oIUsp6cbrFYa0nLSJiw0ZtrCF7EGoq2wgmO1p5xBHMMRGX
+	M2N0G3sg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyTI0-0000000GYbP-1N8Y;
-	Mon, 24 Aug 2026 11:56:32 +0000
+	id 1wyTLq-0000000GZ3t-3Huv;
+	Mon, 24 Aug 2026 12:00:30 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyTHu-0000000GYZL-2y6l
+	id 1wyTLl-0000000GZ1D-0wLu
 	for barebox@lists.infradead.org;
-	Mon, 24 Aug 2026 11:56:30 +0000
+	Mon, 24 Aug 2026 12:00:28 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 6DD622010D6;
-	Mon, 24 Aug 2026 13:56:24 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 94D44201CD0;
+	Mon, 24 Aug 2026 14:00:23 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wyTHs-00367y-18;
-	Mon, 24 Aug 2026 13:56:24 +0200
+	id 1wyTLj-00368b-1S;
+	Mon, 24 Aug 2026 14:00:23 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wyTHs-0000000DTPB-0oau;
-	Mon, 24 Aug 2026 13:56:24 +0200
+	id 1wyTLj-0000000DyeC-1NXs;
+	Mon, 24 Aug 2026 14:00:23 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH 3/4] commands: fix wrong and incomplete help texts
-Date: Mon, 24 Aug 2026 13:55:33 +0200
-Message-ID: <20260824115619.3148656-3-a.fatoum@pengutronix.de>
+Subject: [PATCH master 4/4] of: fdt: bound node nesting depth in __of_unflatten_dtb
+Date: Mon, 24 Aug 2026 13:59:58 +0200
+Message-ID: <20260824120022.3299742-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260824115619.3148656-1-a.fatoum@pengutronix.de>
-References: <20260824115619.3148656-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20260824120022.3299742-1-a.fatoum@pengutronix.de>
+References: <20260824120022.3299742-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260824_045628_059156_9164CF61 
-X-CRM114-Status: GOOD (  12.48  )
+X-CRM114-CacheID: sfid-20260824_050026_233336_DC1303BC 
+X-CRM114-Status: GOOD (  12.02  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -70,11 +70,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Several built-in help texts do not describe what the command
-    actually does or misdocument its options: * bootrom and fiptool carried a
-    description copy-pasted from ls, claiming to "list information about the
-   specified files or directories" * devinfo promised "default information" where
-    detailed informa [...] 
+ Content preview:  of_new_node() builds each node's full_name by concatenating
+    the parent's full path, so unflattening a chain of N nested nodes costs O(N^2)
+    time and memory. A crafted FIT/DTB with hundreds of thousands [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -99,9 +97,9 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: fcs7sh5fgr4gjmckfxunasyrxk87zumu
+X-Stat-Signature: 8s6jdr6kn9q3ro91i7o1yfennnft5i5i
 X-Spamd-Result: default: False [-6.21 / 15.00];
-	BAYES_HAM(-3.00)[100.00%];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	MID_CONTAINS_FROM(1.00)[];
@@ -130,111 +128,72 @@ X-Spamd-Result: default: False [-6.21 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 25D5C201917
+X-Rspamd-Queue-Id: EB9FD200062
 
-Several built-in help texts do not describe what the command actually
-does or misdocument its options:
+of_new_node() builds each node's full_name by concatenating the parent's
+full path, so unflattening a chain of N nested nodes costs O(N^2) time and
+memory. A crafted FIT/DTB with hundreds of thousands of nested nodes (e.g.
+the BRLY-2026-042 U-Boot PoC, 500k deep) therefore drives barebox into
+multi-gigabyte allocations and minutes of CPU before failing, a denial of
+service, even though the iterative walk here never overflows the stack.
 
-* bootrom and fiptool carried a description copy-pasted from ls,
-  claiming to "list information about the specified files or
-  directories"
-* devinfo promised "default information" where detailed information is
-  meant
-* dmesg documented the vdebug loglevel as 7 when it is 8
-* pwm did not document its -F option at all
-* spi did not show that -c takes a chip select argument
-
-Correct the descriptions so that both the shell help and the generated
-command reference describe the actual behavior.
+Reject blobs nested deeper than FDT_MAX_DEPTH (64, as Linux's own
+drivers/of/fdt.c uses) by tracking depth across FDT_BEGIN_NODE/FDT_END_NODE.
+Real device trees are only a handful of levels deep, so the limit is
+generous for legitimate input while cutting the pathological case off early.
 
 Assisted-by: Claude:fable-5
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-imx/bootrom-cmd.c | 2 +-
- commands/devinfo.c              | 2 +-
- commands/dmesg.c                | 2 +-
- commands/fiptool.c              | 2 +-
- commands/pwm.c                  | 1 +
- commands/spi.c                  | 2 +-
- 6 files changed, 6 insertions(+), 5 deletions(-)
+ drivers/of/fdt.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/arch/arm/mach-imx/bootrom-cmd.c b/arch/arm/mach-imx/bootrom-cmd.c
-index afdf1302254b..7f569f295595 100644
---- a/arch/arm/mach-imx/bootrom-cmd.c
-+++ b/arch/arm/mach-imx/bootrom-cmd.c
-@@ -212,7 +212,7 @@ static int do_bootrom(int argc, char *argv[])
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index 1648f4c2d945..b5b64cd06b8d 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -173,6 +173,12 @@ static int fdt_parse_header(const struct fdt_header *fdt, size_t fdt_size,
+ 	return 0;
  }
  
- BAREBOX_CMD_HELP_START(bootrom)
--BAREBOX_CMD_HELP_TEXT("List information about the specified files or directories.")
-+BAREBOX_CMD_HELP_TEXT("Decode and print the BootROM event log on i.MX8M.")
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("Options:")
- BAREBOX_CMD_HELP_OPT ("-l",  "list event log")
-diff --git a/commands/devinfo.c b/commands/devinfo.c
-index 20f21a95b3e7..7bce71c8c92a 100644
---- a/commands/devinfo.c
-+++ b/commands/devinfo.c
-@@ -144,7 +144,7 @@ BAREBOX_CMD_HELP_TEXT("If called without arguments, devinfo shows a summary of t
- BAREBOX_CMD_HELP_TEXT("devices.")
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("If called with a device path being the argument, devinfo shows more")
--BAREBOX_CMD_HELP_TEXT("default information about this device and its parameters.")
-+BAREBOX_CMD_HELP_TEXT("detailed information about this device and its parameters.")
- BAREBOX_CMD_HELP_END
++/*
++ * Maximum node nesting depth we are willing to unflatten.
++ * Matches the limit Linux uses in its own drivers/of/fdt.c.
++ */
++#define FDT_MAX_DEPTH	64
++
+ /**
+  * of_unflatten_dtb - unflatten a dtb binary blob
+  * @infdt - the fdt blob to unflatten
+@@ -196,6 +202,7 @@ static struct device_node *__of_unflatten_dtb(const void *infdt, int size,
+ 	struct fdt_header f;
+ 	int ret;
+ 	int maxlen;
++	unsigned int depth = 0;
+ 	const struct fdt_header *fdt = infdt;
  
+ 	ret = fdt_parse_header(infdt, size, &f);
+@@ -247,6 +254,12 @@ static struct device_node *__of_unflatten_dtb(const void *infdt, int size,
+ 				goto err;
+ 			}
  
-diff --git a/commands/dmesg.c b/commands/dmesg.c
-index b405cf4f1d13..0ad0d199eb93 100644
---- a/commands/dmesg.c
-+++ b/commands/dmesg.c
-@@ -171,7 +171,7 @@ static int do_dmesg(int argc, char *argv[])
++			if (++depth > FDT_MAX_DEPTH) {
++				pr_err("unflatten: node nesting too deep\n");
++				ret = -EINVAL;
++				goto err;
++			}
++
+ 			if (!node) {
+ 				/* The root node must have an empty name */
+ 				if (*pathp) {
+@@ -272,6 +285,7 @@ static struct device_node *__of_unflatten_dtb(const void *infdt, int size,
+ 				goto err;
+ 			}
  
- BAREBOX_CMD_HELP_START(dmesg)
- BAREBOX_CMD_HELP_TEXT("print or control the barebox message buffer")
--BAREBOX_CMD_HELP_TEXT("Loglevels can be specified as number (0=emerg, 7=vdebug)")
-+BAREBOX_CMD_HELP_TEXT("Loglevels can be specified as number (0=emerg, 8=vdebug)")
- BAREBOX_CMD_HELP_TEXT("Known debug loglevels are: emerg, alert, crit, err, warn, notice, info, debug,")
- BAREBOX_CMD_HELP_TEXT("vdebug")
- BAREBOX_CMD_HELP_TEXT("")
-diff --git a/commands/fiptool.c b/commands/fiptool.c
-index 0452b7a0bdcd..a0e67ed43936 100644
---- a/commands/fiptool.c
-+++ b/commands/fiptool.c
-@@ -588,7 +588,7 @@ static int do_fiptool(int argc, char *argv[])
- }
++			depth--;
+ 			node = node->parent;
  
- BAREBOX_CMD_HELP_START(fiptool)
--BAREBOX_CMD_HELP_TEXT("List information about the specified files or directories")
-+BAREBOX_CMD_HELP_TEXT("Inspect and manipulate TF-A firmware image packages")
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("Global options:")
- BAREBOX_CMD_HELP_OPT ("-v",  "verbose output")
-diff --git a/commands/pwm.c b/commands/pwm.c
-index 6e0ba2c2e36f..f1887efd12fe 100644
---- a/commands/pwm.c
-+++ b/commands/pwm.c
-@@ -197,6 +197,7 @@ BAREBOX_CMD_HELP_OPT("-d <name>", "device name (eg 'pwm0')")
- BAREBOX_CMD_HELP_OPT("-D <duty_ns>", "duty cycle (ns)")
- BAREBOX_CMD_HELP_OPT("-P <period_ns>", "period (ns)")
- BAREBOX_CMD_HELP_OPT("-f <freq_hz>", "frequency (Hz)")
-+BAREBOX_CMD_HELP_OPT("-F <freq_hz>", "frequency (Hz), defaulting duty cycle to 50%")
- BAREBOX_CMD_HELP_OPT("-w <duty_%>", "duty cycle (%) - the on 'width' of each cycle")
- BAREBOX_CMD_HELP_OPT("-i\t", "line inverted polarity")
- BAREBOX_CMD_HELP_OPT("-s\t", "stop (disable) the pwm device")
-diff --git a/commands/spi.c b/commands/spi.c
-index c6cfd4fbba78..45bd19223326 100644
---- a/commands/spi.c
-+++ b/commands/spi.c
-@@ -116,7 +116,7 @@ BAREBOX_CMD_HELP_START(spi)
- BAREBOX_CMD_HELP_TEXT("Options:")
- BAREBOX_CMD_HELP_OPT ("-b BUS\t",  "SPI bus number (default 0)")
- BAREBOX_CMD_HELP_OPT ("-r COUNT",  "bytes to read")
--BAREBOX_CMD_HELP_OPT ("-c\t",      "chip select (default 0)")
-+BAREBOX_CMD_HELP_OPT ("-c CS\t",   "chip select (default 0)")
- BAREBOX_CMD_HELP_OPT ("-m MODE\t", "SPI mode (default 0)")
- BAREBOX_CMD_HELP_OPT ("-f HZ\t",   "max speed frequency, in Hz (default 1 MHz)")
- BAREBOX_CMD_HELP_OPT ("-w BIT\t",  "bits per word (default 8)")
+ 			dt_struct = dt_struct_advance(&f, dt_struct, FDT_TAGSIZE, 0);
 -- 
 2.47.3
 
