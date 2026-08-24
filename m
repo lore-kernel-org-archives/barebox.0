@@ -1,17 +1,17 @@
-Delivery-date: Tue, 25 Aug 2026 01:45:35 +0200
+Delivery-date: Tue, 25 Aug 2026 01:54:28 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wyeMA-006sIN-0F
+	id 1wyeUl-006sPh-0n
 	for lore@lore.pengutronix.de;
-	Tue, 25 Aug 2026 01:45:34 +0200
+	Tue, 25 Aug 2026 01:54:28 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 495DD201BD1
-	for <lore@pengutronix.de>; Tue, 25 Aug 2026 01:45:30 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 76053201B02
+	for <lore@pengutronix.de>; Tue, 25 Aug 2026 01:54:23 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=G08tg5pg;
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=dYCJgcqv;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=hMsf6hRj;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=quUuXvae;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -20,80 +20,79 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=z1X2DQs5ST5bNPBGgkg4yCfGQJ1NByaaJGuQAil/Jwg=; b=G08tg5pg/hT5z+9XRPRuqQ4y+u
-	RCL2iO1tAUQW7IA+ku47qzQFxiNX3sBjfpO+gvYuBB0lmLRI+qWDRR1U0C3CIlRzY/H/+Xb8m5X0r
-	Ya9oDyhDtJKBBHO/ewyqMh6fB7MUDhiUr2vjYcy6lKekNRz/fu4RHQsCcRwmVNFG+OCDo1GvUyG2E
-	oZxsXPKmQhHhhRtC6UpVy75K9cTnKInNE0HbnPdFCSm0xr4/2khbkIhn/d/JFk4iT+Opomko0Pj2n
-	rWPSCmc1gseE+R03evMez4IIIOHixFEVxFudd/KsBHSvy19xidDTv2tgIOrIdDEmtISRnvi9Byhzf
-	gkv2nrSw==;
+	bh=oE+pw2CLxKdsKa7QobM1W20dcJUCF44EzDchY78OVSA=; b=hMsf6hRjQq/t02d1NvVwIcuLHW
+	8sVadFFGI7Qfge82H0aTnolpnT+n0Efcs6xL7beP6K5n3KtLL+aKP8h2WRY1Fzk4q7RcnGFJzeqph
+	6Gx+3bITnKcywpGvHiTVjNZEFpxzzMg9qErq+szkmQWsMOGcEo7DOZUM7U4a9ML185T0HbEtynFGR
+	VoNe4ynOpL2ALzoWHXRubvmP85RuqoZe2Fx9FlIlwizzmTYeL2yz4UU+uPLHLjIRsCAbD6euc3Dst
+	afoS6aJHbBnZP8IK5kfdTNKdz1VzvzXY8jL5V4wCYuBbmtHu8w1z9Sb9DYd+kSkHxF8X6L6xlWjt1
+	3TUfnm4A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyeKe-0000000HVEu-31xH;
-	Mon, 24 Aug 2026 23:44:00 +0000
-Received: from mail-wm1-x334.google.com ([2a00:1450:4864:20::334])
+	id 1wyeTQ-0000000HVV0-4Ab5;
+	Mon, 24 Aug 2026 23:53:04 +0000
+Received: from mail-wr1-x431.google.com ([2a00:1450:4864:20::431])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyeKb-0000000HVEA-1rDX
+	id 1wyeTO-0000000HVTn-1JPK
 	for barebox@lists.infradead.org;
-	Mon, 24 Aug 2026 23:43:58 +0000
-Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-499b02fc590so25165595e9.2
-        for <barebox@lists.infradead.org>; Mon, 24 Aug 2026 16:43:56 -0700 (PDT)
+	Mon, 24 Aug 2026 23:53:03 +0000
+Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-47362928f65so2176037f8f.2
+        for <barebox@lists.infradead.org>; Mon, 24 Aug 2026 16:53:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787615035; x=1788219835; darn=lists.infradead.org;
+        d=gmail.com; s=20251104; t=1787615580; x=1788220380; darn=lists.infradead.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=z1X2DQs5ST5bNPBGgkg4yCfGQJ1NByaaJGuQAil/Jwg=;
-        b=dYCJgcqv3wzBfNizYI72DRoRbhUrhIjc2owOrvAEo9e4eujCr5BDf3/gdiTQWW7A5R
-         jhTKvLIYOmvHQCw1pbEd6KUvhTQWs78ZBPRivpTxgbnW7GKcm+/NTihhT3t4jo3u8lbL
-         vzmkpIuBJlOc8tzIRCE0XKS8/PbPdqaPgVNhSOB7FJ24nZTs22iSE/FWAb+7Ul4yT3Tp
-         fkOebgoi9pzoRoT1FWlJ/Wje68xvGNHeUTeHgHl0TtCswIiF4+5MrzX8ZhsrR/8tyXQV
-         Py8NfbV6Pg65oCMfg9BvGB12eOogEwgKFdDazPPLdbw7hO7dcVx1typSvyhuVONDgZmJ
-         zeFQ==
+        bh=oE+pw2CLxKdsKa7QobM1W20dcJUCF44EzDchY78OVSA=;
+        b=quUuXvaeSKYVqGPNnR8fj7OY96tFfOOApbRlMYr3njcuoEr2/1aztryNCyCxhlJ/2+
+         APembNrtPHrFU7OKQt+qUOV/pzCdOGgH6/v4zpM/LquaoVp6bnedPC8NFKx9Kvvwku+g
+         PbuMd4/q7ibty6vUmhW39L8vGroF18RsZyDY7GusEYZG7F+3+pu4hw95HkH81UohScT6
+         zcbHYlMlmVyidRsOoifPuPALI17RbknvxMOnqgtZtJiqVSZzpA6uFXHBS/3xqqq86LeQ
+         dQf6sx19uGoLmkZt5ZtoDofQvnst70qNNm47Tw5OKSvrKCi7Srv3TzPai6W0HXvkULgD
+         75tQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787615035; x=1788219835;
+        d=1e100.net; s=20251104; t=1787615580; x=1788220380;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=z1X2DQs5ST5bNPBGgkg4yCfGQJ1NByaaJGuQAil/Jwg=;
-        b=XyBqfpmOZN+zxpTw2WewXb/w0z/SQqqaAzvRxtr0qyxA4GFrf2M44m2wl6ocKiBuiT
-         nozO35QOAnXwge17F+/TgGsGIarUO9sfG7Z+JKxgRqpnvtt4fAR0+qeSbvi73qI2V6Is
-         vTuiZ5YEB2nNpWvhUePBr3M3iubSSoXEm17xg9dqKnTsgiVbuZeVwXqfeaS+dZik0qZR
-         KRLHyYMmxE3rspspXt7dv2UYIOA5sqE/GCnlaoGsrOOiBIm8ITz2+FlH2PCpqLSBpQxU
-         NKHWLi4RPmkUjmCQbuXk6srVoO51uNJl2kO+1plyOeSG0R3f7f72kpX2cy1dD+Cs7pAe
-         dBzQ==
-X-Gm-Message-State: AFuF++lSibA4BDr0NDTQedUlEs45bBaoMqJ0n0OMuqSeImUXUcSyjMtp
-	7Zz+DOHnU4cymjihlqr8NirukntO5Rr9nI/cePmN80SnBuLBeeK76Z45
-X-Gm-Gg: AR+sD12lNvpGBhFnS3ant46VXY6PLYGICJouyKv4v2yU09orUjYsVZ+vYrmbFuuENYX
-	teR67VDLSMc9iquXqry/FgAlEpBYGSfS8Gm7eTxGCykXVLzWQfJlvAna9AWHvBg4ow7FX5/p3wB
-	IJxScAz3RHUJT6A4ZNB4gTYQmbwiu/IPVvMi5IOtgT0vCvL/v2GSSFblSwaETRZtj7gIF/1BYny
-	Deo9S3MCq3gQvheiOvNOd5ohLkPtKVjqGlcWeCHT5/YivERc76qGe9wR/YHboVltHsQm43Miz2I
-	ZoAlC9YaQ+jqy8VMlkDP9PtKyYxfXTYrAmItkDYUxPwW0bzH5hKymdh/82isXX0RaXzwf6fJXRJ
-	3ZeUDUpIlHAY8+CKb/YZUQCJDQ3C+bMSHgk8hPFnM3F01UuyKMxp24HcIFb4Fj5y6lkQYhhfZA6
-	V+9knZQoks+P3KLzN847jPCUe/1AJZNUCyaNDNTDfgyFr+VCujf0GS6YFYAVSDmql9AyWkB9qDQ
-	0lQv9b6NZUFIec7sX1MVXedtHbNiZdwROtoGcwI2y5prLx3/m6v6K63SWADsB+KYO0PM7ZW3Jdd
-	hZpIPnEq4g==
-X-Received: by 2002:a05:600c:c3db:10b0:499:cd34:f7c with SMTP id 5b1f17b1804b1-499cd3410bdmr150506955e9.5.1787615035415;
-        Mon, 24 Aug 2026 16:43:55 -0700 (PDT)
+        bh=oE+pw2CLxKdsKa7QobM1W20dcJUCF44EzDchY78OVSA=;
+        b=HnLvGs+sA0wa8opfF/APUkDBhvFnO2hvLQr+dDz2787sSr1PHK+fHDJj8MivOw6b4Q
+         ZEK9aUEIEe48Merb1BSsiShN8e9rCU9wsiXlcayBnvTX+ZCExt8UOfYRPj5lJDynhG5p
+         CHZMrkMjLE6+ZvVt8rolTvUADo8EZMcjsM3UZ6BtYjWs7x00ntHwMWukFCccy9kS9Drh
+         s0+Yh3j/PVgobYa81tz9vcRXmJ5ayamprk0FuEiKehGP/A3xVPYYsL5ddUjHVDt7UX5c
+         BaUzHDt05zl5vaZW289tScgoCWATh4RHX3bHwhtfbxPsfnzuPMIl2My7KqIddq8k+/qa
+         f0EA==
+X-Gm-Message-State: AFuF++m1NiJApeURWQkeov9TpynjLmEHo4mfSCyxWwiMZMAElZd0FU+O
+	TJswZS63Tyb2qvvCIjDQUigJy1x/VV5m/tYa79JYYcKbipr7W7WRU/xK
+X-Gm-Gg: AR+sD111Dp4m9ktWO1dlAk1kiwiYBXEo+Oc+MELxrAwbrg4pVh9rninlBHxGrAQ416p
+	CljUiF36ivBDHjlQxqpV5j86vXPTmUfH3bQsHf+HTyT9HjJ3HC2SNHc6H3w35npjhGMV3Sam322
+	cXqIIgdtzxHAlt09d6+AtS3YX1ecLvqNzJVzcq1tsN01phdI4Q0epcv5uyoI3EE62neF5cbJOBu
+	tpwzVfvV/Ju1kv86m3QturnnUqg5IBBtNDL+wHAkZQVCjXdmj/aQyAAJes+ynC6Faq/ed86FnOa
+	aWFrhZAeczu4oLSvdAh068TEeKdqlktGuAFB23WKJQzlo6re7D/xiajyUGKFgqxBYkWOzUhJb+d
+	Unpxbw9spMhEd9X7L+rNrQUNwVsuk0kkDhf1cklkik9yuBY8WfeknsIZo29EVXZ/n8jycc5igyW
+	Bb8BrXkRgETuqH/V/AbdYRexLC88IwXCe2TS01/fIZCamnzne915tHU2Avkg7sisa3sVHmStCrW
+	epi9AxZW6Qze64iDOtZGRvzSQlW/tq+RBN34Rt/1iT/0E8Bb0r0qjrUYQM1kQiD1JCd+plW6RRw
+	qzUTfEUXZA==
+X-Received: by 2002:a05:6000:2589:b0:482:bf17:e685 with SMTP id ffacd0b85a97d-482c0b88f19mr44900172f8f.11.1787615580313;
+        Mon, 24 Aug 2026 16:53:00 -0700 (PDT)
 Received: from CNCMK0001D007E ([213.195.92.95])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499d5d7cccbsm6861075e9.3.2026.08.24.16.43.52
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-482c9b69a60sm9845153f8f.1.2026.08.24.16.52.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 16:43:53 -0700 (PDT)
+        Mon, 24 Aug 2026 16:52:58 -0700 (PDT)
 From: chalianis1@gmail.com
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org,
-	Chali Anis <chalianis1@gmail.com>,
-	Claude Sonnet 5 <noreply@anthropic.com>
-Subject: [PATCH v2 1/1] efi: payload: apply barebox fixups to the devicetree passed to Linux
-Date: Tue, 25 Aug 2026 01:43:45 +0200
-Message-ID: <20260824234345.84068-2-chalianis1@gmail.com>
+	Chali Anis <chalianis1@gmail.com>
+Subject: [PATCH v2 1/3] state: make of_state_fixup() usable outside common/state/
+Date: Tue, 25 Aug 2026 01:52:48 +0200
+Message-ID: <20260824235250.94681-2-chalianis1@gmail.com>
 X-Mailer: git-send-email 2.55.0
-In-Reply-To: <20260824234345.84068-1-chalianis1@gmail.com>
-References: <20260824234345.84068-1-chalianis1@gmail.com>
+In-Reply-To: <20260824235250.94681-1-chalianis1@gmail.com>
+References: <20260824235250.94681-1-chalianis1@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260824_164357_597181_12D9C57F 
-X-CRM114-Status: GOOD (  23.44  )
+X-CRM114-CacheID: sfid-20260824_165302_382165_C3AAD8B0 
+X-CRM114-Status: GOOD (  14.69  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -101,10 +100,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  From: Chali Anis efi_load_fdt() never ran barebox's fixup/overlay
-    pipeline on the devicetree it handed to the kernel. When bootm.oftree was
-    set, the raw file bytes were extracted straight into EFI pages and installed
-    [...] 
+ Content preview:  From: Chali Anis of_state_fixup() was static, callable only
+    via of_register_fixup(). Export it so other subsystems can invoke it directly
+    to render a state instance's devicetree representation on demand, without
+    going [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -112,7 +111,7 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  ---- ---------------------- --------------------------------------------------
  -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/, no
                              trust
-                             [2a00:1450:4864:20:0:0:0:334 listed in]
+                             [2a00:1450:4864:20:0:0:0:431 listed in]
                              [list.dnswl.org]
  -0.0 SPF_PASS               SPF: sender matches SPF record
   0.0 SPF_HELO_NONE          SPF: HELO does not publish an SPF Record
@@ -144,7 +143,7 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: e5j1fsetoa8o4z7pz99ffb1sa4q6w9so
+X-Stat-Signature: d1jt1qez14n9sfn4qa3bm41nbbt74kc1
 X-Spamd-Result: default: False [-6.41 / 15.00];
 	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
@@ -179,309 +178,153 @@ X-Spamd-Result: default: False [-6.41 / 15.00];
 	FROM_NO_DN(0.00)[];
 	DKIM_TRACE(0.00)[lists.infradead.org:+,gmail.com:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	RCPT_COUNT_THREE(0.00)[4];
-	FREEMAIL_CC(0.00)[lists.infradead.org,gmail.com,anthropic.com];
-	RCVD_IN_DNSWL_NONE(0.00)[2a00:1450:4864:20::334:received];
+	RCPT_COUNT_THREE(0.00)[3];
+	FREEMAIL_CC(0.00)[lists.infradead.org,gmail.com];
+	RCVD_IN_DNSWL_NONE(0.00)[2a00:1450:4864:20::431:received];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 495DD201BD1
+X-Rspamd-Queue-Id: 76053201B02
 
 From: Chali Anis <chalianis1@gmail.com>
 
-efi_load_fdt() never ran barebox's fixup/overlay pipeline on the
-devicetree it handed to the kernel. When bootm.oftree was set, the
-raw file bytes were extracted straight into EFI pages and installed
-as-is via loadable_extract_into_buf_full(); of_unflatten_dtb(),
-of_fix_tree() and of_flatten_dtb() were never called. When
-bootm.oftree was unset, the function just returned early, so there
-was no path at all for adopting (and fixing up) a devicetree already
-exposed by firmware. Either way, none of barebox's usual fixups --
-memory nodes, bootargs, state, overlays, and everything else hung
-off of_register_fixup() -- ever reached the tree Linux booted with.
+of_state_fixup() was static, callable only via of_register_fixup().
+Export it so other subsystems can invoke it directly to render a
+state instance's devicetree representation on demand, without going
+through the global fixup-registration/of_fix_tree() machinery.
 
-Fix this for both sources: add efi_fdt_find() to locate the FDT
-firmware exposes via its EFI configuration table, and have
-efi_load_fdt() fall back to it when no bootm.oftree is set. Whichever
-tree is in play, unflatten it into data->of_root_node, run it through
-the standard bootm_set_pending_oftree_overlays()/of_fix_tree()
-sequence, reflatten it, and install the fixed-up result as the UEFI
-configuration table -- matching what every other barebox boot path
-already guarantees.
+While exporting it, teach it to resolve backend nodes that are
+top-level "barebox,fixed-partitions" subnodes carrying a partuuid
+property instead of being tied to a real, already-probed storage
+device node in the tree - the same globally-resolvable-by-UUID
+binding drivers/of/of_path.c's of_cdev_find() already supports for
+EFI, where devices aren't instantiated from devicetree. Without this,
+of_state_fixup() could only find a backend reachable by walking real
+hardware nodes already present in root, which such a partuuid-only
+declaration never is.
 
-While here, size the FDT allocation/free from the actual flattened
-tree instead of a fixed 2 MiB buffer, and reuse efi_fdt_find() in the
-existing efi_fdt_probe() initcall so both callers share one
-EFI-configuration-table lookup instead of duplicating it.
-
-Assisted-by: Claude Sonnet 5 <noreply@anthropic.com>
+Assisted-by: Claude Sonnet 5
 Signed-off-by: Chali Anis <chalianis1@gmail.com>
 ---
- efi/payload/bootm.c   | 60 ++++++++++++++++++++++++++++++-------
- efi/payload/fdt.c     | 34 ++++++++++++++-------
- efi/payload/init.c    | 69 +++++++++++++++++++++++++++++++++++++++++++
- include/efi/payload.h | 10 +++++++
- 4 files changed, 152 insertions(+), 21 deletions(-)
+ common/state/state.c | 72 ++++++++++++++++++++++++++++++++++++--------
+ include/state.h      |  5 +++
+ 2 files changed, 64 insertions(+), 13 deletions(-)
 
-diff --git a/efi/payload/bootm.c b/efi/payload/bootm.c
-index 2f9cc3cbf76b..b9e1d9438e1c 100644
---- a/efi/payload/bootm.c
-+++ b/efi/payload/bootm.c
-@@ -111,27 +111,61 @@ static int efi_load_ramdisk(struct image_data *data,
- static int efi_load_fdt(struct image_data *data, void **fdt)
- {
- 	efi_physical_addr_t mem;
-+	struct fdt_header *oftree;
-+	bool is_loadable = true;
- 	efi_status_t efiret;
-+	size_t size;
- 	void *vmem;
--	size_t bufsize = DIV_ROUND_UP(SZ_2M, EFI_PAGE_SIZE);
--	ssize_t ret;
-+	int ret;
-+
-+	if (!data->oftree) {
-+		/*
-+		 * No devicetree requested; fall back to the one provided by
-+		 * firmware (if any) so barebox's fixups still get applied to it.
-+		 */
-+		oftree = efi_fdt_find(&size);
-+		is_loadable = false;
-+	} else {
-+		oftree = loadable_extract(data->oftree, &size) ?: ERR_PTR(-ENODATA);
-+		if (IS_ERR(oftree))
-+			pr_warn("Failed to extract oftree\n");
-+	}
- 
--	if (!data->oftree)
-+	if (IS_ERR(oftree))
- 		return 0;
- 
-+	data->of_root_node = of_unflatten_dtb(oftree, size);
-+	if (IS_ERR(data->of_root_node)) {
-+		data->of_root_node = NULL;
-+		pr_err("unable to unflatten devicetree\n");
-+		return -EINVAL;
-+	}
-+
-+	if (is_loadable)
-+		free(oftree);
-+
-+	bootm_set_pending_oftree_overlays(data->oftree);
-+	of_fix_tree(data->of_root_node);
-+	bootm_clear_pending_oftree_overlays();
-+
-+	oftree = of_flatten_dtb(data->of_root_node);
-+	if (!oftree)
-+		return -EINVAL;
-+
-+	fdt_add_reserve_map(oftree);
-+
-+	size = efi_size_in_pages(fdt_totalsize(oftree) + 0x3000);
- 	efiret = BS->allocate_pages(EFI_ALLOCATE_ANY_PAGES, EFI_ACPI_RECLAIM_MEMORY,
--				    bufsize, &mem);
-+				    size, &mem);
- 	if (EFI_ERROR(efiret)) {
- 		pr_err("Failed to allocate pages for FDT: %s\n", efi_strerror(efiret));
--		return -efi_errno(efiret);
-+		ret = -efi_errno(efiret);
-+		goto free_oftree;
- 	}
- 
- 	vmem = efi_phys_to_virt(mem);
- 
--	ret = loadable_extract_into_buf_full(data->oftree, vmem,
--					     bufsize * EFI_PAGE_SIZE);
--	if (ret < 0)
--		goto free_efi_mem;
-+	memcpy(vmem, oftree, fdt_totalsize(oftree));
- 
- 	efiret = BS->install_configuration_table(&efi_fdt_guid, vmem);
- 	if (EFI_ERROR(efiret)) {
-@@ -140,11 +174,14 @@ static int efi_load_fdt(struct image_data *data, void **fdt)
- 		goto free_efi_mem;
- 	}
- 
-+	free(oftree);
- 	*fdt = vmem;
- 	return 0;
- 
- free_efi_mem:
--	BS->free_pages(mem, bufsize);
-+	BS->free_pages(mem, size);
-+free_oftree:
-+	free(oftree);
+diff --git a/common/state/state.c b/common/state/state.c
+index b421b43da539..5de806b954e9 100644
+--- a/common/state/state.c
++++ b/common/state/state.c
+@@ -433,14 +433,69 @@ int state_from_node(struct state *state, struct device_node *node, bool create)
  	return ret;
  }
  
-@@ -153,8 +190,9 @@ static void efi_unload_fdt(void *fdt)
- 	if (!fdt)
- 		return;
- 
-+	size_t size = efi_size_in_pages(fdt_totalsize(fdt) + 0x3000);
- 	BS->install_configuration_table(&efi_fdt_guid, NULL);
--	BS->free_pages(efi_virt_to_phys(fdt), DIV_ROUND_UP(SZ_2M, EFI_PAGE_SIZE));
-+	BS->free_pages(efi_virt_to_phys(fdt), size);
- }
- 
- static int do_bootm_efi_stub(struct image_data *data)
-diff --git a/efi/payload/fdt.c b/efi/payload/fdt.c
-index 9cdb32370f22..80e6a1fcec21 100644
---- a/efi/payload/fdt.c
-+++ b/efi/payload/fdt.c
-@@ -9,14 +9,14 @@
- #include <efi/payload/init.h>
- #include <efi/guid.h>
- 
--static int efi_fdt_probe(void)
-+void *efi_fdt_find(size_t *size)
- {
- 	struct efi_config_table *ect;
-+	*size = 0;
- 
- 	for_each_efi_config_table(ect) {
- 		struct fdt_header *oftree;
--		u32 magic, size;
--		int ret;
-+		u32 magic;
- 
- 		if (efi_guidcmp(ect->guid, EFI_DEVICE_TREE_GUID))
- 			continue;
-@@ -26,17 +26,31 @@ static int efi_fdt_probe(void)
- 
- 		if (magic != FDT_MAGIC) {
- 			pr_err("table has invalid magic 0x%08x\n", magic);
--			return -EILSEQ;
-+			return ERR_PTR(-EILSEQ);
- 		}
- 
--		size = be32_to_cpu(oftree->totalsize);
--		ret = write_file("/efi.dtb", oftree, size);
--		if (ret) {
--			pr_err("error saving /efi.dtb: %pe\n", ERR_PTR(ret));
--			return ret;
--		}
-+		*size = fdt_totalsize(oftree);
-+		return oftree;
-+	}
-+
-+	pr_warn("No FDT found in EFI configuration tables\n");
-+	return ERR_PTR(-ENODATA);
-+}
- 
-+static int efi_fdt_probe(void)
+-static int of_state_fixup(struct device_node *root, void *ctx)
++static int state_get_backend(struct state *state, struct device_node *root, struct device_node *n)
 +{
-+	struct fdt_header *oftree;
-+	size_t size;
++	struct device_node *backend_node, *part, *state_root, *np;
++	const char *compatible = "fixed-partitions";
++	struct property *prop;
++	phandle phandle;
 +	int ret;
 +
-+	oftree = efi_fdt_find(&size);
-+	if (IS_ERR(oftree) || !size)
- 		return 0;
++	state_root = of_find_node_by_path(state->of_path);
++	if (!state_root)
++		return -ENODEV;
 +
-+	ret = write_file("/efi.dtb", oftree, size);
-+	if (ret) {
-+		pr_err("error saving /efi.dtb: %pe\n", ERR_PTR(ret));
-+		return ret;
++	backend_node = of_parse_phandle(state_root, "backend", 0);
++	if (!backend_node)
++		return -ENODEV;
++
++	if (of_node_is_fixed_partitions(of_get_parent(backend_node)) &&
++	    of_property_present(backend_node, "partuuid")) {
++		part = of_create_node(root, "/partitions");
++		if (!part)
++			return -ENOMEM;
++
++		prop = of_new_property(part, "compatible", compatible,
++					strlen(compatible) + 1);
++		if (!prop)
++			return -ENOMEM;
++
++		np = of_copy_node(part, backend_node);
++		if (!np)
++			return -ENOMEM;
++
++		/*
++		 * of_copy_node() carries over backend_node's phandle as-is,
++		 * but that phandle was allocated in barebox's own live
++		 * devicetree, a namespace independent of @root's. Assign a
++		 * fresh one scoped to @root instead, so it can't collide
++		 * with an unrelated node already using that value there.
++		 */
++		phandle = of_get_tree_max_phandle(root) + 1;
++		np->phandle = phandle;
++		ret = of_property_write_u32(np, "phandle", phandle);
++		if (ret)
++			return ret;
++
++		return of_property_write_u32(n, "backend", phandle);
++	}
++
++	backend_node = of_find_node_by_reproducible_name(root, state->backend_reproducible_name);
++	if (!backend_node)
++		return -ENODEV;
++
++	phandle = of_node_create_phandle(backend_node);
++
++	return of_property_write_u32(n, "backend", phandle);
++}
++
++int of_state_fixup(struct device_node *root, void *ctx)
+ {
+ 	struct state *state = ctx;
+ 	const char *compatible = "barebox,state";
+-	struct device_node *new_node, *node, *parent, *backend_node, *aliases;
++	struct device_node *new_node, *node, *parent, *aliases;
+ 	struct property *p;
+ 	int ret;
+-	phandle phandle;
+ 
+ 	node = of_find_node_by_path_from(root, state->of_path);
+ 	if (node) {
+@@ -498,16 +553,7 @@ static int of_state_fixup(struct device_node *root, void *ctx)
+ 		goto out;
  	}
  
- 	return 0;
-diff --git a/efi/payload/init.c b/efi/payload/init.c
-index 6d2bd046e4c2..f0ce2a82cefc 100644
---- a/efi/payload/init.c
-+++ b/efi/payload/init.c
-@@ -203,6 +203,75 @@ static int efi_core_init(void)
+-	/* backend phandle */
+-	backend_node = of_find_node_by_reproducible_name(root,
+-						state->backend_reproducible_name);
+-	if (!backend_node) {
+-		ret = -ENODEV;
+-		goto out;
+-	}
+-
+-	phandle = of_node_create_phandle(backend_node);
+-	ret = of_property_write_u32(new_node, "backend", phandle);
++	ret = state_get_backend(state, root, new_node);
+ 	if (ret)
+ 		goto out;
+ 
+diff --git a/include/state.h b/include/state.h
+index 3daf82c0735f..d0034506f6e3 100644
+--- a/include/state.h
++++ b/include/state.h
+@@ -22,6 +22,7 @@ void state_info(void);
+ 
+ int state_read_mac(struct state *state, const char *name, u8 *buf);
+ 
++int of_state_fixup(struct device_node *root, void *ctx);
+ #else /* #if IS_ENABLED(CONFIG_STATE) */
+ 
+ static inline struct state *state_new_from_node(struct device_node *node,
+@@ -60,6 +61,10 @@ static inline int state_read_mac(struct state *state, const char *name, u8 *buf)
+ 	return -ENOSYS;
  }
- core_efi_initcall(efi_core_init);
  
-+/**
-+ * efi_of_fixup_firmware_nodes() - import firmware-injected nodes onto @root
-+ *
-+ * A devicetree supplied out-of-band (e.g. embedded in a FIT image) was
-+ * flattened at build time, so it can never carry nodes that firmware only
-+ * adds to its own devicetree at runtime - most importantly the
-+ * /reserved-memory carve-outs TF-A/OP-TEE add to mark their own
-+ * secure-world memory off-limits (as child nodes, e.g. tegra-carveouts on
-+ * Tegra), and the /firmware node describing the secure monitor call
-+ * conduit. /firmware is copied wholesale, replacing whatever @root already
-+ * had there. /reserved-memory is merged child by child instead, since
-+ * @root may already carry its own reservations alongside firmware's:
-+ * each child firmware's tree has is copied into @root's /reserved-memory
-+ * (created if necessary), replacing any child of the same name @root
-+ * already had.
-+ */
-+static int efi_of_fixup_firmware_nodes(struct device_node *root, void *unused)
++static inline int of_state_fixup(struct device_node *root, void *ctx)
 +{
-+	struct fdt_header *fw_oftree;
-+	struct device_node *fw_root, *fw_firmware, *fw_resmem, *dst_resmem;
-+	struct device_node *dst;
-+	size_t fw_size;
-+
-+	fw_oftree = efi_fdt_find(&fw_size);
-+	if (IS_ERR(fw_oftree))
-+		return 0;
-+
-+	fw_root = of_unflatten_dtb(fw_oftree, fw_size);
-+	if (IS_ERR(fw_root))
-+		return 0;
-+
-+	fw_firmware = of_get_child_by_name(fw_root, "firmware");
-+	if (fw_firmware) {
-+		dst = of_get_child_by_name(root, "firmware");
-+		if (dst)
-+			of_delete_node(dst);
-+
-+		of_copy_node(root, fw_firmware);
-+	}
-+
-+	fw_resmem = of_get_child_by_name(fw_root, "reserved-memory");
-+	if (fw_resmem) {
-+		dst_resmem = of_get_child_by_name(root, "reserved-memory");
-+		if (!dst_resmem) {
-+			of_copy_node(root, fw_resmem);
-+		} else {
-+			struct device_node *child;
-+
-+			for_each_child_of_node(fw_resmem, child) {
-+				dst = of_get_child_by_name(dst_resmem, child->name);
-+				if (dst)
-+					of_delete_node(dst);
-+
-+				of_copy_node(dst_resmem, child);
-+			}
-+		}
-+	}
-+
-+	of_delete_node(fw_root);
-+
-+	return 0;
++	return -ENOSYS;
 +}
-+
-+static int efi_register_firmware_nodes_fixup(void)
-+{
-+	return of_register_fixup(efi_of_fixup_firmware_nodes, NULL);
-+}
-+core_efi_initcall(efi_register_firmware_nodes_fixup);
-+
- /* Features of the loader, i.e. systemd-boot, barebox (imported from systemd) */
- #define EFI_LOADER_FEATURE_CONFIG_TIMEOUT          (1LL << 0)
- #define EFI_LOADER_FEATURE_CONFIG_TIMEOUT_ONE_SHOT (1LL << 1)
-diff --git a/include/efi/payload.h b/include/efi/payload.h
-index 381598ba59f2..8dc09dd5acdc 100644
---- a/include/efi/payload.h
-+++ b/include/efi/payload.h
-@@ -34,4 +34,14 @@ __attribute__((noreturn)) void efi_main(efi_handle_t, struct efi_system_table *)
- 	     t - efi_sys_table->tables < efi_sys_table->nr_tables; \
- 	     t++)
+ #endif /* #if IS_ENABLED(CONFIG_STATE) / #else */
  
-+#if IS_ENABLED(CONFIG_OFTREE)
-+void *efi_fdt_find(size_t *size);
-+#else
-+static inline void *efi_fdt_find(size_t *size)
-+{
-+	*size = 0;
-+	return NULL;
-+}
-+#endif
-+
- #endif
+ #define BAREBOX_STATE_PARTITION_GUID \
 
 
