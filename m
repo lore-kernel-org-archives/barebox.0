@@ -1,68 +1,66 @@
-Delivery-date: Mon, 24 Aug 2026 14:01:33 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Mon, 24 Aug 2026 14:01:36 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wyTMq-006gpH-29
+	id 1wyTMt-006gps-16
 	for lore@lore.pengutronix.de;
-	Mon, 24 Aug 2026 14:01:33 +0200
+	Mon, 24 Aug 2026 14:01:36 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 516FE201B9A
-	for <lore@pengutronix.de>; Mon, 24 Aug 2026 14:01:33 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id E8D3C200062
+	for <lore@pengutronix.de>; Mon, 24 Aug 2026 14:01:35 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=NZ3esdJ7;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="Xbq/zfsM";
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=N6+Y86SMpbR00ut7ptwdfM9IDNHzKIH3I/QLuyLuA8c=; b=NZ3esdJ7MwrwiAPqnd9P/yOn8P
-	cigFf4yzAkuieWl5youZFA305/c99p8iyoU5Cc1sVFKxJ8Hg+Jerc6VCve519BrukG7WC9ZuD8RFB
-	+YyK66qdDjKBdn+9cGm7sjoKSvoZfn15jQprLclvzPrj2xt581CHQVSoaSXO4gcX6wNPTZi7LIEnR
-	Pu5Ghx2jut8dfrohnY+z/7tucR06vK6oHj1rFrNQ2bivSPWQx0SeeekuNsFGmu990XP3iOM7WKNIN
-	RjITqrMyrXhsjT/aEe/eo6Hv/c7IQ5002GCt9m2LGdC6m7Jifk6ejznNtx5DfGM7LFXL8d5VtW9Wq
-	kzCfVnng==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=Zs+BWnPksLb9kCdR6Ii+VqVuiaD0ugcrlCo5nj7qwgs=; b=Xbq/zfsMD1xKuaEZG/rIbIOins
+	AIPgJjAjWk7pP0/4gYkjxxpaVT0b/SAjb8xgvi6zJ6Otq/KwZxD6+7vnObSRjlGNNNp+1hyibaFRS
+	CXwClK0js35AE2J4pE/9sTJBTmqnCLCj0hJE4XFwGK4Pd7H9T2bldffsuPX2AIacxr6PPh5SFLfLs
+	fpz2Cehlhc2TISZHsq546BvmjYu+CC8x+1yQbpbfalMUXFjcOKY4M29lpWDqreSzBc31lNaNX8SJD
+	XUGe5qpCX87QA7mOe7awUDAd8Hji1qkPlDxe+Sxlnc0d/zZXiZfyjmdOyDn3h3s4r2f+sx1Z33OjS
+	goKqlhng==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyTLp-0000000GZ2n-09rs;
-	Mon, 24 Aug 2026 12:00:29 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
-	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyTLl-0000000GZ1E-0s2J
-	for barebox@lists.infradead.org;
+	id 1wyTLo-0000000GZ2b-3ipp;
 	Mon, 24 Aug 2026 12:00:28 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wyTLl-0000000GZ1G-0wic
+	for barebox@lists.infradead.org;
+	Mon, 24 Aug 2026 12:00:27 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 81E88201BC9;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 5D7EE200393;
 	Mon, 24 Aug 2026 14:00:23 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wyTLj-00368Y-1P;
+	id 1wyTLj-00368U-0y;
 	Mon, 24 Aug 2026 14:00:23 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wyTLj-0000000DyeC-1BWi;
+	id 1wyTLj-0000000DyeC-0jLt;
 	Mon, 24 Aug 2026 14:00:23 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH master 3/4] partitions: dos: bound extended partition chain
-Date: Mon, 24 Aug 2026 13:59:57 +0200
-Message-ID: <20260824120022.3299742-3-a.fatoum@pengutronix.de>
+Subject: [PATCH master 1/4] of: only replace a device tree that is actually tentative
+Date: Mon, 24 Aug 2026 13:59:55 +0200
+Message-ID: <20260824120022.3299742-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260824120022.3299742-1-a.fatoum@pengutronix.de>
-References: <20260824120022.3299742-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260824_050026_233060_03215FB3 
-X-CRM114-Status: GOOD (  12.12  )
+X-CRM114-CacheID: sfid-20260824_050026_225133_FDFBB39B 
+X-CRM114-Status: GOOD (  13.27  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -70,9 +68,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  dos_extended_partition() follows the EBR chain by reading
-   each logical partition's link entry (the second entry in the EBR) to locate
-    the next EBR. The loop is an unbounded while (1) and thus could ke [...] 
+ Content preview:  barebox_register_of() is called a second time when the EFI
+    payload registers a device tree read from the EFI system partition on top
+    of the tentative empty device tree registered earlier at core_initc [...]
+    
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -97,9 +96,9 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: tdsyj5ak4gz4c5c6xrynughf7qsks9yg
+X-Stat-Signature: t8rp5deicdfjzwf7wo69g3xhrztp7yme
 X-Spamd-Result: default: False [-6.21 / 15.00];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	MID_CONTAINS_FROM(1.00)[];
@@ -128,62 +127,44 @@ X-Spamd-Result: default: False [-6.21 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 516FE201B9A
+X-Rspamd-Queue-Id: E8D3C200062
 
-dos_extended_partition() follows the EBR chain by reading each logical
-partition's link entry (the second entry in the EBR) to locate the next
-EBR. The loop is an unbounded while (1) and thus could keep running
-until barebox runs out of memory.
+barebox_register_of() is called a second time when the EFI payload
+registers a device tree read from the EFI system partition on top of the
+tentative empty device tree registered earlier at core_initcall.
 
-Bound it at MAX_PARTITION to fix this.
+The check that is meant to allow this looks at the children of the newly
+passed device tree instead of those of the already registered one, so it
+rejects exactly the case it was added for: registering a populated
+device tree over the empty placeholder returns -EBUSY, while an empty
+device tree may silently replace a fully populated one.
 
-Fixes: 57392a862d40 ("partition: allocate struct partition in parser")
-Assisted-by: Claude:fable-5
+Look at the registered root node instead.
+
+Fixes: 10922345fbcc ("efi: payload: register dummy device tree")
+Assisted-by: Claude:opus-5
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/partitions/dos.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/of/base.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/common/partitions/dos.c b/common/partitions/dos.c
-index e5286cb6eb1f..3d9e6e67c676 100644
---- a/common/partitions/dos.c
-+++ b/common/partitions/dos.c
-@@ -129,11 +129,11 @@ static void dos_extended_partition(struct block_device *blk, struct dos_partitio
- 	uint8_t *buf = xmalloc(BLOCKSIZE(blk));
- 	uint32_t ebr_sector = partition->first_sec;
- 	struct partition_entry *table = (struct partition_entry *)&buf[0x1be];
--	unsigned partno = 4;
-+	unsigned partno;
- 	struct dos_partition *dpart;
- 	struct partition *pentry;
- 
--	while (1) {
-+	for (partno = 4; partno < MAX_PARTITION; partno++) {
- 		int rc, i;
- 
- 		dev_dbg(blk->dev, "expect EBR in sector 0x%x\n", ebr_sector);
-@@ -176,8 +176,6 @@ static void dos_extended_partition(struct block_device *blk, struct dos_partitio
- 
- 		list_add_tail(&pentry->list, &dpd->pd.partitions);
- 
--		partno++;
--
- 		/* the second entry defines the start of the next ebr if != 0 */
- 		if (get_unaligned_le32(&table[1].partition_start))
- 			ebr_sector = partition->first_sec +
-@@ -186,6 +184,12 @@ static void dos_extended_partition(struct block_device *blk, struct dos_partitio
- 			break;
- 	}
- 
-+	/* bound the EBR chain: a cyclic link would loop forever */
-+	if (partno == MAX_PARTITION) {
-+		dev_err(blk->dev, "too many logical partitions\n");
-+		goto out;
-+	}
-+
- out:
- 	free(buf);
- 	return;
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 62d452907a57..2a2edc167cc6 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -2151,7 +2151,11 @@ of_populate_initcall(barebox_of_populate);
+ int barebox_register_of(struct device_node *root)
+ {
+ 	if (root_node) {
+-		if (!list_empty(&root->children))
++		/*
++		 * Only a tentative device tree, i.e. one without any nodes,
++		 * may be replaced by a real one.
++		 */
++		if (!list_empty(&root_node->children))
+ 			return -EBUSY;
+ 		/* Not necessarily safe to free, so leak it.. */
+ 		root_node = NULL;
 -- 
 2.47.3
 
