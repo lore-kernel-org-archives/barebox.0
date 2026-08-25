@@ -1,68 +1,67 @@
-Delivery-date: Tue, 25 Aug 2026 12:12:32 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Tue, 25 Aug 2026 12:32:46 +0200
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wyo8t-0072Cg-0m
+	id 1wyoST-0072UG-2I
 	for lore@lore.pengutronix.de;
-	Tue, 25 Aug 2026 12:12:32 +0200
+	Tue, 25 Aug 2026 12:32:46 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id D3A85201AD4
-	for <lore@pengutronix.de>; Tue, 25 Aug 2026 12:12:31 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 37C0C201D0F
+	for <lore@pengutronix.de>; Tue, 25 Aug 2026 12:32:46 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=BLGHZzMq;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=S9znBery;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Eu03yoi6tZXUdf+vhlniuosaVvGfMHO82B86YAoPM0o=; b=BLGHZzMqt8hq90pO9K5DDHWNGX
-	MpopkliYu7EEsshG5mwMF3AN63TYTp3nEV02WXB0CNyuz1PimToJQYHA3btjBBQYx5jUcYL3NHFmw
-	VpJ93RnASB+0mfbSYDxPx18jvEt/nVF/rbatJzryUV4gMe9bsXxB4tK90+giT/I55+6NTji1WFifN
-	ZsaioLDEnqk2oP2U57A3seLuM1IbblF6Yq5FUpvBdTgjTMC/wzu2hhQIb6ZhKghboQpfzhI0K2Se4
-	4GRthPY7h+yybrsr2vyZIs8CU+dsNcQZuK/wtLiEgOHzGQTa7BIpfvYbdSa50wQfe5ctZqYN+Ok8h
-	dIhl+r9Q==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=h8nOZm6CE7vLmMcD7CCGuHm0ckYTmH45VPFzKrSdJBM=; b=S9znBery6+Pbnokob/XRRhKb45
+	tHrUiq1zmK9cy1rNPqR1v9lBxOsmHgC49yDOC85fd97OeCqUymBG+hHs+8dBpQftogogJ/lqV6sIa
+	qzALcaV3pXLwXGiijo9xP8p2bXq1ax3uqPYmKPJnk1olQI/O8KY9vClPcx84W3O1ddWfO+VPGPM3E
+	eAEp8yi7Lul8/kRqMAro4DYma+EkSBFCqyIOT/b3utcTYBHCP59ZQBeqJhMTYVXTnbKbgQGV//CU8
+	CMaTuNCIMHYs46HJ9WgmmiQxv5jU1LB17VhyYS7396P0knO7l9NyxcvpBLIvBhC9Ar6G/8foK8lhL
+	W7UK/6pw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyo7f-00000000Ym9-1PH5;
-	Tue, 25 Aug 2026 10:11:15 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1wyo7e-00000000YlE-3YEr;
+	Tue, 25 Aug 2026 10:11:14 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyo7Z-00000000Ygs-1o53
+	id 1wyo7Z-00000000Ygl-1iRV
 	for barebox@lists.infradead.org;
-	Tue, 25 Aug 2026 10:11:13 +0000
+	Tue, 25 Aug 2026 10:11:12 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id CDD98202078;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id ADE1F200062;
 	Tue, 25 Aug 2026 12:11:07 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wyo7X-003FvJ-2R;
+	id 1wyo7X-003FvD-1y;
 	Tue, 25 Aug 2026 12:11:07 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wyo7X-00000008vZQ-2iV2;
+	id 1wyo7X-00000008vZQ-29Sa;
 	Tue, 25 Aug 2026 12:11:07 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH 4/4] fs: fat: flush metadata updates to the block device
-Date: Tue, 25 Aug 2026 12:10:56 +0200
-Message-ID: <20260825101106.2127202-4-a.fatoum@pengutronix.de>
+Subject: [PATCH 1/4] fs: fat: propagate actual error code when opening/creating files
+Date: Tue, 25 Aug 2026 12:10:53 +0200
+Message-ID: <20260825101106.2127202-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260825101106.2127202-1-a.fatoum@pengutronix.de>
-References: <20260825101106.2127202-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260825_031109_633841_ACFB5223 
-X-CRM114-Status: GOOD (  12.09  )
+X-CRM114-CacheID: sfid-20260825_031109_601458_CC5B9588 
+X-CRM114-Status: UNSURE (   9.40  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -70,10 +69,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  The disk_ioctl glue that barebox provides can take a CTRL_SYNC
-    command, but barebox implemented it as a no-op. Instead, various file system
-    callbacks did flushing manually instead of having fat.c do it via disk_ioctl.
-    
+ Content preview:  We currently map all error codes to -EINVAL when opening or
+    creating a file, when the underlying functions are capable of returning more
+    error codes like -EISDIR or -EROFS. Propagate the received error code to
+   tell consumers more about what went wrong. 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -98,15 +97,15 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: 6d8ptwrn7teyz1kjw1s4ied6pc5e8oqf
+X-Stat-Signature: bg6gamp35q3yfhgm4rxraqs7j4ipb7yz
 X-Spamd-Result: default: False [-6.21 / 15.00];
-	BAYES_HAM(-3.00)[100.00%];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	MID_CONTAINS_FROM(1.00)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:1101:1d::54:received,2607:7c80:54:3::133:from];
+	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::54:received];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MAILLIST(-0.20)[mailman];
@@ -129,147 +128,51 @@ X-Spamd-Result: default: False [-6.21 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: D3A85201AD4
+X-Rspamd-Queue-Id: 37C0C201D0F
 
-The disk_ioctl glue that barebox provides can take a CTRL_SYNC command,
-but barebox implemented it as a no-op.
+We currently map all error codes to -EINVAL when opening or creating a
+file, when the underlying functions are capable of returning more error
+codes like -EISDIR or -EROFS.
 
-Instead, various file system callbacks did flushing manually instead
-of having fat.c do it via disk_ioctl.
+Propagate the received error code to tell consumers more about what went
+wrong.
 
-Implement disk_ioctl(..., CTRL_SYNC) and drop the now superfluous
-flushes.
-
-Assisted-by: Codex:gpt-5.5
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/fat/diskio.h     |  1 +
- fs/fat/fat-diskio.c |  4 ++++
- fs/fat/fat.c        | 46 ++++++++++++++-------------------------------
- 3 files changed, 19 insertions(+), 32 deletions(-)
+ fs/fat/fat.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/fat/diskio.h b/fs/fat/diskio.h
-index 04a587e3bc47..86fa0f21e365 100644
---- a/fs/fat/diskio.h
-+++ b/fs/fat/diskio.h
-@@ -40,6 +40,7 @@ DSTATUS disk_status (FATFS *fatfs);
- DRESULT disk_read (FATFS *fatfs, BYTE*, DWORD, BYTE);
- #if	_READONLY == 0
- DRESULT disk_write (FATFS *fatfs, const BYTE*, DWORD, BYTE);
-+DRESULT disk_flush (FATFS *fatfs);
- #endif
- DRESULT disk_ioctl (FATFS *fatfs, BYTE, void*);
- 
-diff --git a/fs/fat/fat-diskio.c b/fs/fat/fat-diskio.c
-index 6ba18993b870..8e26b6b1e9bb 100644
---- a/fs/fat/fat-diskio.c
-+++ b/fs/fat/fat-diskio.c
-@@ -28,7 +28,11 @@ DRESULT disk_ioctl (FATFS *fat, BYTE command, void *buf)
- 		*(WORD *)buf = disk_sector_size(fat);
- 		return RES_OK;
- 	case CTRL_SYNC:
-+#if	_READONLY == 0
-+		return disk_flush(fat);
-+#else
- 		return RES_OK;
-+#endif
- 	default:
- 		return RES_PARERR;
- 	}
 diff --git a/fs/fat/fat.c b/fs/fat/fat.c
-index b50867524a74..c2e6969f8109 100644
+index 0402db1d945a..b17157d1ea34 100644
 --- a/fs/fat/fat.c
 +++ b/fs/fat/fat.c
-@@ -78,6 +78,13 @@ DRESULT disk_write(FATFS *fat, const BYTE *buf, DWORD sector, BYTE count)
- 	return RES_OK;
- }
+@@ -89,7 +89,7 @@ static int fat_create(struct device *dev, const char *pathname, mode_t mode)
  
-+DRESULT disk_flush(FATFS *fat)
-+{
-+	struct fat_priv *priv = fat->userdata;
-+
-+	return cdev_flush(priv->cdev) ? RES_ERROR : RES_OK;
-+}
-+
- /* ---------------------------------------------------------------*/
- 
- #ifdef CONFIG_FS_FAT_WRITE
-@@ -91,51 +98,28 @@ static int fat_create(struct device *dev, const char *pathname, mode_t mode)
+ 	ret = f_open(&priv->fat, &f_file, pathname, FA_OPEN_ALWAYS);
  	if (ret)
- 		return ret;
+-		return -EINVAL;
++		return ret;
  
--	f_close(&f_file);
--
--	return 0;
-+	return f_close(&f_file);
- }
+ 	f_close(&f_file);
  
- static int fat_unlink(struct device *dev, const char *pathname)
- {
- 	struct fat_priv *priv = dev->priv;
--	int ret;
+@@ -204,7 +204,7 @@ static int fat_open(struct device *dev, struct file *file, const char *filename)
+ 	ret = f_open(&priv->fat, f_file, filename, flags);
+ 	if (ret) {
+ 		free(f_file);
+-		return -EINVAL;
++		return ret;
+ 	}
  
--	ret = f_unlink(&priv->fat, pathname);
--	if (ret)
--		return ret;
--
--	cdev_flush(priv->cdev);
--
--	return 0;
-+	return f_unlink(&priv->fat, pathname);
- }
+ 	if (file->f_flags & O_APPEND) {
+@@ -212,7 +212,7 @@ static int fat_open(struct device *dev, struct file *file, const char *filename)
+ 		if (ret) {
+ 			f_close(f_file);
+ 			free(f_file);
+-			return -EINVAL;
++			return ret;
+ 		}
+ 	}
  
- static int fat_mkdir(struct device *dev, const char *pathname)
- {
- 	struct fat_priv *priv = dev->priv;
--	int ret;
- 
--	ret = f_mkdir(&priv->fat, pathname);
--	if (ret)
--		return ret;
--
--	cdev_flush(priv->cdev);
--
--	return 0;
-+	return f_mkdir(&priv->fat, pathname);
- }
- 
- static int fat_rmdir(struct device *dev, const char *pathname)
- {
- 	struct fat_priv *priv = dev->priv;
--	int ret;
- 
--	ret = f_unlink(&priv->fat, pathname);
--	if (ret)
--		return ret;
--
--	cdev_flush(priv->cdev);
--
--	return 0;
-+	return f_unlink(&priv->fat, pathname);
- }
- 
- static int fat_write(struct file *f, const void *buf, size_t insize)
-@@ -224,16 +208,14 @@ static int fat_open(struct device *dev, struct file *file, const char *filename)
- 
- static int fat_close(struct device *dev, struct file *f)
- {
--	struct fat_priv *priv = dev->priv;
- 	FIL *f_file = f->private_data;
-+	int ret;
- 
--	f_close(f_file);
-+	ret = f_close(f_file);
- 
- 	free(f_file);
- 
--	cdev_flush(priv->cdev);
--
--	return 0;
-+	return ret;
- }
- 
- static int fat_read(struct file *f, void *buf, size_t insize)
 -- 
 2.47.3
 
