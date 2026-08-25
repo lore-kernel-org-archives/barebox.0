@@ -1,61 +1,116 @@
-Delivery-date: Tue, 25 Aug 2026 19:11:58 +0200
+Delivery-date: Wed, 26 Aug 2026 01:15:40 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wyugo-0078sP-0U
+	id 1wz0Ml-007EVF-36
 	for lore@lore.pengutronix.de;
-	Tue, 25 Aug 2026 19:11:58 +0200
+	Wed, 26 Aug 2026 01:15:40 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id AB251204AFA
-	for <lore@pengutronix.de>; Tue, 25 Aug 2026 19:11:54 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id F0ECC2021DE
+	for <lore@pengutronix.de>; Wed, 26 Aug 2026 01:15:35 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=FSCL+FUF;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=weOGdWrf;
+	dkim=fail ("headers rsa verify failed") header.d=gmail.com header.s=20251104 header.b=h9wGxeGj;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
-	dmarc=none
+	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=gmail.com (policy=none);
+	arc=reject ("signature check failed: fail, {[1] = sig:google.com:reject}")
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=P3ctpE6SZ0OPXRPygY/Tef9ysiULpCy/t8iM7BmkXX4=; b=FSCL+FUFDTLvr6jn60gY4fAndK
-	Q9heVDAyi+/QRZk2rkx4Ds6/N+yfYrY6MPeD7nSuwciWa8esPltEfpM3uIGAgjAftRlC2ElZGQDQj
-	wsbz1kmXA7zLGOTzwHl5LA4Y24EIymYgIyQ7IqoFVEG1V+K0ozHcIKiB1G6BlrttbtCYYK6qvWM33
-	pPB35mM87k+bzWqNl8thvCvi3sd5NduJXOayDYxC9+gSpIQ/ZtthW72aFy9i1JllEebXA7TYxzq6V
-	4bcUHxi+fMIuC2HibGyRCTBUaEzl0t4zrmq2NiLCSjbygli4G3SKusojX/dsQRoxStMqXGXG4pxIF
-	V8zOTB+w==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:Content-Type:To:Subject:Message-ID:Date:From:
+	In-Reply-To:References:MIME-Version:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=NtgETKQ0AlTdeUZMBZTE0UUOLtnMhFps4e82RvYMy3M=; b=weOGdWrfQtgX5U
+	7XgxkXzzs2GJf1i7kgmsXLEdW79neKqaVzxsR6A6iHKzjewK586imUwBTjoa4R0TI+ufnDoQYmIsP
+	fTSBYyKqHb/97Wn/oIW/FS+rqaPH4PQ3Lgtv/gnRduRmaHs4txsfjOowiKS+JUWmNn9x2aMC8T0fU
+	jFSX5A/RgmRoyRxM1034WnnWl6Y3EllKhYeEhMqMJUWlkNw+RNyNBG7V1GV/simZsBZZZY2OZ/N6A
+	JU4+OCiSIi6w2dbim954sSN1rczQzxUaozkbeBXF4ZhBuiKKHgK2SM8XZeM8p8D2DgTIsIMNycrpn
+	Iv48NsTNfZ8lCV5bYxbQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyufV-00000001AuR-0NfE;
-	Tue, 25 Aug 2026 17:10:37 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1wz0L4-00000001f7y-2QhD;
+	Tue, 25 Aug 2026 23:13:54 +0000
+Received: from mail-pf1-x42f.google.com ([2607:f8b0:4864:20::42f])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyufR-00000001Au6-04hW
+	id 1wz0L1-00000001f7U-0vVE
 	for barebox@lists.infradead.org;
-	Tue, 25 Aug 2026 17:10:35 +0000
-Received: from [0.0.0.0] (ptz.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::77])
-	(Authenticated sender: afa@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id DE6FD203301;
-	Tue, 25 Aug 2026 19:10:26 +0200 (CEST)
-Message-ID: <b51c5e54-7ce7-40f5-b65d-1d8ef7a07be6@pengutronix.de>
-Date: Tue, 25 Aug 2026 19:10:26 +0200
+	Tue, 25 Aug 2026 23:13:53 +0000
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-8486ac3f347so1690269b3a.1
+        for <barebox@lists.infradead.org>; Tue, 25 Aug 2026 16:13:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1787699630; cv=none;
+        d=google.com; s=arc-20260327;
+        b=AOB51liKnNqPKchM7L/MGeW0R7N/4fDYpLqgaM1v2dwObU8mC+q/7MAQsVuFJ4xMAh
+         dU5YQ/WoJSKq24kvLHdMdd5eWv3rQSEVia8p3FszxgWgvhVqJPgOCRGFRTnoh82bWt7W
+         dkKJ/wYSKOv6GwQFjF7QD+lctfBR5tix4eoGLxXm3JF8ehn04amq2iWtEnSVTubaj7wC
+         rdFTKaFAD+yN+8XXThbV21z1bSLSs5Y1gyxWzTuKak3bJYIbJL0EAfVuU5LoMOfiUYzk
+         HCtwqHtDC95KtRlEd3HXlbjImPYeYJqwS2wtvCp2kQr7czzqy/6c1/GCh7YushRPsXzs
+         MKVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20260327;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=NtgETKQ0AlTdeUZMBZTE0UUOLtnMhFps4e82RvYMy3M=;
+        fh=UOiKfUplrpgsnYrd8q5DXEXXqa0fobXt3ICs9fA/QvY=;
+        b=FWFReSgudNogGqyqvJQ55CKZ6C9CxqDzNoux2PBm+6wkjKyIC/DCrZHiwAC41wI8e3
+         BA2k9YSB6h6Yqdn/Qw8Gf3QupAY+uCBukGiNiJUr1e9veRHvxVOzPHQL1Bj9GhaaToRy
+         d70KhBHb5mwDIY+ywqAJp7KVAl5ugtj1MCwebghWpH9SufKOhwvLjqKFUccfKCZezywr
+         UTdHULSMgqQao7omud+l3Izqfm7aH0dtJoo25sqIFm19iNHnjgw3ZJUegXNwv9h9wLnB
+         BCASNPgtpXDISoHb7jWfzGlZHMMxSZ73JM+7fckwkdvXoy3SntHl2MRvK9vCwcXnCKRP
+         LoqA==;
+        darn=lists.infradead.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787699630; x=1788304430; darn=lists.infradead.org;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to:content-type;
+        bh=NtgETKQ0AlTdeUZMBZTE0UUOLtnMhFps4e82RvYMy3M=;
+        b=h9wGxeGjTEPKErclMZFC8nwB4YYjzns4PvSjMjmL0tFFGxJIyRdDhwXlnEs9lB0fsj
+         NN0d9S9zgrnHrBcScyy0dzv6Ak5uswXynZJtR5BNYzL/d9VSCv7v5gENEmEuidP6/qON
+         g43H103Kn+Ow3LJt5xei7nrdluO6BtIzp7sZ1e5fJNBVBrpMqPMmd017yk8ch0tarz6T
+         1Uh2JpnHGWbBhENQ12vWG3DQlU0OMlvBNB2QUr9ErbZ8JVxYajnMOf0Mz0ouplb1oTh7
+         HSOEjY5RHIyNmqwyPAxzrYFZK3CVqGR+rJpxGPozAbxwbsHQsa/wQ3p7H3tvM43qE4Ll
+         On3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787699630; x=1788304430;
+        h=content-transfer-encoding:content-type:cc:to:subject:message-id
+         :date:from:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=NtgETKQ0AlTdeUZMBZTE0UUOLtnMhFps4e82RvYMy3M=;
+        b=ZgUjSqoVyjFfs1/KlPdwUxYVP0qq3v0kbtkRmgSFlD6tP8H5cx2KFZubbn9yj37+Tl
+         frxebRsBAYDZIysyDfZRdeF7IoJFXWj5h9dv0t4lqMEu53H7A129a3AXJONkc9hQkCrv
+         Yw0QHi/RoJFGJ9iSOpbYjIKMj3gOzy/s2ZoznVrHP8fOpESb3Go6bIgCRlxxFraiPY51
+         fSmfLA69FuEIlkjzsZT26GOYCioy05EIBIhn4pprakfoDPLoDV8PesBd2wuaT3K16vs4
+         y/rdASwwVs23QMQ2A/soYXuUOJwy4KgceK888G9DyaG/MXX0sPBBTMpYgyN0vfLG8Pyo
+         egRw==
+X-Forwarded-Encrypted: i=1; AHgh+RqFkyPGM/4OP29Riffrn2rzfqtB6xEd7pmXL536FqmztwMCk6w9L0RChlM193R+AZj//LdkRT8u@lists.infradead.org
+X-Gm-Message-State: AFuF++ncVIoIWs/HOPrzmZxAYIDdUpG/QiMwL+YpREdVu+TDTh0fftDT
+	UmWPe8gbepp0s7JKEOUJrI+nEl6VL4+rFG92UPvXInTWyZhmmdoGCfcm5ZwWhXawRBqK6sPDkkG
+	NF63NqGIeFAPWEDThjfQunRJ+jwXDezy03EhR
+X-Gm-Gg: AR+sD13uyHEds7Knr4NVVwxms7Ji+49ztf9AKEEYdOzyF619x3/w8DaMPXsH+uKoVjf
+	T7ORwNRKn8SMtWumVVi0pvp2q9hTym4QlxMRnQFebQoYweWwxswTyusKy5kIEt7Mj62uJnNBwuQ
+	AACDqXHhND/Y5Ke1rxJKAyuRorRieSSo82edCcdIpFwomu1BZRgt40nRBablpd3DCr0d4Bk2r25
+	ZN/QGFozPv/kFDRMbGxriD7K028gygS3Wb4R8JSRR0aufZ1QzmvVFP/choxhhFmcnom80dzibex
+	R/YZ0D0n0Bsn3LBt6vunS869YcDFUc92AmzoSS36HdJLlVIPDb6BwHJ6Zh5Bxv9+TboEbqaF21E
+	MipJlQGXXsoYMbJPo2Qns4jdVN0ZDkkK3ZqmPfmCtK4WSXOVTt2jnWZkxdm0k5w==
+X-Received: by 2002:a05:6a20:ef19:b0:3bf:8a0e:dd99 with SMTP id
+ adf61e73a8af0-3cd8f2e03bbmr11654130637.17.1787699630154; Tue, 25 Aug 2026
+ 16:13:50 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/4] state: generic devicetree-overlay based state node
- injection
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: chalianis1@gmail.com, s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org
-References: <20260825030548.473672-1-chalianis1@gmail.com>
- <4462a622-9768-41d9-ad5c-2614954a9aa5@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
+References: <20260825030548.473672-1-chalianis1@gmail.com> <4462a622-9768-41d9-ad5c-2614954a9aa5@pengutronix.de>
 In-Reply-To: <4462a622-9768-41d9-ad5c-2614954a9aa5@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: anis chali <chalianis1@gmail.com>
+Date: Wed, 26 Aug 2026 01:13:37 +0200
+X-Gm-Features: AcwNN1W_deJpvKFl9J0hUs86iZsdRmEvDHYiXFglFRYyLQhv9OwvsL_j7VomEHE
+Message-ID: <CAL+1fyDW0_1voDO--Mbqn9wU1=mUZShtCAtLLEZe_y==HdBr9Q@mail.gmail.com>
+Subject: Re: [PATCH v3 0/4] state: generic devicetree-overlay based state node injection
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260825_101033_213691_B3343E2E 
-X-CRM114-Status: GOOD (  11.69  )
+X-CRM114-CacheID: sfid-20260825_161351_275802_3BB77E2F 
+X-CRM114-Status: GOOD (  60.29  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -63,19 +118,35 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Hi, On 8/25/26 5:02 PM, Ahmad Fatoum wrote: > On 8/25/26 5:05
-    AM, chalianis1@gmail.com wrote: >> so a real state.dtb collides with whatever
-    root the EFI >> payload already registered at boot and is reject [...] 
+ Content preview:  On Tue, Aug 25, 2026 at 05:02:40PM +0200, Ahmad Fatoum wrote:
+    Hi, > Hi, > > On 8/25/26 5:05 AM, > > From: Chali Anis > > > > Boards that
+    want a "barebox,state" node today have exactly one option: > > carry it in
+    their own, statically compiled-in devicetree sourc [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
- -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
+ -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/, no
+                             trust
+                             [2607:f8b0:4864:20:0:0:0:42f listed in]
+                             [list.dnswl.org]
+  0.0 SPF_HELO_NONE          SPF: HELO does not publish an SPF Record
  -0.0 SPF_PASS               SPF: sender matches SPF record
+  0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
+ -0.1 DKIM_VALID_EF          Message has a valid DKIM or DK signature from
+                             envelope-from domain
+ -0.1 DKIM_VALID_AU          Message has a valid DKIM or DK signature from author's
+                             domain
+ -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
  -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
                              [score: 0.0000]
-  0.0 DMARC_MISSING          Missing DMARC policy
+  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends in
+                             digit
+                             [chalianis1(at)gmail.com]
+  0.0 FREEMAIL_FROM          Sender email is commonly abused enduser mail provider
+                             [chalianis1(at)gmail.com]
+ -0.0 DMARC_PASS             DMARC pass policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,76 +158,300 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: barebox@lists.infradead.org
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-57.51 / 15.00];
-	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[99.99%];
+X-Spamd-Result: default: False [-6.27 / 15.00];
+	BAYES_HAM(-2.96)[99.81%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
+	ARC_REJECT(1.00)[signature check failed: fail, {[1] = sig:google.com:reject}];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_SPF_ALLOW(-0.20)[+mx:c];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
-	MAILLIST(-0.20)[mailman];
 	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
-	RCVD_IN_DNSWL_LOW(-0.10)[2a0a:edc0:0:900:1d::77:received];
+	MAILLIST(-0.20)[mailman];
+	R_SPF_ALLOW(-0.20)[+mx:c];
+	DMARC_POLICY_SOFTFAIL(0.10)[gmail.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FORGED_SENDER(0.00)[chalianis1@gmail.com,barebox-bounces@lists.infradead.org];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	DMARC_NA(0.00)[pengutronix.de];
-	ARC_NA(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com,pengutronix.de];
+	FROM_NEQ_ENVFROM(0.00)[chalianis1@gmail.com,barebox-bounces@lists.infradead.org];
 	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
 	FORWARDED(0.00)[barebox@lists.infradead.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	RCPT_COUNT_TWO(0.00)[2];
+	PREVIOUSLY_DELIVERED(0.00)[barebox@lists.infradead.org];
 	RCVD_TLS_LAST(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	DKIM_TRACE(0.00)[lists.infradead.org:+];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	TO_DN_NONE(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FORGED_SENDER(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
+	MISSING_XM_UA(0.00)[];
+	DKIM_MIXED(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	FORGED_SENDER_MAILLIST(0.00)[]
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,gmail.com:-];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	R_DKIM_REJECT(0.00)[gmail.com:s=20251104];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	RCVD_IN_DNSWL_NONE(0.00)[2607:f8b0:4864:20::42f:received];
+	FROM_HAS_DN(0.00)[]
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: AB251204AFA
+X-Rspamd-Queue-Id: F0ECC2021DE
 X-Rspamd-Server: mx1
-X-Stat-Signature: y4kki1bw9cp6wmnerm31nxuyer1gyjrx
+X-Stat-Signature: rji1cgq7w8f89iu5osqjyyjmyq7uz61o
 
+On Tue, Aug 25, 2026 at 05:02:40PM +0200, Ahmad Fatoum wrote:
 Hi,
 
-On 8/25/26 5:02 PM, Ahmad Fatoum wrote:
+> Hi,
+>
 > On 8/25/26 5:05 AM, chalianis1@gmail.com wrote:
->> so a real state.dtb collides with whatever root the EFI
->> payload already registered at boot and is rejected with -EBUSY, and a
->> rejected tree's /aliases entries never reach the global alias cache
->> of_alias_get() relies on either.
-> 
+> > From: Chali Anis <chalianis1@gmail.com>
+> >
+> > Boards that want a "barebox,state" node today have exactly one option:
+> > carry it in their own, statically compiled-in devicetree source. That's
+> > fine as long as barebox is built per-board with a maintained dts, but i=
+t
+> > is a harder fit for targets that don't have one to begin with: the EFI
+> > payload, deliberately meant to run unmodified across arbitrary
+> > x86/arm64 EFI platforms barebox itself knows nothing about at build
+> > time, and the generic BOARD_ARM_GENERIC_DT ("barebox-dt-2nd") image,
+> > which picks up whatever devicetree a first-stage bootloader or QEMU
+> > hands it in r2 at runtime the same way a Kernel would, rather than
+> > being built against a particular board's dts. Either way there is no
+> > single "board dts" being compiled for a state node to live in.
+>
+> We indeed have nothing for the barebox-dt-2nd.img case, but this image
+> is meant to be used with a *barebox* device tree, not some random DT
+> that may use bindings barebox isn't compatible with.
+>
+> This is intentionally narrower than what the kernel supports: The kernel
+> will keep supporting old bindings, but barebox will only support the
+> bindings it ships with.
+>
+> With that background, barebox-dt-2nd.img should never be called with
+> some random DT that's not matched to what barebox expects and thus we
+> can expect that if someone wants a barebox state node they would add it.
+
+The state overlay doesn't resolve against "a random DT" =E2=80=94 it's appl=
+ied via a
+fixup that doesn't need to know which exact DT or platform actually booted,
+works against whatever supported board's DT, just one that isn't available
+at build time to compile against.
+
+> As for QEMU, barebox already ships state overlays for it, but these are
+> built-in and applied early-on.
+>
+> >
+> > CONFIG_EXTERNAL_DTS_FRAGMENTS already covers a related need rather well=
+:
+> > an external build system can append dts fragment files to a board's dts
+> > source at build time, scoped to specific boards via a per-dts
+> > preprocessor macro. That remains the more direct choice whenever a
+> > board's own dts is actually part of the build, and this series doesn't
+> > propose changing that. It runs into the same limit as static dts
+> > inclusion for the EFI payload
+>
+> As mentioned on IRC, this is a limitation that can be fixed and not some
+> deliberate choice.
+>
+> > and barebox-dt-2nd cases specifically,
+>
+> As elaborated above, I have my reservations about starting barebox with
+> arbitrary DTs.
+
+Arbitrary DTs will not work anyway if the SOC at least not supported.
+
+> > though, since it operates at dts-source/build time on a particular
+> > "main dts" - which neither target, by design, has one of.
+>
+> As the EFI payload needs the DT for nothing apart of state, we could
+> also ship an empty DT and make that extensible via fragments.
+
+Yes in the case of EFI, both fragments and overlays has the same result
+since we use a partuuid to declare the state partition
+
+> FYI, there was discussion when fragments were first added if they should
+> be overlays instead:
+>
+> https://lore.barebox.org/barebox/CAMHeXxPZ9on3rZu92H1EeNQj79rUFBRbs5Qre=
+=3DAS3U7_y=3DUueQ@mail.gmail.com/
+>
+> > This series instead proposes a devicetree *overlay* (.dtso, applied at
+> > runtime via CONFIG_STATE_OVERLAY) for that gap. Applied to whichever
+> > devicetree barebox already ends up live with by boot time - statically
+> > compiled in, EFI-firmware-derived, passed in from a first-stage
+> > bootloader, or the EFI payload's own minimal stub root - it only ever
+> > adds one small node, so it doesn't need a "main dts" to attach to at
+> > build time, and it doesn't need to know a board's memory map or other
+> > devicetree content beyond one stable label (or, for EFI, just a
+> > partition UUID, patch 1) to hook its backend into.
+>
+> If we were to allow supplying external overlays at build time that are
+> applied at runtime, why make it specific to only state?
+
+making it specific to state overlay is cleaner in my opinion. we can suppor=
+t
+other overlays, this patches does not prevent them
+
+> Also to be a truly generic solution, we need some accounting for
+> multi-image (what if your build produces both a rpi3 and a rpi4 image
+> and you want different overlays for each?).
+
+a multi image will apply the same overlay which seems to be a limitation
+some people, for my case I run 5 products on the exact same stack which
+reduces support for me once something is fixed in one platform automaticly
+the others will benefet from it.
+
+> > In turn, that also
+> > means it never competes with an existing devicetree for ownership,
+> > which the one realistic alternative we considered - loading a full,
+> > standalone state.dtb at runtime - does run into: barebox_register_of()
+> > only accepts a new root if none is registered yet or the incoming tree
+> > is empty,
+>
+> It only accepting empty state.dtbs is a bug! It's fixed on master now
+> though (and in the latest release).
+
+okay.
+
+> > so a real state.dtb collides with whatever root the EFI
+> > payload already registered at boot and is rejected with -EBUSY, and a
+> > rejected tree's /aliases entries never reach the global alias cache
+> > of_alias_get() relies on either.
+>
 > This argumentation follows from a bug, so it doesn't say anything to the
 > merit of this new feature.
 
-I have now read through the series and my thoughts are that applying
-overlays to the barebox live tree from outside can be useful (I wouldn't
-limit it to state), but:
+The solutions or feature might come from bugs otherwise why changing things
+if they are already perfect.
 
-- it needs better argumentation what it allows that is not feasible with
-fragments
-- it needs some way to account for multi-image
+> > Happy to discuss trade-offs here, in particular whether it's worth
+> > teaching CONFIG_EXTERNAL_DTS_FRAGMENTS (or a variant of it) to handle
+> > the no-base-dts case instead of adding a separate mechanism - this
+> > series is meant as a concrete starting point for that conversation, not
+> > a claim that overlays are the only reasonable answer.
+>
+> I appreciate you putting in the effort. As mentioned on IRC, I am in
+> favor of extending fragments as it meshes with what we already have, but
+> I agree overlays can cover use cases that fragments don't (while
+> overlays as implemented here can't cover all users that fragments provide=
+).
 
-I am going to send out my EFI-payload-state-via-fragment series soon and
-I am interested to hear your thoughts on it.
+as I said one feature not prevent the other, but anyway If fragments solve
+most cases and permits to embbed  the state to barebox without having a sep=
+arate
+file or patching a given internal dts file or maintaining whole dts
+separatly, in
+side it will be fine.
 
-Thanks,
-Ahmad
+> > Patch 1 makes of_state_fixup() able to resolve a partuuid-referenced,
+> > non-hardware-backed backend node, and exports it so it can be called
+> > directly. Patch 2 adds CONFIG_STATE_OVERLAY itself, compiling an
+> > external .dtso into the barebox binary and applying it to the live
+> > devicetree at postcore_initcall time - guarding against there being no
+> > live devicetree yet, and refreshing the alias cache once applied. Patch
+> > 3 builds on both to publish the resolved state description as a UEFI
+> > variable once such a node exists. Patch 4 makes both of those actually
+> > reachable on x86: no code path there ever registered a live devicetree
+> > root pre-boot to begin with, since that registration only existed for
+> > the EFI_STUB entry point barebox uses on other architectures, not the
+> > EFI_PAYLOAD one x86 uses.
+>
+>
+> No need to recount the patch commit messages here. If at all, just
+> include a general description in the cover letter. This mail is already
+> very verbose, which makes following it a bit hard for me.
+Sorry claude authoring.
 
--- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-
+> >
+> > Changes since v1:
+> > - patch 1: fixed the compatible string on the synthesized fixed-partiti=
+ons
+> >   node ("fixed-partitions", not the barebox-internal
+> >   "barebox,fixed-partitions" alias, which external consumers don't
+> >   recognize), fixed a phandle collision where the synthesized node kept
+> >   the phandle it had in barebox's own live devicetree instead of one
+> >   scoped to the target tree, and resolved non-partuuid backends via the
+> >   reproducible name cached at probe time again instead of recomputing i=
+t
+> >   against whatever tree is being fixed up.
+> > - patch 2: state_overlay_apply() now guards against there being no live
+> >   devicetree yet and skips cleanly instead of calling into the overlay
+> >   code with a NULL root, and calls of_alias_scan() afterward so the
+> >   overlay's /aliases entry becomes visible the same way a live overlay
+> >   applied via the interactive of_overlay command already does. Also
+> >   selects CONFIG_OFDEVICE, needed for a live devicetree root to exist
+> >   at all on some targets.
+> > - patch 3: publish "BareboxState" under efi_barebox_vendor_guid instead
+> >   of efi_systemd_vendor_guid - it's a barebox-defined variable, not par=
+t
+> >   of the systemd-boot loader protocol. state_to_efivars_export() and
+> >   efi_late_init() are both late_efi_initcall, and within one initcall
+> >   level execution follows definition order in the object file, so
+> >   state_to_efivars_export() is now defined after efi_late_init():
+> >   on boards with no state node in their own static devicetree,
+> >   efi_late_init() is what loads and registers the standalone state.dtb,
+> >   and only once that has had a chance to run does state_by_alias() (use=
+d
+> >   here instead of open-coding the equivalent of_find_node_by_alias() +
+> >   state_by_node()) have anything to find.
+> > - patch 4 is new: without it, CONFIG_STATE_OVERLAY silently never had a
+> >   devicetree to apply to on x86, and this series' EFI-payload rationale
+> >   didn't hold up for that architecture in practice.
+> > - cover letter: called out BOARD_ARM_GENERIC_DT ("barebox-dt-2nd") as a
+> >   second target that benefits from this alongside the EFI payload, sinc=
+e
+> >   it's in the same "no main dts at build time" situation.
+>
+> I haven't checked out the earlier versions, so I will just gloss over thi=
+s.
+>
+> > Tested on a Raspberry Pi CM4 natively, and as the EFI payload on a
+> > Jetson Orin NX and under QEMU (x86, with a partuuid-referenced backend)=
+.
+>
+> Thanks. This is useful info.
+>
+> >
+> > Chali Anis (4):
+> >   state: make of_state_fixup() usable outside common/state/
+> >   state: add CONFIG_STATE_OVERLAY to inject a state node via devicetree
+> >     overlay
+> >   efi: payload: export resolved state as a BareboxState UEFI variable
+> >   efi: payload: make CONFIG_STATE_OVERLAY (and BareboxState export) wor=
+k
+> >     on x86
+> >
+> >  .../bindings/barebox/barebox,state.rst        |  9 +++
+> >  Documentation/user/state.rst                  | 32 +++++++++
+> >  common/Kconfig                                | 41 +++++++++++
+> >  common/state/Makefile                         | 20 ++++++
+> >  common/state/state.c                          | 72 +++++++++++++++----
+> >  common/state/state_overlay.c                  | 29 ++++++++
+> >  efi/payload/Makefile                          |  1 +
+> >  efi/payload/init.c                            | 69 +++++++++++++++++-
+> >  include/state.h                               |  5 ++
+> >  9 files changed, 263 insertions(+), 15 deletions(-)
+> >  create mode 100644 common/state/state_overlay.c
+> >
+> >
+>
+>
+> Cheers,
+> Ahmad
+>
+>
+>
+> --
+> Pengutronix e.K.                  |                             |
+> Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+>
+>
+>
+Best regards.
+Anis
 
 
