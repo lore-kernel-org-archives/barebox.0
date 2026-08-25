@@ -1,66 +1,65 @@
-Delivery-date: Tue, 25 Aug 2026 09:53:28 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Tue, 25 Aug 2026 10:16:11 +0200
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wylyJ-006zr3-2M
+	id 1wymKI-0070LM-2E
 	for lore@lore.pengutronix.de;
-	Tue, 25 Aug 2026 09:53:28 +0200
+	Tue, 25 Aug 2026 10:16:11 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 4E3FC200F47
-	for <lore@pengutronix.de>; Tue, 25 Aug 2026 09:53:28 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 44FC3200740
+	for <lore@pengutronix.de>; Tue, 25 Aug 2026 10:16:11 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=kOp219Mr;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=PGmq1BTO;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=7+brExKhom5u/aA6Y8Gwr0VmbNtzeTSIXzUI4YOYXZY=; b=kOp219MrkVWXLaDKYLP4kHHUNA
-	i4rrgluPY4Kqe6ga4xAwG7k0WSWreNChqoMPHwx8TBOH1lIVo4aoDRjP3KHTn6uzmnyw3iYz1puTB
-	8p8CBHqxXzLbX+vKOleIp/XhP6v8lBJsLGLp6PZYHAKQ6bX44vbLjvm3QnZxULd/6bidMsPTHS+pi
-	lzXGC1CeXr4xHbkjY2EtWQoY1RAwCWrwvl27V+5PUva48UaM2ny44M7cN0/gJBN/uliIV8sLSz6Ck
-	Q5BV5mmwc2nito1btw1RBjbyAmngLsTSnIVrZ5iQMsoasOuaA8WabtBJ6vsckV5/kNACoNl0wWMMI
-	629Ryd8A==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=UHWKH5LU0aQaFryk0HGWoBIEKc8uJISvQjF/uQaZWbU=; b=PGmq1BTO01icui
+	lI1QCqA8Dz+Mn9oszUMcpBEvgk3NLuo7wNhU8AyuS8RgggdGpyG0/kUM5O6RpKzHd03ZCTSCkeZ8v
+	XNlbgl1xkUQ7ZGxbAqDpyqvBHwSH4GVXGVE7xKiQbsgLppD397xkwPFzznUnATGhLVBWiqbfZ15D9
+	X6U5the5heHX8XObP5Gbxy2i6GVnhdRORPSxRXDC6O2g3HbdvV7Aq0+QpageRxrFQBTnSlsr9Fo5g
+	I49Z+cwfTA5PsxbvrZ9OczKCPPqw29nydLH/tvhzI6l583Be5v7gviuM7/iqraVKag4q5DC7VbWgP
+	f89XWeA1NDLreflyRgNA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wylxo-00000000K9A-2oNQ;
-	Tue, 25 Aug 2026 07:52:56 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1wymJr-00000000MA9-0llm;
+	Tue, 25 Aug 2026 08:15:43 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wylxl-00000000K8R-2J8I
+	id 1wymJo-00000000M8t-0t4Y
 	for barebox@lists.infradead.org;
-	Tue, 25 Aug 2026 07:52:55 +0000
+	Tue, 25 Aug 2026 08:15:41 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id E3AA5200740;
-	Tue, 25 Aug 2026 09:52:49 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id A5BD1201021;
+	Tue, 25 Aug 2026 10:15:37 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wylxh-003Eg8-2l;
-	Tue, 25 Aug 2026 09:52:49 +0200
+	id 1wymJl-003Ezm-1u;
+	Tue, 25 Aug 2026 10:15:37 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wylxh-00000004Ft0-32dw;
-	Tue, 25 Aug 2026 09:52:49 +0200
+	id 1wymJl-00000005D0c-22k1;
+	Tue, 25 Aug 2026 10:15:37 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH master] ARM64: efi-header: declare the code section writable
-Date: Tue, 25 Aug 2026 09:52:46 +0200
-Message-ID: <20260825075248.1014060-1-a.fatoum@pengutronix.de>
+Subject: [PATCH v2 1/3] ARM: cpu: suppress arm_early_mmu_cache_invalidate if dcache enabled
+Date: Tue, 25 Aug 2026 10:13:15 +0200
+Message-ID: <20260825081533.1240832-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260825_005253_743972_58A6A72F 
-X-CRM114-Status: GOOD (  11.23  )
+X-CRM114-CacheID: sfid-20260825_011540_404408_AE304E50 
+X-CRM114-Status: GOOD (  12.28  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -68,9 +67,11 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  CONFIG_PBL_FULLY_PIC was initially introduced to make the
-   enough of the early PBL position-independent, so it can execute until barebox
-    is relocated to EFI allocated RWX memory. This was required beca [...] 
+ Content preview:  barebox built as EFI payload on ARM invalidates the data caches
+    inside barebox_arm_entry(), which may lead to memory corruption. Generally,
+    calling arm_early_mmu_cache_invalidate() while the caches are enabled is
+   a bad idea, so add a function that protects against that and use it in common
+    code. 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -92,12 +93,13 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: sqnmxi5zqze6tom6whar7hke5xp3mfwk
+X-Stat-Signature: q3stb6iuuz7pq7xaqoihjfyt8ze5nes8
 X-Spamd-Result: default: False [-6.21 / 15.00];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	MID_CONTAINS_FROM(1.00)[];
@@ -126,52 +128,94 @@ X-Spamd-Result: default: False [-6.21 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 4E3FC200F47
+X-Rspamd-Queue-Id: 44FC3200740
 
-CONFIG_PBL_FULLY_PIC was initially introduced to make the enough of the
-early PBL position-independent, so it can execute until barebox is
-relocated to EFI allocated RWX memory.
-This was required because the EDK-II EFI firmware I tested against
-mapped the barebox code section read-only.
+barebox built as EFI payload on ARM invalidates the data caches inside
+barebox_arm_entry(), which may lead to memory corruption.
 
-While W^X is desirable, the current setup is broken: We do not check at
-compile-time that there are no relocations, so compiler updates and code
-changes can make this regress. Also the memory barebox allocates for
-itself is RWX as we do not ask for other types of memory via NX_COMPAT.
+Generally, calling arm_early_mmu_cache_invalidate() while the caches are
+enabled is a bad idea, so add a function that protects against that and
+use it in common code.
 
-For this reason, correctly reflect in the PE header's characteristics
-that barebox as EFI payload needs to run with code section mapped RWX.
-
-barebox running as EFI loader is unaffected.
-
-Assisted-by: Claude:fable-5
+Fixes: 742e78976dd4 ("ARM64: add optional EFI stub")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/cpu/efi-header-aarch64.S | 9 +++++++++
- 1 file changed, 9 insertions(+)
+v1 -> v2:
+  - rename dcache_invalidate_stale(to cache_invalidate_stale (Lucas)
+---
+ arch/arm/cpu/common.c        | 16 ++++++++++++++++
+ arch/arm/cpu/entry_ll_32.S   |  2 +-
+ arch/arm/cpu/entry_ll_64.S   |  2 +-
+ arch/arm/include/asm/cache.h |  3 +++
+ 4 files changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/cpu/efi-header-aarch64.S b/arch/arm/cpu/efi-header-aarch64.S
-index 941d0d8fdcaa..b2e891b3872c 100644
---- a/arch/arm/cpu/efi-header-aarch64.S
-+++ b/arch/arm/cpu/efi-header-aarch64.S
-@@ -94,8 +94,17 @@
- 	.long	0					// PointerToLineNumbers
- 	.short	0					// NumberOfRelocations
- 	.short	0					// NumberOfLineNumbers
-+	/*
-+	 * TODO: drop the WRITE here and set NX_COMPAT flag
-+	 *
-+	 * Before we can do this however, we will need a restructure of the PBL:
-+	 * early relocation code will need to go into its own section that's
-+	 * enforced at build-time to be clear of any relocations and only then
-+	 * we can set RX for it and RW for the data.
-+	 */
- 	.long	IMAGE_SCN_CNT_CODE | \
- 		IMAGE_SCN_MEM_READ | \
-+		IMAGE_SCN_MEM_WRITE | \
- 		IMAGE_SCN_MEM_EXECUTE			// Characteristics
+diff --git a/arch/arm/cpu/common.c b/arch/arm/cpu/common.c
+index adb5d6a02bc8..e079f55b8bb7 100644
+--- a/arch/arm/cpu/common.c
++++ b/arch/arm/cpu/common.c
+@@ -37,6 +37,22 @@ void sync_caches_for_execution(void)
+ 	arm_early_mmu_cache_flush();
+ }
  
- 	.ascii	".data\0\0\0"
++/**
++ * cache_invalidate_stale - invalidate caches prior to enabling them
++ *
++ * Some SoCs can come up with invalid entries, but with the valid bit set.
++ * This function discards them, as that would lead to memory corruption
++ * otherwise.
++ */
++void cache_invalidate_stale(void)
++{
++	/* if caches are already enabled, don't cause data loss */
++	if (get_cr() & CR_C)
++		return;
++
++	arm_early_mmu_cache_invalidate();
++}
++
+ void pbl_barebox_break(void)
+ {
+ 	__asm__ __volatile__ (
+diff --git a/arch/arm/cpu/entry_ll_32.S b/arch/arm/cpu/entry_ll_32.S
+index 0d4c47c1c870..0763581fded4 100644
+--- a/arch/arm/cpu/entry_ll_32.S
++++ b/arch/arm/cpu/entry_ll_32.S
+@@ -15,7 +15,7 @@ ENTRY(__barebox_arm_entry)
+ 	mov	r4, r0
+ 	mov	r5, r1
+ 	mov	r6, r2
+-	bl	arm_early_mmu_cache_invalidate
++	bl	cache_invalidate_stale
+ 	mov	r0, r4
+ 	mov	r1, r5
+ 	mov	r2, r6
+diff --git a/arch/arm/cpu/entry_ll_64.S b/arch/arm/cpu/entry_ll_64.S
+index 5eb6efed5baf..c80a23c6506d 100644
+--- a/arch/arm/cpu/entry_ll_64.S
++++ b/arch/arm/cpu/entry_ll_64.S
+@@ -15,7 +15,7 @@ ENTRY(__barebox_arm_entry)
+ 	mov	x19, x0
+ 	mov	x20, x1
+ 	mov	x21, x2
+-	bl	arm_early_mmu_cache_invalidate
++	bl	cache_invalidate_stale
+ 	mov	x0, x19
+ 	mov	x1, x20
+ 	mov	x2, x21
+diff --git a/arch/arm/include/asm/cache.h b/arch/arm/include/asm/cache.h
+index ea78ae123aec..9dbf433356b9 100644
+--- a/arch/arm/include/asm/cache.h
++++ b/arch/arm/include/asm/cache.h
+@@ -26,6 +26,9 @@ static inline void icache_invalidate(void)
+ #endif
+ }
+ 
++
++void cache_invalidate_stale(void);
++
+ void arm_early_mmu_cache_flush(void);
+ void arm_early_mmu_cache_invalidate(void);
+ 
 -- 
 2.47.3
 
