@@ -1,16 +1,16 @@
-Delivery-date: Tue, 25 Aug 2026 12:12:27 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Tue, 25 Aug 2026 12:12:32 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wyo8o-0072Bw-2U
+	id 1wyo8t-0072Cg-0m
 	for lore@lore.pengutronix.de;
-	Tue, 25 Aug 2026 12:12:27 +0200
+	Tue, 25 Aug 2026 12:12:32 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 56A882009FB
-	for <lore@pengutronix.de>; Tue, 25 Aug 2026 12:12:27 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id D3A85201AD4
+	for <lore@pengutronix.de>; Tue, 25 Aug 2026 12:12:31 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=W3mL5Sj1;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=BLGHZzMq;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,50 +19,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=nqArZdyRhPCLZJ5ScTdlUqZHyQ5mZcvUODqhIY73ZPQ=; b=W3mL5Sj1Eiulzt80FTdev5igjX
-	fGuR6ovj1LiwzH7ulsQ4IGcfsCPKapnaQSUm2iog9cPmIb4YXIF0dcGCv9J2ktlJV87W7G/+070ax
-	frsvqfhZrhfQfxC8O/73w12TrJFkS7yhMx95B/lzDg3IlXK07VydQ/jyHyPT0TV64y9IRgCERPvOv
-	xDOnXCJREbEsiDHEDxOze3pR2utKK6fWgOA4A6lkicuYyM4NzqdgD91sfxw7IUnVQOmjfbwbb2bSL
-	nt8hGwPU2eNFHWk/anqsxf2mCM2XGKtceFcdJVd/urqsHFJJW/RL7Iu6/bjixk+3KshaaRH5MFMJo
-	e+Nec/Yg==;
+	bh=Eu03yoi6tZXUdf+vhlniuosaVvGfMHO82B86YAoPM0o=; b=BLGHZzMqt8hq90pO9K5DDHWNGX
+	MpopkliYu7EEsshG5mwMF3AN63TYTp3nEV02WXB0CNyuz1PimToJQYHA3btjBBQYx5jUcYL3NHFmw
+	VpJ93RnASB+0mfbSYDxPx18jvEt/nVF/rbatJzryUV4gMe9bsXxB4tK90+giT/I55+6NTji1WFifN
+	ZsaioLDEnqk2oP2U57A3seLuM1IbblF6Yq5FUpvBdTgjTMC/wzu2hhQIb6ZhKghboQpfzhI0K2Se4
+	4GRthPY7h+yybrsr2vyZIs8CU+dsNcQZuK/wtLiEgOHzGQTa7BIpfvYbdSa50wQfe5ctZqYN+Ok8h
+	dIhl+r9Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyo7f-00000000Ymm-2T1i;
+	id 1wyo7f-00000000Ym9-1PH5;
 	Tue, 25 Aug 2026 10:11:15 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyo7Z-00000000Ygo-1iUx
+	id 1wyo7Z-00000000Ygs-1o53
 	for barebox@lists.infradead.org;
 	Tue, 25 Aug 2026 10:11:13 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C7146201BC9;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id CDD98202078;
 	Tue, 25 Aug 2026 12:11:07 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wyo7X-003FvH-2H;
+	id 1wyo7X-003FvJ-2R;
 	Tue, 25 Aug 2026 12:11:07 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wyo7X-00000008vZQ-2X0k;
+	id 1wyo7X-00000008vZQ-2iV2;
 	Tue, 25 Aug 2026 12:11:07 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH 3/4] fs: fat: use fixed-width 32-bit FatFs types
-Date: Tue, 25 Aug 2026 12:10:55 +0200
-Message-ID: <20260825101106.2127202-3-a.fatoum@pengutronix.de>
+Subject: [PATCH 4/4] fs: fat: flush metadata updates to the block device
+Date: Tue, 25 Aug 2026 12:10:56 +0200
+Message-ID: <20260825101106.2127202-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260825101106.2127202-1-a.fatoum@pengutronix.de>
 References: <20260825101106.2127202-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260825_031109_601337_8A1029FA 
-X-CRM114-Status: GOOD (  11.47  )
+X-CRM114-CacheID: sfid-20260825_031109_633841_ACFB5223 
+X-CRM114-Status: GOOD (  12.09  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -70,10 +70,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  The comment already says LONG/ULONG/DWORD types should be
-   32-bit, but barebox's long is always pointer-sized, so 64-bit on 64-bit platforms.
-    Use explicit 32-bit types for the FatFs fields that are written to disk or
-    used in sector calculations. 
+ Content preview:  The disk_ioctl glue that barebox provides can take a CTRL_SYNC
+    command, but barebox implemented it as a no-op. Instead, various file system
+    callbacks did flushing manually instead of having fat.c do it via disk_ioctl.
+    
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -98,7 +98,7 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: f7jk538t6cydb9f5mj9yjtow3d7yozc6
+X-Stat-Signature: 6d8ptwrn7teyz1kjw1s4ied6pc5e8oqf
 X-Spamd-Result: default: False [-6.21 / 15.00];
 	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
@@ -129,96 +129,147 @@ X-Spamd-Result: default: False [-6.21 / 15.00];
 	RCVD_COUNT_FIVE(0.00)[5];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 56A882009FB
+X-Rspamd-Queue-Id: D3A85201AD4
 
-The comment already says LONG/ULONG/DWORD types should be 32-bit, but
-barebox's long is always pointer-sized, so 64-bit on 64-bit platforms.
+The disk_ioctl glue that barebox provides can take a CTRL_SYNC command,
+but barebox implemented it as a no-op.
 
-Use explicit 32-bit types for the FatFs fields that are written to disk
-or used in sector calculations.
+Instead, various file system callbacks did flushing manually instead
+of having fat.c do it via disk_ioctl.
+
+Implement disk_ioctl(..., CTRL_SYNC) and drop the now superfluous
+flushes.
 
 Assisted-by: Codex:gpt-5.5
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/fat/fat.c     | 4 ++--
- fs/fat/ff.c      | 9 ++++++++-
- fs/fat/integer.h | 8 +++++---
- 3 files changed, 15 insertions(+), 6 deletions(-)
+ fs/fat/diskio.h     |  1 +
+ fs/fat/fat-diskio.c |  4 ++++
+ fs/fat/fat.c        | 46 ++++++++++++++-------------------------------
+ 3 files changed, 19 insertions(+), 32 deletions(-)
 
+diff --git a/fs/fat/diskio.h b/fs/fat/diskio.h
+index 04a587e3bc47..86fa0f21e365 100644
+--- a/fs/fat/diskio.h
++++ b/fs/fat/diskio.h
+@@ -40,6 +40,7 @@ DSTATUS disk_status (FATFS *fatfs);
+ DRESULT disk_read (FATFS *fatfs, BYTE*, DWORD, BYTE);
+ #if	_READONLY == 0
+ DRESULT disk_write (FATFS *fatfs, const BYTE*, DWORD, BYTE);
++DRESULT disk_flush (FATFS *fatfs);
+ #endif
+ DRESULT disk_ioctl (FATFS *fatfs, BYTE, void*);
+ 
+diff --git a/fs/fat/fat-diskio.c b/fs/fat/fat-diskio.c
+index 6ba18993b870..8e26b6b1e9bb 100644
+--- a/fs/fat/fat-diskio.c
++++ b/fs/fat/fat-diskio.c
+@@ -28,7 +28,11 @@ DRESULT disk_ioctl (FATFS *fat, BYTE command, void *buf)
+ 		*(WORD *)buf = disk_sector_size(fat);
+ 		return RES_OK;
+ 	case CTRL_SYNC:
++#if	_READONLY == 0
++		return disk_flush(fat);
++#else
+ 		return RES_OK;
++#endif
+ 	default:
+ 		return RES_PARERR;
+ 	}
 diff --git a/fs/fat/fat.c b/fs/fat/fat.c
-index b17157d1ea34..b50867524a74 100644
+index b50867524a74..c2e6969f8109 100644
 --- a/fs/fat/fat.c
 +++ b/fs/fat/fat.c
-@@ -52,7 +52,7 @@ DRESULT disk_read(FATFS *fat, BYTE *buf, DWORD sector, BYTE count)
- 	size_t len = count * sector_size;
- 	int ret;
- 
--	debug("%s: sector: %ld count: %d\n", __func__, sector, count);
-+	debug("%s: sector: %u count: %d\n", __func__, sector, count);
- 
- 	ret = cdev_read(priv->cdev, buf, len, (loff_t)sector * sector_size, 0);
- 	if (ret != len)
-@@ -68,7 +68,7 @@ DRESULT disk_write(FATFS *fat, const BYTE *buf, DWORD sector, BYTE count)
- 	size_t len = count * sector_size;
- 	int ret;
- 
--	debug("%s: buf: %p sector: %ld count: %d\n",
-+	debug("%s: buf: %p sector: %u count: %d\n",
- 			__func__, buf, sector, count);
- 
- 	ret = cdev_write(priv->cdev, buf, len, (loff_t)sector * sector_size, 0);
-diff --git a/fs/fat/ff.c b/fs/fat/ff.c
-index e4d83a35605f..2f4e3b14f0a5 100644
---- a/fs/fat/ff.c
-+++ b/fs/fat/ff.c
-@@ -1539,14 +1539,21 @@ static enum filetype check_fs (	/* 0:The FAT BR, 1:Valid BR but not an FAT, 2:No
- 	DWORD *bootsec
- )
- {
-+	unsigned long bootsec_ul = 0;
- 	DRESULT ret;
-+	enum filetype type;
- 
- 	/* Load boot record */
- 	ret = disk_read(fs, fs->win, sect, 1);
- 	if (ret)
- 		return filetype_unknown;
- 
--	return is_fat_or_mbr(fs->win, bootsec);
-+	type = is_fat_or_mbr(fs->win, &bootsec_ul);
-+
-+	if (bootsec)
-+		*bootsec = bootsec_ul;
-+
-+	return type;
+@@ -78,6 +78,13 @@ DRESULT disk_write(FATFS *fat, const BYTE *buf, DWORD sector, BYTE count)
+ 	return RES_OK;
  }
  
- /*
-diff --git a/fs/fat/integer.h b/fs/fat/integer.h
-index fe94e374f356..d8b13402afe3 100644
---- a/fs/fat/integer.h
-+++ b/fs/fat/integer.h
-@@ -7,6 +7,8 @@
- #ifndef _INTEGER
- #define _INTEGER
- 
-+#include <linux/types.h>
++DRESULT disk_flush(FATFS *fat)
++{
++	struct fat_priv *priv = fat->userdata;
 +
- /* These types must be 16-bit, 32-bit or larger integer */
- typedef int		INT;
- typedef unsigned int	UINT;
-@@ -23,8 +25,8 @@ typedef unsigned short	WORD;
- typedef unsigned short	WCHAR;
++	return cdev_flush(priv->cdev) ? RES_ERROR : RES_OK;
++}
++
+ /* ---------------------------------------------------------------*/
  
- /* These types must be 32-bit integer */
--typedef long		LONG;
--typedef unsigned long	ULONG;
--typedef unsigned long	DWORD;
-+typedef s32		LONG;
-+typedef u32		ULONG;
-+typedef u32		DWORD;
+ #ifdef CONFIG_FS_FAT_WRITE
+@@ -91,51 +98,28 @@ static int fat_create(struct device *dev, const char *pathname, mode_t mode)
+ 	if (ret)
+ 		return ret;
  
- #endif
+-	f_close(&f_file);
+-
+-	return 0;
++	return f_close(&f_file);
+ }
+ 
+ static int fat_unlink(struct device *dev, const char *pathname)
+ {
+ 	struct fat_priv *priv = dev->priv;
+-	int ret;
+ 
+-	ret = f_unlink(&priv->fat, pathname);
+-	if (ret)
+-		return ret;
+-
+-	cdev_flush(priv->cdev);
+-
+-	return 0;
++	return f_unlink(&priv->fat, pathname);
+ }
+ 
+ static int fat_mkdir(struct device *dev, const char *pathname)
+ {
+ 	struct fat_priv *priv = dev->priv;
+-	int ret;
+ 
+-	ret = f_mkdir(&priv->fat, pathname);
+-	if (ret)
+-		return ret;
+-
+-	cdev_flush(priv->cdev);
+-
+-	return 0;
++	return f_mkdir(&priv->fat, pathname);
+ }
+ 
+ static int fat_rmdir(struct device *dev, const char *pathname)
+ {
+ 	struct fat_priv *priv = dev->priv;
+-	int ret;
+ 
+-	ret = f_unlink(&priv->fat, pathname);
+-	if (ret)
+-		return ret;
+-
+-	cdev_flush(priv->cdev);
+-
+-	return 0;
++	return f_unlink(&priv->fat, pathname);
+ }
+ 
+ static int fat_write(struct file *f, const void *buf, size_t insize)
+@@ -224,16 +208,14 @@ static int fat_open(struct device *dev, struct file *file, const char *filename)
+ 
+ static int fat_close(struct device *dev, struct file *f)
+ {
+-	struct fat_priv *priv = dev->priv;
+ 	FIL *f_file = f->private_data;
++	int ret;
+ 
+-	f_close(f_file);
++	ret = f_close(f_file);
+ 
+ 	free(f_file);
+ 
+-	cdev_flush(priv->cdev);
+-
+-	return 0;
++	return ret;
+ }
+ 
+ static int fat_read(struct file *f, void *buf, size_t insize)
 -- 
 2.47.3
 
