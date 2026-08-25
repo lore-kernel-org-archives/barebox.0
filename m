@@ -1,88 +1,110 @@
-Delivery-date: Tue, 25 Aug 2026 12:32:46 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Tue, 25 Aug 2026 14:16:20 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wyoST-0072UG-2I
+	id 1wyq4h-0074Bh-2b
 	for lore@lore.pengutronix.de;
-	Tue, 25 Aug 2026 12:32:46 +0200
+	Tue, 25 Aug 2026 14:16:20 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 37C0C201D0F
-	for <lore@pengutronix.de>; Tue, 25 Aug 2026 12:32:46 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 0EBA1200740
+	for <lore@pengutronix.de>; Tue, 25 Aug 2026 14:16:20 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=S9znBery;
-	dmarc=none;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=hLDyp9D1;
+	dkim=fail ("headers rsa verify failed") header.d=amelchem.com header.s=default2004 header.b=DkqX6j+L;
+	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=amelchem.com (policy=none);
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=h8nOZm6CE7vLmMcD7CCGuHm0ckYTmH45VPFzKrSdJBM=; b=S9znBery6+Pbnokob/XRRhKb45
-	tHrUiq1zmK9cy1rNPqR1v9lBxOsmHgC49yDOC85fd97OeCqUymBG+hHs+8dBpQftogogJ/lqV6sIa
-	qzALcaV3pXLwXGiijo9xP8p2bXq1ax3uqPYmKPJnk1olQI/O8KY9vClPcx84W3O1ddWfO+VPGPM3E
-	eAEp8yi7Lul8/kRqMAro4DYma+EkSBFCqyIOT/b3utcTYBHCP59ZQBeqJhMTYVXTnbKbgQGV//CU8
-	CMaTuNCIMHYs46HJ9WgmmiQxv5jU1LB17VhyYS7396P0knO7l9NyxcvpBLIvBhC9Ar6G/8foK8lhL
-	W7UK/6pw==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Reply-To:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
+	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:To:From:
+	Subject:Message-ID:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=0yWgiNJi6oFrn5UyhwLE7LrghlPaWVJ7D162mePZQo0=; b=hLDyp9D1vJzGCLCQx0h1sSl7CN
+	TQrQ3/DkMZrOG2S72Lt+FvmabnnnD3g9n87ZM4sD3FmSqf5vjq7Oo2FTXZG1rBveonSJc1J8fHSQ8
+	aizBm5IpWWr9dOlWdEXUFpwWpPSiILc84OMw2rEG7Yq6u8IgwhQR752/DTdoABMMbdGy8/ioOS1vJ
+	23CG6w6J1QxqNJ6S56r7BIZCWZAuFadyYi+meS7ar56HeArdwZ35JhBEwPT9N46XrS0V4Js5fVMEA
+	GsBjbhrAsjV785EAujv3Cw9LxPvRMrVmBWGe7LETlG/dCmvWNobzCJSUfcNw6qsFLEV55yhaCX9cU
+	/DDNUTXQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyo7e-00000000YlE-3YEr;
-	Tue, 25 Aug 2026 10:11:14 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1wyq3C-00000000k6T-2sSA;
+	Tue, 25 Aug 2026 12:14:46 +0000
+Received: from www153.your-server.de ([213.133.104.153])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyo7Z-00000000Ygl-1iRV
+	id 1wyq39-00000000k5U-2VHm
 	for barebox@lists.infradead.org;
-	Tue, 25 Aug 2026 10:11:12 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id ADE1F200062;
-	Tue, 25 Aug 2026 12:11:07 +0200 (CEST)
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	Tue, 25 Aug 2026 12:14:45 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=amelchem.com; s=default2004; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:To:Reply-To:From:Subject:Message-ID:
+	Sender:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=0yWgiNJi6oFrn5UyhwLE7LrghlPaWVJ7D162mePZQo0=; b=DkqX6j+LCpBTCkBJEXj9QuTUY3
+	x+hrYXqA/3PAB8aG2pQaATEzvsIPWNpSxG3Ieus5Vcwk21EXnF2aiCBV0LWCAWyAGQbl7GloirxFb
+	mug9Gq1SxU5JCfIcSGcBKhp7UJSmM/t08HWfYNrlHO1gEKWxhZz5C3mhvI+jXFA0qaCoxrPhXr3rn
+	UH9iYpx/X22wkHaXq05K7g0a3tkbryFNXYlp6370oX4eKiyBZngynoB7GSKDc9adkYNsVrFSYxC86
+	40jhJa0DpYmFX7m4Aqql+WNSesAARJNEZQVicRjhjOHndcUaoMrSy0j3yugNftcj75b+nDCAFQ2Qx
+	daac3Fig==;
+Received: from sslproxy07.your-server.de ([78.47.199.104])
+	by www153.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <rossi@amelchem.com>)
+	id 1wyq35-000IVC-1J
+	for barebox@lists.infradead.org;
+	Tue, 25 Aug 2026 14:14:39 +0200
+Received: from localhost ([127.0.0.1])
+	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wyo7X-003FvD-1y;
-	Tue, 25 Aug 2026 12:11:07 +0200
-Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wyo7X-00000008vZQ-29Sa;
-	Tue, 25 Aug 2026 12:11:07 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH 1/4] fs: fat: propagate actual error code when opening/creating files
-Date: Tue, 25 Aug 2026 12:10:53 +0200
-Message-ID: <20260825101106.2127202-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	(envelope-from <rossi@amelchem.com>)
+	id 1wyq35-0009eU-0Q
+	for barebox@lists.infradead.org;
+	Tue, 25 Aug 2026 14:14:39 +0200
+Message-ID: <010a0855cdd5268ab8e47ed5b5e43a7bbfc539f6.camel@amelchem.com>
+Subject: Re: Driver placement for a new STUSB4500 USB-C PD sink controller
+From: Giandomenico Rossi <rossi@amelchem.com>
+To: barebox <barebox@lists.infradead.org>
+Date: Tue, 25 Aug 2026 14:14:38 +0200
+In-Reply-To: <2d747fac-3c27-45d1-9f6c-95e8579c75a2@pengutronix.de>
+References: <561b94b11b45ec960fbbc060d8db8f292e2446e4.camel@amelchem.com>
+	 <2d747fac-3c27-45d1-9f6c-95e8579c75a2@pengutronix.de>
+Organization: Amel s.r.l.
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2.1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/28103/Tue Aug 25 08:27:08 2026)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260825_031109_601458_CC5B9588 
-X-CRM114-Status: UNSURE (   9.40  )
-X-CRM114-Notice: Please train this message.
-X-Spam-Score: -1.9 (-)
+X-CRM114-CacheID: sfid-20260825_051443_938730_78578047 
+X-CRM114-Status: GOOD (  28.19  )
+X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
  message has been attached to this so you can view it or label
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  We currently map all error codes to -EINVAL when opening or
-    creating a file, when the underlying functions are capable of returning more
-    error codes like -EISDIR or -EROFS. Propagate the received error code to
-   tell consumers more about what went wrong. 
+ Content preview:  On Tue, 2026-08-25 at 12:08 +0200, Ahmad Fatoum wrote: > Hello
+    Giandomenico, > > On 8/25/26 11:38 AM, Giandomenico Rossi wrote: > > Hi,
+   > > > > I'm writing a Barebox driver for the STMicroelectronics [...] 
  
- Content analysis details:   (-1.9 points, 5.0 required)
+ Content analysis details:   (-2.1 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
- -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
+  0.0 RCVD_IN_MSPIKE_H2      RBL: Average reputation (+2)
+                             [213.133.104.153 listed in wl.mailspike.net]
+  0.0 SPF_HELO_NONE          SPF: HELO does not publish an SPF Record
  -0.0 SPF_PASS               SPF: sender matches SPF record
+  0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
+ -0.1 DKIM_VALID_EF          Message has a valid DKIM or DK signature from
+                             envelope-from domain
+ -0.1 DKIM_VALID_AU          Message has a valid DKIM or DK signature from author's
+                             domain
+ -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
  -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
                              [score: 0.0000]
-  0.0 DMARC_MISSING          Missing DMARC policy
+ -0.0 DMARC_PASS             DMARC pass policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -94,87 +116,133 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Reply-To: rossi@amelchem.com
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: bg6gamp35q3yfhgm4rxraqs7j4ipb7yz
-X-Spamd-Result: default: False [-6.21 / 15.00];
+X-Stat-Signature: hjpd151nybwaz7s48jkc6cdrc9r68ab9
+X-Spamd-Result: default: False [-7.31 / 15.00];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	MID_CONTAINS_FROM(1.00)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_MISSING_CHARSET(0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::54:received];
-	R_SPF_ALLOW(-0.20)[+mx:c];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
+	DMARC_POLICY_SOFTFAIL(0.10)[amelchem.com : SPF not aligned (relaxed), DKIM not aligned (relaxed),none];
 	MIME_GOOD(-0.10)[text/plain];
-	RCVD_IN_DNSWL_LOW(-0.10)[2a0a:edc0:0:c01:1d::a2:received];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_ALL(0.00)[];
+	RCPT_COUNT_ONE(0.00)[1];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	ARC_NA(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	MIME_TRACE(0.00)[0:+];
+	HAS_ORG_HEADER(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	DKIM_MIXED(0.00)[];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[rossi@amelchem.com,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	R_DKIM_REJECT(0.00)[amelchem.com:s=default2004];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,amelchem.com:-];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	RCVD_COUNT_FIVE(0.00)[5];
-	DKIM_TRACE(0.00)[lists.infradead.org:+];
-	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 37C0C201D0F
+	HAS_REPLYTO(0.00)[rossi@amelchem.com]
+X-Rspamd-Queue-Id: 0EBA1200740
 
-We currently map all error codes to -EINVAL when opening or creating a
-file, when the underlying functions are capable of returning more error
-codes like -EISDIR or -EROFS.
+On Tue, 2026-08-25 at 12:08 +0200, Ahmad Fatoum wrote:
+> Hello Giandomenico,
+>=20
+> On 8/25/26 11:38 AM, Giandomenico Rossi wrote:
+> > Hi,
+> >=20
+> > I'm writing a Barebox driver for the STMicroelectronics STUSB4500,
+> > an
+> > autonomous USB Type-C Power Delivery sink controller (I2C).=C2=A0
+> > It can trigger a renegotiation, and reports the resulting contract.
+> > Target platform is an STM32MP151-based board.
+>=20
+> Cool. What information should this driver make available?
+1. it configures the sink PDOs defined in the device tree ("sink-
+pdos").
 
-Propagate the received error code to tell consumers more about what went
-wrong.
+2. It also provides a small C API for board code to:
+=C2=A0=C2=A0 2.a. read the current contract;
+=C2=A0=C2=A0 2.b. force a renegotiation;
+=C2=A0=C2=A0 2.c. see the negotiated voltage and current, and separately
+=C2=A0=C2=A0 whether the source flagged a capability mismatch.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- fs/fat/fat.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Points (2.c) covers two distinct things.
+The capability-mismatch flag which is a PD-protocol flag the chip
+reports (the source couldn't fully satisfy the request) and whether the
+voltage/current are the ones the board actually wants.
+For example, our board requires 20 V, so it isn't enough to know that
+"a contract was accepted", since a fallback to 5 V is also a valid,
+contract. The board has to look at the actual negotiated voltage.=C2=A0
+The API therefore returns the values and the flag, and leaves the
+policy to the board.
 
-diff --git a/fs/fat/fat.c b/fs/fat/fat.c
-index 0402db1d945a..b17157d1ea34 100644
---- a/fs/fat/fat.c
-+++ b/fs/fat/fat.c
-@@ -89,7 +89,7 @@ static int fat_create(struct device *dev, const char *pathname, mode_t mode)
- 
- 	ret = f_open(&priv->fat, &f_file, pathname, FA_OPEN_ALWAYS);
- 	if (ret)
--		return -EINVAL;
-+		return ret;
- 
- 	f_close(&f_file);
- 
-@@ -204,7 +204,7 @@ static int fat_open(struct device *dev, struct file *file, const char *filename)
- 	ret = f_open(&priv->fat, f_file, filename, flags);
- 	if (ret) {
- 		free(f_file);
--		return -EINVAL;
-+		return ret;
- 	}
- 
- 	if (file->f_flags & O_APPEND) {
-@@ -212,7 +212,7 @@ static int fat_open(struct device *dev, struct file *file, const char *filename)
- 		if (ret) {
- 			f_close(f_file);
- 			free(f_file);
--			return -EINVAL;
-+			return ret;
- 		}
- 	}
- 
--- 
-2.47.3
+On top of this, the binding defines an optional boolean property,
+st,renegotiate-on-probe. It's meant for users who want to set their
+PDOs from the device tree but have no board-specific C file, and would
+rather let the driver do the renegotiation itself at probe.
+It can be dropped if it doesn't fit barebox's philosophy.
+
+>=20
+> > I'd like to agree on where the files should live, so I don't have
+> > to
+> > reshuffle everything later.
+> >=20
+> > Driver source:=C2=A0at the moment I have the driver under
+> > drivers/usb/misc/,
+> > but since it's a USB Type-C PD sink controller it might fit better
+> > under drivers/usb/typec/ (which Barebox doesn't have yet, so it
+> > would
+> > mean creating it). Would you prefer that, or somewhere else?
+>=20
+> We have had a drivers/usb/typec directory since v2023.07.0.
+> If you missed it you may also want to check the basic USB Type-C
+> framework that was added there and see how well it fits your driver.
+I need holidays!!
+
+Thanks, I'll go through it.=20
+My initial question is whether it fits a part like this: the
+STUSB4500 runs the whole PD negotiation autonomously in hardware, but=20
+I'll check how it's structured and follow up.
+
+
+>=20
+> > DT binding: I've written the binding as a YAML schema
+> > (st,stusb4500.yaml), matching the Linux dt-schema format and
+> > reusing
+> > the common usb-connector.yaml for the connector sub-node.=C2=A0
+> > Where should it go in the Barebox tree?
+>=20
+> I am unsure why you need a custom schema if there's already one
+> upstream? Anyways, barebox-specific schemas are collected in
+> Documentation/devicetree/bindings/. Upstream bindings are imported to
+> dts/Bindings/
+
+Sorry, I was unclear, by "matching the Linux dt-schema" I meant I
+followed the dt-schema format (the YAML meta-schema style), not that
+I'm copying an existing upstream schema. There's no STUSB4500 binding
+upstream (remember I need holidays, but I am quite sure!), so this is a
+new one.
+Thanks for the pointer on placement, I'll put it in
+Documentation/devicetree/bindings/ since it's barebox-specific.
+
+Regards,
+Giandomenico
+
+
 
 
 
