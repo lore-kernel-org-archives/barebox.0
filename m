@@ -1,17 +1,17 @@
-Delivery-date: Tue, 25 Aug 2026 02:08:36 +0200
+Delivery-date: Tue, 25 Aug 2026 02:08:55 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wyeiR-006sbC-2q
+	id 1wyeik-006scD-31
 	for lore@lore.pengutronix.de;
-	Tue, 25 Aug 2026 02:08:36 +0200
+	Tue, 25 Aug 2026 02:08:55 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 0C541200FF9
-	for <lore@pengutronix.de>; Tue, 25 Aug 2026 02:08:32 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 2ACD4201AD4
+	for <lore@pengutronix.de>; Tue, 25 Aug 2026 02:08:51 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="BOVCmUZ/";
-	dkim=pass header.d=gmail.com header.s=20251104 header.b=YRjIh2Az;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=4wDtgk7l;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=q0tVofdM;
 	dmarc=pass (policy=none) header.from=gmail.com;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -20,79 +20,79 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=PUA+j9Eu0I+5rMHFywMsDescagTPNk7BsFVcXouxcsU=; b=BOVCmUZ/cVF8913auLyQ9xt08l
-	KhNKuVFN6u/fPtDcXQQzidEvd5i1GA2J9GzneFX0K6KDpvty3KqqrxtRJjVi5vaGIybi3VY2fi/oF
-	Ni5A1cLab41zDK8rDfehudoxO3QY0wFFD3muBoEdgszHF0LQK5Ts0cC5GkryUQ3y69/+tnPUGQ0xL
-	mfrsBdMvkGfcfrbXEji3Q+jKOP8tb5215VIyj33jukPWK/XFb0BiSGyBs1a06+zmfTvUMuXLT1U5c
-	nvP+ddqcyBmGD0s8GU+eTdmjCJ9QkuPOxdFfeRl1mVnTC6fdQ0GCDjD3b9MygHOILqpQowAvYa1Vb
-	txaHQRtA==;
+	bh=CmCRmNhpK0S5ySZlQDMJvVcUaDMLQiZgacZNXl3u64s=; b=4wDtgk7lQ6QOpR6eAh6Wm2uKCz
+	vUvgW44AwZzp3HaKGrQ8nGrANcKU0lwzpTiJhl6rdQKXjvdTX4sSNlShkUqO6DKJrXfRdy2DQdjM0
+	TTp0g1nI+XB/LUGSqlGGmG5mX0rkHhtMnJlbwNJytv74Kvz9pVoxGQI6HVn0Z5DC6hkC2/bZZFRBE
+	Pb4C5xSuCfycKZL5E4xjCrt7rLQx9+cOFZJhs7/rQ7II+5Z0Cc4wF/4x4z8Sq8pwJWu0dsUp4o4oG
+	LHpA1TemJu89frh+zQQZUphT3j+3Y/SOy4Z1xVK2SeaZiCkW3w3OH13MxmXfoO7cB0Hsb2EdztmIK
+	Zc29DRiA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyeh1-0000000HW6x-128y;
-	Tue, 25 Aug 2026 00:07:07 +0000
-Received: from mail-wm1-x32e.google.com ([2a00:1450:4864:20::32e])
+	id 1wyegu-0000000HW43-05le;
+	Tue, 25 Aug 2026 00:07:00 +0000
+Received: from mail-wr1-x42f.google.com ([2a00:1450:4864:20::42f])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wyegu-0000000HW3s-350J
+	id 1wyegr-0000000HW2u-3Ftr
 	for barebox@lists.infradead.org;
-	Tue, 25 Aug 2026 00:07:01 +0000
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-4921eed3fa2so31322285e9.0
-        for <barebox@lists.infradead.org>; Mon, 24 Aug 2026 17:07:00 -0700 (PDT)
+	Tue, 25 Aug 2026 00:06:58 +0000
+Received: by mail-wr1-x42f.google.com with SMTP id ffacd0b85a97d-47fd66a094eso1186792f8f.3
+        for <barebox@lists.infradead.org>; Mon, 24 Aug 2026 17:06:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1787616419; x=1788221219; darn=lists.infradead.org;
+        d=gmail.com; s=20251104; t=1787616416; x=1788221216; darn=lists.infradead.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=PUA+j9Eu0I+5rMHFywMsDescagTPNk7BsFVcXouxcsU=;
-        b=YRjIh2AzweTO9VHR2nEold6SVECLEkpzBnsId8+k+ic9wydkyjpzfiHQuGVxRmfHcF
-         QX07Yns0LmdmZGC9ISwHPHgQI9E6cpZ+4d8uDLaWfOoHF5zaHZs+eamINcgsGi3I+et7
-         CpNo96AViGE8ra5LNL4pcDp3OMVRIrD3qP/jJh8LybAyOxb8d3zsDbV04MBvk5yJvMv4
-         cfvMhSyye216Jl79ljnEHXPjx4dSpHGvoo/ML7mC1sW9YJb7OfvmRuFOgXs7tOzF6OKP
-         5wyZ0bHCwc7lwCJ97ndyzLWejbpB7DtgZ3g3kYyX8C7J11O1bYBWpkvGulaSP9lbgcev
-         chQA==
+        bh=CmCRmNhpK0S5ySZlQDMJvVcUaDMLQiZgacZNXl3u64s=;
+        b=q0tVofdM3mIrH4tdA1J2cGB9vTzMue4J80lP+ptPPB5fyENOKStRNunisz42IGGMG8
+         4UUWS+/6szfmeXNxXCkhxOVL0SvMM5ea+C4SPVyEqNenLhLwCUEhYBZDnVD0KXlAcww5
+         ShU6J8YRV0oN1lf+9R2nJZcwP6cuEtQuL+4qw4lO1mI32DLSpYmkPaHX6ux2kRqyI19+
+         obqIhOnfUVkoY7lvNDLHsh0l0VVuByBwiDe2/zxq0R+r66YyNS/Kd5GzGW0kc1rRdwAA
+         6LX7za53wq8mEl7OFRRZgUghWO6cvY/AQS0REX3kFoa0qvrvw6HvRBQP19qVrvD0pdZ2
+         zM+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1787616419; x=1788221219;
+        d=1e100.net; s=20251104; t=1787616416; x=1788221216;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to:content-type;
-        bh=PUA+j9Eu0I+5rMHFywMsDescagTPNk7BsFVcXouxcsU=;
-        b=IUpiBWPa80Ix27qEAFPMR30vZ4+1YSlnk7gM0Xfqu999b9HoXkTEPe2oXeNZInS1Ya
-         3+h5Nb2G1/OYuZl7hJykqRUoWB9WClz0H30cG57DnC4qBBLIBm+CjTGl3AxsPeOWaqM9
-         Qda9eBBKN0Q45ZSqmBOAMuJxKLNsSXUFUXGPlDBSpKW8avvnkBEGz9e8f985liQRuXnt
-         L9mYjTAqe8Q2pde0jBipBOJYhlOv0N8n9R0VIMt8+8ppJS58WbxUwmD/Kx75uG+c3l+t
-         eZacY5Qr/QgNInW0UlnyttzbG/vHNLgjZ17knO9Q17r8EGfOmmbhAWwz2oPGc6ng7gIl
-         b47w==
-X-Gm-Message-State: AFuF++lfkvWN/IOoY0KhPiDyP8jsRPVrl7aaefxEjy6hhy0ncOkBvqU1
-	JKSsNkHsTbyL0Wl9wy2hNwkPi8GSbHWbbiRPCNtdjs64x7IfAAkIcc4k
-X-Gm-Gg: AR+sD11hpHyxFLH7a9hQmb7W/RNcvO95EZHeSAT7W5XhsshDVtTd4dW593H3ydekqNg
-	N7aS/kulxL+iyCPBksALTH8GbjhVcWVx4JqEMhEypS1r2WqaJnZnU2ciqSeP3/6GMQQ0qvw3uj2
-	Qfeflgyh6XG7kvW6KzFEjmBPBKQAybqAYYO0AiyMP6atDslqCh0fttrfUVyeVmpf2tS3boc1UNx
-	A6BvCvWxP3p97X/BXhkdC8Dx+2RSFHrJveWzaEPHkU/xQsVz/ABtfcoPG5/KS/DqsQe9YcsBBpH
-	iJmhJn01Q0zVjM8QNMbDvIv5FRtF86Vx3McwBVTZCnmD7H1xaqDvwzTPdTj0HSuKna2wctgvSKT
-	DgiUwt55TMPoxq9iJBQXXl6facU/L4LCPgRc6dDkIhnY99mj/9zaHNH7bgUWeesoTIcD0naEAlh
-	cUxz17pc14U6iTbsTaEZppBU6sIBBsbXbtsufQIKIyi/88N2ax+z1auWormMm5qdw5Uw2G6lSVp
-	Hk2ipZYKtQ/hr/T+U/GNUBXICQ9CwYJ0YExSYNubSksacmK8dE5grtf/DrQHCNrbExXnzoNPuCh
-	l7zK/AlOeQ==
-X-Received: by 2002:a05:600c:638d:b0:497:fecd:5b00 with SMTP id 5b1f17b1804b1-499b8457084mr427890375e9.9.1787616418597;
-        Mon, 24 Aug 2026 17:06:58 -0700 (PDT)
+        bh=CmCRmNhpK0S5ySZlQDMJvVcUaDMLQiZgacZNXl3u64s=;
+        b=RR9EoKLpQjz4hoc1KapdE7yP63iFJhCy6tG9bbHSwPVLYHWV8GgyOT9k51Dll6/rOU
+         z4VeTENnpQWA9mx5DvG9nStRH52DQ9/XIWaS3LPaRR/gnm3qbE7Tsjhy4qnTuOZxcQsl
+         gRoeWs5LWRDQNe8S1CaEgzBjn37mTNFsh9+MZN0xrqxeUjI38gsCiIs9grL4h2Hfbmap
+         8+1AHsrDgpEKc7sqfNFMDHKL7JCbuNVIo0rw6f8gIGGqH62ZvAXGr6Px2t0K73UvZMB3
+         MC5g/IuHgqFTFtsm20pjGHjPVjrehnc+kyt1oLgOwJ5bBB9NUTDyKKutfagSRADCCrxI
+         9O2g==
+X-Gm-Message-State: AFuF++kmdOf0WI2GDrFsI4OV4L3rRuqucTzZOuTUUNgit1wBRLEul9Bg
+	seXGxaYa0/wNUPuqsVSHWJqEGZVkp/giw2EX28oDCGRBPS//PcVZfAAJJ/ZTvg==
+X-Gm-Gg: AR+sD104srenWfTNEZGI8NyVpcgdWvPCeuPJzJeJe5bvQsWCro5YZHKYed301lM+Ady
+	TAIhQGjatl+p1PdYCqVbTmzvBqrox+7mP9+oBjhZH40CwhIrmSQDoPF10Sq88VQeBrbHvk+gvs8
+	akh5rbIRJls2lhuD9Ho/MnFqEJQttdX7ZvIU5UZv2d+xiqcLRo/H2lKTFfp/7/tqMnmuMax7vrd
+	H6Aq2Oifgp+KKaPYqNZEpUidIHRqGPtOrmpCzQVH60e/uJyAv1y/sHzpjBKyMMjVY6lVVVweczY
+	oJsdGLRtl8WORFtcp0fDD/Pvm5E+n9+M9rr5gwf7LONv176ExAWJYpjtfz1fUPvSEcfXBETKB7B
+	y+Ntub0Is2d7mWjUVHoEogkNJCdYe9tWPiWPQKUO1+QJnnBgkbETT6MX0li+xN99zRmf2F9Hl2d
+	bKyaQfj1sN0aPtsiNe8Is4LGxKJUbU5kuqNm87PUZhzMPl6Uem0I97qEx33PLJqYOOZgUzMOGin
+	moHA04/MggW8A0ACczOol070pbV95WvLeTNncZP8VCetMTK1axnVRMCsqKD5gnATN5iS7Js7O4K
+	bOdu/HcoVw==
+X-Received: by 2002:a05:600c:5251:b0:499:8174:9f39 with SMTP id 5b1f17b1804b1-499b8270deamr379588575e9.0.1787616415534;
+        Mon, 24 Aug 2026 17:06:55 -0700 (PDT)
 Received: from CNCMK0001D007E ([213.195.92.95])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499d636efa8sm10181285e9.14.2026.08.24.17.06.55
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-499d636efa8sm10181285e9.14.2026.08.24.17.06.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2026 17:06:57 -0700 (PDT)
+        Mon, 24 Aug 2026 17:06:53 -0700 (PDT)
 From: chalianis1@gmail.com
 To: s.hauer@pengutronix.de
 Cc: barebox@lists.infradead.org,
 	Chali Anis <chalianis1@gmail.com>
-Subject: [PATCH v2 3/3] efi: payload: export resolved state as a BareboxState UEFI variable
-Date: Tue, 25 Aug 2026 02:06:45 +0200
-Message-ID: <20260825000645.122086-4-chalianis1@gmail.com>
+Subject: [PATCH v2 2/3] state: add CONFIG_STATE_OVERLAY to inject a state node via devicetree overlay
+Date: Tue, 25 Aug 2026 02:06:44 +0200
+Message-ID: <20260825000645.122086-3-chalianis1@gmail.com>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20260825000645.122086-1-chalianis1@gmail.com>
 References: <20260825000645.122086-1-chalianis1@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260824_170700_794074_EF1BBEC1 
-X-CRM114-Status: GOOD (  13.19  )
+X-CRM114-CacheID: sfid-20260824_170657_854559_6CA8F959 
+X-CRM114-Status: GOOD (  21.63  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -100,9 +100,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  From: Chali Anis When a "barebox,state" node is already reachable
-    via barebox's live devicetree (statically compiled in, or injected by CONFIG_STATE_OVERLAY),
-    render its fully resolved description - backend phandle in [...] 
+ Content preview:  From: Chali Anis Until now, a "barebox,state" node had to
+   be part of a board's own, statically compiled-in devicetree source. That's
+    a hard requirement for external build systems (Yocto, buildroot, ...) that
+    want to a [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -110,7 +111,7 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  ---- ---------------------- --------------------------------------------------
  -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/, no
                              trust
-                             [2a00:1450:4864:20:0:0:0:32e listed in]
+                             [2a00:1450:4864:20:0:0:0:42f listed in]
                              [list.dnswl.org]
  -0.0 SPF_PASS               SPF: sender matches SPF record
   0.0 SPF_HELO_NONE          SPF: HELO does not publish an SPF Record
@@ -142,9 +143,9 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: 9hpk4wsjk7u1f8yy365ew86fbudfnhcr
+X-Stat-Signature: 7rxg5nxwf759sperdu48mrznuee38xy8
 X-Spamd-Result: default: False [-6.41 / 15.00];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	MID_CONTAINS_FROM(1.00)[];
@@ -159,7 +160,7 @@ X-Spamd-Result: default: False [-6.41 / 15.00];
 	HAS_LIST_UNSUB(-0.01)[];
 	DWL_DNSWL_NONE(0.00)[gmail.com:dkim];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_IN_DNSWL_NONE(0.00)[2a00:1450:4864:20::32e:received];
+	RCVD_IN_DNSWL_NONE(0.00)[2a00:1450:4864:20::42f:received];
 	FREEMAIL_FROM(0.00)[gmail.com];
 	ARC_NA(0.00)[];
 	FORWARDED(0.00)[barebox@lists.infradead.org];
@@ -181,90 +182,199 @@ X-Spamd-Result: default: False [-6.41 / 15.00];
 	FREEMAIL_CC(0.00)[lists.infradead.org,gmail.com];
 	DKIM_TRACE(0.00)[lists.infradead.org:+,gmail.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[]
-X-Rspamd-Queue-Id: 0C541200FF9
+X-Rspamd-Queue-Id: 2ACD4201AD4
 
 From: Chali Anis <chalianis1@gmail.com>
 
-When a "barebox,state" node is already reachable via barebox's live
-devicetree (statically compiled in, or injected by
-CONFIG_STATE_OVERLAY), render its fully resolved description - backend
-phandle included - with of_state_fixup() and publish it as a
-"BareboxState" UEFI variable, so an OS-side consumer can locate the
-state layout without needing a separate state.dtb file on the ESP.
+Until now, a "barebox,state" node had to be part of a board's own,
+statically compiled-in devicetree source. That's a hard requirement
+for external build systems (Yocto, buildroot, ...) that want to add a
+state layout without carrying a board-specific dts patch.
 
-Since a state node reachable this way makes the standalone
-/boot/EFI/barebox/state.dtb loading path redundant, skip it whenever
-a "state" alias is already present in the live devicetree.
+Add CONFIG_STATE_OVERLAY, which compiles an externally supplied
+devicetree overlay (.dtso, pointed to by CONFIG_STATE_OVERLAY_DTS)
+into the barebox binary and applies it to barebox's own live
+devicetree at postcore_initcall time, mirroring how
+CONFIG_EXTERNAL_DTS_FRAGMENTS already lets an external build system
+inject plain dts fragments. Once applied, the resulting node is
+picked up by the regular state probing like any statically defined
+one. This selects CONFIG_OF_OVERLAY_LIVE, required so &label
+references in the overlay (e.g. to an existing backend partition)
+resolve against the base devicetree's __symbols__ node.
 
 Assisted-by: Claude Sonnet 5
 Signed-off-by: Chali Anis <chalianis1@gmail.com>
 ---
- efi/payload/init.c | 46 +++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 45 insertions(+), 1 deletion(-)
+ .../bindings/barebox/barebox,state.rst        |  9 +++++
+ Documentation/user/state.rst                  | 32 +++++++++++++++++
+ common/Kconfig                                | 36 +++++++++++++++++++
+ common/state/Makefile                         | 20 +++++++++++
+ common/state/state_overlay.c                  | 19 ++++++++++
+ 5 files changed, 116 insertions(+)
+ create mode 100644 common/state/state_overlay.c
 
-diff --git a/efi/payload/init.c b/efi/payload/init.c
-index f0ce2a82cefc..7c1cb21d9ecd 100644
---- a/efi/payload/init.c
-+++ b/efi/payload/init.c
-@@ -287,6 +287,50 @@ core_efi_initcall(efi_register_firmware_nodes_fixup);
- #define EFI_LOADER_FEATURE_SECUREBOOT_ENROLL       (1LL << 11)
- #define EFI_LOADER_FEATURE_RETAIN_SHIM             (1LL << 12)
+diff --git a/Documentation/devicetree/bindings/barebox/barebox,state.rst b/Documentation/devicetree/bindings/barebox/barebox,state.rst
+index 390e148a2879..36b1d9acb038 100644
+--- a/Documentation/devicetree/bindings/barebox/barebox,state.rst
++++ b/Documentation/devicetree/bindings/barebox/barebox,state.rst
+@@ -23,6 +23,15 @@ Required Properties
+ * additionally a *state* node must have an alias in the ``/aliases`` node pointing
+   to it.
  
-+static int state_to_efivars_export(void)
++.. note:: A *state* node does not have to be part of the board's static
++   devicetree source. It can instead be added at runtime via a devicetree
++   overlay, see :ref:`CONFIG_STATE_OVERLAY <state_overlay>`. In that case,
++   the node referenced by ``backend`` must still exist in the board's own
++   devicetree source under a stable, well-known *label* (not merely an
++   ``/aliases`` entry), because overlay phandle resolution works by
++   resolving ``&label`` references against the base devicetree's
++   ``__symbols__`` node, which requires ``CONFIG_OF_OVERLAY_LIVE``.
++
+ .. _barebox,state_magic:
+ 
+ The ``magic`` property is a unique number which identifies the *state* variable
+diff --git a/Documentation/user/state.rst b/Documentation/user/state.rst
+index d97ba4e9f157..a03670dfa68e 100644
+--- a/Documentation/user/state.rst
++++ b/Documentation/user/state.rst
+@@ -759,6 +759,38 @@ content, its backend-type and *state* variable layout.
+ 		};
+ 	};
+ 
++.. _state_overlay:
++
++Devicetree Overlay based State Node
++------------------------------------
++
++Normally the *state* node is part of the board's own, statically compiled-in
++devicetree source. ``CONFIG_STATE_OVERLAY`` allows a *state* node to instead
++be added at runtime, via a devicetree overlay that is compiled into the
++barebox binary and applied to barebox's own live devicetree during boot.
++Once applied, the resulting node is picked up by the regular *state* probing
++just like a statically defined one, and is fixed up into whatever devicetree
++barebox eventually boots (internal or external), without requiring any
++board-specific code.
++
++This is primarily meant for use by an external build system (Yocto,
++buildroot, ...) that wants to inject a state layout without patching the
++board's dts: set ``CONFIG_STATE_OVERLAY=y`` and point
++``CONFIG_STATE_OVERLAY_DTS`` at the ``.dtso`` overlay file's path, similar to
++how ``CONFIG_EXTERNAL_DTS_FRAGMENTS`` works for regular dts fragments. As
++with that option, it's not intended to be set in barebox's own defconfig
++files.
++
++Because the overlay is applied to barebox's *live* devicetree, its
++``backend`` phandle can only resolve references to nodes that already exist
++in the board's own devicetree source, and only if that devicetree carries a
++``__symbols__`` node - i.e. ``CONFIG_OF_OVERLAY_LIVE`` must be enabled
++(``CONFIG_STATE_OVERLAY`` selects it automatically). This means the
++referenced backend node needs a stable, well-known *label* defined in the
++board's own devicetree source, not merely an ``/aliases`` entry - the
++overlay itself then only needs to add the *state* node and its alias,
++referencing that existing label.
++
+ Frontend
+ --------
+ 
+diff --git a/common/Kconfig b/common/Kconfig
+index 85df7f7daec6..d557709313c7 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1351,6 +1351,42 @@ config STATE_BACKWARD_COMPATIBLE
+ 	  compatibility with the state framework of barebox <= v2016.08.0. Newer
+ 	  revisions expect an additional 'meta header' and fail otherwise.
+ 
++config STATE_OVERLAY
++	bool "apply an external devicetree overlay to add a state node"
++	depends on STATE
++	select OF_OVERLAY
++	select OF_OVERLAY_LIVE
++	help
++	  Compile an externally supplied devicetree overlay (.dtso) into the
++	  barebox binary and apply it to barebox's own live devicetree at
++	  boot, in order to add a "barebox,state" node (and its /aliases
++	  entry) that isn't part of the board's own compiled-in devicetree.
++
++	  This selects CONFIG_OF_OVERLAY_LIVE, required so the board's own
++	  built-in devicetree carries a __symbols__ node, needed to resolve
++	  &label references from the overlay back into the base devicetree
++	  (e.g. a reference to a backend partition already defined in the
++	  board's static dts).
++
++	  See CONFIG_STATE_OVERLAY_DTS to specify the overlay source file.
++
++config STATE_OVERLAY_DTS
++	string "external state overlay .dtso file"
++	depends on STATE_OVERLAY
++	help
++	  Path to a devicetree overlay source file (.dtso) that will be
++	  compiled and linked into the barebox image and applied to the
++	  live devicetree at boot to add a "barebox,state" node.
++
++	  As with CONFIG_EXTERNAL_DTS_FRAGMENTS, this is not intended to be
++	  put into Barebox's defconfig files. It's an external build
++	  system's job, like Yocto or buildroot, to inject a state overlay
++	  file from outside the Barebox source tree.
++
++	  Any backend node referenced from the overlay via &label must
++	  already exist in the board's own devicetree source, under a
++	  stable, well-known label (not merely an /aliases entry).
++
+ config BOOTCHOOSER
+ 	bool "bootchooser infrastructure"
+ 	select BOOT
+diff --git a/common/state/Makefile b/common/state/Makefile
+index 93215dd06921..a906c66a0747 100644
+--- a/common/state/Makefile
++++ b/common/state/Makefile
+@@ -7,3 +7,23 @@ obj-y += backend_format_raw.o
+ obj-y += backend_storage.o
+ obj-y += backend_bucket_direct.o
+ obj-$(CONFIG_MTD) += backend_bucket_circular.o
++
++# External state devicetree overlay
++# ---------------------------------------------------------------------------
++state-overlay-dts := $(call remove_quotes,$(CONFIG_STATE_OVERLAY_DTS))
++
++ifdef CONFIG_STATE_OVERLAY
++ifeq ($(state-overlay-dts),)
++$(error CONFIG_STATE_OVERLAY is enabled but CONFIG_STATE_OVERLAY_DTS is empty)
++endif
++ifeq ($(wildcard $(state-overlay-dts)),)
++$(error CONFIG_STATE_OVERLAY_DTS="$(state-overlay-dts)" does not exist)
++endif
++
++obj-y += state_overlay.o state-overlay.dtbo.o
++
++$(obj)/state-overlay.dtbo: $(state-overlay-dts) $(DTC) FORCE
++	$(call if_changed_dep,dtc)
++endif
++
++clean-files += *.dtbo *.dtbo.S .*.dtso
+diff --git a/common/state/state_overlay.c b/common/state/state_overlay.c
+new file mode 100644
+index 000000000000..0c5eef830a16
+--- /dev/null
++++ b/common/state/state_overlay.c
+@@ -0,0 +1,19 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <common.h>
++#include <init.h>
++#include <of.h>
++#include <linux/err.h>
++
++extern char __dtbo_state_overlay_start[];
++
++static int state_overlay_apply(void)
 +{
-+	struct device_node *np, *state_root;
-+	struct state *state;
-+	void *fdt;
-+	size_t size;
 +	int ret;
 +
-+	state_root = of_find_node_by_alias(NULL, "state");
-+	if (!IS_ENABLED(CONFIG_STATE) || !state_root)
-+		return 0;
-+
-+	state = state_by_node(state_root);
-+	if (!state)
-+		return -ENODEV;
-+
-+	np = of_new_node(NULL, NULL);
-+	if (!np)
-+		return -ENOMEM;
-+
-+	ret = of_state_fixup(np, state);
++	ret = of_overlay_apply_dtbo(of_get_root_node(), __dtbo_state_overlay_start);
 +	if (ret)
-+		goto out;
++		pr_err("failed to apply state overlay: %pe\n", ERR_PTR(ret));
 +
-+	fdt = of_flatten_dtb(np);
-+	if (!fdt) {
-+		ret = -ENOMEM;
-+		goto out;
-+	}
-+
-+	size = fdt_totalsize(fdt);
-+
-+	efi_set_variable("BareboxState", &efi_barebox_vendor_guid,
-+			  EFI_VARIABLE_BOOTSERVICE_ACCESS |
-+			  EFI_VARIABLE_RUNTIME_ACCESS,
-+			  fdt, size);
-+
-+	free(fdt);
-+	ret = 0;
-+out:
-+	of_delete_node(np);
 +	return ret;
 +}
-+late_efi_initcall(state_to_efivars_export);
- 
- static int efi_postcore_init(void)
- {
-@@ -356,7 +400,7 @@ static int efi_late_init(void)
- 	void *fdt;
- 	int ret;
- 
--	if (!IS_ENABLED(CONFIG_STATE))
-+	if (!IS_ENABLED(CONFIG_STATE) || of_find_node_by_alias(NULL, "state"))
- 		return 0;
- 
- 	if (!get_mounted_path("/boot")) {
++postcore_initcall(state_overlay_apply);
 
 
