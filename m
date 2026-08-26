@@ -1,16 +1,16 @@
-Delivery-date: Wed, 26 Aug 2026 14:21:44 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Wed, 26 Aug 2026 14:21:47 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wzCdT-007QoB-1c
+	id 1wzCdX-007Qoa-05
 	for lore@lore.pengutronix.de;
-	Wed, 26 Aug 2026 14:21:44 +0200
+	Wed, 26 Aug 2026 14:21:47 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id F2EA22023E0
-	for <lore@pengutronix.de>; Wed, 26 Aug 2026 14:21:39 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 8FA6D202422
+	for <lore@pengutronix.de>; Wed, 26 Aug 2026 14:21:43 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=vEb1GX1s;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=DjyeHk4i;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,51 +19,51 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=LrdGNfow+1cZm4yjmUc/Hv6nhoSjCC2unpL9AVeVQgg=; b=vEb1GX1sLiwDMmzHHPcx5LXP5E
-	z9AWY7YVfSPpDSwkGkZlea6FPs/UCJDYcp8PCqwyK0nIz0WebmUnHe0KavgKTjG0epWxnK76XDp37
-	VwqCnpJK0O/KKlW9D5hj9pO8B4Fv15cb6yux9neU1D9q71/oY9eMiSX/yrpK6e7wmeplfZr+eysx4
-	qLs9Orzt1MKs48o9pBuPjGmp1QfOtM2oFwccJAeU1PYxIolfqtygHjZsaBASKyAvmlvxqaXk0K+m2
-	I0gNUI75aBAPpPreiKioIuPbGv9RLqwPB1pfjqtzLjdDK3vNXA710/5r3VKbZ9Uekcnhps8FzRO3e
-	jNqHCVLQ==;
+	bh=dqQYu86k1+EF7QgVnxX6q7D+BqHgc0N8gQD79jjXMMI=; b=DjyeHk4iLl+G/AkGqMlycEZXEq
+	/oTWKOlAqm/jxlCrqynDzFWhWGWPpWrk+3tEaAV9fRvV6W0U4w8LaSO1Jf2voXxxZN+KABAnPtT9+
+	1e0+9M3wAQ2e9v/zMGplI9hQaRkE9kE5DARcXSv2/ECuWzGZnfAz2DuJLGmH/sBojJXS1s+PnUVbM
+	vnLuYel2Xelw33zDrXdpx1DWk0Tp5I0h3ec+Ac4vY/wK8SvMDW3nz7Yx+c/wv5QS4V34z8gpo5snj
+	zNjrQCgk7YGG88QfJuMceuUg0yVqVH0fxj4h7YyW5f+UgrKfVBckXZb50VENvI9cED72LrPa+/z29
+	7hsrFNkA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzCbw-00000002Pm8-2PDj;
-	Wed, 26 Aug 2026 12:20:08 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1wzCc5-00000002PqB-1kgN;
+	Wed, 26 Aug 2026 12:20:17 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzCbq-00000002Pi4-3swg
+	id 1wzCbu-00000002PkW-3WED
 	for barebox@lists.infradead.org;
-	Wed, 26 Aug 2026 12:20:05 +0000
+	Wed, 26 Aug 2026 12:20:11 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 29CAF2021AD;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 55A9D20227E;
 	Wed, 26 Aug 2026 14:19:57 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wzCbl-003RBA-08;
+	id 1wzCbl-003RBL-0k;
 	Wed, 26 Aug 2026 14:19:57 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wzCbk-0000000CK1K-3xRC;
-	Wed, 26 Aug 2026 14:19:56 +0200
+	id 1wzCbl-0000000CK1K-0XH7;
+	Wed, 26 Aug 2026 14:19:57 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: fpg@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH RFT 4/9] efi: payload: honour bootm dryrun in the EFI application handler
-Date: Wed, 26 Aug 2026 14:17:08 +0200
-Message-ID: <20260826121956.2936414-5-a.fatoum@pengutronix.de>
+Subject: [PATCH RFT 8/9] test: py: efiloader: check global.efi.bootargs reaches the kernel
+Date: Wed, 26 Aug 2026 14:17:12 +0200
+Message-ID: <20260826121956.2936414-9-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260826121956.2936414-1-a.fatoum@pengutronix.de>
 References: <20260826121956.2936414-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260826_052003_175505_22E4F0D5 
-X-CRM114-Status: UNSURE (   9.82  )
+X-CRM114-CacheID: sfid-20260826_052007_768687_7E740B48 
+X-CRM114-Status: UNSURE (   8.32  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -72,9 +72,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Unlike do_bootm_efi_stub(), the "EFI Application" bootm handler
-    never looked at data->dryrun and went on to StartImage the application, so
-    "bootm -d some.efi" ran the image it was only supposed to loa [...] 
+ Content preview:  Set a global.efi.bootargs.* variable before booting the Debian
+    kernel and verify that it shows up in /proc/cmdline ahead of the Linux bootargs
+    when booting via the EFI stub and that it is absent when [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -130,42 +130,51 @@ X-Spamd-Result: default: False [-56.21 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: u7zydtrpniyj81pzstthjy88a15yd6ed
-X-Rspamd-Queue-Id: F2EA22023E0
+X-Stat-Signature: j5us9ybaiptwj7c1ad76pb41z4g971fy
+X-Rspamd-Queue-Id: 8FA6D202422
 
-Unlike do_bootm_efi_stub(), the "EFI Application" bootm handler never
-looked at data->dryrun and went on to StartImage the application, so
-"bootm -d some.efi" ran the image it was only supposed to load.  Now
-that the handler shuts barebox down and BS->exit()s once the image
-returns, a dryrun no longer merely runs an unwanted application, it
-also ends the barebox session.
+Set a global.efi.bootargs.* variable before booting the Debian kernel and
+verify that it shows up in /proc/cmdline ahead of the Linux bootargs when
+booting via the EFI stub and that it is absent when booting the same kernel
+without EFI.
 
-Unload the image and return once it has been loaded and its type
-detected, which is as far as the stub handler goes for a dryrun too.
-
-Fixes: 35fb1743f5ac ("efi: payload: bootm: add support for efi stub boot")
-Assisted-by: Claude:opus-5
+Assisted-by: Claude:fable-5
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- efi/payload/bootm.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ test/py/test_linux_efiloader.py | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/efi/payload/bootm.c b/efi/payload/bootm.c
-index 963f6d6ae7d4..2bcfd90e42fa 100644
---- a/efi/payload/bootm.c
-+++ b/efi/payload/bootm.c
-@@ -220,6 +220,11 @@ static int efi_app_execute(struct image_data *data)
+diff --git a/test/py/test_linux_efiloader.py b/test/py/test_linux_efiloader.py
+index eae6703e9d49..a39c6804f61a 100644
+--- a/test/py/test_linux_efiloader.py
++++ b/test/py/test_linux_efiloader.py
+@@ -50,6 +50,8 @@ def configure_bootm(strategy, barebox):
+     barebox.run_check(f"global.bootm.image={kernel_path}")
+     # Speed up subsequent runs a bit
+     barebox.run_check("global linux.bootargs.noapparmor=apparmor=0")
++    # EFI load options are only used with the EFI stub
++    barebox.run_check("global efi.bootargs.test=efibootargs=1")
  
- 	type = file_detect_type(loaded_image->image_base, PAGE_SIZE);
  
-+	if (data->dryrun) {
-+		BS->unload_image(handle);
-+		return 0;
-+	}
-+
- 	return efi_execute_image(handle, loaded_image, true, type);
- }
+ @pytest.mark.lg_feature(['bootable', 'efi', 'testfs'])
+@@ -76,6 +78,8 @@ def test_boot_manual_with_initrd(strategy, barebox, env, efiloader, debian_iso):
+                                    "\n".join(dmesg)) is not None
  
+         if efiloader:
++            # global.efi.bootargs.* must precede global.linux.bootargs.*
++            shell.run_check("grep -q 'efibootargs=1.* apparmor=0' /proc/cmdline")
+             check_efi_kernel_no_warn(shell)
+             check_expected_efi_messages(shell, env)
+             check_efi_systab(shell, env)
+@@ -87,6 +91,8 @@ def test_boot_manual_with_initrd(strategy, barebox, env, efiloader, debian_iso):
+             # Verify that EFI was NOT used
+             assert uefi_not_found, \
+                    "EFI stub was used despite global.bootm.efi=disabled"
++            _, _, ret = shell.run("grep -q efibootargs=1 /proc/cmdline")
++            assert ret != 0, "EFI load options passed despite non-EFI boot"
+ 
+ 
+ def check_efi_kernel_no_warn(shell):
 -- 
 2.47.3
 
