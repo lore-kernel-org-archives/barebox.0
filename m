@@ -1,68 +1,66 @@
-Delivery-date: Wed, 26 Aug 2026 11:30:49 +0200
+Delivery-date: Wed, 26 Aug 2026 11:32:15 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wz9y4-007Nvi-2a
+	id 1wz9zS-007NxA-0l
 	for lore@lore.pengutronix.de;
-	Wed, 26 Aug 2026 11:30:49 +0200
+	Wed, 26 Aug 2026 11:32:15 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 699FA20205A
-	for <lore@pengutronix.de>; Wed, 26 Aug 2026 11:30:49 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id D2F302017E5
+	for <lore@pengutronix.de>; Wed, 26 Aug 2026 11:32:14 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=hpYRd5CM;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=Yu2pX2OI;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=bmtmH0Aa4bcdb9NJLdW0sOMisi5SzgO+olsOOvAG42c=; b=hpYRd5CMDIqKWUssGR3xBRxHeU
-	uJd1//QWWUVmbdrn5x4S51sHMUW+L8/o3DhEK5tb9f6MOdwT4ASyHfOneJ7tICKhikBTZKR528zo0
-	Vj1CSupTeejeHv0sJrzi3meCi01VvYOPV+kvdiYOmhTqhGUuzcRN/rfLa2IuV7pnjlHk32PrTCJvc
-	VNUMrO1MHOm/1ulFxH96jwiU/ic8mzM4y5LP83KOomPpuQGL/1R+D6ByVlXsJaZ0L0sm8hTHzuv16
-	M/VOlwUcB8XX7sDKtLe1mnvIM7IuwvYrlQ8KXuXACc1HnUKxhiDUKvTYsboMgoVxGEpwgp8vtURXN
-	de5mH2xA==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=TS0/bPei6FVaeixhtG9sbq6f2jMmCBSTrhao+pid2XA=; b=Yu2pX2OIvTYvF2vpSmHaiDekr+
+	6392g5NcvfJPjzSqDGTsG9jCMS1Usq7iYBn0r+d0MNzlOMC/NoVrpmK1f2CfSQ/PJ8V4q7JfXjgxq
+	5DDRwRyFl8FNgqHu+d142TQ7TiN5Tt1/Nc106zgxbvj37nlYC9G9Gxbrc6eLnMzMrK8k7WYlyKX9L
+	uBEM761ay+ki3jyeV9ZtKBqJzH0qFmRpfVVlkwgWI1pCapMGOIp3Xesp1D3pBgL/XfnjRBeAxffTr
+	22YTKvsa3A5TcvOHoAhEJn6UYrUxqNzeghbh3XsmWOYPnVqx4frZclSdc4iASXPiBHyv85SUVoptg
+	BmyjJnXA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wz9ws-00000002CFe-0r6w;
-	Wed, 26 Aug 2026 09:29:34 +0000
+	id 1wz9yN-00000002CUY-2w0S;
+	Wed, 26 Aug 2026 09:31:07 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wz9wo-00000002CES-3YvX
+	id 1wz9yK-00000002CTh-2Zlw
 	for barebox@lists.infradead.org;
-	Wed, 26 Aug 2026 09:29:32 +0000
+	Wed, 26 Aug 2026 09:31:06 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id CA1812017E5;
-	Wed, 26 Aug 2026 11:29:28 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id AD6F0200FEE;
+	Wed, 26 Aug 2026 11:31:02 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wz9wm-003PtJ-2L;
-	Wed, 26 Aug 2026 11:29:28 +0200
+	id 1wz9yI-003PtV-22;
+	Wed, 26 Aug 2026 11:31:02 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wz9wm-00000009ubj-2bvi;
-	Wed, 26 Aug 2026 11:29:28 +0200
+	id 1wz9yI-00000009x82-2Dz0;
+	Wed, 26 Aug 2026 11:31:02 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH 2/2] RISC-V: reloc: ignore R_RISCV_NONE relocations
-Date: Wed, 26 Aug 2026 11:29:25 +0200
-Message-ID: <20260826092927.2362311-2-a.fatoum@pengutronix.de>
+Subject: [PATCH 1/2] efi: payload: iomem: use efi_uintn_t for the memory map key
+Date: Wed, 26 Aug 2026 11:30:51 +0200
+Message-ID: <20260826093059.2370477-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260826092927.2362311-1-a.fatoum@pengutronix.de>
-References: <20260826092927.2362311-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260826_022931_103375_864E1CCD 
-X-CRM114-Status: UNSURE (   8.58  )
+X-CRM114-CacheID: sfid-20260826_023104_806383_0D8CDF58 
+X-CRM114-Status: UNSURE (   9.41  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -71,9 +69,11 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  When linking a position independent executable, the linker
-    may reserve a dynamic relocation slot for a reference to an absolute symbol
-    and only later determine that no runtime relocation is needed. Th [...] 
+ Content preview:  The GetMemoryMap() boot service takes a pointer to an efi_uintn_t
+    for the map key. Passing a pointer to an unsigned long fails to compile on
+    32-bit architectures, where efi_uintn_t is 32-bit: efi/payload/iomem.c:161:45:
+    error: passing argument 3 of 'BS->get_memory_map' from incompatible pointer
+    type 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -129,33 +129,37 @@ X-Spamd-Result: default: False [-56.21 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: bdceojhby8tx5z9qw5ew3477strgqwgi
-X-Rspamd-Queue-Id: 699FA20205A
+X-Stat-Signature: swk9rfsy5r84infscojyxewdfo1fd8pg
+X-Rspamd-Queue-Id: D2F302017E5
 
-When linking a position independent executable, the linker may reserve
-a dynamic relocation slot for a reference to an absolute symbol and only
-later determine that no runtime relocation is needed. The slot is not
-removed, but turned into an R_RISCV_NONE entry, which must be ignored.
+The GetMemoryMap() boot service takes a pointer to an efi_uintn_t for
+the map key. Passing a pointer to an unsigned long fails to compile on
+32-bit architectures, where efi_uintn_t is 32-bit:
+
+  efi/payload/iomem.c:161:45: error: passing argument 3 of
+  'BS->get_memory_map' from incompatible pointer type
+
+Use the correct type.
 
 Assisted-by: Claude:fable-5
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/riscv/lib/reloc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ efi/payload/iomem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/lib/reloc.c b/arch/riscv/lib/reloc.c
-index 71d59d4ab62e..99dde7bfffe2 100644
---- a/arch/riscv/lib/reloc.c
-+++ b/arch/riscv/lib/reloc.c
-@@ -45,6 +45,8 @@ static void relocate_image(unsigned long offset,
- 		fixup = (unsigned long *)(rela->r_offset + offset);
- 
- 		switch (RISC_R_TYPE(rela->r_info)) {
-+		case R_RISCV_NONE:
-+			break;
- 		case R_RISCV_RELATIVE:
- 			*fixup = rela->r_addend + offset;
- 			break;
+diff --git a/efi/payload/iomem.c b/efi/payload/iomem.c
+index 8b92dc47a7b9..515bf05233f8 100644
+--- a/efi/payload/iomem.c
++++ b/efi/payload/iomem.c
+@@ -148,7 +148,7 @@ static int efi_barebox_populate_mmap(void)
+ 	void *mmap_buf = NULL, *desc;
+ 	efi_status_t efiret;
+ 	size_t mmap_size;
+-	ulong mapkey;
++	efi_uintn_t mapkey;
+ 	size_t descsz;
+ 	u32 descver;
+ 	int ret = 0;
 -- 
 2.47.3
 
