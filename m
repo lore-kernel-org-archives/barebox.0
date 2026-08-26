@@ -3,14 +3,14 @@ Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wzCdS-007QnW-1T
+	id 1wzCdT-007Qnr-09
 	for lore@lore.pengutronix.de;
 	Wed, 26 Aug 2026 14:21:43 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 02E2320227A
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 31CE520227E
 	for <lore@pengutronix.de>; Wed, 26 Aug 2026 14:21:39 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=CFhwuS37;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=fuARCF10;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,51 +19,51 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=GdHesUpf1OkfagP+iwuzJO5Q1z36JcOMHjq30Eyf0vA=; b=CFhwuS37F8U7JhEawCG6tOwwrf
-	4ErV7IG2SLsSj66Yqj+kqmH+1ba/O9POc2Jb89rDcV1NZo16YBEK70wM+CNm70n0rMNw0qocz+wgG
-	JH6Fe2g8YHOX2U9FQfH3a7Rq2wE7kPw7O3XStP3CGU+TpNHKN4aAM/XzzAW+Twd8T7p7e0kgOT6RF
-	8leg18yVaw+lPCPUy7jik/5/rKNXXKmEgbWStX8YRZBdfvKqi4nl9n2tnVG8ASI6YqDdnRvPvwier
-	84KlfWnsB3sdXyOesM3lCgZk1GqHWo//nqi7G1y6b+ioruxxLnAwhcje5K/jLHv6z0eoBOCnogqHx
-	YzJkbGyw==;
+	bh=0eVQhPB8cDr92+9ZcFvzKTmxM0fR0NzYO0597rmGk58=; b=fuARCF10T7rcHKUg/HMjodhtFZ
+	N4E06dEdUfHQqJdUKuFnt9iJDLsu+C5TS1EEILf5nN9XlwcJvaIQ0qZzo28Uu6i46OL3I+pbVm5Ca
+	BmKQSStppBem025WbTGywt314ATdAWkBBEfO3A39NOfWUAKu/c5q2Z0kG0TOSe7zV41qIjWqqSABU
+	Ukx3u8qoiFlR+pSaoTNjyMX/VQjBDtqgwAK3Qjd078QRnxcHr3OEbcrynRtv5LjcladmPvyvr6H1H
+	Y9vBV/xY0iYbaTh4J0g7swubHHv2+mI+dBEBVhHLfcUHE9hP16C31WtGlAIaTKxQzxA6yFw1ml+/C
+	8IoDTF7w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzCbw-00000002Pkg-0FXv;
-	Wed, 26 Aug 2026 12:20:08 +0000
+	id 1wzCbz-00000002Pn0-3OSE;
+	Wed, 26 Aug 2026 12:20:12 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzCbq-00000002Pi2-3IGv
+	id 1wzCbq-00000002Pi1-3HXx
 	for barebox@lists.infradead.org;
-	Wed, 26 Aug 2026 12:20:04 +0000
+	Wed, 26 Aug 2026 12:20:06 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 1275B202101;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 021AB20203F;
 	Wed, 26 Aug 2026 14:19:57 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wzCbk-003RB4-34;
+	id 1wzCbk-003RB1-2u;
 	Wed, 26 Aug 2026 14:19:56 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wzCbk-0000000CK1K-3Zbs;
+	id 1wzCbk-0000000CK1K-3O9u;
 	Wed, 26 Aug 2026 14:19:56 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: fpg@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH RFT 2/9] globalvar: skip empty variables in globalvar_get_match()
-Date: Wed, 26 Aug 2026 14:17:06 +0200
-Message-ID: <20260826121956.2936414-3-a.fatoum@pengutronix.de>
+Subject: [PATCH RFT 1/9] common: bootargs: drop legacy bootargs fallback with FLEXIBLE_BOOTARGS
+Date: Wed, 26 Aug 2026 14:17:05 +0200
+Message-ID: <20260826121956.2936414-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260826121956.2936414-1-a.fatoum@pengutronix.de>
 References: <20260826121956.2936414-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260826_052003_181049_A2182250 
-X-CRM114-Status: GOOD (  11.84  )
+X-CRM114-CacheID: sfid-20260826_052003_187144_93DDEFA7 
+X-CRM114-Status: GOOD (  17.17  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -71,9 +71,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  globalvar_get_match() concatenates all matching variables
-   with the separator, whether they have a value or not. As variables like global.linux.bootargs.base
-    or global.linux.bootargs.dyn.* are register [...] 
+ Content preview:  linux_bootargs_get() falls back to the legacy bootargs environment
+    variable whenever the concatenation of all global.linux.bootargs.* variables
+    comes out empty. That contradicts the documentation, whi [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -100,8 +100,8 @@ X-Spamd-Result: default: False [-56.21 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	MID_CONTAINS_FROM(1.00)[];
+	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
 	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:1101:1d::54:received,2607:7c80:54:3::133:from];
@@ -112,9 +112,9 @@ X-Spamd-Result: default: False [-56.21 / 15.00];
 	RCVD_IN_DNSWL_LOW(-0.10)[2a0a:edc0:0:c01:1d::a2:received];
 	HAS_LIST_UNSUB(-0.01)[];
 	TO_DN_SOME(0.00)[];
+	ARC_NA(0.00)[];
 	DMARC_NA(0.00)[pengutronix.de];
 	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
@@ -129,68 +129,104 @@ X-Spamd-Result: default: False [-56.21 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: arzs5wapy9eh136rrhsypfncom8xyhk5
-X-Rspamd-Queue-Id: 02E2320227A
+X-Stat-Signature: cp5ykn99c84hcfzmezzp3pssst9irq3o
+X-Rspamd-Queue-Id: 31CE520227E
 
-globalvar_get_match() concatenates all matching variables with the
-separator, whether they have a value or not. As variables like
-global.linux.bootargs.base or global.linux.bootargs.dyn.* are registered
-unconditionally, but often left empty, the resulting kernel command line
-would contain runs of multiple spaces.
+linux_bootargs_get() falls back to the legacy bootargs environment variable
+whenever the concatenation of all global.linux.bootargs.* variables comes
+out empty. That contradicts the documentation, which describes bootargs as
+the CONFIG_FLEXIBLE_BOOTARGS=n way of passing a command line, and it only
+worked until the first boot entry had run: bootscript_boot() registers
+global.linux.bootargs.dyn.ip and .dyn.root, and the separator between the
+two empty variables made the result non-empty, so the kernel got a command
+line consisting of spaces instead.
 
-Treat variables without a value as if they didn't exist at all.
+Drop the fallback and return NULL when there is nothing to pass. All
+callers already handle a NULL command line, as the fallback could return
+NULL as well.
 
-Assisted-by: Claude:fable-5
+Assisted-by: Claude:opus-5
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/user/booting-linux.rst | 2 +-
- common/globalvar.c                   | 6 +++++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ .../migration-guides/migration-master.rst        | 16 ++++++++++++++++
+ Documentation/user/booting-linux.rst             |  6 ++++--
+ common/bootargs.c                                | 14 ++++++--------
+ 3 files changed, 26 insertions(+), 10 deletions(-)
 
+diff --git a/Documentation/migration-guides/migration-master.rst b/Documentation/migration-guides/migration-master.rst
+index d5601ac838c5..c67ea2157f47 100644
+--- a/Documentation/migration-guides/migration-master.rst
++++ b/Documentation/migration-guides/migration-master.rst
+@@ -12,3 +12,19 @@ OP-TEE loading is now only supported
+ 
+ For i.MX6 boards, this can be enabled by enabling
+ ``CONFIG_FIRMWARE_IMX6_OPTEE``.
++
++Legacy bootargs variable ignored with CONFIG_FLEXIBLE_BOOTARGS
++--------------------------------------------------------------
++
++With ``CONFIG_FLEXIBLE_BOOTARGS`` enabled, the kernel command line used to
++fall back to the legacy ``bootargs`` environment variable whenever the
++concatenation of all ``global.linux.bootargs.*`` variables came out empty.
++This fallback is gone, only the global variables are used now.
++
++The fallback was already mostly unreachable: once a boot entry had run,
++``global.linux.bootargs.dyn.ip`` and ``global.linux.bootargs.dyn.root`` were
++registered and the separator between the two empty variables made the
++concatenation non-empty.
++
++Set ``global.linux.bootargs.base`` instead of ``bootargs``, or disable
++``CONFIG_FLEXIBLE_BOOTARGS`` to keep using the legacy variable.
 diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
-index 95834786b67a..fa5a355183eb 100644
+index 0f1225681360..95834786b67a 100644
 --- a/Documentation/user/booting-linux.rst
 +++ b/Documentation/user/booting-linux.rst
-@@ -87,7 +87,7 @@ With ``CONFIG_FLEXIBLE_BOOTARGS`` enabled, the bootargs are composed
- from different :ref:`global device<global_device>` variables and the
- :ref:`bootargs <magicvar_bootargs>` environment variable is ignored.
- All variables beginning with ``global.linux.bootargs.`` will be concatenated
--to the bootargs:
-+to the bootargs. Variables without a value are skipped:
+@@ -84,8 +84,10 @@ The simple method to pass bootargs to the kernel is with
+ takes the bootargs from the :ref:`bootargs <magicvar_bootargs>` environment variable.
+ 
+ With ``CONFIG_FLEXIBLE_BOOTARGS`` enabled, the bootargs are composed
+-from different :ref:`global device<global_device>` variables. All variables beginning
+-with ``global.linux.bootargs.`` will be concatenated to the bootargs:
++from different :ref:`global device<global_device>` variables and the
++:ref:`bootargs <magicvar_bootargs>` environment variable is ignored.
++All variables beginning with ``global.linux.bootargs.`` will be concatenated
++to the bootargs:
  
  .. code-block:: sh
  
-diff --git a/common/globalvar.c b/common/globalvar.c
-index 876379b2538e..41f3e93b00e1 100644
---- a/common/globalvar.c
-+++ b/common/globalvar.c
-@@ -7,6 +7,7 @@
- #include <init.h>
- #include <environment.h>
- #include <magicvar.h>
-+#include <string.h>
- #include <fs.h>
- #include <fcntl.h>
- #include <libfile.h>
-@@ -419,7 +420,8 @@ void globalvar_print(void)
-  * globalvar_get_match
+diff --git a/common/bootargs.c b/common/bootargs.c
+index 36528b8b5827..710f74de9629 100644
+--- a/common/bootargs.c
++++ b/common/bootargs.c
+@@ -17,12 +17,10 @@ static int linux_bootargs_overwritten;
+ /*
+  * This returns the Linux bootargs
   *
-  * get a concatenated string of all globalvars beginning with 'match'.
-- * This adds whitespaces between the different globalvars
-+ * This adds the separator between the different globalvars. Variables
-+ * without a value are skipped.
+- * There are two ways to handle bootargs. The old legacy way is to use the
+- * 'bootargs' environment variable. The new and more flexible way is to use
+- * global variables beginning with "global.linux.bootargs." and
+- * "global.linux.mtdparts.". These variables will be concatenated together to
+- * the resulting bootargs. If there are no "global.linux.bootargs." variables
+- * we fall back to "bootargs"
++ * The bootargs are concatenated from the global variables beginning with
++ * "global.linux.bootargs.", "global.linux.mtdparts." and
++ * "global.linux.blkdevparts.". The legacy 'bootargs' environment variable
++ * is only used by the CONFIG_FLEXIBLE_BOOTARGS=n stub in <bootargs.h>.
   */
- char *globalvar_get_match(const char *match, const char *separator)
+ const char *linux_bootargs_get(void)
  {
-@@ -429,6 +431,8 @@ char *globalvar_get_match(const char *match, const char *separator)
- 	dev_for_each_param(&global_device, param) {
- 		if (!strncmp(match, param->name, strlen(match))) {
- 			const char *p = dev_get_param(&global_device, param->name);
-+			if (isempty(p))
-+				continue;
- 			if (val) {
- 				char *new = basprintf("%s%s%s", val,
- 							separator, p);
+@@ -34,9 +32,9 @@ const char *linux_bootargs_get(void)
+ 	free(linux_bootargs);
+ 
+ 	bootargs = globalvar_get_match("linux.bootargs.", " ");
+-	if (!strlen(bootargs)) {
++	if (!*bootargs) {
+ 		free(bootargs);
+-		return getenv("bootargs");
++		return NULL;
+ 	}
+ 
+ 	linux_bootargs = bootargs;
 -- 
 2.47.3
 
