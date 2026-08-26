@@ -3,14 +3,14 @@ Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wzCdb-007QpW-1l
+	id 1wzCdb-007QpX-1t
 	for lore@lore.pengutronix.de;
 	Wed, 26 Aug 2026 14:21:52 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id BDDC420227E
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id C6681202282
 	for <lore@pengutronix.de>; Wed, 26 Aug 2026 14:21:47 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=VU+jZp8N;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=h5e5hX3t;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,51 +19,51 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=B/eZg11xpYXyNKM8GE6IsZ/t7hYBCr9VxNNd4hX4T7U=; b=VU+jZp8NYXomZTzKRcO7YK1SkP
-	xyKV/FhZ0tf1VDNyTeesyFuoIpIEjLX37+nwxAXN2mr8dlB4mQXv87kasTWMhhXFR5lAbibfsnDzw
-	0nEp+yz6ThyOtKYcvLCAOmGKUE3qRorVjrwIr3X3/6WjPHuA3L0AdDFz34B9nHnmpuaS5EjDwHIfU
-	2PE4VP2AanMx5dbiBdderw2svn3001MqCsDNsFejW9U8RJ0OCadTYiw/5Rr7UIiP0eEERG7x9NuD1
-	rUAJRq8fP1ezd7ADtCUkw9QoTLLbEQZl1JlfErnJGKagGUouhI0uB+bVnKZGcpKDoUAgUlEOO+FAi
-	23bRZEwA==;
+	bh=h7oWrGUDUKkNrMyvaR0EOaLkPDuURgJFz/YGlilWBOE=; b=h5e5hX3tesR54bZbvVCNb/GgBL
+	Vri+7jWAytDld3QCdADRHW8NDUJQA/4AETlYwe+h2xip4/bzxfXzyOnR6GTKN58EBhTNVnN4czJR8
+	t+4LdKeNzH+j6y+uK2+ZxK66/2yCVnG0KwX4uwJFf58Nf5KhddgcOgbhAQ77CM/OIdPbb1s3oAftE
+	XOPcal2NACHbMEEI6kFvmmSHveSK+iwdzTeXv3kit9pXYwaRLRz21HnO7hYv5HDOGLhf688KoKjBQ
+	KRLfHDEryl73ws2q8cuHsxM0rPq3kDM3qxFwidkAwsDfAL3ChO/desDKV3meWz7CuWUhfpBujtuS3
+	1cS4kbfA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzCc8-00000002Pto-0Zie;
-	Wed, 26 Aug 2026 12:20:20 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1wzCc3-00000002Ppk-477y;
+	Wed, 26 Aug 2026 12:20:16 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzCbu-00000002PkH-1lHY
+	id 1wzCbu-00000002PkG-1kZd
 	for barebox@lists.infradead.org;
-	Wed, 26 Aug 2026 12:20:12 +0000
+	Wed, 26 Aug 2026 12:20:10 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 33CFE2021CF;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 3F28520220C;
 	Wed, 26 Aug 2026 14:19:57 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wzCbl-003RBD-0J;
+	id 1wzCbl-003RBG-0T;
 	Wed, 26 Aug 2026 14:19:57 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wzCbk-0000000CK1K-4A20;
+	id 1wzCbl-0000000CK1K-0AOo;
 	Wed, 26 Aug 2026 14:19:57 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: fpg@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH RFT 5/9] efi: payload: pass shell arguments as load options to executed images
-Date: Wed, 26 Aug 2026 14:17:09 +0200
-Message-ID: <20260826121956.2936414-6-a.fatoum@pengutronix.de>
+Subject: [PATCH RFT 6/9] efi: add global.efi.bootargs for bootm'd EFI applications
+Date: Wed, 26 Aug 2026 14:17:10 +0200
+Message-ID: <20260826121956.2936414-7-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260826121956.2936414-1-a.fatoum@pengutronix.de>
 References: <20260826121956.2936414-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260826_052007_835026_F98A25C6 
-X-CRM114-Status: GOOD (  21.61  )
+X-CRM114-CacheID: sfid-20260826_052007_764314_CE3A63E9 
+X-CRM114-Status: GOOD (  27.48  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -71,9 +71,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  EFI applications executed directly from the shell via the
-   binfmt hook, e.g. "/boot/shell.efi -nostartup", currently have their arguments
-    silently dropped: the only load options ever set are the Linux [...] 
+ Content preview:  The load options of an EFI application booted via bootm can
+    so far only be influenced for EFI-stubbed Linux kernels and only via the
+   Linux bootargs. There is no way to pass options to a generic EFI ap [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -129,187 +129,330 @@ X-Spamd-Result: default: False [-56.21 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: 655gi94d4koppoph53rcncpg1efywmub
-X-Rspamd-Queue-Id: BDDC420227E
+X-Stat-Signature: kzw6534rfnyurttr7autk1ywerh16oi5
+X-Rspamd-Queue-Id: C6681202282
 
-EFI applications executed directly from the shell via the binfmt hook,
-e.g. "/boot/shell.efi -nostartup", currently have their arguments silently
-dropped: the only load options ever set are the Linux bootargs and only if
-the image was detected as an EFI-stubbed kernel.
+The load options of an EFI application booted via bootm can so far only be
+influenced for EFI-stubbed Linux kernels and only via the Linux bootargs.
+There is no way to pass options to a generic EFI application like a shell
+or a boot loader, and no way to pass EFI-stub-specific options like initrd=
+or efi= to a kernel separately from what goes into the Linux bootargs.
 
-Serialize the arguments following the image path into the load options
-instead and leave it to the caller of efi_execute_image() to decide what
-the load options should be. bootm keeps passing the Linux bootargs for
-kernel images, but executing a kernel image directly from the shell now
-passes exactly what was typed on the command line, which makes the
-documentation's claim that only bootm passes the kernel command line true
-again.
+Add a global.efi.bootargs.* family of variables that works like
+global.linux.bootargs.*: all variables with that prefix are concatenated in
+lexicographical order and become the load options of any EFI application
+booted via bootm. For EFI-stubbed Linux kernels, the Linux bootargs are
+appended, so the kernel command line becomes
+"$global.efi.bootargs $global.linux.bootargs".
 
-The firmware unloads an application as soon as it returns, as does barebox'
-own loader in efi_exit() and EDK2 in CoreStartImage(), so the load options
-may only be cleared for a driver that started successfully and is thus
-still around. The buffer itself belongs to barebox and is freed either way.
-
-While at it, add the missing space in the "Booting kernel via StartImage
-with options" message.
+The helper lives outside efi/payload and efi/loader, as the variable is
+meant to be used identically when barebox runs as EFI payload and when it
+runs as EFI loader. Executing an application directly from the shell keeps
+passing only the shell arguments and the legacy x86 handover protocol is
+unaffected, because it bypasses the EFI stub that would interpret the load
+options.
 
 Assisted-by: Claude:fable-5
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- efi/payload/bootm.c |  9 ++++++--
- efi/payload/image.c | 51 ++++++++++++++++++++++++++++++++++-----------
- efi/payload/image.h |  2 +-
- 3 files changed, 47 insertions(+), 15 deletions(-)
+ common/boot.c          |  1 +
+ efi/Makefile           |  2 +-
+ efi/bootargs.c         | 65 ++++++++++++++++++++++++++++++++++++++++++
+ efi/loader/bootm.c     | 27 ++++++++++++------
+ efi/payload/bootm.c    | 23 ++++++++++-----
+ include/efi/bootargs.h |  9 ++++++
+ test/py/test_shell.py  | 26 +++++++++++++++++
+ 7 files changed, 136 insertions(+), 17 deletions(-)
+ create mode 100644 efi/bootargs.c
+ create mode 100644 include/efi/bootargs.h
 
-diff --git a/efi/payload/bootm.c b/efi/payload/bootm.c
-index 2bcfd90e42fa..fe2d27b7ff10 100644
---- a/efi/payload/bootm.c
-+++ b/efi/payload/bootm.c
-@@ -22,6 +22,7 @@
- #include <string.h>
- #include <linux/err.h>
- #include <boot.h>
-+#include <bootargs.h>
- #include <bootm.h>
- #include <fs.h>
- #include <libfile.h>
-@@ -185,7 +186,9 @@ static int do_bootm_efi_stub(struct image_data *data)
- 	if (data->dryrun)
- 		goto unload_ramdisk;
+diff --git a/common/boot.c b/common/boot.c
+index dc1441d0dc91..dce5c5330eeb 100644
+--- a/common/boot.c
++++ b/common/boot.c
+@@ -201,6 +201,7 @@ int boot_entry(struct bootentry *be, int verbose, int dryrun)
+ 		pr_err("Booting entry '%s' failed: %pe\n", be->title, ERR_PTR(ret));
  
--	ret = efi_execute_image(handle, loaded_image, true, type);
-+	ret = efi_execute_image(handle, loaded_image, true, type,
-+				filetype_is_linux_efi_image(type) ?
-+				linux_bootargs_get() : NULL);
+ 	globalvar_set_match("linux.bootargs.dyn.", "");
++	globalvar_set_match("efi.bootargs.dyn.", "");
  
- 	/* efi_execute_image takes care to unload the image on error,
- 	 * so we set image_freed and fall through to freeing ramdisk
-@@ -225,7 +228,9 @@ static int efi_app_execute(struct image_data *data)
- 		return 0;
- 	}
- 
--	return efi_execute_image(handle, loaded_image, true, type);
-+	return efi_execute_image(handle, loaded_image, true, type,
-+				 filetype_is_linux_efi_image(type) ?
-+				 linux_bootargs_get() : NULL);
+ 	return ret;
  }
- 
- static int linux_efi_handover = true;
-diff --git a/efi/payload/image.c b/efi/payload/image.c
-index e3fe3d5afe34..e553c4573ebe 100644
---- a/efi/payload/image.c
-+++ b/efi/payload/image.c
-@@ -18,7 +18,6 @@
+diff --git a/efi/Makefile b/efi/Makefile
+index 7032e1fe1ded..4338e188db56 100644
+--- a/efi/Makefile
++++ b/efi/Makefile
+@@ -6,4 +6,4 @@ obj-$(CONFIG_EFI_RUNTIME)	+= runtime/
+ obj-$(CONFIG_EFI_GUID)		+= guid.o
+ obj-$(CONFIG_EFI_DEVICEPATH)	+= devicepath.o
+ obj-y				+= errno.o handle.o efivar.o efivar-filename.o
+-obj-y				+= initrd.o
++obj-y				+= initrd.o bootargs.o
+diff --git a/efi/bootargs.c b/efi/bootargs.c
+new file mode 100644
+index 000000000000..4a238388ef3f
+--- /dev/null
++++ b/efi/bootargs.c
+@@ -0,0 +1,65 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * bootargs.c - load options for EFI applications started via bootm
++ *
++ * Copyright (C) 2026 Ahmad Fatoum <a.fatoum@pengutronix.de>
++ */
++#include <common.h>
++#include <init.h>
++#include <malloc.h>
++#include <magicvar.h>
++#include <globalvar.h>
++#include <bootargs.h>
++#include <efi/bootargs.h>
++
++/**
++ * efi_bootargs_get() - compute load options for an EFI application
++ * @linux_image: whether the image is an EFI-stubbed Linux kernel
++ *
++ * All variables beginning with "global.efi.bootargs." are concatenated in
++ * lexicographical order. For Linux kernels, the Linux bootargs are appended,
++ * so the EFI stub sees them as the kernel command line.
++ *
++ * Return: newly allocated string to be freed by the caller or NULL
++ */
++char *efi_bootargs_get(bool linux_image)
++{
++	const char *linux_args = NULL;
++	char *efi_args, *options;
++
++	efi_args = globalvar_get_match("efi.bootargs.", " ");
++	if (efi_args && !*efi_args) {
++		free(efi_args);
++		efi_args = NULL;
++	}
++
++	if (linux_image)
++		linux_args = linux_bootargs_get();
++	if (linux_args && !*linux_args)
++		linux_args = NULL;
++
++	if (efi_args && linux_args)
++		options = xasprintf("%s %s", efi_args, linux_args);
++	else if (linux_args)
++		options = xstrdup(linux_args);
++	else
++		options = efi_args;
++
++	if (options != efi_args)
++		free(efi_args);
++
++	return options;
++}
++
++static int efi_bootargs_init(void)
++{
++	globalvar_add_simple("efi.bootargs.base", NULL);
++
++	return 0;
++}
++late_initcall(efi_bootargs_init);
++
++BAREBOX_MAGICVAR(global.efi.bootargs.*,
++		 "Load options of EFI applications started via bootm. Linux bootargs are appended for EFI-stubbed kernels");
++BAREBOX_MAGICVAR(global.efi.bootargs.dyn.*,
++		 "Load options set by boot entries. Cleared after each boot entry");
+diff --git a/efi/loader/bootm.c b/efi/loader/bootm.c
+index a68db742e173..e3d654774831 100644
+--- a/efi/loader/bootm.c
++++ b/efi/loader/bootm.c
+@@ -13,7 +13,6 @@
+ #include <init.h>
+ #include <driver.h>
+ #include <io.h>
+-#include <bootargs.h>
  #include <malloc.h>
  #include <string.h>
  #include <linux/err.h>
+@@ -34,6 +33,7 @@
+ #include <efi/services.h>
+ #include <efi/error.h>
+ #include <efi/initrd.h>
++#include <efi/bootargs.h>
+ #include <efi/devicepath.h>
+ 
+ /**
+@@ -199,6 +199,7 @@ static int efi_loader_bootm(struct image_data *data)
+ 	resource_size_t start, end;
+ 	void *load_option = NULL;
+ 	u32 load_option_size = 0;
++	char *options;
+ 	efi_handle_t handle;
+ 	struct efi_device_path *file_path = NULL;
+ 	struct efi_event *evt;
+@@ -215,19 +216,19 @@ static int efi_loader_bootm(struct image_data *data)
+ 	if (IS_ERR(os_res))
+ 		return PTR_ERR(os_res);
+ 
+-	if (filetype_is_linux_efi_image(data->kernel_type)) {
+-		const char *options;
+-
+-		options = linux_bootargs_get();
+-		if (options) {
+-			load_option = xstrdup_char_to_wchar(options);
+-			load_option_size = (strlen(options) + 1) * sizeof(wchar_t);
+-		}
++	options = efi_bootargs_get(filetype_is_linux_efi_image(data->kernel_type));
++	if (options) {
++		load_option = xstrdup_char_to_wchar(options);
++		load_option_size = (strlen(options) + 1) * sizeof(wchar_t);
+ 	}
+ 
+ 	file_path = efi_dp_from_file(AT_FDCWD, data->os_file);
+ 
+ 	pr_info("Loading %pD\n", file_path);
++	if (data->verbose && options)
++		pr_info("Load options: %s\n", options);
++
++	free(options);
+ 
+ 	/* Initialize EFI drivers */
+ 	efiret = efi_init_obj_list();
+@@ -321,6 +322,14 @@ static int efi_loader_bootm(struct image_data *data)
+ 	/* Control is returned to us, disable EFI watchdog */
+ 	efi_set_watchdog(0);
+ 
++	/*
++	 * A still loaded driver would keep referencing the load options.
++	 * efi_set_load_options() tolerates the already deleted handle of an
++	 * application.
++	 */
++	efi_set_load_options(handle, 0, NULL);
++	free(load_option);
++
+ 	return -efi_errno(efiret);
+ 
+ out:
+diff --git a/efi/payload/bootm.c b/efi/payload/bootm.c
+index fe2d27b7ff10..491bafb66898 100644
+--- a/efi/payload/bootm.c
++++ b/efi/payload/bootm.c
+@@ -22,7 +22,6 @@
+ #include <string.h>
+ #include <linux/err.h>
+ #include <boot.h>
 -#include <bootargs.h>
  #include <bootm.h>
  #include <fs.h>
  #include <libfile.h>
-@@ -101,10 +100,10 @@ int efi_load_image(const char *file, struct efi_loaded_image **loaded_image,
- int efi_execute_image(efi_handle_t handle,
- 		      struct efi_loaded_image *loaded_image,
- 		      bool is_bootm,
--		      enum filetype filetype)
-+		      enum filetype filetype, const char *options)
- {
- 	efi_status_t efiret;
--	const char *options;
-+	wchar_t *load_options = NULL;
- 	bool is_driver;
- 	bool no_return;
+@@ -32,6 +31,7 @@
+ #include <efi/payload/driver.h>
+ #include <efi/error.h>
+ #include <efi/initrd.h>
++#include <efi/bootargs.h>
  
-@@ -120,16 +119,20 @@ int efi_execute_image(efi_handle_t handle,
+ #include "image.h"
  
- 	efi_export_dtb();
- 
-+	if (options && *options) {
-+		load_options = xstrdup_char_to_wchar(options);
-+		loaded_image->load_options = load_options;
-+		loaded_image->load_options_size =
-+			(strlen(options) + 1) * sizeof(wchar_t);
-+	}
-+
- 	if (filetype_is_linux_efi_image(filetype)) {
--		options = linux_bootargs_get();
- 		printf("Booting kernel via StartImage");
--		if (options) {
--			printf("with options '%s'", options);
--			loaded_image->load_options = xstrdup_char_to_wchar(options);
--			loaded_image->load_options_size =
--				(strlen(options) + 1) * sizeof(wchar_t);
--		}
-+		if (load_options)
-+			printf(" with options '%s'", options);
- 		printf("...\n");
-+	} else if (load_options) {
-+		pr_debug("Starting image with options '%s'\n", options);
- 	}
- 
- 	if (no_return) {
-@@ -152,8 +155,24 @@ int efi_execute_image(efi_handle_t handle,
- 	if (EFI_ERROR(efiret))
- 		pr_err("failed to StartImage: %s\n", efi_strerror(efiret));
- 
--	if (!is_driver)
-+	/*
-+	 * The firmware unloads an application as soon as it returns, as well as
-+	 * a driver that failed to start, freeing the loaded image protocol with
-+	 * it. Only a still loaded driver's protocol may be touched here, and it
-+	 * must be, as it references the load options we are about to free.
-+	 * Unloading an application that already returned just fails, but is
-+	 * still needed when StartImage failed before running it.
-+	 */
-+	if (is_driver) {
-+		if (!EFI_ERROR(efiret)) {
-+			loaded_image->load_options = NULL;
-+			loaded_image->load_options_size = 0;
-+		}
-+	} else {
- 		BS->unload_image(handle);
-+	}
-+
-+	free(load_options);
- 
- 	efi_connect_all();
- 	efi_register_devices();
-@@ -165,13 +184,21 @@ static int efi_execute(struct binfmt_hook *b, char *file, int argc, char **argv)
- {
- 	struct efi_loaded_image *loaded_image;
- 	efi_handle_t handle;
+@@ -167,6 +167,7 @@ static int do_bootm_efi_stub(struct image_data *data)
+ 	bool image_freed = false;
+ 	efi_handle_t handle = NULL; /* silence compiler warning */
+ 	enum filetype type;
 +	char *options;
  	int ret;
  
- 	ret = efi_load_image(file, &loaded_image, &handle);
- 	if (ret)
- 		return ret;
+ 	ret = efi_load_os(data, &loaded_image, &handle);
+@@ -186,9 +187,11 @@ static int do_bootm_efi_stub(struct image_data *data)
+ 	if (data->dryrun)
+ 		goto unload_ramdisk;
  
--	return efi_execute_image(handle, loaded_image, false, b->type);
-+	/* argv[0] is the image itself, the rest become the load options */
-+	options = strjoin(" ", &argv[1], argc - 1);
+-	ret = efi_execute_image(handle, loaded_image, true, type,
+-				filetype_is_linux_efi_image(type) ?
+-				linux_bootargs_get() : NULL);
++	options = efi_bootargs_get(filetype_is_linux_efi_image(type));
 +
-+	ret = efi_execute_image(handle, loaded_image, false, b->type, options);
++	ret = efi_execute_image(handle, loaded_image, true, type, options);
++
++	free(options);
+ 
+ 	/* efi_execute_image takes care to unload the image on error,
+ 	 * so we set image_freed and fall through to freeing ramdisk
+@@ -215,6 +218,7 @@ static int efi_app_execute(struct image_data *data)
+ 	struct efi_loaded_image *loaded_image;
+ 	efi_handle_t handle;
+ 	enum filetype type;
++	char *options;
+ 	int ret;
+ 
+ 	ret = efi_load_image(data->os_file, &loaded_image, &handle);
+@@ -223,14 +227,19 @@ static int efi_app_execute(struct image_data *data)
+ 
+ 	type = file_detect_type(loaded_image->image_base, PAGE_SIZE);
+ 
++	options = efi_bootargs_get(filetype_is_linux_efi_image(type));
++
+ 	if (data->dryrun) {
+ 		BS->unload_image(handle);
++		free(options);
+ 		return 0;
+ 	}
+ 
+-	return efi_execute_image(handle, loaded_image, true, type,
+-				 filetype_is_linux_efi_image(type) ?
+-				 linux_bootargs_get() : NULL);
++	ret = efi_execute_image(handle, loaded_image, true, type, options);
 +
 +	free(options);
 +
 +	return ret;
  }
  
- static struct binfmt_hook binfmt_efi_hook = {
-diff --git a/efi/payload/image.h b/efi/payload/image.h
-index 33f7e1a21b30..54494c71626a 100644
---- a/efi/payload/image.h
-+++ b/efi/payload/image.h
-@@ -14,7 +14,7 @@ int efi_load_image(const char *file, struct efi_loaded_image **loaded_image,
- int efi_execute_image(efi_handle_t handle,
- 		      struct efi_loaded_image *loaded_image,
- 		      bool is_bootm,
--		      enum filetype filetype);
-+		      enum filetype filetype, const char *options);
+ static int linux_efi_handover = true;
+diff --git a/include/efi/bootargs.h b/include/efi/bootargs.h
+new file mode 100644
+index 000000000000..dfd17261ff9d
+--- /dev/null
++++ b/include/efi/bootargs.h
+@@ -0,0 +1,9 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef __EFI_BOOTARGS_H
++#define __EFI_BOOTARGS_H
++
++#include <linux/types.h>
++
++char *efi_bootargs_get(bool linux_image);
++
++#endif /* __EFI_BOOTARGS_H */
+diff --git a/test/py/test_shell.py b/test/py/test_shell.py
+index 23c2d5dbb0b6..05090ae07be0 100644
+--- a/test/py/test_shell.py
++++ b/test/py/test_shell.py
+@@ -155,3 +155,29 @@ def test_barebox_test_var_exists(barebox, barebox_config):
  
- extern struct image_handler efi_x86_linux_handle_tr;
- extern struct image_handler efi_x86_linux_handle_handover;
+     # Clean up
+     barebox.run_check('rm /tmp/testvars')
++
++
++def test_boot_bootargs_dyn_cleared(barebox, barebox_config):
++    skip_disabled(barebox_config, "CONFIG_CMD_BOOT", "CONFIG_CMD_GLOBAL",
++                  "CONFIG_CMD_ECHO")
++
++    barebox.run_check("echo -o /env/boot/dyntest '#!/bin/sh'")
++    barebox.run_check("echo -a /env/boot/dyntest "
++                      "'global linux.bootargs.dyn.test=linux-dyn'")
++    barebox.run_check("echo -a /env/boot/dyntest "
++                      "'global efi.bootargs.dyn.test=efi-dyn'")
++    barebox.run_check("echo -a /env/boot/dyntest "
++                      "'global efi.bootargs.nodyntest=efi-static'")
++
++    # Run the script, but don't actually boot anything
++    barebox.run("boot -d -d dyntest")
++
++    # .dyn. variables must not leak into subsequent boot entries
++    assert barebox.run_check("echo ${global.linux.bootargs.dyn.test}") == [""]
++    assert barebox.run_check("echo ${global.efi.bootargs.dyn.test}") == [""]
++    # ... but other variables are left alone
++    assert barebox.run_check("echo ${global.efi.bootargs.nodyntest}") == \
++        ["efi-static"]
++
++    barebox.run_check("global -r efi.bootargs.nodyntest")
++    barebox.run_check("rm /env/boot/dyntest")
 -- 
 2.47.3
 
