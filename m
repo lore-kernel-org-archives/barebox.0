@@ -3,64 +3,66 @@ Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wzAG1-007OFQ-0w
+	id 1wzAG1-007OFa-1T
 	for lore@lore.pengutronix.de;
 	Wed, 26 Aug 2026 11:49:22 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id DFE96202040
-	for <lore@pengutronix.de>; Wed, 26 Aug 2026 11:49:21 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 0F16D20205C
+	for <lore@pengutronix.de>; Wed, 26 Aug 2026 11:49:22 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=diAH466Q;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ed4UmvFI;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=rnlgS78Nvxi/oJg8S5LCDtSgvBjfTRiOzmFI1xUVOX8=; b=diAH466QK0LdRwLqSKh0rH7Z8b
-	T3oqDl2Qc50USRemaNjcA9bgQ6CamQC7wIyW++dgCnvH8PBHSVF3qg2Bxjc1xrT8XvphPfCvpM0oX
-	ehQH+9alymmEmOImCekII1NYOzPhXlwgVWJjvDCr58P4oWVjsHo0eLmwM1zr4Sx+p4CLKN6XY/IPF
-	1RVJC+GnRghBn5zPI33FhUmvVmMOebbGDN6YyYFGG00ElD1DuPFj70MQfUChVidZ8hgLnrogJLkGZ
-	V4pWgkvZhxcgUh4uRC6f2T3TMBVC5R0u+z1pgtzyXwf/LJ/s/rVEmhEzTYUpCQmJBpKqFkfis3m5S
-	izQ6AB3g==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=EK3570P9iMu66kkkh0M4x2zr9ZXKMCffxNI+thFjLmI=; b=ed4UmvFIHyzSLltNA0nzly0tGL
+	tndAbYgfUq/V2wVGwNmItch8vbWEDk7OMgQPpXPYuHyWGPFQNiGeDxQRYnTFht0LNT5M21OWGdO5H
+	sehjVhAK9sZE2nKm+E8xZnUdeWn9EAtuqY6mS4Y0ERfct5kCMwhBf1vX26Wl8+iiAJwbSUZPvJ0hq
+	ZtjvreH9KdF2kQs6ZKsyT4rN788u9qMyjAMlQXI94uKRzXeN2Gmb3xSos5IunvC9fAeYomty93C3+
+	04hNGNyclXjkeD171vKtlUJNK7OgypfktW16m3FeGCGKTVvZiXDlrxtoyvi/IOx0G3mPnzjgdaiaX
+	Sz4VHCKA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzAEt-00000002Ea9-3mWG;
-	Wed, 26 Aug 2026 09:48:11 +0000
+	id 1wzAEu-00000002EaG-0iDW;
+	Wed, 26 Aug 2026 09:48:12 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzAEp-00000002EZS-3EOE
+	id 1wzAEp-00000002EZT-3EOP
 	for barebox@lists.infradead.org;
-	Wed, 26 Aug 2026 09:48:09 +0000
+	Wed, 26 Aug 2026 09:48:10 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B59DB2017E5;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id BF154202040;
 	Wed, 26 Aug 2026 11:48:05 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wzAEj-003Q0G-27;
+	id 1wzAEj-003Q0H-2G;
 	Wed, 26 Aug 2026 11:48:01 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wzAEj-0000000Al5z-2J1D;
+	id 1wzAEj-0000000Al5z-2WCi;
 	Wed, 26 Aug 2026 11:48:01 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH 1/2] efi: loader: don't let VarToFile stop the variable file from being written
-Date: Wed, 26 Aug 2026 11:47:57 +0200
-Message-ID: <20260826094800.2564299-1-a.fatoum@pengutronix.de>
+Subject: [PATCH 2/2] efi: loader: keep booting when the runtime variable store is unavailable
+Date: Wed, 26 Aug 2026 11:47:58 +0200
+Message-ID: <20260826094800.2564299-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260826094800.2564299-1-a.fatoum@pengutronix.de>
+References: <20260826094800.2564299-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260826_024807_970953_6FD99E45 
-X-CRM114-Status: UNSURE (   9.77  )
+X-CRM114-CacheID: sfid-20260826_024807_970950_DA9B5C50 
+X-CRM114-Status: UNSURE (   9.71  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -69,9 +71,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  efi_var_collect() walks the variable store with GetNextVariableName()
-    and reads every variable it finds into a buffer the size of the store, then
-    keeps only those matching the attribute mask. Reading [...] 
+ Content preview:  efi_init_runtime_variable_supported() creates the two variables
+    the OS needs to write the variable file itself: RTStorageVolatile names the
+    file on the ESP and VarToFile hands out its contents. Both a [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -127,46 +129,43 @@ X-Spamd-Result: default: False [-56.21 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: 3xzcmbyaowhoyaosd4at4b6otmrbezee
-X-Rspamd-Queue-Id: DFE96202040
+X-Stat-Signature: mxz9xiso6zexfsonj19x9f5phncugmya
+X-Rspamd-Queue-Id: 0F16D20205C
 
-efi_var_collect() walks the variable store with GetNextVariableName() and
-reads every variable it finds into a buffer the size of the store, then
-keeps only those matching the attribute mask. Reading a variable whose
-value does not fit aborts the collection, and with it the write of the
-variable file:
+efi_init_runtime_variable_supported() creates the two variables the OS
+needs to write the variable file itself: RTStorageVolatile names the file
+on the ESP and VarToFile hands out its contents. Both are inserted into
+the same 128 KiB in-memory store as every other variable, so both fail
+with EFI_OUT_OF_RESOURCES once that store is full.
 
-  efi-loader: var-file: Failed to persist EFI variables Out of memory
-
-VarToFile is such a variable. Its value is not stored anywhere: reading
-it serializes all non-volatile variables, so it needed as much room as
-everything collected before it.
+The loader itself does not need those variables, only runtime
+SetVariable() does. Warn and clear EFI_RT_SUPPORTED_SET_VARIABLE in the
+runtime properties table instead, so the OS is told that persisting
+variables at runtime is not available, and boot on.
 
 Assisted-by: Claude:opus-5
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- efi/loader/efi_var_common.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ efi/loader/runtime.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/efi/loader/efi_var_common.c b/efi/loader/efi_var_common.c
-index 4c6cb77e7c2c..dcdfa6fb0165 100644
---- a/efi/loader/efi_var_common.c
-+++ b/efi/loader/efi_var_common.c
-@@ -454,6 +454,14 @@ efi_status_t __maybe_unused efi_var_collect(struct efi_var_file **bufp, loff_t *
- 		ret = efi_get_variable_int(var->name, &var->guid,
- 					   &var->attr, &data_length, data,
- 					   &var->time);
-+		/*
-+		 * The attributes are valid even when the value did not fit.
-+		 * Variables we are not going to keep may thus be skipped
-+		 * without their value ever being copied, e.g. VarToFile.
-+		 */
-+		if (ret == EFI_BUFFER_TOO_SMALL &&
-+		    (var->attr & check_attr_mask) != check_attr_mask)
-+			continue;
- 		if (ret != EFI_SUCCESS) {
- 			free(buf);
- 			return ret;
+diff --git a/efi/loader/runtime.c b/efi/loader/runtime.c
+index f0fbd263fe55..a33db166d064 100644
+--- a/efi/loader/runtime.c
++++ b/efi/loader/runtime.c
+@@ -72,8 +72,10 @@ efi_status_t efi_init_runtime_supported(void)
+ 		CHECK_RT_FLAG(QUERY_VARIABLE_INFO);
+ 
+ 	ret = efi_init_runtime_variable_supported();
+-	if (ret != EFI_SUCCESS)
+-		return ret;
++	if (ret != EFI_SUCCESS) {
++		pr_warn("no runtime variable store: %s\n", efi_strerror(ret));
++		rt_table->runtime_services_supported &= ~EFI_RT_SUPPORTED_SET_VARIABLE;
++	}
+ 
+ 	return efi_install_configuration_table(&efi_rt_properties_table_guid, rt_table);
+ }
 -- 
 2.47.3
 
