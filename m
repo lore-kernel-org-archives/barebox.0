@@ -1,66 +1,108 @@
-Delivery-date: Wed, 26 Aug 2026 13:46:33 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Wed, 26 Aug 2026 13:55:26 +0200
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wzC5Q-007Q7y-2U
+	id 1wzCE1-007QDg-2v
 	for lore@lore.pengutronix.de;
-	Wed, 26 Aug 2026 13:46:33 +0200
+	Wed, 26 Aug 2026 13:55:26 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 5CB2B20205C
-	for <lore@pengutronix.de>; Wed, 26 Aug 2026 13:46:33 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 1A3A2201BCA
+	for <lore@pengutronix.de>; Wed, 26 Aug 2026 13:55:26 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=GLrNPkF7;
-	dmarc=none;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=iwBWNHQI;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b=Funb4Mlo;
+	dmarc=pass (policy=none) header.from=gmail.com;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=ry9AkcAlxOLjXsEN0C6UHNAomxQEXxlMyrb/3TjOw5E=; b=GLrNPkF7DO7Stj6Qs+rXrv0Uw3
-	WH/VvQcq9znMvLBu1mH105EoAASn36lDgigEB33PCM8IVxYRLqtXGueBkic4E7Cwr0NcdG68RQqrx
-	o11A2fCqqcK6oUfP+CIIa2WqyYfAb6l2mGo7O9Wpx1CemDL2ieKmYLhRuHRXQkHuMqL//mno1yOYm
-	YhFMtRdv5bkTZoCqs6/PbO3yN6v8mOWXa7ZIFt47j8gZvjoiLp24e0O0DUYI/k/CQJJIH0y3ZA4U8
-	7Oz04H0I/seKin+fST2uIYCkpPrX0NdrWpdmI9Ckh7vXwjkeAqWePcTVTkVxfrIpSyZgixzBfJdAN
-	45VaCEtQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Message-Id:Date:References:
+	In-Reply-To:Cc:To:From:Subject:Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=bCojuOc81gucG24sZm/tlx+rL+6/znknzz/fq2+ocK4=; b=iwBWNHQIKJPRpq7smhxieT328s
+	FX7oR+kjR7Acvpp2KmC4thud53FqH3SB8Nq28dICiKKELNqOuXw0Ho/Hs3ignE7j4Q2iAOgnBRVgb
+	EeI4tTfHvOjg7sbzn66pxQzX9yATLqU5pwtSflGZDWPbke9M4kFXidi2BTbDY+Bbequ7biDVR0vA5
+	/bV6KYT+V/t6OKGxwkW9pU5qwIBm1Hx/Blke/Js3QIejIr43EZxlzK1IJkqIi/KQ2iofx6ui+mtvX
+	z6DdslCNTv9ay87ROzZ/+DNrBaR6dq6QRzkooSpdlk1fWJN0XnzI5BTEAiURctCzxj2kzxJEFMiOw
+	HRmN6UPg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzC4N-00000002Mv3-2a7z;
-	Wed, 26 Aug 2026 11:45:27 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1wzCDb-00000002NXY-1J9M;
+	Wed, 26 Aug 2026 11:54:59 +0000
+Received: from mail-wm1-x329.google.com ([2a00:1450:4864:20::329])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzC4K-00000002Muh-0E6S
+	id 1wzCDX-00000002NWp-2NwM
 	for barebox@lists.infradead.org;
-	Wed, 26 Aug 2026 11:45:25 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 58B2420205C;
-	Wed, 26 Aug 2026 13:45:22 +0200 (CEST)
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wzC4I-003Qr0-0s;
-	Wed, 26 Aug 2026 13:45:22 +0200
-Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wzC4I-0000000CFYP-0hso;
-	Wed, 26 Aug 2026 13:45:22 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH] efi: loader: accept NULL DevicePath in LoadImage when SourceBuffer is given
-Date: Wed, 26 Aug 2026 13:45:01 +0200
-Message-ID: <20260826114521.2919654-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	Wed, 26 Aug 2026 11:54:57 +0000
+Received: by mail-wm1-x329.google.com with SMTP id 5b1f17b1804b1-4998b5a63e2so6733765e9.1
+        for <barebox@lists.infradead.org>; Wed, 26 Aug 2026 04:54:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1787745293; x=1788350093; darn=lists.infradead.org;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=bCojuOc81gucG24sZm/tlx+rL+6/znknzz/fq2+ocK4=;
+        b=Funb4MloqENTFhzfcX0s5kHxr0ECJDfAZ9XFbJWJA0cz8JSprWt6+plIExAOlwW8DE
+         Y3RUgl50vgl5cywmFi29K67gm+kR3HrhmRccnRfmnaUa9tjdNlrKAAr4NYKDhQxX/wPP
+         TahuwHZQzXAToon1xbJtLb4A5PhSPiD4qlbISmtpbALc9ve/Qe1U4pchTKqfaygxw1bq
+         OEKTOnHoLr6NUPhmND0ZuSNK3h5fgm+Id5j9pMs5A3frWlqEWqf4jx9EyzreCD9bGNvC
+         SkSgV1tAbUSv/q7Ko6zjmkP3K/zVKbKEotFa3IpmK/qD2nZRFmiwkBsZ0rTvuN0BzQGZ
+         Xc0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1787745293; x=1788350093;
+        h=message-id:date:references:in-reply-to:cc:to:from:subject
+         :content-transfer-encoding:content-type:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
+         :content-type;
+        bh=bCojuOc81gucG24sZm/tlx+rL+6/znknzz/fq2+ocK4=;
+        b=F4Mvwuee/ucGxLWAXT770rjqIAj794ZOgkk0cL35dGs60qBAkh5HWPqWZXrU/j6hjr
+         8RvBqNX3FDprcXSBmuBonnp758jj2aWRUFVvxhYuVug7Ooc1Q9iWCl78wDpDEnbm5VIx
+         G9SpujZGPzjwAUkKqt0i//ioGhkXDr4YHhWvVhFRj6zHMg5kU39dgV/BV7ZnQbZVEsrN
+         iXcypCWjpglhL4P09FYn1F12Own3+9nPOPa60LHJUSZdKEZV1c0M3YRGb0gEt22Ik00Z
+         /6o/VAvnVRo/ZEyjzJuH3xl3pgilSZbBT2oT5Wkiz3ddZ9TPWbpTMwXIzTFql1pwzCAo
+         +1fQ==
+X-Forwarded-Encrypted: i=1; AHgh+Rpdatl86SHwiVm+0KXOoZdnDIyKwOiz9DxJcr6ODLetpHu7o+55efJYlugHYtbva4UdLfF4R5pu@lists.infradead.org
+X-Gm-Message-State: AFuF++kT5TDSpFZq1jQnKCIid3d8/O4p/dRFj1EPsXg6gnedKgHWeyWi
+	PEujNIoAzA3QC9ezZ4MuudPZScdh3eY3bom5Iy8HanSqEtQdpHq6xTF1PMRp1A==
+X-Gm-Gg: AR+sD10orD+aGeqOBbZNNyg+VIu4eXtm26F4Llr4rOHo2xRCZYfyq2he1iHrA9CbJEq
+	cSIO/JIQYVkKn7Xbzi3gGw5oS8lqWn5oMeb7pvEw07LBrAFbwyxcfIS0GbYxcGgLC7Ozw0A07Bo
+	kKN9FHkUt22MW0Kiz53lz7pHSbUqVTSSexCT8OqDNcVlFxbg8dTIe4Iw2pIK/oNinITbqZNlI2F
+	Z927eL1gBzoPk5zDTiP0A4gkgVrAiiS7F8GPRKujTsLn4Rk9Qo+MC/NMIFKr4ZGM08kXKjMLoUc
+	lheOaHfwuJ3slVpL6OKKHDOreohvNoqY6f0JYMN+L7zC03bvBqLABMQ1Hpnxbh/4YnV5g+706Re
+	GumnRk8j0ifJFjxnkkjDhhDgRmVbuRo7XxO4Mmk1VLK0VFqBf0HO4AY2TE9PGqgCBV5sS+vehvb
+	xEkMeONbarGGwCzlwHNQ5aQvcpVxz2s1CxRGJJp36+7JSwtsOosQG1h0V0j3IZCbEJUiEYdEn3F
+	2rJYcvAKYl9/8rMUcMnkn4NdmjtGByq1R/NlAkrx/uZhoGBBTWnrLRrWN29p2Dk5mCkfL/XSQI4
+	WOvFtSRcTkogAv6x5ehV
+X-Received: by 2002:a05:600c:8518:b0:499:d95a:414 with SMTP id 5b1f17b1804b1-499dc7042b6mr57720685e9.6.1787745292914;
+        Wed, 26 Aug 2026 04:54:52 -0700 (PDT)
+Received: from [192.168.1.133] ([213.195.92.95])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49af4ad0ea5sm1178275e9.5.2026.08.26.04.54.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Aug 2026 04:54:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] usb: dwc2: skip polling for the soft reset clear bit
+ and add after reset delay
+From: chalianis1@gmail.com
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: chalianis1@gmail.com, barebox@lists.infradead.org
+In-Reply-To: <E1we9fW-00000005ggu-3u1v@pty.whiteo.stw.pengutronix.de>
+References: <E1we9fW-00000005ggu-3u1v@pty.whiteo.stw.pengutronix.de>
+Date: Wed, 26 Aug 2026 13:54:50 +0200
+Message-Id: <178774529085.956898.8142660027039059393.b4-reply@b4>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1787745291; l=2421;
+ i=anis.chali@ro-main.com; s=20260826; h=from:subject:message-id;
+ bh=IzcTSA5cWcTUKhFiuoAh7Qxu2gi8qxMOvy2/IVFst/A=;
+ b=Fjj9kFJ4WMERl27rVmvLunuXr6HyGylMKtCRvyQlOuXGS78yQbBFte3RbU6pEcKaq9U4DliGJ
+ ZxExMr3AygmD2+l664u68Tvcq18p0Hro9boGENvUkbeMTJTJU7SIS4d
+X-Developer-Key: i=anis.chali@ro-main.com; a=ed25519;
+ pk=TqnEtud6Lz6n/ejHxgJEbC95QoqQs4Xs4Wl2TbjIVTk=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260826_044524_329180_1C0C17CE 
-X-CRM114-Status: GOOD (  13.61  )
+X-CRM114-CacheID: sfid-20260826_045455_634228_03D27F3C 
+X-CRM114-Status: GOOD (  26.49  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -68,19 +110,34 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  The UEFI specification only requires DevicePath when no SourceBuffer
-    is given. Loading an image from memory with a NULL DevicePath is valid and
-    results in a loaded image without device handle and file [...] 
+ Content preview:  On 2026-06-29 10:56 +0000, Sascha Hauer wrote: > On 2026-06-23
+    10:23, chalianis1 wrote: > > From: Chali Anis > > > > The RPi4 SoC do not
+    deassert GRSTCTL_CSFTRST within the expected > > window but c [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
- -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
+ -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/, no
+                             trust
+                             [2a00:1450:4864:20:0:0:0:329 listed in]
+                             [list.dnswl.org]
  -0.0 SPF_PASS               SPF: sender matches SPF record
+  0.0 SPF_HELO_NONE          SPF: HELO does not publish an SPF Record
+ -0.1 DKIM_VALID_EF          Message has a valid DKIM or DK signature from
+                             envelope-from domain
+ -0.1 DKIM_VALID_AU          Message has a valid DKIM or DK signature from author's
+                             domain
+  0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
+ -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
  -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
                              [score: 0.0000]
-  0.0 DMARC_MISSING          Missing DMARC policy
+  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends in
+                             digit
+                             [chalianis1(at)gmail.com]
+  0.0 FREEMAIL_FROM          Sender email is commonly abused enduser mail provider
+                             [chalianis1(at)gmail.com]
+ -0.0 DMARC_PASS             DMARC pass policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -93,92 +150,118 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-56.21 / 15.00];
-	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[99.99%];
+X-Spamd-Result: default: False [-7.41 / 15.00];
+	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
+	MID_RHS_NOT_FQDN(0.50)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_MISSING_CHARSET(0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::54:received];
-	MAILLIST(-0.20)[mailman];
 	R_SPF_ALLOW(-0.20)[+mx:c];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
-	RCVD_IN_DNSWL_LOW(-0.10)[2a0a:edc0:0:c01:1d::a2:received];
+	MAILLIST(-0.20)[mailman];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,gmail.com:s=20251104];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWO(0.00)[2];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
+	FORGED_SENDER(0.00)[chalianis1@gmail.com,barebox-bounces@lists.infradead.org];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	ARC_NA(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	DKIM_TRACE(0.00)[lists.infradead.org:+];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,lists.infradead.org];
+	RECEIVED_SPAMHAUS_PBL(0.00)[213.195.92.95:received];
 	NEURAL_HAM(-0.00)[-1.000];
+	PREVIOUSLY_DELIVERED(0.00)[barebox@lists.infradead.org];
+	FROM_NEQ_ENVFROM(0.00)[chalianis1@gmail.com,barebox-bounces@lists.infradead.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NO_DN(0.00)[];
+	DWL_DNSWL_NONE(0.00)[gmail.com:dkim];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	FORGED_SENDER_MAILLIST(0.00)[]
+	DKIM_TRACE(0.00)[lists.infradead.org:+,gmail.com:+];
+	RCPT_COUNT_THREE(0.00)[3];
+	RCVD_IN_DNSWL_NONE(0.00)[2a00:1450:4864:20::329:received]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: xcnjswqbjhf9fashrkcf3r5zrcr5wc9x
-X-Rspamd-Queue-Id: 5CB2B20205C
+X-Stat-Signature: gy4iaswyxhhkupnuj5pbetei1ozx6cwk
+X-Rspamd-Queue-Id: 1A3A2201BCA
 
-The UEFI specification only requires DevicePath when no SourceBuffer is
-given. Loading an image from memory with a NULL DevicePath is valid and
-results in a loaded image without device handle and file path. That's what
-EDK2 does and what the U-Boot code this was imported from does as well, as
-it ignores the result of efi_dp_split_file_path().
+On 2026-06-29 10:56 +0000, Sascha Hauer wrote:
+> On 2026-06-23 10:23, chalianis1 wrote:
+> > From: Chali Anis <chalianis1@gmail.com>
+> > 
+> > The RPi4 SoC do not deassert GRSTCTL_CSFTRST within the expected
+> > window but continue to operate correctly, causing probe to fail
+> > with ETIMEDOUT.
+> 
+> Does "within the expected window" imply that there is a bigger window in
+> which it is de-asserted?
+>
+What I mean is within the expected window according to the SoC datasheet
+of RK3588 which I just realized that I wrongly thought that it has a DWC2.
+Rockchip RK3588 TRM V1.0-Part2 20220309 page 2221 
+> > 
+> > Per the datasheet, GRSTCTL_CSFTRST is self-clearing but requires at least
+> > 3 PHY clocks after reset before any PHY domain access. Add a 1us delay to
+> > satisfy this requirement.
+> 
+> Which datasheet, the SoC datasheet or a DWC2 datasheet?
+>
+the SOC one.
+> I'm just asking if there is a chance to not need a SoC check here.
+> 
+> Sascha
+> 
+> > 
+> > Signed-off-by: Chali Anis <chalianis1@gmail.com>
+> > ---
+> >  drivers/usb/dwc2/core.c | 13 +++++++++----
+> >  1 file changed, 9 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/drivers/usb/dwc2/core.c b/drivers/usb/dwc2/core.c
+> > index 60cc690fdbc0..6d4b7930da9e 100644
+> > --- a/drivers/usb/dwc2/core.c
+> > +++ b/drivers/usb/dwc2/core.c
+> > @@ -809,11 +809,16 @@ int dwc2_core_reset(struct dwc2 *dwc2)
+> >  	greset |= GRSTCTL_CSFTRST;
+> >  	dwc2_writel(dwc2, greset, GRSTCTL);
+> >  
+> > -	ret = dwc2_wait_bit_clear(dwc2, GRSTCTL, GRSTCTL_CSFTRST, 10000);
+> > -	if (ret) {
+> > -		dwc2_warn(dwc2, "%s: Timeout! Waiting for Core Soft Reset\n",
+> > +	/* Wait for at least 3 PHY Clocks */
+> > +	udelay(1);
+> > +
+> > +	if (!of_machine_is_compatible("brcm,bcm2711")) {
+> > +		ret = dwc2_wait_bit_clear(dwc2, GRSTCTL, GRSTCTL_CSFTRST, 10000);
+> > +		if (ret) {
+> > +			dwc2_warn(dwc2, "%s: Timeout! Waiting for Core Soft Reset\n",
+> >  				__func__);
+> > -		return ret;
+> > +			return ret;
+> > +		}
+> >  	}
+> >  
+> >  	if (wait_for_host_mode)
+> > 
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> 
+> 
 
-barebox on the other hand checks the result and as efi_dp_dup(NULL) returns
-NULL, LoadImage fails with the misleading EFI_OUT_OF_RESOURCES. This breaks
-chainloading from a barebox EFI payload running on top of the barebox EFI
-loader: the payload passes the device path of its own device handle, which
-it doesn't have when it was booted via QEMU's fw_cfg, so it passes NULL.
-
-Only split the device path if there is one and hand out an empty file path
-otherwise, so LoadedImage->FilePath stays non-NULL for applications like
-the EDK2 shell that dereference it unconditionally.
-
-Fixes: b9e581c97389 ("efi: loader: avoid NULL image file paths")
-Assisted-by: Claude:fable-5
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- efi/loader/boot.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
-
-diff --git a/efi/loader/boot.c b/efi/loader/boot.c
-index d361a71a4dae..2d98c95b5c34 100644
---- a/efi/loader/boot.c
-+++ b/efi/loader/boot.c
-@@ -2026,8 +2026,18 @@ efi_status_t EFIAPI efiloader_load_image(bool boot_policy,
- 	} else {
- 		dest_buffer = source_buffer;
- 	}
--	/* split file_path which contains both the device and file parts */
--	ret = efi_dp_split_file_path(file_path, &dp, &fp);
-+	/*
-+	 * DevicePath is optional when SourceBuffer is given, the loaded image
-+	 * then has no device handle and an empty file path.
-+	 */
-+	if (file_path) {
-+		/* file_path contains both the device and the file parts */
-+		ret = efi_dp_split_file_path(file_path, &dp, &fp);
-+	} else {
-+		dp = NULL;
-+		fp = efi_dp_append_node(NULL, NULL);
-+		ret = fp ? EFI_SUCCESS : EFI_OUT_OF_RESOURCES;
-+	}
- 	if (ret == EFI_SUCCESS) {
- 		ret = efi_setup_loaded_image(dp, fp, image_obj, &info);
- 		if (ret == EFI_SUCCESS)
--- 
-2.47.3
+Best regards.
+Anis
 
 
 
