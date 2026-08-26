@@ -1,68 +1,66 @@
-Delivery-date: Wed, 26 Aug 2026 11:38:21 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Wed, 26 Aug 2026 11:40:48 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wzA5M-007O3F-1R
+	id 1wzA7j-007O56-1l
 	for lore@lore.pengutronix.de;
-	Wed, 26 Aug 2026 11:38:21 +0200
+	Wed, 26 Aug 2026 11:40:48 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id C046A201552
-	for <lore@pengutronix.de>; Wed, 26 Aug 2026 11:38:20 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id EF1E22017E5
+	for <lore@pengutronix.de>; Wed, 26 Aug 2026 11:40:47 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=coUS1evO;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=2M7PrIXq;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=P9eIUiDkmTMhPdm1tGUz9OgJGIa07st2cSm1+XJOcTk=; b=coUS1evOumtkbaG8Zih8XJqikn
-	azXS1Ydw9bGGXUqrk/O/XTyUY9eHgf5YCg9+RaOmKBssSjFtuYJ0cqnm2pyOCCvWnzvluayx9Jv5M
-	HTygeYGZUpooWAez6RPq4F9RmU63lykz9P/LZ5vbPFbCAVFgIL7SOAsmD7+1fxHlrg9aL0kE3HGZ2
-	WJzTonYbEB1L91lZac3EBizPhE4vfdG6TxMa/y3nM7FBpxxE/XttKoxwJ5NP+p0QONgJX0OLDP/UH
-	uV2zi5NjZWoqNG+F++aAZSRRvr0aQifRU+fjdMddQTvDzn15avZlL8RavBTsUjB5GwJx9sPtHjlYa
-	aBf4lyjA==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=19TET3FibxnAdfdxvhiTMknGA9kxdhfIoDMDFZiXFxw=; b=2M7PrIXq0lRJslJ5zhQ+/zvVkw
+	cEPE+Fh8HuY79acLteU/gTpJn0cVpwQgV53nOju34a8qG4gmQDoS+dW1ZkvLYe/fJZA9IT0ReyMIu
+	exPsS1m3u3TvxShRKB/m86ipHGseUiQCbNb4IIFDxpDEDbjvu4GPBbVg6YbaslJQ+FJA8GmW3U8WM
+	ypR6zlAKNf83fZNlOkNmkglaWzchq3G4s10DAmyiPrZoyo0kctlIyf3/538uARZf+VybkEH3zTsMH
+	wUvSZZXL4SRSwEe8uaKR28OMQyM2/p0fzDiLTUZzltc2KF3jItoliNw5p1dwctUwhqOD0y6AO86A7
+	IQEMRtyg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzA4F-00000002DE0-03B5;
-	Wed, 26 Aug 2026 09:37:11 +0000
+	id 1wzA6h-00000002DiA-3VV5;
+	Wed, 26 Aug 2026 09:39:43 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzA49-00000002DBM-033X
+	id 1wzA6d-00000002Dhl-2r2g
 	for barebox@lists.infradead.org;
-	Wed, 26 Aug 2026 09:37:08 +0000
+	Wed, 26 Aug 2026 09:39:41 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 13958202107;
-	Wed, 26 Aug 2026 11:37:03 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 8CAC8202040;
+	Wed, 26 Aug 2026 11:39:37 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wzA46-003Pz6-37;
-	Wed, 26 Aug 2026 11:37:02 +0200
+	id 1wzA6b-003PzR-1U;
+	Wed, 26 Aug 2026 11:39:37 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wzA46-0000000ARid-3cZy;
-	Wed, 26 Aug 2026 11:37:02 +0200
+	id 1wzA6b-0000000AfMr-1UBD;
+	Wed, 26 Aug 2026 11:39:37 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH master 3/4] efi: loader: disk: don't require block-size aligned I/O buffers
-Date: Wed, 26 Aug 2026 11:36:50 +0200
-Message-ID: <20260826093701.2486248-3-a.fatoum@pengutronix.de>
+Subject: [PATCH] partitions: efi: only warn about valid GPT entries beyond the limit
+Date: Wed, 26 Aug 2026 11:39:36 +0200
+Message-ID: <20260826093936.2542278-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260826093701.2486248-1-a.fatoum@pengutronix.de>
-References: <20260826093701.2486248-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260826_023705_240817_FA78149C 
-X-CRM114-Status: GOOD (  10.42  )
+X-CRM114-CacheID: sfid-20260826_023939_897554_64FECDEE 
+X-CRM114-Status: GOOD (  10.21  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -70,9 +68,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  The Block I/O protocol's io_align member tells the consumer
-    what alignment the buffers passed to read_blocks()/write_blocks() need to
-    have. We set it to the block size, but our implementation services [...] 
+ Content preview:  GPT headers may describe more than the customary 128 partition
+    entries. xorriso for example writes a 248 entry table for hybrid ISOs like
+    the Alpine Linux images, of which only three entries are in us [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -128,47 +126,56 @@ X-Spamd-Result: default: False [-56.21 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: urgwy8b8gkddythe4fscpydpkay556yd
-X-Rspamd-Queue-Id: C046A201552
+X-Stat-Signature: ygtiks6a3cbanfu7jnpo7wnqtzkfb1rh
+X-Rspamd-Queue-Id: EF1E22017E5
 
-The Block I/O protocol's io_align member tells the consumer what
-alignment the buffers passed to read_blocks()/write_blocks() need to
-have. We set it to the block size, but our implementation services all
-requests via cdev_read()/cdev_write(), which copy through the block
-layer's cache chunks regardless of the caller's buffer alignment, so
-there is no such requirement.
+GPT headers may describe more than the customary 128 partition entries.
+xorriso for example writes a 248 entry table for hybrid ISOs like the
+Alpine Linux images, of which only three entries are in use. barebox
+would then warn on every boot:
 
-Report an io_align of 1 instead, which per UEFI specification, like 0,
-means the buffer can be placed anywhere in memory. Prefer 1 over 0 as
-a consumer computing the mask as io_align - 1 without checking for 0
-first (as U-Boot's own producer side does) keeps working with 1, but
-would reject every buffer with 0.
+  WARNING: GPT has more partitions than we support (248) > max partition number (128)
+
+although it could handle every partition that actually exists. Iterate
+over all entries instead and only warn about the valid ones that we
+have to ignore.
 
 Assisted-by: Claude:fable-5
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- efi/loader/protocols/disk.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ common/partitions/efi.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/efi/loader/protocols/disk.c b/efi/loader/protocols/disk.c
-index 5c5447acca20..5376c9ec9a14 100644
---- a/efi/loader/protocols/disk.c
-+++ b/efi/loader/protocols/disk.c
-@@ -253,7 +253,13 @@ static efi_status_t efi_disk_add_cdev(efi_handle_t parent,
- 	diskobj->media.removable_media = removable;
- 	diskobj->media.media_present = true;
- 	diskobj->media.read_only = cdev->flags & DEVFS_PARTITION_READONLY;
--	diskobj->media.block_size = diskobj->media.io_align = 1u << blockbits;
-+	diskobj->media.block_size = 1u << blockbits;
-+	/*
-+	 * Reads and writes go through cdev_read()/cdev_write(), which
-+	 * always copy through the block layer cache, so any buffer
-+	 * alignment is acceptable.
-+	 */
-+	diskobj->media.io_align = 1;
- 	diskobj->media.last_block = (cdev->size >> blockbits) - 1;
- 	diskobj->blockbits = blockbits;
+diff --git a/common/partitions/efi.c b/common/partitions/efi.c
+index 7ec54a98e335..d9f0e1a00d45 100644
+--- a/common/partitions/efi.c
++++ b/common/partitions/efi.c
+@@ -626,12 +626,6 @@ static struct partition_desc *efi_partition(void *buf, struct block_device *blk)
  
+ 	nb_part = le32_to_cpu(gpt->num_partition_entries);
+ 
+-	if (nb_part > MAX_PARTITION) {
+-		dev_warn(blk->dev, "GPT has more partitions than we support (%d) > max partition number (%d)\n",
+-			 nb_part, MAX_PARTITION);
+-		nb_part = MAX_PARTITION;
+-	}
+-
+ 	snprintf(blk->cdev.diskuuid, sizeof(blk->cdev.diskuuid), "%pUl", &gpt->disk_guid);
+ 	add_gpt_diskuuid_param(epd, blk);
+ 
+@@ -641,6 +635,12 @@ static struct partition_desc *efi_partition(void *buf, struct block_device *blk)
+ 			continue;
+ 		}
+ 
++		if (i >= MAX_PARTITION) {
++			dev_warn(blk->dev, "ignoring GPT partition %d beyond the %d we support\n",
++				 i + 1, MAX_PARTITION);
++			continue;
++		}
++
+ 		epart = xzalloc(sizeof(*epart));
+ 		epart->pte = &ptes[i];
+ 		pentry = &epart->part;
 -- 
 2.47.3
 
