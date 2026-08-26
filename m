@@ -1,66 +1,68 @@
-Delivery-date: Wed, 26 Aug 2026 11:38:15 +0200
+Delivery-date: Wed, 26 Aug 2026 11:38:21 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wzA5G-007O2X-0r
+	id 1wzA5M-007O3F-1R
 	for lore@lore.pengutronix.de;
-	Wed, 26 Aug 2026 11:38:15 +0200
+	Wed, 26 Aug 2026 11:38:21 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id E12AD202107
-	for <lore@pengutronix.de>; Wed, 26 Aug 2026 11:38:14 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id C046A201552
+	for <lore@pengutronix.de>; Wed, 26 Aug 2026 11:38:20 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=37Gv+hz+;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=coUS1evO;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=yaIsi4I5kzjf78IAdfaAFq9xhh3a4PVDCIJaS3RdnLs=; b=37Gv+hz+o3adnBbwV541BOTV/U
-	1MvW6H2znanglz30UpISl5trVCK0rnlNlZEsE2e2IVT/fa4su0I3UhScKKO95T5oMZmAFpsWd3AiC
-	EqLGOwC32B2LFPHs4kjB6h4sQzpS58Sl8ZWLDTrQjZ3hjL+HZM9aI1/7u2MdnLPiYR082m6iM6FZ2
-	JOOMDbu3cgpx813zJRkFxdhB3zCdF/UzLMPW0Fbja8hjbtfmB8fn/0+YQlS4/sPw7HixDecdgP/w6
-	IkD/bSVCB/nrKqIH8Eh6+gZGOYl76LhMQKREYW+I0jdir+dhuQ5EfaBfqik5D1uUd/4UHbwNObJ+y
-	wmfTQW+w==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=P9eIUiDkmTMhPdm1tGUz9OgJGIa07st2cSm1+XJOcTk=; b=coUS1evOumtkbaG8Zih8XJqikn
+	azXS1Ydw9bGGXUqrk/O/XTyUY9eHgf5YCg9+RaOmKBssSjFtuYJ0cqnm2pyOCCvWnzvluayx9Jv5M
+	HTygeYGZUpooWAez6RPq4F9RmU63lykz9P/LZ5vbPFbCAVFgIL7SOAsmD7+1fxHlrg9aL0kE3HGZ2
+	WJzTonYbEB1L91lZac3EBizPhE4vfdG6TxMa/y3nM7FBpxxE/XttKoxwJ5NP+p0QONgJX0OLDP/UH
+	uV2zi5NjZWoqNG+F++aAZSRRvr0aQifRU+fjdMddQTvDzn15avZlL8RavBTsUjB5GwJx9sPtHjlYa
+	aBf4lyjA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzA4D-00000002DDQ-2cJM;
-	Wed, 26 Aug 2026 09:37:09 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1wzA4F-00000002DE0-03B5;
+	Wed, 26 Aug 2026 09:37:11 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzA48-00000002DBK-3qT3
+	id 1wzA49-00000002DBM-033X
 	for barebox@lists.infradead.org;
-	Wed, 26 Aug 2026 09:37:07 +0000
+	Wed, 26 Aug 2026 09:37:08 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id E816C202040;
-	Wed, 26 Aug 2026 11:37:02 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 13958202107;
+	Wed, 26 Aug 2026 11:37:03 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wzA46-003Pz2-2n;
+	id 1wzA46-003Pz6-37;
 	Wed, 26 Aug 2026 11:37:02 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wzA46-0000000ARid-3DUQ;
+	id 1wzA46-0000000ARid-3cZy;
 	Wed, 26 Aug 2026 11:37:02 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH master 1/4] efi: loader: don't truncate the status in efi_init_runtime_variable_supported()
-Date: Wed, 26 Aug 2026 11:36:48 +0200
-Message-ID: <20260826093701.2486248-1-a.fatoum@pengutronix.de>
+Subject: [PATCH master 3/4] efi: loader: disk: don't require block-size aligned I/O buffers
+Date: Wed, 26 Aug 2026 11:36:50 +0200
+Message-ID: <20260826093701.2486248-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260826093701.2486248-1-a.fatoum@pengutronix.de>
+References: <20260826093701.2486248-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260826_023705_106312_F86648E7 
-X-CRM114-Status: GOOD (  10.60  )
+X-CRM114-CacheID: sfid-20260826_023705_240817_FA78149C 
+X-CRM114-Status: GOOD (  10.42  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -68,9 +70,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  The return values of efi_set_variable_int() are efi_status_t,
-    i.e. 64-bit on 64-bit targets with the error bit in the topmost bit. Collecting
-    them in an int drops that bit, so the value returned to ef [...] 
+ Content preview:  The Block I/O protocol's io_align member tells the consumer
+    what alignment the buffers passed to read_blocks()/write_blocks() need to
+    have. We set it to the block size, but our implementation services [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -126,38 +128,47 @@ X-Spamd-Result: default: False [-56.21 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: ucm7j6xfk5besp6o5nzg8gmpaipa84n3
-X-Rspamd-Queue-Id: E12AD202107
+X-Stat-Signature: urgwy8b8gkddythe4fscpydpkay556yd
+X-Rspamd-Queue-Id: C046A201552
 
-The return values of efi_set_variable_int() are efi_status_t, i.e. 64-bit
-on 64-bit targets with the error bit in the topmost bit. Collecting them
-in an int drops that bit, so the value returned to
-efi_init_runtime_supported() is a small positive number that no longer
-identifies an EFI error: EFI_OUT_OF_RESOURCES arrives as 9.
+The Block I/O protocol's io_align member tells the consumer what
+alignment the buffers passed to read_blocks()/write_blocks() need to
+have. We set it to the block size, but our implementation services all
+requests via cdev_read()/cdev_write(), which copy through the block
+layer's cache chunks regardless of the caller's buffer alignment, so
+there is no such requirement.
 
-Callers only compared against EFI_SUCCESS so far, which happens to still
-work, but the status is worth printing and the next commit does so.
+Report an io_align of 1 instead, which per UEFI specification, like 0,
+means the buffer can be placed anywhere in memory. Prefer 1 over 0 as
+a consumer computing the mask as io_align - 1 without checking for 0
+first (as U-Boot's own producer side does) keeps working with 1, but
+would reject every buffer with 0.
 
-Assisted-by: Claude:opus-5
+Assisted-by: Claude:fable-5
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- efi/loader/efi_var_file.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ efi/loader/protocols/disk.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/efi/loader/efi_var_file.c b/efi/loader/efi_var_file.c
-index 12543bce2851..fbafd901bd0c 100644
---- a/efi/loader/efi_var_file.c
-+++ b/efi/loader/efi_var_file.c
-@@ -191,8 +191,8 @@ efi_status_t efi_var_from_file(int dirfd, const char *filename)
+diff --git a/efi/loader/protocols/disk.c b/efi/loader/protocols/disk.c
+index 5c5447acca20..5376c9ec9a14 100644
+--- a/efi/loader/protocols/disk.c
++++ b/efi/loader/protocols/disk.c
+@@ -253,7 +253,13 @@ static efi_status_t efi_disk_add_cdev(efi_handle_t parent,
+ 	diskobj->media.removable_media = removable;
+ 	diskobj->media.media_present = true;
+ 	diskobj->media.read_only = cdev->flags & DEVFS_PARTITION_READONLY;
+-	diskobj->media.block_size = diskobj->media.io_align = 1u << blockbits;
++	diskobj->media.block_size = 1u << blockbits;
++	/*
++	 * Reads and writes go through cdev_read()/cdev_write(), which
++	 * always copy through the block layer cache, so any buffer
++	 * alignment is acceptable.
++	 */
++	diskobj->media.io_align = 1;
+ 	diskobj->media.last_block = (cdev->size >> blockbits) - 1;
+ 	diskobj->blockbits = blockbits;
  
- efi_status_t efi_init_runtime_variable_supported(void)
- {
-+	efi_status_t ret;
- 	u8 s = 0;
--	int ret;
- 
- 	if (!IS_ENABLED(CONFIG_EFI_RT_VOLATILE_STORE))
- 		return EFI_SUCCESS;
 -- 
 2.47.3
 
