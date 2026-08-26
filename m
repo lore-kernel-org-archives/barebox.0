@@ -1,66 +1,68 @@
-Delivery-date: Wed, 26 Aug 2026 11:56:36 +0200
+Delivery-date: Wed, 26 Aug 2026 11:57:19 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wzAN1-007OKg-2h
+	id 1wzANi-007OLg-0l
 	for lore@lore.pengutronix.de;
-	Wed, 26 Aug 2026 11:56:36 +0200
+	Wed, 26 Aug 2026 11:57:19 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 61D05201552
-	for <lore@pengutronix.de>; Wed, 26 Aug 2026 11:56:36 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id D06B4201552
+	for <lore@pengutronix.de>; Wed, 26 Aug 2026 11:57:18 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=XVtooXNh;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=0plyCYQz;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=o+09z+gcPmgXH8sOpbUF8xSXw90T/C/v8LzyAuR7QWo=; b=XVtooXNh5OP9u1cZ6DH9tLFjzO
-	R7kL74497oFdkuFV91e5nmpp8CZuiaHGNQImGsltc/awzR8EATYroLZMEwBOY3d963tfZKWAk02Oj
-	p5blUHA+VxAoNV+Gf/Gfs4uSzr8ia7vvvcDbXjyjVkHQco0zYfr8IoMrfJ56FGsJqxl/+vOV5tgR0
-	SKiwviPAWIyMPPPN5wWsps7kznVeNChWSydz4WXwLhxXyormTuBcOJHcykTGMnEouaNozykZNKnSq
-	8FUBWvN4b4klk6zV5b3SCf+VOoj3aouSKqkuLhx8TMWD2uBq14Ps2QMfh1BcXJcp0NWjaKEBxjyiU
-	w+k0D9uw==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=HjW69tx+STrbXpIoiFbWYjGoneQ8bDLCPVJBotFR5xE=; b=0plyCYQz+x7sqta0dIwyQdR7Ti
+	u9vt0duX7hj+eFHkLIDjRDuydqRrIP3AS/qtb1GDvMXYui1doQyv3Ioa2xibakQvr/joSLYIagDDc
+	E/GGXLprowWZVgqpC98Vg8ouL4fGCq45gVdVQQlMHjm672xKEuIhkPwAzPQK3PskwkbrqXBq9BLRs
+	FcrcaSeDuDIadk0RzK7+CVhZUCxDNcukKyiZbcULql9CT96W3q30eT/nlK+KSIppbOKvbNvCJDNh1
+	7pqRBbjOhltk/0SXZvyT7idPIGa/lYhb7yWZebBLvcg6KTucazETA435WRQCmZ9PFolzcfOhi07a4
+	jVk+Pc9A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzAMc-00000002F76-0p2h;
+	id 1wzAMc-00000002F7E-17kG;
 	Wed, 26 Aug 2026 09:56:10 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzAMY-00000002F5u-4BgA
+	id 1wzAMZ-00000002F5v-05FD
 	for barebox@lists.infradead.org;
-	Wed, 26 Aug 2026 09:56:08 +0000
+	Wed, 26 Aug 2026 09:56:09 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 2AE1B201552;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 3F4D2202047;
 	Wed, 26 Aug 2026 11:56:05 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wzAMX-003Q1b-0J;
+	id 1wzAMX-003Q1c-0S;
 	Wed, 26 Aug 2026 11:56:05 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1wzAMW-0000000B8Pz-4C54;
+	id 1wzAMX-0000000B8Pz-0BPu;
 	Wed, 26 Aug 2026 11:56:05 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH 1/2] libfile: advance offset in pread_full() on short reads
-Date: Wed, 26 Aug 2026 11:55:37 +0200
-Message-ID: <20260826095604.2652204-1-a.fatoum@pengutronix.de>
+Subject: [PATCH 2/2] libfile: allow fixup_path_case() to resolve directories
+Date: Wed, 26 Aug 2026 11:55:38 +0200
+Message-ID: <20260826095604.2652204-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260826095604.2652204-1-a.fatoum@pengutronix.de>
+References: <20260826095604.2652204-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260826_025607_191062_BEC926F4 
-X-CRM114-Status: UNSURE (   9.38  )
+X-CRM114-CacheID: sfid-20260826_025607_207592_9E92A6B7 
+X-CRM114-Status: UNSURE (   8.53  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -69,10 +71,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  pread_full() loops until the requested size was read, but
-   reads from the same offset on every iteration, so a short read is followed
-    by re-reading the same data instead of the remainder. Advance the offset
-   along with the buffer pointer. 
+ Content preview:  fixup_path_case() opens the final path component without O_DIRECTORY
+    and thus fails with -EISDIR if that component is a directory. The only user
+    so far resolved a file and called fstat() on the fd, but in future we may
+    extend it to handle directories as well, so prepare for that. 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -99,11 +101,11 @@ X-Spamd-Result: default: False [-56.21 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	MID_CONTAINS_FROM(1.00)[];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
+	MID_CONTAINS_FROM(1.00)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::54:received];
+	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:1101:1d::54:received,2607:7c80:54:3::133:from];
 	MAILLIST(-0.20)[mailman];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
@@ -128,50 +130,40 @@ X-Spamd-Result: default: False [-56.21 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: 68kfqrrecqayxp6yiaf8ne1xh744jbme
-X-Rspamd-Queue-Id: 61D05201552
+X-Stat-Signature: d9czik6sie53o444dim3m6ixhc71jznq
+X-Rspamd-Queue-Id: D06B4201552
 
-pread_full() loops until the requested size was read, but reads from
-the same offset on every iteration, so a short read is followed by
-re-reading the same data instead of the remainder.
+fixup_path_case() opens the final path component without O_DIRECTORY
+and thus fails with -EISDIR if that component is a directory.
 
-Advance the offset along with the buffer pointer.
+The only user so far resolved a file and called fstat() on the fd,
+but in future we may extend it to handle directories as well,
+so prepare for that.
 
-Fixes: 59d6b83f1d4b ("libfile: implement new pread_full")
 Assisted-by: Claude:fable-5
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-While a fix, I would keep it in next, just to watch if this leads to
-adverse effects.
----
- lib/libfile.c    | 1 +
- scripts/common.c | 1 +
- 2 files changed, 2 insertions(+)
+ lib/libfile.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
 diff --git a/lib/libfile.c b/lib/libfile.c
-index cf78c70354d9..bd0118a7e5be 100644
+index bd0118a7e5be..35ec631de82f 100644
 --- a/lib/libfile.c
 +++ b/lib/libfile.c
-@@ -93,6 +93,7 @@ int pread_full(int fd, void *buf, size_t size, loff_t offset)
- 			return now;
- 		size -= now;
- 		buf += now;
-+		offset += now;
- 	}
+@@ -869,7 +869,12 @@ int fixup_path_case(int fd, const char **path)
+ 		free(imatch);
  
- 	return insize - size;
-diff --git a/scripts/common.c b/scripts/common.c
-index a6eee968b79d..6615cfb38b55 100644
---- a/scripts/common.c
-+++ b/scripts/common.c
-@@ -210,6 +210,7 @@ int pread_full(int fd, void *buf, size_t size, loff_t offset)
- 			return now;
- 		size -= now;
- 		buf += now;
-+		offset += now;
- 	}
+ next_component:
+-		fd = openat(fd, curr, next ? O_DIRECTORY : 0);
++		/*
++		 * The final component may be a directory as well, which
++		 * can't be opened without O_DIRECTORY, but O_PATH suffices
++		 * for the fstat() callers usually follow up with.
++		 */
++		fd = openat(fd, curr, next ? O_DIRECTORY : O_PATH);
+ 		closedir(dir);
  
- 	return insize - size;
+ 		if (fd < 0)
 -- 
 2.47.3
 
