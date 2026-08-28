@@ -1,57 +1,70 @@
-Delivery-date: Fri, 28 Aug 2026 16:22:08 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Fri, 28 Aug 2026 16:25:17 +0200
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wzxT5-008BWf-0z
+	id 1wzxW8-008BZI-1U
 	for lore@lore.pengutronix.de;
-	Fri, 28 Aug 2026 16:22:08 +0200
+	Fri, 28 Aug 2026 16:25:17 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id DD095202427
-	for <lore@pengutronix.de>; Fri, 28 Aug 2026 16:22:07 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 1581E202429
+	for <lore@pengutronix.de>; Fri, 28 Aug 2026 16:25:17 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="qZ/JN8H2";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=DGVn6iVu;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Date:
-	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Cc:To:Subject:
-	From:Message-ID:Reply-To:MIME-Version:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=cfVmMYD42aIlAM7XJr1jhOONAxjcWHf5b6MvVqKoRe8=; b=qZ/JN8H24x4t3W
-	K5d958ScWwJ8a4Uh6rkIV+lKIrK+i1+bhTItHTEKTOoSMZ59LSzEid0xuk+EnFRByNMmGWQ3aBUij
-	6QVQrpQjJfgfYQUwAxd9Eyx1YHb8d7xu7LE28ghK2Bs8gtTmSvL4SaMLwcQDBAhkXHCPfbG5WyGb9
-	j1pidTP72fHU5QL3F9LJ9x/EauQucqDL7T3XCAlvonFVX2mZQSfl3yFJ2aBfFjXmF7qA0lxdSVn+X
-	wO+wgW68w3FBorij40tLbvpbDrZvPxRjVqM4YHPNnaKKjOQdAKLXOsdokemtiNlcxRxzlSAfyAWlZ
-	HmxCtwZ3fikbLJfXevfw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=N9qlp6xRTsllBEcMM53YvPSBbHfg8Db3utgglblpcoc=; b=DGVn6iVuUQtVsNx9vPMDEYo0Vi
+	KdOdpu2pCmAXeeTmSyPNmGUPcQN7sp/Hj1jLalLN+ko6Gbb1rBrUQjItF1qhHDkZLCAroYU0YwgeA
+	ja9lbf0Zciszpvz/7pnW47RYu5+TWo+QjGeEKt96dGri595n75HLWmic89tcWqzuRAzVYas9kv6hI
+	tVVNkyfSumQPRy80YztrHfMV+snRSfdOviG02p1aGt/Jw+2UuGhDxbNOlTJdVNIy4CTy3osAXBH+U
+	YpZSrcKyGa41dlkyjE3NY1LJ9Wx4Fi2/tYD8+Ot6M272FyDtezeFTu+oO58Rjnoty6eAuMQ2jTGnJ
+	3SCwc9ew==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzxRy-00000005xyA-13xR;
-	Fri, 28 Aug 2026 14:20:58 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1wzxUz-00000005yQO-1gZH;
+	Fri, 28 Aug 2026 14:24:05 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzxRt-00000005xxG-1IPA
+	id 1wzxUv-00000005yPW-2SOU
 	for barebox@lists.infradead.org;
-	Fri, 28 Aug 2026 14:20:56 +0000
-Received: from [127.0.0.1] (unknown [IPv6:2a02:560:5dd5:4b00:9ebf:dff:fe00:fdb5])
-	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 62EFA200F45;
-	Fri, 28 Aug 2026 16:20:51 +0200 (CEST)
-Message-ID: <fe4f0bca-9946-4398-9c05-20c3f63d1fd0@pengutronix.de>
-From: "Sascha Hauer" <s.hauer@pengutronix.de>
-Subject: Re: [RFC next 2/2] commands: lvm: inspect VGs, activate LVs
-To: "Tobias Waldekranz" <tobias@waldekranz.com>
-Cc: barebox@lists.infradead.org
-In-Reply-To: <20260824183203.3759144-3-tobias@waldekranz.com>
-References: <20260824183203.3759144-1-tobias@waldekranz.com>
- <20260824183203.3759144-3-tobias@waldekranz.com>
-Content-Type: text/plain; charset=utf-8
+	Fri, 28 Aug 2026 14:24:04 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 7477D201D34;
+	Fri, 28 Aug 2026 16:23:59 +0200 (CEST)
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wzxUt-003mfW-1D;
+	Fri, 28 Aug 2026 16:23:59 +0200
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1wzxUt-00000002Bq1-1JtT;
+	Fri, 28 Aug 2026 16:23:59 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20260825075248.1014060-1-a.fatoum@pengutronix.de>
+References: <20260825075248.1014060-1-a.fatoum@pengutronix.de>
+Subject: Re: [PATCH master] ARM64: efi-header: declare the code section
+ writable
+Message-Id: <178792703930.522043.10001836408925445051.b4-ty@pengutronix.de>
+Date: Fri, 28 Aug 2026 16:23:59 +0200
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Date: Fri, 28 Aug 2026 14:20:50 +0000
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260828_072055_199723_2592139F 
-X-CRM114-Status: GOOD (  13.99  )
+X-CRM114-CacheID: sfid-20260828_072401_777751_AF7C1960 
+X-CRM114-Status: UNSURE (   8.98  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -59,9 +72,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On 2026-08-24 18:31, Tobias Waldekranz wrote: > Provide the
-    most rudimentary commands needed to inspect and activate > volume groups
-   (VGs) and logical volumes (LVs). > > Signed-off-by: Tobias Waldekra [...] 
+ Content preview:  On Tue, 25 Aug 2026 09:52:46 +0200, Ahmad Fatoum wrote: >
+    CONFIG_PBL_FULLY_PIC was initially introduced to make the enough of the >
+    early PBL position-independent, so it can execute until barebox is [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -84,89 +97,63 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-55.41 / 15.00];
+X-Spamd-Result: default: False [-57.81 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	MISSING_MIME_VERSION(2.00)[];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
+	RCVD_IN_DNSWL_MED(-0.60)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received,2a0a:edc0:0:c01:1d::a2:received];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_SPF_ALLOW(-0.20)[+mx:c];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
 	MAILLIST(-0.20)[mailman];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:tobias@waldekranz.com,m:barebox@lists.infradead.org,s:lore@pengutronix.de];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
+	RCPT_COUNT_TWO(0.00)[2];
 	DMARC_NA(0.00)[pengutronix.de];
+	MIME_TRACE(0.00)[0:+];
 	ARC_NA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	NEURAL_HAM(-0.00)[-0.997];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: 9fgyjst83mhqx9acdfok89tsttkx4aby
-X-Rspamd-Queue-Id: DD095202427
+X-Stat-Signature: n6hajg3qhoxztgzh958a74xmeeg3werw
+X-Rspamd-Queue-Id: 1581E202429
 
-On 2026-08-24 18:31, Tobias Waldekranz wrote:
-> Provide the most rudimentary commands needed to inspect and activate
-> volume groups (VGs) and logical volumes (LVs).
+
+On Tue, 25 Aug 2026 09:52:46 +0200, Ahmad Fatoum wrote:
+> CONFIG_PBL_FULLY_PIC was initially introduced to make the enough of the
+> early PBL position-independent, so it can execute until barebox is
+> relocated to EFI allocated RWX memory.
+> This was required because the EDK-II EFI firmware I tested against
+> mapped the barebox code section read-only.
 > 
-> Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
-> ---
->  commands/Kconfig  |  11 ++
->  commands/Makefile |   1 +
->  commands/lvm.c    | 264 ++++++++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 276 insertions(+)
->  create mode 100644 commands/lvm.c
+> While W^X is desirable, the current setup is broken: We do not check at
+> compile-time that there are no relocations, so compiler updates and code
+> changes can make this regress. Also the memory barebox allocates for
+> itself is RWX as we do not ask for other types of memory via NX_COMPAT.
 > 
-> diff --git a/commands/Kconfig b/commands/Kconfig
-> index 08fe544ee1..d7e3bab3f9 100644
-> --- a/commands/Kconfig
-> +++ b/commands/Kconfig
-> @@ -808,6 +808,17 @@ config CMD_VERITYSETUP
->  	  commands:
->  	        open <data-dev> <name> <hash-dev> <root-hash>
->  
-> +config CMD_LVM
-> +	tristate
-> +	depends on DM_LVM
-> +	prompt "lvm"
-> +	help
-> +	  lvm - inspect and activate LVM2 logical volumes
-> +
-> +	  commands:
-> +	        pvs / vgs / lvs
-> +	        activate <vg>/<lv> [<name>]
+> [...]
 
-This is not consistent with the implementation which has "info" and
-"activate" as subcommands.
+Applied, thanks!
 
-Sascha
+[1/1] ARM64: efi-header: declare the code section writable
+      https://git.pengutronix.de/cgit/barebox/commit/?id=42e510a258d7 (link may not be stable)
 
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
