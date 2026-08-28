@@ -1,16 +1,16 @@
-Delivery-date: Fri, 28 Aug 2026 14:19:20 +0200
+Delivery-date: Fri, 28 Aug 2026 14:27:42 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wzvYF-0089ZI-1t
+	id 1wzvgL-0089fB-3A
 	for lore@lore.pengutronix.de;
-	Fri, 28 Aug 2026 14:19:20 +0200
+	Fri, 28 Aug 2026 14:27:42 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 2E1F3200FE5
-	for <lore@pengutronix.de>; Fri, 28 Aug 2026 14:19:20 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 94FF82017D4
+	for <lore@pengutronix.de>; Fri, 28 Aug 2026 14:27:42 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=iy7n3fEX;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=my8qKh2q;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,51 +19,51 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=X4JtmS1HNlCPxFH8EwUCtb2XtpjIWT2zMbuD5UJqaoU=; b=iy7n3fEX+p1Vpsz2KPfmVK0m+r
-	qXW73ifoaYqrrMH0v4gJJnJjT0UWuEw3CD+/BMlymdyhFhKkhk1Tfgor/LgTKSE5jNF//hVogU4YF
-	PzH9gnU1n8MTCUcCABcQwCXWZxIYXnDX83/aa6xvLF57ysdpAudE8P4mhefo3tGEoJPVu+nxVSoFH
-	dl+He1DRjjJYeHEjbwQLF/8gxIb/7IcvBVJONlFvkAXyOz5w9c6T6pG3uzrQJSVV/v/cZLqSVmy5Q
-	bd+GtLoSIptaqNdFlZbW1iso7WXA/63IAN8N4N5KAgEYHHs1wsQ65TBQS1OnYSn6wDwvaYFJSFKIp
-	AdOJALvg==;
+	bh=iOW9NAk6wF6dE4XOHqn25EaeWBy/LtRaXbiKB0jxX+0=; b=my8qKh2qDt4nBmXhZ2IaAgXCcI
+	ll1AUztdZdWnrQPQtqKabCb5iJOKuj8xPHzCRLFFx0WYDORqyc9DC5kVi/Pz5qh7ggvoRViMRLVK0
+	PHlHVJeTqsZ3V7g/dl1un5YgQ3C8BzX1OtBVAmDiPAaxtaR/ho2pZAo2W0+/cj3sm48XmXTKMhn4U
+	Ez+4G3y5UWV2wAVG4/nAFlwWhaH+gwHPKvBWYfleYxUsUqY59bw4NoV8sjwZZ7qNcDzlikddxhQfd
+	PeeiOmjQT6U8F9e3p2N0UHf8H/xV41RNV+qBnXepZtGIkb7DXaDiFfh9+T3oN2UbjWJoUYBk35K0u
+	Z6oNCT2g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzvXC-00000005iwt-2dUY;
-	Fri, 28 Aug 2026 12:18:14 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1wzvfC-00000005jU8-1SpU;
+	Fri, 28 Aug 2026 12:26:30 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzvX8-00000005iwJ-3qSi
+	id 1wzvf9-00000005jTj-1Q37
 	for barebox@lists.infradead.org;
-	Fri, 28 Aug 2026 12:18:12 +0000
+	Fri, 28 Aug 2026 12:26:29 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 524612017D4;
-	Fri, 28 Aug 2026 14:18:09 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 4955D2017D4;
+	Fri, 28 Aug 2026 14:26:25 +0200 (CEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wzvX7-003leo-0q;
-	Fri, 28 Aug 2026 14:18:09 +0200
+	id 1wzvf7-003lfN-0i;
+	Fri, 28 Aug 2026 14:26:25 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wzvX7-00000001mwD-0plW;
-	Fri, 28 Aug 2026 14:18:09 +0200
+	id 1wzvf7-00000001oK1-0eCo;
+	Fri, 28 Aug 2026 14:26:25 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260826095604.2652204-1-a.fatoum@pengutronix.de>
-References: <20260826095604.2652204-1-a.fatoum@pengutronix.de>
-Subject: Re: [PATCH 1/2] libfile: advance offset in pread_full() on short
- reads
-Message-Id: <178791948919.426331.2204410585316458537.b4-ty@pengutronix.de>
-Date: Fri, 28 Aug 2026 14:18:09 +0200
+In-Reply-To: <20260826093059.2370477-1-a.fatoum@pengutronix.de>
+References: <20260826093059.2370477-1-a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 1/2] efi: payload: iomem: use efi_uintn_t for the
+ memory map key
+Message-Id: <178791998514.431650.7918470114421355795.b4-ty@pengutronix.de>
+Date: Fri, 28 Aug 2026 14:26:25 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260828_051811_104797_92D61430 
-X-CRM114-Status: UNSURE (   7.04  )
+X-CRM114-CacheID: sfid-20260828_052627_533250_2277D2CA 
+X-CRM114-Status: UNSURE (   6.33  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -72,9 +72,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Wed, 26 Aug 2026 11:55:37 +0200, Ahmad Fatoum wrote: >
-    pread_full() loops until the requested size was read, but reads from > the
-    same offset on every iteration, so a short read is followed by > r [...] 
+ Content preview:  On Wed, 26 Aug 2026 11:30:51 +0200, Ahmad Fatoum wrote: >
+    The GetMemoryMap() boot service takes a pointer to an efi_uintn_t for > the
+    map key. Passing a pointer to an unsigned long fails to compile o [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -121,33 +121,33 @@ X-Spamd-Result: default: False [-57.81 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	NEURAL_HAM(-0.00)[-0.994];
+	NEURAL_HAM(-0.00)[-0.995];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: wznmgyezg3r7y6n9mxqaw4ht8xzsumjc
-X-Rspamd-Queue-Id: 2E1F3200FE5
+X-Stat-Signature: cmiop71k5w9r1iymskf6s95bogkxi8pe
+X-Rspamd-Queue-Id: 94FF82017D4
 
 
-On Wed, 26 Aug 2026 11:55:37 +0200, Ahmad Fatoum wrote:
-> pread_full() loops until the requested size was read, but reads from
-> the same offset on every iteration, so a short read is followed by
-> re-reading the same data instead of the remainder.
+On Wed, 26 Aug 2026 11:30:51 +0200, Ahmad Fatoum wrote:
+> The GetMemoryMap() boot service takes a pointer to an efi_uintn_t for
+> the map key. Passing a pointer to an unsigned long fails to compile on
+> 32-bit architectures, where efi_uintn_t is 32-bit:
 > 
-> Advance the offset along with the buffer pointer.
-> 
+>   efi/payload/iomem.c:161:45: error: passing argument 3 of
+>   'BS->get_memory_map' from incompatible pointer type
 > 
 > [...]
 
 Applied, thanks!
 
-[1/2] libfile: advance offset in pread_full() on short reads
-      https://git.pengutronix.de/cgit/barebox/commit/?id=ab863d035c6d (link may not be stable)
-[2/2] libfile: allow fixup_path_case() to resolve directories
-      https://git.pengutronix.de/cgit/barebox/commit/?id=edf68574ef1f (link may not be stable)
+[1/2] efi: payload: iomem: use efi_uintn_t for the memory map key
+      https://git.pengutronix.de/cgit/barebox/commit/?id=b94b47402195 (link may not be stable)
+[2/2] efi: payload: env: don't execute unmatched network driver glob
+      https://git.pengutronix.de/cgit/barebox/commit/?id=a03232518068 (link may not be stable)
 
 Best regards,
 -- 
