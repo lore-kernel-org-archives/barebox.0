@@ -1,16 +1,16 @@
-Delivery-date: Fri, 28 Aug 2026 14:53:25 +0200
+Delivery-date: Fri, 28 Aug 2026 15:01:43 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wzw5F-0089zz-0C
+	id 1wzwDG-008A5S-2n
 	for lore@lore.pengutronix.de;
-	Fri, 28 Aug 2026 14:53:25 +0200
+	Fri, 28 Aug 2026 15:01:43 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 7C1EA202282
-	for <lore@pengutronix.de>; Fri, 28 Aug 2026 14:53:25 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 768E5202427
+	for <lore@pengutronix.de>; Fri, 28 Aug 2026 15:01:43 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=deGjX+Ll;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=YVq9lsEc;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,51 +19,51 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=E9ByPjYKAUnmr82Mhc452YLyYJ97BPgUbUnfOQ3aNIo=; b=deGjX+Ll8Fd8kFHSfB3r8J+Z5t
-	jgEvQxRIYviWw8jNgHWFh90rlaVnm1QxpQGL5mX1P4rcE8/l6zP2hxulHTO47vguIpTGxKpJyFLWY
-	f6ZR9tZoEfX3IuMfab5dkseGlZnyxrCUJRTbHgfh26UpVQwUG3hnQcLAspOCmsJ4RVl9KpfdMhTeF
-	QmI6PPZFJoVwVpPYqBHW1adD8m8bGQMKOm+7P435WYU7Kst1chtnSBhJx1hg3n1EXEozrbxvZDZMm
-	umrR2ayJHHUwhl8fwi1e9A9fJjHxtH1fwliHXlWhmnghb+9GjgnCgJDLSoRjNbqfh9wmslQ+oA+KL
-	CqnEQIaw==;
+	bh=5/gXw0ZQXBWY4LNhBQdt/DaJnLGeFLlAH6wnMsmiWQI=; b=YVq9lsEceyFYP/FIMX0pASpO2N
+	zqCwaYVMMaqnQ/SeCWEMMS/SliOZQcpa+Bls9ymMVM9yYdMQdfXeeN7rT+sTsxoFYbCI8AqTm/CVI
+	I6Bn37C9WnsX2AQO6cpsJwJVpTT2ALeQJxYDT6/m5I08tT4s/PA27SYVIMWuSv99YJCihzrB5MENK
+	ir/OUjbYEwo1b/5jX3NbAU19wZKWsNj3sw3wpJJhYonqs0qYDZZoAMeu+A2liDwgDuj6ZpZWGoLgr
+	USN7j72vr4U/rXnpAmEHnP7c//Xwh07wGz3K1ys+M4NSo53lF+ueYqWAz4o/sEThr4yQBtYkNqIoc
+	IY/caapQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzw43-00000005lG9-2Gsi;
-	Fri, 28 Aug 2026 12:52:11 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1wzwC1-00000005mOk-2y8P;
+	Fri, 28 Aug 2026 13:00:25 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzw40-00000005lFl-2j0O
+	id 1wzwBw-00000005mOJ-02u8
 	for barebox@lists.infradead.org;
-	Fri, 28 Aug 2026 12:52:10 +0000
+	Fri, 28 Aug 2026 13:00:24 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 15F262006EB;
-	Fri, 28 Aug 2026 14:52:06 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 170802006EB;
+	Fri, 28 Aug 2026 15:00:17 +0200 (CEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wzw3x-003lwc-3D;
-	Fri, 28 Aug 2026 14:52:06 +0200
+	id 1wzwBt-003lxB-00;
+	Fri, 28 Aug 2026 15:00:17 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wzw3x-00000001tSg-3vf2;
-	Fri, 28 Aug 2026 14:52:05 +0200
+	id 1wzwBs-00000001us1-3vlP;
+	Fri, 28 Aug 2026 15:00:16 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260826093720.2496298-1-a.fatoum@pengutronix.de>
-References: <20260826093720.2496298-1-a.fatoum@pengutronix.de>
-Subject: Re: [PATCH] fs: efivarfs: allow creating variables under any GUID
- in loader mode
-Message-Id: <178792152593.451404.2378757923178883522.b4-ty@pengutronix.de>
-Date: Fri, 28 Aug 2026 14:52:05 +0200
+In-Reply-To: <20260826093936.2542278-1-a.fatoum@pengutronix.de>
+References: <20260826093936.2542278-1-a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] partitions: efi: only warn about valid GPT entries
+ beyond the limit
+Message-Id: <178792201693.456817.12305556598452113147.b4-ty@pengutronix.de>
+Date: Fri, 28 Aug 2026 15:00:16 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260828_055208_845201_B41FB9D7 
-X-CRM114-Status: UNSURE (   7.81  )
+X-CRM114-CacheID: sfid-20260828_060020_223154_8FB57223 
+X-CRM114-Status: UNSURE (   5.94  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -72,9 +72,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Wed, 26 Aug 2026 11:37:13 +0200, Ahmad Fatoum wrote: >
-    efivars_create() refuses to create variables outside the barebox vendor >
-    GUID. That dates from when barebox was only an EFI payload: on some [...]
+ Content preview:  On Wed, 26 Aug 2026 11:39:36 +0200, Ahmad Fatoum wrote: >
+    GPT headers may describe more than the customary 128 partition entries. >
+    xorriso for example writes a 248 entry table for hybrid ISOs like t [...]
     
  
  Content analysis details:   (-1.9 points, 5.0 required)
@@ -103,7 +103,7 @@ X-Spamd-Result: default: False [-57.81 / 15.00];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	RCVD_IN_DNSWL_MED(-0.60)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received,2a0a:edc0:0:c01:1d::a2:received];
+	RCVD_IN_DNSWL_MED(-0.60)[2607:7c80:54:3::133:from,2a0a:edc0:0:c01:1d::a2:received,2a0a:edc0:0:1101:1d::28:received];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	MAILLIST(-0.20)[mailman];
 	R_SPF_ALLOW(-0.20)[+mx:c];
@@ -129,29 +129,24 @@ X-Spamd-Result: default: False [-57.81 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: 4tsebohyrnt6z9ms34uyzpi43skr4q17
-X-Rspamd-Queue-Id: 7C1EA202282
+X-Stat-Signature: z7xca53nsurpudbeos6h898iacstpz47
+X-Rspamd-Queue-Id: 768E5202427
 
 
-On Wed, 26 Aug 2026 11:37:13 +0200, Ahmad Fatoum wrote:
-> efivars_create() refuses to create variables outside the barebox vendor
-> GUID. That dates from when barebox was only an EFI payload: on somebody
-> else's firmware, whose NVRAM holds the platform's own state, a shell that
-> can create Boot#### or BootOrder under the global GUID is a liability,
-> and the payload only ever needs barebox-env-<guid> anyway.
+On Wed, 26 Aug 2026 11:39:36 +0200, Ahmad Fatoum wrote:
+> GPT headers may describe more than the customary 128 partition entries.
+> xorriso for example writes a 248 entry table for hybrid ISOs like the
+> Alpine Linux images, of which only three entries are in use. barebox
+> would then warn on every boot:
 > 
-> The EFI loader took the same efivarfs over unchanged, where the argument
-> does not hold. The store is barebox' own in-memory buffer backed by a
-> file it writes itself, and everything the loader starts - the UEFI
-> Shell, GRUB, the OS - can already create variables under any GUID. Only
-> the barebox shell was held back:
+>   WARNING: GPT has more partitions than we support (248) > max partition number (128)
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] fs: efivarfs: allow creating variables under any GUID in loader mode
-      https://git.pengutronix.de/cgit/barebox/commit/?id=97f6cf9c5acb (link may not be stable)
+[1/1] partitions: efi: only warn about valid GPT entries beyond the limit
+      https://git.pengutronix.de/cgit/barebox/commit/?id=184f39a5975b (link may not be stable)
 
 Best regards,
 -- 
