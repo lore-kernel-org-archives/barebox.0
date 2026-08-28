@@ -1,16 +1,16 @@
-Delivery-date: Fri, 28 Aug 2026 13:54:49 +0200
+Delivery-date: Fri, 28 Aug 2026 13:55:20 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wzvAW-0088zX-0q
+	id 1wzvB1-00890F-1s
 	for lore@lore.pengutronix.de;
-	Fri, 28 Aug 2026 13:54:49 +0200
+	Fri, 28 Aug 2026 13:55:20 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id D808E201D34
-	for <lore@pengutronix.de>; Fri, 28 Aug 2026 13:54:48 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 32D28201D34
+	for <lore@pengutronix.de>; Fri, 28 Aug 2026 13:55:20 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=TUgqiYkh;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=LHRwHgxm;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,51 +19,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=T4JA2mxyW4eUOSbhrZPL/JbidrncWNJtYnXZFPVuhpI=; b=TUgqiYkh/hcbSGN84zW0TzE8oE
-	faZfpnhomvIAZVSmXcNYIA5Ut3gHvYpr/HW0QZRQVrYK4S+MMZW3viHBMX3qPgFjoJq/bDbkNhg6w
-	/M6fcayVRhmcMc4dOxaNtD9zI3hKG4zhOZlrDNW3+K/mfGCA3iNHIBxJE+cAW6kFiVmL0gG0A0RYT
-	QCPcBbaUSxD1BoLvZAW4zIoEM339t7mf7u6RbADdlc8zmahGP+0g+TBf3OV1pLOxSz18BkQfjRbet
-	/8M/TN/sKTmoN7WkvBaeJWwz8OFC8ovj6ZzoIWjtc7fKB8EaNpu8AFjed+ZCTLuq28j6jaCvk4wSG
-	TXM/UVrg==;
+	bh=Xn4xVucEmOkV+4pROtXKClMpXIFRQLK6upA5i3lc6RA=; b=LHRwHgxmsokVCtgqdjhm0ri+0/
+	u6aIUwRuan82SfTAw6Saxmgxzs5yGJFRhZFAHKTJazcoq/1hZkGWEuYMU7zqhCBaBvPlbqFTGXanD
+	Ym2bpvbrFR7x2zK07xG/QpzNlmCx5R5C40/TzV3qWe4wxIParV0yT0RN+PKBO7GUWra/cFcl2eLtw
+	m3bTmdvHx8FWPRRoBWOPV2Y3sMJ2dPqmUvD1Z0JXux/kKR94ogF44SU32gJtZjxUZGFHUPWmiFe42
+	Up2EIgvl2z8teMvmqUDxj2d43EnwuGl7TrcVuYgjjlf6v10pxRn4e33NNq6p3Sp3kGbPNW6yJEp8a
+	CaFbQJ2A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzv9H-00000005ghu-0tuE;
-	Fri, 28 Aug 2026 11:53:31 +0000
+	id 1wzv9w-00000005gmN-1LdY;
+	Fri, 28 Aug 2026 11:54:12 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzv9D-00000005ghY-2xb0
+	id 1wzv9t-00000005glm-1f3f
 	for barebox@lists.infradead.org;
-	Fri, 28 Aug 2026 11:53:30 +0000
+	Fri, 28 Aug 2026 11:54:11 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 8D6F52016CA;
-	Fri, 28 Aug 2026 13:53:25 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id AAF4F202427;
+	Fri, 28 Aug 2026 13:54:07 +0200 (CEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wzv9B-003lLd-1b;
-	Fri, 28 Aug 2026 13:53:25 +0200
+	id 1wzv9r-003lLj-1n;
+	Fri, 28 Aug 2026 13:54:07 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wzv9B-00000001hNs-1lsL;
-	Fri, 28 Aug 2026 13:53:25 +0200
+	id 1wzv9r-00000001hYA-23xT;
+	Fri, 28 Aug 2026 13:54:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260825101106.2127202-1-a.fatoum@pengutronix.de>
-References: <20260825101106.2127202-1-a.fatoum@pengutronix.de>
-Subject: Re: [PATCH 1/4] fs: fat: propagate actual error code when
- opening/creating files
-Message-Id: <178791800541.404992.1158128907285987274.b4-ty@pengutronix.de>
-Date: Fri, 28 Aug 2026 13:53:25 +0200
+In-Reply-To: <20260826083303.864464-1-a.fatoum@pengutronix.de>
+References: <20260826083303.864464-1-a.fatoum@pengutronix.de>
+Subject: Re: [PATCH master] commands: cpuinfo: unify command description
+Message-Id: <178791804748.405639.9284453125848187907.b4-ty@pengutronix.de>
+Date: Fri, 28 Aug 2026 13:54:07 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260828_045327_926574_DAE5D992 
-X-CRM114-Status: UNSURE (   6.59  )
+X-CRM114-CacheID: sfid-20260828_045409_586548_5AB170A3 
+X-CRM114-Status: UNSURE (   5.13  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -72,10 +71,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Tue, 25 Aug 2026 12:10:53 +0200, Ahmad Fatoum wrote: >
-    We currently map all error codes to -EINVAL when opening or creating a >
-   file, when the underlying functions are capable of returning more er [...]
-    
+ Content preview:  On Wed, 26 Aug 2026 10:33:00 +0200, Ahmad Fatoum wrote: >
+    While the rendering of the barebox command help text into the documentation
+    > got better between v206.07.0 and v2026.08, it's still not compl [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -122,37 +120,31 @@ X-Spamd-Result: default: False [-57.81 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	NEURAL_HAM(-0.00)[-0.991];
+	NEURAL_HAM(-0.00)[-0.994];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: asr1zopfi1acn43asunk8697kuy4yntf
-X-Rspamd-Queue-Id: D808E201D34
+X-Stat-Signature: 7tnu98x8cezamhzhggwqaqjykuqigm51
+X-Rspamd-Queue-Id: 32D28201D34
 
 
-On Tue, 25 Aug 2026 12:10:53 +0200, Ahmad Fatoum wrote:
-> We currently map all error codes to -EINVAL when opening or creating a
-> file, when the underlying functions are capable of returning more error
-> codes like -EISDIR or -EROFS.
+On Wed, 26 Aug 2026 10:33:00 +0200, Ahmad Fatoum wrote:
+> While the rendering of the barebox command help text into the documentation
+> got better between v206.07.0 and v2026.08, it's still not completely
+> right:
 > 
-> Propagate the received error code to tell consumers more about what went
-> wrong.
+>   https://www.barebox.org/doc/2026.07.0/commands/info/cpuinfo.html
+>   https://www.barebox.org/doc/2026.08.0/commands/info/cpuinfo.html
 > 
 > [...]
 
 Applied, thanks!
 
-[1/4] fs: fat: propagate actual error code when opening/creating files
-      https://git.pengutronix.de/cgit/barebox/commit/?id=228a800d9599 (link may not be stable)
-[2/4] fs: fat: drop stray printf debug output
-      https://git.pengutronix.de/cgit/barebox/commit/?id=99cee192dbee (link may not be stable)
-[3/4] fs: fat: use fixed-width 32-bit FatFs types
-      https://git.pengutronix.de/cgit/barebox/commit/?id=f2c889bed1b2 (link may not be stable)
-[4/4] fs: fat: flush metadata updates to the block device
-      https://git.pengutronix.de/cgit/barebox/commit/?id=6d149f6ff875 (link may not be stable)
+[1/1] commands: cpuinfo: unify command description
+      https://git.pengutronix.de/cgit/barebox/commit/?id=a6e159b5acc4 (link may not be stable)
 
 Best regards,
 -- 
