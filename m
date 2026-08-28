@@ -1,16 +1,16 @@
-Delivery-date: Fri, 28 Aug 2026 15:05:42 +0200
+Delivery-date: Fri, 28 Aug 2026 15:06:04 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wzwH7-008A8j-1d
+	id 1wzwHT-008A9c-2u
 	for lore@lore.pengutronix.de;
-	Fri, 28 Aug 2026 15:05:42 +0200
+	Fri, 28 Aug 2026 15:06:04 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 16F65201ED1
-	for <lore@pengutronix.de>; Fri, 28 Aug 2026 15:05:42 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 81D94201D34
+	for <lore@pengutronix.de>; Fri, 28 Aug 2026 15:06:04 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=1KxvNAX1;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=APXU2hhO;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,51 +19,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=MmsUn63yOGKul42lCvU8OV9xYcE6KP50aw+PM+BEH1w=; b=1KxvNAX1ROacetXttqr7OjdQbO
-	Vzfj2tCXs09BoaTLercK2wnVoE4KVWSZ3YreoD4MpEaLyAu6V4RFj30wEft5sl3g7LRavpxRPl2Yi
-	NcXy997WFaFK9tkaGar4n7N2XRPMcHuFG0YUMEiDICOIvts0M2fSC+ukHA4Ish51JokQzPPu1bU/f
-	WRiZ/y8nRcQm7D/hCbthiyw7RyVnPexiyNwsx2sqfg2g2fAEX4NPSlqSMi74DiF26mmbI8EOXhRwa
-	comt0A/IoX+JRa0hMr5VBJZopsvBDUHw+YcU1eau/hSNnWR11nEmQgyz78BBjLm2PTeQIDTntAGCf
-	KWtW8EMA==;
+	bh=bKAFK17bmKTXAUvuaVma46mFvekU02ACwtVp4N2ta6Y=; b=APXU2hhOFclmAv3LspLf1bAbIU
+	v32LpLWilTc3xBOkZorVy/7To0YPnqAfo8hzi6EqcbmruGTsDs9TzeOv3fJWw8KOJQJeOs+sZeJmj
+	GhCwLwEvjpOUrcVkI9iaNCoA3O8MinTdfDLMViAGnv5k9QFtnFHkigE6ydUP1LmUvsLkps4LPpxkw
+	JEwF5J/wSGKqoZzzQhRWmw4m0j2u7AUMYa2FD6rj5ptBay98/G2yJ8It9rucZNXJOpJSqiKJFkTwU
+	wHrpWs6KswSnExBHlKTW48aO2zldm8VQ5WRj5wMu1GozJix1QeYk/PolKLf4dzdHLE4gsAc4k+2ja
+	iw7SAiqQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzwG7-00000005mgV-15uO;
-	Fri, 28 Aug 2026 13:04:39 +0000
+	id 1wzwGS-00000005mjB-1TWy;
+	Fri, 28 Aug 2026 13:05:00 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzwG5-00000005mfr-14Gp
+	id 1wzwGQ-00000005mio-09l5
 	for barebox@lists.infradead.org;
-	Fri, 28 Aug 2026 13:04:38 +0000
+	Fri, 28 Aug 2026 13:04:59 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 90364201ED1;
-	Fri, 28 Aug 2026 15:04:35 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 6F379201021;
+	Fri, 28 Aug 2026 15:04:56 +0200 (CEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wzwG3-003mDv-1f;
-	Fri, 28 Aug 2026 15:04:35 +0200
+	id 1wzwGO-003mE0-1D;
+	Fri, 28 Aug 2026 15:04:56 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wzwG3-00000001wJP-1tdP;
-	Fri, 28 Aug 2026 15:04:35 +0200
+	id 1wzwGO-00000001wS3-1JEZ;
+	Fri, 28 Aug 2026 15:04:56 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260825085316.1312263-1-a.fatoum@pengutronix.de>
-References: <20260825085316.1312263-1-a.fatoum@pengutronix.de>
-Subject: Re: [PATCH] efi: don't truncate EFI_MEMORY_RUNTIME when setting
- resource attributes
-Message-Id: <178792227544.462356.15698226183817906181.b4-ty@pengutronix.de>
-Date: Fri, 28 Aug 2026 15:04:35 +0200
+In-Reply-To: <20260825085338.1313653-1-a.fatoum@pengutronix.de>
+References: <20260825085338.1313653-1-a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] serial: name the semihosting console
+Message-Id: <178792229630.462913.2166144254218319974.b4-ty@pengutronix.de>
+Date: Fri, 28 Aug 2026 15:04:56 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260828_060437_446597_9562F432 
-X-CRM114-Status: UNSURE (   6.61  )
+X-CRM114-CacheID: sfid-20260828_060458_224422_1597FDF6 
+X-CRM114-Status: UNSURE (   5.37  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -72,10 +71,11 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Tue, 25 Aug 2026 10:53:15 +0200, Ahmad Fatoum wrote: >
-    resource_set_efi_memory_type_attrs() stored the runtime attribute with >
-   > res->runtime = attrs & EFI_MEMORY_RUNTIME; > > but struct resource [...]
-    
+ Content preview:  On Tue, 25 Aug 2026 10:53:37 +0200, Ahmad Fatoum wrote: >
+    This makes it easier to reference it without having to look at the > device/driver
+    behind it. > > Applied, thanks! [1/1] serial: name the semihosting console
+    https://git.pengutronix.de/cgit/barebox/commit/?id=60d8868a242e (link may
+    not be stable) 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -98,12 +98,12 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-57.81 / 15.00];
+X-Spamd-Result: default: False [-57.79 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-2.98)[99.93%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:c01:1d::a2:received,2a0a:edc0:0:1101:1d::28:received,2607:7c80:54:3::133:from];
+	RCVD_IN_DNSWL_MED(-0.60)[2607:7c80:54:3::133:from,2a0a:edc0:0:c01:1d::a2:received,2a0a:edc0:0:1101:1d::28:received];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	MAILLIST(-0.20)[mailman];
 	R_SPF_ALLOW(-0.20)[+mx:c];
@@ -122,33 +122,27 @@ X-Spamd-Result: default: False [-57.81 / 15.00];
 	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	NEURAL_HAM(-0.00)[-0.997];
+	NEURAL_HAM(-0.00)[-0.998];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	TO_DN_SOME(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: gbg3ehissm9a3jj8ranxqfaeizutu6hy
-X-Rspamd-Queue-Id: 16F65201ED1
+X-Stat-Signature: iozr8qkquy7r1ha57kspr9o8w9dkmmq7
+X-Rspamd-Queue-Id: 81D94201D34
 
 
-On Tue, 25 Aug 2026 10:53:15 +0200, Ahmad Fatoum wrote:
-> resource_set_efi_memory_type_attrs() stored the runtime attribute with
+On Tue, 25 Aug 2026 10:53:37 +0200, Ahmad Fatoum wrote:
+> This makes it easier to reference it without having to look at the
+> device/driver behind it.
 > 
-> 	res->runtime = attrs & EFI_MEMORY_RUNTIME;
 > 
-> but struct resource declares runtime as a one-bit field and
-> EFI_MEMORY_RUNTIME is bit 63, so the assignment keeps only the low bit of
-> the masked value and always stores zero. Every caller passing the
-> attribute silently ended up with a non-runtime resource.
-> 
-> [...]
 
 Applied, thanks!
 
-[1/1] efi: don't truncate EFI_MEMORY_RUNTIME when setting resource attributes
-      https://git.pengutronix.de/cgit/barebox/commit/?id=3177a7454bde (link may not be stable)
+[1/1] serial: name the semihosting console
+      https://git.pengutronix.de/cgit/barebox/commit/?id=60d8868a242e (link may not be stable)
 
 Best regards,
 -- 
