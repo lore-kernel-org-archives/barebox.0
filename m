@@ -1,16 +1,16 @@
-Delivery-date: Fri, 28 Aug 2026 15:01:43 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Fri, 28 Aug 2026 15:02:49 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1wzwDG-008A5S-2n
+	id 1wzwEK-008A6d-13
 	for lore@lore.pengutronix.de;
-	Fri, 28 Aug 2026 15:01:43 +0200
+	Fri, 28 Aug 2026 15:02:49 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 768E5202427
-	for <lore@pengutronix.de>; Fri, 28 Aug 2026 15:01:43 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id E16EA201D27
+	for <lore@pengutronix.de>; Fri, 28 Aug 2026 15:02:48 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=YVq9lsEc;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=M2+0DtHW;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,51 +19,51 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5/gXw0ZQXBWY4LNhBQdt/DaJnLGeFLlAH6wnMsmiWQI=; b=YVq9lsEceyFYP/FIMX0pASpO2N
-	zqCwaYVMMaqnQ/SeCWEMMS/SliOZQcpa+Bls9ymMVM9yYdMQdfXeeN7rT+sTsxoFYbCI8AqTm/CVI
-	I6Bn37C9WnsX2AQO6cpsJwJVpTT2ALeQJxYDT6/m5I08tT4s/PA27SYVIMWuSv99YJCihzrB5MENK
-	ir/OUjbYEwo1b/5jX3NbAU19wZKWsNj3sw3wpJJhYonqs0qYDZZoAMeu+A2liDwgDuj6ZpZWGoLgr
-	USN7j72vr4U/rXnpAmEHnP7c//Xwh07wGz3K1ys+M4NSo53lF+ueYqWAz4o/sEThr4yQBtYkNqIoc
-	IY/caapQ==;
+	bh=O5BFyTyHJtPbIoPBPPRsa09+ke9VRVQtBh6sI7TMdpo=; b=M2+0DtHWyRNhgxhUVlLya2hHJU
+	WzThsGb3er//9jcBTLV2um+MQBV4NXtUqROFW8Ab+6pIsdeTp4XkIfJrCYVjrzG3OgEkKLpAminPG
+	FitvTQa9T5qzu3fjTxI6b81KLxU9u89II/bpdkDRvk6Bu5KFNzbxWKTh1ld3VvQyOhvfzYG/hEhp0
+	hXK2ZAcmkmMsvUWJPBomN0jw2SnkC8js2V6HJRwye0RaJln5tSbQmVqVJrLaAZ50xuo57abXFQzYb
+	3X6ATzyg4Aq2Y1pFEGJI+RPHSiicrs3vs53cD19e7rK1NHTy0+LZOREf7Gb0o6RHWBAcqIWqrLgXE
+	v0sgNTUQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzwC1-00000005mOk-2y8P;
-	Fri, 28 Aug 2026 13:00:25 +0000
+	id 1wzwDA-00000005mU6-3gGh;
+	Fri, 28 Aug 2026 13:01:36 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wzwBw-00000005mOJ-02u8
+	id 1wzwD7-00000005mTS-2iUd
 	for barebox@lists.infradead.org;
-	Fri, 28 Aug 2026 13:00:24 +0000
+	Fri, 28 Aug 2026 13:01:35 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 170802006EB;
-	Fri, 28 Aug 2026 15:00:17 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 40AA5201D27;
+	Fri, 28 Aug 2026 15:01:31 +0200 (CEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wzwBt-003lxB-00;
-	Fri, 28 Aug 2026 15:00:17 +0200
+	id 1wzwD5-003lxR-0a;
+	Fri, 28 Aug 2026 15:01:31 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1wzwBs-00000001us1-3vlP;
-	Fri, 28 Aug 2026 15:00:16 +0200
+	id 1wzwD5-00000001vYQ-0UMf;
+	Fri, 28 Aug 2026 15:01:31 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260826093936.2542278-1-a.fatoum@pengutronix.de>
-References: <20260826093936.2542278-1-a.fatoum@pengutronix.de>
-Subject: Re: [PATCH] partitions: efi: only warn about valid GPT entries
- beyond the limit
-Message-Id: <178792201693.456817.12305556598452113147.b4-ty@pengutronix.de>
-Date: Fri, 28 Aug 2026 15:00:16 +0200
+In-Reply-To: <20260826094033.2545168-1-a.fatoum@pengutronix.de>
+References: <20260826094033.2545168-1-a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] fs: don't leak the parent path when openat() fails
+ after the lookup
+Message-Id: <178792209111.459451.4626581437630596295.b4-ty@pengutronix.de>
+Date: Fri, 28 Aug 2026 15:01:31 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260828_060020_223154_8FB57223 
-X-CRM114-Status: UNSURE (   5.94  )
+X-CRM114-CacheID: sfid-20260828_060133_841261_3588E14B 
+X-CRM114-Status: UNSURE (   6.49  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -72,9 +72,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Wed, 26 Aug 2026 11:39:36 +0200, Ahmad Fatoum wrote: >
-    GPT headers may describe more than the customary 128 partition entries. >
-    xorriso for example writes a 248 entry table for hybrid ISOs like t [...]
+ Content preview:  On Wed, 26 Aug 2026 11:40:32 +0200, Ahmad Fatoum wrote: >
+    openat() jumps to out1 on three errors that happen after the lookup has >
+    succeeded, and none of them drops what the lookup took: > > - creat [...]
     
  
  Content analysis details:   (-1.9 points, 5.0 required)
@@ -103,7 +103,7 @@ X-Spamd-Result: default: False [-57.81 / 15.00];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	RCVD_IN_DNSWL_MED(-0.60)[2607:7c80:54:3::133:from,2a0a:edc0:0:c01:1d::a2:received,2a0a:edc0:0:1101:1d::28:received];
+	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:c01:1d::a2:received,2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	MAILLIST(-0.20)[mailman];
 	R_SPF_ALLOW(-0.20)[+mx:c];
@@ -129,24 +129,26 @@ X-Spamd-Result: default: False [-57.81 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: z7xca53nsurpudbeos6h898iacstpz47
-X-Rspamd-Queue-Id: 768E5202427
+X-Stat-Signature: yft3ejwz56x8o3hrth47x8b4xd819nrj
+X-Rspamd-Queue-Id: E16EA201D27
 
 
-On Wed, 26 Aug 2026 11:39:36 +0200, Ahmad Fatoum wrote:
-> GPT headers may describe more than the customary 128 partition entries.
-> xorriso for example writes a 248 entry table for hybrid ISOs like the
-> Alpine Linux images, of which only three entries are in use. barebox
-> would then warn on every boot:
+On Wed, 26 Aug 2026 11:40:32 +0200, Ahmad Fatoum wrote:
+> openat() jumps to out1 on three errors that happen after the lookup has
+> succeeded, and none of them drops what the lookup took:
 > 
->   WARNING: GPT has more partitions than we support (248) > max partition number (128)
+> - create() failing leaves both the negative dentry that filename_create()
+>   returned and the parent path it filled in.
+> - The -ENOENT branch dputs the dentry, which is path.dentry here, but not
+>   the vfsmount reference held alongside it.
+> - The -EISDIR branch drops nothing at all.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] partitions: efi: only warn about valid GPT entries beyond the limit
-      https://git.pengutronix.de/cgit/barebox/commit/?id=184f39a5975b (link may not be stable)
+[1/1] fs: don't leak the parent path when openat() fails after the lookup
+      https://git.pengutronix.de/cgit/barebox/commit/?id=d1fc63ad66c4 (link may not be stable)
 
 Best regards,
 -- 
