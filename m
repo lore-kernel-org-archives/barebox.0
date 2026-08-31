@@ -1,58 +1,76 @@
-Delivery-date: Mon, 31 Aug 2026 11:12:55 +0200
+Delivery-date: Mon, 31 Aug 2026 11:49:42 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x0y4U-009Drb-2U
+	id 1x0ye5-009EJC-1n
 	for lore@lore.pengutronix.de;
-	Mon, 31 Aug 2026 11:12:55 +0200
+	Mon, 31 Aug 2026 11:49:42 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 26F92201EB9
-	for <lore@pengutronix.de>; Mon, 31 Aug 2026 11:12:55 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id C92F12018B6
+	for <lore@pengutronix.de>; Mon, 31 Aug 2026 11:49:41 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=XyjQmQ9q;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=VVaZpuiB;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Date:
-	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:To:Subject:From
-	:Message-ID:Reply-To:MIME-Version:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=LEGBfAV+PReAlrVVKWagVcGqNjUQenDAe/l2+ytSTtg=; b=XyjQmQ9q9pnU/AyfTtZ9nGQX6P
-	beRIWIFl86umlqNF/UDLyjjZvuEbT619OpHjptILGlOcC0nwVMifjwD9gY6LUT7OH+5ofSmslK7Wl
-	dBXkkVS9Z5ABc0W4M6crmdZWbXLBeDhS5w23OUGgp/nNTB+Wx7nYKkDFzCsBziYIYyQ/H8o1G6mOk
-	FkHASWd5YIf2pUG7Jnx+4XSyP0wkYX01BhIX7aIfqnCvTfqUzOpm7Pxhoy73tFKh3dI8MU3AbN3fk
-	4j5zFMYMRl8Qow3qfJImocgOcRhvVUfsNVrwfwxXWPaT8/eKOBWWuzXrOivTt9LBBzaHeNLwJ/ZFA
-	q8ATW9Ag==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=kJoPH2R79cZl9cjTwVSbO/Tehx8JTQ9jVwcZaxGS//o=; b=VVaZpuiBRQ6DcJzMAHcoVW/DGe
+	GWzKuz2V/juGQ0webaXJIe9VS0rWGrPzBdTFQuUB9ukp9kAH8U7tLnvHk4Nme4HcZG4uk7tAZaTn5
+	Td5pJvhNclPIfi1Z/bikHTNhEZmQ/fM+PyftP/7Iahjurgxpzo05XUgCN0Vt772YFmAtmpZtn8MU1
+	SmYN54MILGvt+HZwjZgFX6lt9ip+v0Xad/DqL2lyEnJvNeMjxOuOXdiiiwIB6P1ovmJNZIpggBEK3
+	LjvsROOjGW9sdTd3VRddL9ALd8BiF5WgXr3+aWc0dmnv/aN1C2HjM3xiMUQQ4/YNOV9IEG8GWMOrD
+	tnYBviRQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x0y3F-00000008zJW-3z0E;
-	Mon, 31 Aug 2026 09:11:37 +0000
+	id 1x0ycz-000000093QW-3Py2;
+	Mon, 31 Aug 2026 09:48:33 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x0y3C-00000008zID-1DqF
+	id 1x0ycv-000000093Nq-10Qw
 	for barebox@lists.infradead.org;
-	Mon, 31 Aug 2026 09:11:36 +0000
-Received: from [127.0.0.1] (unknown [IPv6:2a02:560:5dd5:4b00:9ebf:dff:fe00:fdb5])
-	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 70AFB201EB9;
-	Mon, 31 Aug 2026 11:11:32 +0200 (CEST)
-Message-ID: <84c85354-aaab-4800-b193-49f28e4c363c@pengutronix.de>
-From: "Sascha Hauer" <s.hauer@pengutronix.de>
-Subject: Re: [RFC next 0/2] dm: lvm: Initial Logical Volume Management
- support
-To: "Tobias Waldekranz" <tobias@waldekranz.com>
-In-Reply-To: <87ld9mofce.fsf@waldekranz.com>
-References: <20260824183203.3759144-1-tobias@waldekranz.com>
- <d66fbfb2-135d-439b-b53e-97f7ea21459d@pengutronix.de>
- <87ld9mofce.fsf@waldekranz.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 31 Aug 2026 09:11:31 +0000
+	Mon, 31 Aug 2026 09:48:31 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 3D16B2020C1;
+	Mon, 31 Aug 2026 11:48:26 +0200 (CEST)
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1x0ycs-004Ebk-0P;
+	Mon, 31 Aug 2026 11:48:26 +0200
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1x0ycs-0000000Bs0g-0DGp;
+	Mon, 31 Aug 2026 11:48:26 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Mon, 31 Aug 2026 11:48:26 +0200
+Subject: [PATCH 2/4] fs: remove the default automount when a cdev is
+ removed
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260831-usbdisk-aliases-v1-2-0a2e40a35f3d@pengutronix.de>
+References: <20260831-usbdisk-aliases-v1-0-0a2e40a35f3d@pengutronix.de>
+In-Reply-To: <20260831-usbdisk-aliases-v1-0-0a2e40a35f3d@pengutronix.de>
+To: BAREBOX <barebox@lists.infradead.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788169706; l=3901;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=4xHQFa3NLX0RE4b/alkZGUI0RaiC2B3ZtJ8fdL6056I=;
+ b=KVoG5KZ07jnbpaYHDhqQlLobVQAh/BAYEAqB9xpSGXGvYu+tdb3jjg1pJUp5/wiRkFxqGVrpS
+ YZ4MiZ2pnsNBekGAV7dl4UIMihNO71nIgs+fa6YPGdQ0qgFRD+UFGsn
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260831_021134_475648_E08427CA 
-X-CRM114-Status: GOOD (  23.73  )
+X-CRM114-CacheID: sfid-20260831_024829_530218_7138B7E4 
+X-CRM114-Status: GOOD (  17.31  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -60,9 +78,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On 2026-08-31 10:37, Tobias Waldekranz wrote: > > Hi Sascha,
-    > > Thanks for taking the time to look at this! > > On fre, aug 28, 2026
-   at 14:10, "Sascha Hauer" <s.hauer@pengutronix.de> wrote: > > Hi To [...] 
+ Content preview:  cdev_create_default_automount() registers an automount point
+    at /mnt/<cdevname> which runs "mount <cdevname>" when the directory is first
+    walked into. It never had a counterpart, so when the cdev goes [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -84,93 +102,157 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: barebox@lists.infradead.org
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Stat-Signature: mkxztxcbyw8qwjj68yb44i88di5nnbdr
-X-Rspamd-Queue-Id: 26F92201EB9
-X-Spamd-Result: default: False [-55.41 / 15.00];
+X-Stat-Signature: egmzsy63cpajsbmm3kbua53f6qwboq5i
+X-Rspamd-Queue-Id: C92F12018B6
+X-Spamd-Result: default: False [-57.81 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[99.99%];
-	MISSING_MIME_VERSION(2.00)[];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
+	RCVD_IN_DNSWL_MED(-0.60)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received,2a0a:edc0:0:c01:1d::a2:received];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_SPF_ALLOW(-0.20)[+mx:c];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
 	MAILLIST(-0.20)[mailman];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
+	TO_DN_ALL(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_RECIPIENTS(0.00)[m:tobias@waldekranz.com,m:barebox@lists.infradead.org,s:lore@pengutronix.de];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FORGED_SENDER(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
-	DMARC_NA(0.00)[pengutronix.de];
+	RCVD_TLS_LAST(0.00)[];
 	ARC_NA(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_ONE(0.00)[1];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	MISSING_XM_UA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 
-On 2026-08-31 10:37, Tobias Waldekranz wrote:
->=20
-> Hi Sascha,
->=20
-> Thanks for taking the time to look at this!
->=20
-> On fre, aug 28, 2026 at 14:10, "Sascha Hauer" <s.hauer@pengutronix.de> wr=
-ote:
-> > Hi Tobias,
-> >
-> > On 2026-08-24 18:31, Tobias Waldekranz wrote:
-> >> [...]
-> >> If the overall structure is OK with the community and maintainers,
-> >> then the biggest remaining issue is testing. I have been surprised to
-> >> learn that the standard LVM tools will not operate on disk images
-> >> (without loopback mounting). Nor does there seem to be any other tools
-> >> out there that allows you to provision PVs/VGs/LVs without having them
-> >> "live" and attached to the host system. If there are any suggestions
-> >> here they would be very welcome!
-> >
-> > Would guestfish be an option? That allows you to call pvcreate/vgcreate
-> > on disk images.
->=20
-> Thank you, I had completely forgotten about that! I definitely think
-> that it would solve the problem.
->=20
-> You would be okay with bringing that dependency into the barebox-ci
-> container then? Do we foresee any issues with access to /dev/kvm or
-> things like that from inside there? I guess it would still work in TCG
-> mode, but might be slow?
+cdev_create_default_automount() registers an automount point at
+/mnt/<cdevname> which runs "mount <cdevname>" when the directory is first
+walked into. It never had a counterpart, so when the cdev goes away the
+directory and the automount entry stay behind, pointing at a device that
+no longer exists.
 
-It should work generally, but yes, it will be slow. I guess as long as
-we only use it to create physical volumes and volume groups it should be
-fine, but we should refrain from making excess data accesses like
-writing verifying big images through the software emulation.
+Unplugging a USB mass storage device leaves /mnt/disk0 and /mnt/disk0.0
+around, and repartitioning at runtime leaves an entry for every partition
+that doesn't come back - remove the two partitions of a disk and create a
+single one instead and /mnt/disk0.1 is still there afterwards. The stale
+entries are replaced once the same cdev name is registered again, since
+automount_add() drops a previous entry for the same dentry, which is why
+this went unnoticed for so long. Names that are not reused stay stale
+forever though.
 
-Sascha
+Add cdev_remove_default_automount() and call it from devfs_remove().
+Whether a cdev has an automount is remembered in a new DEVFS_HAS_AUTOMOUNT
+flag rather than being guessed from the path, so that an automount point
+somebody registered by hand is never removed just because a cdev happens
+to share its name.
 
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Removal is safe while a filesystem is mounted: mounting holds the cdev
+open via fsdev_open_cdev(), so devfs_remove() bails out with -EBUSY long
+before we get here. automount_remove() looks the path up without
+LOOKUP_DIRECTORY or LOOKUP_PARENT, so follow_automount() returns -EISDIR
+and the lookup doesn't trigger the automount it is about to remove.
+
+Fixes: 85dffaacfa ("fs: Create automount entries for the default mount pathes")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Assisted-by: Claude:claude-opus-5
+---
+ fs/devfs-core.c  |  2 ++
+ fs/fs.c          | 20 +++++++++++++++++++-
+ include/driver.h |  5 +++++
+ 3 files changed, 26 insertions(+), 1 deletion(-)
+
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index b9e34f83bb..8b023009a0 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -605,6 +605,8 @@ int devfs_remove(struct cdev *cdev)
+ 
+ 	devfs_remove_aliases(cdev);
+ 
++	cdev_remove_default_automount(cdev);
++
+ 	list_for_each_entry_safe(c, tmp, &cdev->partitions, partition_entry)
+ 		cdevfs_del_partition(c);
+ 
+diff --git a/fs/fs.c b/fs/fs.c
+index ce41f23f88..f109e31075 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -3493,12 +3493,30 @@ void cdev_create_default_automount(struct cdev *cdev)
+ 	cmd = basprintf("mount %s", cdev->name);
+ 
+ 	make_directory(path);
+-	automount_add(path, cmd);
++	if (!automount_add(path, cmd))
++		cdev->flags |= DEVFS_HAS_AUTOMOUNT;
+ 
+ 	free(cmd);
+ 	free(path);
+ }
+ 
++void cdev_remove_default_automount(struct cdev *cdev)
++{
++	char *path;
++
++	if (!(cdev->flags & DEVFS_HAS_AUTOMOUNT))
++		return;
++
++	path = basprintf("/mnt/%s", cdev->name);
++
++	automount_remove(path);
++	rmdir(path);
++
++	cdev->flags &= ~DEVFS_HAS_AUTOMOUNT;
++
++	free(path);
++}
++
+ void automount_print(void)
+ {
+ 	struct automount *am;
+diff --git a/include/driver.h b/include/driver.h
+index 77b9b87695..b0602e6f16 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -572,6 +572,7 @@ extern struct list_head cdev_list;
+ #define DEVFS_PARTITION_FOR_FIXUP	(1U << 13)
+ #define DEVFS_WRITE_AUTOERASE		(1U << 14)
+ #define DEVFS_PARTITION_CAN_OVERLAP	(1U << 15)
++#define DEVFS_HAS_AUTOMOUNT		(1U << 16)
+ 
+ /**
+  * cdev_write_requires_erase - Check whether writes must be done to erased blocks
+@@ -615,10 +616,14 @@ cdev_find_child_by_gpt_typeuuid(struct cdev *cdev, const guid_t *typeuuid);
+ 
+ #ifdef CONFIG_FS_AUTOMOUNT
+ void cdev_create_default_automount(struct cdev *cdev);
++void cdev_remove_default_automount(struct cdev *cdev);
+ #else
+ static inline void cdev_create_default_automount(struct cdev *cdev)
+ {
+ }
++static inline void cdev_remove_default_automount(struct cdev *cdev)
++{
++}
+ #endif
+ 
+ #define DEVFS_PARTITION_APPEND		0
+
+-- 
+2.47.3
 
 
 
