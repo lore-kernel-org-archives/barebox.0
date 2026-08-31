@@ -1,17 +1,17 @@
-Delivery-date: Mon, 31 Aug 2026 10:40:34 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Mon, 31 Aug 2026 10:41:04 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x0xZC-009DCd-0V
+	id 1x0xZf-009DDQ-39
 	for lore@lore.pengutronix.de;
-	Mon, 31 Aug 2026 10:40:34 +0200
+	Mon, 31 Aug 2026 10:41:04 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 6B7FF200444
-	for <lore@pengutronix.de>; Mon, 31 Aug 2026 10:40:34 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 3AA19200444
+	for <lore@pengutronix.de>; Mon, 31 Aug 2026 10:41:04 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=D1mxGzWg;
-	dkim=pass header.d=waldekranz-com.20251104.gappssmtp.com header.s=20251104 header.b=Jpx79FrC;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ReHhmzYa;
+	dkim=pass header.d=waldekranz-com.20251104.gappssmtp.com header.s=20251104 header.b=eJLGdS2g;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -20,80 +20,80 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-ID:Date:References:In-Reply-To:Subject:Cc:To:From:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=BoZhTfizV3MLLoq/jx0MLdf9ti3X6CkNwkjxJjSR7p8=; b=D1mxGzWgzpHL1Cu/t7PMaSefdY
-	bSlT1ym1ICxJvUNN7nTY598YzVekTnPSC53kdMPO764bRlp++nEHsLWFYXrMLDXKH6lTKveOK/6+x
-	B6pd0hH1pS20rad/vEJfSVjPtH9vCsPwONtaMhN9QXSyYzMzvmatVnxLqTWmmTCKJoEXnOVF8l+cC
-	LHvKZRi5OMZSdkye16zbz/zD6jfSySs5z9PHWMzYLHyC2R/0hCWIFahP4oqh918toq8hmxfYBqmLE
-	F4HMK6Wtr8JXw/aO9ocZsF/RkIkFovdLiQrvE+giiKHtYBbSwF/ZLCkMAH5lbGUHH3fRAfHN2LCi1
-	Osl+Q49g==;
+	bh=d/v7BHL94YD9+lhAAqy2fZrE63xFCa0sDZSzMAr+E28=; b=ReHhmzYaW5gRfk36wSbDoACunr
+	U0XN+/3LT0eC5kLoGdCqbfGwpL7XWOfcn9/gnD22D6vtaBqySrxLgEN0JJtXRFdaOohxDMRYDzUNs
+	yLdAgxPiABHLziFtC1odlEKISxa2FRiE2I5Q5CN4BP9y9INqWGPqi7JvBosdWH5M8bCpxF85U17NH
+	ugRtvGYTDh63tp/lZRAjjuRzOEb3GUy88rG14d6wPsV9cSjyANCzsuaYFgYvh7c4+Ue/UmWwAS0my
+	+0L8nPPWKWH7pJhhIMWfA3A2xLeKCyo2GdiqL5MNAwT0SsxpOaRX0hnwEwLnLcD+6p32UPrkzuFFm
+	dhXudk2w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x0xY2-00000008vEG-028W;
-	Mon, 31 Aug 2026 08:39:22 +0000
-Received: from mail-ed1-x533.google.com ([2a00:1450:4864:20::533])
+	id 1x0xZO-00000008vOX-0oOg;
+	Mon, 31 Aug 2026 08:40:46 +0000
+Received: from mail-ej1-x62a.google.com ([2a00:1450:4864:20::62a])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x0xXz-00000008vDa-3I8S
+	id 1x0xZL-00000008vNg-0nj7
 	for barebox@lists.infradead.org;
-	Mon, 31 Aug 2026 08:39:20 +0000
-Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-69f7fa1c548so4902558a12.2
-        for <barebox@lists.infradead.org>; Mon, 31 Aug 2026 01:39:19 -0700 (PDT)
+	Mon, 31 Aug 2026 08:40:44 +0000
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-c1600d040e4so531059666b.1
+        for <barebox@lists.infradead.org>; Mon, 31 Aug 2026 01:40:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=waldekranz-com.20251104.gappssmtp.com; s=20251104; t=1788165558; x=1788770358; darn=lists.infradead.org;
+        d=waldekranz-com.20251104.gappssmtp.com; s=20251104; t=1788165641; x=1788770441; darn=lists.infradead.org;
         h=content-type:mime-version:message-id:date:references:in-reply-to
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=BoZhTfizV3MLLoq/jx0MLdf9ti3X6CkNwkjxJjSR7p8=;
-        b=Jpx79FrC3RbgXGqHvmZPCUTdepcg/z40FCY5VugjWPs/k58Dgg+solgPyN77ooDsnQ
-         /9ITh+OsWNHxJAA5eQul8/DktElEs4dzHO6nyxJ9Qaiz1pOcFrAaa+r5/laEMTRfq4Im
-         CfkbawSa5hBZji4Ryrz6EPe7XMyIr4ceplwuHYXMcuE0VYaI8fnw+YvRwHt5W9hnierP
-         +AOdcrWNVfqHN8GUXvmVz12kC/wk+OxnLvlmTf7h8Cgq8ZD2B/8Ja/Fo+Rx120VtNLBq
-         /KeJxQgMNmsOiOQo1TXVxX8+IVZE3E/I9+L2YMpG2sI+tJ+73PJmhpxQUrC8Iz33+kvu
-         Rv1g==
+        bh=d/v7BHL94YD9+lhAAqy2fZrE63xFCa0sDZSzMAr+E28=;
+        b=eJLGdS2gtVBXKY2eE7dySHRWEd9XSRZVGPZMq9SGVireaTsT/AxrMMgKupuABx+Hm1
+         x6MF+ijrZk9sWIl6u/pN4l8CdpTuSZG3W0lgzuDBNrKclmzfWC7oDOxnUAhZ2tdItHRq
+         8vq1iqXE/Py2UNAU2d1OCF+qIGASnREpyfjhQdZqCF7ELtucXpUOa0FWAVKVj6Bccxe+
+         HduFfm/ZmxWflnB86TfucANGVoULIZVX6Gsku3pFnZQF9ZkyQiefehLil/3Ab4qz6LDs
+         vvEQzj/od6aVexpNG4uoSVR267dXnLbNVh4fbz5czaywm6aYlscnrILSBJPGxntHtlbs
+         Q5AQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1788165558; x=1788770358;
+        d=1e100.net; s=20251104; t=1788165641; x=1788770441;
         h=content-type:mime-version:message-id:date:references:in-reply-to
          :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to:content-type;
-        bh=BoZhTfizV3MLLoq/jx0MLdf9ti3X6CkNwkjxJjSR7p8=;
-        b=oi7Qs33WgelS9KriVncoZqDOR5SbkbV+oPYHCfRmNvG3ASSxACr5vuE/o/NK1QmEwy
-         SMqFyxeqtFPUjicNGl0NS8XYLE6VXEBg18bXi1VA2GzcBJOc2VyeNt0YWjGADGOqTkT3
-         81zbjmZZo0j23xBaOipfkWYVG3Alxqt+4amMeupMhnFNO+UM7yL0Wj0MzbH1eOprlh7O
-         UogBoflZ5r11Psjy3uJo8evRWoHwo6xy+eK/TWy6TOQKiloVwf1Pk+IRfoMk+NkGj6sB
-         zCokHW/Sddtk5rrl+d/tHbJgZJvXYlQSF09yB1IZsDNUeCB5NhPemZUC5uj2oMbIexXG
-         37Tg==
-X-Gm-Message-State: AFuF++kEcbNusjhPhT3TF878q2HqezqGqplIaJ2GKURuMA/f+C1MvTQN
-	bAGWJ+f3Rfp2RJVmW7pGTHZlJQjbkCWz9gjhKia60teRwDcz1viDR/eOfDMJI6prBgW+x41z22a
-	rjXIg
-X-Gm-Gg: AYBFou1Jq7KO012sFRZ0eFkC0eh63jqH4MahsMUiC/rv266c9DrxHF9WcdV7wH2N+5a
-	TBxlhGFJh3LShS+gr4Cgz9SGpM1A5W2XhOMxGWynqoj97XpapWRujV2Nr8Qumk5xmiUj7b2IplK
-	dOx6kmWiY6ManIW1vIimZcLLCXW+BT+Q6HcR9mYDI3Yge3lHKlYtbHxH8LF21V1meWJrye4kJ75
-	9hNzVYCzDnztPKXvgpv8M8JQnhPhwbkeuiOKeOcTSUF6qhXih+nttjle097jcMKISNTUUS4pGOq
-	yCue+xB0/l4ZQ9Kb7pNLY/oox+sOgnPOsfOVkcEFbW62OmC1qzkjcvmneIObxIFYBluxCyzit29
-	a6c/kqGHHmz6zBv5GlwN6FRsCuiEYR/pY4uvq1wFua2mI/8ntjZx4dtJdpNXcAJfVCblwtaUTWm
-	7uQshXAKhxFbziSS0ccmlDIyuW7CfJh6tg+AdyGyJnd9CGE3WI4iEBIxsyprH4KYAYrJPpHBs6a
-	7RojwSEWMeXyLhC8S7uKFWWjmdzynkt+yMcSzfvd0FydPxSJWG5VFmS5p9dQOpU8/TJOecm8tiq
-	EWM=
-X-Received: by 2002:a05:6402:a0ca:b0:6a6:32fa:54f7 with SMTP id 4fb4d7f45d1cf-6a632fa5574mr6908113a12.22.1788165557686;
-        Mon, 31 Aug 2026 01:39:17 -0700 (PDT)
+        bh=d/v7BHL94YD9+lhAAqy2fZrE63xFCa0sDZSzMAr+E28=;
+        b=B/aGMxgnOWU4mhvx/bBhqyGvDBxWP9HxRQWqq9xdWTEIbBgfB4i9Ih69h3b7HLzQ2K
+         iSCfrtwgoGa3PkB8NKRHifMV1u7ATaJ9It5DEpzx4J01xyBLgNdVpG+nbOCWbfwfuWaB
+         8Qn3ISMSqbHbTOlPy/aVUtzTp52OQpkm91PUQDX8LL2uTdQKTD4F6yQW4mBucqmk/3m5
+         3iyjfyaKDd0zSbY5YQzUY9FtmSMlSIUDtUdLCTxYEQe+Wsv7unRASy0Kv8FU3kM+tGDP
+         oubT9M4AdY9nuLfUAKcQJZWd4V6yFbwwlvsLJ4C5CZjEmYhm2TPmBC1Jm8nLFj7YwXLW
+         IvKA==
+X-Gm-Message-State: AFuF++mvLIio/CYhdVwoGK4XdLMIpjggYy71HfVeTXXDNcbDnhwM9mFb
+	Y3wQDLvRLmjhd2bkefrMHlNHF1N9g/clg3lFcNC5XZKn9iEjXmvMRBANXC4pEKT2xPqMoGiFUya
+	ZE1tT
+X-Gm-Gg: AR+sD13FQm7xKBwZymN+E2hZ3p5f5yDlzqCMnMs2AodIn75LGVTujJdO8us2gcXdgtE
+	V5100pnthGEYzTO8U/pduNTsmcUXb2riske/HEc43aif/sE3STw0IfxYQV/REHKFMOQ2Y5rjXVx
+	nSimCTS58C9rI5nvRjNHNj1dOK0ohEXtToNbDckYgDnZiuF4wV8d0U4131gxLRRZbcV7RgUqQtx
+	WGq+gVpVTlRR2qsndx32mBcXU22Z4x21vKa6IY7wD77Gw8bjX3hsPM/iMLlTTT+kSWD/2Y27vRt
+	1AE4LwY3n9jolJt4iGWDhbmc06LTuHotCD8QApgv8QT4Tzhsw4E1ylPhfv7IJDxbN2uDR59rv7A
+	TDhAQmhn74XRI79ka1jtNwZo6pR+JCqRn+FvLZojNO800m7UsrpINdCf2EWPcXphDh3mtuUZshA
+	Vxbdwx+d4uzq5gRnPYZn527zzN6Ehj5z65+SD1bJR4vmSXwlF2n577hTQaolyFyUO3jdvf4VMhf
+	ncB15wR51k25cLUqlyUFYObMQbL7OFPuy76hg6IgWFY185+30QFq5wIkxnE9STEgQOyxZc17Tsg
+	IuA=
+X-Received: by 2002:a17:907:9450:b0:c25:4ca3:dfda with SMTP id a640c23a62f3a-c25969351d8mr362127566b.9.1788165640867;
+        Mon, 31 Aug 2026 01:40:40 -0700 (PDT)
 Received: from wkz-x13 (h-79-136-22-50.NA.cust.bahnhof.se. [79.136.22.50])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a611c7773asm3340724a12.31.2026.08.31.01.39.17
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6a611c38e82sm2937194a12.19.2026.08.31.01.40.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2026 01:39:17 -0700 (PDT)
+        Mon, 31 Aug 2026 01:40:40 -0700 (PDT)
 From: Tobias Waldekranz <tobias@waldekranz.com>
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Subject: Re: [RFC next 1/2] dm: lvm: Initial Logical Volume Management support
-In-Reply-To: <466724b2-2de6-4e41-b546-724dc2bd3d9a@pengutronix.de>
+Subject: Re: [RFC next 2/2] commands: lvm: inspect VGs, activate LVs
+In-Reply-To: <fe4f0bca-9946-4398-9c05-20c3f63d1fd0@pengutronix.de>
 References: <20260824183203.3759144-1-tobias@waldekranz.com>
- <20260824183203.3759144-2-tobias@waldekranz.com>
- <466724b2-2de6-4e41-b546-724dc2bd3d9a@pengutronix.de>
-Date: Mon, 31 Aug 2026 10:39:16 +0200
-Message-ID: <87ik4qof9n.fsf@waldekranz.com>
+ <20260824183203.3759144-3-tobias@waldekranz.com>
+ <fe4f0bca-9946-4398-9c05-20c3f63d1fd0@pengutronix.de>
+Date: Mon, 31 Aug 2026 10:40:39 +0200
+Message-ID: <87fqzuof7c.fsf@waldekranz.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260831_013919_828194_E7323574 
-X-CRM114-Status: GOOD (  10.06  )
+X-CRM114-CacheID: sfid-20260831_014043_237230_504C18E2 
+X-CRM114-Status: GOOD (  11.26  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -101,9 +101,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On fre, aug 28, 2026 at 14:19, "Sascha Hauer" <s.hauer@pengutronix.de>
-    wrote: > On 2026-08-24 18:31, Tobias Waldekranz wrote: >> + >> +const lvm_tok_t
-    *lvm_md_vgsect(const struct lvm_md *md, const lvm [...] 
+ Content preview:  On fre, aug 28, 2026 at 14:20, "Sascha Hauer" <s.hauer@pengutronix.de>
+    wrote: > On 2026-08-24 18:31, Tobias Waldekranz wrote: >> Provide the most
+    rudimentary commands needed to inspect and activate >> [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -111,7 +111,7 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  ---- ---------------------- --------------------------------------------------
  -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/, no
                              trust
-                             [2a00:1450:4864:20:0:0:0:533 listed in]
+                             [2a00:1450:4864:20:0:0:0:62a listed in]
                              [list.dnswl.org]
  -0.0 SPF_PASS               SPF: sender matches SPF record
   0.0 SPF_HELO_NONE          SPF: HELO does not publish an SPF Record
@@ -133,10 +133,10 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Stat-Signature: ekbc9yuiwdihcp1xckdsq65x76qbwfet
-X-Rspamd-Queue-Id: 6B7FF200444
-X-Spamd-Result: default: False [-7.38 / 15.00];
-	BAYES_HAM(-2.97)[99.88%];
+X-Stat-Signature: hiaw7njk85yg4jopsyj9mpwshqa6fhbu
+X-Rspamd-Queue-Id: 3AA19200444
+X-Spamd-Result: default: False [-7.41 / 15.00];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
@@ -166,51 +166,46 @@ X-Spamd-Result: default: False [-7.38 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	RCVD_IN_DNSWL_NONE(0.00)[2a00:1450:4864:20::533:received];
+	RCVD_IN_DNSWL_NONE(0.00)[2a00:1450:4864:20::62a:received];
 	DKIM_TRACE(0.00)[lists.infradead.org:+,waldekranz-com.20251104.gappssmtp.com:+];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 
-On fre, aug 28, 2026 at 14:19, "Sascha Hauer" <s.hauer@pengutronix.de> wrote:
+On fre, aug 28, 2026 at 14:20, "Sascha Hauer" <s.hauer@pengutronix.de> wrote:
 > On 2026-08-24 18:31, Tobias Waldekranz wrote:
+>> Provide the most rudimentary commands needed to inspect and activate
+>> volume groups (VGs) and logical volumes (LVs).
+>> 
+>> Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
+>> ---
+>>  commands/Kconfig  |  11 ++
+>>  commands/Makefile |   1 +
+>>  commands/lvm.c    | 264 ++++++++++++++++++++++++++++++++++++++++++++++
+>>  3 files changed, 276 insertions(+)
+>>  create mode 100644 commands/lvm.c
+>> 
+>> diff --git a/commands/Kconfig b/commands/Kconfig
+>> index 08fe544ee1..d7e3bab3f9 100644
+>> --- a/commands/Kconfig
+>> +++ b/commands/Kconfig
+>> @@ -808,6 +808,17 @@ config CMD_VERITYSETUP
+>>  	  commands:
+>>  	        open <data-dev> <name> <hash-dev> <root-hash>
+>>  
+>> +config CMD_LVM
+>> +	tristate
+>> +	depends on DM_LVM
+>> +	prompt "lvm"
+>> +	help
+>> +	  lvm - inspect and activate LVM2 logical volumes
 >> +
->> +const lvm_tok_t *lvm_md_vgsect(const struct lvm_md *md, const lvm_tok_t **keyp)
->> +{
->> +	const lvm_tok_t *key, *val;
->> +
->> +	lvm_md_for_each(md, key, &md->tokens[0]) {
->> +		val = key + 1;
+>> +	  commands:
+>> +	        pvs / vgs / lvs
+>> +	        activate <vg>/<lv> [<name>]
 >
-> Should you check against num_tokens here?
+> This is not consistent with the implementation which has "info" and
+> "activate" as subcommands.
 
-Good catch, yes I should!
-
->
->> +		if (val->type == LVM_TOK_SECTION) {
->> +			if (keyp)
->> +				*keyp = key;
->> +			return val;
->> +		}
->> +	}
->> +
->> +	return NULL;
->> +}
->> +
->
->> +const lvm_tok_t *lvm_md_find(const struct lvm_md *md, const lvm_tok_t *sec,
->> +			     const char *key)
->> +{
->> +	const lvm_tok_t *k;
->> +
->> +	if (sec->type != LVM_TOK_SECTION)
->> +		return NULL;
->> +
->> +	lvm_md_for_each(md, k, sec) {
->> +		if (lvm_md_tok_eq(md, k, key))
->> +			return k + 1;
->
-> Here as well. Fuzzing might indeed be useful ;)
-
-Indeed :) Thanks for the thorough review!
+Oh right, I forgot to update that bit. Thanks!
 
 
