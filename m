@@ -1,16 +1,16 @@
-Delivery-date: Mon, 31 Aug 2026 15:25:53 +0200
+Delivery-date: Mon, 31 Aug 2026 15:26:31 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x121I-009I6a-23
+	id 1x121v-009I7V-0C
 	for lore@lore.pengutronix.de;
-	Mon, 31 Aug 2026 15:25:53 +0200
+	Mon, 31 Aug 2026 15:26:31 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 201AB202497
-	for <lore@pengutronix.de>; Mon, 31 Aug 2026 15:25:49 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 9EAFB2020E6
+	for <lore@pengutronix.de>; Mon, 31 Aug 2026 15:26:27 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=sD7hxI+K;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=4m3qt6Cn;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,50 +19,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kK8LFpQvZg7qoUL+9R0Fa0kxqoLd1wiPU0QbEOh8xYg=; b=sD7hxI+KFcwWaEJf+0KWy/vkt4
-	dvHLWGvqEbxZQNWtinqtw8axvngisrqZJr3CJ5/IOxCu95CGhFF0nFmm3fsDWV1x5F5zquCf283gH
-	7Xcs4PZk3IF3UtU1DPgj9SeiRuDSX3qZv6iClponFrODl7VTLzd/NsZBFCjg1SrD2tDbG9duSk4Gw
-	mIeiKNcWLwEOfCMtfNGw0pPywJn5VIkvReO3DZXLGzzGIXxDn4wbvndLqlUntsyWcWoWeWlHMueQz
-	bkmWLzD0SFBI4uNtgbPga+zHkMDfx7bQ8TEHi2C1JZ1f5MumELe+doaSx+CKs7XNtP37utaZbxInS
-	T9Vijt7g==;
+	bh=42O89TiHGfC53pZLDHCOPyGGlOcwbZsMkJ0ny8Iqhls=; b=4m3qt6CnjmVvGX7eOQLG6uRYKQ
+	tGSybZ0RV0OpuznCqFlWJabQ0g3oG3lv9KfU1MULaA0kwe/LtnXncxJtG+lJ9capVu5Us+8HeaD9j
+	dx5PSER2dVylbdxcrGVElGoyWWlmojNro8F59f8PfCT4zA33smG4G/uLgfZAnXxYfQE6JgnAKE6rs
+	3ZxkXaHEq31+RHn3MID8Zed0Xm4PyrbtZRxXxd0MHcl1MEZQv+relODD9AMZxfZuZGdi8oVeHAv5o
+	Z/VuQBj7cY99LxtiedXDBT3clWnXYsyUuluTAHbGGWhyZaWwoOpeXTcX1uYHo0uD0aB0HsVTCZV/F
+	e4GzD/6w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x120Y-00000009P0s-2pGr;
-	Mon, 31 Aug 2026 13:25:06 +0000
+	id 1x120Z-00000009P1Q-39di;
+	Mon, 31 Aug 2026 13:25:07 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x120U-00000009OzE-47Mg
+	id 1x120U-00000009OzC-40zK
 	for barebox@lists.infradead.org;
 	Mon, 31 Aug 2026 13:25:04 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 3E7AE201ED7;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 2AABD20071A;
 	Mon, 31 Aug 2026 15:24:57 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1x120P-004GSB-0S;
+	id 1x120P-004GS8-0I;
 	Mon, 31 Aug 2026 15:24:57 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1x120P-000000034AG-09s9;
+	id 1x120O-000000034AG-49do;
 	Mon, 31 Aug 2026 15:24:57 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH master 3/4] fs: efivarfs: initialize dummy data written on variable creation
-Date: Mon, 31 Aug 2026 15:24:53 +0200
-Message-ID: <20260831132456.730833-3-a.fatoum@pengutronix.de>
+Subject: [PATCH master 2/4] efi: loader: fix EFI_EXIT2 tracing an uninitialized status
+Date: Mon, 31 Aug 2026 15:24:52 +0200
+Message-ID: <20260831132456.730833-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260831132456.730833-1-a.fatoum@pengutronix.de>
 References: <20260831132456.730833-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260831_062503_172185_0AE74E86 
-X-CRM114-Status: UNSURE (   9.23  )
+X-CRM114-CacheID: sfid-20260831_062503_154234_3050ABFC 
+X-CRM114-Status: UNSURE (   7.55  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -71,9 +71,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Building with clang reports: error: variable 'dummydata' is
-    uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
-    Fix this by initializing the variable. 
+ Content preview:  EFI_EXIT2() stores its argument in _r and passes that to EFI_EXIT(),
+    whose own _r shadows it, so typeof(_r) _r = _r reads the uninitialized inner
+    variable and the traced status is garbage. This only affects trace output
+    was and was detected by a warning when being compiled with clang. 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -97,15 +98,15 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Stat-Signature: 9dfbfqmqri51yoxubfrb3tigm3x3z1ib
-X-Rspamd-Queue-Id: 201AB202497
+X-Stat-Signature: 85nntj8azngqu63ptde5sdqskapfnyr3
+X-Rspamd-Queue-Id: 9EAFB2020E6
 X-Spamd-Result: default: False [-56.31 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	MID_CONTAINS_FROM(1.00)[];
-	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:c01:1d::a2:received,2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::54:received];
+	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:1101:1d::54:received,2607:7c80:54:3::133:from,2a0a:edc0:0:c01:1d::a2:received];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
@@ -131,32 +132,58 @@ X-Spamd-Result: default: False [-56.31 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 
-Building with clang reports:
+EFI_EXIT2() stores its argument in _r and passes that to EFI_EXIT(),
+whose own _r shadows it, so typeof(_r) _r = _r reads the uninitialized
+inner variable and the traced status is garbage.
 
-  error: variable 'dummydata' is uninitialized when passed as a
-    const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+This only affects trace output was and was detected by a warning when
+being compiled with clang.
 
-Fix this by initializing the variable.
-
-Fixes: 46b5a6d6527f ("fs: efivars: implement write support")
+Fixes: c05e8108d769 ("efi: loader: add support for tracing calls back into UEFI")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/efivarfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/efi/loader/trace.h | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/fs/efivarfs.c b/fs/efivarfs.c
-index 1f53c06d66d3..b9f514c51cd9 100644
---- a/fs/efivarfs.c
-+++ b/fs/efivarfs.c
-@@ -58,7 +58,7 @@ static int efivars_create(struct device *dev, const char *pathname,
- 	struct efivarfs_inode *inode;
- 	efi_guid_t vendor;
- 	efi_status_t efiret;
--	u8 dummydata;
-+	u8 dummydata = 0;
- 	char *name8;
- 	s16 *name;
- 	int ret;
+diff --git a/include/efi/loader/trace.h b/include/efi/loader/trace.h
+index 4acf7c1634cc..767812f84e26 100644
+--- a/include/efi/loader/trace.h
++++ b/include/efi/loader/trace.h
+@@ -34,24 +34,25 @@ const char *__efi_nesting_dec(void);
+  */
+ #ifndef EFI_EXIT
+ #define EFI_EXIT(ret) ({ \
+-	typeof(ret) _r = ret; \
++	typeof(ret) __efi_r = ret; \
+ 	__EFI_PRINT("%sEFI: Exit: %s: %s (%u)\n", __efi_nesting_dec(), \
+-		__func__, efi_strerror((uintptr_t)_r), (u32)((uintptr_t) _r & ~EFI_ERROR_MASK)); \
+-	_r; \
++		__func__, efi_strerror((uintptr_t)__efi_r), \
++		(u32)((uintptr_t) __efi_r & ~EFI_ERROR_MASK)); \
++	__efi_r; \
+ 	})
+ #endif
+ 
+ #ifndef EFI_EXIT2
+ #define EFI_EXIT2(ret, val) ({ \
+-	typeof(ret) _r = ret; \
+-	if (EFI_ERROR(_r)) \
+-		EFI_EXIT(_r); \
++	typeof(ret) __efi_r2 = ret; \
++	if (EFI_ERROR(__efi_r2)) \
++		EFI_EXIT(__efi_r2); \
+ 	else \
+ 		__EFI_PRINT("%sEFI: Exit: %s: %s (%u) = 0x%llx\n", __efi_nesting_dec(), \
+-			__func__, efi_strerror((uintptr_t)_r), \
+-			(u32)((uintptr_t) _r & ~EFI_ERROR_MASK), \
++			__func__, efi_strerror((uintptr_t)__efi_r2), \
++			(u32)((uintptr_t) __efi_r2 & ~EFI_ERROR_MASK), \
+ 			(u64)(uintptr_t)(val)); \
+-	_r; \
++	__efi_r2; \
+ 	})
+ #endif
+ 
 -- 
 2.47.3
 
