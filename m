@@ -1,69 +1,66 @@
-Delivery-date: Mon, 31 Aug 2026 21:37:10 +0200
+Delivery-date: Mon, 31 Aug 2026 21:37:11 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x17ob-009O04-0g
+	id 1x17oc-009O0Q-1j
 	for lore@lore.pengutronix.de;
-	Mon, 31 Aug 2026 21:37:09 +0200
+	Mon, 31 Aug 2026 21:37:11 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id AFEEB202492
-	for <lore@pengutronix.de>; Mon, 31 Aug 2026 21:37:05 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 0ED3E2032FA
+	for <lore@pengutronix.de>; Mon, 31 Aug 2026 21:37:07 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=dCx5IdK+;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=RfzrvTHE;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=O0wJsudWGw1PAmkicY16iq8xM4ZpUjeamzl6WgpYDZw=; b=dCx5IdK+Z7pYYzhn+E1yzcnxa6
-	rvTlGh9OpH73+mTfD/xnHYMCWAWB5acSK+ypCv2cg82qdd9eZIflSPMPdrNIyNEfU4ktSEuYQP/lu
-	gvAEFquois5B5PFWUc1BQixMLjaQrkYt9pi6XXv96MA8xMx2svR0LjnnSRevDW4oLCQZAnLuvUpIO
-	1vkowrmfrqP9ruWnCE64CG1KRWUQnOSX0GqdC91YJo3WNF0rA1ys4VbPZ8Vwec+oQRCz4KJ/Y1lDZ
-	R7hq2zofjPH2VnYuo7vQl+j+mKG+UdsgHYcZyvslMsi9TjXeBZoXd6QyJ+Zo0LB27pZHMtt1v9ML+
-	lbVyOx7g==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=ox3TG/4TKKOIgoCDzgOskIlEDuK02LK8/96XVD7Yi58=; b=RfzrvTHEJpxuArhcWyPkyTYA7x
+	u6kJUrAmM+SBZyfmwJgt7kUrcLvEbzLwfRpuS8Wnmoji8rXxcnLjvJsgV30C/1adwfOYTJ49ZHfZt
+	QExiIQJPWc+NxceIclH4KHncMUBOVeQx5t2pBKYYi3E0LIXd7XWuEiGhQq2Jggdct9cbQJ/iu5Y9d
+	l6eSF1tzVAzNOfY9W2flQ2V6S6fEimhvJyo7GliB3Kyg/cp73Lkn5XENjP719eyMXtwXuqX4vK8wB
+	8JZXvu+7YDt87Je1r4rlY5slu2OXlPge2uTMPt+0u4roal/fh4JxCi3EP20w8Zyhug/2PQbWn+1PG
+	n6P4I/Vg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x17np-0000000ANox-16uA;
-	Mon, 31 Aug 2026 19:36:21 +0000
+	id 1x17no-0000000ANo3-2ZnK;
+	Mon, 31 Aug 2026 19:36:20 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x17nm-0000000ANmN-2zuC
+	id 1x17nj-0000000ANkd-0wBc
 	for barebox@lists.infradead.org;
-	Mon, 31 Aug 2026 19:36:20 +0000
+	Mon, 31 Aug 2026 19:36:17 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 872462032FE;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 35727202485;
 	Mon, 31 Aug 2026 21:36:09 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1x17nd-004J3n-1P;
+	id 1x17nd-004J3V-0J;
 	Mon, 31 Aug 2026 21:36:09 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1x17nd-00000006Bjz-1Jzx;
+	id 1x17nc-00000006Bjz-4849;
 	Mon, 31 Aug 2026 21:36:09 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Subject: [PATCH 8/8] clk: divider: fix calculation of maximal parent rate for a given divider
-Date: Mon, 31 Aug 2026 21:35:55 +0200
-Message-ID: <20260831193605.1474749-8-a.fatoum@pengutronix.de>
+Subject: [PATCH 1/8] clk: stm32f4: allow building under COMPILE_TEST and fix the build
+Date: Mon, 31 Aug 2026 21:35:48 +0200
+Message-ID: <20260831193605.1474749-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260831193605.1474749-1-a.fatoum@pengutronix.de>
-References: <20260831193605.1474749-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260831_123618_936554_339A1D82 
-X-CRM114-Status: GOOD (  15.25  )
+X-CRM114-CacheID: sfid-20260831_123615_434379_3FD1DFB8 
+X-CRM114-Status: GOOD (  12.39  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -71,11 +68,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> This is an adoption
-    of the corresponding Linux commit: | commit da321133b53caf7889ed3ca1dabe4cc368db2604
-    | Author: Uwe Kleine-König <u.kleine-koenig@pengutronix.de> | Date: Sat
-   Feb 21 11:40:23 2015 +0100 | | clk: divider: fix calculation of maximal paren
-    [...] 
+ Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> No in-tree defconfig
+    combines ARCH_STM32 with this driver, so it has never been compiled and doesn't
+    build: clk-stm32f4.c:1665:20: error: 'struct clk_mux' has no member named
+    'width' 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -99,120 +95,93 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Stat-Signature: w4h1n55jp33qdnbcf6gxmp68b3xqwmga
-X-Rspamd-Queue-Id: AFEEB202492
-X-Spamd-Result: default: False [-56.81 / 15.00];
+X-Stat-Signature: 83gw3nmas56irc35z1zy64n3ujpsbdbp
+X-Rspamd-Queue-Id: 0ED3E2032FA
+X-Spamd-Result: default: False [-56.31 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	MID_CONTAINS_FROM(1.00)[];
-	RCVD_IN_DNSWL_MED(-0.60)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::54:received,2a0a:edc0:0:c01:1d::a2:received];
+	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:1101:1d::54:received,2607:7c80:54:3::133:from,2a0a:edc0:0:c01:1d::a2:received];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	MAILLIST(-0.20)[mailman];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
+	MAILLIST(-0.20)[mailman];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[pengutronix.de];
 	TO_DN_SOME(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
 	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_TWO(0.00)[2];
 	ARC_NA(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_HAM(-0.00)[-0.999];
+	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-This is an adoption of the corresponding Linux commit:
+No in-tree defconfig combines ARCH_STM32 with this driver, so it has
+never been compiled and doesn't build:
 
-| commit da321133b53caf7889ed3ca1dabe4cc368db2604
-| Author: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-| Date:   Sat Feb 21 11:40:23 2015 +0100
-|
-|     clk: divider: fix calculation of maximal parent rate for a given divider
-|
-|     The rate provided at the output of a clk-divider is calculated as:
-|
-|     	DIV_ROUND_UP(parent_rate, div)
-|
-|     since commit b11d282dbea2 (clk: divider: fix rate calculation for
-|     fractional rates). So to yield a rate not bigger than r parent_rate
-|     must be <= r * div.
-|
-|     The effect of choosing a parent rate that is too big as was done before
-|     this patch results in wrongly ruling out good dividers.
-|
-|     Note that this is not a complete fix as __clk_round_rate might return a
-|     value >= its 2nd parameter. Also for dividers with
-|     CLK_DIVIDER_ROUND_CLOSEST set the calculation is not accurate. But this
-|     fixes the test case by Sascha Hauer that uses a chain of three dividers
-|     under a fixed clock.
-|
-|     Fixes: b11d282dbea2 (clk: divider: fix rate calculation for fractional rates)
-|     Suggested-by: Sascha Hauer <s.hauer@pengutronix.de>
-|     Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-|     Acked-by: Sascha Hauer <s.hauer@pengutronix.de>
-|     Signed-off-by: Michael Turquette <mturquette@linaro.org>
+  clk-stm32f4.c:1665:20: error: 'struct clk_mux' has no member named 'width'
 
-The "not a complete fix" caveat applies here as well: barebox'
-clk_round_rate() falls back to clk_get_rate() for a clock without a
-round_rate op, and clk_mux_round_rate() returns the closest parent rate, so
-both can return more than they were asked for and clk_divider_bestdiv() can
-still end up without a candidate. CLK_DIVIDER_ROUND_CLOSEST doesn't exist in
-barebox, so that half of the caveat doesn't apply.
+barebox' struct clk_mux carries a mask like Linux', so assign it
+verbatim as upstream does; the tables already hold unshifted masks.
 
-With the previous commit, the i.MX6 IPU pixel clocks now hit their
-requested rates exactly, e.g. on a SABRE Lite:
+The symbol can't be enabled at all either: its prompt is gated on
+COMPILE_TEST and it has no default, and the only in-tree selector of
+ARCH_STM32 is ARCH_STM32MP, which uses clk-stm32mp1.c instead.
 
-  clk_round_rate ipu1_di0 65000000  ->  65000000 (was 40500000)
-  clk_round_rate ipu1_di0 148500000 -> 148500000 (was 148500001)
+As I still hope to finish upstreaming my STM32F support one day, let's
+just ensure the driver compile tests for now.
 
-Fixes: d4aaca3647fe ("clk: clk-divider: sync with kernel code")
-Reported-by: Claude:opus-5
+Fixes: 27923adcd1b7 ("clk: add clock driver for stm32f4 and stm32f7")
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- drivers/clk/clk-divider.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/clk/Kconfig       | 4 ++--
+ drivers/clk/clk-stm32f4.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/clk-divider.c b/drivers/clk/clk-divider.c
-index 8e630ccde4e6..2c97742cec0e 100644
---- a/drivers/clk/clk-divider.c
-+++ b/drivers/clk/clk-divider.c
-@@ -112,12 +112,6 @@ static unsigned long clk_divider_recalc_rate(struct clk_hw *hw,
- 				   divider->flags, divider->width);
- }
+diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
+index fe7056f8971b..e11361c43895 100644
+--- a/drivers/clk/Kconfig
++++ b/drivers/clk/Kconfig
+@@ -43,8 +43,8 @@ config CLK_SOCFPGA
+ if COMMON_CLK
  
--/*
-- * The reverse of DIV_ROUND_UP: The maximum number which
-- * divided by m is r
-- */
--#define MULT_ROUND_UP(r, m) ((r) * (m) + (m) - 1)
--
- static bool _is_valid_table_div(const struct clk_div_table *table,
- 							 unsigned int div)
- {
-@@ -211,8 +205,7 @@ static int clk_divider_bestdiv(struct clk *clk, unsigned long rate,
- 			*best_parent_rate = parent_rate_saved;
- 			return i;
- 		}
--		parent_rate = clk_round_rate(clk_get_parent(clk),
--				MULT_ROUND_UP(rate, i));
-+		parent_rate = clk_round_rate(clk_get_parent(clk), rate * i);
- 		now = DIV_ROUND_UP_ULL((u64)parent_rate, i);
- 		if (now <= rate && now > best) {
- 			bestdiv = i;
+ config COMMON_CLK_STM32F
+-	bool "STM32F4 and STM32F7 clock driver" if COMPILE_TEST
+-	depends on ARCH_STM32
++	bool "STM32F4 and STM32F7 clock driver"
++	depends on ARCH_STM32 || COMPILE_TEST
+ 	help
+ 	  Support for stm32f4 and stm32f7 SoC families clocks
+ 
+diff --git a/drivers/clk/clk-stm32f4.c b/drivers/clk/clk-stm32f4.c
+index 343ee0e6e9b5..764603cc473a 100644
+--- a/drivers/clk/clk-stm32f4.c
++++ b/drivers/clk/clk-stm32f4.c
+@@ -1659,7 +1659,7 @@ static struct clk_hw *stm32_register_aux_clk(const char *name,
+ 
+ 		mux->reg = base + offset_mux;
+ 		mux->shift = shift;
+-		mux->width = hweight8(mask);
++		mux->mask = mask;
+ 		mux->flags = 0;
+ 		mux_hw = &mux->hw;
+ 		mux_ops = &clk_mux_ops;
 -- 
 2.47.3
 
