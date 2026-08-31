@@ -1,16 +1,16 @@
-Delivery-date: Mon, 31 Aug 2026 21:36:47 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Mon, 31 Aug 2026 21:36:50 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x17oE-009NyD-3A
+	id 1x17oH-009Nyb-22
 	for lore@lore.pengutronix.de;
-	Mon, 31 Aug 2026 21:36:47 +0200
+	Mon, 31 Aug 2026 21:36:50 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 868DF201ED1
-	for <lore@pengutronix.de>; Mon, 31 Aug 2026 21:36:43 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 1EB3A2032F7
+	for <lore@pengutronix.de>; Mon, 31 Aug 2026 21:36:46 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="Lb/43qz8";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=0Ty+mARK;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,50 +19,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+O5toPBD1RUL7jVHigFnXsnVBDXwzFYfOPOV4nXvNpw=; b=Lb/43qz8M5sl1kC6ad3lszOwcj
-	XnzRokIeL8AsJyQflzceDIctip/Tb5YhVpq2hqbRRvmbXNH7LHFsGrLoyeT7RQIgtvEcAk0BBGrZ3
-	YuzrAm39tA7OyXdq0ACVqgcMQLjdRoO8H1ZV3x/qwsIFDDDN/4D11Dvh6sP9U9ugeQdHXt7k9hQvg
-	13mXGLn2vUNLmnxwbjzkGopbaicbgHodLJFE1kVm9N0Nh9/pO8UFBcDXnO7zg0HjIiEeSzARgczKE
-	rAB3po+mGeLMEgGyRdgbmam/DoIVX35hl/0l3Hu2bz/4LhZmb2tI3rWJL+kS3/IvACw7e1cMBQwgl
-	2UD7XyOw==;
+	bh=LrQNoAhOe2+ZJh5XDHda3rBNGFgX/UBia4mgC3xVVhs=; b=0Ty+mARK//VbSxMWGT9Laz8Ci4
+	dpHk0vg+5HlLMcZfnVfOnhR4lEJ1wt0+YYKzo+LN0eKVdqM2EhcfyqfPK1WlSr74PxybKvuFC3yAv
+	Afdvs4reDp+4Q3Bs1M9R7rbD960xOu7Ru0SlzB0Tt+a304ExojjcpYO3yVnZS00KCYz2Azg0lUtkJ
+	V6zB/27jccNHR9VXoyh5ahp+I7C8MhneMMsq0+vjL6yA5QbiJBhlMrEB+QiGwBPBsDV/WgQyVqIA1
+	4aRCFMW1Xhx7eFvHqss4jQL3iLb2k/NAuWcUJiKtc2Uk0RWN2LmRwyGh0o0sLSrTrtFVT1/LzQQwN
+	gAWACr1A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x17no-0000000ANoE-2xMw;
-	Mon, 31 Aug 2026 19:36:20 +0000
+	id 1x17nm-0000000ANmV-1tSN;
+	Mon, 31 Aug 2026 19:36:18 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x17nj-0000000ANkh-0vDi
+	id 1x17nj-0000000ANkf-0wI4
 	for barebox@lists.infradead.org;
-	Mon, 31 Aug 2026 19:36:18 +0000
+	Mon, 31 Aug 2026 19:36:16 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 64B872032FB;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 5BF402032FA;
 	Mon, 31 Aug 2026 21:36:09 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1x17nd-004J3f-0v;
+	id 1x17nd-004J3c-0o;
 	Mon, 31 Aug 2026 21:36:09 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1x17nd-00000006Bjz-0jfG;
+	id 1x17nd-00000006Bjz-0XAd;
 	Mon, 31 Aug 2026 21:36:09 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Subject: [PATCH 5/8] clk: imx: pllv3: use 64-bit arithmetic in fractional PLL recalc_rate
-Date: Mon, 31 Aug 2026 21:35:52 +0200
-Message-ID: <20260831193605.1474749-5-a.fatoum@pengutronix.de>
+Subject: [PATCH 4/8] clk: fixed-factor: use 64-bit arithmetic in recalc_rate
+Date: Mon, 31 Aug 2026 21:35:51 +0200
+Message-ID: <20260831193605.1474749-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260831193605.1474749-1-a.fatoum@pengutronix.de>
 References: <20260831193605.1474749-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260831_123615_433949_1E44D7AA 
-X-CRM114-Status: UNSURE (   7.76  )
+X-CRM114-CacheID: sfid-20260831_123615_425423_25E650F0 
+X-CRM114-Status: UNSURE (   8.53  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -71,10 +71,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> (parent_rate / mfd)
-    * mfn truncates the intermediate division in clk_pllv3_av_recalc_rate() and
-    clk_pllv3_sys_vf610_recalc_rate(). Use u64 multiplication and do_div, as
-   Linux does since commit ba7f4f5 [...] 
+ Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> (parent_rate / div)
+    * mult loses precision in the intermediate division and parent_rate * mult
+    can exceed 32 bits. Use u64 multiplication and do_div like Linux' clk_factor_recalc_rate()
+    does since com [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -98,8 +98,8 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Stat-Signature: 9ygqysyfu9mi6eqjys7ypjdnghwsi4w4
-X-Rspamd-Queue-Id: 868DF201ED1
+X-Stat-Signature: b1m58twxnhbfgmibb5uuwyxti9z683oh
+X-Rspamd-Queue-Id: 1EB3A2032F7
 X-Spamd-Result: default: False [-56.31 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[100.00%];
@@ -135,53 +135,41 @@ X-Rspamd-Action: no action
 
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-(parent_rate / mfd) * mfn truncates the intermediate division in
-clk_pllv3_av_recalc_rate() and clk_pllv3_sys_vf610_recalc_rate(). Use
-u64 multiplication and do_div, as Linux does since commit ba7f4f557eb6
-("clk: imx: correct AV PLL rate formula") and 5c2f117a22e4 ("clk: imx:
-fix integer overflow in AV PLL round rate"), the latter having widened
-the truncated result from u32 to unsigned long.
+(parent_rate / div) * mult loses precision in the intermediate division
+and parent_rate * mult can exceed 32 bits. Use u64 multiplication and
+do_div like Linux' clk_factor_recalc_rate() does since commit
+bab53301c38 ("clk: fixed-factor: round_rate should use do_div").
 
-Fixes: 809549b1bf93 ("ARM i.MX: initial clk support")
-Fixes: 7a8d295cdf60 ("i.MX: clk: Add IMX_PLLV3_SYS_VF610 subtype")
+Fixes: f2e2e596a221 ("clk: initial common clk support")
 Reported-by: Claude:opus-4.6
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- drivers/clk/imx/clk-pllv3.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/clk/clk-fixed-factor.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/imx/clk-pllv3.c b/drivers/clk/imx/clk-pllv3.c
-index eb806e7f9892..8d41b76df826 100644
---- a/drivers/clk/imx/clk-pllv3.c
-+++ b/drivers/clk/imx/clk-pllv3.c
-@@ -192,7 +192,12 @@ static unsigned long clk_pllv3_av_recalc_rate(struct clk_hw *hw,
- 	u32 mfd = readl(pll->base + PLL_DENOM_OFFSET);
- 	u32 div = readl(pll->base) & pll->div_mask;
+diff --git a/drivers/clk/clk-fixed-factor.c b/drivers/clk/clk-fixed-factor.c
+index d2c808d40c63..a163c3de28b6 100644
+--- a/drivers/clk/clk-fixed-factor.c
++++ b/drivers/clk/clk-fixed-factor.c
+@@ -9,13 +9,17 @@
+ #include <malloc.h>
+ #include <linux/clk.h>
+ #include <linux/err.h>
++#include <linux/math64.h>
  
--	return (parent_rate * div) + ((parent_rate / mfd) * mfn);
-+	u64 temp64 = (u64)parent_rate;
-+
-+	temp64 *= mfn;
-+	do_div(temp64, mfd);
-+
-+	return parent_rate * div + (unsigned long)temp64;
+ static unsigned long clk_fixed_factor_recalc_rate(struct clk_hw *hw,
+ 		unsigned long parent_rate)
+ {
+ 	struct clk_fixed_factor *f = to_clk_fixed_factor(hw);
++	unsigned long long int rate;
+ 
+-	return (parent_rate / f->div) * f->mult;
++	rate = (unsigned long long int)parent_rate * f->mult;
++	do_div(rate, f->div);
++	return (unsigned long)rate;
  }
  
- static long clk_pllv3_av_round_rate(struct clk_hw *hw, unsigned long rate,
-@@ -293,7 +298,12 @@ static unsigned long clk_pllv3_sys_vf610_recalc_rate(struct clk_hw *hw,
- 	u32 mfd = readl(pll->base + SYS_VF610_PLL_OFFSET + PLL_DENOM_OFFSET);
- 	u32 div = (readl(pll->base) & pll->div_mask) ? 22 : 20;
- 
--	return (parent_rate * div) + ((parent_rate / mfd) * mfn);
-+	u64 temp64 = (u64)parent_rate;
-+
-+	temp64 *= mfn;
-+	do_div(temp64, mfd);
-+
-+	return parent_rate * div + (unsigned long)temp64;
- }
- 
- static long clk_pllv3_sys_vf610_round_rate(struct clk_hw *hw, unsigned long rate,
+ static long clk_factor_round_rate(struct clk_hw *hw, unsigned long rate,
 -- 
 2.47.3
 
