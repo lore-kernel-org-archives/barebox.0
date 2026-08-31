@@ -1,75 +1,59 @@
-Delivery-date: Mon, 31 Aug 2026 15:37:45 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Mon, 31 Aug 2026 15:46:01 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x12Cm-009IHU-1v
+	id 1x12Km-009IRE-3B
 	for lore@lore.pengutronix.de;
-	Mon, 31 Aug 2026 15:37:45 +0200
+	Mon, 31 Aug 2026 15:46:01 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id B7BB8201ED1
-	for <lore@pengutronix.de>; Mon, 31 Aug 2026 15:37:40 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 35B11201ED7
+	for <lore@pengutronix.de>; Mon, 31 Aug 2026 15:45:57 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=HTapnFtI;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ekhu995S;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=L6eMz/ThWDndL93SWhrvGlDq5d+uD6slGMcjTYkPw88=; b=HTapnFtII/Dwhp8d2NdPWNpuQ8
-	SbdhP25jnd9GwLQoNlpKJMgoIBwi7Y9RtfHSAvNY7S2bmrc3habAWU23v5Fo3D3cWln/B1K6dwlNu
-	N8cQNKYIJ0qBEmTf+IPCUInhsKLkWqeI79RejD03bD+zP/JWvHaUVqCC8GnLXIiE73aUcrjEbC43A
-	L637DBdnU+4QPld4rPBk06PwT20D+eraICTNATMpIfmfSEX7eg5OU83EI+FN6PY28m6MRjjAkzbzT
-	N7rG9mO2To4bpBZb99v4WhJNKb0XloeetmSOQ0M3jHsg1t8bzF+RpWP/eKXbd/8slFOj7GJV0MCC9
-	OX66KRSQ==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Date:
+	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:To:Subject:From
+	:Message-ID:Reply-To:MIME-Version:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=s/63XkiuRziDiBiCAntG6LaIVIQcFK2ec16np16XAtE=; b=ekhu995S47c58P7E2x0VsILVDX
+	pNUtvCaS6AP4vCFnC+DdxgO4fQOvTGv5GuUs3s7OtQHaGmPxq69uat3YbEfby/CWfA2DaRtozgXxx
+	JXpO3hc4wed7VrlusJquL7y1FWaRWfDq7qvpFAitmiJ5C39ABBpOdFgOz6O2xW4WZ1BNyYV60kURa
+	wmEWcVrsWcqtopjUWaXiZRPpea89hKk/AoLzBaSIAxc4ZYJNeJuz61JTWrbZpm0wj8fhUlxUWRMxA
+	i8j+MT3ZFD4DyHpf84mOgmEnnhcT021bvFE0dATgnnDE1wCj9IX/Q6utciXISn0nouW5lkBTO8Trf
+	RAXdee8w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x12Bx-00000009RQ4-0vjq;
-	Mon, 31 Aug 2026 13:36:53 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1x11kX-00000009MfF-3NJO;
+	Mon, 31 Aug 2026 13:08:33 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x12Br-00000009RNm-1dU8
+	id 1x11kT-00000009Me9-2ddV
 	for barebox@lists.infradead.org;
-	Mon, 31 Aug 2026 13:36:50 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 974F1202475;
-	Mon, 31 Aug 2026 15:36:41 +0200 (CEST)
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1x12Bl-004GXi-1g;
-	Mon, 31 Aug 2026 15:36:41 +0200
-Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1x11vm-0000000H7Av-23Lq;
-	Mon, 31 Aug 2026 15:20:10 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 31 Aug 2026 15:20:19 +0200
-Subject: [PATCH 12/13] usb: detect unplugged devices on transfer errors
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260831-usb-device-lifetime-v1-12-6adf4054b909@pengutronix.de>
-References: <20260831-usb-device-lifetime-v1-0-6adf4054b909@pengutronix.de>
-In-Reply-To: <20260831-usb-device-lifetime-v1-0-6adf4054b909@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788182410; l=7859;
- i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=uLVdVzInk3aN2iFK9/gm6g+/7fFAkrDoTlyMZA93Ms8=;
- b=skFE32agAgdh85NOI5zEtawlJjUyPgTkaMS9OWgXSlqN+iKbFjwB7ipO8J2AUMlmi4opHq+6v
- MuDzwKeGLBVD/7hexiy80cyd8JQj8rrt/XJP+IHu/s+sS2b9GoIsrLm
-X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
- pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
+	Mon, 31 Aug 2026 13:08:32 +0000
+Received: from [127.0.0.1] (unknown [IPv6:2a02:560:5dd5:4b00:9ebf:dff:fe00:fdb5])
+	(Authenticated sender: sha@pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 96C64201BCA;
+	Mon, 31 Aug 2026 15:08:23 +0200 (CEST)
+Message-ID: <6ec6ad6e-05d4-4d1b-b3ac-49a702ae6ab5@pengutronix.de>
+From: "Sascha Hauer" <s.hauer@pengutronix.de>
+Subject: Re: [PATCH v4 05/14] drivers: fan: add fan subsystem, core API and
+ G76x fan controller driver
+To: "Luca Lauro" <famlauro93l@gmail.com>
+In-Reply-To: <CANRe2WKLBADaD7z3HqmQ2LVEFa46VQrC=rYwcNdB1wmvxDN-QA@mail.gmail.com>
+References: <20260813-rn102-rn104-series-v4-0-f932ac63efa0@gmail.com>
+ <20260813-rn102-rn104-series-v4-5-f932ac63efa0@gmail.com>
+ <713c23b4-9089-43c3-bb14-fef649849943@pengutronix.de>
+ <CANRe2WKLBADaD7z3HqmQ2LVEFa46VQrC=rYwcNdB1wmvxDN-QA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 31 Aug 2026 13:08:23 +0000
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260831_063647_595081_C8DD5BDD 
-X-CRM114-Status: GOOD (  30.77  )
+X-CRM114-CacheID: sfid-20260831_060829_823395_CB54A1C8 
+X-CRM114-Status: GOOD (  29.66  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -77,9 +61,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Removing a device is only done when somebody runs "usb". Until
-    then I/O to a device that has been unplugged in the meantime keeps failing,
-    and neither the USB core nor the drivers realise why. Reading [...] 
+ Content preview:  On 2026-08-31 13:53, Luca Lauro wrote: > Il giorno lun 24
+   ago 2026 alle ore 10:11 Sascha Hauer > <s.hauer@pengutronix.de> ha scritto:
+    > > > > Hi Luca, > > > > On 2026-08-13 17:26, Luca Lauro via B4 Re [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -101,299 +85,184 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: =?utf-8?b?b3BlbiBsaXN0OkJB?= =?utf-8?b?UkVCT1g=?= <barebox@lists.infradead.org>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Stat-Signature: nq6komgya8d4x3pkm8iben6hqfp5nyna
-X-Rspamd-Queue-Id: B7BB8201ED1
-X-Spamd-Result: default: False [-57.81 / 15.00];
+X-Stat-Signature: wacg7rpkku1mfz8zgh1k8p5dba1d1zfi
+X-Rspamd-Queue-Id: 35B11201ED7
+X-Spamd-Result: default: False [-53.91 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[100.00%];
+	MISSING_MIME_VERSION(2.00)[];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
+	CC_EXCESS_BASE64(1.50)[];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:c01:1d::a2:received,2a0a:edc0:0:1101:1d::28:received,2607:7c80:54:3::133:from];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_SPF_ALLOW(-0.20)[+mx:c];
-	MAILLIST(-0.20)[mailman];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
+	MAILLIST(-0.20)[mailman];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_ALL(0.00)[];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_RECIPIENTS(0.00)[m:famlauro93l@gmail.com,m:barebox@lists.infradead.org,s:lore@pengutronix.de];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	ARC_NA(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	FORGED_SENDER(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
+	ARC_NA(0.00)[];
 	DMARC_NA(0.00)[pengutronix.de];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	RCVD_TLS_LAST(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCPT_COUNT_ONE(0.00)[1];
-	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	NEURAL_HAM(-0.00)[-0.998];
 	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_ALL(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	MISSING_XM_UA(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 
-Removing a device is only done when somebody runs "usb". Until then I/O
-to a device that has been unplugged in the meantime keeps failing, and
-neither the USB core nor the drivers realise why. Reading from a
-filesystem that was mounted off a stick that is gone results in an
-endless stream of
+On 2026-08-31 13:53, Luca Lauro wrote:
+> Il giorno lun 24 ago 2026 alle ore 10:11 Sascha Hauer
+> <s.hauer@pengutronix.de> ha scritto:
+> >
+> > Hi Luca,
+> >
+> > On 2026-08-13 17:26, Luca Lauro via B4 Relay wrote:
+> > > +
+> > > +struct fan_ops {
+> > > +     int (*get_fan_startv)(struct device *dev, char *buf);
+> > > +     int (*set_fan_startv)(struct device *dev, unsigned long val);
+> > > +
+> > > +     int (*get_gear_multiplier)(struct device *dev, char *buf);
+> > > +     int (*set_gear_multiplier)(struct device *dev, unsigned long va=
+l);
+> > > +
+> > > +     int (*get_fan_ppr)(struct device *dev, char *buf);
+> > > +     int (*set_fan_ppr)(struct device *dev, unsigned long val);
+> > > +
+> > > +     int (*get_pwm_polarity)(struct device *dev, char *buf);
+> > > +     int (*set_pwm_polarity)(struct device *dev, unsigned long val);
+> > > +
+> > > +     int (*get_clk_freq)(struct device *dev, char *buf);
+> > > +     int (*set_clk_freq)(struct device *dev, unsigned long val);
+> > > +
+> > > +     int (*get_clk_div)(struct device *dev, char *buf);
+> > > +     int (*set_clk_div)(struct device *dev, unsigned long val);
+> > > +
+> > > +     int (*get_control_mode)(struct device *dev, char *buf);
+> > > +     int (*set_control_mode)(struct device *dev, unsigned long val);
+> > > +
+> > > +     int (*get_output_mode)(struct device *dev, char *buf);
+> > > +     int (*set_output_mode)(struct device *dev, unsigned long val);
+> > > +
+> > > +     int (*get_ooc_detection)(struct device *dev, char *buf);
+> > > +     int (*set_ooc_detection)(struct device *dev, unsigned long val);
+> > > +
+> > > +     int (*get_failure_detection)(struct device *dev, char *buf);
+> > > +     int (*set_failure_detection)(struct device *dev, unsigned long =
+val);
+> > > +
+> > > +     int (*get_failure_state)(struct device *dev, char *buf);
+> > > +     int (*get_ooc_state)(struct device *dev, char *buf);
+> > > +
+> > > +     int (*get_fan_speed)(struct device *dev, char *buf);
+> > > +     int (*set_fan_speed)(struct device *dev, unsigned long val);
+> > > +
+> > > +     int (*get_fan_rpm)(struct device *dev, char *buf);
+> > > +     int (*set_fan_rpm)(struct device *dev, unsigned long val);
+> > > +
+> > > +     int (*get_fan_level)(struct device *dev, char *buf);
+> > > +     int (*set_fan_level)(struct device *dev, unsigned long val);
+> >
+> > Converting the integer value to a string shouldn't be delegated to the
+> > drivers. When the fan level can be expressed as unsigned long, then
+> > get_fan_level() should take a unsigned long * as argument as well.
+> >
+> > Also the user facing interface you could use device parameters which
+> > makes the fan command almost go away.
+> >
+> > Reworking the parameters above along the lines:
+> >
+> >         dev_add_param_uint32(&fan->dev, "rpm", fan_rpm_set, fan_rpm_get=
+, &fan->rpm, "%u", fan);
+> >
+> > Will give you scriptable access to the parameters without an additional
+> > command.
+>=20
+> Thanks for the feedback.
+>=20
+> Just to give some context:: the fan subsystem (fan.c / fan.h) is meant to
+> be the hardware abstraction layer for the various fan controller
+> hardware-specific
+> drivers adapted from the Linux kernel.
+> The =E2=80=9Cfan=E2=80=9D command was only intended as a thin user-facing=
+ frontend on top
+> of that HAL, similar in spirit to how barebox exposes unified interfaces
+> for GPIO, LEDs, etc.
+>=20
+> I agree that device parameters provide a more compact interface in barebo=
+x,
+> and they already cover most of the use cases that the command was meant to
+> address.
+>=20
+> Before I rework the series, I would like to understand your preference for
+> the user-facing layer: should the fan subsystem rely entirely on device
+> parameters, or do you see value in keeping a small generic command on top
+> of the HAL? I can follow either direction; just let me know which one fits
+> better into barebox.
 
-	usb-storage usb1-0-1: Resetting EP 1...
-	ERROR: xHCI xHCI0: halted endpoint, not queueing URB.
+A command might be useful for more complex operations that can't be
+expressed by device parameters, but for the bulk of the operations which
+1:1 map onto a variable I would prefer device parameters over a command.
 
-as the storage driver keeps resetting endpoints of a device that is not
-there and retries the command.
+Note that using device parameters also allows you to provide defaults
+via the environment.
 
-When a transfer fails, ask the hub the device is attached to whether the
-port still reports a connection. That is cheap - the hub is still there -
-and it answers the question the transfer error cannot: is this a flaky
-device or no device at all. Remember the answer, so the bus is asked once
-and every further transfer fails with -ENODEV right away.
+But generally I question the ABI you have chosen. My first search didn't
+reveal it because there is no g76x in the Kernel, but then I found the g762
+driver which has a fairly complete device tree binding:
 
-Only a hub that positively reports an empty port counts. If the hub
-cannot be asked we have learned nothing, and marking a device gone
-because some unrelated transfer failed would be worse than leaving it
-alone. A device behind a hub that turns out to be gone is marked as well,
-along with everything below it.
+        g762@3e {
+                compatible =3D "gmt,g762";
+                reg =3D <0x3e>;
+                clocks =3D <&g762_clk>;
+                fan_gear_mode =3D <0>;
+                fan_startv =3D <1>;
+                pwm_polarity =3D <0>;
+        };
 
-Removal itself is left to the next scan. Tearing the device down from
-inside a transfer would pull the block device and the cdevs out from
-under the filesystem that is asking for the data.
+The above things should just be configurable via device tree and not
+even adjustable from the command line, as there's no point in doing so.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Assisted-by: Claude:claude-opus-5
----
- drivers/usb/core/hub.c  | 22 ++++++++++++
- drivers/usb/core/usb.c  | 89 +++++++++++++++++++++++++++++++++++++++++++++++--
- drivers/usb/core/usb.h  |  1 +
- include/linux/usb/usb.h | 16 +++++++++
- 4 files changed, 126 insertions(+), 2 deletions(-)
+Also this fan subsytems looks as if it is written specifically for the
+chip you are trying to handle, not as a generic subsystem.
 
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index f897740cbf..6520cd43d5 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -260,6 +260,28 @@ static int hub_port_reset(struct usb_device *hub, int port,
- }
- 
- 
-+/**
-+ * usb_hub_port_connected - ask a hub whether a port still has a device
-+ * @hub: the hub to ask
-+ * @port: 1-based port number
-+ *
-+ * Return: 1 if the port reports a device, 0 if it doesn't and a negative
-+ * error code when the hub could not be asked. Do not treat the latter as
-+ * "no device": a hub that doesn't answer tells us nothing about what is
-+ * plugged into it.
-+ */
-+int usb_hub_port_connected(struct usb_device *hub, int port)
-+{
-+	struct usb_port_status portsts;
-+	int ret;
-+
-+	ret = usb_get_port_status(hub, port, &portsts);
-+	if (ret < 0)
-+		return ret;
-+
-+	return !!(le16_to_cpu(portsts.wPortStatus) & USB_PORT_STAT_CONNECTION);
-+}
-+
- /**
-  * usb_hub_cancel_scans - drop pending port scans of a hub that goes away
-  * @dev: the USB device that is about to be removed
-diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-index 55c57e6334..71b72c3efb 100644
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -751,6 +751,73 @@ int usb_rescan(void)
-  *
-  */
- 
-+/**
-+ * usb_mark_disconnected - remember that a device and its children are gone
-+ * @dev: the device that has been unplugged
-+ */
-+static void usb_mark_disconnected(struct usb_device *dev)
-+{
-+	int i;
-+
-+	if (usb_device_disconnected(dev))
-+		return;
-+
-+	dev->disconnected = true;
-+	dev_info(&dev->dev, "disconnected\n");
-+
-+	/* everything behind an unplugged hub is gone as well */
-+	for (i = 0; i < dev->maxchild; i++)
-+		if (dev->children[i])
-+			usb_mark_disconnected(dev->children[i]);
-+}
-+
-+/**
-+ * usb_device_check_gone - find out whether a failed transfer means "unplugged"
-+ * @dev: the device a transfer just failed on
-+ *
-+ * A transfer can fail for all kinds of reasons, so ask the hub the device
-+ * is attached to whether the port still sees a device. Without this the
-+ * only thing telling a stale device from a flaky one is a scan, and until
-+ * somebody runs one we keep resetting endpoints of a device that is not
-+ * there anymore.
-+ *
-+ * The result is remembered, so this asks the bus once and all further
-+ * transfers fail right away.
-+ */
-+static bool usb_device_check_gone(struct usb_device *dev)
-+{
-+	struct usb_device *parent = dev->parent;
-+
-+	if (usb_device_disconnected(dev))
-+		return true;
-+
-+	/*
-+	 * A root hub has no hub to ask. It goes away with its controller,
-+	 * which is not something we can detect here.
-+	 */
-+	if (!parent)
-+		return false;
-+
-+	/* If the hub itself is gone, so is everything below it */
-+	if (usb_device_check_gone(parent)) {
-+		usb_mark_disconnected(dev);
-+		return true;
-+	}
-+
-+	/*
-+	 * Only believe a hub that positively says the port is empty. If it
-+	 * doesn't answer we have learned nothing, and declaring the device
-+	 * gone on a transfer that failed for some other reason would be
-+	 * worse than leaving it alone.
-+	 */
-+	if (usb_hub_port_connected(parent, dev->portnr) != 0)
-+		return false;
-+
-+	usb_mark_disconnected(dev);
-+
-+	return true;
-+}
-+
- /*
-  * submits an Interrupt Message
-  */
-@@ -760,6 +827,9 @@ int usb_submit_int_msg(struct usb_device *dev, unsigned long pipe,
- 	struct usb_host *host = dev->host;
- 	int ret;
- 
-+	if (usb_device_disconnected(dev))
-+		return -ENODEV;
-+
- 	ret = usb_host_acquire(host);
- 	if (ret)
- 		return ret;
-@@ -768,6 +838,9 @@ int usb_submit_int_msg(struct usb_device *dev, unsigned long pipe,
- 
- 	usb_host_release(host);
- 
-+	if (ret && usb_device_check_gone(dev))
-+		return -ENODEV;
-+
- 	return ret;
- }
- 
-@@ -788,6 +861,9 @@ int usb_control_msg(struct usb_device *dev, unsigned int pipe,
- 	int ret;
- 	struct devrequest *setup_packet = dev->setup_packet;
- 
-+	if (usb_device_disconnected(dev))
-+		return -ENODEV;
-+
- 	ret = usb_host_acquire(host);
- 	if (ret)
- 		return ret;
-@@ -808,8 +884,11 @@ int usb_control_msg(struct usb_device *dev, unsigned int pipe,
- 
- 	usb_host_release(host);
- 
--	if (ret)
-+	if (ret) {
-+		if (usb_device_check_gone(dev))
-+			return -ENODEV;
- 		return ret;
-+	}
- 
- 	return dev->act_len;
- }
-@@ -828,6 +907,9 @@ int usb_bulk_msg(struct usb_device *dev, unsigned int pipe,
- 	if (len < 0)
- 		return -1;
- 
-+	if (usb_device_disconnected(dev))
-+		return -ENODEV;
-+
- 	ret = usb_host_acquire(host);
- 	if (ret)
- 		return ret;
-@@ -837,8 +919,11 @@ int usb_bulk_msg(struct usb_device *dev, unsigned int pipe,
- 
- 	usb_host_release(host);
- 
--	if (ret)
-+	if (ret) {
-+		if (usb_device_check_gone(dev))
-+			return -ENODEV;
- 		return ret;
-+	}
- 
- 	*actual_length = dev->act_len;
- 
-diff --git a/drivers/usb/core/usb.h b/drivers/usb/core/usb.h
-index b3c224d88f..2529bcfec1 100644
---- a/drivers/usb/core/usb.h
-+++ b/drivers/usb/core/usb.h
-@@ -7,5 +7,6 @@ void usb_free_device(struct usb_device *dev);
- int usb_new_device(struct usb_device *dev);
- void usb_remove_device(struct usb_device *dev);
- void usb_hub_cancel_scans(struct usb_device *dev);
-+int usb_hub_port_connected(struct usb_device *hub, int port);
- 
- #endif /* __CORE_USB_H */
-diff --git a/include/linux/usb/usb.h b/include/linux/usb/usb.h
-index c25f3d73c3..784786dad5 100644
---- a/include/linux/usb/usb.h
-+++ b/include/linux/usb/usb.h
-@@ -126,8 +126,24 @@ struct usb_device {
- 
- 	/* slot_id - for xHCI enabled devices */
- 	unsigned int slot_id;
-+
-+	/* device is physically gone, don't talk to it anymore */
-+	bool disconnected;
- };
- 
-+/**
-+ * usb_device_disconnected - has the device been unplugged?
-+ * @dev: the USB device
-+ *
-+ * Set once a transfer to the device failed and the hub it is attached to
-+ * confirmed that the port has no connection anymore. Transfers to such a
-+ * device fail with -ENODEV without touching the bus.
-+ */
-+static inline bool usb_device_disconnected(struct usb_device *dev)
-+{
-+	return dev->disconnected;
-+}
-+
- struct usb_device_id;
- 
- struct usb_driver {
+I think you should have a closer look at how Linux does it, this might
+give you some more guidance how this thing could be implemented.
 
--- 
-2.47.3
+Another thing: Please separate the subsystem patch from the driver(s),
+it makes it easier to review the border between both.
+
+I think you should send the fan stuff as an extra series, otherwise it
+becomes the blocker for this series which as a whole already looks ok.
+
+Sascha
+
+--=20
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 
