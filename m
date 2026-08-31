@@ -1,76 +1,69 @@
-Delivery-date: Mon, 31 Aug 2026 15:25:37 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Mon, 31 Aug 2026 15:25:53 +0200
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x1212-009I5m-1v
+	id 1x121I-009I6a-23
 	for lore@lore.pengutronix.de;
-	Mon, 31 Aug 2026 15:25:37 +0200
+	Mon, 31 Aug 2026 15:25:53 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id C3CE82024A9
-	for <lore@pengutronix.de>; Mon, 31 Aug 2026 15:25:32 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 201AB202497
+	for <lore@pengutronix.de>; Mon, 31 Aug 2026 15:25:49 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=0jbZPYSj;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=sD7hxI+K;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=BZGEn72169ctL3gI38DOkyaJ6Omg0tvVeMOj5waOMOo=; b=0jbZPYSjQSPMZ6jEZexSHUUqCS
-	t4NzC6wPN2kJ2EHYnV8hvPBfRh+SRD/RmqltGzkAaQCnWbqaBwUxQrCtvFRFTit7i2/0dPz1FaZFG
-	X/De0vQlSU50zB9c6IkQ2DpkwSuWtxilSe56uox2x7RZmIDhFcvZm8WQBss/LDpFlXzdaJiqg5a9r
-	XO18xORO6iVTXZHtdifZro19ugBGL1ePI6fez3iK++RLKDMTYzvWjw0SVSZ1coALNoy2rO9XAAse0
-	RZRJJ13Lcf6kHpbxoZNf8p9hia6rvNs/nEcTz8BU1EDQB6EblJhWhj37uFGvhzsrJa/PV2yYUnHnD
-	HWNNdxTg==;
+	bh=kK8LFpQvZg7qoUL+9R0Fa0kxqoLd1wiPU0QbEOh8xYg=; b=sD7hxI+KFcwWaEJf+0KWy/vkt4
+	dvHLWGvqEbxZQNWtinqtw8axvngisrqZJr3CJ5/IOxCu95CGhFF0nFmm3fsDWV1x5F5zquCf283gH
+	7Xcs4PZk3IF3UtU1DPgj9SeiRuDSX3qZv6iClponFrODl7VTLzd/NsZBFCjg1SrD2tDbG9duSk4Gw
+	mIeiKNcWLwEOfCMtfNGw0pPywJn5VIkvReO3DZXLGzzGIXxDn4wbvndLqlUntsyWcWoWeWlHMueQz
+	bkmWLzD0SFBI4uNtgbPga+zHkMDfx7bQ8TEHi2C1JZ1f5MumELe+doaSx+CKs7XNtP37utaZbxInS
+	T9Vijt7g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x11w0-00000009NzN-3Yxx;
-	Mon, 31 Aug 2026 13:20:24 +0000
+	id 1x120Y-00000009P0s-2pGr;
+	Mon, 31 Aug 2026 13:25:06 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x11vx-00000009Nv3-34AZ
+	id 1x120U-00000009OzE-47Mg
 	for barebox@lists.infradead.org;
-	Mon, 31 Aug 2026 13:20:23 +0000
+	Mon, 31 Aug 2026 13:25:04 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C8907202476;
-	Mon, 31 Aug 2026 15:20:10 +0200 (CEST)
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 3E7AE201ED7;
+	Mon, 31 Aug 2026 15:24:57 +0200 (CEST)
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1x11vm-004GR4-22;
-	Mon, 31 Aug 2026 15:20:10 +0200
-Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1x11vm-0000000H7Av-1zVQ;
-	Mon, 31 Aug 2026 15:20:10 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 31 Aug 2026 15:20:14 +0200
-Subject: [PATCH 07/13] usb: hub: cancel pending port scans of a removed
- device
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1x120P-004GSB-0S;
+	Mon, 31 Aug 2026 15:24:57 +0200
+Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1x120P-000000034AG-09s9;
+	Mon, 31 Aug 2026 15:24:57 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: [PATCH master 3/4] fs: efivarfs: initialize dummy data written on variable creation
+Date: Mon, 31 Aug 2026 15:24:53 +0200
+Message-ID: <20260831132456.730833-3-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260831132456.730833-1-a.fatoum@pengutronix.de>
+References: <20260831132456.730833-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260831-usb-device-lifetime-v1-7-6adf4054b909@pengutronix.de>
-References: <20260831-usb-device-lifetime-v1-0-6adf4054b909@pengutronix.de>
-In-Reply-To: <20260831-usb-device-lifetime-v1-0-6adf4054b909@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788182410; l=3203;
- i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=6FYykOTtn/QEEZwVwAKXkwJKM4eifJUEiFllhS9geEU=;
- b=4S1GrQKkmK6F+Qug55X5XzKxz7hSB02he1SH7PCGzxT2udIzim7ZcqmpcO2/FCcMlOrlICG5z
- molImzRWYPoCK5fwVubGL3DYIjNV5PNp/MBhvvLn7Ug7Qq0nZptSkRP
-X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
- pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260831_062021_943524_D056DB0B 
-X-CRM114-Status: GOOD (  16.13  )
+X-CRM114-CacheID: sfid-20260831_062503_172185_0AE74E86 
+X-CRM114-Status: UNSURE (   9.23  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -78,9 +71,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  usb_hub_configure_ports() queues one scan entry per port and
-    leaves the draining to usb_device_list_scan(). That function is not reentrant:
-    when a hub is found during a scan, its ports are queued and [...] 
+ Content preview:  Building with clang reports: error: variable 'dummydata' is
+    uninitialized when passed as a const pointer argument here [-Werror,-Wuninitialized-const-pointer]
+    Fix this by initializing the variable. 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -104,124 +97,66 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Stat-Signature: ifc1xuu845nbdwn6youbyt6oiqkm5tzc
-X-Rspamd-Queue-Id: C3CE82024A9
-X-Spamd-Result: default: False [-57.81 / 15.00];
+X-Stat-Signature: 9dfbfqmqri51yoxubfrb3tigm3x3z1ib
+X-Rspamd-Queue-Id: 201AB202497
+X-Spamd-Result: default: False [-56.31 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:c01:1d::a2:received,2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received];
+	MID_CONTAINS_FROM(1.00)[];
+	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:c01:1d::a2:received,2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::54:received];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
 	DMARC_NA(0.00)[pengutronix.de];
-	TO_DN_ALL(0.00)[];
 	ARC_NA(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FROM_HAS_DN(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
 	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[lists.infradead.org:+];
-	RCVD_COUNT_FIVE(0.00)[5];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	RCPT_COUNT_ONE(0.00)[1];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US]
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 
-usb_hub_configure_ports() queues one scan entry per port and leaves the
-draining to usb_device_list_scan(). That function is not reentrant: when
-a hub is found during a scan, its ports are queued and processed by the
-loop that is already running rather than by a nested one.
+Building with clang reports:
 
-An entry therefore outlives the call that created it, and it holds
-pointers to both the usb_device and its usb_hub_device. Removing a hub
-frees the former in usb_free_device() and the latter in
-usb_hub_disconnect(), so any entry left in the list would be dereferenced
-after the free - hub->query_delay is read on every round.
+  error: variable 'dummydata' is uninitialized when passed as a
+    const pointer argument here [-Werror,-Wuninitialized-const-pointer]
 
-Drop the entries belonging to a device before it goes away.
-usb_remove_device() recurses into the children first, so every device in
-a removed subtree cleans up its own entries.
+Fix this by initializing the variable.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Assisted-by: Claude:claude-opus-5
+Fixes: 46b5a6d6527f ("fs: efivars: implement write support")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/usb/core/hub.c | 24 ++++++++++++++++++++++++
- drivers/usb/core/usb.c |  3 +++
- drivers/usb/core/usb.h |  1 +
- 3 files changed, 28 insertions(+)
+ fs/efivarfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index 3820b4cc90..b56c658f91 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -260,6 +260,30 @@ static int hub_port_reset(struct usb_device *hub, int port,
- }
- 
- 
-+/**
-+ * usb_hub_cancel_scans - drop pending port scans of a hub that goes away
-+ * @dev: the USB device that is about to be removed
-+ *
-+ * The scan list is filled by usb_hub_configure_ports() and drained by
-+ * usb_device_list_scan(). As the latter is not reentrant, a hub found
-+ * during a scan queues its ports and leaves them for the loop that is
-+ * already running. If that hub is removed before its entries have been
-+ * processed, they would be left pointing at the freed usb_device and its
-+ * freed usb_hub_device.
-+ */
-+void usb_hub_cancel_scans(struct usb_device *dev)
-+{
-+	struct usb_device_scan *usb_scan, *tmp;
-+
-+	list_for_each_entry_safe(usb_scan, tmp, &usb_scan_list, list) {
-+		if (usb_scan->dev != dev)
-+			continue;
-+
-+		list_del(&usb_scan->list);
-+		free(usb_scan);
-+	}
-+}
-+
- static void usb_hub_port_connect_change(struct usb_device *dev, int port,
- 					uint16_t portstatus, uint16_t portchange)
- {
-diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-index 3daa6b1d1d..bc80e66fcb 100644
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -620,6 +620,9 @@ void usb_remove_device(struct usb_device *usbdev)
- 
- 	for (i = 0; i < usbdev->maxchild; i++)
- 		usb_remove_device(usbdev->children[i]);
-+
-+	usb_hub_cancel_scans(usbdev);
-+
- 	if (usbdev->parent && usbdev->portnr)
- 		usbdev->parent->children[usbdev->portnr - 1] = NULL;
- 	list_del(&usbdev->list);
-diff --git a/drivers/usb/core/usb.h b/drivers/usb/core/usb.h
-index 0d4f80c21d..b3c224d88f 100644
---- a/drivers/usb/core/usb.h
-+++ b/drivers/usb/core/usb.h
-@@ -6,5 +6,6 @@ struct usb_device *usb_alloc_new_device(void);
- void usb_free_device(struct usb_device *dev);
- int usb_new_device(struct usb_device *dev);
- void usb_remove_device(struct usb_device *dev);
-+void usb_hub_cancel_scans(struct usb_device *dev);
- 
- #endif /* __CORE_USB_H */
-
+diff --git a/fs/efivarfs.c b/fs/efivarfs.c
+index 1f53c06d66d3..b9f514c51cd9 100644
+--- a/fs/efivarfs.c
++++ b/fs/efivarfs.c
+@@ -58,7 +58,7 @@ static int efivars_create(struct device *dev, const char *pathname,
+ 	struct efivarfs_inode *inode;
+ 	efi_guid_t vendor;
+ 	efi_status_t efiret;
+-	u8 dummydata;
++	u8 dummydata = 0;
+ 	char *name8;
+ 	s16 *name;
+ 	int ret;
 -- 
 2.47.3
 
