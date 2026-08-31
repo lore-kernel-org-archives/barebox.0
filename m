@@ -1,16 +1,16 @@
-Delivery-date: Mon, 31 Aug 2026 15:21:49 +0200
+Delivery-date: Mon, 31 Aug 2026 15:21:51 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x11xM-009I0r-1z
+	id 1x11xP-009I1S-0a
 	for lore@lore.pengutronix.de;
-	Mon, 31 Aug 2026 15:21:49 +0200
+	Mon, 31 Aug 2026 15:21:51 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id C7B80202476
-	for <lore@pengutronix.de>; Mon, 31 Aug 2026 15:21:44 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id A9AC5200700
+	for <lore@pengutronix.de>; Mon, 31 Aug 2026 15:21:47 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="2u/YwX5p";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=SzQ8TYGe;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,57 +19,57 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=2GiVuPKdD2NPVXl0KyJYmpNjfqc/oSupbJAY7nI+Oho=; b=2u/YwX5pgoRsZN2Qk4rkLpXDof
-	5rcK6+a51uH0tdoiD2yokoD5qSCo9Me7WGpcu+s3sRuiiW8BL5PfzgZ1CBaxkUV43+yP2t14oqoOY
-	ncfuZZFEbKATwOmbC3fCpu9tD8NdUTN8JxvG+O6aL82QViszOVIA8s8CPwS3ulq82CPzi6PrdUge/
-	foQu0xdnRNM7lFgvggIOfEcMv9g4rqvkqyMwxqPn68vRsK7xyDA7LJWuYjJbYxpgogcNtKtUmfTr3
-	79N3qBwzY4t9JwZhAqzz0H/vc4n8O30FMnNQu6jzuETyvbNDvBXTv23qoidBSsq3leDneO2O3JTss
-	cI+K3O8w==;
+	bh=eoCX3WqD+Yg20hU8ZLqGxz5OmApTsQbFr+FL+2o0huw=; b=SzQ8TYGeB4g8Sg/15elbPu8kKC
+	1zvzBOZrtK6srHeclRTPtLNW8fjovh5/yIHQMXqiFiCwj1nkc3Go00k+RVPb7HfaRzWx0voBPXazu
+	9Zw4IJzFxicenV7gLuqnhceRB5l9fF3T3FwhfCAGssrWUV18ZFfKe47kgvr/cEIJ+zgFtf+4wEd8/
+	lFb93dvoK7ySy2H2u1JXLPDpu6XS6a5/ye8nPe7q2hfo4wKfhhdl0w1l3nQ75chLPPDklsUMyx4EH
+	mGNg1gk3uNrZEeVBvI4engzEazy61HyhFeo9TbUcqHu7n4iyRFec/cDY7Aw/G+Xo6ThCmCB5IeD27
+	+zgHYIhA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x11w1-00000009O07-0zM0;
-	Mon, 31 Aug 2026 13:20:25 +0000
+	id 1x11vx-00000009NvE-0I5q;
+	Mon, 31 Aug 2026 13:20:21 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x11vx-00000009Nv5-489f
+	id 1x11vs-00000009NtD-2aUr
 	for barebox@lists.infradead.org;
-	Mon, 31 Aug 2026 13:20:24 +0000
+	Mon, 31 Aug 2026 13:20:20 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id DF3AE202487;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C2901202475;
 	Mon, 31 Aug 2026 15:20:10 +0200 (CEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1x11vm-004GR6-21;
+	id 1x11vm-004GQz-1y;
 	Mon, 31 Aug 2026 15:20:10 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1x11vm-0000000H7Av-21L2;
+	id 1x11vm-0000000H7Av-1vYF;
 	Mon, 31 Aug 2026 15:20:10 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Mon, 31 Aug 2026 15:20:16 +0200
-Subject: [PATCH 09/13] usb: hub: detect disconnected devices
+Date: Mon, 31 Aug 2026 15:20:09 +0200
+Subject: [PATCH 02/13] fs: devfs: count an open partition as an open device
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260831-usb-device-lifetime-v1-9-6adf4054b909@pengutronix.de>
+Message-Id: <20260831-usb-device-lifetime-v1-2-6adf4054b909@pengutronix.de>
 References: <20260831-usb-device-lifetime-v1-0-6adf4054b909@pengutronix.de>
 In-Reply-To: <20260831-usb-device-lifetime-v1-0-6adf4054b909@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788182410; l=5128;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788182410; l=2467;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=bFIwLpr7EqiqQhSgHYHj8n1bANhJ4+lv1wxCK1n2+LA=;
- b=VrZZ4Tws4lci0Cmolt2OZ7vRi9qIlFNNogivu62p67k2F27EPYhVPpOSDa4DlLFKywvJmfMOj
- zgWW2Zm4mFPDeV8MwdynApcxWL+K++fr2yfVBzexD6iyOsEzZrWd7+r
+ bh=+vWB6zhrNaT4JvBOtuTKhDMWzfclmpE31Xry7HmsxwA=;
+ b=5z97AWSZyazcLr+mr2jPmcv0qBAw2aE+njcbc0iPGdGxS86nRz393cXRdRUwVqHgmgOvVrjSQ
+ 43fUV+LntSqA8NbfpsqjOGeD4C2b2Dz8ee5BZ9hhyjAptDBC26Z9GQf
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260831_062022_207211_F6A1CABB 
-X-CRM114-Status: GOOD (  27.84  )
+X-CRM114-CacheID: sfid-20260831_062016_836413_95E8FCC6 
+X-CRM114-Status: GOOD (  16.18  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -77,9 +77,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  barebox never noticed that a USB device was unplugged. Running
-    "usb" again after removing a stick kept reporting it, /dev/disk0 and its
-   partitions stayed around and reads went to a device that was not [...] 
+ Content preview:  devfs_remove() refuses to remove a cdev that is open, but
+   opening a partition only increments the open count of the partition itself:
+    cdev_open() passes the master to the ->open operation, but counts [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -103,11 +103,11 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Stat-Signature: 6hfg3qfswxgqtjyank7rgithdrfio3jq
-X-Rspamd-Queue-Id: C7B80202476
-X-Spamd-Result: default: False [-57.81 / 15.00];
+X-Stat-Signature: yehwxpf9ocmx7dz1o3qjz6a4mwkc86b8
+X-Rspamd-Queue-Id: A9AC5200700
+X-Spamd-Result: default: False [-57.77 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-2.96)[99.83%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_IN_DNSWL_MED(-0.60)[2607:7c80:54:3::133:from,2a0a:edc0:0:c01:1d::a2:received,2a0a:edc0:0:1101:1d::28:received];
@@ -117,140 +117,97 @@ X-Spamd-Result: default: False [-57.81 / 15.00];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
 	TO_DN_ALL(0.00)[];
-	ARC_NA(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	ARC_NA(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[lists.infradead.org:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
 	RCPT_COUNT_ONE(0.00)[1];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US]
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 
-barebox never noticed that a USB device was unplugged. Running "usb"
-again after removing a stick kept reporting it, /dev/disk0 and its
-partitions stayed around and reads went to a device that was not there
-anymore.
+devfs_remove() refuses to remove a cdev that is open, but opening a
+partition only increments the open count of the partition itself:
+cdev_open() passes the master to the ->open operation, but counts on the
+cdev it was given. A disk whose partition is mounted therefore does not
+look busy at all.
 
-The machinery to remove a device was all there, it was just never
-reached. usb_scan_port() bailed out before usb_hub_port_connect_change()
-whenever the port reported no connection:
+Removing it then gets half done. The master is unlinked from cdev_list
+and its aliases and automount are dropped, then the loop over the
+partitions calls cdevfs_del_partition(), which does return -EBUSY for the
+mounted partition, but nobody looks at the return value. The partition
+stays in cdev_list with its ->master and ->priv pointing at the block
+device the caller is about to free, and the next access walks
+cdev_get_master() into freed memory.
 
-	if (!(portchange & USB_PORT_STAT_C_CONNECTION) ||
-	    !(portstatus & USB_PORT_STAT_CONNECTION))
-
-A port whose device has been unplugged has the change bit set - the hub
-latches it - and the connection bit clear, which is exactly what the
-second half of the condition filters out. The disconnect branch in
-usb_hub_port_connect_change() could therefore never run: getting there
-required the connection bit to be set, so its test for the very same bit
-being clear was always false.
-
-Let a connection change through when we have a device on that port, no
-matter what the connection bit says, and decide in
-usb_hub_port_connect_change() what it means: the device we knew about is
-gone in either case, so remove it and enumerate a new one only if the
-port reports a connection again. That also covers a device being swapped
-for another one between two scans, which used to end in
-
-	ERROR: register_device: already registered usb1-0
-
-with the new device unusable and the old one orphaned from the port
-array, so it could never be removed at all.
-
-The previous attempt to catch that case tested for USB_PORT_STAT_ENABLE
-being clear. That cannot work on xHCI: a SuperSpeed root port is enabled
-by the controller during link training, so it is already enabled the
-first time we look at it. Drop the test.
-
-Ports without a device keep the old behaviour and stay in the scan list
-until the connect timeout expires, so slow devices still get their
-second before we give up on them.
+A device with an open partition is in use, so count the open along the
+whole chain of masters instead of only on the cdev that was opened. The
+open count then means what it says and devfs_remove() needs no special
+case.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 Assisted-by: Claude:claude-opus-5
 ---
- drivers/usb/core/hub.c | 35 +++++++++++++++++++++++++----------
- 1 file changed, 25 insertions(+), 10 deletions(-)
+ fs/devfs-core.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index b56c658f91..18de8badf5 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -292,20 +292,29 @@ static void usb_hub_port_connect_change(struct usb_device *dev, int port,
- 	/* Clear the connection change status */
- 	usb_clear_port_feature(dev, port + 1, USB_PORT_FEAT_C_CONNECTION);
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index 522d883e1c..c106e65a04 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -249,6 +249,7 @@ static struct cdev *cdev_get_master(struct cdev *cdev)
+ int cdev_open(struct cdev *cdev, unsigned long flags)
+ {
+ 	struct cdev *master = cdev_get_master(cdev);
++	struct cdev *c;
+ 	int ret;
  
--	/* Disconnect any existing devices under this port */
--	if (dev->children[port] && !(portstatus & USB_PORT_STAT_CONNECTION)) {
-+	/*
-+	 * The connection changed, so whatever we knew about this port is
-+	 * gone. That covers a plain unplug as well as a device that has been
-+	 * replaced while we were not looking: the port reports a connection
-+	 * again in that case, but not the one we have a device for.
-+	 *
-+	 * Note we must not test for USB_PORT_STAT_ENABLE here to tell the
-+	 * two apart. An xHCI root hub enables a SuperSpeed port on its own
-+	 * during link training, so the port is already enabled the first
-+	 * time we see it.
-+	 */
-+	if (dev->children[port]) {
- 		dev_dbg(&dev->dev, "port%d: disconnect detected\n", port + 1);
- 		usb_remove_device(dev->children[port]);
-+		dev->children[port] = NULL;
- 
- 		if (!dev->parent && dev->host->usbphy)
- 			usb_phy_notify_disconnect(dev->host->usbphy, dev->speed);
--
--		return;
+ 	if (cdev->ops->open) {
+@@ -257,7 +258,14 @@ int cdev_open(struct cdev *cdev, unsigned long flags)
+ 			return ret;
  	}
  
--	/* Remove disabled but connected devices */
--	if (dev->children[port] && !(portstatus & USB_PORT_STAT_ENABLE))
--		usb_remove_device(dev->children[port]);
-+	/* Nothing connected anymore, we are done */
-+	if (!(portstatus & USB_PORT_STAT_CONNECTION))
-+		return;
- 
- 	/* Allocate a new device struct for the port */
- 	usb = usb_alloc_new_device();
-@@ -380,8 +389,15 @@ static void usb_scan_port(struct usb_device_scan *usb_scan)
- 	dev_dbg(&dev->dev, "port%d: Status 0x%04x Change 0x%04x\n",
- 			port + 1, portstatus, portchange);
- 
+-	cdev->open++;
 +	/*
-+	 * A connection change on a port we have a device for has to be
-+	 * handled even when the port reports no connection: that is how a
-+	 * disconnect looks. An empty port on the other hand keeps its change
-+	 * bit set from the power-on, so leave it in the scan list until the
-+	 * connect timeout expires to give slow devices time to show up.
++	 * A device with an open partition is in use itself, so count the
++	 * open along the whole chain up to the device the partition lives
++	 * on. Without that a disk with a mounted partition looks idle and
++	 * could be removed from under the filesystem.
 +	 */
- 	if (!(portchange & USB_PORT_STAT_C_CONNECTION) ||
--	    !(portstatus & USB_PORT_STAT_CONNECTION)) {
-+	    (!(portstatus & USB_PORT_STAT_CONNECTION) && !dev->children[port])) {
- 		if (get_time_ns() >= hub->connect_timeout) {
- 			dev_dbg(&dev->dev, "port%d: timeout\n", port + 1);
- 			/* Remove this device from scanning list */
-@@ -402,8 +418,7 @@ static void usb_scan_port(struct usb_device_scan *usb_scan)
- 		usb_clear_port_feature(dev, port + 1, USB_PORT_FEAT_C_BH_PORT_RESET);
++	for (c = cdev; c; c = c->master)
++		c->open++;
+ 
+ 	return 0;
+ }
+@@ -314,6 +322,7 @@ struct cdev *cdev_open_by_path_name(const char *name, unsigned long flags)
+ int cdev_close(struct cdev *cdev)
+ {
+ 	struct cdev *master = cdev_get_master(cdev);
++	struct cdev *c;
+ 
+ 	if (cdev->ops->close) {
+ 		int ret = cdev->ops->close(master);
+@@ -321,7 +330,8 @@ int cdev_close(struct cdev *cdev)
+ 			return ret;
  	}
  
--	/* A new USB device is ready at this point */
--	dev_dbg(&dev->dev, "port%d: USB dev found\n", port + 1);
-+	dev_dbg(&dev->dev, "port%d: connection change\n", port + 1);
+-	cdev->open--;
++	for (c = cdev; c; c = c->master)
++		c->open--;
  
- 	usb_hub_port_connect_change(dev, port, portstatus, portchange);
- 
+ 	return 0;
+ }
 
 -- 
 2.47.3
