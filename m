@@ -1,88 +1,140 @@
-Delivery-date: Tue, 01 Sep 2026 14:36:31 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Tue, 01 Sep 2026 17:14:37 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x1Nj4-009dxQ-17
+	id 1x1QC4-009gT4-0e
 	for lore@lore.pengutronix.de;
-	Tue, 01 Sep 2026 14:36:31 +0200
+	Tue, 01 Sep 2026 17:14:37 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id C8D1F200700
-	for <lore@pengutronix.de>; Tue, 01 Sep 2026 14:36:26 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 5BF35204974
+	for <lore@pengutronix.de>; Tue, 01 Sep 2026 17:14:32 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=xidSVgsM;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=xOC5xdL7;
+	dkim=pass header.d=gmail.com header.s=20251104 header.b="qbE/pNDt";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
-	dmarc=none
+	dmarc=pass (policy=none) header.from=gmail.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=KouSoPr3JYnr3sCz9DIXyP4RHJmmfuxsMTwtIp11PiA=; b=xidSVgsMf3ZGn63fKx1Qvbp6Pe
-	KU+74CXgwuHd/e+rjPuuaaIKJRi8gLM5e107dK/1oH5Ozj3IjGsjg2hPt+CycuUS4YRXkcew0yM1Z
-	JrDABUWncnvWdJmMi9OmELz4KaRJFuDHS4Veyp6CW6p+eG/oOIITo+B7HDCnF9z99I2tVdqI6hJ3Q
-	QayENtg0ktXzjqWEDtYeiLktvqtRzEIYdPg+AzYGTJocUfRgCXUyMnSP2q9QyyecTtks+8u1+amkU
-	C0v34UQ/s5mwRd1iS/6CA0INEzMrtZ3qgUrUX63EZCCIVO6eoXqEZHYdOCUQXuKZnl2MT5bHTAPzA
-	d+ZkXG2g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=HmzQs/e30tZJcBv1XKc4Mxtinve+svWUaMl/klG4lWg=; b=xOC5xdL7UUJmOf
+	TLWCdQM+xO2Kc7wL4VvVG+zWAy1juPN0zCkN6vG45wbcHrMJJvdqdOSzbRUh642YrzTfzzQ3onr71
+	XiuSTGqrwP/b+He81wOxKq1HU4iIVXswvPLqdrP68TpGYLw9Zg8h8vgsfwh0sRKHpndNyN0L2voBq
+	2IDhsUnf58tnCw9EJbcW1pcOJ+BjiD6btU5HLj2G2P8xrr5R1ZlTrk5DQ5DecMRcjmLWu1mD6pG99
+	tCbv40soHu/Kr1m0Cw19rXnrHXNcpxdIneDpWAFkf2OpspLWbJC3yn2qDMz7MzW8hcpl6J39ri308
+	8lQrnGcv+62RtKJKB/Tw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x1Nbh-0000000C6oS-340w;
-	Tue, 01 Sep 2026 12:28:53 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1x1QBO-0000000CRYx-0aLH;
+	Tue, 01 Sep 2026 15:13:54 +0000
+Received: from mail-wm1-x330.google.com ([2a00:1450:4864:20::330])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x1Nbf-0000000C6n7-0GIi
+	id 1x1QBL-0000000CRXO-32xq
 	for barebox@lists.infradead.org;
-	Tue, 01 Sep 2026 12:28:52 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 51846205830;
-	Tue, 01 Sep 2026 14:28:43 +0200 (CEST)
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1x1NbX-004QNs-0p;
-	Tue, 01 Sep 2026 14:28:43 +0200
-Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1x1NbX-0000000CbcI-0fIc;
-	Tue, 01 Sep 2026 14:28:43 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Fabian Pflug <f.pflug@pengutronix.de>
-Subject: [PATCH] defaultenv: don't pass environment path to zero env
-Date: Tue,  1 Sep 2026 14:28:31 +0200
-Message-ID: <20260901122834.3004512-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	Tue, 01 Sep 2026 15:13:52 +0000
+Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-49b965570d7so10889635e9.0
+        for <barebox@lists.infradead.org>; Tue, 01 Sep 2026 08:13:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1788275629; x=1788880429; darn=lists.infradead.org;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:from:to:cc:subject:date:message-id
+         :reply-to:content-type;
+        bh=HmzQs/e30tZJcBv1XKc4Mxtinve+svWUaMl/klG4lWg=;
+        b=qbE/pNDtRk50UUAmkO2hAfsPN7x1g93Dk81skL8reLQBF2LMvJNYzrc+qwdLD7Kt9u
+         SGIo6dttH8ndReWUnwmkNqgilH48ni07NuXdLPgwSEyKKUMYd2DmGHB/rtvIATCTNx2y
+         6VikIGHbtOEb8IyZCAgF7/o6XgjceVq4btI+DXz2MDOIvZ3Vw5gpqJihaDD0dAwrFpB8
+         dbGYiKDiQ/racJc4m4eYUDXNfDlOdrCgAlnnOaM8gBlGEolkBkxZAAmNLvQ9ULgM1KVe
+         RIYNpmA9Cc2u2SEaIQhvDnSmGw1nB0D5zURfh2dL+NXglsiycqKPy+CwOIHtlbscBI3/
+         SKkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1788275629; x=1788880429;
+        h=cc:to:content-transfer-encoding:content-type:mime-version
+         :message-id:date:subject:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to:content-type;
+        bh=HmzQs/e30tZJcBv1XKc4Mxtinve+svWUaMl/klG4lWg=;
+        b=KMCDfxTFFwm4AF8UV83AD8xABJNE+oTjVFGnm7ZbMRWXvhWzUvjhVb0CqwViOBVTg3
+         pimx6PC1FeCjO7PdczUVPOnhO6B8BxoAJoGP+72UYW3XR9uEzqRibBjzgbWpLuyVNuca
+         ixgGQU1mS1HwNP7I5LYKMD38kkQSQe1A811sY4aauJBUsuBt5rLSZVjua7Ik/zi2FNnj
+         +57MEVb1ZtxSdrc0g6/1SOeBGgnIiEty79cVrVcmZ7D8Wq4qNN/ThC4rJproC13Ch2vM
+         Y+Q5NS86hZBrBEvOJRj55l5JcIlG00Wby8k+JwpV8+Ob6Wajk4c7QBn4NhRdct1a1/Qy
+         NIiQ==
+X-Gm-Message-State: AFuF++kkP6MOFwkUQEYf3qmR8BTWZhJ9F/8zGgPTyt1gvpDc7VYCvw1d
+	HfPLACgStuCN5TtlOxq2jsnypZasizkKDHb+PsOgwjLn4kmHTv9mpQXDZ2K9ZA==
+X-Gm-Gg: AR+sD13goDWGFuSOklB/pxmfjhZXSL9TQ7Ve7P9hGCN/LPqS57SoU/BW+pVkxmlUsu1
+	LaLr45kI6HfhdNkY4Dsla+ohUEYc5sxTe0lrkonx34ffSvO5f7TgvdHKvYxvpRcWALoII0GXCHc
+	PZZNJhf+kNRbSDNfbo8mfIIvZVaotrcw5Lym7kcxkzq3wwaywHjq22mvKqGX+YPSPjYUOCoHZ24
+	CfX+J6TJo1RuZnaqQmmJnu05cC6n0qhL4sk13dtMxWIZUbx3ESa+7CEIfiJZUeXXmC7L1rViC0P
+	w92pS++Sap9qMCMBWggGV/lImm4jwxNQyDX8GiUlip6BcwuGiWYbVgyOS7KSo0E904rGk2i7G0/
+	RI/CLe00Rm/yjdCZwS9AI6LEggJ6+lGqk73glkzW5Xhd4BAlV9V6QEWZUhYv8BSaFJXh1SRgjgZ
+	HfwpP/35ElikY+7g9swE2QjLG94U24TSg0V74JUqso6sMKrC1k94V5N3fW0s2wPrc11yDHbGtBj
+	uIqtiQ44WhQd0+SQc8Sy1LsAdtX+P2N8i5V9LNrWcCnUPfKD3DECfs13GDz46ziEHMh48tJWnk9
+	943GxQ==
+X-Received: by 2002:a05:600c:1393:b0:49b:12c2:104f with SMTP id 5b1f17b1804b1-49b91c2660amr495694155e9.1.1788275628924;
+        Tue, 01 Sep 2026 08:13:48 -0700 (PDT)
+Received: from [192.168.0.233] (2a02-8388-e6ca-5780-e161-768d-5c97-84d0.cable.dynamic.v6.surfer.at. [2a02:8388:e6ca:5780:e161:768d:5c97:84d0])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49b955e7906sm303549035e9.1.2026.09.01.08.13.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Sep 2026 08:13:48 -0700 (PDT)
+From: Andrei Lalaev <andrey.lalaev@gmail.com>
+Subject: [RFC PATCH 0/6] Add Raspberry Pi 5 initial support
+Date: Tue, 01 Sep 2026 17:12:55 +0200
+Message-Id: <20260901-add-rpi5-support-v1-0-129784fe06fa@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/yXMTQ6CQAxA4auQrm0ygwLiVYiL+SlQFzBpB2NCu
+ LujLL/FezsoCZPCo9pB6M3K61JgLxWE2S0TIcdiqE3dmt5YdDGiJG5Qt5RWyXj3o7tdyYbed1C
+ yJDTy578cnqd18y8K+feB4/gCA9U40HQAAAA=
+X-Change-ID: 20260901-add-rpi5-support-8bfa43e1c9b7
+To: barebox@lists.infradead.org
+Cc: Andrei Lalaev <andrey.lalaev@gmail.com>
+X-Mailer: b4 0.16.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788275628; l=2488;
+ i=andrey.lalaev@gmail.com; s=20260901; h=from:subject:message-id;
+ bh=baqS3SS1NHsEfUirEiNobN4Rm7MNOTcvegmq1qphGgU=;
+ b=8egel4C8352c0cY1qNRWf2sG3vMmcgFABGl48qU2mrutgIjRD4lHkUZYtzuqolUEFEKTzH6qk
+ 2UFmy048azmAJFCh7iQAT2/mKIKtboz2t6yCuwqua0sWjIAesNsoUWv
+X-Developer-Key: i=andrey.lalaev@gmail.com; a=ed25519;
+ pk=YHk+K3q98GV/1CigmrEAQ+Vc0o+GlFWt3j94jvrEh6o=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260901_052851_248948_D1A46D8D 
-X-CRM114-Status: GOOD (  12.12  )
-X-Spam-Score: -1.9 (-)
+X-CRM114-CacheID: sfid-20260901_081351_786648_CC845608 
+X-CRM114-Status: GOOD (  10.69  )
+X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
  message has been attached to this so you can view it or label
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  bareboxenv -z sets ENVFS_FLAGS_FORCE_BUILT_IN, which makes
-    envfs_save() emit a bare header and never look at its directory argument.
-    Passing CONFIG_DEFAULT_ENVIRONMENT_PATH there was pointless, but ha [...]
-    
+ Content preview:  This patchseries adds initial support of Raspberry Pi 5. Since
+    the most peripheral is routed though RP1 south bridge, only debug UART and
+    SD card are supported. Boot log: NOTICE: BL31: v2.6(release):v2.6-240-gfc45bc492
+    NOTICE: BL31: Built : 12:55:13, Dec 4 2024 
  
- Content analysis details:   (-1.9 points, 5.0 required)
+ Content analysis details:   (-2.1 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
- -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
+ -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/, no
+                             trust
+                             [2a00:1450:4864:20:0:0:0:330 listed in]
+                             [list.dnswl.org]
+  0.0 SPF_HELO_NONE          SPF: HELO does not publish an SPF Record
  -0.0 SPF_PASS               SPF: sender matches SPF record
+ -0.1 DKIM_VALID_EF          Message has a valid DKIM or DK signature from
+                             envelope-from domain
+ -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
+ -0.1 DKIM_VALID_AU          Message has a valid DKIM or DK signature from author's
+                             domain
+  0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
  -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
                              [score: 0.0000]
-  0.0 DMARC_MISSING          Missing DMARC policy
+  0.0 FREEMAIL_FROM          Sender email is commonly abused enduser mail provider
+                             [andrey.lalaev(at)gmail.com]
+ -0.0 DMARC_PASS             DMARC pass policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -96,85 +148,102 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Stat-Signature: 55km1nj4isnuasugehgsnnsa5mmhaomw
-X-Rspamd-Queue-Id: C8D1F200700
-X-Spamd-Result: default: False [-56.31 / 15.00];
-	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[99.99%];
+X-Stat-Signature: imck1fgwkgykn7iz5uogba9x8mqrmbpi
+X-Rspamd-Queue-Id: 5BF35204974
+X-Spamd-Result: default: False [-7.91 / 15.00];
+	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	MID_CONTAINS_FROM(1.00)[];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	RCVD_IN_DNSWL_MED(-0.60)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::54:received,2a0a:edc0:0:c01:1d::a2:received];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_MISSING_CHARSET(0.50)[];
+	DMARC_POLICY_ALLOW(-0.50)[gmail.com,none];
 	MAILLIST(-0.20)[mailman];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	R_SPF_ALLOW(-0.20)[+mx:c];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,gmail.com:s=20251104];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCVD_IN_DNSWL_NONE(0.00)[2a00:1450:4864:20::330:received];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
+	FREEMAIL_FROM(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+];
-	RCPT_COUNT_THREE(0.00)[3];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com];
+	PREVIOUSLY_DELIVERED(0.00)[barebox@lists.infradead.org];
+	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[andreylalaev@gmail.com,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	RCVD_COUNT_FIVE(0.00)[5];
+	MID_RHS_MATCH_FROM(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_HAM(-0.00)[-0.984];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,gmail.com:+];
+	TAGGED_RCPT(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	FORGED_SENDER_MAILLIST(0.00)[]
+	DWL_DNSWL_NONE(0.00)[gmail.com:dkim]
 X-Rspamd-Action: no action
 
-bareboxenv -z sets ENVFS_FLAGS_FORCE_BUILT_IN, which makes envfs_save()
-emit a bare header and never look at its directory argument. Passing
-CONFIG_DEFAULT_ENVIRONMENT_PATH there was pointless, but harmless until
-the Kconfig sync made auto.conf no longer quote string options:
-The result is that the quotes became part of the value.
+This patchseries adds initial support of Raspberry Pi 5.
+Since the most peripheral is routed though RP1 south bridge,
+only debug UART and SD card are supported.
 
-This is triggered by OpenEmbedded's barebox.bbclass for example, which
-overrides the option on the make command line in the old, quoted form:
+Boot log:
+  NOTICE:  BL31: v2.6(release):v2.6-240-gfc45bc492
+  NOTICE:  BL31: Built : 12:55:13, Dec  4 2024
 
-  oe_runmake CONFIG_DEFAULT_ENVIRONMENT_PATH="\"${BAREBOX_DEFAULT_ENV} ${BAREBOX_ENV_DIR}\""
+  barebox 2026.08.0-00096-g549bcd6aa802 Tue Sep 1 07:54:36 CEST 2026
 
-The recipe's quotes split this value apart:
+  Board: Raspberry Pi 5
+  ERROR: regulator-fixed sd-vcc-reg.of: probe permanently deferred
+  WARNING: sdhci-bcmstb 1000fff000.mmc@fff000.of: Failed to get 'vmmc' regulator (ignored).
+  sdhci-bcmstb 1000fff000.mmc@fff000.of: registered as mci0
+  ERROR: regulator-fixed wl-on-reg.of: probe permanently deferred
+  malloc space: 0x1fd00000 -> 0x3f70ffff (size 506.1 MiB)
+  mci0: detected SD card version 3.0
+  mci0: registered disk0
+  environment load /boot/barebox.env: No such file or directory
+  Maybe you have to create the partition.
+  barebox@Raspberry Pi 5 Model B Rev 1.0:/
 
-  bareboxenv -z "" /path/to/env"" defaultenv/barebox_zero_env
-
-and bareboxenv takes the environment directory for its output file and
-then aborts with "open: Is a directory".
-
-Thus drop the argument. The generated file remains unchanged.
-
-It's probably also apt to drop the quotes from newer versions of the
-barebox.bbclass even though it doesn't currently lead to other errors.
-
-Fixes: 243abef11b8f ("kconfig: sync with Linux v6.18")
-Reported-by: Fabian Pflug <f.pflug@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Andrei Lalaev <andrey.lalaev@gmail.com>
 ---
- defaultenv/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Andrei Lalaev (6):
+      mci: add driver for Broadcom SDHCI
+      ARM: rpi: add Raspberry Pi 5 support
+      Documentation: bcm283x: add Raspberry Pi 5 support
+      arm: dts: bcm2712-rpi: specify clock frequency for uart
+      arm: dts: bcm2712-rpi: disable wifi SDIO
+      bcm283x: debug_ll: add Raspberry Pi 5 UART support
 
-diff --git a/defaultenv/Makefile b/defaultenv/Makefile
-index 79edf5604cf6..6c429d5c3b0b 100644
---- a/defaultenv/Makefile
-+++ b/defaultenv/Makefile
-@@ -32,7 +32,7 @@ $(obj)/barebox_default_env.h: $(obj)/barebox_default_env$(bbenv-suffix-y) FORCE
- 	$(call if_changed,env_h)
- 
- quiet_cmd_env_zero = ENVZ    $@
--cmd_env_zero = ($(objtree)/scripts/bareboxenv -z "$(CONFIG_DEFAULT_ENVIRONMENT_PATH)" $@)
-+cmd_env_zero = $(objtree)/scripts/bareboxenv -z "" $@
- 
- $(obj)/barebox_zero_env: FORCE
- 	$(call if_changed,env_zero)
--- 
-2.47.3
+ Documentation/boards/bcm2835.rst          |   4 +-
+ arch/arm/boards/raspberry-pi/lowlevel.c   |   3 +
+ arch/arm/boards/raspberry-pi/rpi-common.c |  11 ++
+ arch/arm/configs/rpi_v8a_defconfig        |   2 +
+ arch/arm/dts/Makefile                     |   1 +
+ arch/arm/dts/bcm2712-rpi-5.dts            |   4 +
+ arch/arm/dts/bcm2712-rpi.dtsi             |  14 +++
+ arch/arm/include/asm/system_info.h        |   3 +
+ arch/arm/mach-bcm283x/Kconfig             |   6 ++
+ arch/arm/mach-bcm283x/core.c              |   4 +-
+ common/Kconfig.debug_ll                   |   8 ++
+ drivers/mci/Kconfig                       |   5 +
+ drivers/mci/Makefile                      |   1 +
+ drivers/mci/bcmstb-sdhci.c                | 165 ++++++++++++++++++++++++++++++
+ include/mach/bcm283x/debug_ll.h           |  10 ++
+ include/mach/bcm283x/mbox.h               |   1 +
+ include/mach/bcm283x/platform.h           |   1 +
+ 17 files changed, 240 insertions(+), 3 deletions(-)
+---
+base-commit: 42e510a258d7c276c35f06c103e685c80d376eab
+change-id: 20260901-add-rpi5-support-8bfa43e1c9b7
+
+Best regards,
+--  
+Andrei Lalaev <andrey.lalaev@gmail.com>
 
 
 
