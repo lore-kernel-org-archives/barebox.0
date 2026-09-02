@@ -1,70 +1,57 @@
-Delivery-date: Wed, 02 Sep 2026 10:47:56 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Wed, 02 Sep 2026 10:54:40 +0200
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x1gdP-009wtc-2g
+	id 1x1gjw-009wyg-0B
 	for lore@lore.pengutronix.de;
-	Wed, 02 Sep 2026 10:47:56 +0200
+	Wed, 02 Sep 2026 10:54:40 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 195DB205858
-	for <lore@pengutronix.de>; Wed, 02 Sep 2026 10:47:56 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 8C24D201ED7
+	for <lore@pengutronix.de>; Wed, 02 Sep 2026 10:54:40 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=QHqHS7kf;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ddF3HZaA;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=JCf6aAbzlk7aEZkvECTs70EQl2S4jQOtnso1KIqlbCI=; b=QHqHS7kfDmuFEMoWXWk5SdtNBs
-	sv1ZcpVSXgNq7I+G5H7b4RwPpfvOovVIRUWp+rolVhNGo/LltyIS8p1O5axVifdMvOl/NF4rz5Oi8
-	lss3pZ5eUngFFOLhu1dTZ7zuSwZx4FG8Ja2b2a+anmPOTMQlUkVA5XtDhTtNjGxRTEAbrBMFlNrBe
-	F/WbcNPOmm7f4j0KApukwlcnaDBbZALRmS2fuAYs9Zji6Lyk2e6LQbZTHCBEN178Db4vjUL+9vtaR
-	yJJ+nnif3s6SD/SnLDFF4ud9CbbrVuyYA2vyUKyx7CA/rp0oPHm7PQjecZgz/JnKjQekad8mqZdlk
-	UyZop79Q==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Date:
+	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:To:Subject:From
+	:Message-ID:Reply-To:MIME-Version:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=HNleJUEvNxnVypNeDCHayG6XdDuOM82E/ewUswUFtso=; b=ddF3HZaA5pPmNBhauG+ikyYubQ
+	X7WKH6XVEJy9guzRXEeOSNbIuoVGs0tjr97fqg84c5eERXhBSbfSIcCBomKPdIl2iBwuwWS1O67Vn
+	gxbbVf42XBMGr64TQmOLTXU8Ykz4rn9IdFxnbFMtNqn5x8d5LbHr2EnsmFBvZHA0sTuvMFT0h3Acg
+	zCZ+/XMR22Em+4mwVyuoFuOStYkPUI2TCcmRTIurmfusA8T8r8LlsrAFlL/BD3dkItNzftGvbR8FT
+	LaREqHDsZ278vpjQjqju/WNPeNeKG/DKpd1m3hmwgPxCsl5fgw7GzUilUCheh1EgH5KcpzfLauyb8
+	5XhFlg9Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x1gRz-0000000E776-05RF;
-	Wed, 02 Sep 2026 08:36:07 +0000
+	id 1x1giq-0000000E9aa-0Cnp;
+	Wed, 02 Sep 2026 08:53:32 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x1gRv-0000000E75a-2KIS
+	id 1x1gim-0000000E9a0-0lk7
 	for barebox@lists.infradead.org;
-	Wed, 02 Sep 2026 08:36:05 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 680DA20582F;
-	Wed, 02 Sep 2026 10:36:01 +0200 (CEST)
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1x1gRt-004YtK-17;
-	Wed, 02 Sep 2026 10:36:01 +0200
-Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1x1gRt-0000000EPRq-15oC;
-	Wed, 02 Sep 2026 10:36:01 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20260831192958.1468375-1-a.fatoum@pengutronix.de>
-References: <20260831192958.1468375-1-a.fatoum@pengutronix.de>
-Subject: Re: [PATCH] video: efi_gop: reject Blt-only graphics output
-Message-Id: <178833816125.3432916.12999449269569978332.b4-ty@pengutronix.de>
-Date: Wed, 02 Sep 2026 10:36:01 +0200
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+	Wed, 02 Sep 2026 08:53:30 +0000
+Received: from [127.0.0.1] (unknown [IPv6:2a02:560:5dd5:4b00:9ebf:dff:fe00:fdb5])
+	(Authenticated sender: sha@pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 2A52420177F;
+	Wed, 02 Sep 2026 10:53:26 +0200 (CEST)
+Message-ID: <1ac8589a-05d1-45b5-9512-b8d28e206536@pengutronix.de>
+From: "Sascha Hauer" <s.hauer@pengutronix.de>
+Subject: Re: [PATCH] defaultenv: don't pass environment path to zero env
+To: "Ahmad Fatoum" <a.fatoum@pengutronix.de>
+In-Reply-To: <27d45798-6876-4e70-b2e0-9ddcf3f9a732@pengutronix.de>
+References: <20260901122834.3004512-1-a.fatoum@pengutronix.de>
+ <178833859741.3676557.11754066543148243970.b4-ty@pengutronix.de>
+ <27d45798-6876-4e70-b2e0-9ddcf3f9a732@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 02 Sep 2026 08:53:25 +0000
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260902_013603_758758_C669C0DF 
-X-CRM114-Status: UNSURE (   7.67  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260902_015328_369556_876DAAB4 
+X-CRM114-Status: GOOD (  17.02  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -72,10 +59,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Mon, 31 Aug 2026 21:29:53 +0200, Ahmad Fatoum wrote: >
-    A GOP in PixelBltOnly mode has neither a linear framebuffer nor a pixel >
-    layout, so there is nothing to draw into. Bail out of both the mode [...]
-    
+ Content preview:  On 2026-09-02 10:45, Ahmad Fatoum wrote: > Hello Sascha, >
+    > On 9/2/26 10:43 AM, Sascha Hauer wrote: > > > > On Tue, 01 Sep 2026 14:28:31
+    +0200, Ahmad Fatoum wrote: > >> bareboxenv -z sets ENVFS_FLAGS [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -97,60 +83,82 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: barebox@lists.infradead.org, Fabian
+ Pflug <f.pflug@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Rspamd-Queue-Id: 195DB205858
-X-Spamd-Result: default: False [-57.81 / 15.00];
+X-Rspamd-Queue-Id: 8C24D201ED7
+X-Spamd-Result: default: False [-55.41 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
+	MISSING_MIME_VERSION(2.00)[];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:c01:1d::a2:received,2a0a:edc0:0:1101:1d::28:received,2607:7c80:54:3::133:from];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_SPF_ALLOW(-0.20)[+mx:c];
-	MAILLIST(-0.20)[mailman];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
+	MAILLIST(-0.20)[mailman];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	RCVD_COUNT_THREE(0.00)[3];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
+	ARC_NA(0.00)[];
+	FORGED_SENDER(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
+	TO_DN_SOME(0.00)[];
 	DMARC_NA(0.00)[pengutronix.de];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
+	RCVD_TLS_LAST(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
-	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	TO_DN_SOME(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Stat-Signature: tapmg76dsq5eq41ef1g354j45wd7iwa8
+X-Stat-Signature: 6cnsz5wnai5gzsdk531z8y91on4zz4e7
 X-Rspamd-Server: mx1
 
+On 2026-09-02 10:45, Ahmad Fatoum wrote:
+> Hello Sascha,
+>=20
+> On 9/2/26 10:43 AM, Sascha Hauer wrote:
+> >=20
+> > On Tue, 01 Sep 2026 14:28:31 +0200, Ahmad Fatoum wrote:
+> >> bareboxenv -z sets ENVFS_FLAGS_FORCE_BUILT_IN, which makes envfs_save()
+> >> emit a bare header and never look at its directory argument. Passing
+> >> CONFIG_DEFAULT_ENVIRONMENT_PATH there was pointless, but harmless until
+> >> the Kconfig sync made auto.conf no longer quote string options:
+> >> The result is that the quotes became part of the value.
+> >>
+> >> This is triggered by OpenEmbedded's barebox.bbclass for example, which
+> >> overrides the option on the make command line in the old, quoted form:
+> >>
+> >> [...]
+> >=20
+> > Applied, thanks!
+> >=20
+> > [1/1] defaultenv: don't pass environment path to zero env
+> >       https://git.pengutronix.de/cgit/barebox/commit/?id=3Dbe574e455b3a=
+ (link may not be stable)
+>=20
+> Please also backport to master.
 
-On Mon, 31 Aug 2026 21:29:53 +0200, Ahmad Fatoum wrote:
-> A GOP in PixelBltOnly mode has neither a linear framebuffer nor a pixel
-> layout, so there is nothing to draw into. Bail out of both the mode
-> setup and the probe instead of making up a 4 bpp format; the probe
-> check is needed as register_framebuffer() ignores the initial mode
-> setup's error. Query the mode before switching to it, so an unusable
-> mode doesn't change the display state.
-> 
-> [...]
+Applied to master in the first place already.
 
-Applied, thanks!
+Sascha
 
-[1/1] video: efi_gop: reject Blt-only graphics output
-      https://git.pengutronix.de/cgit/barebox/commit/?id=e72448d0c116 (link may not be stable)
-
-Best regards,
--- 
-Sascha Hauer <s.hauer@pengutronix.de>
+--
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 
