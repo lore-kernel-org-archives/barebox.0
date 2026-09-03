@@ -1,67 +1,64 @@
-Delivery-date: Thu, 03 Sep 2026 18:14:27 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Thu, 03 Sep 2026 18:14:28 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x2A55-00APdK-0J
+	id 1x2A55-00APdh-28
 	for lore@lore.pengutronix.de;
-	Thu, 03 Sep 2026 18:14:27 +0200
+	Thu, 03 Sep 2026 18:14:28 +0200
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=H7Kn9+zS;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=BLZy4sm4;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 98A3F205925
-	for <lore@pengutronix.de>; Thu, 03 Sep 2026 18:14:23 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 2F0E6205927
+	for <lore@pengutronix.de>; Thu, 03 Sep 2026 18:14:24 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=idRmAzHNNJp/EcxexZjT8bElT47JjAkgXEqOaWHT6Tw=; b=H7Kn9+zSXXJ20c
-	TDkCEWJt9Qc6+gNm21YtKV188R+9j9mRzIRY5hfZETWOq2CqeZdXiZXKHw1gMN2+cEzQhY0tv8N2K
-	eCATNAZrLn8tFEagB1Ttr9OtaZkwZF5wcFxdhuoqOgyD//nFfIKzsVrEA46OK5lHImKS0dfEuTdY1
-	0H2g2DErwZtu8JXm/MMsajHi61ZQGC2CRrVJefQ+DzEZbizyn25aG8NewULAbmgHAueQk+BzYjlCG
-	yZ/Ilm9cNzbXF9N9Sv5RpXGv5KykzBG3fkp93PtYeu0ndixMpg2k7ybUmuvOCoweADhM49nrY2BGd
-	tujUjFcFipGj4rW2m2zw==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Ip1UShwG978aaEnmXqc33FVsVT64PXA8VhEO57NiJBQ=; b=BLZy4sm4HzKrci1VOYwh4eJAFH
+	uyd5pvKpjYQDNrt/K5kE4igt2n5XIbUYhNgiVtPgKNoSGZNjHRkXGR4MVQ7+gxhJURKgzVMEPPKrx
+	6ajwesf0KwtN6x8zAThy7iKEzF6h7dbFpBuhVmFegTXixWd+XB+2Q5k1WZgUSw9rSxIVqyMijg2+f
+	XNU9kczkUmwVGUvdVGy3qu9g/fy4DNjScUQIh75b5pLFOCiiDegr2Xoc1WWv/XT1yemxxKNY7qsmL
+	A6T4jq0cHnPa47VeEWdWK1+571XMd3H9JqNfT6LlscIor7IG9+DbRwJc62sGNyp12md1xi18LyZZ2
+	IqxmG8UQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x2A3a-000000008Dh-0aVz;
-	Thu, 03 Sep 2026 16:12:54 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1x2A3b-000000008E2-1C9Q;
+	Thu, 03 Sep 2026 16:12:55 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x2A3W-000000008Bu-3Vbm
+	id 1x2A3W-000000008Bw-3VXH
 	for barebox@lists.infradead.org;
-	Thu, 03 Sep 2026 16:12:52 +0000
+	Thu, 03 Sep 2026 16:12:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id F2D90205858;
-	Thu, 03 Sep 2026 18:12:42 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 06F82205882;
+	Thu, 03 Sep 2026 18:12:43 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <m.tretter@pengutronix.de>)
-	id 1x2A3O-004mPK-2r;
+	id 1x2A3O-004mPK-2y;
 	Thu, 03 Sep 2026 18:12:42 +0200
 From: Michael Tretter <m.tretter@pengutronix.de>
-Subject: [PATCH 0/4] arm: socfpga: iossm: cleanup and fix SDRAM setup
-Date: Thu, 03 Sep 2026 18:12:41 +0200
-Message-Id: <20260903-socfpga-fix-sdram-setup-v1-0-0daa166adbca@pengutronix.de>
+Date: Thu, 03 Sep 2026 18:12:42 +0200
+Subject: [PATCH 1/4] arm: socfpga: iossm: remove unused num_port
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAHmcmWoC/x2MQQqAIBAAvxJ7bkFLjPpKdBBbaw+VuBWB9Pek4
- 8DMZBBKTAJDlSHRzcLHXkDXFfjV7Qshz4WhUY1VvWpRDh/i4jDwgzInt6HQeUW0yhttrel6TVD
- qmKgo/3mc3vcDps9sxGkAAAA=
-X-Change-ID: 20260903-socfpga-fix-sdram-setup-60c41664791e
+Message-Id: <20260903-socfpga-fix-sdram-setup-v1-1-0daa166adbca@pengutronix.de>
+References: <20260903-socfpga-fix-sdram-setup-v1-0-0daa166adbca@pengutronix.de>
+In-Reply-To: <20260903-socfpga-fix-sdram-setup-v1-0-0daa166adbca@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Michael Tretter <m.tretter@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260903_091251_027679_6AF64C7B 
-X-CRM114-Status: UNSURE (   8.28  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260903_091251_031300_3016A008 
+X-CRM114-Status: GOOD (  13.06  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -69,10 +66,11 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  barebox needs to wait for PLL lock before starting the SDRAM
-    calibration in the EMIF. A developer can configure the PLLs that are used
-    for the EMIF at device configuration time. The SDM firmware writes the configured
-    PLLs into the handoff data. 
+ Content preview:  The dualport configuration is read from the handoff table
+   and used for configuration, but num_port is never read or used. Remove the
+    unused field. Signed-off-by: Michael Tretter <m.tretter@pengutronix.de> ---
+    arch/arm/mach-socfpga/agilex5-sdram.c | 5 ----- arch/arm/mach-socfpga/iossm_mailbox.c
+    | 5 ++--- arch/arm/mach-socfpga/iossm_mailbox.h | 2 [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -97,14 +95,14 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: 879mxxsntj5qp46ujczyyio43i7khq8h
-X-Rspamd-Queue-Id: 98A3F205925
+X-Stat-Signature: 7w77jjgmo76quory5rrk7qf3n4fmh371
+X-Rspamd-Queue-Id: 2F0E6205927
 X-Spamd-Result: default: False [-57.81 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:c01:1d::a2:received,2a0a:edc0:0:1101:1d::54:received,2607:7c80:54:3::133:from];
+	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:1101:1d::54:received,2a0a:edc0:0:c01:1d::a2:received,2607:7c80:54:3::133:from];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
@@ -132,40 +130,80 @@ X-Spamd-Result: default: False [-57.81 / 15.00];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 
-barebox needs to wait for PLL lock before starting the SDRAM calibration
-in the EMIF.
+The dualport configuration is read from the handoff table and used for
+configuration, but num_port is never read or used.
 
-A developer can configure the PLLs that are used for the EMIF at device
-configuration time. The SDM firmware writes the configured PLLs into the
-handoff data.
-
-Up until now, barebox always waited for the EMIF instance 0 PLL A, which
-is likely to be the configured PLL, but actually barebox should wait for
-the actually configured PLL.
-
-Patches 1-3 are preparatory cleanup for Patch 4, which actually reads
-the configuration from the handoff data and fixes the poll for the PLL
-lock.
+Remove the unused field.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
-Michael Tretter (4):
-      arm: socfpga: iossm: remove unused num_port
-      arm: socfpga: iossm: fix macro
-      arm: socfpga: iossm: refactor register access
-      arm: socfpga: iossm: wait for PLL lock from handoff table
+ arch/arm/mach-socfpga/agilex5-sdram.c | 5 -----
+ arch/arm/mach-socfpga/iossm_mailbox.c | 5 ++---
+ arch/arm/mach-socfpga/iossm_mailbox.h | 2 --
+ 3 files changed, 2 insertions(+), 10 deletions(-)
 
- arch/arm/mach-socfpga/agilex5-sdram.c | 11 +++---
- arch/arm/mach-socfpga/iossm_mailbox.c | 72 ++++++++++++++++++++++++-----------
- arch/arm/mach-socfpga/iossm_mailbox.h |  4 +-
- 3 files changed, 58 insertions(+), 29 deletions(-)
----
-base-commit: a59cb95e1133c7f4844c68398c570694d1c7d9ed
-change-id: 20260903-socfpga-fix-sdram-setup-60c41664791e
+diff --git a/arch/arm/mach-socfpga/agilex5-sdram.c b/arch/arm/mach-socfpga/agilex5-sdram.c
+index fa940958d104..4a28713a3588 100644
+--- a/arch/arm/mach-socfpga/agilex5-sdram.c
++++ b/arch/arm/mach-socfpga/agilex5-sdram.c
+@@ -98,11 +98,6 @@ static int populate_ddr_handoff(struct altera_sdram_plat *plat, struct io96b_inf
+ 	plat->dualport = FIELD_GET(BIT(0), handoff_table[PORT_EMIF_CONFIG_OFFSET]);
+ 	pr_debug("%s: dualport from handoff: 0x%x\n", __func__, plat->dualport);
+ 
+-	if (plat->dualport)
+-		io96b_ctrl->num_port = 2;
+-	else
+-		io96b_ctrl->num_port = 1;
+-
+ 	/* Read handoff - dual EMIF */
+ 	plat->dualemif = FIELD_GET(BIT(1), handoff_table[PORT_EMIF_CONFIG_OFFSET]);
+ 	pr_debug("%s: dualemif from handoff: 0x%x\n", __func__, plat->dualemif);
+diff --git a/arch/arm/mach-socfpga/iossm_mailbox.c b/arch/arm/mach-socfpga/iossm_mailbox.c
+index 6a9a7a489b75..b79ec87b4f46 100644
+--- a/arch/arm/mach-socfpga/iossm_mailbox.c
++++ b/arch/arm/mach-socfpga/iossm_mailbox.c
+@@ -49,7 +49,7 @@ static const char *ddr_type_list[7] = {
+ 		"DDR4", "DDR5", "DDR5_RDIMM", "LPDDR4", "LPDDR5", "QDRIV", "UNKNOWN"
+ };
+ 
+-static int is_ddr_csr_clkgen_locked(u32 clkgen_mask, u8 num_port)
++static int is_ddr_csr_clkgen_locked(u32 clkgen_mask)
+ {
+ 	int ret;
+ 	u32 tmp;
+@@ -289,8 +289,7 @@ void io96b_init_mem_cal(struct io96b_info *io96b_ctrl)
+ 	count = 0;
+ 	for (i = 0; i < io96b_ctrl->num_instance; i++) {
+ 		if (io96b_ctrl->ckgen_lock) {
+-			ret = is_ddr_csr_clkgen_locked(DDR_CSR_CLKGEN_LOCKED_IO96B_MASK(i),
+-						       io96b_ctrl->num_port);
++			ret = is_ddr_csr_clkgen_locked(DDR_CSR_CLKGEN_LOCKED_IO96B_MASK(i));
+ 			if (ret) {
+ 				pr_err("%s: ckgena_lock iossm IO96B_%d is not locked\n",
+ 				       __func__, i);
+diff --git a/arch/arm/mach-socfpga/iossm_mailbox.h b/arch/arm/mach-socfpga/iossm_mailbox.h
+index 0e942a632847..954bfcdf382e 100644
+--- a/arch/arm/mach-socfpga/iossm_mailbox.h
++++ b/arch/arm/mach-socfpga/iossm_mailbox.h
+@@ -119,7 +119,6 @@ struct io96b_instance {
+  * @overall_size:	Total DDR memory size
+  * @io96b[]:		IO96B instance specific information
+  * @ckgen_lock:		IO96B GEN PLL lock (false = not locked, true = locked)
+- * @num_port:		Number of IO96B port.
+  */
+ struct io96b_info {
+ 	int			 version;
+@@ -131,7 +130,6 @@ struct io96b_info {
+ 	phys_size_t		 overall_size;
+ 	struct io96b_instance	 io96b[MAX_IO96B_SUPPORTED];
+ 	bool			 ckgen_lock;
+-	u8			 num_port;
+ };
+ 
+ int io96b_mb_req(void __iomem *io96b_csr_addr, u32 ip_type, u32 instance_id,
 
-Best regards,
 -- 
-Michael Tretter <m.tretter@pengutronix.de>
+2.47.3
 
 
 
