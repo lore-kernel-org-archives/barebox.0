@@ -1,71 +1,66 @@
-Delivery-date: Thu, 03 Sep 2026 18:31:07 +0200
+Delivery-date: Fri, 04 Sep 2026 09:17:11 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x2ALC-00APpU-0z
+	id 1x2OAg-00AdxU-2d
 	for lore@lore.pengutronix.de;
-	Thu, 03 Sep 2026 18:31:07 +0200
+	Fri, 04 Sep 2026 09:17:11 +0200
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=lZKRfCnK;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=XrkpDC49;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id D31A42016CA
-	for <lore@pengutronix.de>; Thu, 03 Sep 2026 18:31:02 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 663FE20582F
+	for <lore@pengutronix.de>; Fri, 04 Sep 2026 09:17:11 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=txP+ohxBzTYLdWeyEBOnYasWJl3Os6hmotHXoJft+IY=; b=lZKRfCnKgMmoSpGweOufm62/4a
-	WMskZfgoAgaF3jJ6h79+eu/x64R8Ffwng6T33rVUoNeZQgrtu3n/jilab7+4p4ymzs0YKUcBu6E7D
-	5/SnlpRG/KdpR4ToE9xity2nH15C/6Cq6BpgqgPdpGgbsW/h+bo59G3G2DZB3AxHYHQNox0dugPVR
-	FJO18QF9l9ZD/39bEXJcktSV1nCvpolQUIv1QNAVvkQerVDPOJ3ysR+duRcAH6V4ob3j1oqWI5gTi
-	795i1HQaSWlYN2miaPH9OrirKI3IUrdAcomPFWrsn4nX8T24WnhATYhiaLUPmqcjRYeIXZA821916
-	her0jkkg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=I8oOYHEwTgPYhk24eAkPxMP7u0maGJeCf0Y1IYoYLes=; b=XrkpDC49EWaDiyER4uQn8Vy6+e
+	AEg38JfzH85LML+BVtcHSlyB927VlLZdIguVqGMe3nEZ2Dc0HrfYNV7ncf6rj23crnaQB3DF7L9CJ
+	9DM+EDKAd+VyDXlk1NVhtoQ+OWuUPU+a+umuO5L3kvQmFLjxq8x4Gkm+Tm3HPuh1NdjT853Ehpwcy
+	dj4n5xZs3+KFep112HBmllxbw88icBh6iehHYmRHjscKO6HjUZbaahhukPBEAyXnby9MJjDBllfOC
+	CyH7bY2/xWh923QamFTTmUAW8FAx5kyrMzhf2RwghTkmDLS3F1NrAqfSFjglgJeDiy6r1CuoRfPBA
+	KxJQ8vzg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x2AJl-00000000AXR-2gy2;
-	Thu, 03 Sep 2026 16:29:37 +0000
+	id 1x2OA1-00000001ESn-2HWA;
+	Fri, 04 Sep 2026 07:16:29 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x2AJi-00000000AVY-1liv
+	id 1x2O9y-00000001ESD-24ko
 	for barebox@lists.infradead.org;
-	Thu, 03 Sep 2026 16:29:36 +0000
+	Fri, 04 Sep 2026 07:16:28 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id E56052058ED;
-	Thu, 03 Sep 2026 18:29:26 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id D556D202455;
+	Fri, 04 Sep 2026 09:16:23 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1x2AJa-004mQo-2e;
-	Thu, 03 Sep 2026 18:29:26 +0200
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1x2O9v-004sZK-2X;
+	Fri, 04 Sep 2026 09:16:23 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1x2AJa-0000000FX2j-3AGk;
-	Thu, 03 Sep 2026 18:29:26 +0200
-From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Date: Thu, 03 Sep 2026 18:29:13 +0200
-Subject: [PATCH 1/2] fs: __read: fix EOF count clamping for negative file
- sizes
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1x2O9v-00000000Dsn-2sih;
+	Fri, 04 Sep 2026 09:16:23 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: [PATCH] fs: efi: don't leak the file info buffer in efifs_truncate()
+Date: Fri,  4 Sep 2026 09:16:21 +0200
+Message-ID: <20260904071621.53334-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260903-fix-fs_read_write_eof_checks-v1-1-7afd44db1793@pengutronix.de>
-References: <20260903-fix-fs_read_write_eof_checks-v1-0-7afd44db1793@pengutronix.de>
-In-Reply-To: <20260903-fix-fs_read_write_eof_checks-v1-0-7afd44db1793@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>, 
- "open list:BAREBOX" <barebox@lists.infradead.org>
-Cc: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-X-Mailer: b4 0.15.2
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260903_092934_612996_E67E81E6 
-X-CRM114-Status: GOOD (  15.24  )
+X-CRM114-CacheID: sfid-20260904_001626_712056_81C3E811 
+X-CRM114-Status: GOOD (  10.77  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -73,9 +68,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  __read() clamps count to the bytes remaining until EOF, but
-    compared the signed 64-bit f->f_pos/f->f_size (loff_t) against count (size_t),
-    which is 32-bit on 32-bit arches and 64-bit on 64-bit arches. 
+ Content preview:  The 1 KiB EFI_FILE_INFO buffer is never freed on any of the
+    three exits, and this runs on every truncating open. Assisted-by: Claude:opus-5
+    Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de> --- fs/efi.c | 10 +++++-----
+    1 file changed, 5 insertions(+), 5 deletions(-) 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -100,95 +96,87 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: qwf5xukuzyrgy9msaxr5maxturb55bpo
-X-Rspamd-Queue-Id: D31A42016CA
-X-Spamd-Result: default: False [-57.81 / 15.00];
+X-Stat-Signature: 7ot4hgak1z9aqszm71zq135nyrecgp3g
+X-Rspamd-Queue-Id: 663FE20582F
+X-Spamd-Result: default: False [-56.31 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
+	MID_CONTAINS_FROM(1.00)[];
 	RCVD_IN_DNSWL_MED(-0.60)[2607:7c80:54:3::133:from,2a0a:edc0:0:c01:1d::a2:received,2a0a:edc0:0:1101:1d::54:received];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_ALL(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
 	DMARC_NA(0.00)[pengutronix.de];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
-	ARC_NA(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	RCPT_COUNT_THREE(0.00)[3];
-	FORGED_SENDER(0.00)[s.kerkmann@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[s.kerkmann@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+];
-	RCVD_COUNT_FIVE(0.00)[5];
-	MID_RHS_MATCH_FROM(0.00)[];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWO(0.00)[2];
 	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	FORGED_SENDER_MAILLIST(0.00)[]
 
-__read() clamps count to the bytes remaining until EOF, but compared
-the signed 64-bit f->f_pos/f->f_size (loff_t) against count (size_t),
-which is 32-bit on 32-bit arches and 64-bit on 64-bit arches.
+The 1 KiB EFI_FILE_INFO buffer is never freed on any of the three
+exits, and this runs on every truncating open.
 
-This made the comparison type targent dependent, breaking it for
-negative file sizes except for the FILE_SIZE_STREAM sentinel.
-
-- On 32-bit arches count is converted to the signed 64-bit type of
-  f->f_pos, so for e.g. f->f_size = -512 the comparison f->f_pos + count
-  > f->f_size evaluated true. The clamp then assigned the negative
-  difference of f->f_size - f->f_pos to the unsigned count, wrapping it
-  to a value near 2^32 and turning a small read into a huge out of
-  bounds read request.
-
-- On 64-bit arches size_t cannot be represented by signed 64-bit, so the
-  arithmetic C conversions turned the whole comparison unsigned:
-  f->f_size = -512 was reinterpreted as a value near 2^64, the
-  comparison stayed false and the clamp never ran, leaving count
-  unclamped and the bogus size undetected.
-
-__read() now rejects negative file sizes (except for the
-FILE_SIZE_STREAM sentinel) with -EINVAL. Reads at or past the end of the
-file (reachable via pread() with an offset beyond EOF) now return 0.
-Remaining reads are clamped to the bytes left until EOF.
-
-Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+Assisted-by: Claude:opus-5
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/fs.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ fs/efi.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index dc6c30802d..a8f2b78294 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -427,8 +427,16 @@ static ssize_t __read(struct file *f, void *buf, size_t count)
- 	if (fsdrv != ramfs_driver)
- 		assert_command_context();
+diff --git a/fs/efi.c b/fs/efi.c
+index 76eb86a85eea..74dad235b19d 100644
+--- a/fs/efi.c
++++ b/fs/efi.c
+@@ -250,9 +250,9 @@ static int efifs_truncate(struct file *f, loff_t size)
+ 	efi_status_t efiret;
+ 	struct efi_file_info *info;
+ 	size_t bufsize = 1024;
+-	int ret;
++	int ret = 0;
  
--	if (f->f_size != FILE_SIZE_STREAM && f->f_pos + count > f->f_size)
--		count = f->f_size - f->f_pos;
-+	if (f->f_size != FILE_SIZE_STREAM) {
-+		if (f->f_size < 0) {
-+			ret = -EINVAL;
-+			goto out;
-+		}
-+		if (f->f_pos > f->f_size)
-+			count = 0;
-+		else
-+			count = min_t(u64, (u64)f->f_size - (u64)f->f_pos, count);
-+	}
+-	info = xzalloc(1024);
++	info = xzalloc(bufsize);
  
- 	if (!count)
- 		return 0;
-
+ 	efiret = ufile->entry->get_info(ufile->entry, &efi_file_info_id, &bufsize, info);
+ 	if (EFI_ERROR(efiret)) {
+@@ -262,7 +262,7 @@ static int efifs_truncate(struct file *f, loff_t size)
+ 	}
+ 
+ 	if (size > info->FileSize)
+-		return 0;
++		goto out;
+ 
+ 	info->FileSize = size;
+ 
+@@ -270,11 +270,11 @@ static int efifs_truncate(struct file *f, loff_t size)
+ 	if (EFI_ERROR(efiret)) {
+ 		pr_err("%s: unable to SetInfo: %s\n", __func__, efi_strerror(efiret));
+ 		ret = -efi_errno(efiret);
+-		goto out;
+ 	}
+ 
+-	return 0;
+ out:
++	free(info);
++
+ 	return ret;
+ }
+ 
 -- 
 2.47.3
 
