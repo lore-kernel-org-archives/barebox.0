@@ -1,69 +1,65 @@
-Delivery-date: Fri, 04 Sep 2026 10:17:40 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Fri, 04 Sep 2026 11:16:25 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x2P7D-00AexQ-1E
+	id 1x2Q24-00Afsz-2o
 	for lore@lore.pengutronix.de;
-	Fri, 04 Sep 2026 10:17:40 +0200
+	Fri, 04 Sep 2026 11:16:25 +0200
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="Lf/lxI84";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=rJc9yFcC;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id EE295205858
-	for <lore@pengutronix.de>; Fri, 04 Sep 2026 10:17:39 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 73A24200F53
+	for <lore@pengutronix.de>; Fri, 04 Sep 2026 11:16:25 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=XmQV2q9xWQosGfUd6etdN5sRguDODYdwsPkg2D9KJbM=; b=Lf/lxI846Vx3KK92+noFpjADSR
-	sGFCDYdQpYJO485sscP4nCAlDxfgWlnrUHBjwvIXexbIstMpRdV8RpasE5UbxlpJm6MXy36Bxd2ge
-	a7d6Wzx1dGlU7gMKhqOMz+NiWF/gfGOAW8dOY5P/ejXlVcUmRLbj7CbyNpsGCkwQBPfzHkpLID9P9
-	UfHekrwcMbWYV66VflTSMSwjIQpjBFggbfsXdl61biqFEyJv2WswzbADE/+NmA7qIYMXYPDZvcedz
-	4zOajhiy1bcUutA0aVSvfZZ12C472qTcrDxhLrOThuuZTXLOTUnB2hMFuebXdtpqOjAwlM+lK3NUF
-	Ct8+gZCw==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=9ZUFfBJvAK64QzojQX0T5eQDVJT0w4MYaJIwhcxurJQ=; b=rJc9yFcCbj7D1C
+	VckO4d9uSRpoVRU5JXHKyiXX/vyxBHyahRUpQElWNlC52O8/ISKxCk0P8wtvgFwUdZN/JebQeBoo+
+	h/eunxAZG/g8t3Yg+rSi3dkqMxCqPNIZjtnG0baqFdTHtQ+dsLd7g89FspQHZyWPzb0oEvVXxqV5F
+	b6EDpIC3FTl4GHrY0g+/dItAcXqA1FqG1IVf2Lk/0EnSOvVmohtmrmwoC703Q0XI5JfDXb5rTao4q
+	3Q3bamHA4bgkcJcRPbFkF6ZiX75WtOhf9j1CSKsjIuSQiT0tZRTdj4pRR79OJ3e4DJC/yyFzzuCyB
+	KqSoNy2Y8yKg/r9mvwAA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x2Oqd-00000001JtQ-41WM;
-	Fri, 04 Sep 2026 08:00:31 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1x2Q1f-00000001V3o-0c76;
+	Fri, 04 Sep 2026 09:15:59 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x2OqZ-00000001Jqx-3A50
+	id 1x2Q1b-00000001V37-3Wk6
 	for barebox@lists.infradead.org;
-	Fri, 04 Sep 2026 08:00:30 +0000
+	Fri, 04 Sep 2026 09:15:57 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 18C3120592B;
-	Fri, 04 Sep 2026 10:00:26 +0200 (CEST)
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 51EB5200F53;
+	Fri, 04 Sep 2026 11:15:52 +0200 (CEST)
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1x2OqY-004sj8-01;
-	Fri, 04 Sep 2026 10:00:26 +0200
-Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1x2OqX-00000000cNK-3mnY;
-	Fri, 04 Sep 2026 10:00:25 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Subject: [PATCH 4/5] kbuild: disable -Winitializer-overrides for clang
-Date: Fri,  4 Sep 2026 09:59:16 +0200
-Message-ID: <20260904080025.147376-5-a.fatoum@pengutronix.de>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1x2Q1Y-004tRe-0p;
+	Fri, 04 Sep 2026 11:15:52 +0200
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1x2Q1Y-0000000Fa7B-0bHH;
+	Fri, 04 Sep 2026 11:15:52 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Subject: [PATCH] fs: reject inodes whose size the superblock cannot address
+Date: Fri,  4 Sep 2026 11:15:51 +0200
+Message-ID: <20260904091551.3713729-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260904080025.147376-1-a.fatoum@pengutronix.de>
-References: <20260904080025.147376-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260904_010027_958312_37E15807 
-X-CRM114-Status: UNSURE (   8.02  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260904_021556_031774_4C8BD722 
+X-CRM114-Status: GOOD (  12.90  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -71,18 +67,17 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> clang warns about
-    the intentional [0 ... N] = default followed by per-entry overrides, e.g.
-    in arch/arm/cpu/interrupts_64.c: arch/arm/cpu/interrupts_64.c:28:26: error:
-    initializer overrides prior initialization of this subobject [-Werror,-Winitializer-overrides]
+ Content preview:  f_size is an alias for the inode's i_size, and filesystems
+    read that size straight from untrusted media. ext4's ext4_isize() builds
+   it as ((loff_t)size_high << 32) | size, so bit 31 of size_high lands [...]
     
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
- -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
  -0.0 SPF_PASS               SPF: sender matches SPF record
+ -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
  -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
                              [score: 0.0000]
   0.0 DMARC_MISSING          Missing DMARC policy
@@ -97,72 +92,111 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: t54pfbrkh4k95t4f318rsdn6r56su35c
-X-Rspamd-Queue-Id: EE295205858
+X-Stat-Signature: gixwf93sqbjw37wcxu7d3urk1bsjsywq
+X-Rspamd-Queue-Id: 73A24200F53
 X-Spamd-Result: default: False [-56.31 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	MID_CONTAINS_FROM(1.00)[];
-	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:c01:1d::a2:received,2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::54:received];
+	RCVD_IN_DNSWL_MED(-0.60)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received,2a0a:edc0:0:c01:1d::a2:received];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MAILLIST(-0.20)[mailman];
 	R_SPF_ALLOW(-0.20)[+mx:c];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	MIME_TRACE(0.00)[0:+];
+	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	RCPT_COUNT_TWO(0.00)[2];
-	ARC_NA(0.00)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
 	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	ARC_NA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	TO_DN_ALL(0.00)[];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	RCVD_COUNT_FIVE(0.00)[5];
+	DKIM_TRACE(0.00)[lists.infradead.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[]
 
-From: Ahmad Fatoum <a.fatoum@barebox.org>
+f_size is an alias for the inode's i_size, and filesystems read that
+size straight from untrusted media. ext4's ext4_isize() builds it as
+((loff_t)size_high << 32) | size, so bit 31 of size_high lands in the
+sign bit; squashfs takes an unchecked le64 for LREG inodes. A negative
+i_size then feeds the offset arithmetic in __read(), __write() and
+friends, where it either wraps a size_t count to something huge or --
+depending on whether size_t is 32 or 64 bit -- turns the comparison
+unsigned and skips the EOF clamp altogether.
 
-clang warns about the intentional [0 ... N] = default followed by
-per-entry overrides, e.g. in arch/arm/cpu/interrupts_64.c:
+Catch this the way Linux does: give the superblock a ceiling and refuse
+sizes beyond it, instead of hardening every arithmetic site. Default
+s_maxbytes to MAX_LFS_FILESIZE in init_super(), which runs before the
+driver probe, so the filesystems that already lower it (jffs2, ubifs,
+squashfs, 9p) keep doing so and everyone else stops sitting at zero.
 
-  arch/arm/cpu/interrupts_64.c:28:26: error: initializer overrides prior initialization of this subobject [-Werror,-Winitializer-overrides]
+The check goes into do_dentry_open() rather than into iget: ten drivers
+only learn the size in their ->open() callback and write it to the
+inode through file->f_size, so a lookup time check would miss them.
+Casting to u64 makes a negative size exceed any sane s_maxbytes, so the
+sign is covered too; FILE_SIZE_STREAM is negative on purpose and has to
+be excluded.
 
-Disable it for clang, as Linux does.
-
-Assisted-by: Claude:fable-5
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+Assisted-by: Claude:claude-opus-5
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/Makefile.warn | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/fs.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/scripts/Makefile.warn b/scripts/Makefile.warn
-index 393f7fd522c8..237597d18af4 100644
---- a/scripts/Makefile.warn
-+++ b/scripts/Makefile.warn
-@@ -47,6 +47,9 @@ KBUILD_CFLAGS += -Wno-pointer-sign
- # them when -Wall is passed later on the command line, so the -Wno... options
- # must come after -Wall
- KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
-+ifdef CONFIG_CC_IS_CLANG
-+KBUILD_CFLAGS += -Wno-initializer-overrides
-+endif
+diff --git a/fs/fs.c b/fs/fs.c
+index ce41f23f88..9518f28539 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -986,6 +986,7 @@ int fsdev_open_cdev(struct fs_device *fsdev)
+ static void init_super(struct super_block *sb)
+ {
+ 	INIT_LIST_HEAD(&sb->s_inodes);
++	sb->s_maxbytes = MAX_LFS_FILESIZE;
+ }
  
- #
- # W=e and CONFIG_WERROR - error out on warnings
+ static int fsdev_umount(struct fs_device *fsdev)
+@@ -2613,6 +2614,14 @@ static int rmdirat(int dirfd, const char *pathname)
+ 	return errno_set(error);
+ }
+ 
++static bool i_size_valid(struct inode *inode)
++{
++	if (inode->i_size == FILE_SIZE_STREAM)
++		return true;
++
++	return (u64)inode->i_size <= inode->i_sb->s_maxbytes;
++}
++
+ static int do_dentry_open(struct file *f)
+ {
+ 	int error;
+@@ -2628,6 +2637,12 @@ static int do_dentry_open(struct file *f)
+ 			return error;
+ 	}
+ 
++	if (!i_size_valid(f->f_inode)) {
++		dev_warn(&f->fsdev->dev, "%s: bad i_size value: %lld\n",
++			 f->path, f->f_size);
++		return -EUCLEAN;
++	}
++
+ 	if (f->f_flags & O_TRUNC) {
+ 		error = fsdev_truncate(f, 0);
+ 		f->f_size = 0;
 -- 
 2.47.3
 
