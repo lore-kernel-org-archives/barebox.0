@@ -1,68 +1,66 @@
-Delivery-date: Fri, 04 Sep 2026 10:01:48 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Fri, 04 Sep 2026 10:01:49 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x2Ors-00AeWN-04
+	id 1x2Ors-00AeWk-24
 	for lore@lore.pengutronix.de;
-	Fri, 04 Sep 2026 10:01:48 +0200
+	Fri, 04 Sep 2026 10:01:49 +0200
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=aG4rPYHK;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=yh8ETuCl;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 9F07F205925
-	for <lore@pengutronix.de>; Fri, 04 Sep 2026 10:01:48 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 3FB10205925
+	for <lore@pengutronix.de>; Fri, 04 Sep 2026 10:01:49 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Zixbayos4JQTPzUOzUMc+LFQK6Jy1zC2TyGzfr0YJF0=; b=aG4rPYHK9ry9M5Biu72EDfPQBP
-	r5kwVHgTEgVT76cKFy+Tzrhs1etKfJBZgzreyJOexne0qMBxmT7qIXTUf37ZYCY+9MKpN5baQiir1
-	AbOm7jnXX2x7kgpvvlRn6p55T3/75rCsu88p9KWn9g+04C/VT88aa57UCCBramXsUSPxC/lTtniM3
-	mYTPwJm8z8oppPGWX0aRSfR8dJC/GmdyA2YEEK4fr+6Pv2tqmokWdHZY9MuFi31IKynW5tcstCkL5
-	Rifyw6FNgfjn/fsCK4oO8BXSCMy3vk3KYmjYGLmRki21jqKcPNw+hh7TKZmp+Y+iP5F20oQJi9oLV
-	DS+5sNYw==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=0MVagiv9Jtfc23hAWnypvAk3rAYjJ7Cxm48Gp5dKUYE=; b=yh8ETuClTyVWES1nQTnXN3kh/C
+	q3StbvQdppmvxhAOO8/v4ltROZ6H3X+cmvbafX/FRwk4infBQY8RFgAf225/OuCEdwN60dr2nSpxF
+	2iUvnhwafHw1/Je7si/SN0hKWRKGhztEZmxtlIt2ZF5pRwSHn/HUTCow3C8o8TvJdOCi9IGhZ6+A6
+	yPqFXkKBu0bKA8yKAKHpoV1rMGhvFkjdoi/4ZQbOW/BJVm6zbiR1LsvqMannlfQzw9j4NqHSa4iux
+	drfOuNVRB9z8F47YUuGewU/E2KxlHe7P70nCr0PmXh9ppksBSns0f+GxFuSnRDPgfoUZfk2bnrrI/
+	QOzhT0Lg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x2Oqc-00000001JsP-22MG;
+	id 1x2Oqc-00000001Jsb-3DT3;
 	Fri, 04 Sep 2026 08:00:30 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x2OqZ-00000001Jqv-3CV1
+	id 1x2OqZ-00000001Jqt-3A3y
 	for barebox@lists.infradead.org;
-	Fri, 04 Sep 2026 08:00:29 +0000
+	Fri, 04 Sep 2026 08:00:30 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id F39D9205929;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id DDCAF202454;
 	Fri, 04 Sep 2026 10:00:25 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1x2OqX-004sj1-2w;
+	id 1x2OqX-004six-2d;
 	Fri, 04 Sep 2026 10:00:25 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1x2OqX-00000000cNK-3OsL;
+	id 1x2OqX-00000000cNK-30Fj;
 	Fri, 04 Sep 2026 10:00:25 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Subject: [PATCH 2/5] scripts: imx9image: fix warnings reported by clang
-Date: Fri,  4 Sep 2026 09:59:14 +0200
-Message-ID: <20260904080025.147376-3-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: [PATCH 0/5] clang: more warning and error fixes
+Date: Fri,  4 Sep 2026 09:59:12 +0200
+Message-ID: <20260904080025.147376-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260904080025.147376-1-a.fatoum@pengutronix.de>
-References: <20260904080025.147376-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260904_010027_958630_9F5378C5 
-X-CRM114-Status: UNSURE (   9.76  )
+X-CRM114-CacheID: sfid-20260904_010027_952965_5B8A90D3 
+X-CRM114-Status: UNSURE (   7.13  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -71,11 +69,11 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> Host tools inherit
-    -Werror with CONFIG_WERROR=y and clang fails on: scripts/imx9image.c:889:6:
-    error: variable 'cont_img_count' set but not used [-Werror,-Wunused-but-set-variable]
-    scripts/imx9image.c:1263:33: error: equality comparison with extraneous parentheses
-    [- [...] 
+ Content preview:  In preparation for making bare metal targets also compile
+   with clang, here are some more warning and error fixes for both assembler
+   and compiler. Ahmad Fatoum (5): kbuild: emit asm-offsets markers as .ascii
+    strings scripts: imx9image: fix warnings reported by clang kbuild: disable
+    -Wunused-but-set-variable after -Wall kbuild: disable -Winitiali [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -100,8 +98,8 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: jrc1wb5z6o47aqidkj66emcxidq94rbk
-X-Rspamd-Queue-Id: 9F07F205925
+X-Stat-Signature: 761nrzpibckhuroqbzkodmzmdo1br9tu
+X-Rspamd-Queue-Id: 3FB10205925
 X-Spamd-Result: default: False [-56.31 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[99.99%];
@@ -112,102 +110,44 @@ X-Spamd-Result: default: False [-56.31 / 15.00];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
-	MAILLIST(-0.20)[mailman];
 	R_SPF_ALLOW(-0.20)[+mx:c];
+	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
 	DMARC_NA(0.00)[pengutronix.de];
+	ARC_NA(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_TWO(0.00)[2];
-	ARC_NA(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	RCVD_COUNT_FIVE(0.00)[5];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[]
 
-From: Ahmad Fatoum <a.fatoum@barebox.org>
+In preparation for making bare metal targets also compile with clang,
+here are some more warning and error fixes for both assembler and compiler.
 
-Host tools inherit -Werror with CONFIG_WERROR=y and clang fails on:
+Ahmad Fatoum (5):
+  kbuild: emit asm-offsets markers as .ascii strings
+  scripts: imx9image: fix warnings reported by clang
+  kbuild: disable -Wunused-but-set-variable after -Wall
+  kbuild: disable -Winitializer-overrides for clang
+  ARM64: cache: use WEAK() for v8_flush_l3_cache stub
 
-  scripts/imx9image.c:889:6: error: variable 'cont_img_count' set but not used [-Werror,-Wunused-but-set-variable]
-  scripts/imx9image.c:1263:33: error: equality comparison with extraneous parentheses [-Werror,-Wparentheses-equality]
+ Makefile                   | 4 ----
+ arch/arm/cpu/cache-armv8.S | 3 +--
+ include/linux/kbuild.h     | 6 +++---
+ scripts/Makefile.warn      | 8 ++++++++
+ scripts/imx9image.c        | 9 ++-------
+ 5 files changed, 14 insertions(+), 16 deletions(-)
 
-Drop the unused counter and the extra parentheses.
-
-Assisted-by: Claude:fable-5
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
----
- scripts/imx9image.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
-
-diff --git a/scripts/imx9image.c b/scripts/imx9image.c
-index 61b7cc943f00..bd015a6ab7fc 100644
---- a/scripts/imx9image.c
-+++ b/scripts/imx9image.c
-@@ -886,7 +886,6 @@ static int build_container_qx_qm_b0(soc_type_t soc, uint32_t sector_size, uint32
- 	const char *platform;
- 
- 	int container = -1;
--	int cont_img_count = 0; /* indexes to arrange the container */
- 
- 	if (image_stack == NULL) {
- 		fprintf(stderr, "Empty image stack ");
-@@ -948,7 +947,6 @@ static int build_container_qx_qm_b0(soc_type_t soc, uint32_t sector_size, uint32
- 			img_sp->src = file_off;
- 
- 			file_off += ALIGN(sbuf.st_size, sector_size);
--			cont_img_count++;
- 			break;
- 
- 		case DUMMY_V2X:
-@@ -966,7 +964,6 @@ static int build_container_qx_qm_b0(soc_type_t soc, uint32_t sector_size, uint32
- 						images_hash);
- 			img_sp->src = file_off;
- 
--			cont_img_count++;
- 			break;
- 
- 		case SECO:
-@@ -986,7 +983,6 @@ static int build_container_qx_qm_b0(soc_type_t soc, uint32_t sector_size, uint32
- 			img_sp->src = file_off;
- 
- 			file_off += sbuf.st_size;
--			cont_img_count++;
- 			break;
- 
- 		case NEW_CONTAINER:
-@@ -995,7 +991,6 @@ static int build_container_qx_qm_b0(soc_type_t soc, uint32_t sector_size, uint32
- 					CONTAINER_ALIGNMENT,
- 					CONTAINER_FLAGS_DEFAULT,
- 					fuse_version);
--			cont_img_count = 0; /* reset img count when moving to new container */
- 			scfw_flags = 0;
- 			break;
- 
-@@ -1260,12 +1255,12 @@ static void print_image_array_fields(struct flash_header_v3 *container_hdrs, soc
- 			if ((soc == ULP) || (soc == IMX9)) {
- 				if (img_flags.core_id == CORE_ULP_UPOWER)
- 					strcpy(img_name, "uPower FW");
--				else if ((img_flags.core_id == CORE_ULP_CA35))
-+				else if (img_flags.core_id == CORE_ULP_CA35)
- 					if (app_cntr)
- 						strcpy(img_name, "A core Image");
- 					else
- 						strcpy(img_name, "Bootloader");
--				else if ((img_flags.core_id == CORE_ULP_CM33))
-+				else if (img_flags.core_id == CORE_ULP_CM33)
- 					strcpy(img_name, "M33");
- 
- 			} else {
 -- 
 2.47.3
 
