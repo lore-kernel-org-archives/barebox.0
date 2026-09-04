@@ -1,68 +1,69 @@
-Delivery-date: Fri, 04 Sep 2026 11:45:45 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Fri, 04 Sep 2026 11:46:54 +0200
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x2QUS-00AgIV-1t
+	id 1x2QVZ-00AgJa-2g
 	for lore@lore.pengutronix.de;
-	Fri, 04 Sep 2026 11:45:45 +0200
+	Fri, 04 Sep 2026 11:46:54 +0200
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=OaRBDa7O;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=bpoinruO;
 	dmarc=none;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org"
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 04D70200444
-	for <lore@pengutronix.de>; Fri, 04 Sep 2026 11:45:45 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 36712200444
+	for <lore@pengutronix.de>; Fri, 04 Sep 2026 11:46:54 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3nzQCSAWmk0ZiqEeDEQjONw0i8elrE3r7Ff1xUpP4ok=; b=OaRBDa7OK9MXY25ostW6zyrVSR
-	p8EKPl9EzaKtWoh5kr80aT3pgodxUtH2epaxUWlnjnsyred1S0XvaOE/wQWTs5hRWI4t4GMhPtkTP
-	JMcOzfA4YMl1HaLudKk2tZBV5005835mQICyaXA7Ltn/OaPWzsf0wlGTzkWUICv0h6te59zrP2qdm
-	adLtfDxPwCZKlB6jobSNhkz030cUEl1BMZcFv8cYFq6ZJSy9VZ401PC+bwR1uUEoDTg8W5JCMtTYW
-	6qqBQYV4RPj05VsJCCZcfc7w3I/AszLfH2FnWelXXvtjpbZlZxHDH2GrSDhiel0E3JCXZZj97j741
-	/1a+g+5g==;
+	bh=gmNueRPGo9z4D9Kt36QDxHNhzw+aJUW7Vz9wvV4KVnY=; b=bpoinruO81fLt9BxIJiaHBEtvw
+	WF8tYAjyBhuZ/Xicvo+uTA2VmcJKyHCF6ht3Cyfltws/Cn11dXSb8/kb12lih/fE8jJu3j7jfbqlQ
+	+BAH1TZzBx8cqw7IrtEqXEPNpnUVmJmM8dSp74491q5GL03GuksehgCKETgOEgTXw7MOWWsrYVqrF
+	uT72metOx2YnMBl8+7cQNyNLIg44JoLFHEoa+si0VUetl2alvrBMneWAz71+K0lvrjuvgMuQtFf9v
+	/QOXABmGPl57Sd1xb+/aJdNsL6Zxo/HNDPTfgQKJ8TrdaUCRh4cFzl7u4osjGqnxp1x4VtXgNQzG2
+	RaEej/gQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x2QTL-00000001ZHS-2xzh;
-	Fri, 04 Sep 2026 09:44:35 +0000
+	id 1x2QUY-00000001ZQo-3ugK;
+	Fri, 04 Sep 2026 09:45:50 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x2QTI-00000001ZH4-2fsk
+	id 1x2QUW-00000001ZQE-1Bfj
 	for barebox@lists.infradead.org;
-	Fri, 04 Sep 2026 09:44:34 +0000
+	Fri, 04 Sep 2026 09:45:49 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 5D634201FD7;
-	Fri, 04 Sep 2026 11:44:30 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 95C48200F53;
+	Fri, 04 Sep 2026 11:45:46 +0200 (CEST)
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1x2QTG-004tZY-0x;
-	Fri, 04 Sep 2026 11:44:30 +0200
+	id 1x2QUU-004tZf-1j;
+	Fri, 04 Sep 2026 11:45:46 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1x2QTG-0000000Ffua-0yny;
-	Fri, 04 Sep 2026 11:44:30 +0200
+	id 1x2QUU-0000000FgBZ-1y8J;
+	Fri, 04 Sep 2026 11:45:46 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260904080025.147376-1-a.fatoum@pengutronix.de>
-References: <20260904080025.147376-1-a.fatoum@pengutronix.de>
-Subject: Re: [PATCH 0/5] clang: more warning and error fixes
-Message-Id: <178851507022.3735977.17847837571290344014.b4-ty@pengutronix.de>
-Date: Fri, 04 Sep 2026 11:44:30 +0200
+Cc: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+In-Reply-To: <20260903120902.2359859-1-a.fatoum@pengutronix.de>
+References: <20260903120902.2359859-1-a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] Makefile: fix security_%config configurator targets
+Message-Id: <178851514646.3737023.8464977402843915392.b4-ty@pengutronix.de>
+Date: Fri, 04 Sep 2026 11:45:46 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260904_024432_834715_598B6997 
-X-CRM114-Status: UNSURE (   6.86  )
+X-CRM114-CacheID: sfid-20260904_024548_484217_E127895C 
+X-CRM114-Status: UNSURE (   6.25  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -71,9 +72,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Fri, 04 Sep 2026 09:59:12 +0200, Ahmad Fatoum wrote: >
-    In preparation for making bare metal targets also compile with clang, > here
-    are some more warning and error fixes for both assembler and com [...] 
+ Content preview:  On Thu, 03 Sep 2026 14:09:00 +0200, Ahmad Fatoum wrote: >
+    The security_%config targets documented in > Documentation/user/security-policies.rst
+    are broken in three ways: > > The sync with Linux v6.17 [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -98,32 +99,32 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: zab5g4isbscu5a9tmywckpxn7h7wbwqp
-X-Rspamd-Queue-Id: 04D70200444
+X-Stat-Signature: wryrw9eyn1hb1wq56x1ajuccofrgk1u9
+X-Rspamd-Queue-Id: 36712200444
 X-Spamd-Result: default: False [-57.81 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:1101:1d::28:received,2a0a:edc0:0:c01:1d::a2:received,2607:7c80:54:3::133:from];
+	RCVD_IN_DNSWL_MED(-0.60)[2607:7c80:54:3::133:from,2a0a:edc0:0:c01:1d::a2:received,2a0a:edc0:0:1101:1d::28:received];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	MAILLIST(-0.20)[mailman];
 	R_SPF_ALLOW(-0.20)[+mx:c];
+	MAILLIST(-0.20)[mailman];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	DMARC_NA(0.00)[pengutronix.de];
+	RCVD_TLS_LAST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	ARC_NA(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	RCPT_COUNT_THREE(0.00)[3];
 	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	DKIM_TRACE(0.00)[lists.infradead.org:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
@@ -131,31 +132,20 @@ X-Spamd-Result: default: False [-57.81 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 
 
-On Fri, 04 Sep 2026 09:59:12 +0200, Ahmad Fatoum wrote:
-> In preparation for making bare metal targets also compile with clang,
-> here are some more warning and error fixes for both assembler and compiler.
+On Thu, 03 Sep 2026 14:09:00 +0200, Ahmad Fatoum wrote:
+> The security_%config targets documented in
+> Documentation/user/security-policies.rst are broken in three ways:
 > 
-> Ahmad Fatoum (5):
->   kbuild: emit asm-offsets markers as .ascii strings
->   scripts: imx9image: fix warnings reported by clang
->   kbuild: disable -Wunused-but-set-variable after -Wall
->   kbuild: disable -Winitializer-overrides for clang
->   ARM64: cache: use WEAK() for v8_flush_l3_cache stub
+> The sync with Linux v6.17 dropped the exclusion of security_%config
+> from the config-build classification, so the goals are now dispatched
+> to scripts/kconfig:
 > 
 > [...]
 
 Applied, thanks!
 
-[1/5] kbuild: emit asm-offsets markers as .ascii strings
-      https://git.pengutronix.de/cgit/barebox/commit/?id=d0be5d7ff7d9 (link may not be stable)
-[2/5] scripts: imx9image: fix warnings reported by clang
-      https://git.pengutronix.de/cgit/barebox/commit/?id=0ed92a5f4ca1 (link may not be stable)
-[3/5] kbuild: disable -Wunused-but-set-variable after -Wall
-      https://git.pengutronix.de/cgit/barebox/commit/?id=52d6a7a60bae (link may not be stable)
-[4/5] kbuild: disable -Winitializer-overrides for clang
-      https://git.pengutronix.de/cgit/barebox/commit/?id=9c787cdf53df (link may not be stable)
-[5/5] ARM64: cache: use WEAK() for v8_flush_l3_cache stub
-      https://git.pengutronix.de/cgit/barebox/commit/?id=69b498bb79a5 (link may not be stable)
+[1/1] Makefile: fix security_%config configurator targets
+      https://git.pengutronix.de/cgit/barebox/commit/?id=94f3ad5f8cac (link may not be stable)
 
 Best regards,
 -- 
