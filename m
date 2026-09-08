@@ -1,65 +1,65 @@
-Delivery-date: Tue, 08 Sep 2026 10:32:55 +0200
+Delivery-date: Tue, 08 Sep 2026 10:33:38 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x3rGB-001TKo-2E
+	id 1x3rGs-001TLv-2R
 	for lore@lore.pengutronix.de;
-	Tue, 08 Sep 2026 10:32:55 +0200
+	Tue, 08 Sep 2026 10:33:38 +0200
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=VyVls1gi;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=aYZH9pGf;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 7BCC8201CD1
-	for <lore@pengutronix.de>; Tue, 08 Sep 2026 10:32:55 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 3C1AA200975
+	for <lore@pengutronix.de>; Tue, 08 Sep 2026 10:33:38 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=PMahfrXlBVg35v/WuJgNwobOO9vjKDOSQMl64yZjAPs=; b=VyVls1gi85Pw9ywnBPmu2HqRF6
-	tTWgquqBbncYJ3QlfyF/i1qkpCAmCkaebu3AHZMk/v7Pe/tLLZcpFovPtSpSpaFyE7rOFTqNWSOX6
-	+KDidt8tH3auX8bFnPWYK0ohkzM9ITE6ycL9kNH+2srKcWGgNLyFkaR7v9P/FIxXAuAFLFdkGw/at
-	I/JaKmUqupRqEdtFN8LWQXlT7VH71wWQCOBK+sYM4cUx3IyVKHbOP2FIW1KxpMGHd7HhA5vhZSqI4
-	6xSuqy7p4+6va83N8X3WMvI4rhn41U2prx6KV+vYu2c68zLOFAO3RgWE6tSt27GGEDdRXSB53rmyh
-	Zp9X7L4A==;
+	bh=XOY1MQYJrEZB2fImfSlgy7wqXiKZuVGDKwDS1F3l71w=; b=aYZH9pGfGvXOtGEV9iXuRyKlj8
+	O0dhUduLtyRcMLPpuRIQLEjMmSHa4mMDMiRIg1zYUXgVYv2MwDBtBwMvBOYblPdPImN/uvHKAcgU4
+	YJMH3geQpzBUgp0iaZCsE25LO8dd+HNX6mr26SlC1wLwu3QEL+m3ok9KEEXFBJWho4wqoFJG2YpP+
+	peYzXM8n06kS2c1b4eKymn0j2cLnIOFXsPDv3PtyqT9HdXQR+FJkBAIl0mtcH5L+L+PrV200pb4uB
+	kuP9LRUgHxZ86IvJFi1wG+2KG4cjh0keJdLwQmmO/5g24uIEqfx3V9fIad7+8c1gMRZTsVz3H/U0S
+	QUQrkCcw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x3rFa-00000008Pkm-23OI;
-	Tue, 08 Sep 2026 08:32:18 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1x3rFb-00000008Pl6-2wt9;
+	Tue, 08 Sep 2026 08:32:19 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x3rFX-00000008Pih-0PpZ
+	id 1x3rFX-00000008Pig-08ny
 	for barebox@lists.infradead.org;
-	Tue, 08 Sep 2026 08:32:16 +0000
+	Tue, 08 Sep 2026 08:32:18 +0000
 Received: from [127.0.1.1] (unknown [IPv6:2a02:560:5dd5:4b00:9ebf:dff:fe00:fdb5])
 	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 787B3202062;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 6CFA220202F;
 	Tue, 08 Sep 2026 10:32:11 +0200 (CEST)
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 08 Sep 2026 10:32:10 +0200
-Subject: [PATCH 2/2] fs: reject inodes whose size the superblock cannot
- address
+Date: Tue, 08 Sep 2026 10:32:09 +0200
+Subject: [PATCH 1/2] fs: track streaming and unknown-size files in
+ dedicated inode fields
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260908-fs-filesize-fixes-v1-2-8cf3e781a4d0@pengutronix.de>
+Message-Id: <20260908-fs-filesize-fixes-v1-1-8cf3e781a4d0@pengutronix.de>
 References: <20260908-fs-filesize-fixes-v1-0-8cf3e781a4d0@pengutronix.de>
 In-Reply-To: <20260908-fs-filesize-fixes-v1-0-8cf3e781a4d0@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1788856331; l=2505;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1788856331; l=5418;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=mVEVk4LZ5IBe6pocDUNdk8qwE2uxWCkdc1TXUw9x068=;
- b=UWaXpRZbDbIfM5OuqqtepWBWN0Z9bnq0Tlfrj7dOZsAzH8NkZ1QWrn2pOt+3MK896kUxbzNI3
- JtkA3YPYthCDkhi+AmCbrb/8XMP8VFvzw1KCHwRWFCEdjdkyt8Lkjul
+ bh=9FExecqKSzEMSYcrCRuGwU3z0FPqEEYYRppYjfJoQz4=;
+ b=hx9sCN3ELs984nKII2KgZxV02EvqctpR6p1wn+AJhTYRYgmBZi693GrrrIxLcRuvWoXeW6C1Q
+ W5vkpl9bKmzDsScYIIqqzw0dyLbhFpTADRbEhccGpzBWq1TAZlQ+I9H
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260908_013215_290987_2B45F73F 
-X-CRM114-Status: GOOD (  12.56  )
+X-CRM114-CacheID: sfid-20260908_013215_375384_9DCF8EA9 
+X-CRM114-Status: GOOD (  22.91  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -67,10 +67,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  f_size is an alias for the inode's i_size, and filesystems
-    read that size straight from untrusted media. ext4's ext4_isize() builds
-   it as ((loff_t)size_high << 32) | size, so bit 31 of size_high lands [...]
-    
+ Content preview:  Streaming files and files of not-yet-known size carried that
+    fact as i_size == FILE_SIZE_STREAM, i.e. (loff_t)-1. Overloading i_size this
+    way is fragile: a value read from media is indistinguishable f [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -94,8 +93,8 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Stat-Signature: yne4h7kw1xat7u4m6kqi4nrdxfkmxup4
-X-Rspamd-Queue-Id: 7BCC8201CD1
+X-Stat-Signature: 6jsf75xsq8ccawrfpmowb651mh7jk6jc
+X-Rspamd-Queue-Id: 3C1AA200975
 X-Spamd-Result: default: False [-57.41 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[99.99%];
@@ -128,74 +127,155 @@ X-Spamd-Result: default: False [-57.41 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 
-f_size is an alias for the inode's i_size, and filesystems read that
-size straight from untrusted media. ext4's ext4_isize() builds it as
-((loff_t)size_high << 32) | size, so bit 31 of size_high lands in the
-sign bit; squashfs takes an unchecked le64 for LREG inodes. A negative
-i_size then feeds the offset arithmetic in __read(), __write() and
-friends, where it either wraps a size_t count to something huge or --
-depending on whether size_t is 32 or 64 bit -- turns the comparison
-unsigned and skips the EOF clamp altogether.
+Streaming files and files of not-yet-known size carried that fact as
+i_size == FILE_SIZE_STREAM, i.e. (loff_t)-1. Overloading i_size this way
+is fragile: a value read from media is indistinguishable from the
+sentinel, so nothing can tell a genuine special file from a corrupted
+inode that happens to hold -1.
 
-Catch this the way Linux does: give the superblock a ceiling and refuse
-sizes beyond it, instead of hardening every arithmetic site. Default
-s_maxbytes to MAX_LFS_FILESIZE in init_super(), which runs before the
-driver probe, so the filesystems that already lower it (jffs2, ubifs,
-squashfs, 9p) keep doing so and everyone else stops sitting at zero.
+Two unrelated situations were hidden behind that one value:
 
-The check goes into do_dentry_open() rather than into iget: ten drivers
-only learn the size in their ->open() callback and write it to the
-inode through file->f_size, so a lookup time check would miss them.
-Casting to u64 makes a negative size exceed any sane s_maxbytes, so the
-sign is covered too; streaming files carry no size of their own and are
-exempted on the i_stream flag rather than on an i_size value.
+  - a character device is a genuine sizeless stream, and
+  - a tftp transfer without a negotiated size has a real, definite size
+    that is simply not known until the file has been read to its end.
 
-Assisted-by: Claude:claude-opus-5
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+The latter is not a stream: it has an end of file and it is seekable --
+tftp_lseek() moves forward by reading and discarding and backward by
+reopening the transfer. Conflating the two would invite wrong
+conclusions such as forbidding seeks on a tftp file.
+
+Give the inode an i_stream flag for the former and an i_size_unknown flag
+for the latter, and leave i_size at a real value in both cases. The two
+agree on the only thing that matters to the I/O layer: i_size is not a
+valid bound, so reads, writes and seeks must not be clamped to it and the
+driver reports the end of the file itself. That shared question is folded
+into the i_size_is_bound() helper. FILE_SIZE_STREAM stays only as the
+stat sentinel that stat_inode() synthesises from these flags for its
+callers.
+
+No functional change intended; this only moves the "no i_size bound" bit
+out of i_size so it can be trusted independently of the on-media value.
+
+Assisted-by: Claude:claude-fable-5
 ---
- fs/fs.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ fs/devfs.c         |  7 ++++++-
+ fs/fs.c            | 22 ++++++++++++++++++----
+ fs/tftp.c          |  2 +-
+ include/linux/fs.h |  2 ++
+ 4 files changed, 27 insertions(+), 6 deletions(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 85881f6cf1..29478cb419 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -998,6 +998,7 @@ int fsdev_open_cdev(struct fs_device *fsdev)
- static void init_super(struct super_block *sb)
- {
- 	INIT_LIST_HEAD(&sb->s_inodes);
-+	sb->s_maxbytes = MAX_LFS_FILESIZE;
- }
- 
- static int fsdev_umount(struct fs_device *fsdev)
-@@ -2627,6 +2628,14 @@ static int rmdirat(int dirfd, const char *pathname)
- 	return errno_set(error);
- }
- 
-+static bool i_size_valid(struct inode *inode)
-+{
-+	if (inode->i_stream)
-+		return true;
-+
-+	return (u64)inode->i_size <= inode->i_sb->s_maxbytes;
-+}
-+
- static int do_dentry_open(struct file *f)
- {
- 	int error;
-@@ -2642,6 +2651,12 @@ static int do_dentry_open(struct file *f)
- 			return error;
+diff --git a/fs/devfs.c b/fs/devfs.c
+index 75df330bcb..cb2980b114 100644
+--- a/fs/devfs.c
++++ b/fs/devfs.c
+@@ -110,7 +110,12 @@ static int devfs_open(struct inode *inode, struct file *f)
+ 			return -ENOENT;
  	}
  
-+	if (!i_size_valid(f->f_inode)) {
-+		dev_warn(&f->fsdev->dev, "%s: bad i_size value: %lld\n",
-+			 f->path, f->f_size);
-+		return -EUCLEAN;
+-	f->f_size = cdev_size(cdev);
++	if (cdev_size(cdev) == FILE_SIZE_STREAM) {
++		inode->i_stream = true;
++		f->f_size = 0;
++	} else {
++		f->f_size = cdev->size;
 +	}
+ 	f->private_data = cdev;
+ 
+ 	return cdev_open(cdev, f->f_flags);
+diff --git a/fs/fs.c b/fs/fs.c
+index ce41f23f88..85881f6cf1 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -373,6 +373,18 @@ static int fsdev_truncate(struct file *f, loff_t length)
+ 		f->f_inode->i_fop->truncate(f, length) : -EROFS;
+ }
+ 
++/*
++ * Reads, writes and seeks are clamped to i_size, but only when i_size is a
++ * meaningful bound. A character device is a sizeless stream, and a file whose
++ * size is only discovered while reading (e.g. a tftp transfer without a
++ * negotiated size) starts out with i_size zero; for both, i_size must not clamp
++ * I/O and the driver reports the end of the file itself.
++ */
++static bool i_size_is_bound(const struct inode *inode)
++{
++	return !inode->i_stream && !inode->i_size_unknown;
++}
 +
- 	if (f->f_flags & O_TRUNC) {
- 		error = fsdev_truncate(f, 0);
- 		f->f_size = 0;
+ int ftruncate(int fd, loff_t length)
+ {
+ 	struct file *f = fd_to_file(fd, false);
+@@ -381,7 +393,7 @@ int ftruncate(int fd, loff_t length)
+ 	if (IS_ERR(f))
+ 		return -errno;
+ 
+-	if (f->f_size == FILE_SIZE_STREAM)
++	if (!i_size_is_bound(f->f_inode))
+ 		return 0;
+ 
+ 	ret = fsdev_truncate(f, length);
+@@ -427,7 +439,7 @@ static ssize_t __read(struct file *f, void *buf, size_t count)
+ 	if (fsdrv != ramfs_driver)
+ 		assert_command_context();
+ 
+-	if (f->f_size != FILE_SIZE_STREAM && f->f_pos + count > f->f_size)
++	if (i_size_is_bound(f->f_inode) && f->f_pos + count > f->f_size)
+ 		count = f->f_size - f->f_pos;
+ 
+ 	if (!count)
+@@ -487,7 +499,7 @@ static ssize_t __write(struct file *f, const void *buf, size_t count)
+ 	if (fsdrv != ramfs_driver)
+ 		assert_command_context();
+ 
+-	if (f->f_size != FILE_SIZE_STREAM && f->f_pos + count > f->f_size) {
++	if (i_size_is_bound(f->f_inode) && f->f_pos + count > f->f_size) {
+ 		ret = fsdev_truncate(f, f->f_pos + count);
+ 		if (ret) {
+ 			if (ret == -EPERM)
+@@ -592,7 +604,7 @@ loff_t lseek(int fd, loff_t offset, int whence)
+ 
+ 	pos += offset;
+ 
+-	if (f->f_size != FILE_SIZE_STREAM && (pos < 0 || pos > f->f_size))
++	if (i_size_is_bound(f->f_inode) && (pos < 0 || pos > f->f_size))
+ 		goto out;
+ 
+ 	if (f->f_inode->i_fop->lseek) {
+@@ -1105,6 +1117,8 @@ static void stat_inode(struct inode *inode, struct stat *s)
+ 		cdev = cdev_by_name(inode->cdevname);
+ 
+ 		s->st_size = cdev ? cdev_size(cdev) : 0;
++	} else if (!i_size_is_bound(inode)) {
++		s->st_size = FILE_SIZE_STREAM;
+ 	} else {
+ 		s->st_size = inode->i_size;
+ 	}
+diff --git a/fs/tftp.c b/fs/tftp.c
+index e8a6b62870..dc68f2c77c 100644
+--- a/fs/tftp.c
++++ b/fs/tftp.c
+@@ -1088,7 +1088,7 @@ static struct dentry *tftp_lookup(struct inode *dir, struct dentry *dentry,
+ 	if (filesize)
+ 		inode->i_size = filesize;
+ 	else
+-		inode->i_size = FILE_SIZE_STREAM;
++		inode->i_size_unknown = true;
+ 
+ 	d_add(dentry, inode);
+ 
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index d3813ad9c5..fc50d207a6 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -129,6 +129,8 @@ struct inode {
+ 	gid_t			i_gid;
+ 	u64			i_version;
+ 	loff_t			i_size;
++	bool			i_stream;	/* sizeless stream, e.g. a character device */
++	bool			i_size_unknown;	/* real size, not known until read, e.g. tftp */
+ 	struct timespec		i_atime;
+ 	struct timespec		i_mtime;
+ 	struct timespec		i_ctime;
 
 -- 
 2.47.3
