@@ -1,68 +1,74 @@
-Delivery-date: Wed, 09 Sep 2026 14:38:44 +0200
+Delivery-date: Wed, 09 Sep 2026 17:31:18 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x4HZc-000C7G-0K
+	id 1x4KGc-000Et5-01
 	for lore@lore.pengutronix.de;
-	Wed, 09 Sep 2026 14:38:44 +0200
+	Wed, 09 Sep 2026 17:31:18 +0200
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="HKQN/Tsw";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=KsTzQdui;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id B11262058D8
-	for <lore@pengutronix.de>; Wed, 09 Sep 2026 14:38:43 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id D346C20598D
+	for <lore@pengutronix.de>; Wed, 09 Sep 2026 17:31:17 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=I+du5PcGMfyXpgWSxjPzqXnGM+Hz77oanNeoCk8TDIA=; b=HKQN/TswOIVgYyTqVrUZOTQJYC
-	fqsDxeG/vHAZjFWyXsvyTd0KZYEl1M07nwllfXJ0LkuJRzQ3pQdieLxK0e13RjYD0sWEipqXE1WMY
-	AAWuzF6EI3wP1AZA3d1hIsZaoZjX2WRXzusVv5jBrAcYOdn/jZb50dHz97bqoyGrHwUQq/N7IziDE
-	/u6lViiz6RhenDrlKP7hwDhrjm1aUxSd+fd3c4ayjKQbW0ZqaDxgkooHkLEvlne4D/+C9qWUabiDZ
-	flmFDlIo+iacSonuOB+kAcE2iVmjXvE1U2QSO7oRHdnrVTgarL59LvDb/31vpwt+H47QFS/nauptE
-	BtTC4sNg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=bPSsRS1qAzkWE/7X8kUhAjXuvpjT60rLJhmJf5mkTSY=; b=KsTzQduiErvbQmPxWDpLIgfRdn
+	++MAg4SDp5yHS/PkOJqa/7iWSsfQWG9wMTNIdmRVG5PPDWNtrv6ZIKfelZt2Z8S5n+os7/WbC9XuI
+	p03zYreg9pWzyHP1K1dEgQSfLbBvIWTAVPHi2p5uZ7Q7vZyjbet8uKVcrNJI8NGf9MBtz5JJ/f1ya
+	C3VYzwVgVo+i0dluInW4/VSuszdqCdYlEwQQXQFsI1WYHUIA86/WpIdAp+aDOdN5mljMsd1hJijBm
+	KX8yfxLJzA1K1j5CLz9gajdyenYRgxIeg00UWuP/jvSA/Af1JG1tBikTpnofM+N06ZZeKlSsfcNze
+	Ul+PkC+Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x4GhW-0000000Bbt3-2hCB;
-	Wed, 09 Sep 2026 11:42:50 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1x4KF4-0000000CAQm-2l9p;
+	Wed, 09 Sep 2026 15:29:42 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x4GhT-0000000Bbs4-0vbo
+	id 1x4KF0-0000000CAPZ-0QSV
 	for barebox@lists.infradead.org;
-	Wed, 09 Sep 2026 11:42:49 +0000
+	Wed, 09 Sep 2026 15:29:41 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 7551A201FA9;
-	Wed, 09 Sep 2026 13:42:45 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 4E35B20598D;
+	Wed, 09 Sep 2026 17:29:34 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1x4GhR-0005Dm-1E;
-	Wed, 09 Sep 2026 13:42:45 +0200
+	(envelope-from <s.kerkmann@pengutronix.de>)
+	id 1x4KEw-00079w-0n;
+	Wed, 09 Sep 2026 17:29:34 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1x4GhR-0000000HCoq-3KLq;
-	Wed, 09 Sep 2026 13:42:45 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: ske@pengutronix.de,
-	mtr@pengutronix.de,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH master 1/2] clock: make udelay(), get_time_ns() and is_timeout() weak aliases
-Date: Wed,  9 Sep 2026 13:42:38 +0200
-Message-ID: <20260909114242.4099220-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	(envelope-from <s.kerkmann@pengutronix.de>)
+	id 1x4KEw-00000000mIF-2xt6;
+	Wed, 09 Sep 2026 17:29:34 +0200
+From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+Date: Wed, 09 Sep 2026 17:29:34 +0200
+Subject: [PATCH master] partitions: efi: reject partitions with negative
+ size
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260909-fix-gpt-parser-v1-1-ce1758be604a@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAF17oWoC/yWM0QrCMAxFf2Xk2UDXSVn9FfGhrnGL4CxJNwZj/
+ 27Ux3O55+ygJEwKl2YHoZWV37NBe2pgmNI8EnI2Bu98cNFFfPCGY6lYkpiK0ecutDnkrj+DSUX
+ IHr/gFV5JKwnc/rsu9ycN9VuD4/gAEfx7VHoAAAA=
+X-Change-ID: 20260909-fix-gpt-parser-92d361d6d384
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ Bruno Produit <bruno.produit@trailofbits.com>, 
+ "open list:BAREBOX" <barebox@lists.infradead.org>
+Cc: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+X-Mailer: b4 0.15.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260909_044247_414192_E4D3E558 
-X-CRM114-Status: UNSURE (   7.73  )
+X-CRM114-CacheID: sfid-20260909_082938_302109_0BEDEE37 
+X-CRM114-Status: UNSURE (   9.00  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -71,9 +77,11 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  The ARM64 PBL is about to override these three for the time
-    before a clocksource is registered. Give the clocksource based implementations
-    names of their own and turn the generic ones into weak aliase [...] 
+ Content preview:  From: "Bruno Produit (Patch the Planet in collaboration with
+    OpenAI)" <bruno.produit@trailofbits.com> Previously the GPT parser accepted
+    a partition whose ending LBA is smaller than its starting LBA. The sector-count
+    calculation then wraped and registered a partition with a negative file size.
+    This is [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -97,128 +105,86 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Stat-Signature: oeqd8qdhgsefg4qyb9teb1o9g7hm9cdg
-X-Rspamd-Queue-Id: B11262058D8
-X-Spamd-Result: default: False [-56.31 / 15.00];
+X-Stat-Signature: if564k1x3ma9wbumcgb9y9gcbaeuf9yr
+X-Rspamd-Queue-Id: D346C20598D
+X-Spamd-Result: default: False [-57.81 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[100.00%];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	MID_CONTAINS_FROM(1.00)[];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:c01:1d::a2:received,2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::54:received];
+	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:1101:1d::54:received,2607:7c80:54:3::133:from,2a0a:edc0:0:c01:1d::a2:received];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_MISSING_CHARSET(0.50)[];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
-	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
 	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	DMARC_NA(0.00)[pengutronix.de];
+	FORGED_SENDER(0.00)[s.kerkmann@pengutronix.de,barebox-bounces@lists.infradead.org];
+	ARC_NA(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TO_DN_ALL(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
+	DKIM_TRACE(0.00)[lists.infradead.org:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[s.kerkmann@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 
-The ARM64 PBL is about to override these three for the time before a
-clocksource is registered. Give the clocksource based implementations
-names of their own and turn the generic ones into weak aliases, so an
-override can still call the clocksource based version. No functional
-change.
+From: "Bruno Produit (Patch the Planet in collaboration with OpenAI)" <bruno.produit@trailofbits.com>
 
-Assisted-by: Claude:fable-5.1
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Previously the GPT parser accepted a partition whose ending LBA is
+smaller than its starting LBA. The sector-count calculation then wraped
+and registered a partition with a negative file size. This is invalid
+and caused out of bounds reads in the bootm 4-KiB image probe on 32-bit
+systems.
+
+Fixes: 760689e5ccf1 ("disk: partitions: add EFI GUID Partition Table")
+Assisted-by: gpt-5.6-sol-cyber
+Signed-off-by: Bruno Produit <bruno.produit@trailofbits.com>
+Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 ---
- common/clock.c  | 13 ++++++++++---
- include/clock.h |  5 +++++
- 2 files changed, 15 insertions(+), 3 deletions(-)
+ common/partitions/efi.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/common/clock.c b/common/clock.c
-index fc770ac8530f..0f2f47ed5399 100644
---- a/common/clock.c
-+++ b/common/clock.c
-@@ -50,7 +50,7 @@ late_initcall(dummy_csrc_warn);
- /**
-  * get_time_ns - get current timestamp in nanoseconds
-  */
--uint64_t get_time_ns(void)
-+uint64_t clocksource_current_get_time_ns(void)
+diff --git a/common/partitions/efi.c b/common/partitions/efi.c
+index 9a04b7014d..d3bda96b05 100644
+--- a/common/partitions/efi.c
++++ b/common/partitions/efi.c
+@@ -248,9 +248,13 @@ static int is_gpt_valid(struct block_device *blk, u64 lba,
+ static inline int
+ is_pte_valid(const gpt_entry *pte, const u64 lastlba)
  {
- 	struct clocksource *cs = current_clock;
- 	uint64_t cycle_now, cycle_delta;
-@@ -73,6 +73,8 @@ uint64_t get_time_ns(void)
- 	time_ns += ns_offset;
- 	return time_ns;
- }
++	u64 start = le64_to_cpu(pte->starting_lba);
++	u64 end = le64_to_cpu(pte->ending_lba);
 +
-+uint64_t get_time_ns(void) __weak __alias(clocksource_current_get_time_ns);
- EXPORT_SYMBOL(get_time_ns);
- 
- /**
-@@ -165,7 +167,7 @@ int is_timeout_non_interruptible(uint64_t start_ns, uint64_t time_offset_ns)
+ 	if (guid_is_null(&pte->partition_type_guid) ||
+-	    le64_to_cpu(pte->starting_lba) > lastlba	 ||
+-	    le64_to_cpu(pte->ending_lba)   > lastlba)
++	    start > lastlba ||
++	    end > lastlba ||
++	    start > end)
+ 		return 0;
+ 	return 1;
  }
- EXPORT_SYMBOL(is_timeout_non_interruptible);
- 
--int is_timeout(uint64_t start_ns, uint64_t time_offset_ns)
-+int clocksource_current_is_timeout(uint64_t start_ns, uint64_t time_offset_ns)
- {
- 	int ret = is_timeout_non_interruptible(start_ns, time_offset_ns);
- 
-@@ -174,6 +176,9 @@ int is_timeout(uint64_t start_ns, uint64_t time_offset_ns)
- 
- 	return ret;
- }
-+
-+int is_timeout(uint64_t start_ns, uint64_t time_offset_ns)
-+	__weak __alias(clocksource_current_is_timeout);
- EXPORT_SYMBOL(is_timeout);
- 
- void ndelay(unsigned long nsecs)
-@@ -184,12 +189,14 @@ void ndelay(unsigned long nsecs)
- }
- EXPORT_SYMBOL(ndelay);
- 
--void udelay(unsigned long usecs)
-+void clocksource_current_udelay(unsigned long usecs)
- {
- 	uint64_t start = get_time_ns();
- 
- 	while(!is_timeout(start, usecs * USECOND));
- }
-+
-+void udelay(unsigned long usecs) __weak __alias(clocksource_current_udelay);
- EXPORT_SYMBOL(udelay);
- 
- void mdelay(unsigned long msecs)
-diff --git a/include/clock.h b/include/clock.h
-index ca69535e9185..ea87bfd2020a 100644
---- a/include/clock.h
-+++ b/include/clock.h
-@@ -58,6 +58,11 @@ void udelay(unsigned long usecs);
- void mdelay(unsigned long msecs);
- void mdelay_non_interruptible(unsigned long msecs);
- 
-+/* the clocksource based implementations the weak functions above alias */
-+void clocksource_current_udelay(unsigned long usecs);
-+uint64_t clocksource_current_get_time_ns(void);
-+int clocksource_current_is_timeout(uint64_t start_ns, uint64_t time_offset_ns);
-+
- #if IN_PROPER
- void clocksource_srand(void);
- #else
--- 
-2.47.3
+
+---
+base-commit: e55e492573e33823f25935ee00fe7fa7bf2c5c90
+change-id: 20260909-fix-gpt-parser-92d361d6d384
+
+Best regards,
+--  
+Stefan Kerkmann <s.kerkmann@pengutronix.de>
 
 
 
