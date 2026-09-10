@@ -1,62 +1,67 @@
-Delivery-date: Thu, 10 Sep 2026 12:20:09 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Thu, 10 Sep 2026 12:23:03 +0200
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x4bt3-000XMg-1K
+	id 1x4bvr-000XP4-1H
 	for lore@lore.pengutronix.de;
-	Thu, 10 Sep 2026 12:20:09 +0200
+	Thu, 10 Sep 2026 12:23:03 +0200
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=JqtxTvH6;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=0oI9KiC9;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 688042059AA
-	for <lore@pengutronix.de>; Thu, 10 Sep 2026 12:20:08 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id CAC942021B3
+	for <lore@pengutronix.de>; Thu, 10 Sep 2026 12:23:02 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=obq1zxiw3CfyYtTfFW3fbdeP2KE6Eb6fWmJekU8s2uc=; b=JqtxTvH6voBxmPYXnGdoSsENvJ
-	x1gPNdqbNIaF9rlu8qhohIDRLeF6uI5KgsM9BB8ymVZc+j6mcbNN76oWcJxCF1rLrYUMkXAFfB6JK
-	/PC8H3zDmePfrGmdfgOghVl25To2itc7SR8NXPD+1+F13o+wFs4mxgKwEFZOeExRangUf2rXa5xXf
-	CKE5TrzKyURvZJYWzsKnDH5HWjSvJKwZcZbOj1yaxb42LTjyflW1EUcWFDfRGaagGOweyggCTOKVx
-	ZXfi5gutOlUyHrQRt+Uppm+89roCRcHi3eEdK3+tGNY5+3b7AIXaJ9E3FMMVuIOfotFd8MUuna3yo
-	pdwvwnSA==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=wO1yrSx0ElqeRgnT5D5BaQeA/Y8/memyNYF4ciA9tGM=; b=0oI9KiC9NnLfpGgij/1wwJgdrT
+	oTjrv+iTFsUCNnUD9NpHOQDX30MjL09Sws2aqWuU3YSdHzHVbspjFgTaNsSgJhjNh9E+ebIGEs1lm
+	0p3vdouo06LWcQxtFhrlCWVR8NZdDbbD2q82nzvbm20KFpxHgSWNA24lpfoHZajOB7NoUFJf+rWMF
+	LgDPfqUuj4l5W8UEZXBQwsrABgxJQuTxNpuOIY6zPCM8dSjPK1yRN32h0fZ2EKJywkMuVUDoXPGFT
+	Xyynzc8IsePY4C5BynAenAE/hRjDezDonLof+RkvJbbiCFq4uyDZ1mHcSBo0nBPqVmPkkQup8ffaw
+	RvB/URFA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x4bsb-0000000E26d-3Xsj;
-	Thu, 10 Sep 2026 10:19:41 +0000
+	id 1x4bud-0000000E2NI-19wB;
+	Thu, 10 Sep 2026 10:21:47 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x4bsZ-0000000E25x-1UR2
+	id 1x4buZ-0000000E2Ma-4BsZ
 	for barebox@lists.infradead.org;
-	Thu, 10 Sep 2026 10:19:41 +0000
-Received: from [0.0.0.0] (ptz.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::77])
-	(Authenticated sender: afa@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 73BD5201EB9;
-	Thu, 10 Sep 2026 12:19:37 +0200 (CEST)
-Message-ID: <568fe536-615b-4b91-a4e1-d1b744731277@pengutronix.de>
-Date: Thu, 10 Sep 2026 12:19:37 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFT 6/9] efi: add global.efi.bootargs for bootm'd EFI
- applications
-To: Fabian Pflug <f.pflug@pengutronix.de>, barebox@lists.infradead.org
-Cc: fpg@pengutronix.de
-References: <20260826121956.2936414-1-a.fatoum@pengutronix.de>
- <20260826121956.2936414-7-a.fatoum@pengutronix.de>
- <e9fae129f180a1f237fa5ec11388eeb3d0df6cc1.camel@pengutronix.de>
+	Thu, 10 Sep 2026 10:21:46 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 4ACF02021B3;
+	Thu, 10 Sep 2026 12:21:42 +0200 (CEST)
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1x4buY-000F3m-0i;
+	Thu, 10 Sep 2026 12:21:42 +0200
+Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1x4buY-00000000iIy-2hBU;
+	Thu, 10 Sep 2026 12:21:42 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
-In-Reply-To: <e9fae129f180a1f237fa5ec11388eeb3d0df6cc1.camel@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
+To: barebox@lists.infradead.org
+Cc: uol@pengutronix.de,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: [PATCH v2] commands: bootm: remove -c and -s options
+Date: Thu, 10 Sep 2026 12:21:06 +0200
+Message-ID: <20260910102141.170024-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260910_031939_546890_E6606C25 
-X-CRM114-Status: GOOD (  23.18  )
+X-CRM114-CacheID: sfid-20260910_032144_190689_3BF29B32 
+X-CRM114-Status: GOOD (  12.53  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -64,9 +69,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Helo Fabian, On 9/10/26 12:16 PM, Fabian Pflug wrote: > On
-    Wed, 2026-08-26 at 14:17 +0200, Ahmad Fatoum wrote: >> + options = efi_bootargs_get(filetype_is_linux_efi_image(data->kernel_type));
-    > > At this point you [...] 
+ Content preview:  We have inconsistencies about what verification level is used
+    for FIT images when they are used for both booting and for overlays if bootm
+    -c/-s is used to raise the verification level. Properly fixing them would
+    increase the complexity, which could in turn negatively impact security. 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -90,22 +96,22 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Stat-Signature: nxsbgbwzruxj1uczqfx4bo6j5xhu6y16
-X-Rspamd-Queue-Id: 688042059AA
-X-Spamd-Result: default: False [-57.61 / 15.00];
+X-Stat-Signature: oi3spisfnminhqdmiatkf8sy11zpis8k
+X-Rspamd-Queue-Id: CAC942021B3
+X-Spamd-Result: default: False [-56.31 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[100.00%];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
+	MID_CONTAINS_FROM(1.00)[];
+	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:1101:1d::54:received,2607:7c80:54:3::133:from,2a0a:edc0:0:c01:1d::a2:received];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:900:1d::77:received,2607:7c80:54:3::133:from];
-	R_SPF_ALLOW(-0.20)[+mx:c];
+	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.20)[mailman];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
-	RCVD_COUNT_THREE(0.00)[3];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
@@ -113,205 +119,113 @@ X-Spamd-Result: default: False [-57.61 / 15.00];
 	ARC_NA(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
-	FORGED_SENDER(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 
-Helo Fabian,
+We have inconsistencies about what verification level is used for FIT
+images when they are used for both booting and for overlays if
+bootm -c/-s is used to raise the verification level.
 
-On 9/10/26 12:16 PM, Fabian Pflug wrote:
-> On Wed, 2026-08-26 at 14:17 +0200, Ahmad Fatoum wrote:
->> +	options = efi_bootargs_get(filetype_is_linux_efi_image(data->kernel_type));
-> 
-> At this point you are in bootm and want to boot an image. There should be another way to tell bootm to include the
-> kernel command line arguments, because UKI's are MS-Dos executeables, even though they do contain the kernel to execute
-> and bootm will just silently drop all kernel command line parameters here.
-> 
-> Making bootm.appendroot completly useless, which is an advantage of using barebox on x86.
-> 
-> Just indescrimently adding them would also not be good, as windows would also be the same filetype. But maybe add a
-> magic variable to tell efi: "I'm sure, that this will be a kernel. Trust me bro!"
+Properly fixing them would increase the complexity, which could
+in turn negatively impact security.
 
-What does the UKI EFI stub do with extra command-line arguments?
-Are they prepended? Appended? Do they replace the built-in command-line?
-Does enabling secure boot change the behavior?
+I expect that any users are equally well served with
+global.bootm.verify, so drop the extra toggle.
 
-I don't have verified answers to these questions. If you can research
-them, I can consider adapting the behavior here.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v1 -> v2:
+  - drop -c from BAREBOX_CMD_OPTS
+  - fix s/verity/verify/ in commit message (Ulrich)
+---
+ .../migration-guides/migration-master.rst     | 21 +++++++++++++++++++
+ commands/bootm.c                              | 13 ++----------
+ 2 files changed, 23 insertions(+), 11 deletions(-)
 
-Cheers,
-Ahmad
-
-> 
-> /Fabian
->> +	if (options) {
->> +		load_option = xstrdup_char_to_wchar(options);
->> +		load_option_size = (strlen(options) + 1) * sizeof(wchar_t);
->>  	}
->>  
->>  	file_path = efi_dp_from_file(AT_FDCWD, data->os_file);
->>  
->>  	pr_info("Loading %pD\n", file_path);
->> +	if (data->verbose && options)
->> +		pr_info("Load options: %s\n", options);
->> +
->> +	free(options);
->>  
->>  	/* Initialize EFI drivers */
->>  	efiret = efi_init_obj_list();
->> @@ -321,6 +322,14 @@ static int efi_loader_bootm(struct image_data *data)
->>  	/* Control is returned to us, disable EFI watchdog */
->>  	efi_set_watchdog(0);
->>  
->> +	/*
->> +	 * A still loaded driver would keep referencing the load options.
->> +	 * efi_set_load_options() tolerates the already deleted handle of an
->> +	 * application.
->> +	 */
->> +	efi_set_load_options(handle, 0, NULL);
->> +	free(load_option);
->> +
->>  	return -efi_errno(efiret);
->>  
->>  out:
->> diff --git a/efi/payload/bootm.c b/efi/payload/bootm.c
->> index fe2d27b7ff10..491bafb66898 100644
->> --- a/efi/payload/bootm.c
->> +++ b/efi/payload/bootm.c
->> @@ -22,7 +22,6 @@
->>  #include <string.h>
->>  #include <linux/err.h>
->>  #include <boot.h>
->> -#include <bootargs.h>
->>  #include <bootm.h>
->>  #include <fs.h>
->>  #include <libfile.h>
->> @@ -32,6 +31,7 @@
->>  #include <efi/payload/driver.h>
->>  #include <efi/error.h>
->>  #include <efi/initrd.h>
->> +#include <efi/bootargs.h>
->>  
->>  #include "image.h"
->>  
->> @@ -167,6 +167,7 @@ static int do_bootm_efi_stub(struct image_data *data)
->>  	bool image_freed = false;
->>  	efi_handle_t handle = NULL; /* silence compiler warning */
->>  	enum filetype type;
->> +	char *options;
->>  	int ret;
->>  
->>  	ret = efi_load_os(data, &loaded_image, &handle);
->> @@ -186,9 +187,11 @@ static int do_bootm_efi_stub(struct image_data *data)
->>  	if (data->dryrun)
->>  		goto unload_ramdisk;
->>  
->> -	ret = efi_execute_image(handle, loaded_image, true, type,
->> -				filetype_is_linux_efi_image(type) ?
->> -				linux_bootargs_get() : NULL);
->> +	options = efi_bootargs_get(filetype_is_linux_efi_image(type));
->> +
->> +	ret = efi_execute_image(handle, loaded_image, true, type, options);
->> +
->> +	free(options);
->>  
->>  	/* efi_execute_image takes care to unload the image on error,
->>  	 * so we set image_freed and fall through to freeing ramdisk
->> @@ -215,6 +218,7 @@ static int efi_app_execute(struct image_data *data)
->>  	struct efi_loaded_image *loaded_image;
->>  	efi_handle_t handle;
->>  	enum filetype type;
->> +	char *options;
->>  	int ret;
->>  
->>  	ret = efi_load_image(data->os_file, &loaded_image, &handle);
->> @@ -223,14 +227,19 @@ static int efi_app_execute(struct image_data *data)
->>  
->>  	type = file_detect_type(loaded_image->image_base, PAGE_SIZE);
->>  
->> +	options = efi_bootargs_get(filetype_is_linux_efi_image(type));
->> +
->>  	if (data->dryrun) {
->>  		BS->unload_image(handle);
->> +		free(options);
->>  		return 0;
->>  	}
->>  
->> -	return efi_execute_image(handle, loaded_image, true, type,
->> -				 filetype_is_linux_efi_image(type) ?
->> -				 linux_bootargs_get() : NULL);
->> +	ret = efi_execute_image(handle, loaded_image, true, type, options);
->> +
->> +	free(options);
->> +
->> +	return ret;
->>  }
->>  
->>  static int linux_efi_handover = true;
->> diff --git a/include/efi/bootargs.h b/include/efi/bootargs.h
->> new file mode 100644
->> index 000000000000..dfd17261ff9d
->> --- /dev/null
->> +++ b/include/efi/bootargs.h
->> @@ -0,0 +1,9 @@
->> +/* SPDX-License-Identifier: GPL-2.0-only */
->> +#ifndef __EFI_BOOTARGS_H
->> +#define __EFI_BOOTARGS_H
->> +
->> +#include <linux/types.h>
->> +
->> +char *efi_bootargs_get(bool linux_image);
->> +
->> +#endif /* __EFI_BOOTARGS_H */
->> diff --git a/test/py/test_shell.py b/test/py/test_shell.py
->> index 23c2d5dbb0b6..05090ae07be0 100644
->> --- a/test/py/test_shell.py
->> +++ b/test/py/test_shell.py
->> @@ -155,3 +155,29 @@ def test_barebox_test_var_exists(barebox, barebox_config):
->>  
->>      # Clean up
->>      barebox.run_check('rm /tmp/testvars')
->> +
->> +
->> +def test_boot_bootargs_dyn_cleared(barebox, barebox_config):
->> +    skip_disabled(barebox_config, "CONFIG_CMD_BOOT", "CONFIG_CMD_GLOBAL",
->> +                  "CONFIG_CMD_ECHO")
->> +
->> +    barebox.run_check("echo -o /env/boot/dyntest '#!/bin/sh'")
->> +    barebox.run_check("echo -a /env/boot/dyntest "
->> +                      "'global linux.bootargs.dyn.test=linux-dyn'")
->> +    barebox.run_check("echo -a /env/boot/dyntest "
->> +                      "'global efi.bootargs.dyn.test=efi-dyn'")
->> +    barebox.run_check("echo -a /env/boot/dyntest "
->> +                      "'global efi.bootargs.nodyntest=efi-static'")
->> +
->> +    # Run the script, but don't actually boot anything
->> +    barebox.run("boot -d -d dyntest")
->> +
->> +    # .dyn. variables must not leak into subsequent boot entries
->> +    assert barebox.run_check("echo ${global.linux.bootargs.dyn.test}") == [""]
->> +    assert barebox.run_check("echo ${global.efi.bootargs.dyn.test}") == [""]
->> +    # ... but other variables are left alone
->> +    assert barebox.run_check("echo ${global.efi.bootargs.nodyntest}") == \
->> +        ["efi-static"]
->> +
->> +    barebox.run_check("global -r efi.bootargs.nodyntest")
->> +    barebox.run_check("rm /env/boot/dyntest")
-
+diff --git a/Documentation/migration-guides/migration-master.rst b/Documentation/migration-guides/migration-master.rst
+index d5601ac838c5..b40ea66827cb 100644
+--- a/Documentation/migration-guides/migration-master.rst
++++ b/Documentation/migration-guides/migration-master.rst
+@@ -12,3 +12,24 @@ OP-TEE loading is now only supported
+ 
+ For i.MX6 boards, this can be enabled by enabling
+ ``CONFIG_FIRMWARE_IMX6_OPTEE``.
++
++Removal of bootm -c/-s options
++------------------------------
++
++The :ref:`command_bootm` options ``-c`` and ``-s`` used to selectively
++enable checksum/hash and signature verification, respectively.
++
++They have been removed in favor of the global toggle
++:ref:`global.bootm.verify <magicvar_global_bootm_verify>`.
++This can be restricted at build-time via setting ``CONFIG_BOOTM_FORCE_SIGNED_IMAGES``
++or loosened :ref:`at runtime <use_security-policies>`
++via setting ``SCONFIG_BOOT_UNSIGNED_IMAGES``.
++
++The removal is motivated by making it easier to reason about what the active
++verification level is, especially as there are now other uses for verified
++images like when :ref:`global.of.overlay.path <magicvar_global_of_overlay_path>`
++points at a FIT.
++
++Existing users, if any, will fail-secure: The command will now exit with a failure::
++
++  bootm: invalid option -- s
+diff --git a/commands/bootm.c b/commands/bootm.c
+index 9ff4b218fd1f..44abb953f661 100644
+--- a/commands/bootm.c
++++ b/commands/bootm.c
+@@ -28,7 +28,7 @@
+ #include <magicvar.h>
+ #include <asm-generic/memory_layout.h>
+ 
+-#define BOOTM_OPTS_COMMON "sca:e:vo:fd"
++#define BOOTM_OPTS_COMMON "a:e:vo:fd"
+ 
+ #ifdef CONFIG_BOOTM_INITRD
+ #define BOOTM_OPTS BOOTM_OPTS_COMMON "L:r:"
+@@ -55,13 +55,6 @@ static int do_bootm(int argc, char *argv[])
+ 
+ 	while ((opt = getopt(argc, argv, BOOTM_OPTS)) > 0) {
+ 		switch(opt) {
+-		case 'c':
+-			if (data.verify < BOOTM_VERIFY_HASH)
+-				data.verify = BOOTM_VERIFY_HASH;
+-			break;
+-		case 's':
+-			data.verify = BOOTM_VERIFY_SIGNATURE;
+-			break;
+ #ifdef CONFIG_BOOTM_INITRD
+ 		case 'L':
+ 			data.initrd_address = simple_strtoul(optarg, NULL, 0);
+@@ -113,8 +106,6 @@ static int do_bootm(int argc, char *argv[])
+ 
+ BAREBOX_CMD_HELP_START(bootm)
+ BAREBOX_CMD_HELP_TEXT("Options:")
+-BAREBOX_CMD_HELP_OPT ("-c\t",  "hash check image integrity")
+-BAREBOX_CMD_HELP_OPT ("-s\t",  "check signature of image")
+ BAREBOX_CMD_HELP_OPT ("-d\t",  "dry run: check data, but do not run")
+ BAREBOX_CMD_HELP_OPT ("-f\t",  "load images even if type is undetectable")
+ #ifdef CONFIG_BOOTM_INITRD
+@@ -134,7 +125,7 @@ BAREBOX_CMD_HELP_END
+ BAREBOX_CMD_START(bootm)
+ 	.cmd		= do_bootm,
+ 	BAREBOX_CMD_DESC("boot an application image")
+-	BAREBOX_CMD_OPTS("[-cdf"
++	BAREBOX_CMD_OPTS("[-df"
+ #ifdef CONFIG_BOOTM_INITRD
+ 					  "rL"
+ #endif
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+2.47.3
 
 
 
