@@ -1,16 +1,16 @@
-Delivery-date: Mon, 21 Sep 2026 11:01:07 +0200
+Delivery-date: Mon, 21 Sep 2026 11:38:11 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x8Ztb-004crm-2N
+	id 1x8aTT-004dVQ-2M
 	for lore@lore.pengutronix.de;
-	Mon, 21 Sep 2026 11:01:07 +0200
+	Mon, 21 Sep 2026 11:38:11 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 8F6F02001F2
-	for <lore@pengutronix.de>; Mon, 21 Sep 2026 11:01:07 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 5816C2007E0
+	for <lore@pengutronix.de>; Mon, 21 Sep 2026 11:38:11 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=rqTi0sJs;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=czTmm9Qj;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -19,49 +19,48 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=pm9sM5ot4fdXSS6a13ONE3MtLUhbbYat//ek8OqDd5k=; b=rqTi0sJs+4Ye+V+JfVnGssKCUG
-	PVQzrbR0nxcnWv4VegJxxP+6eFRHiB2Z/MvbwAQ4P21G4PB4MeTRvo2StLuWjuQ7XzW802AyRNx7Z
-	PjjMfWTMn/sbmgtS/tXFI1BdX6Y6dxpLYz6bHVOQfd5TCK0Lk9ykQAFYmQKDEQUq/gkE/KA80qY2B
-	gkSmhS+WdMD8x+i9wdLDYLrUtBjvDNAjCYoBSbx3xTdatPv+SbCG0N7v5v6mOf3te/GsKNcxDhOzE
-	LVU0zYrzK7eqvXtkwT4MLezvK0FooG3OykTc6bi9iS3Nz1wwLhlSP+ygtQYo1U3Lk+IoJmGxH2qB3
-	zr/dMVbA==;
+	bh=A0yW2GggHNU6omRpjnLIInkXvhXj04Jov8c+tqUIbjw=; b=czTmm9Qj4yvmH5qMiHArRU+EXC
+	JGKdKls83G/uRrWTXhCUjJCsUjiZHBIdUpLJQIPj8Hz6GnnmixBn9XJNbB/8VPp6EN4ExeBt7TqHz
+	a3ImiK/YV1cCkL9sw+VAD6p7JpeY+wwPQYyqw5uZvwc5N81bTQjC4VdjDb8Y9tAFrxHCdEIHrl71w
+	V2/ChgbgpgmqVxkFdKqDXb+al+94IQSNIDLZms0k+1mHUatAyWGwqd51DJ6cN2c8Hkny36a6p+vz6
+	8VpoYSvsEmkW0nZRuGsMANp2/JnvG/a70cGKVu/mfglepGr3K2qHLkoHMSquEjN+D2525Dej0LpCY
+	6+er1PPw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x8Zs8-00000001QB9-1PuZ;
-	Mon, 21 Sep 2026 08:59:36 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1x8aSD-00000001XSB-0Bdr;
+	Mon, 21 Sep 2026 09:36:53 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x8Zs5-00000001Q8J-1DzW
+	id 1x8aS9-00000001XRc-0hUC
 	for barebox@lists.infradead.org;
-	Mon, 21 Sep 2026 08:59:35 +0000
+	Mon, 21 Sep 2026 09:36:50 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 617DA20007B;
-	Mon, 21 Sep 2026 10:59:26 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 053662001F2;
+	Mon, 21 Sep 2026 11:36:47 +0200 (CEST)
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1x8Zry-00225V-11;
-	Mon, 21 Sep 2026 10:59:26 +0200
+	id 1x8aS6-0022V7-31;
+	Mon, 21 Sep 2026 11:36:46 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1x8Zry-000000019yJ-2yz1;
-	Mon, 21 Sep 2026 10:59:26 +0200
+	id 1x8aS7-00000003hZX-1T6v;
+	Mon, 21 Sep 2026 11:36:46 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: bruno.produit@trailofbits.com,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH] .mailmap: fix Bruno Produit's author name
-Date: Mon, 21 Sep 2026 10:59:18 +0200
-Message-ID: <20260921085922.261158-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: [PATCH] scripts: genenv: make the temporary directory writable
+Date: Mon, 21 Sep 2026 11:36:41 +0200
+Message-ID: <20260921093646.882466-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260921_015933_484389_2887128F 
-X-CRM114-Status: UNSURE (   7.18  )
+X-CRM114-CacheID: sfid-20260921_023649_374677_D5E74011 
+X-CRM114-Status: UNSURE (   8.67  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -70,9 +69,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Import into git led to two of Bruno's patches having bruno.produit@trailofbits.com
-    as both author and email. Not sure how that came about, but add his name
-   to the mailmap, so they are shown correctly. 
+ Content preview:  genenv copies the environment directories it is given into
+    a temporary directory next to its output and removes that directory again
+    when it is done. The copy is made with cp, which preserves the mode [...]
+    
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -96,60 +96,75 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Stat-Signature: hwin7xfr3d595d6nfinz4poswhjm7boe
-X-Rspamd-Queue-Id: 8F6F02001F2
+X-Stat-Signature: hcao3uhwyo15agtw9k1xo1f5a7kt6qdi
+X-Rspamd-Queue-Id: 5816C2007E0
 X-Spamd-Result: default: False [-56.31 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	MID_CONTAINS_FROM(1.00)[];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:1101:1d::54:received,2a0a:edc0:0:c01:1d::a2:received,2607:7c80:54:3::133:from];
+	MID_CONTAINS_FROM(1.00)[];
+	RCVD_IN_DNSWL_MED(-0.60)[2607:7c80:54:3::133:from,2a0a:edc0:0:c01:1d::a2:received,2a0a:edc0:0:1101:1d::54:received];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	MAILLIST(-0.20)[mailman];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	R_SPF_ALLOW(-0.20)[+mx:c];
+	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
+	DMARC_NA(0.00)[pengutronix.de];
+	FROM_HAS_DN(0.00)[];
 	ARC_NA(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
+	RCPT_COUNT_TWO(0.00)[2];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
-	RCPT_COUNT_THREE(0.00)[3];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	RCVD_COUNT_FIVE(0.00)[5];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 
-Import into git led to two of Bruno's patches having
-bruno.produit@trailofbits.com as both author and email.
+genenv copies the environment directories it is given into a temporary
+directory next to its output and removes that directory again when it is
+done. The copy is made with cp, which preserves the mode of what it copied,
+so building from a read-only source tree, e.g. a Nix store path leaves a
+temporary directory nothing can be deleted from:
 
-Not sure how that came about, but add his name to the mailmap,
-so they are shown correctly.
+  rm: cannot remove '.../defaultenv-qemu_fw_cfg.bbenv.genenv.tmp/boot/qemu_fw_cfg': Permission denied
+  make[7]: *** [scripts/Makefile.env:41: common/boards/qemu/defaultenv-qemu_fw_cfg.bbenv] Error 1
 
+and the build fails. The same modes also stop the find that prunes stray
+editor backups a few lines further down from doing anything.
+
+Make the copies writable before either runs. Their modes are of no interest
+to anything: bareboxenv packs the files into an environment image that
+carries its own.
+
+Assisted-by: Claude:opus-5
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- .mailmap | 1 +
- 1 file changed, 1 insertion(+)
+ scripts/genenv | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/.mailmap b/.mailmap
-index d04f28bedfa7..640a10b05778 100644
---- a/.mailmap
-+++ b/.mailmap
-@@ -30,3 +30,4 @@ Wjatscheslaw Stoljarski <wjatscheslaw.stoljarski@kiwigrid.com>
- Wolfgang Denk <wdenk>
- gregory hermant <gregory.hermant@calao-systems.com>
- shravan <shravan.k@phytec.in>
-+Bruno Produit <bruno.produit@trailofbits.com>
+diff --git a/scripts/genenv b/scripts/genenv
+index b630e995cb9b..668f681ab9c3 100755
+--- a/scripts/genenv
++++ b/scripts/genenv
+@@ -42,6 +42,8 @@ for i in $*; do
+ 	fi
+ done
+ 
++chmod -R u+w "$tempdir"
++
+ find $tempdir -name '.svn' -o -name '*~' -delete
+ 
+ scripts/bareboxenv -s $tempdir ${tmpfile}
 -- 
 2.47.3
 
