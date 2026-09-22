@@ -1,120 +1,117 @@
-Delivery-date: Tue, 22 Sep 2026 12:54:21 +0200
+Delivery-date: Tue, 22 Sep 2026 12:54:23 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x8y8j-0052E7-02
+	id 1x8y8l-0052EW-0E
 	for lore@lore.pengutronix.de;
-	Tue, 22 Sep 2026 12:54:21 +0200
+	Tue, 22 Sep 2026 12:54:23 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 7922A200927
-	for <lore@pengutronix.de>; Tue, 22 Sep 2026 12:54:20 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 8996E200927
+	for <lore@pengutronix.de>; Tue, 22 Sep 2026 12:54:22 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=yzaLfAp7;
-	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=duFD53YL;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=RpN7sriu;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=3eXv1wQU;
+	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=aGgDvfMG;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=AW3T68ow;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790074460;
+	s=20260414; t=1790074462;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:list-id:list-help:
+	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=MiefjYS6U8kHYe0k3zWOddcivN8ObBGsMzIbBgU+BVw=;
-	b=Uj1VvoQblIAFfA5FLGDUmqggwKKjzpqE3bYWTfLskEeAUascHfZ54S76tpxJtHm6sRDw4+
-	jte7+6hzsupUteQ+R2Jx7qREpR3EDNpwXf0Md7ytNiPdmL5YlEP/c+Lg+eT1SpcHOvAe39
-	rJ83Qsw5qJ99fRe/JNGvMCdT4UNCQeMHQF9aiMUPtIzQRYsL6fFQzJqVXXU112MKb1rfL4
-	hO7t04PzScIpLu4ZL5+ibywNNWFF6F4g6vTurfAGPZbQtA0z4SEKQr9Nv+OMTVlwqJk5nN
-	YqGhQP0JwD0wIkJrLT7v9+NxiKO5wRQIxjiSfw+u2aeaUmHeYvT1PKErZUJVZQ==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790074460; a=rsa-sha256;
+	bh=mwMIlgk5RSiKwuAHNTCEixOLwNG/sxlH6D+LrKdursw=;
+	b=JmjNh2BDoqAcQjoJJ4KPT6JJ23P1STuKP8DTZ9MQ+ie01SS1Oo1C7aYMggKjE85SsDYGyx
+	4oO7mjRk32PVm/DEssmD0a0RZj+NXRbDk+el4iQ1CC4253J+UU4pxXUdw32aYdQVyyATgo
+	eHWEWIYXghw0LR0JFuLIXfYKYA/VUsTXCTRBusHGc+z3UDyWOXLQ5feVQ1GkkIUK2lcRsJ
+	JhsqKEUXxVXZTCxU6mugNz1Izg4m3skdrmJK9d+FwFbgnnIk2xFMtBUPBCdcgke8oEtDFC
+	ENq/olY9KB2KJPulMVQ9CKPAu1OSEZ+5ILmYpz+MAjyegai+Q+Khz8BQeUfiVA==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790074462; a=rsa-sha256;
 	cv=pass;
-	b=cPM8Mvubcvmf1NW0NjVoL6vhNG1LjcCkR+SnwqfMfbFr09q5yp68TEN9w0GYxkSdk1eKiz
-	kifZSuBgnQ2gNtAwDkOfSY/J2RWtfPxzJ+n1FtWFPkb8CDwWagTBT8OwMgpizZTu+yaRAw
-	7ZE0SvU5iFJII3DCmB0YkhwmP7TCyRck7vboveyWe4ZF13ZOzqIIela26uKFx1HdS1CwTb
-	ceMaY6zJJJaOi7b7rKcCMTjCiY0RENfgzPHUdgyxg34LyzRblJmbRAnMWwXzjQQ8ud0y6q
-	xO9/rQU5zboqaDDJGGc3gRnMPwIticIli+KzagdzCkBMBNHo61giTVTaxECU5w==
+	b=AD8fnISHKpCb/xaQBCv+z+osRiY7vwfdnqw25EucpzfT8J8/C19VG6Ie10vb/MRmLAxNzN
+	bYaRF+zaPufCmm/x29h4AR3uVwLNQ7E1zh39pFM8Ul3hf/gHQutaP995Sj71b5Wo7uowGT
+	9pbmXj7WySa4Z4e/v91YmXU6PiXP5rYXCcg1eDIx/aNB0x/she/RNG3KFnCyfqitwWAsaz
+	ktz02MwBnden+nLAp9716ygRbOi0Zv9secpTuVV2TRbX+9l0gV9j0aLS6NVz7CyyJbFB9o
+	3QR4PMm5ZlMWLqGmu75r47Gu1C1EXS3A5jCcIvl70zZ8heqJaxfuYe8Dx/XrMg==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=yzaLfAp7;
-	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=duFD53YL;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=RpN7sriu;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=3eXv1wQU;
+	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=aGgDvfMG;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=AW3T68ow;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=MiefjYS6U8kHYe0k3zWOddcivN8ObBGsMzIbBgU+BVw=; b=yzaLfAp7duTb8P5EVBXBBzIPBD
-	K8996aJzWQVxJ8fIpCoRLPCjp38GD74GJILipOjDw5J1I3cXMlx4giC+nLs/NreT+kmuO4FHRXCSW
-	8X93Qp0BTivpje0o8WxeylvkvbG8gvVvYzWG0Q5AhhAtU1FcWsmNRTxm4f5DLddEmtk9NPriAv6lN
-	5DoWxzD7Q8CAICXWIHch75oprgPRSCS5bB0EipxejlbYgxLZAv8UF4fWe2QJeuatZN+A+HDoMupbE
-	yxNGAq+0dFl51Fu/eZpp4mT6Mja9yxRfrHMtR55+7t4k5ixrt8gVRkpeF19M/u+7mKLBdUbm3fTLM
-	btDtWR1A==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=mwMIlgk5RSiKwuAHNTCEixOLwNG/sxlH6D+LrKdursw=; b=3eXv1wQUJxO1bVoSdpUervzgT7
+	GbBQz6o2Ou0lWjcL9AKCdZwinPVez7XZLBtU+JK/6efP6JFLPlUeLqyqa3oiIX9c3X8I+0pP7UPZZ
+	E7gplTBw6/r7CRtptaj7/fVQ9XduI6FFU5AlQGeb3UURmF4TUSx3OlNg/33qDXxcRGESMByL5bWsV
+	XxVXMNgeCBFDsF/VbhbcgIW9TGCcX1j/FkhHgfIum4DShgJ80CY9DB511SGq8VRZDvqYeK4wi0+vY
+	uMCNoN65kfWl9LnM3dRNLHdNwpriz3sy/xx5UTAjxH0MT+mF5Wm7MNrmZGj1eHg3eigfdBmfzpnjS
+	PDLZdM8g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x8y7f-0000000576D-2BsG;
+	id 1x8y7f-00000005766-1mVb;
 	Tue, 22 Sep 2026 10:53:15 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x8y7e-0000000575o-2oMP
+	id 1x8y7d-0000000575l-3zEY
 	for barebox@bombadil.infradead.org;
-	Tue, 22 Sep 2026 10:53:14 +0000
+	Tue, 22 Sep 2026 10:53:13 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=MiefjYS6U8kHYe0k3zWOddcivN8ObBGsMzIbBgU+BVw=; b=duFD53YLWWZ3jND4XRgrJSfk0C
-	Fghfh1kNUl0a6wKiwHv87ZBwoHQ3E81mdmeL9PrNHt/Alt28kYsLHJ1MEWtgRCn9FF5ASYLuTIBEz
-	fQ+h8PdK6Yd3mNQMil1Uakp0zFgxC3o8q17Ts+U+h2Ya4Fmlwssy1lnLviT5B8Iok7YlBLEWOpfLa
-	JWpFwcGk5ex0RkX0FnL9EK1cQ0m9zr7jdA3BfolBJeDGevWv99HVjllSpeau464Z9ejxJpKASxLTT
-	ti9p6p5kNJKMe59UQF0UACG41eEGrn5yZiUGuM4KKi3N+1dyhMba7mo3FCACG9R2lhAQqXgvX6h6t
-	oOwhRaoQ==;
+	:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=mwMIlgk5RSiKwuAHNTCEixOLwNG/sxlH6D+LrKdursw=; b=aGgDvfMG1TtFw+NL+pKcIO2PFp
+	2DD+jjwlek/j+kWVRXjfrjG8QMejz2zY00Ujt2h07hUW41EfZyZJiqNzp15t4sHFj9ebFp9bbd054
+	K54GhUp+gWQz6HQkDLT5nvCyYa8zRLh/Wa/N6wFmoIeRqJjLzfp4RciX1hw2lvireMpotoum5Ns8Y
+	R0YxITvAff4DCyJRCW2H33ouLGJk8nDfTdRSNgRbUeSrsWIqaL0wHb4Xofe/4X8DT2HXcPWC/OFW+
+	TZVVFjAVNxGzYGC12A1MCneMoSXv4owdn9g9EupH76Dw8WRT8kG7XrKHSTgfCO9RfkKZjVVaEk/oz
+	tsyQLT2g==;
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by desiato.infradead.org with esmtps (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1x8y7a-0000000DSl9-08nl
+	id 1x8y7a-0000000DSl8-06IB
 	for barebox@lists.infradead.org;
-	Tue, 22 Sep 2026 10:53:13 +0000
+	Tue, 22 Sep 2026 10:53:12 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 1134C201F19;
-	Tue, 22 Sep 2026 12:53:09 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id F3F28201F07;
+	Tue, 22 Sep 2026 12:53:08 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1790074389;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MiefjYS6U8kHYe0k3zWOddcivN8ObBGsMzIbBgU+BVw=;
-	b=RpN7sriukL85Bd+xXtaBfUsgCWFkyCmvVWBgttg57wFgzUix1YcnX415f4xnOZemBj1fRC
-	RX0f4qIuwGHlH0QkBEDcnSucFBYM90Pff0KsHh6lBApwG5q03ATpee8a0NktQvqUw1Jeoi
-	b3et+IgAZymtPV4/0lgWj0jzQJifdOMIwYYWjazJkySdyddzNSPlHd78pDnJUnWmeGPGz0
-	mgk4DopPEeweAlnDPZCyc01nRZ8fpWtezo5eoHHQv+6TDzQz+fZrlHvLss/q+Od2/uf66L
-	Nc+bC2EwPgVgeAOQv97+Kuwa+Xzslu2cu3oNCIsYXDeCP8OZPtv7N8f1qoNOGg==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=mwMIlgk5RSiKwuAHNTCEixOLwNG/sxlH6D+LrKdursw=;
+	b=AW3T68owFMfIHSbp1chP2OF72ARaeT8P2RPLtmzNgQn9AA4ESnrrprX8huznBlRQmo1BLc
+	4Fx40HLD3qL/vsESUUeEctjl2Fwxq8T4uI8y3Vj7XYjuaxv973R4Y8YB+WzUgr/i2ZaRnV
+	6cqro4SvgVq/RQBL3XlDVPO03I/Y08lxhIoT4kKD89dQLW0KrD3ZJ4z5kED1V9r35HazvX
+	x75G8hdTZuKd31t3qdqyrl8Xhp44C9fyZUCxxgTuikgh6D4KNCm8P77SP2BXgEaKHslT3v
+	MhY9ISu7jkza5JHx4/3kJNlTdbtjxrvSIjMcamUKYDwH9nj4aKptmkPXNNN+dw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790074389;
+	s=20260414; t=1790074388;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MiefjYS6U8kHYe0k3zWOddcivN8ObBGsMzIbBgU+BVw=;
-	b=OqrCRtXBrrlQfzkUr7HalgeeQDLf1UzNKU+87HB3otBFyqTmuh+KoWnIAyWrpwMduzLara
-	47x5whC9NHMCAe4mj87BVHadl1SIZNSNkrqHgoFGlMnt7RcdANDu+VFmLKXEf7OVic8PTY
-	mJoGP+tWXezXVvgIGibPSR2BokDLx3qqmko/A9x1Bkhce3MC4krlT3Htgo0eMNXAM/A7WV
-	kmyagXyW/Ad85eOPE88zz4BD5MgPgx5epTpKkr6cIzhyJNa9r1aaqBqcOUsAuEm6Lc6yc2
-	Tz2j+JBoEk020tb8KzXCgLVCYXCPuD5+Tile3+HyJyJZXbJDse2kzuemwR5rpA==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=mwMIlgk5RSiKwuAHNTCEixOLwNG/sxlH6D+LrKdursw=;
+	b=Fl6yOQfHyM/j8LpTfMlEycUjpxEzeNMSifpZzn6s0ASX0KX9EHvWFgZ4yp9Zb/L32YG73n
+	PH+VtB0y4Ocf+WayoTa0+vwzC5FUh786H2orXQttt5r3eAY4TBml8d1whdphC3pLOAc76B
+	xemGmKN2SSYAiuoaVF9oR5IUFW+y4jY9Pl4/ZmDwrUCbns6hBCQqGV+GfwbIyhtXoI7mg0
+	PI3jSpPzMKLyBVUKkks4Yoz1feiTgmxBGfV1HsgKwzNVxMCKNkVom67J8bHhWYItLJT9FU
+	5eNl5E1d48Qk9hEW+anB6e9sm2kmhrcuQjsS7gMGbpObp0EdAe8Ref8/1Xe1+w==
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790074389; a=rsa-sha256;
 	cv=none;
-	b=dK+q6/+BwrZsT1YWS/vvHq4ZkMnn9FB4bdrWZKAL/HekGPR/d+FqabDm5tnvyuBVZSvZyS
-	roIejx1hdoc7xzpDOgnmfigd93RcTmp10YkgXrgbbsltKba4fyS9qjMyqoaWwp3zLNAPFY
-	8mv9qvL5QCiBTnPdOO4yeQTyE8BI/T5pOD9VSZBGrMDHA0FN9TpNhHmfOO/Z1Hz6idTvwi
-	VM2gVXBawUy8tlNABUt+MFVcRF2g3n/cNFiHZRplFWpl7oKidnPPmEcy6/Yi9KWsGMx4Bu
-	Xh6wZ0cPA2WsZ3QSz2Ep5pLMk33/ONx1/rRVM7vEeCGS35QpxHmi/1WWo/SMBA==
+	b=UJhxYOrfBsZOgDZCWbHgTjm5ni5UQw4o2QVY0bs4j0wIjJJJDJM6NzF0JRaSEZHPh08IrJ
+	ncrGtvz+AoqPSMEJUTCxkH0EITu3o38DoQl0t+M7r5mMZ/NVMybtzS3mwT46oMcukDxniR
+	ov3DjLCultM0jCNU1Vaxu7UUDFbBMcvDfW7+Agj2ync3PLyZGf8J9ldBV4Ma0Rd0Tvx3T8
+	pwRYwSUbm3eZ3xlYc/9aLJ30VgfiTiphn1Sr5xJnPe5v4jihDitp4d7bpiqe+ZEhlDkQ01
+	2uLLc3C52aU6XUr1iB7fshS7aXi2B5dunRWvB817Fbvzrq9O8v0Jrcwf02oMjw==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
@@ -122,27 +119,26 @@ Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1x8y7Y-002DTS-38;
+	id 1x8y7Y-002DTR-2y;
 	Tue, 22 Sep 2026 12:53:08 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1x8y7Z-00000001cqw-1cBa;
+	id 1x8y7Z-00000001cqw-1Pew;
 	Tue, 22 Sep 2026 12:53:08 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH 2/2] test: self: free a zero-sized buffer with free_sensitive()
-Date: Tue, 22 Sep 2026 12:53:03 +0200
-Message-ID: <20260922105308.386749-2-a.fatoum@pengutronix.de>
+Subject: [PATCH 1/2] sandbox: route malloc_usable_size() through the PBL glue again
+Date: Tue, 22 Sep 2026 12:53:02 +0200
+Message-ID: <20260922105308.386749-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260922105308.386749-1-a.fatoum@pengutronix.de>
-References: <20260922105308.386749-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260922_115311_791261_8AD9D6F8 
-X-CRM114-Status: GOOD (  10.35  )
+X-CRM114-CacheID: sfid-20260922_115311_244675_B3FCFECF 
+X-CRM114-Status: UNSURE (   7.84  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -0.2 (/)
 X-Spam-Report: Spam detection software, running on the system "desiato.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -150,9 +146,12 @@ X-Spam-Report: Spam detection software, running on the system "desiato.infradead
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  free_sensitive() asks the allocator for the usable size of
-    the buffer before zeroing it, so it is one more path that has to cope with
-    the ZERO_SIZE_PTR that zero-sized allocations return. The sandbox [...] 
+ Content preview:  Everything in SANDBOX_PBL2PROPER_GLUE_SYMS is #defined to
+   a barebox_ prefixed name in barebox proper, so calls end up at our wrappers
+    instead of directly in the host libc directly. malloc_usable_size lost its
+    prefix when sandbox was migrated to PBL, which becomes quickly apparent if
+    it's called with a ZERO_SIZE_PTR: The barebox wrapper rejects it, while the
+    host allocator will c [...] 
  
  Content analysis details:   (-0.2 points, 5.0 required)
  
@@ -181,13 +180,13 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Spamd-Result: default: False [-59.51 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[100.00%];
+	BAYES_HAM(-3.00)[99.99%];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	MID_CONTAINS_FROM(1.00)[];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
-	RCVD_IN_DNSWL_MED(-0.80)[2a0a:edc0:0:c01:1d::a2:received,2001:8b0:10b:1:d65d:64ff:fe57:4e05:received,2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::54:received];
+	RCVD_IN_DNSWL_MED(-0.80)[2a0a:edc0:0:c01:1d::a2:received,2001:8b0:10b:1:d65d:64ff:fe57:4e05:received,2a0a:edc0:0:1101:1d::54:received,2607:7c80:54:3::133:from];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
 	MAILLIST(-0.20)[mailman];
@@ -218,38 +217,41 @@ X-Spamd-Result: default: False [-59.51 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 7922A200927
-X-Stat-Signature: m4ym1nusd1jrzy84scob4pxgrpy1s5q6
+X-Rspamd-Queue-Id: 8996E200927
+X-Stat-Signature: cqnxgo3zm9br4sw1ia3xpa4eqqedqs1g
 
-free_sensitive() asks the allocator for the usable size of the buffer
-before zeroing it, so it is one more path that has to cope with the
-ZERO_SIZE_PTR that zero-sized allocations return. The sandbox got this
-wrong until the previous commit and only ASAN noticed, so let's have the
-allocator selftest walk over it.
+Everything in SANDBOX_PBL2PROPER_GLUE_SYMS is #defined to a barebox_
+prefixed name in barebox proper, so calls end up at our wrappers
+instead of directly in the host libc directly.
 
-Assisted-by: Claude:opus-5-1m
+malloc_usable_size lost its prefix when sandbox was migrated to PBL,
+which becomes quickly apparent if it's called with a ZERO_SIZE_PTR:
+The barebox wrapper rejects it, while the host allocator will choke on
+it under ASAN:
+
+  AddressSanitizer: attempting to call malloc_usable_size() for pointer
+  which is not owned: 0x000000000010
+
+Fixes: 2aba0017c95a ("sandbox: switch to using PBL")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- test/self/malloc.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/sandbox/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/test/self/malloc.c b/test/self/malloc.c
-index 1ec351c3efe5..14d936f96a45 100644
---- a/test/self/malloc.c
-+++ b/test/self/malloc.c
-@@ -140,6 +140,11 @@ static void test_malloc(void)
- 	__expect_cond(p == ZERO_SIZE_PTR, true, "get ZERO_SIZE_PTR for 0-size buffers", __func__, __LINE__);
+diff --git a/arch/sandbox/Makefile b/arch/sandbox/Makefile
+index c8f5ae8c8986..9490a1ae4b35 100644
+--- a/arch/sandbox/Makefile
++++ b/arch/sandbox/Makefile
+@@ -33,7 +33,8 @@ TEXT_BASE = $(CONFIG_TEXT_BASE)
  
- 	free(p);
--	free(tmp);
-+
-+	/*
-+	 * free_sensitive() asks the allocator for the usable size before it
-+	 * zeroes the buffer, so ZERO_SIZE_PTR has to survive that path too
-+	 */
-+	free_sensitive(tmp);
- }
- bselftest(core, test_malloc);
+ SANDBOX_PBL2PROPER_GLUE_SYMS := \
+ 	putchar errno setjmp longjmp \
+-	malloc_stats memalign malloc free realloc calloc memleak_check brk sbrk
++	malloc_stats memalign malloc free realloc calloc malloc_usable_size \
++	memleak_check brk sbrk
+ 
+ KBUILD_CFLAGS += $(foreach s,$(SANDBOX_PBL2PROPER_GLUE_SYMS),-D$(s)=barebox_$(s))
+ 
 -- 
 2.47.3
 
