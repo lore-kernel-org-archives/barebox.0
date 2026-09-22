@@ -1,17 +1,17 @@
 Delivery-date: Tue, 22 Sep 2026 12:49:41 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x8y4D-00529A-19
+	id 1x8y4D-00529K-1i
 	for lore@lore.pengutronix.de;
 	Tue, 22 Sep 2026 12:49:41 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 34F2E201F45
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 02DCA200044
 	for <lore@pengutronix.de>; Tue, 22 Sep 2026 12:49:41 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ajqcNvUT;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=FQRXc1XQ;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=W2Za0nzs;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=TvS8hIGd;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
@@ -22,23 +22,23 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=6R78XU3TrkLPOr9WEQeNHMFyyVU6qo5dyqoBFgYi0FE=;
-	b=DsTf27BH6QTsMRRmk1nA3SSmCCPTG6biJQJMhf5kDtGCjlGoEdzyRSx6Z2pNyKc0ijAw+g
-	LLcF5mMcaAsTia3nl3/JNphps2t1fS9UYs/XInK1qY3TEZKIQ04/Dgki3fHF6hptn6nqze
-	OAE4rdNcOU9saMopSFcAIhWkSHvIS1AVskf/M6mKVaIZGU/yNHKPaEW8zhHH6ouLKHbSDJ
-	cYbsMZbqhJB87z8r3j3HfRmTBaskiZpfdo6cv4VdrTNrIJEiyKiYKETakvwLGwL7d6Y6+f
-	90KHrCHeat9EdNT816NXJoffK6kLquUULBiyYrHpBitALtNOX+weZfwgHDmwew==
+	bh=Gf0vwM0DZBLUc3mZEtVAFRnlCyZNxPTtSA8NylR78Yk=;
+	b=bLlJ1OFLD11kHzINGOlCt8SZYiU8CfWF/SBl26/9MB66rEWBIRkv1ZDz8m9goyYOdQTmKM
+	b3LaCbNy+jAOSpAeUQzq9v+dKnR83Z4EpaTY8cxFta/6cCXsCIFCexN2dVPKIA9A4awuAw
+	sdpz4QPk0O2BUJ9Ik1nZeZqyQ1zAt8tb8bHY70Z4pcWNvmkTVfzXQXP1a0ZFQfAWYW2NlK
+	WVuh99MXJySpHEaB3s6nBIv5OTqCAyseM6f6IzVvj7BW/D2YOOx6MV3cz53GfpO9Zpk5fj
+	eRl4dPbbeFQfEIgzI8Jjx91qHypUDxkcAXSSwgtZMH5kVb1AIv3nFbcNB205KQ==
 ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790074181; a=rsa-sha256;
 	cv=pass;
-	b=QvTEUC3OfsVoeC/+5sogeHSJ2NVi90UjXSEeRW/OnAIWVtJ09GUizJk4cQYU15mTSsnuz8
-	322pAxBrdSLSw9K7UbuuLBLDu9Oxer9ZK8OZY0SJ1tyb0HC2eMgjt7x170lR/yqTxUx6/b
-	Z1qFOyIMklWNCBdwxfxW9dFkiwS8yr5v4kkmJOmTja9z6O1fC4NOHssi6/UnIt2J8etjBd
-	JCkVjW8DkFNzRZZ4u+4DG/2WBFMXAZm4tSMh/31QwAYjDySahxo421VYqE/SVwxNDIT7v8
-	f51g0xOieVi56mXiWGQm2TP/HML8XfKRfeAVDD4DP44wRtuVNHwPtjBf050P9w==
+	b=HrPON0vS1L3DghSQvkO/FAzmbnAl0xE9L9ci5J7VN8AhbEobZaysSczyPkM0GNgcj0uU9M
+	t2BZStFcgr9hdkKGT9I2WsLFSk4k/AW8hW6Yb3WeI+uRtz6T7B3A2XNMWiXHw425fe1l6Y
+	Q7mD2YVanUuFTWQst5eMiqn/ZlHOCCpQQwUI8eq8MAQ7zXtoVWxj/UuadeEDyf3iXhb3iB
+	NEM1gmHRJc8oS6jp1muHJ1fHFCjLcOQrMkuXuFdnjXCJZJC2AWQaIo2wiWoINxp4J2qx8N
+	liVaBwxlOm0K1vwye5ONtVNmyoGbcSFrVfC3+gMairLgrQWM9EKEzGABDWxiNg==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ajqcNvUT;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=FQRXc1XQ;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=W2Za0nzs;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=TvS8hIGd;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
@@ -48,56 +48,56 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=6R78XU3TrkLPOr9WEQeNHMFyyVU6qo5dyqoBFgYi0FE=; b=ajqcNvUTQCdT/CB0D3p8mjIBY+
-	+WKAaIbxKxhmgwWN1W7E+iNIeOKLs/ymfeI0gJ4dH4wvGRi8UGjKYyvx3awQxRqPffgMZgRLEEnbG
-	s+IrCQ0tVLrQ1AP1FVqcnrCsSShIsJl/ikCQdoVJYA5o6Lugz1vFO/8DYnuKVS/0MHUT2LSFHSENs
-	Uz5TjtaaJc+NGcNSLTZEC6+3KboBs3ix+XOA8Gy4lGdpNlLLQNwlziIP2Ay4s2mnao7MwfH3E8yqo
-	E65YxhxCscqrtSL5wYd/ZExRiB/dwG09P52/pGXjhRpEtOdivXudXaAx6qN1E2HYGrvIsob9XMFMq
-	2g33vfxw==;
+	bh=Gf0vwM0DZBLUc3mZEtVAFRnlCyZNxPTtSA8NylR78Yk=; b=W2Za0nzsU1hwzBdvK12t5CoA7+
+	sUumG6zahJrFy8EHfTwb8TVMVTMT+1Ds5s16DiybIo9cQFrsDnrKYBp251UPmi2fya/NXGDI34yiB
+	q3X+kAHlaxhMrrcu6NSO3suEL7snb9thrWIsDjiKxSKuSMMyW4qBx6uQXhZoNk2/f16GATWL7rAG/
+	aOfJie1D0z6Y5WFwa8lk6XfCt1c8tPr08sHyEMyi7AVeg0l6tGkq+irnBCyUOiWnJ+Ug25DDLucgR
+	XtzdqN24ldvK1TKApJ/mOezq7gdUP1+sl/Ln1FjGVOxQYmkI8DTjKrUIiyd6S4+8If1HrsimX4YY5
+	vQahP6oQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x8y2x-000000056G9-0fwh;
-	Tue, 22 Sep 2026 10:48:23 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1x8y2z-000000056Hr-2wrR;
+	Tue, 22 Sep 2026 10:48:25 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x8y2s-000000056E8-3XBB
+	id 1x8y2w-000000056FP-1phm
 	for barebox@lists.infradead.org;
-	Tue, 22 Sep 2026 10:48:21 +0000
+	Tue, 22 Sep 2026 10:48:23 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id D2C8B201F19;
-	Tue, 22 Sep 2026 12:48:16 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 082D4201F46;
+	Tue, 22 Sep 2026 12:48:17 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790074096;
+	s=20260414; t=1790074097;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6R78XU3TrkLPOr9WEQeNHMFyyVU6qo5dyqoBFgYi0FE=;
-	b=FQRXc1XQe1wP/z6bd2wTSCoeLiCZ5UtJrtlhRWbbAydqMKaIeol3lQ2sissnZdoERGjVMl
-	8SF/ghodgaDexPszJd7G3xvJsa6ow1ReHqVdKej8hfKzy0U7L6wMWXQoCELsXJnu0csDw1
-	Qm8Jj6vUGRs4dLbu0FgDWjJApvaWaLav+annrjKaWVUpkFfkX9bZYC7szTObOSBJBeZ8Ac
-	FixzfoJdyKweRcdLDpr37syEeNxiG2Kd1x7vLZXrXLfvFF7PQGnWKjD42gIhAXWR4m2a7n
-	g0LFyssdP9PVqZ+cBy1unU/SDOfBfMKrxiEIVDbu6QKm0m5SGirDObBlzEjfSA==
+	bh=Gf0vwM0DZBLUc3mZEtVAFRnlCyZNxPTtSA8NylR78Yk=;
+	b=TvS8hIGdu7Naso+dIW9bdv3CzHGHzS7TkwDUdj+S4FKi6Jo6GQ6Q7DZFAu3ysti4tMcpB4
+	Chp72jAP2YnwGwceL8cyJeYV2QKoBksTecBiaQbsNRPGsjXqEtmpV2ROQ4UdwS1OY8Zeaj
+	JPuNfPJ+tdRufjW2qj9PioO6/JFQ59CdJcXLb9G1JD338s3X8OAmvXSkpKrlO1GBhlX8dR
+	v2dCzUN8Ecxz7ilHzJploNEbXReIIh0dJ//ypGezjw9e3wyXpZ6HPEiO5/rDw5FOOfC7v1
+	y2dPGSs5/8t8uJ7gxOQVlr4IMZ332pNb6qZQ3vyRmChE4pM/AqHl3v6z1oJqaw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790074096;
+	s=20260414; t=1790074097;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6R78XU3TrkLPOr9WEQeNHMFyyVU6qo5dyqoBFgYi0FE=;
-	b=eIrVlHIAvrK1wBHK/78QrR/Y3S00OsJulZNCfX0kxdXMFeedp28hKul4eoV6O/RlPcikCX
-	N2XrUqzZRcvV+ObjUFuHscqpMq6iwyqaAB77w15U8OvWn/W8LY3azvuf+mAv5hGeSxEcuP
-	UBEDh9+SlNh2c/q5uUQxozcjJ9zE/7Safb9LLW6zYhrVAeqbYDHsCvhxMI7Q/O+40i0zwH
-	7Kp/jfg+OeYt3CK4afiBWy38/TDrRlBl2o180rMSyHXOZfzFySKQHr7cQJDxLwNgPYAUDs
-	zeiff56vp92Q8bznEFfk4NVxpm+iSTTEoECcNjBNKWEAMvi2aicFSD2By3nYUw==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790074096; a=rsa-sha256;
+	bh=Gf0vwM0DZBLUc3mZEtVAFRnlCyZNxPTtSA8NylR78Yk=;
+	b=bAzJr7050o5F5Fv0BdB9J0uHYXxGVd2CInl5H7Dzes5cUKzaszVolmD0MFPZAyT9XbGFS8
+	NgSr5E2wuPhK2la2SLq9I0SCHcK+wJs0veqhU4rn3jWceJdPEww4z0u87qEZQASq0S8cQa
+	S/AzgkMIOg0BBFqEGPaNXMecz+Wk1RPRxV//821+lEQvgU9g4edu1WorRrjNfkuuiL6h6i
+	NGqZ1v7gVryMjKZLM+nHM6M0qdxMQGg0LZR68gPLSafi5NTeiMER5ew5XWn0brP6O8vXPK
+	2y4eEfsjdk1ayfWTrF0t3YczUl6cu8uARH7y0ntGEWp89ajJrC4Y6Yd0FghXDA==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790074097; a=rsa-sha256;
 	cv=none;
-	b=FjaUIGNXnyyBZsr9r84a10P+68Ua1arb9NN7mK23PG1ClyrK81eRMyvTZQfN6j5/uIOxef
-	IF9Zk94uYs1BqJXtEq4owjI3fpMcOJ8p0PXRkV68liuvFvVc5MYwica0SxqeIo/oSu5pOp
-	AuE3LYbazk4Vx8OTCOJ7Z++8iCWTcyo0rXBx4rTkq8NQVgFG5pzJubety455JDwlEDsIWI
-	WO67XBkcCB+Gq32WG03mpeQCN/tBNpFjSMFzIV3z574zAHBxrsBZ3OYFjdlvsdnA1fz+6d
-	FGvh05KTMA1NC9BmayrLgV1qA1GLRNO36yav86Dh15flwSKBUV4kWNRQAGDuyg==
+	b=TCezMbHrIMKiHvX9bdphQsA0ZYWp3BnSZvcLhcicQjVKxGRudfpqlmfSb/RRU8HRTEz1x3
+	cACab4JOF7xJNkMK3/8Sb8Fx6SA2qXo+J+F+thes+zj0HxtpPEM7LtXi8D14OYPt3gJ/89
+	qGaIAXmDpjlX7jGtoDsLR0DHQZA+GZCmka/y3JkB28gg/QRK30UZbJBGauMVCht4+FmNyB
+	yuH88ISVWNY0KiUM7BeOgTtKcjF09KHbYG5P9BUn0MoGC96T9mjybvefdE4ZIHDgbxdW/e
+	lvXOv4hXF71KhbF0X5J+pKX0I2iz0KHNVKdAAXeDzSBX2g381QnIY0bqtOdu2g==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
@@ -105,29 +105,28 @@ Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1x8y2q-002DSb-2T;
+	id 1x8y2q-002DSo-35;
 	Tue, 22 Sep 2026 12:48:16 +0200
 Received: from [::1] (helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1x8y2r-00000001M6y-0nqd;
+	id 1x8y2r-00000001M6y-1Yf7;
 	Tue, 22 Sep 2026 12:48:16 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: mfe@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH 1/5] commands: rksecure: exit if invalid integer passed to -b
-Date: Tue, 22 Sep 2026 12:47:52 +0200
-Message-ID: <20260922104813.317584-2-a.fatoum@pengutronix.de>
+Subject: [PATCH 5/5] test: self: add cleanup selftest
+Date: Tue, 22 Sep 2026 12:47:56 +0200
+Message-ID: <20260922104813.317584-6-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260922104813.317584-1-a.fatoum@pengutronix.de>
 References: <20260922104813.317584-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260922_034819_347171_F481A6F9 
-X-CRM114-Status: UNSURE (   9.47  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20260922_034822_628780_3003D162 
+X-CRM114-Status: GOOD (  16.94  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -135,11 +134,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  kstrtouint() is defined with __must_check and we will enforce
-    this in a follow-up commit. The rksecure command used the function, but didn't
-    check its return value. Fix this. Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-    --- commands/rksecure.c | 4 +++- 1 file changed, 3 insertions(+), 1 deletion(-)
-    
+ Content preview:  The new __free() handlers have no user in the tree yet, so
+    add a selftest that exercises them: it checks that leaving the scope really
+    runs the cleanup, that NULL and error pointers are never passed t [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -170,13 +167,13 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Spamd-Result: default: False [-59.31 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:c01:1d::a2:received,2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::54:received];
+	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:1101:1d::54:received,2a0a:edc0:0:c01:1d::a2:received,2607:7c80:54:3::133:from];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
@@ -202,33 +199,158 @@ X-Spamd-Result: default: False [-59.31 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 34F2E201F45
-X-Stat-Signature: s48ydojr6hk349wr8wgd7onmoa5w9opc
+X-Rspamd-Queue-Id: 02DCA200044
+X-Stat-Signature: 3gqoscbxa6qbq3ig9zgyjyrpp37ne9py
 
-kstrtouint() is defined with __must_check and we will enforce this in a
-follow-up commit. The rksecure command used the function, but didn't check
-its return value. Fix this.
+The new __free() handlers have no user in the tree yet, so add a
+selftest that exercises them: it checks that leaving the scope really
+runs the cleanup, that NULL and error pointers are never passed to free(),
+and that no_free_ptr() inhibits the cleanup.
 
+Assisted-by: Claude:opus-5-1m
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- commands/rksecure.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ test/self/Kconfig   | 10 +++++
+ test/self/Makefile  |  1 +
+ test/self/cleanup.c | 89 +++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 100 insertions(+)
+ create mode 100644 test/self/cleanup.c
 
-diff --git a/commands/rksecure.c b/commands/rksecure.c
-index d761cac152ce..8f277af761dc 100644
---- a/commands/rksecure.c
-+++ b/commands/rksecure.c
-@@ -93,7 +93,9 @@ static int do_rksecure(int argc, char *argv[])
- 			hash = optarg;
- 			break;
- 		case 'b':
--			kstrtouint(optarg, 10, &key_size_bits);
-+			ret = kstrtouint(optarg, 10, &key_size_bits);
-+			if (ret)
-+				return ret;
- 			break;
- 		case 'l':
- 			lockdown = 1;
+diff --git a/test/self/Kconfig b/test/self/Kconfig
+index 85a3ef790116..804fe6ac8d31 100644
+--- a/test/self/Kconfig
++++ b/test/self/Kconfig
+@@ -32,6 +32,7 @@ config SELFTEST_ENABLE_ALL
+ 	select SELFTEST_RANGE
+ 	select SELFTEST_PRINTF
+ 	select SELFTEST_MALLOC
++	select SELFTEST_CLEANUP
+ 	select SELFTEST_PROGRESS_NOTIFIER
+ 	select SELFTEST_OF_MANIPULATION
+ 	select SELFTEST_ENVIRONMENT_VARIABLES if ENVIRONMENT_VARIABLES
+@@ -71,6 +72,15 @@ config SELFTEST_MALLOC
+ 	help
+ 	  Tests barebox memory allocator
+ 
++config SELFTEST_CLEANUP
++	bool "scope-based cleanup selftest"
++	help
++	  Tests the __free() cleanup handlers the barebox allocators define,
++	  i.e. that leaving a scope frees the buffer, that NULL and error
++	  pointers are never freed and that no_free_ptr() inhibits cleanup.
++
++	  If unsure, say n.
++
+ config SELFTEST_TALLOC
+ 	bool "talloc() selftest"
+ 	help
+diff --git a/test/self/Makefile b/test/self/Makefile
+index 2bfdbb9949df..2fecab1f8ee3 100644
+--- a/test/self/Makefile
++++ b/test/self/Makefile
+@@ -4,6 +4,7 @@ obj-$(CONFIG_SELFTEST) += core.o
+ obj-$(CONFIG_SELFTEST_BASE64) += base64.o
+ obj-$(CONFIG_SELFTEST_RANGE) += range.o
+ obj-$(CONFIG_SELFTEST_MALLOC) += malloc.o
++obj-$(CONFIG_SELFTEST_CLEANUP) += cleanup.o
+ obj-$(CONFIG_SELFTEST_TALLOC) += talloc.o
+ obj-$(CONFIG_SELFTEST_PRINTF) += printf.o
+ CFLAGS_printf.o += -Wno-format-security -Wno-format
+diff --git a/test/self/cleanup.c b/test/self/cleanup.c
+new file mode 100644
+index 000000000000..7a3b63cc897f
+--- /dev/null
++++ b/test/self/cleanup.c
+@@ -0,0 +1,89 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
++#include <common.h>
++#include <bselftest.h>
++#include <malloc.h>
++#include <linux/err.h>
++#include <linux/slab.h>
++
++BSELFTEST_GLOBALS();
++
++static void *freed[2];
++static int frees;
++static void count_free(void *mem)
++{
++	if (frees < ARRAY_SIZE(freed))
++		freed[frees] = mem;
++	frees++;
++	free(mem);
++}
++DEFINE_FREE(count_free, void *, if (!IS_ERR_OR_NULL(_T)) count_free(_T))
++
++static void test_cleanup(void)
++{
++	void *first, *second;
++
++	/* leaving the scope must free the buffer, and only then */
++	frees = 0;
++	{
++		void *p __free(count_free) = malloc(64);
++
++		assert_cond(p != NULL);
++		assert_cond(frees == 0);
++		first = p;
++	}
++	assert_cond(frees == 1);
++	assert_cond(freed[0] == first);
++	/* the variable defined last is freed first */
++	frees = 0;
++	{
++		void *p __free(count_free) = malloc(64);
++		void *q __free(count_free) = malloc(64);
++
++		first = p;
++		second = q;
++	}
++	assert_cond(frees == 2);
++	assert_cond(freed[0] == second);
++	assert_cond(freed[1] == first);
++
++	/* NULL must not reach the allocator */
++	{
++		void *p __free(free) = NULL;
++		void *q __free(free_sensitive) = NULL;
++		void *r __free(kfree) = NULL;
++		void *s __free(kfree_sensitive) = NULL;
++
++		assert_cond(p == NULL);
++		assert_cond(q == NULL);
++		assert_cond(r == NULL);
++		assert_cond(s == NULL);
++	}
++
++	/* and neither may error pointers */
++	{
++		void *p __free(free) = ERR_PTR(-EINVAL);
++		void *q __free(free_sensitive) = ERR_PTR(-EINVAL);
++		void *r __free(kfree) = ERR_PTR(-ENOMEM);
++		void *s __free(kfree_sensitive) = ERR_PTR(-ENOMEM);
++
++		assert_cond(IS_ERR(p));
++		assert_cond(IS_ERR(q));
++		assert_cond(IS_ERR(r));
++		assert_cond(IS_ERR(s));
++	}
++
++	/* no_free_ptr() inhibits the cleanup, so the buffer stays taken */
++	{
++		void *p __free(kfree) = kmalloc(64, GFP_KERNEL);
++		assert_cond(p != NULL);
++		first = no_free_ptr(p);
++	}
++	second = kmalloc(64, GFP_KERNEL);
++	assert_cond(second != first);
++	kfree(first);
++	kfree(second);
++}
++bselftest(core, test_cleanup);
 -- 
 2.47.3
 
