@@ -1,45 +1,45 @@
-Delivery-date: Wed, 23 Sep 2026 08:10:10 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Wed, 23 Sep 2026 08:11:08 +0200
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x9GBG-005KQk-0C
+	id 1x9GCB-005KSD-3A
 	for lore@lore.pengutronix.de;
-	Wed, 23 Sep 2026 08:10:10 +0200
+	Wed, 23 Sep 2026 08:11:07 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id D2D90201FDF
-	for <lore@pengutronix.de>; Wed, 23 Sep 2026 08:10:09 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 936ED201A8D
+	for <lore@pengutronix.de>; Wed, 23 Sep 2026 08:11:07 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=VYYeil9c;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=TmwOgS8S;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=kWDIuwkS;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=BRtIY5jI;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790143809;
+	s=20260414; t=1790143867;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=IHDLo9T4ltLCMGJdGw3p3UY8COYVK1Ig/QAJCyp1ABw=;
-	b=EQ55Th5tjJZ5TtFUricQg0FvyTTK4UrWJse36JJqGs2RY7O/eFXWJbKJnXHpKprfK/TRUw
-	Jrox3GOcsbPxoSQ9k7lD/2tLkKzwPBCFjCSLCBp3g1c1twLoNhZDoBEtL0qTXYNfYHWH2L
-	eTg1ExTBx3MVeyBLKkyh3az7ejzhhLppT53X3LIByYOcuqypyIAzi40KJPtcrraeVkKcij
-	tVTdH+4IvysgOqFNT00bnB+zbOsHUCSgCGpodjN6jtR13vqpG3EpSLmqZCzktMikKvhqyY
-	odfdjOXmRK70U0wa9afLRLhvUratgLwtuunfn0BLf8merwdmrjs5rJaFOKbuTA==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790143809; a=rsa-sha256;
+	bh=zGeuAriA3iokauBVj05meETh9JuHjfooWzWcESwjLy4=;
+	b=BonVItCQsJONdaKLM8qVJM+uNrTv02OXnbACSg+judOuzFNYC2XOl+iRFVdpzKDQ7VDzoj
+	sawDAfA0/8uU7ZCCqufktX6hfRti+tjlMhtTgz5r6+ewjede+myGvhzqpzeiPqqQurUCzE
+	zEIZuis4V0tYFHjvEE+Kj3RQmBEnXgBCypDtDtWEqm0Q9nU8v41y1l37qAj5s7dvPzpO/1
+	/wvJpKy5LfR9SdcHGO1LWQ/ArpNpdgy2dQb0apNJdd5koyZuxa3zKlDi0saDLzYPcKfkgu
+	enFJut2uDDlIm6M+GjkZK6uTNahKdBRhyvboOGfWHUSr+TZP/44CW2NOgcsWcA==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790143867; a=rsa-sha256;
 	cv=pass;
-	b=M6drPebAiRkUL4V1jAugedA7iSgoHyB/F6NzmOdc7FeIqu+5qiuGWJ1lPQNXUINKj8HNAi
-	LwCeHj8t7hNx08ShzoFWr22l15xM4Bk2+lXrq8Ow1NkrDfZGZJNx/WjtSPuVUpoTYB3SdH
-	+w4XYx68+a2q8LOmaXOmHCzv/DoKAt4FQ6Vy4VzRVWM2jKrz10lxNVAaIjj7EVGtuQB+YL
-	nU7fHo0qpGZR33kgy9DS1i1mtjNfH9vwFyy9VVzkQfVjFv8tLmeDdn9PARPu1Za9A5LDv7
-	AYlekP+woqgvr0cRpZ7DYO44CpAbRXjut8Kmt7ITcdC5kASzQQqEk9EOyFec9Q==
+	b=WaxNcPpRcbAqwDbv5jbHtwrdeEARwLZCkmW08FZ4tXWmf4Bcu1LgD0BBiJn8wpVovWir8P
+	/wER85FwQBf/Lub8cv3FpW+xVEg9F+P2+mXGqf75wrpTfDPBxVSMrEuB1dhW/DU4xSG4vq
+	Oa1UCsnxUkHP+kXBO0b5px3wUFdWcLIvcYcGvXlmv8D+/xmHxowmu3WZSlz0VczGc1ynQ1
+	uvg615yt1sJ5Lwc4+0UHvxFm+tgri58OVali+SkPtkhl8XkcFrb7cenZvZXAlrPreff0xg
+	BjXEM2ZD0R5TB2y8Y/iBmQUFuxr14TYnJOidMs+0ETTnT0d7sB52nEH2M0vhAg==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=VYYeil9c;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=TmwOgS8S;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=kWDIuwkS;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=BRtIY5jI;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
@@ -49,56 +49,56 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=IHDLo9T4ltLCMGJdGw3p3UY8COYVK1Ig/QAJCyp1ABw=; b=VYYeil9cQ87KLtNGFZgzJomyrm
-	59KdkjZjw9yJmH26+yl4X14F5JA2yDRRD4CO95HJDYxh1uS62N8KbC6Z6FXiHANggl39bH2+jLkJX
-	IhHOUm1IwkvXVoedNUL4qSNGKwY3ooY1ej6kcIpVMOvvaSp1e0Jqa57ilE42t8nhdRDw8hOYR1R/r
-	le+Z2aoGdaJEcZ1ILkwS8B1soDqxxgRKqCgHwo4dUqC4Nw3hXCnj77zufS4ntJMEhpJs51zl8VV0N
-	aubnQimad/TRXuPTMcjTJZeW6xejRIDGT4AcBvZBDNA2JU/xie9qek5voP8ugJrIsEl2UZGCIM7zF
-	CVoVIhXg==;
+	bh=zGeuAriA3iokauBVj05meETh9JuHjfooWzWcESwjLy4=; b=kWDIuwkSc1/T8TxmY6mq0tTzXJ
+	m3a+iRTCVCoHx+09hSJw+/Jko6l2Urs8wEdNcYg2B+49QSVPFUAyggzlvL2JNrEMikxVOm3jVg+nG
+	ZLEfyOeKpmYCvEGXku+gDoENeTkAySJf1lybxhahEAHB7/HAAd3oOXgig3zGhDgj+w4e+pq6ZGxx+
+	HDUmQk8lhrKEyNJvCrPhrFcjmV/6PXTAOsqPxPqtdVMwQH/mhsZ4shH5kxmoVABNjFDaFovlo8/bI
+	Lmrdq29n2aNSebltQVEkVIlzKO6G7hCONlz9YhBDN3cLIxywQ0djH6aR/FESWFGN1eqtBouQzEz7n
+	P82POs0Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x9G9u-00000007F3W-0MjJ;
-	Wed, 23 Sep 2026 06:08:46 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1x9GB4-00000007F7Q-1z7S;
+	Wed, 23 Sep 2026 06:09:58 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x9G9q-00000007F35-3FM6
+	id 1x9GB1-00000007F6v-1Iuq
 	for barebox@lists.infradead.org;
-	Wed, 23 Sep 2026 06:08:44 +0000
+	Wed, 23 Sep 2026 06:09:56 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 2D58E20026F;
-	Wed, 23 Sep 2026 08:08:39 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 5E6F0201F08;
+	Wed, 23 Sep 2026 08:09:53 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790143719;
+	s=20260414; t=1790143793;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IHDLo9T4ltLCMGJdGw3p3UY8COYVK1Ig/QAJCyp1ABw=;
-	b=TmwOgS8S3Ivx/i7wWWfxAr7xy4i1olVftCXdTi941FHxlL8lK9Qck0v1dGtCPS3U8lY9rf
-	qUHKMG1StWtofnQOXnyMRvRVLH055T3dA6TpH8he/U7yPjxK5l4q0S2eMyeErp9NsSLeLm
-	PdEYQ9wa172U/esIGNPOIDLjX08BnvOM4u67kaKfThjW4MRUmMwwvwCHWvfctt9H6umZvg
-	TDAGKbsNWPjgSUPiZ1IFqFV76jeazE74J/wFOXKCxM6ExYWCwdj91pwI3WcWDq037IAQf2
-	ml3eoHuxQnu3IphSqVtAPl+598j2PqXLDNteM/bIK+7CSt/eO4lbH7sR6t31Ig==
+	bh=zGeuAriA3iokauBVj05meETh9JuHjfooWzWcESwjLy4=;
+	b=BRtIY5jI81Rnl4nNoXC3pHfoO8p7vD7FF+ODxt1bK5gnIJo/CuGFYUZzUnSEUcZMVy1IT3
+	4oPrEhjF9stAx3uuErGK5JzXo7GBPl3OLltPmnI4fvkIcU1Tvhg+ZUeNHebtvDHLt2LShW
+	wYmpeNr3aSPSHi/oLrFNfgcO6sSYp8SKZ81FRvcuraMzgF4WeqRO5AJ6son9l4/Dh2uvzo
+	ugZLfSghsuTjr7MoJ4PG3iNc865fjGnG9zNyATygAKWWS1czU9+DVUWZDXWaQ3MXyxB73x
+	MCMBnbxVnblGnyvQFwLHmFFnnMwtCOZROL+qXpHqOlUOdG9l92E7nw14oXxuQw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790143719;
+	s=20260414; t=1790143793;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IHDLo9T4ltLCMGJdGw3p3UY8COYVK1Ig/QAJCyp1ABw=;
-	b=EYWmaFNwJppDv/xZnHCQ6NhSFubK8YfTasWX5MqhuA9LvtjGbDXboaq4Z0h7DVui1FgMc7
-	iKcy43a0PhktsCSx16IBw1/+iNAmvnzRLhb2ApkHmA8umIqdd6BkhrkmTdQzIK8jGxlY5q
-	gOSAw7TGH+6NRgUvgDAZjAu+S9rZzragnAfzwrkiBq9ebbHGswTnxbDG1tp2AmrhXsFd+0
-	JpkTJnmbKl7m8FjIR1y92Ge6XGK0uBOt0okcboXNXQREiQIc8p8RjWQQjanIp5xY6vpalF
-	CnlfTiCdNYeCDAuvKAVsVeRSKmif8XG1CorLoxSAOUGA2pPLJbV7xZdpoJ5YIg==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790143719; a=rsa-sha256;
+	bh=zGeuAriA3iokauBVj05meETh9JuHjfooWzWcESwjLy4=;
+	b=GRH4Cn2ZdtACmr3Oq0VLXraAJG1DENWHEDMTysmE2tlt7XkTGTvrT8RTkWizMDKXyV2SeA
+	r35XisZFsd3+p4AYyoljhfbauZoIDqPe2bXsIUF2K605yxlCI8n1NCQyh6H8xzOWl33dp+
+	2w4OooZwJkeHfA23vCWRdP/70HR4Jq40FOwhKdq3IZDOm5U5tUrOWU0xdCeEelGa/XKaoY
+	Trg/vtxsuBdYeoLtDt0Rbr3hBQmD9xYmEsqQ4/M1H6UwPKqaaHZTCraDVeYCWE5msJKF11
+	64ZolxqowM20T5KbPliaYI53EEn5qo0yQZkTXwnGcOQswbyjyqz+6CXiqHbA9g==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790143793; a=rsa-sha256;
 	cv=none;
-	b=V9MkIvFQQsWHLv5haASNYLI55DHlptii7HidycFa2QqSBYwGFMy/VQIzNkavu55p1mQm2z
-	s1UY9O28jpp4ePe0yGjqxSlhNFXpwLHXzhp3wNWg1QfX1ikXFpLLcaokf2ZuY7g6iVyGEc
-	Gj+K19sSmPget+WPIQkACKiGnubg4qq+b0dRGjE4NGgIcSiOfm4QJTVo9lPa0Z7ynOq0lY
-	mPqefLmUY+8A8IaF8MCRO0CQIOfTu89za/ycivHh16pwEHjzmpD0/+KrZNo2AFU43PeMKs
-	ILCg3tg4rpNy65zSuLex7+6Pv5F3brw+183OpRavjH3M2molFlFR7YR715u73g==
+	b=ZiZZzaAJMmoiN+qFbk1WiBp1TQm8eXhiYTNUBFQVhWKm5JD3eEFWNF4+YNx34mYLRgCf3f
+	2T9J1P1fEAYEZom+Hw7lBYMyzOUsQweMG4eMtfS84l+zrl5AfEsxhchBJldWtSYPQBCr5l
+	avHwf50E/Put1u9wdp0216ZBMC0IKyGxLT6w/7/vYCsGq3yRCryYX2lgOjFc+Snydv99bd
+	LddMNRxLO+9k83wgxgjkprNyCgGwldbAO5x6NTzZJm+0XALSzDkrjEV/vD3GAaoMwx+YeO
+	oP4xWhGGmxGwGoPATx4CpFkiFSamLhJxpMTEdOSy6ilWfoKQ0BbaGulGvdeRlg==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
@@ -106,27 +106,28 @@ Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1x9G9n-002M4I-0J;
-	Wed, 23 Sep 2026 08:08:39 +0200
+	id 1x9GAz-002M4Q-0z;
+	Wed, 23 Sep 2026 08:09:53 +0200
 Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1x9G9n-0000000BoZV-08Ag;
-	Wed, 23 Sep 2026 08:08:39 +0200
+	id 1x9GAz-0000000Boc7-12Oc;
+	Wed, 23 Sep 2026 08:09:53 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20260922124600.1556201-1-a.fatoum@pengutronix.de>
-References: <20260922124600.1556201-1-a.fatoum@pengutronix.de>
-Subject: Re: [PATCH] treewide: replace git.pengutronix.de addresses
-Message-Id: <179014371902.2815970.10914024528471443453.b4-ty@pengutronix.de>
-Date: Wed, 23 Sep 2026 08:08:39 +0200
+In-Reply-To: <20260922105308.386749-1-a.fatoum@pengutronix.de>
+References: <20260922105308.386749-1-a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 1/2] sandbox: route malloc_usable_size() through the
+ PBL glue again
+Message-Id: <179014379324.2816128.4504755399464080457.b4-ty@pengutronix.de>
+Date: Wed, 23 Sep 2026 08:09:53 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260922_230842_994210_EAF3ED39 
-X-CRM114-Status: UNSURE (   5.39  )
+X-CRM114-CacheID: sfid-20260922_230955_571973_EC8C642F 
+X-CRM114-Status: UNSURE (   6.64  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -135,10 +136,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Tue, 22 Sep 2026 14:45:59 +0200, Ahmad Fatoum wrote: >
-    Our public-facing git server has not been spared from crawlers and slows
-   > down to a crawl on occasion as a result. > > All git.pengutronix.d [...]
-    
+ Content preview:  On Tue, 22 Sep 2026 12:53:02 +0200, Ahmad Fatoum wrote: >
+    Everything in SANDBOX_PBL2PROPER_GLUE_SYMS is #defined to a barebox_ > prefixed
+    name in barebox proper, so calls end up at our wrappers > ins [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -174,7 +174,7 @@ X-Spamd-Result: default: False [-60.81 / 15.00];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
-	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:c01:1d::a2:received,2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received];
+	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:1101:1d::28:received,2607:7c80:54:3::133:from,2a0a:edc0:0:c01:1d::a2:received];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	MAILLIST(-0.20)[mailman];
@@ -200,24 +200,28 @@ X-Spamd-Result: default: False [-60.81 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: D2D90201FDF
-X-Stat-Signature: kjqtwsfoooyys3rpwqtz1ade9bjtq6cq
+X-Rspamd-Queue-Id: 936ED201A8D
+X-Stat-Signature: htbbjzuog5w77od6cccraux3zw9jnojy
 
 
-On Tue, 22 Sep 2026 14:45:59 +0200, Ahmad Fatoum wrote:
-> Our public-facing git server has not been spared from crawlers and slows
-> down to a crawl on occasion as a result.
+On Tue, 22 Sep 2026 12:53:02 +0200, Ahmad Fatoum wrote:
+> Everything in SANDBOX_PBL2PROPER_GLUE_SYMS is #defined to a barebox_
+> prefixed name in barebox proper, so calls end up at our wrappers
+> instead of directly in the host libc directly.
 > 
-> All git.pengutronix.de links in the barebox repository are also mirrored
-> on Github. They also have availability issue, but less pronounced, so
-> point at those instead for now.
+> malloc_usable_size lost its prefix when sandbox was migrated to PBL,
+> which becomes quickly apparent if it's called with a ZERO_SIZE_PTR:
+> The barebox wrapper rejects it, while the host allocator will choke on
+> it under ASAN:
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] treewide: replace git.pengutronix.de addresses
-      https://git.pengutronix.de/cgit/barebox/commit/?id=2484dce3741d (link may not be stable)
+[1/2] sandbox: route malloc_usable_size() through the PBL glue again
+      https://git.pengutronix.de/cgit/barebox/commit/?id=e542d5ae713b (link may not be stable)
+[2/2] test: self: free a zero-sized buffer with free_sensitive()
+      https://git.pengutronix.de/cgit/barebox/commit/?id=0e9ba4d8df4a (link may not be stable)
 
 Best regards,
 -- 
