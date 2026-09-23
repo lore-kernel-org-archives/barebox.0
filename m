@@ -1,120 +1,133 @@
-Delivery-date: Wed, 23 Sep 2026 08:27:01 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Wed, 23 Sep 2026 08:28:07 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x9GRZ-005KvM-0S
+	id 1x9GSd-005KwU-2p
 	for lore@lore.pengutronix.de;
-	Wed, 23 Sep 2026 08:27:01 +0200
+	Wed, 23 Sep 2026 08:28:07 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 9C4B4201FF6
-	for <lore@pengutronix.de>; Wed, 23 Sep 2026 08:27:00 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id AE54720075E
+	for <lore@pengutronix.de>; Wed, 23 Sep 2026 08:28:07 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="E1s/HJ4F";
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=HX0T0cvZ;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ILBU6eqQ;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=JR1Pol8u;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790144820;
+	s=20260414; t=1790144887;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:content-type:content-type:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=MR2xc4Qj2bVBOiCH8tWy8Q18DY0MvLG8EmcgFC0YSdQ=;
-	b=VQVGiwfv56a4p9Ty0UTYSTxSm4/5o3zUgWD5av4Uu1xQkFNvYaiypIxbr1cyAfBonI/VUp
-	DI80mXuLuuEdQ/ZzwmhOWCJLaTTSOlavhgM8bdTmvTA3kIWTrlndTv+AZJGrfZY1jGErq/
-	20KicqKgOCpbeAFZjl47p7ATMHhn3yoJUdYnUQHPg9getUj4FkhcIwLuVPXdQkibUWgwWH
-	ZnqLsW33TOUf0eUV9z2Q+kqgYi7uwA5137p/p8jOX5HNTA11SkNR7XWoWac/f8V1Iw4P7+
-	zbfCKRapjiGdA9EA08Atz0iCaGBtGcpu7/h09GZvpbYvkWfgihI9jPP+xKZDtA==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790144820; a=rsa-sha256;
+	bh=p2Ba4e4zIE6G8r0PpX35SVhulklpOaQOCH/rBD+fFdI=;
+	b=Ad/nhfBY348/5XCCm6UETowhsj73NxAFeQfQucQNrfWskOHfw+tHm0puFa7+bTz6IpECln
+	B0vd/b662+yxP3AyVTKWrQK6T77b/ekmlS549kojlCx5Wf8878D8pkYtJNNCpcOKx1BLK8
+	o+UQMPulwPdeyR4m5KeL5lgmSHpnFnK8ho/ruZCof0pEfdeMHbB2hwmZLYfg3nx1N+xt7C
+	ICzvOhvuH0wCPn3tHwFtqy3qRYPwqzBLbCzATk1+B9K8k8ZZmz7y6sQfRERS4o2j56rDoP
+	Sdavm6olifAiP2lt2/oQiZJ3LROWgtX4121AV2ISF4VGO6gdXRumZpYaptrfZA==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790144887; a=rsa-sha256;
 	cv=pass;
-	b=OXbsidxkcIqSNy2B309qlXpVGcYhCJxy87ipmcut5pDnq2aQ+NX8goHMG7g9+zdUxDncN2
-	IR7xaSHy3TzcldlJ9G/8WjpCFFaFUVZsC4ZZa522MKBE2r5s4lFftyEQLAgwGBWmx05+2N
-	JixGqdLymP1Lx1a3hvWKZdiNkA5q/SD7Dd5dX7aIRyXkM2fYq2fRtQAnLLq4t0BHqsH2Ea
-	rRrBpHcBqzzIUSMsb5khACertTsGxBoVMRnB/UyLnewVRpZdVgA90aQx0lTXv8RaZ66m9n
-	Vu/TwRf6T9fNqZ/gXp+mIVKvUhzdWIxq6zk+0MFrBEn1/bFZBKT9LEu2+jie/A==
+	b=eaoSMaUCs+8IUmEaBUVhcWN9voJKCCnvkOqtKs90Ic+ad5PbIc+6pEtvW7qYWKjI2N5L3G
+	ALnGl3RJuSAyioyo2tcVrQWxOKPVQLpZ1S0Xc/MM5BroiBkkqfpZ1cvF4IPc35qpdlNbT+
+	e6Fr9X0Equ6IVtf9H/dvld2Yx4zUrbyABafXYGNxXgd/t9DIAcCSdKTqzPju5BqwB7OR/8
+	huwKt9lX1SYBZ9ZiVS6HH2GMe974lnszqHqxfplNc2o68+K8pvTqSKEYHC+dpQqFu+RcYG
+	CqriN7sPPea4D+tO6A1lsCnfnCkcyn7SU0gI+FaGRcyEqP5h9DFEI2lxdU3G/g==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="E1s/HJ4F";
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=HX0T0cvZ;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ILBU6eqQ;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=JR1Pol8u;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Date:
-	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Cc:To:Subject:
-	From:Message-ID:Reply-To:MIME-Version:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=MR2xc4Qj2bVBOiCH8tWy8Q18DY0MvLG8EmcgFC0YSdQ=; b=E1s/HJ4FrjVIAe
-	eaU4kc+fV2KwXKz8k84wWzXWqWYMVtGHq2E9AB2ip2iTaIAsEtRSQy9doHDIv+SAtpVLd5Y8fjEmP
-	s5C2wu5TwP2MQHTRdhTr+HqXQ832bsXGuuuUT3IWF88sv7j0tB8+sywYHhuSK+Ti68Jy/wZf+Z2iE
-	r132XDZOcsvjot/a34i4/vQjuQZDkoYFIRbHHFlAk4S5JBPYeSN77Ubzg8fwMcvyX4qZZ8M6XqPJe
-	+KkhruKeodbapZYy6wsikV+6lvLPPqG8VRd2wzN14AeS4EHq8a8zHIPRdwRwxIE2d9BVVFHY1wUx8
-	DLFjQqfMrFIV83VXL0gg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=p2Ba4e4zIE6G8r0PpX35SVhulklpOaQOCH/rBD+fFdI=; b=ILBU6eqQ0G8qGiXl+BLrVKkB45
+	tvYyizlRzZACaWgY7XY/cEhpf2Atxq9ppW6l57yDZGONCN+hIbt8S/EGNYLc5WQ0b//fZAOovtnO/
+	yiyjjOI1KlB5ZmcCe5QF68ItbKs2U/xZd+9NnGTsaWssz3bs7kuAOkgzDfxiApAdfOXuSGFq2zocg
+	kwAIQ8dBJB0sscTq6WcQQkrQy0XyiQyfrUefpKAmhGph/42hAuQgUaUPHhtvXf8meljYOLP5dLxEB
+	vXfwF4ma+ULi+QPPcGzKrxo0XgZLzQEAHmVQZh8ZBjR6lv1ovm1BnYWPwxxt/WM+aGa5fACzhEFT6
+	DCGulOoQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x9GQP-00000007GdP-3qtN;
-	Wed, 23 Sep 2026 06:25:49 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1x9GRa-00000007Gjt-2BTJ;
+	Wed, 23 Sep 2026 06:27:02 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x9GQL-00000007Gcz-48BE
+	id 1x9GRX-00000007GjH-0OAD
 	for barebox@lists.infradead.org;
-	Wed, 23 Sep 2026 06:25:48 +0000
-Received: from [127.0.0.1] (unknown [IPv6:2a02:560:5dd5:4b00:9ebf:dff:fe00:fdb5])
-	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 083C620075E;
-	Wed, 23 Sep 2026 08:25:44 +0200 (CEST)
+	Wed, 23 Sep 2026 06:27:00 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 3AA53201A8D;
+	Wed, 23 Sep 2026 08:26:57 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790144744;
+	s=20260414; t=1790144817;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MR2xc4Qj2bVBOiCH8tWy8Q18DY0MvLG8EmcgFC0YSdQ=;
-	b=HX0T0cvZEjn6J6bUQlfZ1JGB+wJoreYkPEfkanUDk3GFjrj+rwh5AcFcQsh+HPDsemepLE
-	h338c7fQvxJafrErurSPxUwUnJcw5NxGZEv0AfIagcwBPENbgF7XaD2HOjJaPq74OjRbE6
-	Nv7GAP3b6S2dfSa0D0jVIC+pPUnhZ+74h8AHSoWQvLvhTOI2vmJy/OmJnbOVngRlzp+11p
-	o1nxE1i3C4XerW+/4bjirCrrfxIZzkKvLjNS0ZcB/SdMD4nWaFLOJsJjc1DWaGZrLgxXAv
-	jR6rTBshi+fAUTUZotp2plJEBHpOGlZ0gexDUvyk9OUDYksnGib0Zyd4DVuWkg==
+	bh=p2Ba4e4zIE6G8r0PpX35SVhulklpOaQOCH/rBD+fFdI=;
+	b=JR1Pol8uZo/KM3YxP/opdsnRpR99TXuvx5rh0sRFe05yPoMimTS9xnn64FIOG+zU8uyfx+
+	uYGGd1hG14q7+bjHPCzkXR2pifwgFT+lCMRrG9b4Av+F/2J6sJh/AS02n9cGOn/pRTlkZt
+	uWyuF6ZbsL7pOLFJd62+C1ZF+NQhdBs5yDjiKFQ82AS7gbOeQxmcgn5PyzPjJ+auxmb5mx
+	YEmHF0wQpEv1Q1HWiuAx75eHjZcWRPbm6u/qqmOnrH1bkDPrpTCbTxst2pfzNqDnx+xRe3
+	ATtpOb9psTq3XK8nvQoad9fBkKSisMdR1guJQd9NrI6L59an4URwKgJEPilEjQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790144744;
+	s=20260414; t=1790144817;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MR2xc4Qj2bVBOiCH8tWy8Q18DY0MvLG8EmcgFC0YSdQ=;
-	b=EkT7WiPOTDJk7IXTjIPiYMySNnDyhZKHiKD739N3ze1FGeZ5S8FSpErn5ojXsG1HBQWCgx
-	lpblnWH8K/izMN9+MbQOPxxUjn3oZFCN18nbz6SDeW8NcmfywRJw4JIfZh4VfyKYIIwEn0
-	/434KbT91zoKp9mGKm5GKKIQvYpb1eFsixvVxOguzRCQLv+UzVK1YXkg0l8hTeaKMUWm2h
-	ENeRJOTrhNJHStZ601LTJ9NL05ZTkyvh4Tya1UtIFjrGp3VxqyMNIzOgthrBik+gs6DXRi
-	0Tu31myhuCC38SGkeV4dZ8Exdqb3bAbM8WDksnFHRunBMn1rJ9dPiU2vtrwgDQ==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790144744; a=rsa-sha256;
+	bh=p2Ba4e4zIE6G8r0PpX35SVhulklpOaQOCH/rBD+fFdI=;
+	b=ZkDl03ZjLnHqJoFujyCVNJ2HE7LpK+FRBbOMpvEgC5b6KC7K5YnvNBREbJ0wK+iICrjwbc
+	18x2/11MfnqikNorCHnhlfQtoydNqaOWxmnvMlJXq+PRaThlEoo0/EEWWGbnUPEI5qnLkg
+	34BQtKjwAxl82pOfD2Mwl/Zr90QBTNo4gBgbSu7jFvxd0Hfi7IVL7UkC77Wxpds2IFPN9Y
+	gktBTcouT+kT+I0I40oKMstnK7unY2aM+Xr2Odjxo1tpTweVsi2dCAu4CnoDRVwzdCgtNC
+	sHhjC6NMkZCP/O1t1l6Nk69nUyaAZq+4OZT/PdQMLGgl9EMqCAryrc2pITdO+A==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790144817; a=rsa-sha256;
 	cv=none;
-	b=BwLhyT7IFYFuy06ZsWFrSxswcB0GsGgFTk515DFTng6NfP+YiSdth002yAAi0VZuoBt8/T
-	4EGfkwNZYpMIGO+nqIiY3Xpos+ZWFCKkVv+uvD2epxixtukY2kuIEp8xF/1QcdK6IgHjJa
-	Sf4KfBHpKnbwy5BiDoQ6U7OUyqARqerUt0opxLn8osaBDHH03AdfJrl3Mfyn6UuW5QMzMc
-	Mcq9wu1CxxRHQ/7QIUVGF4G/mctcntG/Phc1EOtHYQ79L9obmHVyR5fua5XVJAe9e48BqL
-	Cx8PTj0gcSGi5woRqCRWymy16NRkpJM1esmR3CP6a9xnv+q4nE1H/mg0VxA5Rg==
+	b=KeK76BODkNJXZ8rAOOlzOKK1KFX9jyrxY6UB4RH95BS9GZOlslxfzz3zsTGwxemhFPVwVF
+	tIWEY6rZv0plxBEilAx7PGi7XvTTyyNCV6HHDAny4Xvldy5H5obNbmDhXlVfNfnQVzkoRC
+	hetVQ0ZGr1MR7s7Z7oe06Og4mu7pSkNfmymchZwaR/bh1wCs1B0z+33uRIqCjJB35gV7JW
+	YTnhc6BeUkkxMFseZeNsbdLcD9blgJktfpiAHzbVqeyUSqWnoGp68v8PFLBxNVcNgGRNRf
+	xdbrTovrFphOHBn8hZxjKEUFlc3IRsmODJ5escWf4OWkU5NFs44o504iCoBWRQ==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
-	auth=pass smtp.auth=sha@pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
-Message-ID: <6551e95c-71cf-44df-a327-e5e24bdb3a76@pengutronix.de>
-From: "Sascha Hauer" <s.hauer@pengutronix.de>
-Subject: Re: [PATCH] semihosting: add semihosting_exit() and an smhexit
- command
-To: "Ahmad Fatoum" <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, "Ahmad Fatoum" <a.fatoum@pengutronix.de>
-In-Reply-To: <20260921101948.1007488-1-a.fatoum@pengutronix.de>
-References: <20260921101948.1007488-1-a.fatoum@pengutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 23 Sep 2026 06:25:43 +0000
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1x9GRV-002M5x-0U;
+	Wed, 23 Sep 2026 08:26:57 +0200
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1x9GRV-0000000BpYH-0KyP;
+	Wed, 23 Sep 2026 08:26:57 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20260921093646.882466-1-a.fatoum@pengutronix.de>
+References: <20260921093646.882466-1-a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] scripts: genenv: make the temporary directory writable
+Message-Id: <179014481707.2819724.12866022677566305052.b4-ty@pengutronix.de>
+Date: Wed, 23 Sep 2026 08:26:57 +0200
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260922_232546_201615_51676A3B 
-X-CRM114-Status: GOOD (  14.10  )
+X-CRM114-CacheID: sfid-20260922_232659_291610_B807E9E9 
+X-CRM114-Status: UNSURE (   7.26  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -122,9 +135,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On 2026-09-21 12:18, Ahmad Fatoum wrote: > + > +static int
-    do_smhexit(int argc, char *argv[]) > +{ > + bool extended_flag = true, shutdown_flag
-    = true; > + int opt, status = 0; > + > + while ((opt = g [...] 
+ Content preview:  On Mon, 21 Sep 2026 11:36:41 +0200, Ahmad Fatoum wrote: >
+    genenv copies the environment directories it is given into a temporary >
+   directory next to its output and removes that directory again when i [...]
+    
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -153,121 +167,63 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-58.41 / 15.00];
+X-Spamd-Result: default: False [-60.81 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[100.00%];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	MISSING_MIME_VERSION(2.00)[];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
-	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
+	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
+	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:c01:1d::a2:received,2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
-	R_SPF_ALLOW(-0.20)[+mx:c];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
 	MAILLIST(-0.20)[mailman];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
+	DMARC_NA(0.00)[pengutronix.de];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	DMARC_NA(0.00)[pengutronix.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
-	RCVD_TLS_LAST(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
-	FORGED_SENDER_FORWARDING(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	RCVD_COUNT_FIVE(0.00)[5];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 9C4B4201FF6
-X-Stat-Signature: gcassmj8btxb3bf15yakdeqnod3319wz
+X-Rspamd-Queue-Id: AE54720075E
+X-Stat-Signature: yk7bm44qjng6hir8yr76osbnd9nxujya
 
-On 2026-09-21 12:18, Ahmad Fatoum wrote:
-> +
-> +static int do_smhexit(int argc, char *argv[])
-> +{
-> +	bool extended_flag =3D true, shutdown_flag =3D true;
-> +	int opt, status =3D 0;
-> +
-> +	while ((opt =3D getopt(argc, argv, "pf")) > 0) {
-> +		switch (opt) {
-> +		case 'p':
-> +			extended_flag =3D false;
-> +			break;
-> +		case 'f':
-> +			shutdown_flag =3D false;
-> +			break;
-> +		default:
-> +			return COMMAND_ERROR_USAGE;
-> +		}
-> +	}
-> +
-> +	argc -=3D optind;
-> +	argv +=3D optind;
-> +
-> +	if (argc > 1)
-> +		return COMMAND_ERROR_USAGE;
-> +
-> +	if (argc =3D=3D 1 && kstrtoint(argv[0], 0, &status))
-> +		return COMMAND_ERROR_USAGE;
-> +
-> +	if (shutdown_flag)
-> +		shutdown_barebox();
-> +
-> +	console_flush();
-> +	semihosting_exit(status, extended_flag);
-> +
-> +	/* Unreachable */
 
-        unreachable();
+On Mon, 21 Sep 2026 11:36:41 +0200, Ahmad Fatoum wrote:
+> genenv copies the environment directories it is given into a temporary
+> directory next to its output and removes that directory again when it is
+> done. The copy is made with cp, which preserves the mode of what it copied,
+> so building from a read-only source tree, e.g. a Nix store path leaves a
+> temporary directory nothing can be deleted from:
+> 
+>   rm: cannot remove '.../defaultenv-qemu_fw_cfg.bbenv.genenv.tmp/boot/qemu_fw_cfg': Permission denied
+>   make[7]: *** [scripts/Makefile.env:41: common/boards/qemu/defaultenv-qemu_fw_cfg.bbenv] Error 1
+> 
+> [...]
 
-> +	return 1;
-> +}
-> +
-> +BAREBOX_CMD_HELP_START(smhexit)
-> +BAREBOX_CMD_HELP_TEXT("Tell the debugger or emulator barebox runs under =
-that the session")
-> +BAREBOX_CMD_HELP_TEXT("is over and hand it STATUS (0 if none is given) a=
-s the exit status.")
-> +BAREBOX_CMD_HELP_TEXT("QEMU exits with it, so a boot driven from the out=
-side can report")
-> +BAREBOX_CMD_HELP_TEXT("its outcome without anything having to read the c=
-onsole.")
-> +BAREBOX_CMD_HELP_TEXT("")
-> +BAREBOX_CMD_HELP_TEXT("Options:")
-> +BAREBOX_CMD_HELP_OPT("-p", "use the plain SYS_EXIT call for a host that =
-has no")
-> +BAREBOX_CMD_HELP_OPT("",   "SYS_EXIT_EXTENDED. On 32-bit, this loses STA=
-TUS.")
+Applied, thanks!
 
--f option is not documented.
+[1/1] scripts: genenv: make the temporary directory writable
+      https://git.pengutronix.de/cgit/barebox/commit/?id=859a88435455 (link may not be stable)
 
-> +BAREBOX_CMD_HELP_TEXT("")
-> +BAREBOX_CMD_HELP_TEXT("Without a host listening the trap instruction is =
-undefined and the")
-> +BAREBOX_CMD_HELP_TEXT("machine stops instead.")
-> +BAREBOX_CMD_HELP_END
-> +
-
-Sascha
-
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best regards,
+-- 
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
