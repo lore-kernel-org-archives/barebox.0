@@ -1,121 +1,124 @@
-Delivery-date: Wed, 23 Sep 2026 10:05:45 +0200
+Delivery-date: Wed, 23 Sep 2026 10:30:35 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x9Hz7-005MVe-0F
+	id 1x9IN9-005Mot-2f
 	for lore@lore.pengutronix.de;
-	Wed, 23 Sep 2026 10:05:45 +0200
+	Wed, 23 Sep 2026 10:30:35 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 1F7212001F2
-	for <lore@pengutronix.de>; Wed, 23 Sep 2026 10:05:44 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 1B1A3201FFC
+	for <lore@pengutronix.de>; Wed, 23 Sep 2026 10:30:35 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=knHBZ+UP;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=FS3dkO80;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=IgdWfniO;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=XO9VxcqJ;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790150744;
+	s=20260414; t=1790152235;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:content-type:content-type:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=3rbcr9M6WHK0uuyWD2OBE6F1pgnlVhZuMj0IhIxU5qM=;
-	b=HolFKhAZ6ome4id9qAinpsRQVrnxbcesQKG4JP47IrgB10J70N1yMvQFnQXjuw9SVMFl1t
-	irmOAfkKLoFdM5qSwyibOl6Kt7UpsRPUtDdoxc4pmneWohr/W6ofPFzbrpEoEp+bCxagTu
-	M6B6GVh+1pq6k1IrF1lelACX0NzOdSKq3piSbXZnP+aFeEdHNwiuglcjAj+J7UGrXByD7I
-	W0xZm9OX57Z3vkjglHU15lBqx4cegjsig+5gqcIIyhsAKBhH8LH77OkOkui0qBZQsHRCac
-	heL9dAQicyKA6H/Bae0cxj08mxG49BHcv9cRIoxXEMsMT5acZBQi/qP9/7INew==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790150744; a=rsa-sha256;
+	bh=NtQsRdDVkZZRteRkjtcGmh8G2OTtuWdOADNCOq5/rVg=;
+	b=GX+f4KZkRx3XeWjaNhikcQR5ox8Yh/eVERyEAzjC3avlG9JoJ+/MfgAU2YUFAyc/4DDmC2
+	tsZ/E7zJeHRqasD2QGt6ymusoOKiOOASPWUbYDjSZC1SPiHK5mM8EpFzr2ALMfkWGBy4Z7
+	0OdIfoQ19Xzj9g6tyrkFg6W0z3Llsdh6uxyyeymcHOAvDOysq+LbYU+zjcaadp2aoLHMt7
+	sDTWWRC42eWygj6TvmUVqbpuoNdECDGCc0rGLN9YTNzq1wP6jAFucqgpupdpMWWzDC6HY3
+	/74h6BZWpiIM1cxwmN6hKHfY9FFMgIMASkKnTnnsg2uUXGJ8DaqFeJsR/Tx2qg==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790152235; a=rsa-sha256;
 	cv=pass;
-	b=SvBEVt2iER3S0n65aFjvSdYjfO6gOeavzy9XxUqNLOyCLK641bzQgPxhUmF8qRA0nb3vvb
-	DX8rYF5p9+4nTWY8MjYhb9/2B4NoQ0sFsd6O7R8GYRplF/0URpzs7uN6YRKxQ9Zwu28qji
-	DhJ4izoabtmgxFpxlqEhGXJK/gp+33ZGr6MrPNnaPWTAPm+KBJHy0nF38OrPnhM3J1wXFW
-	jYz2qzSVnkOWtH4nIUvI9ZoaG/YuvfcDL6caseVFMPzgPZjUcbQq3Vab2k97Ymcmri9IfR
-	vLao/HdW0eml7jQNJ5VZUcmSdrDBB97z9hhEpceOVvzQ9cSYHoiu4LqZ/3Iq+Q==
+	b=CGs7/lLO+Jq/OvX5dTmQ+2JEI/eFAGNraoM5L8FoOiJrO9K04VEK7emsuhzEHERZA3pBDr
+	w36Vv8R/bvarM9MTrgOaAyniMurWp8Z1GtvrrDpC3IVuQgPzdcelgWR/gTXRVMexBm4W6A
+	UTUXpBkx3BqVPEOwMg6rwG5D//b2T6kfBjmS594awQ6Pg3vzvGfvjizpt12VBMOafXA+hp
+	cPDM79Z+EXxJ/eg9Gz17ZEky5dqznCSZRUn3Ju4unZqz2SOmerR45/NqNup/ID2qv2ODx+
+	puVGrVRvE6ypeuE7yMkbrbrvgooZKrbiut4r9ohMT2OJPUBaGNgJO9LR+VMxgA==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=knHBZ+UP;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=FS3dkO80;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=IgdWfniO;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=XO9VxcqJ;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Date:
-	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Cc:To:Subject:
-	From:Message-ID:Reply-To:MIME-Version:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=3rbcr9M6WHK0uuyWD2OBE6F1pgnlVhZuMj0IhIxU5qM=; b=knHBZ+UPVAc61P
-	VCm7Nz52C8nWlOHcjBL1oJQhFfo4lNbbrkdUdbzU0fz0yfg+wW5pxmP22bi8WQYDw4Q7Uyc81R2LD
-	h9n6f0XRh1cDWsLUebVb+0NgDIb1t14RnKaenorZQ3WrEQwU99IKjsmonBXVJRoarADJp8CLGgXiF
-	YIKHLL2dalj0PF/rU7drTO65RumcrPaYKFVePZgoI1g5TUrhP9pymrmDGJ7l/q0Hjo070pC3JeEJZ
-	9vManezxkWBB1mWLBqKhaXSiJwGXqY0AlBgo0bcYLb2P54MP25E/Y/jUaAxIQk2gCfbf2fCai7bKE
-	TA5ZYdGZe/p5dHHBT6ng==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=NtQsRdDVkZZRteRkjtcGmh8G2OTtuWdOADNCOq5/rVg=; b=IgdWfniOejr9Q/r4AcTMkDYWvB
+	rOz0gyUTbUJSUmds3ljbe/N25NTRaITqmgT0aDkzXrpKTsBbFzTLb6BsKNF47nf1BzEnpbt/RqRa7
+	s01RZmuEsJ7VsGgCv4pzeBxX/XoBIseAbuvaaiCF2RekqxAXTaM5L/QMGUZIn0VqdY4xFGlLh9ltR
+	RQFWN4z7kpoVMOc5R1q54A2a2Y46mhRCHULar812WPM6t7BjG+0ZgIeFJskNUFsHbFzMLS02xPFNM
+	TVqsxJ4+p0P++3yWisWf1Q2QJgztLEWpUi3Z15ev4byRsxiwItsyerq/i/Yvgh8ZABTKs815kfsdA
+	NSg8AJ6A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x9Hxl-00000007Swg-2vko;
-	Wed, 23 Sep 2026 08:04:21 +0000
+	id 1x9IAa-00000007V4Y-3gb2;
+	Wed, 23 Sep 2026 08:17:36 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x9Hxh-00000007SwE-2uZG
+	id 1x9IAX-00000007V4D-2zDQ
 	for barebox@lists.infradead.org;
-	Wed, 23 Sep 2026 08:04:19 +0000
-Received: from [127.0.0.1] (unknown [IPv6:2a02:560:5dd5:4b00:9ebf:dff:fe00:fdb5])
-	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 0B9F7200153;
-	Wed, 23 Sep 2026 10:04:15 +0200 (CEST)
+	Wed, 23 Sep 2026 08:17:35 +0000
+Received: from [0.0.0.0] (ptz.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::77])
+	(Authenticated sender: afa@pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B600F20075E;
+	Wed, 23 Sep 2026 10:17:31 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790150655;
+	s=20260414; t=1790151451;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3rbcr9M6WHK0uuyWD2OBE6F1pgnlVhZuMj0IhIxU5qM=;
-	b=FS3dkO80Xl87hLM5ejB8iPvh3OpShvJC474+0SkwOlBPTrzpvcrW1fDJd6i9+KX5gmhTIh
-	q/7yB/qltToFniMH/beq5arHbw1qBTSj77rxScd28K0EmUHWsR7GUmdN3R9pApIBh/7J4d
-	rwr6nLJ7J01r27aCXmkC6G3TZfl1cO6IEJ3Wdi5lmIBf5eC0qIimARSDKo9Ju5yAjxmUF0
-	9frczssePC3dNlS0IOudpO2sY8DYDqvwBgZxZdZ7SG6eAzI6dEzzODOlCYtFzlBOT//OqB
-	xe9tsW9Rhmw00eFwovQ/16935o6rEecRYeYI67vFKhKkmRPSbyofrriNjKZFZw==
+	bh=NtQsRdDVkZZRteRkjtcGmh8G2OTtuWdOADNCOq5/rVg=;
+	b=XO9VxcqJs/FaF6aGSG6W2L4Bnw2lLAWJ8Cr1lBn7ov9muxfXOjylH4vVrzGMEznACl42tm
+	sGPaEX1kM2RQ3iDRU0zmVPxE1l3O+4bHx+wLZ5ePE1UKC5WKltTp7iE0/rqWdmroxj55g1
+	EgwDMWRZgJErCy7sczeIcv53WDyVDmjfRmmGJufnMp0VKZ6h8n3q7kn0aSqluzvDSrrvjo
+	CYxZNz3CGiq/sJc4PC99HjcbYccjvVTpig8K/xD+7tx8oHcrG0Hc0+qi1K8tuzQlkgFlbi
+	uJUlHFlFAKa5gEHZs7UWVAHwGmLX1vD2KZlxLmECd6TI4I2k1f12p8jZHo28XQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790150655;
+	s=20260414; t=1790151451;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3rbcr9M6WHK0uuyWD2OBE6F1pgnlVhZuMj0IhIxU5qM=;
-	b=bZ1QWXDL8XDJKq70DjJBWDCqBhpU2UnaiRwesFAjaTTqznpS5ATqgThrAvcy/Q9blssXlX
-	K1Xsmx2BwPi8zfDYxN//hSrS64n5EWpdusWwer4lpsKWMExiNb8rABno3ML7IqDHj+K/Tv
-	wLJFfYJZcLE0BA8qXdIhqY1jlkma+d+kGEYia7YgXM4Z1fOpAj7oZ90lOji4IYFlQJMFnI
-	VDSnVsUDLfyYQMRh/A0d0NrqW4l5l5cJxfnmaWQVraKoVHQ6mJCAFK65nco6WZv52yGwcM
-	IPFFcRYE6g4OxZV8qWKnrLhLmJDnlaMIIQE0GljYxATBadPwmFXktTSyy8e17Q==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790150655; a=rsa-sha256;
+	bh=NtQsRdDVkZZRteRkjtcGmh8G2OTtuWdOADNCOq5/rVg=;
+	b=eLaoSGsiNtqRHjjY/PsVlhY2cBWIq4tMwxJ8HHIu3F4yOPnpiq86rvzEpHT7bUFgk9pDwJ
+	/eqmL/XnF7gEE+Rlk0VOYfyNsVCiNQoSKlItYHV95UjafJPTVh965MgcKZk8d3oW2Saz0y
+	yFZLf3Zt07gSKasP7ijH1EUsx5gRYeb6+qKvCck6+9xD0vIjrKTc5Fp+DUIPQ2Jo66uk3m
+	8OSNK2Gy1KFhSXj0LCcwMV9oa2MuNOmXRIlzAckOibcYL5D6/n8KS77Br3kg9qmbwxjS0H
+	8rC3IW2HloAsQPxYfJtQUiKaUyiGs7N61kbuMTfuPR6YgF7ARRgdLXsp1EwlKw==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790151451; a=rsa-sha256;
 	cv=none;
-	b=fPCbGiFO7Nr1wtYYSN11KT3aREdK5KN25QF0ReBfaXkhAoawMaAbMmmvf/E3e7TY7DzEs3
-	MzbW6BJWFAEVfsgXSSCPvQe308Z1WOEVmrI0bgG5tAwj5Gv8YXBLdUVJpfM1yeCt9fbG4r
-	3YumFPXwjmM8P1AcyvfKzMbrctok6F7EPR3uXGaCmTOzbI/5t2dCtfVBIV2+zvIOpQX2wu
-	p6CkofdpkjzrrlZDR58Xzu5IyLyAcnQdr/JlnkHL9X26GvLOwD8g0DuZ1Ufx7MmqZ4Fs4B
-	9eITi6W37PoYIVxWOdsjTKaePggG/Pd4hZGrx6Zb7yKygskNMYlamauzyKpy4w==
+	b=CevtEmC+lHSrdVDi4MjuXBTtbUdXJBK6Tb147IxZvk3wEmwrPs2ddg4SAPpCmlaT5dkKH7
+	Uvf0GeshWjTr0O7TpnMBz0pA9WTU4tH8grMlybnxEKYXyxtWuTwsdS+qF5jpfzIkhhXjGM
+	rsPLib+iv3R9OMKBr74KEglQnVZ4/TvUto3rCotzAQXSi3dRsGbTDgTgSFUIQ01rvUieox
+	GmcjJ6Tpw7qw2lsh0sVKyuF4SsqvEgPV6xMwTWVgJ5E2gmF36cOIwNXWgHS5EjbNZ//Q4x
+	f8hJ7EHSjXqyiOKVeHY7IZKXtCxQqThaEzZL2rpbjvu9UDYfj1dMdoY9bpo9OQ==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
-	auth=pass smtp.auth=sha@pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
-Message-ID: <fe0def8b-1c40-471b-92c3-e0d538ae2a29@pengutronix.de>
-From: "Sascha Hauer" <s.hauer@pengutronix.de>
-Subject: Re: [PATCH remotes/origin/next 5/5] test: py: lvm: Add basic LV
- activation test
-To: "Tobias Waldekranz" <tobias@waldekranz.com>
-Cc: barebox@lists.infradead.org
-In-Reply-To: <20260917074202.3851071-6-tobias@waldekranz.com>
-References: <20260917074202.3851071-1-tobias@waldekranz.com>
- <20260917074202.3851071-6-tobias@waldekranz.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 23 Sep 2026 08:04:13 +0000
+	auth=pass smtp.auth=afa@pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
+Message-ID: <2a8db0f2-888e-4cd0-86d9-ca3fe99c64b6@pengutronix.de>
+Date: Wed, 23 Sep 2026 10:17:31 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] test: check-security-policies: mark the source tree safe
+ for git
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ Barebox List <barebox@lists.infradead.org>
+References: <20260923073000.4124447-1-s.hauer@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <20260923073000.4124447-1-s.hauer@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260923_010417_911952_8BAE987C 
-X-CRM114-Status: GOOD (  12.49  )
+X-CRM114-CacheID: sfid-20260923_011733_908829_8ABF9179 
+X-CRM114-Status: GOOD (  20.56  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -123,10 +126,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Hi Tobias, Only some nitpicking inside. Otherwise looks fine.
-    On 2026-09-17 07:40, Tobias Waldekranz wrote: > diff --git a/scripts/lvm-pvs.guestfish
-    b/scripts/lvm-pvs.guestfish > new file mode 100755 > index 0000000000..c8d31385f3
-    > --- /dev/null > +++ b/scripts [...] 
+ Content preview:  On 9/23/26 9:30 AM, Sascha Hauer wrote: > The labgrid-pytest
+    job runs the container as root, while the checkout > belongs to the user
+   of the GitHub runner. git refuses a repository owned > by someone [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -155,142 +157,105 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-58.41 / 15.00];
+X-Spamd-Result: default: False [-60.61 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	MISSING_MIME_VERSION(2.00)[];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
-	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
+	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
+	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:900:1d::77:received,2607:7c80:54:3::133:from];
 	R_SPF_ALLOW(-0.20)[+mx:c];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	MAILLIST(-0.20)[mailman];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCPT_COUNT_TWO(0.00)[2];
 	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_RECIPIENTS(0.00)[m:tobias@waldekranz.com,m:barebox@lists.infradead.org,s:lore@pengutronix.de];
-	FORGED_SENDER(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	DMARC_NA(0.00)[pengutronix.de];
-	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	FORWARDED(0.00)[barebox@lists.infradead.org];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_FORWARDING(0.00)[];
 	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_ALL(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
 	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
-	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 1F7212001F2
-X-Stat-Signature: tciu8e3qp56gd3odqqose1k4niyrcu63
+X-Rspamd-Queue-Id: 1B1A3201FFC
+X-Stat-Signature: 1spgqgfuz6mcaaf3acmywccg8qi9rafp
 
-Hi Tobias,
 
-Only some nitpicking inside. Otherwise looks fine.
 
-On 2026-09-17 07:40, Tobias Waldekranz wrote:
-> diff --git a/scripts/lvm-pvs.guestfish b/scripts/lvm-pvs.guestfish
-> new file mode 100755
-> index 0000000000..c8d31385f3
-> --- /dev/null
-> +++ b/scripts/lvm-pvs.guestfish
-> @@ -0,0 +1,53 @@
-> +#!/usr/bin/guestfish -f
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +#
-> +# Create a single disk image that holds two LVM PVs. This is used by
-> +# the LVM labgrid tests.
+On 9/23/26 9:30 AM, Sascha Hauer wrote:
+> The labgrid-pytest job runs the container as root, while the checkout
+> belongs to the user of the GitHub runner. git refuses a repository owned
+> by someone else, and the final
+> 
+> 	git diff --exit-code -- '*.sconfig'
+> 
+> then never compares anything. Instead of failing with the ownership
+> error, git diff treats the tree as no repository at all, falls back to
+> --no-index and exits 129 with its usage message, which fails the job:
+> 
+> 	Check security policy configurator
+> 	Process completed with exit code 129.
+> 
+> Pass safe.directory on the command line, where it still counts as
+> protected configuration, and check up front that we are in a work tree
+> at all, so a future breakage of the repository lookup is reported
+> instead of being mistaken for modified policies.
+> 
+> Assisted-by: Claude:claude-opus-5
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+Acked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+> ---
+>  test/check-security-policies.sh | 15 ++++++++++++++-
+>  1 file changed, 14 insertions(+), 1 deletion(-)
+> 
+> diff --git a/test/check-security-policies.sh b/test/check-security-policies.sh
+> index 09b5301590..946a1ccdde 100755
+> --- a/test/check-security-policies.sh
+> +++ b/test/check-security-policies.sh
+> @@ -71,5 +71,18 @@ for O in "" "$builddir"; do
+>  	make O="$O" mrproper
+>  done
+>  
+> +# The CI container runs as root, while the checkout belongs to the user
+> +# the runner uses, so git refuses the repository over its ownership. git
+> +# diff doesn't fail loudly in that case: it falls back to --no-index and
+> +# exits 129 with a usage message instead of comparing anything.
+> +srctree_git() {
+> +	git -c safe.directory="$PWD" "$@"
+> +}
 > +
-> +alloc lvm-pvs.disk 8M
-> +launch
+> +if ! srctree_git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+> +	echo >&2 "$0: not a git work tree, cannot look for modified policies"
+> +	exit 1
+> +fi
 > +
-> +part-init /dev/sda gpt
-> +part-add /dev/sda p 34 8191
-> +part-add /dev/sda p 8192 -34
+>  # Catches security_oldconfig rewriting a committed policy.
+> -git diff --exit-code -- '*.sconfig'
+> +srctree_git diff --exit-code -- '*.sconfig'
 
-You could use part-set-name to avoid
-
-  WARNING: pvs: Failed to create link from pvs.primary to pvs.1
-
-> +
-> +# Keep sizes reasonably small
-> +debug sh "lvm pvcreate --metadatasize 4k /dev/sda1"
-> +debug sh "lvm pvcreate --metadatasize 4k --pvmetadatacopies 2 /dev/sda2"
-> +debug sh "lvm vgcreate -s 4k testvg /dev/sda1 /dev/sda2"
-> +
-> +# Create an LV with three segments that span both PVs
-> +debug sh "lvm lvcreate -y -n testlv -l 8 testvg /dev/sda1:8-15"
-> +debug sh "lvm lvextend -l +8 testvg/testlv /dev/sda2:0-7"
-> +debug sh "lvm lvextend -l +8 testvg/testlv /dev/sda1:0-7"
-> +
-> +debug sh "lvm lvs -o lv_name,seg_le_ranges --segments testvg"
-> +
-> +mkfs vfat /dev/testvg/testlv
-> +mount /dev/testvg/testlv /
-> +
-> +# Generate a test file that:
-> +# 1. Is big enough to be spread over all three segments
-> +# 2. Contains data that is sensitvie to reordering
-
-s/sensitvie/sensitive/
-
-> +# 3. Compresses well, since we're checking it in
-> +debug sh "printf \'0%*s0\' 4094 >>/sysroot/bigfile"
-> +debug sh "printf \'1%*s1\' 4094 >>/sysroot/bigfile"
-> +debug sh "printf \'2%*s2\' 4094 >>/sysroot/bigfile"
-> +debug sh "printf \'3%*s3\' 4094 >>/sysroot/bigfile"
-> +debug sh "printf \'4%*s4\' 4094 >>/sysroot/bigfile"
-> +debug sh "printf \'5%*s5\' 4094 >>/sysroot/bigfile"
-> +debug sh "printf \'6%*s6\' 4094 >>/sysroot/bigfile"
-> +debug sh "printf \'7%*s7\' 4094 >>/sysroot/bigfile"
-> +debug sh "printf \'8%*s8\' 4094 >>/sysroot/bigfile"
-> +debug sh "printf \'9%*s9\' 4094 >>/sysroot/bigfile"
-> +debug sh "printf \'a%*sa\' 4094 >>/sysroot/bigfile"
-> +debug sh "printf \'b%*sb\' 4094 >>/sysroot/bigfile"
-> +debug sh "printf \'c%*sc\' 4094 >>/sysroot/bigfile"
-> +debug sh "printf \'d%*sd\' 4094 >>/sysroot/bigfile"
-> +debug sh "printf \'e%*se\' 4094 >>/sysroot/bigfile"
-> +debug sh "printf \'f%*sf\' 4094 >>/sysroot/bigfile"
-> +debug sh "printf \'g%*sg\' 4094 >>/sysroot/bigfile"
-> +debug sh "md5sum </sysroot/bigfile >/sysroot/bigfile.md5sum"
-> +
-> +umount /
-> +
-> diff --git a/test/py/test_lvm.py b/test/py/test_lvm.py
-> new file mode 100644
-> index 0000000000..c148571780
-> --- /dev/null
-> +++ b/test/py/test_lvm.py
-> @@ -0,0 +1,76 @@
-> +# SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +import hashlib
-
-hashlib seems unused.
-
-Sascha
-
-
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+-- 
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
