@@ -3,15 +3,15 @@ Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x9HRl-005Ltl-0j
+	id 1x9HRl-005Lu6-2n
 	for lore@lore.pengutronix.de;
 	Wed, 23 Sep 2026 09:31:17 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 0DF16201D7D
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id B194C201D7D
 	for <lore@pengutronix.de>; Wed, 23 Sep 2026 09:31:17 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=JliEANxe;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=NdSptp7F;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=SEqBam05;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b="Vq/tXOTm";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
@@ -21,23 +21,23 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=Ae2XixhMlJ6+4HfZvqqqqF0a2+KcE9daAWFRhMLiAAQ=;
-	b=J75E5zT+2f+dO4Jcv4IJuWIH5JwwQrfmpbaOGCJfupQsJ8u0DBu7nhDqUHkpkmLdoiTfCX
-	89/7ocqMAS9vlzd4omQISo21/IrNRSCRmXnj128CSWdVAOqgXJ2TBw50+feMBF4nBj4cSg
-	vw06wH5qwbEzLAOywIW/OQaEWZjvjlZRohUUZpKXJMoTgGVb+YlWlOyCNQpHbAXwd4lNRR
-	XWQZbVd8dFjkevQSGsZ6TRFG/rfLx3aDSXj8oRY3r1uHFzgr/J81j2ReD7nREfTDALrkEm
-	7oJ4kbkQeqkS+J+4fG7Bgb+ubnR2bARvm7RAaeNPz6BX1rvfdhDEy2v41kfDJg==
+	bh=T3Cmevx08WhWZdYnBxOm0BbR5jC78s3shu8jMfPMA9k=;
+	b=U3GFBI2rCsetDzeeITDzczJFwv6cA0HpKwpwY2vnw1GK+fWVJ1ErCiraUD8xg0hYta7akQ
+	LHTpDUm+SgSJtjodA/973Fl39pRWF8//CrhK7cs5LfxM4tDhEozpqEX4SYXzdFulP9JUSp
+	cC6CVpKT4AYvZP3Y8/G8YNK5sLTvUZLfSlofTmII99eFQDVWgjId4pD4NsujKsSBMQv6Xy
+	gHtG/+8TMoVJ1vxpzoMJ4I7ZKFRRo16b3zhpRYX/vraRWYvCtm5dPycUETiQZ4m0FwJ1A7
+	wYmn81RYxShNsLOZgh+k4yB3KlD2pnSNlq+87ncp08/vgTDx76ivfLc4fNzTjA==
 ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790148677; a=rsa-sha256;
 	cv=fail;
-	b=fLXylXZURzDOkigFKJpKJAFhVLs4JzbxNI2i/Sc5S6tHeiaIikPW+jmzhqkZ0L/DbxDazO
-	yoED2P8265+YcIoaviaLH6dGO5/ZRZVivyfwSQJwJ4hu2x7/OpQ3q8tVDAsVwrUjgpDMn6
-	8qUOE+ONkeZCZGFUIdFEYokha/mxqPL2sqlNteXu29Uqs/gh1ushWQYJGya0CrBgArvqJi
-	JCDOkmyx7wi+Vyi761WxoeaDgbGBPA6ImAFr8JJrksHL9M+1otazbjsVSftBMifsqkh8B9
-	UK0mQYGOSRUu3NDzVLYWSe/bgUZqxUzvynY3Es3BgXWjZdtR0pY1qrcJ7tq7AQ==
+	b=FMzjhU47viDgESRwSF3i+8P+Es2QL6df+dTdR+DQxHOtYsBcKwugQcF3nYgIfxa6cGei69
+	H4QHY6TgH6K5seSuG8vzPjyJEM3XEDMC7cqMjIS0W7iIuSSmFi3jC/I2I9NKi90vYxX0z6
+	VJrpD1GrSbvYVPYA6ijoXpdnBTds9InHKD4C5+S+4daA4Bp6kDDUkrygySyzFOA51D1eus
+	yoHuz3bnw6MXTNXGlpOhu8K0QVlrRM6Eh6gvkluQlO2poo64+WSQ6jysflltr3PAHIQx1k
+	DASHpjpBa0TkEuuwZf5r/KdTPBQEBHIs06wxbhWhdkKlX8OWcOHcazfHLEjKSQ==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=JliEANxe;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=NdSptp7F;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=SEqBam05;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b="Vq/tXOTm";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
@@ -47,68 +47,69 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=Ae2XixhMlJ6+4HfZvqqqqF0a2+KcE9daAWFRhMLiAAQ=; b=JliEANxe24kMQvgE8q+O3LDrfK
-	lsu+Pu4Jqkxiytl17l9HqpJaZR/iSQaJR+O8moRbuiLgElJVzBbhwuAaVrxgCAFWUiYRIQ4mTOelo
-	JNS0p0yw1osvmoFOUYicJHlXPODoPLOz/QdXJ/fHRJHzXq6kL/71bLdG5FLDGvExT9rYniAm2vvu4
-	lWk83FMl0lUE4cJI1e66uiTZetx0sN/qZBNqRpF1eC7X8kxUirBGc/sLKQnwe6FYy+vlnUA8OfXea
-	5bBQFlrxEqSomJDw+dkJVyScir9YZ9i0b4TWyuygB+y+dsBW72JRTiscc3vD6HapYq6RCo5yMb6xJ
-	sjky73AQ==;
+	bh=T3Cmevx08WhWZdYnBxOm0BbR5jC78s3shu8jMfPMA9k=; b=SEqBam05M5GInuYpJgBDgb8c3L
+	fvGulaIZuL1gYglut2D1kmCdR0E84Teqd57QskWe/rBdAmd+0XSz5wuwuuShVsnTsEIYRFoREQLPm
+	vTdADLqVVwYnxFeQOGhGToqEZr1NuVP7dXigTFoiKQ4qq9RZRVS6ab4ojWIMuYo5zVkkc0u5ydV+y
+	JyfupsnBhjQ5o3tu0bHIXt36SNDkjZQdJypYGY7LpNfkte+ArgNMA8Yt2c7wCIOscad02kncQSKeG
+	1lMsleJxkbCLnWfUyz/DphDLWYL/sZKsGCKqzAT+Inu+TfhckaJWK3e2cQGLfCC9oWvzcOVktIvcD
+	wEkCDKJQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x9HQX-00000007PVz-2Nsp;
-	Wed, 23 Sep 2026 07:30:01 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1x9HQe-00000007PXX-2isd;
+	Wed, 23 Sep 2026 07:30:08 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x9HQT-00000007PUs-2FFS
+	id 1x9HQb-00000007PW9-3aus
 	for barebox@lists.infradead.org;
-	Wed, 23 Sep 2026 07:29:59 +0000
+	Wed, 23 Sep 2026 07:30:07 +0000
 Received: from dharma.fritz.box (unknown [IPv6:2a02:560:5dd5:4b00:9ebf:dff:fe00:fdb5])
 	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 92B132001F2;
-	Wed, 23 Sep 2026 09:29:55 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 91EAD2001F2;
+	Wed, 23 Sep 2026 09:30:02 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790148595;
+	s=20260414; t=1790148602;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=Ae2XixhMlJ6+4HfZvqqqqF0a2+KcE9daAWFRhMLiAAQ=;
-	b=NdSptp7FmkUCkX6PticdJARUDcYy++e0ZkcFCIyphtYID67IMbF4bPnk9vOOmzO2iO/+uJ
-	RzaOm+L2/ml/sP3o0azQg3STTzT5tjJFocylio/zgI1o3I/AqPHq0rb3SyEAlETTJC1vpf
-	Nb9MbvLcybmmlxJTMwSImZSDihpzppawGPYZtnMrpoHQ1nMiBzLbiIRAXO2MuUwnYHJ263
-	KgvAPBHkYPRGAXQ4rsqYE+eQ55TNT+U6hfjc4CwyKNXwlE5OkmMlecwW9GpjEdfnEPYCcq
-	bGrY9hEKX4s6Bsf6i2aXBQzDQgePR2/nrxMbW+3OYGBEKzz+IMHntG8kJfMwqA==
+	bh=T3Cmevx08WhWZdYnBxOm0BbR5jC78s3shu8jMfPMA9k=;
+	b=Vq/tXOTmf/el4m8r1tHrmqsVHS3j00iyEbzZJrvHQsgXkeoFqCnSTuCi5D4u3UDZ6kK4Mg
+	zx3bm8bFt1mWqLT4GRTEHalRWm0Wt4hzZPK/hp42uXlA7FeLhYmjzM6a3vEfGV1XrtNuV2
+	iGzicROFnsdGIN7dRmk8ehVkQUhzWBNhK0zAA9x4r8apPa3+Enhj9y90WhI/BwgTqXXjqY
+	feGPLXZ28WXN6JTQdPzIpGZBPR/x6P2ngrSF0/JuG0cCMqZB+2CJDIiYjS3lFoCKGmhbQx
+	wtnMfvpGk8Vrkf2IJUfq6Vgspw9hekVTJqSs1DKo7XGFg4kY6LgREdgoUNKJ8w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790148595;
+	s=20260414; t=1790148602;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=Ae2XixhMlJ6+4HfZvqqqqF0a2+KcE9daAWFRhMLiAAQ=;
-	b=Czxo2ZKK2b/gunlFNVhFMyUUfXuK5YS/A0pP86aZ8JqP9QgL00oCdhLHpt7IX5jm9fYLx9
-	zPB4xqsnONbFayQtBPCO8mfwz6/HoDLgxM1nRs9rONw/3/VryIg2haff3wrZPQzsHqpyIN
-	uS8bS8iG8gVzYoTtqmH6u1AbGPlduW3qc0506wyZxRojcfka3zCZtQ+6B7USPgNIagljJY
-	xVX45j4yldw8qy/BAzrJmqT/AF0qqgXbybQi62KgHXwdl12U4qmPO77TDehFObbTkg2rCd
-	TGUbcj6cuo2kH7B4FVosUKt4r4T/jB0rBbobNV5cM7e5Mb2YgJfHKtXvQiqQxw==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790148595; a=rsa-sha256;
+	bh=T3Cmevx08WhWZdYnBxOm0BbR5jC78s3shu8jMfPMA9k=;
+	b=EEnBzJ3i9z37KbEtLwojdi+Po8iJW3/p1Mxf82xoR0Trc6RMQyxe/EW1rFl9cN48vED1Lv
+	D98pNEwLHtpt8i62qLECg68ptUCRfPuoS8hOrt+yKwcbBuCEuxk0W/v09Bn3sf6uSCcpxy
+	CGzXvlLaBIo4vxy2o5HdDQG0EFhgRqeteYIp6hKEgnROcJ2Qzq40feD7Glg8osILiOxWgB
+	bXe1RNsbWxAOcpF7YFssc/AggV5H0/+ABRFEwvRj14gkq8rXPL2NpPJ3UpvwwDAeDuiPn2
+	knQMtNEyvXl0Bnv94fcih0J2z5GwzyzaXhFqU1Oj2t6f+8R1U4epcFIMb4dfCg==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790148602; a=rsa-sha256;
 	cv=none;
-	b=bL26R5hN75SxWGPrm7PwphaSwv23K0ZXq+JlaP5GTRrXeCkaRoBBdakBWL6MjIEyNN0uI0
-	ltbNWgqtkRTvhrHolyr643eVCd/bfAzi5o7wR5kTxlPtmg47z0MDjGkvpYLG1oy/0CWs/t
-	k1FD6q8XLg1U7uS0keP8HHfCeC5K9CNL3Hdq9fmSeBU1TWqgRtpm9/82ynOqoXFMXKqXtj
-	pJyhaUhriHTxBrwDrKudFcjw4A0rHZ5VfF7Wtl5GvQkzB4mWUP5twgKaUn64zBdF5p1Qr6
-	W3Iz7hifyvz4xWT0ZD5Z2Poejv/BWqhA338qA6n/e5ZoUT1uGgW0J9CTmzep9w==
+	b=ezohBVhWkH0pbEKy9Atim9bdtDNXSW5mGEb3zN/s3C5hxFZP0eLZr8z88Y37Z6MCkvqJ2c
+	9hTYdPsDwW6pm8oVIwelNRx1dchu+61kC69IA5QBnUqO7Zvy5CX1Wbu4mKpHCjAceYIrTF
+	hliYYSPNlKBvG5Fpi5AQUZpG4n+oEiHvEvEWLPL0PHmPtneazWYRpCNj+TudgeE3xIT/n5
+	daBn2R/uaf/nth8RU9itiHbvvD9Ir8L/W+J51tOFS8tEBb49KB+INkH4rBrpurqxhFJEvb
+	PB/gpcXKIiWvXhwCF1Ju9YQfgaFsaT8pDgZXGgsZcMQI5Mk+qRDKdikiB5cweQ==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=sha@pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Subject: [PATCH] x86: efi_defconfig: enable the EFI USB I/O protocol driver
-Date: Wed, 23 Sep 2026 09:29:53 +0200
-Message-ID: <20260923072953.4123955-1-s.hauer@pengutronix.de>
+Subject: [PATCH] test: check-security-policies: mark the source tree safe for git
+Date: Wed, 23 Sep 2026 09:30:00 +0200
+Message-ID: <20260923073000.4124447-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260923_002957_724896_1A09FCAA 
-X-CRM114-Status: GOOD (  12.14  )
+X-CRM114-CacheID: sfid-20260923_003006_056000_D940D34E 
+X-CRM114-Status: UNSURE (   9.79  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -116,9 +117,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  b31adcfd28bc ("test: x86: add test for uefi usb io") added
-    a usb1 entry to the devices list in test/x86/pc@efi_defconfig.yaml and enabled
-    the driver needed for it in the kconfig_add of that same file. 
+ Content preview:  The labgrid-pytest job runs the container as root, while the
+    checkout belongs to the user of the GitHub runner. git refuses a repository
+    owned by someone else, and the final git diff --exit-code -- '*.sconfig' 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -175,7 +176,7 @@ X-Spamd-Result: default: False [-54.91 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	NEURAL_HAM(-0.00)[-0.998];
+	NEURAL_HAM(-0.00)[-0.999];
 	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:-];
 	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	R_DKIM_REJECT(0.00)[pengutronix.de:s=20260414];
@@ -183,49 +184,57 @@ X-Spamd-Result: default: False [-54.91 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 0DF16201D7D
-X-Stat-Signature: dutxhmqtq4hjkar1xis9by85xcker6w3
+X-Rspamd-Queue-Id: B194C201D7D
+X-Stat-Signature: yjtzje6pxouwrx5wjmrmpxjsf6w85pm9
 
-b31adcfd28bc ("test: x86: add test for uefi usb io") added a usb1 entry to
-the devices list in test/x86/pc@efi_defconfig.yaml and enabled the driver
-needed for it in the kconfig_add of that same file.
+The labgrid-pytest job runs the container as root, while the checkout
+belongs to the user of the GitHub runner. git refuses a repository owned
+by someone else, and the final
 
-As described in 266482336cda ("ci: pytest: enable console and libc
-allocator for allyesconfig"), we build and run tests in two separate
-stages, so the options in kconfig_add are never applied. MAKEALL reads
-them only when it is passed the YAML file, which would have it run the
-tests as well, and that doesn't play nicely with our structure, because
-we build e.g. multi_v7_defconfig once and then run multiple tests on it.
+	git diff --exit-code -- '*.sconfig'
 
-CONFIG_USB_HOST is thus not set in the image under test and
-test_devices_present fails with:
+then never compares anything. Instead of failing with the ownership
+error, git diff treats the tree as no repository at all, falls back to
+--no-index and exits 129 with its usage message, which fails the job:
 
-	devinfo usb1
-	devinfo: No such device
+	Check security policy configurator
+	Process completed with exit code 129.
 
-266482336cda worked the options around in the build stage. Here the
-driver is useful for everyone booting barebox as an EFI payload, so
-enable it in efi_defconfig instead.
+Pass safe.directory on the command line, where it still counts as
+protected configuration, and check up front that we are in a work tree
+at all, so a future breakage of the repository lookup is reported
+instead of being mistaken for modified policies.
 
 Assisted-by: Claude:claude-opus-5
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/x86/configs/efi_defconfig | 2 ++
- 1 file changed, 2 insertions(+)
+ test/check-security-policies.sh | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/configs/efi_defconfig b/arch/x86/configs/efi_defconfig
-index e21ac4fda3..62d83afac4 100644
---- a/arch/x86/configs/efi_defconfig
-+++ b/arch/x86/configs/efi_defconfig
-@@ -78,6 +78,8 @@ CONFIG_DRIVER_NET_EFI_SNP=y
- # CONFIG_SPI is not set
- CONFIG_DISK=y
- CONFIG_DISK_WRITE=y
-+CONFIG_USB_HOST=y
-+CONFIG_USB_EFI_IO_PROTOCOL=y
- CONFIG_VIDEO=y
- CONFIG_FRAMEBUFFER_CONSOLE=y
- CONFIG_DRIVER_VIDEO_EFI_GOP=y
+diff --git a/test/check-security-policies.sh b/test/check-security-policies.sh
+index 09b5301590..946a1ccdde 100755
+--- a/test/check-security-policies.sh
++++ b/test/check-security-policies.sh
+@@ -71,5 +71,18 @@ for O in "" "$builddir"; do
+ 	make O="$O" mrproper
+ done
+ 
++# The CI container runs as root, while the checkout belongs to the user
++# the runner uses, so git refuses the repository over its ownership. git
++# diff doesn't fail loudly in that case: it falls back to --no-index and
++# exits 129 with a usage message instead of comparing anything.
++srctree_git() {
++	git -c safe.directory="$PWD" "$@"
++}
++
++if ! srctree_git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
++	echo >&2 "$0: not a git work tree, cannot look for modified policies"
++	exit 1
++fi
++
+ # Catches security_oldconfig rewriting a committed policy.
+-git diff --exit-code -- '*.sconfig'
++srctree_git diff --exit-code -- '*.sconfig'
 -- 
 2.47.3
 
