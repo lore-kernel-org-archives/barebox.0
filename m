@@ -1,149 +1,175 @@
-Delivery-date: Wed, 23 Sep 2026 10:30:35 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Thu, 24 Sep 2026 09:41:53 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x9IN9-005Mot-2f
+	id 1x9e5Z-005i4n-2P
 	for lore@lore.pengutronix.de;
-	Wed, 23 Sep 2026 10:30:35 +0200
+	Thu, 24 Sep 2026 09:41:53 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 1B1A3201FFC
-	for <lore@pengutronix.de>; Wed, 23 Sep 2026 10:30:35 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 2F793201A7F
+	for <lore@pengutronix.de>; Thu, 24 Sep 2026 09:41:53 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=IgdWfniO;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=XO9VxcqJ;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=tO+PR1Va;
+	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b="OS1TgLi/";
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=DxIv+QvG;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790152235;
+	s=20260414; t=1790235713;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=NtQsRdDVkZZRteRkjtcGmh8G2OTtuWdOADNCOq5/rVg=;
-	b=GX+f4KZkRx3XeWjaNhikcQR5ox8Yh/eVERyEAzjC3avlG9JoJ+/MfgAU2YUFAyc/4DDmC2
-	tsZ/E7zJeHRqasD2QGt6ymusoOKiOOASPWUbYDjSZC1SPiHK5mM8EpFzr2ALMfkWGBy4Z7
-	0OdIfoQ19Xzj9g6tyrkFg6W0z3Llsdh6uxyyeymcHOAvDOysq+LbYU+zjcaadp2aoLHMt7
-	sDTWWRC42eWygj6TvmUVqbpuoNdECDGCc0rGLN9YTNzq1wP6jAFucqgpupdpMWWzDC6HY3
-	/74h6BZWpiIM1cxwmN6hKHfY9FFMgIMASkKnTnnsg2uUXGJ8DaqFeJsR/Tx2qg==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790152235; a=rsa-sha256;
+	bh=OIqpr/De/56A3mFs4JmwV5Kiq9eF8xsc2BCws4rXh6U=;
+	b=Ly4sfmQms4otsaZnDfvZC0+F9HlU1f3TajkupuhutTOw2bUc6TJyFTPfOAHQ+7PYJ0LARl
+	fturpl2AQLVduUPDewb1cReB8sCqb52h/f7OTfBUMxLRS2VORQwi51sS0Xevvkdh+4rFrK
+	5cvUHDA4LIel1317WmwB3VCNJ8DMQQLx2emqFI04SWpCoGoA4HwO2QMhRsDbayBBmGrQ/t
+	bL8YSl+3pnAmfbLGfSvJckHkcIUMsTZmatyjKd7O5nRDrK9FBabRcpro/EYQrmYnth6JeO
+	YpQtZzjrRxERXT0NeVhyH2/UV+HQQm0RNsAm0IYvTzwzk0gfPx/fhQ1uqnATEg==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790235713; a=rsa-sha256;
 	cv=pass;
-	b=CGs7/lLO+Jq/OvX5dTmQ+2JEI/eFAGNraoM5L8FoOiJrO9K04VEK7emsuhzEHERZA3pBDr
-	w36Vv8R/bvarM9MTrgOaAyniMurWp8Z1GtvrrDpC3IVuQgPzdcelgWR/gTXRVMexBm4W6A
-	UTUXpBkx3BqVPEOwMg6rwG5D//b2T6kfBjmS594awQ6Pg3vzvGfvjizpt12VBMOafXA+hp
-	cPDM79Z+EXxJ/eg9Gz17ZEky5dqznCSZRUn3Ju4unZqz2SOmerR45/NqNup/ID2qv2ODx+
-	puVGrVRvE6ypeuE7yMkbrbrvgooZKrbiut4r9ohMT2OJPUBaGNgJO9LR+VMxgA==
+	b=G9of/MpZqJo5QkrcFCBrurcT9Z5W2WlQ1xh5+R4I/dvK0TIUw98nzqbwhmlzIh01aLj9if
+	DF4RmcShSI1pCqbATwEavjLr8wN+B4WhhdSnm/Gky+f8vBTIePh6o1Lylgf5BYYD9jirHG
+	0PvzLPmOXHABq6jpDndFMongWDnCTH4zWI9D4wuaaEmnb46ioBPjXdi8zWFfidjT41/NsJ
+	J85w3dWXt+TEBaik7e7qI89BTXutqq7dhyG9dm2aCzeiFdNoCyqCbcDdbhbcypp2Njevs3
+	hbvGUkCIQ/ukmNfH7jLZQd0975wdpV1lqHloOB/pIWmR9JridQcTGifzh5rvbQ==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=IgdWfniO;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=XO9VxcqJ;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=tO+PR1Va;
+	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b="OS1TgLi/";
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=DxIv+QvG;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=NtQsRdDVkZZRteRkjtcGmh8G2OTtuWdOADNCOq5/rVg=; b=IgdWfniOejr9Q/r4AcTMkDYWvB
-	rOz0gyUTbUJSUmds3ljbe/N25NTRaITqmgT0aDkzXrpKTsBbFzTLb6BsKNF47nf1BzEnpbt/RqRa7
-	s01RZmuEsJ7VsGgCv4pzeBxX/XoBIseAbuvaaiCF2RekqxAXTaM5L/QMGUZIn0VqdY4xFGlLh9ltR
-	RQFWN4z7kpoVMOc5R1q54A2a2Y46mhRCHULar812WPM6t7BjG+0ZgIeFJskNUFsHbFzMLS02xPFNM
-	TVqsxJ4+p0P++3yWisWf1Q2QJgztLEWpUi3Z15ev4byRsxiwItsyerq/i/Yvgh8ZABTKs815kfsdA
-	NSg8AJ6A==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=OIqpr/De/56A3mFs4JmwV5Kiq9eF8xsc2BCws4rXh6U=; b=tO+PR1Va7jKLohdFBGtbvXOoFn
+	4ZA5wb2rAqb2rEz7eXYveleFWBplPoju/V44TO5xTkm0qOVFKXReo6JH2TtKfHF6B4Ptcqdcgm+v/
+	1uzY5Q6m2Suj2jQBITfIDebGda74i5aNxyLVb7gJRX+jRxz2cuudY00bE7vmvIEen29jEKHd1EB4y
+	5dPCEhCSQ3FCNT3jQVXMNLSkHMiylvhiV2hAo7cfhTYf6qTtXcILmae8fizdRpUceLtuWunswiCC9
+	eXfR89upg3IjgQHuZIA5YJS4TK2RVP6Xv69BLAUdXgPJ+4gTrTl9KDFMD0obBC0uRGU/cUZ2/BMDS
+	8xh7sV1Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x9IAa-00000007V4Y-3gb2;
-	Wed, 23 Sep 2026 08:17:36 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1x9e53-0000000AKCE-0v7B;
+	Thu, 24 Sep 2026 07:41:21 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x9IAX-00000007V4D-2zDQ
+	id 1x9e51-0000000AKBx-34CI
+	for barebox@bombadil.infradead.org;
+	Thu, 24 Sep 2026 07:41:20 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+	:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:From:Sender:
+	Reply-To:Cc:Content-ID:Content-Description;
+	bh=OIqpr/De/56A3mFs4JmwV5Kiq9eF8xsc2BCws4rXh6U=; b=OS1TgLi/jVXUKp31z9HmYrNtyF
+	BD//C+FYocWfzNwjvsd456MSNz25bavJVq5Yxj1c69qhF0nbKdpg2+IwTzbo8aANLhzglcPcVFoCX
+	d3vHtuXkWU10P3Cgfzvk4hoFHuv+Z0I6Yfe9OX2l4UzlDc0jj75jzYm6iFVSqQFv2+/PicqSby1vQ
+	Su5J/gpumgIAa1qGuBvV/YcU6C7lQQE5nKp5Npmn7oK5bN4tfHIzh9ybAkcW7CDxdpqg3/KYTgnHr
+	wQMA5bot1PmBQzJ3rlykg8R3dLMCFl3vf2Gss35SClOsnhRmD11yMzoHEvWQcEl9PdguZ6AzQxNQa
+	h3S00tCg==;
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	by desiato.infradead.org with esmtps (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1x9e4y-0000000FfQe-0ACO
 	for barebox@lists.infradead.org;
-	Wed, 23 Sep 2026 08:17:35 +0000
-Received: from [0.0.0.0] (ptz.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::77])
-	(Authenticated sender: afa@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B600F20075E;
-	Wed, 23 Sep 2026 10:17:31 +0200 (CEST)
+	Thu, 24 Sep 2026 07:41:18 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 9232E200291;
+	Thu, 24 Sep 2026 09:41:14 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790151451;
+	s=20260414; t=1790235674;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=NtQsRdDVkZZRteRkjtcGmh8G2OTtuWdOADNCOq5/rVg=;
-	b=XO9VxcqJs/FaF6aGSG6W2L4Bnw2lLAWJ8Cr1lBn7ov9muxfXOjylH4vVrzGMEznACl42tm
-	sGPaEX1kM2RQ3iDRU0zmVPxE1l3O+4bHx+wLZ5ePE1UKC5WKltTp7iE0/rqWdmroxj55g1
-	EgwDMWRZgJErCy7sczeIcv53WDyVDmjfRmmGJufnMp0VKZ6h8n3q7kn0aSqluzvDSrrvjo
-	CYxZNz3CGiq/sJc4PC99HjcbYccjvVTpig8K/xD+7tx8oHcrG0Hc0+qi1K8tuzQlkgFlbi
-	uJUlHFlFAKa5gEHZs7UWVAHwGmLX1vD2KZlxLmECd6TI4I2k1f12p8jZHo28XQ==
+	bh=OIqpr/De/56A3mFs4JmwV5Kiq9eF8xsc2BCws4rXh6U=;
+	b=DxIv+QvGjGpYYjP+2xytoPCbOPmILQCDyDE4QAUtOA08P14SsNGnWAal3I3GmTJVjd/1kr
+	8LRJTKOmdQ+FTAqODsiYXywlbiLpIDP3rdWJTV/+ptMRSLDIp9NVy5GRqeefzPUq17xuZd
+	/OA6AD+rmTfOkYwoHhOTPGEfoFsnAdXRqwBswzFbRmaRwTF2iBydcyMMbWEY6+HICCDH/Y
+	7Id7/LPdjUz8Jdl1JdjsmBJHtTSjcsAkJeh/AHBdbotubzCMu7J9SWdbhZJFRd0fGlkMm+
+	qFzA0k0J2MHIER3WGLoTURFKriHGQBBp1cgwG3bi92fpJPXR5AqiA3W9bVTUGA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790151451;
+	s=20260414; t=1790235674;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=NtQsRdDVkZZRteRkjtcGmh8G2OTtuWdOADNCOq5/rVg=;
-	b=eLaoSGsiNtqRHjjY/PsVlhY2cBWIq4tMwxJ8HHIu3F4yOPnpiq86rvzEpHT7bUFgk9pDwJ
-	/eqmL/XnF7gEE+Rlk0VOYfyNsVCiNQoSKlItYHV95UjafJPTVh965MgcKZk8d3oW2Saz0y
-	yFZLf3Zt07gSKasP7ijH1EUsx5gRYeb6+qKvCck6+9xD0vIjrKTc5Fp+DUIPQ2Jo66uk3m
-	8OSNK2Gy1KFhSXj0LCcwMV9oa2MuNOmXRIlzAckOibcYL5D6/n8KS77Br3kg9qmbwxjS0H
-	8rC3IW2HloAsQPxYfJtQUiKaUyiGs7N61kbuMTfuPR6YgF7ARRgdLXsp1EwlKw==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790151451; a=rsa-sha256;
+	bh=OIqpr/De/56A3mFs4JmwV5Kiq9eF8xsc2BCws4rXh6U=;
+	b=K5Kv1VgArKhI93qfb6I4vbYXfI6APSbMWlt1GWRdPHtv1ox+mxOQgnCp1Qk+n1oNoIc5g5
+	kTw/HUNLznC2jHlDiTwCodkygrXb8OAQLoX1ifZOMSOC4C8IFKxpQV4r9uAQUkJIgZOkED
+	zvUMYjlvAAQV9p7Iw67h1ql9iG03rd5IRV0Jd32XWPnDewS4qyeNKpE/bNNyHaYjnVkJy9
+	2+608/+55DOoQNKo+PbKG89WbnhtL89Hur03nWRckzQEjpIi1ENmnTcckxfZK1HZ8/lB2c
+	pK87s93NJkmmiARMHYPz0iMhDCFJSTQ6t0hfjcENDVT+U/cu7QnKzjclsxHmiw==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790235674; a=rsa-sha256;
 	cv=none;
-	b=CevtEmC+lHSrdVDi4MjuXBTtbUdXJBK6Tb147IxZvk3wEmwrPs2ddg4SAPpCmlaT5dkKH7
-	Uvf0GeshWjTr0O7TpnMBz0pA9WTU4tH8grMlybnxEKYXyxtWuTwsdS+qF5jpfzIkhhXjGM
-	rsPLib+iv3R9OMKBr74KEglQnVZ4/TvUto3rCotzAQXSi3dRsGbTDgTgSFUIQ01rvUieox
-	GmcjJ6Tpw7qw2lsh0sVKyuF4SsqvEgPV6xMwTWVgJ5E2gmF36cOIwNXWgHS5EjbNZ//Q4x
-	f8hJ7EHSjXqyiOKVeHY7IZKXtCxQqThaEzZL2rpbjvu9UDYfj1dMdoY9bpo9OQ==
+	b=TilBaFSmGT0f0qq6R/Rebf5HSbYyOfgIdZ8SLJhQz++7hMZ9zGGpCVdtAH+JQ13UAlDju3
+	RHPkwmWC+CxvpOwdcM6vyb6JJCAgWkQD4LDy5SlXUiCkYIqZrRMZetwC02g95DL3CvjXw+
+	o0K6gxTxa90w/GLiTwJg6Dy7Z0O83lTycq7+8xec/RzK0hEm57PJc3O3IfZ3byW2z24EGM
+	MwZRVVz+3lzmM40N2CmFNrdacBgUSwESAyKZ8bVZsR4cYqyUPqVQFaBQCRYWYsWqjSL8Ua
+	FYgZjCsswOnZWIy0/hLPHLBhe+LGby1Ms93suwXTijMjJ0KwY6yBpU2z/cxxzw==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
-	auth=pass smtp.auth=afa@pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
-Message-ID: <2a8db0f2-888e-4cd0-86d9-ca3fe99c64b6@pengutronix.de>
-Date: Wed, 23 Sep 2026 10:17:31 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] test: check-security-policies: mark the source tree safe
- for git
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Barebox List <barebox@lists.infradead.org>
-References: <20260923073000.4124447-1-s.hauer@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Content-Language: en-US, de-DE, de-BE
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1x9e4w-002Wt9-1f;
+	Thu, 24 Sep 2026 09:41:14 +0200
+Received: from [::1] (helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.98.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1x9e4w-0000000GpEW-1trp;
+	Thu, 24 Sep 2026 09:41:14 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
 In-Reply-To: <20260923073000.4124447-1-s.hauer@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
+References: <20260923073000.4124447-1-s.hauer@pengutronix.de>
+Subject: Re: [PATCH] test: check-security-policies: mark the source tree
+ safe for git
+Message-Id: <179023567445.4010155.3519918163986079788.b4-ty@pengutronix.de>
+Date: Thu, 24 Sep 2026 09:41:14 +0200
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260923_011733_908829_8ABF9179 
-X-CRM114-Status: GOOD (  20.56  )
-X-Spam-Score: -2.1 (--)
-X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
+X-CRM114-CacheID: sfid-20260924_084116_695651_EED98BB5 
+X-CRM114-Status: UNSURE (   5.97  )
+X-CRM114-Notice: Please train this message.
+X-Spam-Score: -0.2 (/)
+X-Spam-Report: Spam detection software, running on the system "desiato.infradead.org",
  has NOT identified this incoming email as spam.  The original
  message has been attached to this so you can view it or label
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On 9/23/26 9:30 AM, Sascha Hauer wrote: > The labgrid-pytest
-    job runs the container as root, while the checkout > belongs to the user
-   of the GitHub runner. git refuses a repository owned > by someone [...] 
+ Content preview:  On Wed, 23 Sep 2026 09:30:00 +0200, Sascha Hauer wrote: >
+    The labgrid-pytest job runs the container as root, while the checkout > belongs
+    to the user of the GitHub runner. git refuses a repository ow [...] 
  
- Content analysis details:   (-2.1 points, 5.0 required)
+ Content analysis details:   (-0.2 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
  -0.0 SPF_PASS               SPF: sender matches SPF record
  -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
- -0.1 DKIM_VALID_AU          Message has a valid DKIM or DK signature from author's
-                             domain
+  0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
  -0.1 DKIM_VALID_EF          Message has a valid DKIM or DK signature from
                              envelope-from domain
+ -0.1 DKIM_VALID_AU          Message has a valid DKIM or DK signature from author's
+                             domain
  -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
-  0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
- -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
-                             [score: 0.0000]
   0.0 DMARC_MISSING          Missing DMARC policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -157,34 +183,36 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-60.61 / 15.00];
+X-Spamd-Result: default: False [-61.01 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
+	BAYES_HAM(-3.00)[99.99%];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
-	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
+	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
+	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
+	RCVD_IN_DNSWL_MED(-0.80)[2a0a:edc0:0:c01:1d::a2:received,2607:7c80:54:3::133:from,2001:8b0:10b:1:d65d:64ff:fe57:4e05:received,2a0a:edc0:0:1101:1d::28:received];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:900:1d::77:received,2607:7c80:54:3::133:from];
 	R_SPF_ALLOW(-0.20)[+mx:c];
-	MAILLIST(-0.20)[mailman];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
+	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	RCVD_COUNT_THREE(0.00)[3];
-	DMARC_NA(0.00)[pengutronix.de];
-	FORGED_SENDER(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
 	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
 	TO_DN_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[pengutronix.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	FORWARDED(0.00)[barebox@bombadil.infradead.org];
+	FORGED_SENDER(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	DKIM_MIXED(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,infradead.org:-,pengutronix.de:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	R_DKIM_REJECT(0.00)[infradead.org:s=desiato.20200630];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
@@ -193,12 +221,11 @@ X-Spamd-Result: default: False [-60.61 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 1B1A3201FFC
-X-Stat-Signature: 1spgqgfuz6mcaaf3acmywccg8qi9rafp
+X-Rspamd-Queue-Id: 2F793201A7F
+X-Stat-Signature: cupwy5ayysa4h9gr6qppz8m8nrfmzi89
 
 
-
-On 9/23/26 9:30 AM, Sascha Hauer wrote:
+On Wed, 23 Sep 2026 09:30:00 +0200, Sascha Hauer wrote:
 > The labgrid-pytest job runs the container as root, while the checkout
 > belongs to the user of the GitHub runner. git refuses a repository owned
 > by someone else, and the final
@@ -209,53 +236,16 @@ On 9/23/26 9:30 AM, Sascha Hauer wrote:
 > error, git diff treats the tree as no repository at all, falls back to
 > --no-index and exits 129 with its usage message, which fails the job:
 > 
-> 	Check security policy configurator
-> 	Process completed with exit code 129.
-> 
-> Pass safe.directory on the command line, where it still counts as
-> protected configuration, and check up front that we are in a work tree
-> at all, so a future breakage of the repository lookup is reported
-> instead of being mistaken for modified policies.
-> 
-> Assisted-by: Claude:claude-opus-5
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> [...]
 
-Acked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Applied, thanks!
 
-> ---
->  test/check-security-policies.sh | 15 ++++++++++++++-
->  1 file changed, 14 insertions(+), 1 deletion(-)
-> 
-> diff --git a/test/check-security-policies.sh b/test/check-security-policies.sh
-> index 09b5301590..946a1ccdde 100755
-> --- a/test/check-security-policies.sh
-> +++ b/test/check-security-policies.sh
-> @@ -71,5 +71,18 @@ for O in "" "$builddir"; do
->  	make O="$O" mrproper
->  done
->  
-> +# The CI container runs as root, while the checkout belongs to the user
-> +# the runner uses, so git refuses the repository over its ownership. git
-> +# diff doesn't fail loudly in that case: it falls back to --no-index and
-> +# exits 129 with a usage message instead of comparing anything.
-> +srctree_git() {
-> +	git -c safe.directory="$PWD" "$@"
-> +}
-> +
-> +if ! srctree_git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-> +	echo >&2 "$0: not a git work tree, cannot look for modified policies"
-> +	exit 1
-> +fi
-> +
->  # Catches security_oldconfig rewriting a committed policy.
-> -git diff --exit-code -- '*.sconfig'
-> +srctree_git diff --exit-code -- '*.sconfig'
+[1/1] test: check-security-policies: mark the source tree safe for git
+      https://git.pengutronix.de/cgit/barebox/commit/?id=0734b8afb94f (link may not be stable)
 
+Best regards,
 -- 
-Pengutronix e.K.                  |                             |
-Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
