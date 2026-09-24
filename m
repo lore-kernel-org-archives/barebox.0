@@ -1,123 +1,107 @@
-Delivery-date: Thu, 24 Sep 2026 17:07:44 +0200
+Delivery-date: Thu, 24 Sep 2026 20:01:57 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1x9l32-005otJ-2t
+	id 1x9nld-005rjb-2j
 	for lore@lore.pengutronix.de;
-	Thu, 24 Sep 2026 17:07:44 +0200
+	Thu, 24 Sep 2026 20:01:57 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id AFD2B200B66
-	for <lore@pengutronix.de>; Thu, 24 Sep 2026 17:07:44 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 8767A202136
+	for <lore@pengutronix.de>; Thu, 24 Sep 2026 20:01:53 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=13ute6Ib;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=QtcljJJK;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=FMwIPvpo;
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=TByVeMb2;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
-	dmarc=none;
-	arc=pass ("pengutronix.de:s=20260414:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790262464;
+	dmarc=pass (policy=reject) header.from=bootlin.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1790272913;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:list-id:list-help:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=FC5+9PfCq+M4YhtR9yJg2P6uuy+M5emI+KCpr7DBZ2M=;
-	b=fPrfQDjf4zuzU8StJO0auQyd2/wljXxamBxyWKaY7PeT3PDtFeGzWtlBmNKNyl1uq1zWwi
-	5Gp07iuvCf/fac9twNKBcoQV7ONjJio2HS8axZeai291P6lTt+QhyWbU4ileX2I1OuPNek
-	Zm0uUdtA3EkRgnySrr218WT6jVjtWyIR9dy5DgWf0VqbvxJw0D9fb0n1/1inj2YIGevrkj
-	PZ5k/FoBm0fXhEGnbH59hddH+8bMGo4jmEE+9gzZdCTawX4MHqpKnBLhugggmrcilDAguU
-	VhreHp6H3YMIXX+5bwFWTfBK/Ei/NtR5ZBjDJeWQ/sWvQfdoHVPXsuBUWCQ7Mw==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790262464; a=rsa-sha256;
-	cv=pass;
-	b=KQpaqSqSyaTkrOkJa4MwAGWHhXYyhQE8S/j0Y1B0moP2q/PNsqs0XJWx3OC3ejO2wRFtTu
-	0XSfusiIqYvSbrQ/Q4A1XPIebcesJFDuXuVyBBS45N2hlEZilgb6N6tquakmQAsxX9v132
-	LAujhkXnWem8X3lhfjCLzHJKFzTNc/UWOnNue/TSiNkOjcH81UXIVlUSbllbUt75+6m3aA
-	o2Nn9/wPU9X+ZVGlC4TJg2GgP7jgqd5XGhSpvg6z4OZhLELqYhaiGbQgAzm7wAZNRzsMWd
-	cpLi8BfJK7SmWPvvIYohuX7lt0g5Bs/bCHzK5+vYALD6bdtuDRo6HB1gjZAMwA==
-ARC-Authentication-Results: i=2;
+	bh=hZkR/KfjIkcWdeeUDF/Htqg9B2jEI/CIIhioxNN0YGs=;
+	b=DYUg9K55P+LF6jl1Blk/quE9/xdoCN9Xj3kvd+vxwWLDjjESfZhGfy8cogNFAODDzQOCXa
+	8BzL5x/Nduv6z0sszhV+mbfFPn1l2w9DZS3VwsOm5Nza3fYXX+KdozrZX0bAGL6scnr37U
+	uwu0HmpUW2ryhJGGDERqMrZy+m8bjqFBeBC+kt/Mq3jlErIMvz2GXM38BjqKYDJZIwB+xn
+	Fd++/JrJ0i9PNfGxtOYmACSVbuQilJLYxQVcV6D8IgXK+pYqYz+i3xAS0nIoF4G/8xm3E8
+	1WhWLD5x9Rv4Ee+CQef482FgmNioh0CjE4mSLIQQGuWFnh5rV6J0ALqm3SClRQ==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790272913; a=rsa-sha256;
+	cv=none;
+	b=NfPOyK8n5EAokO9MErwR+HWSbDLVHA2Vdsvyj5vxIEjfo/NAGqi9lFV6V0WsqWta8+7IkZ
+	xt3EgZ2eg6kL3xmGLTzMDDgbHQMqEM1q/2eRkgdv/o7vvLuuQvds0now4rD9Dt/t4q9T3N
+	28TjdS8J+eBODnooHYcF0dvp9oKob0ok0LtIeZjxPto5vi2N4AilZI9DTgMIEplDmquAJp
+	GIb3hoqG7uxHa2LG5AEmAdF672tC9fpEJ7zWD9B61WnvBbVn090a2oPPS18lZ6qFG/+TVj
+	BiYEULbKauj91cR4JyRihyMTt+34LHZIxW0MZbPEHlCxi9gYAIh4mMKRUJT/NQ==
+ARC-Authentication-Results: i=1;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=13ute6Ib;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=QtcljJJK;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=FMwIPvpo;
+	dkim=pass header.d=bootlin.com header.s=dkim header.b=TByVeMb2;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
-	dmarc=none;
-	arc=pass ("pengutronix.de:s=20260414:i=1")
+	dmarc=pass (policy=reject) header.from=bootlin.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=FC5+9PfCq+M4YhtR9yJg2P6uuy+M5emI+KCpr7DBZ2M=; b=13ute6IbLC4IWqwCS8VuptEhRZ
-	7PfZ89M4tl63UdZN+tR4rdV8XaQA+LqQsve05axopC458m6qKAIIsSs6N643oU1N6nexnzAgWVU9t
-	+RVjGsW+Iw0HDU050qkjIoFtxHI4iRF21uflcXQNNK6NSdgiGnW75LAYbQmjlo3PWj7g7vXq/3SCM
-	dsqL5yMgIWkwleTLsxe1bi0AfJL01RNtTM9RKRkYP1vivXRr9EkdtPT8jaqa6bvBepQKnGMl4p2sA
-	aCfUUa8G+xzZHTg1UudMofHHYQmsAvkBP71GHSN/DCx5rcSxId+RESkz9kjDe7QwDokP/2O5QE8jh
-	3amZN2IA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=hZkR/KfjIkcWdeeUDF/Htqg9B2jEI/CIIhioxNN0YGs=; b=FMwIPvpoedSxJm
+	/fdUebW++sLzK0ZdoWsckZZ7NO1mIVyV16/svURcr67BPE2rjfMOhx+4QUxAwgDGpxZACXXQwUOeF
+	2heMCwIXSuCTT7R/ocr/0eYd6sP+o3LX4WRIrUMSnBKWMgsyn8BJce6XfW6Wjqaxe+armV2d8FP9J
+	tg+eJ9xcNKjFNgwpdLZCIB9MZ7EL1b3xuCAwt0FOC3om6uh9VmQHM06HT2FibWfBzMOmBSZFBGmjA
+	wnb0iB8Td/WEisQLnsbjXf9RDcZofJAc3EsSbzQ26hfJcOMX8N9OAC//PtymKrLjrwEtBxhkqyoOa
+	I/N4IcIIFCddBtKjURRQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x9l1q-0000000BKqw-35hY;
-	Thu, 24 Sep 2026 15:06:30 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1x9nkD-0000000Br0i-3iw9;
+	Thu, 24 Sep 2026 18:00:29 +0000
+Received: from smtpout-03.galae.net ([185.246.85.4])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1x9l1n-0000000BKq7-15dJ
+	id 1x9nkA-0000000Bqy4-0KLm
 	for barebox@lists.infradead.org;
-	Thu, 24 Sep 2026 15:06:28 +0000
-Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.4.pengutronix.de [10.17.1.19])
-	(Authenticated sender: relay-from-dude05.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 3667020007B;
-	Thu, 24 Sep 2026 17:06:25 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790262385;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FC5+9PfCq+M4YhtR9yJg2P6uuy+M5emI+KCpr7DBZ2M=;
-	b=QtcljJJKHNud3WXNBiR1rwWOcgWnlXzjMQjrQR1DZ29yRtg5yvqy62VZ9HV6KK0cWIY/Tj
-	heRVpA1ZrZZosNs0kN78BJzMcGAqzZgLu31V3fJU01I6hQV6AKB8j6bEqpcseCTDvJvFid
-	6uhWhncLIV6/Lwe1sj4AhliJiKjfoTjRXOrMS2GmWhnfiGPQpnnkK2hWaxa2n/rHsu+kCP
-	7X0/AGs6iLEr8zr2CdsLPeYyRUFghz1IAm3EOctBJ24ekAzuql5G432IkxFwe/6XqoKAoQ
-	+VlFzcmYezgFCOABgMO6waacGhoYohHVo+4uHOKItafpmwiJRM2s3BA+KzA6+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790262385;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FC5+9PfCq+M4YhtR9yJg2P6uuy+M5emI+KCpr7DBZ2M=;
-	b=cUohNq/Qc6v/7JQ4Tid/Fs1tSl1sQ8D7FqtOMY3w1nf3AIzv/z/INRumZyV45RNp0L/WyV
-	oTZaF4/Vcj0Q4MWXBtaIZH9Sye29rJm1e8wA1FBljoB7ql2aIDtntEjAkUh39eiV3rSMKt
-	i56leBpH3hkFPovJ54ewURscg+x3Qoi34rQ8aZrN6aBKAKYg69VkauJcPL21QJW1S4mG5b
-	rms5QqjonQM9wcz8lWUAqBEFHfTJo21DLY4d9luM0rTOkLRF61vfGm0T3SdgdQRB1wnXgS
-	sDEy4eLaem1RGAwkeJohGi/RGWhARb0DY7XyLLJ1+T6XxWzGuyDlvdLQXTmVRg==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790262385; a=rsa-sha256;
-	cv=none;
-	b=E+v9MTgtU0mnP/melLMmrZsB3glcJ5CjXdavEBUeAwYvOB2NwElc0XIZC9GJwWFtYYUrf3
-	EI1jhP6bjsXTILEcN45IHwRyQ6qRrevntej3dFN26xqUqXCFIJslQWdE16B910DqojvNz2
-	4/kRP90Vtb3RuNOsNLBnZM0CJV64p3HzUidnxBh2AIQ5w7ymcNizOj+Pm/RUzVVjuSjhHe
-	m9l1plfwMFSMCv5MpwNqCP26pDWfpnKc5BJc0z1xMH20dijzbFba0nRFiMsTJnG7SzuSNF
-	gcOLTTk4HFJ0ZZFKloIruJe5rVW9u9JuMfabeUY+/d9JP0pozEixibXMENpfeQ==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-dude05.red.stw.pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
-Received: from dude05.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id 1DC96740398;
-	Thu, 24 Sep 2026 17:06:25 +0200 (CEST)
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH] fixup! Documentation: troubleshooting: add debugging via built-in init scripts
-Date: Thu, 24 Sep 2026 17:06:21 +0200
-Message-ID: <20260924150624.2771746-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260924145332.2712276-2-a.fatoum@pengutronix.de>
-References: <20260924145332.2712276-2-a.fatoum@pengutronix.de>
+	Thu, 24 Sep 2026 18:00:28 +0000
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 643A54E4105C
+	for <barebox@lists.infradead.org>; Thu, 24 Sep 2026 18:00:22 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 2827860738;
+	Thu, 24 Sep 2026 18:00:22 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F35E2103290CA;
+	Thu, 24 Sep 2026 20:00:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1790272817; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=hZkR/KfjIkcWdeeUDF/Htqg9B2jEI/CIIhioxNN0YGs=;
+	b=TByVeMb2FjV0me7sxnZYXtdLLWD5MjAKdgcjS+3EDlQ0mNMNH8T3Ui+2joRwwNAwQ5a/Dx
+	Lnn7hg6SSRE5fOEP5T0v79UzXAQTBpFHHBpKuadLUZI0TTW6dU1SoNXLaqzngjqQ3RRfaQ
+	TDiT0u1VkD3oY2De/h0zAh+vUV/6mAljKiYNS54L5r0rXk/CBCb1kY1RTqK4Czwtx8R5Y0
+	SlqfaP74nUZB90D8S3HT30jp88BqowQq+0QZv5t5oL9U5I05rGwe4XCV53DP6isE1/0ww/
+	JyqfJIlyFAwPI6vcWQ6uiIHwws36vE4V5z4fbxrzyqz0azIfS+jlHfBc/awf4g==
+From: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
+Subject: [PATCH v2 0/3] FIT: parse and use the cmdline property of FIT
+ images
+Date: Thu, 24 Sep 2026 19:59:30 +0200
+Message-Id: <20260924-add-cmdline-fitimage-v2-0-4a665e165002@bootlin.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4WNQQ7CIBBFr9LMWgxQba0r72G6oDDYMRYMYKNpe
+ nehHsDlS95/f4GIgTDCuVog4EyRvMsgdxXoUbkbMjKZQXLZ8JNsmTKG6ck8yCGzlGhS2TlI2ww
+ Su5prAXn6DGjpvWWv/Y/ja7ijTqVVjJFi8uGz/c6ieH8uZsEEOzYtFygs5119GbxP2dlrP0G/r
+ usXuFXhb8wAAAA=
+X-Change-ID: 20260827-add-cmdline-fitimage-42f6b2e930c1
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ Ahmad Fatoum <a.fatoum@pengutronix.de>, 
+ "open list:BAREBOX" <barebox@lists.infradead.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ =?utf-8?q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>, 
+ =?utf-8?q?Herv=C3=A9_Codina?= <herve.codina@bootlin.com>, 
+ Thomas Bonnefille <thomas.bonnefille@bootlin.com>
+X-Mailer: b4 0.15.2
+X-Last-TLS-Session-Version: TLSv1.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260924_080627_559632_888CD5F3 
-X-CRM114-Status: UNSURE (   7.90  )
+X-CRM114-CacheID: sfid-20260924_110026_265673_B286583B 
+X-CRM114-Status: UNSURE (   9.97  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -126,11 +110,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de> ---
-   Documentation/devel/troubleshooting.rst | 1 + 1 file changed, 1 insertion(+)
-    diff --git a/Documentation/devel/troubleshooting.rst b/Documentation/devel/troubleshooting.rst
-    index aed9870d6e46..9cd669334b8b 100644 --- a/Documentation/devel/troubleshooting.rst
-    +++ b/Documentation [...] 
+ Content preview:  As of FIT v0.9, it is possible to pass cmdline parameters
+   to the bootloader via a special property in the fitimage. This series adds
+    support for this feature in Barebox. It also adds some tests to avo [...]
+    
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -146,7 +129,7 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
   0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
  -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
                              [score: 0.0000]
-  0.0 DMARC_MISSING          Missing DMARC policy
+ -0.0 DMARC_PASS             DMARC pass policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -159,63 +142,85 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-58.91 / 15.00];
-	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
+X-Spamd-Result: default: False [-7.91 / 15.00];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
-	MID_CONTAINS_FROM(1.00)[];
+	DMARC_POLICY_ALLOW(-0.50)[bootlin.com,reject];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
 	MAILLIST(-0.20)[mailman];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,bootlin.com:s=dkim];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	FROM_HAS_DN(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
-	TO_DN_SOME(0.00)[];
-	SUBJECT_HAS_EXCLAIM(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
+	RCVD_TLS_LAST(0.00)[];
+	TO_DN_ALL(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER(0.00)[thomas.bonnefille@bootlin.com,barebox-bounces@lists.infradead.org];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=1];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[thomas.bonnefille@bootlin.com,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,bootlin.com:+];
+	PREVIOUSLY_DELIVERED(0.00)[barebox@lists.infradead.org];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[7];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: AFD2B200B66
-X-Stat-Signature: 9cpanrwxorhsmiww77wpmqis6q6axmsi
+X-Rspamd-Queue-Id: 8767A202136
+X-Stat-Signature: 8484eso558gyfcf8kyxrrf6sammosakq
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+As of FIT v0.9, it is possible to pass cmdline parameters to the
+bootloader via a special property in the fitimage.
+This series adds support for this feature in Barebox.
+It also adds some tests to avoid any regression on this feature.
+As `cmdline` is a property in a configuration that isn't a reference to
+an image, it needs to be whitelisted by fit_config_build_hash_nodes() to
+not be hashed.
+
+Signed-off-by: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
 ---
- Documentation/devel/troubleshooting.rst | 1 +
- 1 file changed, 1 insertion(+)
+Changes in v2:
+- Skip bootargs configuration if CONFIG_FLEXIBLE_BOOTARGS isn't enabled
+- Use a dynamic bootargs
+- Added a test for the fit image command line parameter
+- Whitelisted the cmdline property in fit image hashing
+- Link to v1: https://patch.msgid.link/20260827-add-cmdline-fitimage-v1-1-56701e1f0093@bootlin.com
 
-diff --git a/Documentation/devel/troubleshooting.rst b/Documentation/devel/troubleshooting.rst
-index aed9870d6e46..9cd669334b8b 100644
---- a/Documentation/devel/troubleshooting.rst
-+++ b/Documentation/devel/troubleshooting.rst
-@@ -374,6 +374,7 @@ Interactive Console
-   - :ref:`command_of_dump` if device tree description may be erroneous
-   - :ref:`command_clk_dump` if serial is missing due to clock issues
-   - :ref:`command_devinfo` to list the devices barebox knows about
-+  - :ref:`command_drvinfo` to list the drivers and the devices bound to them
-   - :ref:`command_iomem` to display the I/O memory map from barebox's point of view
- 
- Kernel Hang
--- 
-2.47.3
+To: Sascha Hauer <s.hauer@pengutronix.de>
+To: "open list:BAREBOX" <barebox@lists.infradead.org>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Cc: Miquèl Raynal <miquel.raynal@bootlin.com>
+
+---
+Thomas Bonnefille (3):
+      bootm: add fitimage command line to bootargs
+      test: py: add test for fit cmdline parameter
+      FIT: add cmdline to whitelist of non-hashed properties
+
+ common/bootm-fit.c                           | 18 ++++++++++++++++++
+ common/image-fit.c                           |  1 +
+ test/py/test_fit.py                          |  1 +
+ test/testdata/multi_v7_defconfig-gzipped.its |  1 +
+ test/testdata/multi_v8_defconfig-gzipped.its |  1 +
+ 5 files changed, 22 insertions(+)
+---
+base-commit: 75819f9e196e2da048e96c8589898fdc38ef8e7a
+change-id: 20260827-add-cmdline-fitimage-42f6b2e930c1
+
+Best regards,
+--  
+Thomas Bonnefille <thomas.bonnefille@bootlin.com>
 
 
 
