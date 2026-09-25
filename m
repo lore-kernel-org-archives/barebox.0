@@ -3,15 +3,15 @@ Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xA3cA-0068iC-2S
+	id 1xA3cA-0068iB-2T
 	for lore@lore.pengutronix.de;
 	Fri, 25 Sep 2026 12:57:14 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 433BA202122
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 210A7202108
 	for <lore@pengutronix.de>; Fri, 25 Sep 2026 12:57:14 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=1RrpLMF1;
-	dkim=pass header.d=waldekranz-com.20251104.gappssmtp.com header.s=20251104 header.b=d0cPYlfi;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=F4AazMwe;
+	dkim=pass header.d=waldekranz-com.20251104.gappssmtp.com header.s=20251104 header.b=hojJXUnJ;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
@@ -21,23 +21,23 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=d/TSK2w/h7CRCOELF8J+ez+sTsOrF1C/NH0TtnUIAlE=;
-	b=a8hyfv+xlec2vXwZWXDbNOAKOppH5qVEcR6HktdPSYeQERl59J4XeUCiBAFba+Ok6A2rB6
-	giWTbaiNVjjk5odh8XxO4tFPbwlQOh/3Q/nfz91p9DX0T1IiUT58Dy7/2XzmP2Dd36h7vi
-	ViQg6sny5s5e1FO4rlaKRmC327EEQRwXum4BFnxfCJOWVCx/lwcAtSQyHWOyZBSQT7f7iy
-	ZQA2z57y8aMzMgXPOr+XP3rp5ScCdtjmB0t0oflLWHnssAAP39PAGZKHxxHstQFUqeDL4p
-	EZnmBGtNca2iudfq3pTC2lNwrbW3Z5nFqbTo6uPKi5XpqQwWmFqFoPX+MEP89A==
+	bh=k9fUNhSwXkY9elwvk/ZBARN5FHCXaZyKXi+hbPVlcpI=;
+	b=ZwnO48/XRJr5NlpgKUR0ujVtomSDovv1HEIQ6GY8UFKndGF9/y9oM0m5zS6fZa7Ug4vDX0
+	GW+CQim6Th7cHhQDRGDHmk34mJctYbBYxxSCvTWIbvGOaCYE0q3XhPu6ewfhOCh0tylRq5
+	PfaoxmMmOpNL/MerwiRt7dZAZcK46eSN0H+bVRv3TpqGPB2hDBpCVs+oAutr+whbra/N2x
+	IYcGhcn7meISmgR4R8DelJA+uYDB+5WsDmip7rqmFCteTWhhyhFpVWdKa4Hd9cxiO/GfxO
+	Zut1nwR5eyxmGPWtkizz+SPLTlE67s3BfPFmfkcT5We9aoO2//HjEmJ1+prdyQ==
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790333834; a=rsa-sha256;
 	cv=none;
-	b=UMBt1TYRVV5spYZBuPVoeuKQhQ4Y+n9U/xKtU64haoHHmgsa5pZSIp9SB7YRoZfPl9En6z
-	fsfWQ+W4vT+1lElrhbOhqPpaWW3Yecis03Jvfy41LpVMM9dm2HKG4rOVUEecDEAdyZNqha
-	yfGYXQRvIHWEoRYSsytko6GfYoki6zHpd4eBRTCGfj5r5DEi+ITwSIeZEKKky0KFkVpFT1
-	8Eh5cRdKI9cm/7lpWyFjjFo90bi32CXCIwiXOL+ifMNfmrMEbGaNrQTC+MrDQaLfdBnRbh
-	J7WvF9X7M4Xe0iiiJrnu10S7MD0EEEtzYa2M13WUGIA7dNzU0NqXHk/CIztbYA==
+	b=MaEt14bBZGWBEl1IyWgOIJOZsUglO3om2B/V/pgEoyFmQoE8Exyb0wBE9jiCs9WBH/5MuY
+	F5O9pEK488nr/ytLYFo5xW+oSkRuqerCoUsVAUYptyidmpY3VaZTFHLhsA6TsZL1mLzS0L
+	cSARv0rLIlMm5aJ/IeaGeRnSD9hi/fm0wItBeJtb+62ot+YvG28MpS3o2dHf9/WWc9YIqm
+	vrbhXXjFE5vE4xfgpgrHleWTU9U5ekLj7gKcHTO9/LyOgkJ9bhqxCWq462/c/i08X9tdVf
+	M/WDHSKU288zFZR9NEEudT/bxsAMEzmmAZ86l/ef/esSajbq8DyRVSbqI7d1SQ==
 ARC-Authentication-Results: i=1;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=1RrpLMF1;
-	dkim=pass header.d=waldekranz-com.20251104.gappssmtp.com header.s=20251104 header.b=d0cPYlfi;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=F4AazMwe;
+	dkim=pass header.d=waldekranz-com.20251104.gappssmtp.com header.s=20251104 header.b=hojJXUnJ;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -46,72 +46,72 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=d/TSK2w/h7CRCOELF8J+ez+sTsOrF1C/NH0TtnUIAlE=; b=1RrpLMF1bmIA+9duvWlxoym12O
-	WH2ajxkQCapH4cSAtSRhpT2uFwDq/SbPUFq37jBDP9wwt9HJ/FZJJI6crCq3DwAKR770hYJocTlZn
-	oqN8j2gmuEBQJjg6MRVVuICWUcYkoHTwgzw6pnqihQpJyz5AQAbxdk+Kt/vsZ/Qn9LBGcv2N0MsPU
-	EOAORGP9DAX5EN2oWutuRJagIQ9kCFf+YBi1H92pGIxZiTgPnz5HL72PEELb3+icM6IPdtvDC98e+
-	YYRqss0gn5Wm7ZqH19JgIsgV5o4qIOYbCOXVzCPavEVT1SwgqC+/oZPtNfsaYdMlWPN9FmpPqnlhz
-	rS0JsobA==;
+	bh=k9fUNhSwXkY9elwvk/ZBARN5FHCXaZyKXi+hbPVlcpI=; b=F4AazMwePXf/VMRMD3jZRwTQUq
+	vPZ0E6nolyUaZZ+oRM8Wp9Qxuoa59PqMtoNDqVjY4nHOn2ota/P2RGrVMuz7sJ7SUT7f1qa2mTbse
+	dD9fxVXGZDeN9unh61H+lA7yKS6bRAeLe9UGvp16ZqYoImFA7BiX+2yyKs6JhT0AEbzSuyF5pASpn
+	mifaMvYi8ShphFYDoK2i7br5zizAgy2VGNiac2SHxw11IlNcRwTc8lKXiBinUGINo3yZBpGl16kHJ
+	YzrmVkTNPGPtjJK1eukJySQfZ+zbTz3O6CYUonZzVtBUT1Fq3KCEDoREt0AeP5RKYQGUnCCYzJVxo
+	/8bg8u9A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xA3aR-0000000D8bO-1iTu;
-	Fri, 25 Sep 2026 10:55:27 +0000
-Received: from mail-ej2-x10.google.com ([2a00:1450:4864:34::10])
+	id 1xA3aS-0000000D8cD-3lvr;
+	Fri, 25 Sep 2026 10:55:28 +0000
+Received: from mail-ej2-x13.google.com ([2a00:1450:4864:34::13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xA3aL-0000000D8YR-462E
+	id 1xA3aM-0000000D8Yj-1qhp
 	for barebox@lists.infradead.org;
-	Fri, 25 Sep 2026 10:55:25 +0000
-Received: by mail-ej2-x10.google.com with SMTP id a640c23a62f3a-c254f9f7dbfso84533266b.2
-        for <barebox@lists.infradead.org>; Fri, 25 Sep 2026 03:55:20 -0700 (PDT)
+	Fri, 25 Sep 2026 10:55:27 +0000
+Received: by mail-ej2-x13.google.com with SMTP id a640c23a62f3a-c254f9f7dbfso84535266b.2
+        for <barebox@lists.infradead.org>; Fri, 25 Sep 2026 03:55:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=waldekranz-com.20251104.gappssmtp.com; s=20251104; t=1790333719; x=1790938519; darn=lists.infradead.org;
+        d=waldekranz-com.20251104.gappssmtp.com; s=20251104; t=1790333720; x=1790938520; darn=lists.infradead.org;
         h=content-transfer-encoding:organization:mime-version:references
          :in-reply-to:message-id:date:subject:to:from:from:to:cc:subject:date
          :message-id:reply-to:content-type;
-        bh=d/TSK2w/h7CRCOELF8J+ez+sTsOrF1C/NH0TtnUIAlE=;
-        b=d0cPYlfi+Ikgo7n/UArXzxzIktTxTDBiOuar3Hdn7h/VEo9DeEYbtQr0L4uJh0FR3w
-         teLa3eqRjiwZSuRNoEna5qDmDQ460J+Wp3R/CYzxyfHjF/R1hdnLKZt8qU6mNltDsIBq
-         UNIoFF5/hGpV2i6dOlEOXni7lEVrb4b+OOFd4ZZABn60/pjxYXXqm4ar4vAvLwvqDrHY
-         zXxslkzxBfULVudW6ny/7KloNftOb99nLgUiIVZtkU/CwpRPH/vzIKtxdGZPMpK7z73q
-         WceNJnRryGTr6Kduu1Y370bdRhXebVt0hXpKa46kblivRrt3fOvj4qgaS/w6FVR8AuFX
-         aSyg==
+        bh=k9fUNhSwXkY9elwvk/ZBARN5FHCXaZyKXi+hbPVlcpI=;
+        b=hojJXUnJ+hvZ+hskxD1c2hsgbPNsAmRInYoOR+v31BNZ0E8JC7FGphPSVdq2MDwWah
+         X50og8YpvEUEHP5o4X1VrmymfOjlZFA1bm31UO7pzRa2MkqRVi6PCSPgoUKChrrPc6Q5
+         Ll0Kl1MnqopxzNtTmAZrEm1hW+OyE12tL7Z420twGmDMRUjThrCFMHgy7QwpSoQWP03/
+         PwBoJW96watYpLh5BI7davyaa3gtCYgzKIwwOgh+/APJu6lizgPaR2WiQg6DSOz42Ljv
+         sYjHPoSU60ZjP0uTdXqf2zTp/ffCA2RwbgHMDfYaI2j7bjN82v0P42LaBV0A4xrLbx+s
+         Sk5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790333719; x=1790938519;
+        d=1e100.net; s=20260707; t=1790333720; x=1790938520;
         h=content-transfer-encoding:organization:mime-version:references
          :in-reply-to:message-id:date:subject:to:from:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
          :content-type;
-        bh=d/TSK2w/h7CRCOELF8J+ez+sTsOrF1C/NH0TtnUIAlE=;
-        b=jKlHT6JupjFB9zx1jI5NpKRkgb49ZqWdbZ6x81gCIXc5IZe1oWKtWUVGKxQWcKlI9h
-         BnjwMXuaeobnrbAcCY/JDJFO/BGGtK49ym0UpY0CQbpKgn4O+bJtuLPKfr8chvej59gX
-         Y5kCBD0lBZOJjt3B43X5HxFEVrhegXnrxcN2LJ9dhrbKt77T29rpW6A6XFyXlnfhUFzO
-         L30YjO/fsEKYowPLzCiQbEU7IcLheJFMZPOFALtWMBOA92cp/+IpE67gpcwZtUQQ+zMW
-         IfekQeF09kERSYPn90PPdefSb3uv3rHB+2EBIHNAZo9aOnxR923vRigaIGddKx13N2LC
-         cz/w==
-X-Gm-Message-State: AFuF++lYtxeH6BrK1eI6n8T6Llt3Xz6VHcLZPd9giGFNYopTV7tcFA1g
-	AyYBz4V9sRFBuPRlFVD0VUkTx7LWHlthiH4rYUR3bz/o/N2d/rYc348fBZ5xSVsyvevFTGOT1mB
-	U8w8K
-X-Gm-Gg: AYBFou0NkWRPW/P2EK4bEEXbKrQ9ktMCsNidh8C1ekCVbZhgcLpmCzauPHWrneybFjc
-	OlRKRt0R8BpJqI+p2RtXrbC/BIFIvP5gVRsbhiDKTROix85ydSzomDebW3EFhWy1/thPJ0rvDIS
-	qoZ+k1E5lFi+Cs0rk27SSfMMIMxFUINy/I3/khYUjbdWiz/zhtI7xo6Wduj5NIB8eXhSEhYGC6b
-	PPO5RMPmoFUSYVFJvyGX0wklBvVtzQ28b2vQEilv5YLg0Q7an1TlwPqNT/uGeN01qKQU1l1DsNT
-	Z7yFBZAkKvToXnV9lg2XmkgGhm7E1vjW7inW/H+5ozgQXg4bM+OuKQX4R+uebMca9gip9szMqmE
-	sGKhKPnukd6IqsQKWrHGA8FWMA3ebdaqq6OqZ45t1bLtf7xqa6gjo9/HmqYeUfMRAvA+bN7VjOl
-	wTXRTA+P39cVOH3ZcdF3WziddN0Lrq1NHM1CBy1VAgefeO9PGdHGWpAlZyZaCWynm5P4lOuCTFV
-	TzFH5ppHmIvHYWDV2chw+VXZzrTpnSHNAyq0iCGKx2q6ATtUqxGfAxJfm+XvvLr7Hfrvxb1y5sX
-	1IgikzNtAqyeLibuBo1s
-X-Received: by 2002:a17:907:3f83:b0:c2a:704c:8c74 with SMTP id a640c23a62f3a-c2ac259cad1mr500145766b.28.1790333719122;
+        bh=k9fUNhSwXkY9elwvk/ZBARN5FHCXaZyKXi+hbPVlcpI=;
+        b=hlvUBXu35YctlykvCi7amFt/L7xjIPDppW5YILz6MvK+TKt371h/ZQEx8KWT73MqTP
+         f7Gz8tP8uyn7FwxKoxV2GkL/uxXT6PbyhtVKuA9yTGrJfbHuS/oYI7u9bVdH1WgDznWb
+         VK5moDUBmG9P/NqQlX2oztET2LvZ+huB3x4EG9LBDYYZDeZKH3H3JiYfJ0I3O7BFAF2g
+         Zy19EAjiGptflb3bXK4Bn6NwnG7l+NFaSRslXPi8B5gBgWLq5DH1Dtu1ME1A7kO11033
+         vRG/ZLvJsQfM1EsqOywzSARb/cYVH0cekYV/4605XUSY4dd/jkluKlEgIIe87e5gMnWm
+         Axzg==
+X-Gm-Message-State: AFuF++l6e/lRr7FQ7WdsA6TWk+8Y5OdCobis7DCQCwQJ5H0leKy9mlkD
+	SSgiQKiHcovaT99JSMnbbbDuH7roCe4cSg9vbZ32Xpg+YU4x7Ka1+e2tVg6cH5bOVEwyTgo5CTY
+	5XHgX
+X-Gm-Gg: AYBFou15kct6MCt6AHFrD1e86OGTvGMJBJV6LT+OOusJUSSe2UWWXtcA+HqEI0pCVoo
+	xX0A5uB191qid1zRqJReKuCkfUoGLW/eF/ZRYN8G8kbkklOFVFOFyrDb3BjwrYZKTK6FqpEWgnZ
+	j80FZBun4lIy8KLh4vei/1mhcCbHUv2gGhPqsN8Z4X/fkvl5TQcFTdjR6RUBEFNGSRpTJkXaKfy
+	xsL8eEyIrcoCti5mIGekLpJT1MpU/PKwz8L6K7Zwi9LLouzGph8e2deOJvj608hrWdPWNjJT5CF
+	jjHIoYqXkmCxJ57bz2Iyll3qGIRBefeXusFyUZta94PxPbRBttM8mwv244JdVw/ScTlCzviR352
+	kIWsxkiFT/tma5UbB4cdNFI5mBsk/i7IuzkOO+f43ABCtKGEMbNWbyIxgVHgUpBGEoyUtD5udPQ
+	8LAzF7rCTISuGS6HF3z305G6wDCQxhRMmzyP9vwPm90Ga/+f+IO5ru/p3O2vIluAll3aPl9ynCU
+	8tIOPcQlQMOXLy0aKcv9DKA99bqkPgrMd65XwHgJlhh4o0XDFCxTKPHFLJ1UaWFxFK/Tp4oJ6nT
+	b7D7Zq0t7qZFJd4xGQP/
+X-Received: by 2002:a17:907:e012:20b0:c2a:c6fd:ec6c with SMTP id a640c23a62f3a-c2ac6fded38mr310042666b.30.1790333719937;
         Fri, 25 Sep 2026 03:55:19 -0700 (PDT)
 Received: from spa.addiva.ad (h-79-136-22-50.NA.cust.bahnhof.se. [79.136.22.50])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2ae757ac8dsm98416066b.25.2026.09.25.03.55.18
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2ae757ac8dsm98416066b.25.2026.09.25.03.55.19
         for <barebox@lists.infradead.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 03:55:18 -0700 (PDT)
+        Fri, 25 Sep 2026 03:55:19 -0700 (PDT)
 From: Tobias Waldekranz <tobias@waldekranz.com>
 To: barebox@lists.infradead.org
-Subject: [PATCH v2 next 2/5] dm: lvm: Add fuzz testers for metadata parser and binary headers
-Date: Fri, 25 Sep 2026 10:54:24 +0000
-Message-ID: <20260925105510.1431927-3-tobias@waldekranz.com>
+Subject: [PATCH v2 next 3/5] test: self: lvm: Add tests for metadata parser and binary headers
+Date: Fri, 25 Sep 2026 10:54:25 +0000
+Message-ID: <20260925105510.1431927-4-tobias@waldekranz.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260925105510.1431927-1-tobias@waldekranz.com>
 References: <20260925105510.1431927-1-tobias@waldekranz.com>
@@ -119,8 +119,8 @@ MIME-Version: 1.0
 Organization: Wires
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260925_035522_062940_C49EA87A 
-X-CRM114-Status: GOOD (  21.91  )
+X-CRM114-CacheID: sfid-20260925_035522_641130_56829DDC 
+X-CRM114-Status: GOOD (  25.19  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -128,18 +128,16 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  For the header parser, we help the fuzzer along by ensuring
-    enough of the basic structure is in place that allows it to reach deeper
-   into the code, rather than immediately bailing out on missing magic [...] 
+ Content preview:  Create a PV/VG generator that can generate images with various
+    non-standard transformations, then use it to test various types of both valid
+    and invalid images. Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
+    --- test/self/Kconfig | 14 + test/self/Makefile | 2 + test/self/lvm.c | 818
+    +++++++++++++++++++++++++++++++++++++++++++++ 3 files changed, 834 [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
- -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/, no
-                             trust
-                             [2a00:1450:4864:34:0:0:0:10 listed in]
-                             [list.dnswl.org]
   0.0 SPF_HELO_NONE          SPF: HELO does not publish an SPF Record
  -0.0 SPF_PASS               SPF: sender matches SPF record
  -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
@@ -167,334 +165,917 @@ X-Spamd-Result: default: False [-5.91 / 15.00];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,waldekranz-com.20251104.gappssmtp.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+mx:c];
-	MAILLIST(-0.20)[mailman];
 	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	MAILLIST(-0.20)[mailman];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	DMARC_NA(0.00)[waldekranz.com];
+	ARC_NA(0.00)[];
 	RCPT_COUNT_ONE(0.00)[1];
 	HAS_ORG_HEADER(0.00)[];
-	ARC_NA(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=1];
 	MIME_TRACE(0.00)[0:+];
 	PREVIOUSLY_DELIVERED(0.00)[barebox@lists.infradead.org];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	TO_DN_NONE(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[tobias@waldekranz.com,barebox-bounces@lists.infradead.org];
-	RCVD_IN_DNSWL_NONE(0.00)[2a00:1450:4864:34::10:received];
 	DKIM_TRACE(0.00)[lists.infradead.org:+,waldekranz-com.20251104.gappssmtp.com:+]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 433BA202122
-X-Stat-Signature: k6pct3c13jxuskyjubx7o8ibu3nfby1u
+X-Rspamd-Queue-Id: 210A7202108
+X-Stat-Signature: 4hmqusoipyrmob3hjnwmwnuwdene5zhb
 
-For the header parser, we help the fuzzer along by ensuring enough of
-the basic structure is in place that allows it to reach deeper into
-the code, rather than immediately bailing out on missing magic values
-or incorrect CRCs.
+Create a PV/VG generator that can generate images with various
+non-standard transformations, then use it to test various types of
+both valid and invalid images.
 
 Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
 ---
- drivers/block/dm/lvm/Makefile   |   1 +
- drivers/block/dm/lvm/lvm-fuzz.c | 182 ++++++++++++++++++++++++++++++++
- images/Makefile.sandbox         |   2 +
- test/testdata/fuzz/lvm-md.dict  |  29 +++++
- test/testdata/fuzz/lvm.dict     |  30 ++++++
- 5 files changed, 244 insertions(+)
- create mode 100644 drivers/block/dm/lvm/lvm-fuzz.c
- create mode 100644 test/testdata/fuzz/lvm-md.dict
- create mode 100644 test/testdata/fuzz/lvm.dict
+ test/self/Kconfig  |  14 +
+ test/self/Makefile |   2 +
+ test/self/lvm.c    | 818 +++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 834 insertions(+)
+ create mode 100644 test/self/lvm.c
 
-diff --git a/drivers/block/dm/lvm/Makefile b/drivers/block/dm/lvm/Makefile
-index b85f2714d1..b0be22db20 100644
---- a/drivers/block/dm/lvm/Makefile
-+++ b/drivers/block/dm/lvm/Makefile
-@@ -1,2 +1,3 @@
- # SPDX-License-Identifier: GPL-2.0-only
- obj-y += lvm-core.o lvm-md.o
-+obj-$(CONFIG_FUZZ) += lvm-fuzz.o
-diff --git a/drivers/block/dm/lvm/lvm-fuzz.c b/drivers/block/dm/lvm/lvm-fuzz.c
+diff --git a/test/self/Kconfig b/test/self/Kconfig
+index 7b359067be..9d91cc3c0f 100644
+--- a/test/self/Kconfig
++++ b/test/self/Kconfig
+@@ -50,6 +50,7 @@ config SELFTEST_ENABLE_ALL
+ 	select SELFTEST_IDR
+ 	select SELFTEST_TLV
+ 	select SELFTEST_DM
++	select SELFTEST_LVM if BLOCK
+ 	select SELFTEST_TALLOC
+ 	select SELFTEST_BLSPEC if BLSPEC && DEFAULT_ENVIRONMENT
+ 	help
+@@ -163,6 +164,19 @@ config SELFTEST_TLV
+ 	select BASE64
+ 	select BOARD_LXA
+ 
++config SELFTEST_LVM
++	bool "LVM selftest"
++	depends on BLOCK
++	select DM_LVM
++	select RAMDISK_BLK
++	help
++	  Tests the parsing of LVM2 metadata, using physical volume
++	  images that are assembled in memory and backed by ramdisks.
++	  This covers the tokenizer, the recovery from damaged labels
++	  and metadata areas, the selection of the most recent metadata
++	  when the physical volumes of a group disagree, and the mapping
++	  of logical volumes onto the extents they are made of.
++
+ config SELFTEST_DM
+ 	bool "Device mapper selftest"
+ 	select DISK
+diff --git a/test/self/Makefile b/test/self/Makefile
+index 2fecab1f8e..3b8d149bcd 100644
+--- a/test/self/Makefile
++++ b/test/self/Makefile
+@@ -28,6 +28,8 @@ obj-$(CONFIG_SELFTEST_TLV) += tlv.o tlv.dtb.o
+ obj-$(CONFIG_SELFTEST_DM) += dm.o
+ obj-$(CONFIG_SELFTEST_BLSPEC) += blspec.o
+ bbenv-$(CONFIG_SELFTEST_BLSPEC) += defaultenv-blspec-test
++obj-$(CONFIG_SELFTEST_LVM) += lvm.o
++CFLAGS_lvm.o += -I$(srctree)/drivers/block/dm/lvm
+ 
+ ifdef REGENERATE_KEYTOC
+ 
+diff --git a/test/self/lvm.c b/test/self/lvm.c
 new file mode 100644
-index 0000000000..3eaec8c14b
+index 0000000000..71f63914e2
 --- /dev/null
-+++ b/drivers/block/dm/lvm/lvm-fuzz.c
-@@ -0,0 +1,182 @@
++++ b/test/self/lvm.c
+@@ -0,0 +1,818 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +// SPDX-FileCopyrightText: 2026 Tobias Waldekranz <tobias@waldekranz.com>
 +
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
 +#include <block.h>
-+#include <fuzz.h>
++#include <bselftest.h>
++#include <driver.h>
++#include <linux/err.h>
++#include <linux/kernel.h>
++#include <linux/sizes.h>
 +#include <lvm.h>
++#include <ramdisk.h>
++#include <stdio.h>
++#include <string.h>
++#include <xfuncs.h>
 +
-+#include "lvm2.h"
-+#include "lvm-md.h"
++#include <asm/unaligned.h>
 +
-+static int fuzz_lvm_md(const char *text, size_t size)
++/* Makefile pulls in drivers/block/dm/lvm for access to on-disk
++ * structures.
++ */
++#include <lvm2.h>
++#include <lvm-md.h>
++
++BSELFTEST_GLOBALS();
++
++#define PV_SIZE		SZ_1M
++#define MDA_OFFSET	(8 * SECTOR_SIZE)
++#define MDA_SIZE	(SZ_64K - MDA_OFFSET)
++#define PE_START	SZ_64K
++#define EXTENT_SIZE	SZ_64K
++
++#define PE_START_SECTORS	(PE_START / SECTOR_SIZE)
++#define EXTENT_SECTORS		(EXTENT_SIZE / SECTOR_SIZE)
++#define PE_COUNT		((PV_SIZE - PE_START) / EXTENT_SIZE)
++
++#define VG_UUID		"vgvgvg11112222333344445555vgvgvg"
++#define LV_UUID		"lvlvlv11112222333344445555lvlvlv"
++
++struct test_pv {
++	struct ramdisk *rd;
++	struct block_device *blk;
++	const char *devname;
++	char uuid[LVM_UUID_LEN + 1];
++	u8 *img;
++};
++
++struct test_seg {
++	int pv;
++	u64 start_extent;
++	u64 extent_count;
++	u64 pv_extent;
++};
++
++/* How the image should deviate from a well formed one. */
++struct test_vg_xfrm {
++	struct {
++		struct {
++			int image;	/* The sector in which to store the label */
++			int header;	/* The recorded sector in the header */
++		} sector;
++
++		bool bad_crc;
++	} label;
++
++	struct {
++		int copies;
++
++		bool bad_text_crc;
++		bool bad_hdr_crc;
++		bool precommitted;	/* Leave a second document behind */
++		bool wrap_text;
++	} md;
++};
++
++#define TEST_VG_XFRM_DEFAULT					\
++	.label = {						\
++		.sector = {					\
++			.image = 1,				\
++			.header = -1,				\
++		},						\
++	},							\
++	.md = {							\
++		.copies = 1, \
++	}
++
++#define TEST_MAX_PVS	2
++#define TEST_MAX_SEGS	3
++
++struct test_vg {
++	struct test_pv pvs[TEST_MAX_PVS];
++	int num_pvs;
++
++	struct test_seg segs[TEST_MAX_SEGS];
++	int num_segs;
++
++	u64 seqno;
++
++	struct test_vg_xfrm xfrm;
++};
++
++static char *generate_md(struct test_vg *tvg)
 +{
-+	struct lvm_md *md;
++	char *text, *pvs = NULL, *segs = NULL;
++	struct test_seg *seg;
++	int i;
 +
-+	if (!lvm_md_parse_alloc(text, size, &md))
-+		lvm_md_free(md);
++	for (i = 0; i < tvg->num_pvs; i++)
++		pvs = xrasprintf(pvs,
++				 "    pv%u {\n"
++				 "      id = \"%s\"\n"
++				 "      device = \"/dev/%s\"\n"
++				 "      status = [\"ALLOCATABLE\"]\n"
++				 "      flags = []\n"
++				 "      dev_size = %u\n"
++				 "      pe_start = %u\n"
++				 "      pe_count = %u\n"
++				 "    }\n",
++				 i, tvg->pvs[i].uuid, tvg->pvs[i].devname,
++				 PV_SIZE / SECTOR_SIZE, PE_START_SECTORS,
++				 PE_COUNT);
 +
++	for (i = 0, seg = tvg->segs; i < tvg->num_segs; i++, seg++)
++		segs = xrasprintf(segs,
++				 "      segment%u {\n"
++				 "        start_extent = %llu\n"
++				 "        extent_count = %llu\n"
++				 "        type = \"striped\"\n"
++				 "        stripe_count = 1\n"
++				 "        stripes = [\n"
++				 "          \"pv%u\", %llu\n"
++				 "        ]\n"
++				 "      }\n",
++				 i + 1, seg->start_extent, seg->extent_count,
++				 seg->pv, seg->pv_extent);
++
++	text = xasprintf("vgtest {\n"
++			 "  id = \"%s\"\n"
++			 "  seqno = %llu\n"
++			 "  format = \"lvm2\"\n"
++			 "  status = [\"RESIZEABLE\", \"READ\", \"WRITE\"]\n"
++			 "  flags = []\n"
++			 "  extent_size = %u\n"
++			 "  max_lv = 0\n"
++			 "  max_pv = 0\n"
++			 "  metadata_copies = 0\n"
++			 "  physical_volumes {\n"
++			 "%s"
++			 "  }\n"
++			 "  logical_volumes {\n"
++			 "    lv0 {\n"
++			 "      id = \"%s\"\n"
++			 "      status = [\"READ\", \"WRITE\", \"VISIBLE\"]\n"
++			 "      flags = []\n"
++			 "      segment_count = %u\n"
++			 "%s"
++			 "    }\n"
++			 "  }\n"
++			 "}\n"
++			 "# Generated by the barebox self test\n",
++			 VG_UUID, tvg->seqno, EXTENT_SECTORS, pvs, LV_UUID,
++			 tvg->num_segs, segs);
++
++	free(pvs);
++	free(segs);
++	return text;
++}
++
++static void inject_md(struct test_pv *tpv, const char *text, int copy,
++		      const struct test_vg_xfrm *xfrm)
++{
++	u64 start, head, offset = copy ? PV_SIZE - MDA_SIZE : MDA_OFFSET;
++	size_t len = strlen(text) + 1;
++	struct lvm2_md_header *hdr;
++	u32 crc;
++
++	hdr = (void *)(tpv->img + offset);
++
++	/* The document may start anywhere in the circular buffer that
++	 * follows the header, and wraps back to its beginning.
++	 */
++	start = xfrm->md.wrap_text ? MDA_SIZE - len / 2 : SECTOR_SIZE;
++	head = min_t(u64, len, MDA_SIZE - start);
++
++	memcpy(tpv->img + offset + start, text, head);
++	if (head < len)
++		memcpy(tpv->img + offset + SECTOR_SIZE, text + head,
++		       len - head);
++
++	crc = lvm2_crc(text, len);
++	if (xfrm->md.bad_text_crc && !copy)
++		crc = ~crc;
++
++	*hdr = (struct lvm2_md_header) {
++		.version = cpu_to_le32(LVM2_MDA_VERSION),
++		.start = cpu_to_le64(offset),
++		.size = cpu_to_le64(MDA_SIZE),
++	};
++	memcpy(hdr->magic, LVM2_MDA_MAGIC, sizeof(hdr->magic));
++
++	hdr->area[0] = (struct lvm2_md_area) {
++		.offset = cpu_to_le64(start),
++		.size = cpu_to_le64(len),
++		.checksum = cpu_to_le32(crc),
++	};
++
++	if (xfrm->md.precommitted && !copy) {
++		/* LVM only leaves a second document behind if it was
++		 * interrupted while committing new metadata.
++		 */
++		start = SECTOR_SIZE + len;
++		memcpy(tpv->img + offset + start, text, len);
++
++		hdr->area[1] = (struct lvm2_md_area) {
++			.offset = cpu_to_le64(start),
++			.size = cpu_to_le64(len),
++			.checksum = cpu_to_le32(lvm2_crc(text, len)),
++		};
++	}
++
++	crc = lvm2_crc(&hdr->magic, SECTOR_SIZE - sizeof(hdr->checksum));
++	if (xfrm->md.bad_hdr_crc && !copy)
++		crc = ~crc;
++
++	hdr->checksum = cpu_to_le32(crc);
++}
++
++static void inject_label(struct test_pv *tpv, const struct test_vg_xfrm *xfrm)
++{
++	u8 *sector = tpv->img + xfrm->label.sector.image * SECTOR_SIZE;
++	struct lvm2_label *label = (void *)sector;
++	struct lvm2_pv_header *pvh;
++	struct lvm2_area *mda;
++	u32 crc;
++	int i;
++
++	*label = (struct lvm2_label) {
++		.sector = cpu_to_le64(xfrm->label.sector.header < 0 ?
++				      xfrm->label.sector.image : xfrm->label.sector.header),
++		.pv_offset = cpu_to_le32(sizeof(*label)),
++	};
++	memcpy(label->id, LVM2_LABEL_ID, sizeof(label->id));
++	memcpy(label->type, LVM2_LABEL_TYPE, sizeof(label->type));
++
++	pvh = (void *)(sector + sizeof(*label));
++	*pvh = (struct lvm2_pv_header) {
++		.size = cpu_to_le64(PV_SIZE >> SECTOR_SHIFT),
++	};
++	memcpy(pvh->uuid, tpv->uuid, sizeof(pvh->uuid));
++
++	/* One data area, then the metadata areas, each list terminated
++	 * by a zeroed entry.
++	 */
++	mda = pvh->area;
++	mda->offset = cpu_to_le64(PE_START);
++	mda += 2;
++
++	for (i = 0; i < xfrm->md.copies; i++, mda++) {
++		*mda = (struct lvm2_area) {
++			.offset = cpu_to_le64(i ? PV_SIZE - MDA_SIZE : MDA_OFFSET),
++			.size = cpu_to_le64(MDA_SIZE),
++		};
++	}
++
++	crc = lvm2_crc(&label->pv_offset,
++		       SECTOR_SIZE - offsetof(struct lvm2_label, pv_offset));
++	if (xfrm->label.bad_crc)
++		crc = ~crc;
++
++	label->crc = cpu_to_le32(crc);
++}
++
++static int tvg_init(struct test_vg *tvg)
++{
++	struct test_pv *tpv;
++	char *text;
++	int i, j;
++
++	for (i = 0, tpv = tvg->pvs; i < tvg->num_pvs; i++, tpv++) {
++		memset(tpv->uuid, 'a' + i, LVM_UUID_LEN);
++		tpv->uuid[LVM_UUID_LEN] = '\0';
++
++		tpv->rd = ramdisk_init(SECTOR_SIZE);
++		if (!tpv->rd) {
++			pr_err("Failed to create ramdisk\n");
++			return -ENODEV;
++		}
++
++		tpv->img = xzalloc(PV_SIZE);
++		ramdisk_setup_rw(tpv->rd, tpv->img, PV_SIZE);
++
++		tpv->blk = ramdisk_get_block_device(tpv->rd);
++		tpv->devname = cdev_name(&tpv->blk->cdev);
++	}
++
++	text = generate_md(tvg);
++
++	for (i = 0, tpv = tvg->pvs; i < tvg->num_pvs; i++, tpv++) {
++		for (j = 0; j < tvg->xfrm.md.copies; j++)
++			inject_md(tpv, text, j, &tvg->xfrm);
++
++		inject_label(tpv, &tvg->xfrm);
++	}
++
++	free(text);
 +	return 0;
 +}
-+fuzz_test_str("lvm-md", fuzz_lvm_md);
 +
-+static void lvm_fuzz_fixup_mda(u8 *img, size_t size, u64 mda_offset, u64 mda_size)
++static int tvg_init_simple(struct test_vg *tvg, const struct test_vg_xfrm *xfrm)
 +{
-+	struct lvm2_md_header *hdr;
-+	struct lvm2_md_area *area;
-+	u64 off, len, wrap;
-+	u8 *text;
++	*tvg = (struct test_vg) {
++		.num_pvs = 1,
++		.num_segs = 1,
++		.segs = {
++			{
++				.pv = 0,
++				.pv_extent = 0,
++				.start_extent = 0,
++				.extent_count = 2,
++			},
++		},
++		.seqno = 7,
 +
-+	if (mda_offset >= size || mda_size < SECTOR_SIZE ||
-+	    mda_size > size - mda_offset)
++		.xfrm = *xfrm,
++	};
++
++	return tvg_init(tvg);
++}
++
++static void tpv_free(struct test_pv *tpv)
++{
++	if (tpv->rd) {
++		ramdisk_setup_rw(tpv->rd, NULL, 0);
++		ramdisk_free(tpv->rd);
++		tpv->rd = NULL;
++	}
++
++	free(tpv->img);
++	tpv->img = NULL;
++}
++
++static void tvg_free(struct test_vg *tvg)
++{
++	struct test_pv *tpv;
++	int i;
++
++	for (i = 0, tpv = tvg->pvs; i < tvg->num_pvs; i++, tpv++)
++		tpv_free(tpv);
++}
++
++static void test_lvm_simple(void)
++{
++	struct test_vg_xfrm xfrm = { TEST_VG_XFRM_DEFAULT };
++	struct test_vg tvg;
++	struct lvm_vg *vg;
++	struct lvm_lv *lv;
++	char *table, *expect;
++
++	if (tvg_init_simple(&tvg, &xfrm))
 +		return;
 +
-+	hdr = (void *)(img + mda_offset);
-+	memcpy(hdr->magic, LVM2_MDA_MAGIC, sizeof(hdr->magic));
-+	put_unaligned_le32(LVM2_MDA_VERSION, &hdr->version);
++	if (!assert_cond(!lvm_vg_alloc_by_cdev(&tvg.pvs[0].blk->cdev, &vg)))
++		goto out;
 +
-+	for (area = hdr->area;
-+	     (u8 *)(area + 1) <= (u8 *)hdr + SECTOR_SIZE; area++) {
-+		off = get_unaligned_le64(&area->offset);
-+		len = get_unaligned_le64(&area->size);
++	assert_streq(vg->name, "vgtest");
++	assert_streq(vg->uuid, VG_UUID);
++	assert_inteq(vg->seqno, 7);
++	assert_inteq(vg->pe_size, EXTENT_SECTORS);
++	assert_inteq(vg->num_pvs, 1);
++	assert_inteq(vg->num_lvs, 1);
 +
-+		if (!off && !len)
-+			break;
-+		if (!len || off >= mda_size || len > mda_size)
-+			continue;
++	lv = lvm_vg_lv_by_name(vg, "lv0");
++	if (!assert_cond(lv))
++		goto out_free;
 +
-+		text = malloc(len);
-+		if (!text)
-+			return;
++	assert_streq(lv->uuid, LV_UUID);
++	assert_inteq(lv->type, LVM_LV_LINEAR);
++	assert_inteq(lv->size, 2 * EXTENT_SECTORS);
 +
-+		if (off + len > mda_size) {
-+			wrap = mda_size - off;
-+
-+			if (SECTOR_SIZE + (len - wrap) > mda_size)
-+				goto next;
-+
-+			memcpy(text, img + mda_offset + off, wrap);
-+			memcpy(text + wrap,
-+			       img + mda_offset + SECTOR_SIZE,
-+			       len - wrap);
-+		} else {
-+			memcpy(text, img + mda_offset + off, len);
-+		}
-+
-+		put_unaligned_le32(lvm2_crc(text, len), &area->checksum);
-+next:
-+		free(text);
++	table = lvm_lv_dm_ctable(lv);
++	if (assert_cond(!IS_ERR(table))) {
++		expect = xasprintf("0 %u linear /dev/%s %u\n",
++				   2 * EXTENT_SECTORS, tvg.pvs[0].devname,
++				   PE_START_SECTORS);
++		assert_streq(table, expect);
++		free(expect);
++		free(table);
 +	}
 +
-+	/* Last, as it covers the descriptors fixed up above. */
-+	put_unaligned_le32(lvm2_crc(hdr->magic,
-+				    SECTOR_SIZE
-+				    - offsetof(struct lvm2_md_header, magic)),
-+			   &hdr->checksum);
++out_free:
++	lvm_vg_free(vg);
++out:
++	tvg_free(&tvg);
 +}
++bselftest(core, test_lvm_simple);
 +
-+static void lvm_fuzz_fixup_image(u8 *img, size_t size)
++
++/* Two PVs, holding an LV whose extents are neither contiguous nor in
++ * the order they appear on disk.
++ */
++static void test_lvm_scattered(void)
 +{
-+	struct lvm2_pv_header *pvh;
-+	struct lvm2_label *label;
-+	struct lvm2_area *area;
-+	u8 *sector = NULL;
-+	u32 pv_offset;
-+	int s;
++	struct test_vg tvg = {
++		.num_pvs = 2,
++		.num_segs = 3,
++		.segs = {
++			{
++				.pv = 0,
++				.pv_extent = 0,
++				.start_extent = 4,
++				.extent_count = 2,
++			},
++			{
++				.pv = 1,
++				.pv_extent = 1,
++				.start_extent = 2,
++				.extent_count = 2,
++			},
++			{
++				.pv = 0,
++				.start_extent = 0,
++				.extent_count = 2,
++				.pv_extent = 4,
++			}
++		},
 +
-+	for (s = 0; s < LVM2_LABEL_SCAN_SECTORS; s++) {
-+		if ((size_t)(s + 1) << SECTOR_SHIFT > size)
-+			break;
++		.seqno = 3,
 +
-+		label = (void *)(img + ((size_t)s << SECTOR_SHIFT));
-+		if (!memcmp(label->id, LVM2_LABEL_ID, sizeof(label->id))) {
-+			sector = (u8 *)label;
-+			break;
-+		}
-+	}
-+
-+	/* Without a label there is nothing to find, so plant one in the
-+	 * sector that LVM uses by default, leaving the rest of it as it
-+	 * is.
-+	 */
-+	if (!sector) {
-+		if (size < 2 * SECTOR_SIZE)
-+			return;
-+
-+		s = 1;
-+		sector = img + SECTOR_SIZE;
-+		label = (void *)sector;
-+		memcpy(label->id, LVM2_LABEL_ID, sizeof(label->id));
-+	}
-+
-+	memcpy(label->type, LVM2_LABEL_TYPE, sizeof(label->type));
-+	put_unaligned_le64(s, &label->sector);
-+
-+	pv_offset = get_unaligned_le32(&label->pv_offset);
-+	if (pv_offset < SECTOR_SIZE) {
-+		pvh = (void *)(sector + pv_offset);
-+
-+		/* Same walk as lvm_pv_probe(): past the data areas, past
-+		 * the zero separator, then one fixup per metadata area.
-+		 */
-+		for (area = pvh->area;
-+		     (u8 *)(area + 1) <= sector + SECTOR_SIZE
-+			     && get_unaligned_le64(&area->offset);
-+		     area++)
-+			;
-+
-+		for (area++;
-+		     (u8 *)(area + 1) <= sector + SECTOR_SIZE
-+			     && get_unaligned_le64(&area->offset);
-+		     area++)
-+			lvm_fuzz_fixup_mda(img, size,
-+					   get_unaligned_le64(&area->offset),
-+					   get_unaligned_le64(&area->size));
-+	}
-+
-+	put_unaligned_le32(lvm2_crc(&label->pv_offset,
-+				    SECTOR_SIZE - offsetof(struct lvm2_label, pv_offset)),
-+			   &label->crc);
-+}
-+
-+static int fuzz_lvm(const u8 *data, size_t size)
-+{
-+	static struct ramdisk *ramdisk;
-+	struct block_device *blk;
++		.xfrm = { TEST_VG_XFRM_DEFAULT },
++	};
 +	struct lvm_vg *vg;
-+	char *table;
-+	size_t i;
-+	u8 *img;
++	struct lvm_lv *lv;
++	char *table, *expect;
 +
-+	if (size < 2 * SECTOR_SIZE)
-+		return 0;
++	if (tvg_init(&tvg))
++		goto out;
 +
-+	if (!ramdisk)
-+		ramdisk = ramdisk_init(SECTOR_SIZE);
-+	if (!ramdisk)
-+		return -ENODEV;
++	if (!assert_cond(!lvm_vg_alloc_by_cdev(&tvg.pvs[0].blk->cdev, &vg)))
++		goto out;
 +
-+	img = xmemdup(data, size);
++	assert_inteq(vg->num_pvs, 2);
 +
-+	/* Help the fuzzer out by injecting a proper LVM label and
-+	 * valid CRCs, so it can reach further into the parser.
-+	 */
-+	lvm_fuzz_fixup_image(img, size);
++	lv = lvm_vg_lv_by_name(vg, "lv0");
++	if (!assert_cond(lv))
++		goto out_free;
 +
-+	ramdisk_setup_rw(ramdisk, img, size);
-+	blk = ramdisk_get_block_device(ramdisk);
++	assert_inteq(lv->size, 6 * EXTENT_SECTORS);
 +
-+	if (!lvm_vg_alloc_by_cdev(&blk->cdev, &vg)) {
-+		for (i = 0; i < vg->num_lvs; i++) {
-+			table = lvm_lv_dm_ctable(vg->lvs[i]);
-+			if (!IS_ERR(table))
-+				free(table);
++	table = lvm_lv_dm_ctable(lv);
++	if (assert_cond(!IS_ERR(table))) {
++		/* Sorted by logical offset, with every segment mapped to
++		 * the right offset of the right device.
++		 */
++		expect = xasprintf("0 %u linear /dev/%s %u\n"
++				   "%u %u linear /dev/%s %u\n"
++				   "%u %u linear /dev/%s %u\n",
++				   2 * EXTENT_SECTORS, tvg.pvs[0].devname,
++				   PE_START_SECTORS + 4 * EXTENT_SECTORS,
++
++				   2 * EXTENT_SECTORS, 2 * EXTENT_SECTORS,
++				   tvg.pvs[1].devname,
++				   PE_START_SECTORS + 1 * EXTENT_SECTORS,
++
++				   4 * EXTENT_SECTORS, 2 * EXTENT_SECTORS,
++				   tvg.pvs[0].devname, PE_START_SECTORS);
++		assert_streq(table, expect);
++		free(expect);
++		free(table);
++	}
++
++out_free:
++	lvm_vg_free(vg);
++out:
++	tvg_free(&tvg);
++}
++bselftest(core, test_lvm_scattered);
++
++struct header_test_case {
++	const char *name;
++	bool valid;
++	struct test_vg_xfrm xfrm;
++};
++
++static const struct header_test_case header_cases[] = {
++	{
++		.name = "pristine",
++		.valid = true,
++		.xfrm = {
++			TEST_VG_XFRM_DEFAULT,
++		}
++	},
++	{
++		.name = "label in sector 0",
++		.valid = true,
++		.xfrm = {
++			TEST_VG_XFRM_DEFAULT,
++			.label.sector.image = 0,
++		}
++	},
++	{
++		.name = "label out of range",
++		.valid = false,
++		.xfrm = {
++			TEST_VG_XFRM_DEFAULT,
++			.label.sector.image = 4,
++		}
++	},
++	{
++		.name = "bad label crc",
++		.valid = false,
++		.xfrm = {
++			TEST_VG_XFRM_DEFAULT,
++			.label.bad_crc = true,
++		}
++	},
++	{
++		.name = "wrapped metadata",
++		.valid = true,
++		.xfrm = {
++			TEST_VG_XFRM_DEFAULT,
++			.md.wrap_text = true,
++		}
++	},
++	{
++		.name = "bad metadata crc",
++		.valid = false,
++		.xfrm = {
++			TEST_VG_XFRM_DEFAULT,
++			.md.bad_text_crc = true,
++		}
++	},
++	{
++		.name = "backup metadata area",
++		.valid = true,
++		.xfrm = {
++			TEST_VG_XFRM_DEFAULT,
++			.md = {
++				.bad_text_crc = true,
++				.copies = 2,
++			},
++		}
++	},
++	{
++		.name = "bad metadata header crc",
++		.valid = false,
++		.xfrm = {
++			TEST_VG_XFRM_DEFAULT,
++			.md.bad_hdr_crc = true,
++		}
++	},
++	{
++		.name = "backup after bad header",
++		.valid = true,
++		.xfrm = {
++			TEST_VG_XFRM_DEFAULT,
++			.md = {
++				.bad_hdr_crc = true,
++				.copies = 2,
++			},
++		}
++	},
++	{
++		.name = "relocated label",
++		.valid = false,
++		.xfrm = {
++			TEST_VG_XFRM_DEFAULT,
++			.label.sector.header = 2,
++		}
++	},
++	{
++		.name = "precommitted metadata",
++		.valid = false,
++		.xfrm = {
++			TEST_VG_XFRM_DEFAULT,
++			.md = {
++				.bad_text_crc = true,
++				.precommitted = true,
++			},
++		}
++	},
++};
++
++/* Images that must be parsed, and images that must be rejected. */
++static void test_lvm_headers(void)
++{
++	struct test_vg tvg;
++	struct lvm_vg *vg;
++	int err, i;
++
++	for (i = 0; i < ARRAY_SIZE(header_cases); i++) {
++		if (tvg_init_simple(&tvg, &header_cases[i].xfrm))
++			return;
++
++		err = lvm_vg_alloc_by_cdev(&tvg.pvs[0].blk->cdev, &vg);
++		if (!assert_inteq(!err, header_cases[i].valid))
++			pr_warn("%s: unexpectedly %s\n", header_cases[i].name,
++				err ? "rejected" : "accepted");
++
++		if (!err)
++			lvm_vg_free(vg);
++
++		tvg_free(&tvg);
++	}
++}
++bselftest(core, test_lvm_headers);
++
++/* When the PVs of a VG disagree, the most recently updated metadata
++ * wins.
++ */
++static void test_lvm_seqno(void)
++{
++	struct test_vg tvg = {
++		.num_pvs = 2,
++		.num_segs = 1,
++		.segs = {
++			{
++				.pv = 0,
++				.start_extent = 0,
++				.extent_count = 2
++			},
++		},
++		.seqno = 4,
++		.xfrm = { TEST_VG_XFRM_DEFAULT },
++	};
++	struct lvm_vg_iter *iter;
++	struct lvm_vg *vg;
++	int found = 0;
++	char *text;
++
++	if (tvg_init(&tvg))
++		goto out;
++
++	/* Rewrite the second PV with a newer document. */
++	tvg.seqno = 9;
++	text = generate_md(&tvg);
++	inject_md(&tvg.pvs[1], text, 0, &tvg.xfrm);
++	free(text);
++
++	iter = lvm_vg_iter_new();
++
++	/* The iterator hands over ownership of every VG it returns. */
++	while ((vg = lvm_vg_iter_next(iter))) {
++		if (!strcmp(vg->name, "vgtest")) {
++			found++;
++			assert_inteq(vg->seqno, 9);
 +		}
 +
 +		lvm_vg_free(vg);
 +	}
 +
-+	ramdisk_setup_rw(ramdisk, NULL, 0);
-+	free(img);
-+	return 0;
++	/* Both PVs describe the same VG, which must be reported once. */
++	assert_inteq(found, 1);
++	lvm_vg_iter_free(iter);
++out:
++	tvg_free(&tvg);
 +}
-+fuzz_test("lvm", fuzz_lvm);
-diff --git a/images/Makefile.sandbox b/images/Makefile.sandbox
-index d0dc503fd0..0419fb8e18 100644
---- a/images/Makefile.sandbox
-+++ b/images/Makefile.sandbox
-@@ -16,6 +16,8 @@ fuzzer-$(CONFIG_EFI_PE_PARSER)	+= pe
- fuzzer-$(CONFIG_TLV)		+= tlv
- fuzzer-$(CONFIG_FS_FAT)		+= fat
- fuzzer-$(CONFIG_STATE)		+= state-direct
-+fuzzer-$(CONFIG_DM_LVM)		+= lvm
-+fuzzer-$(CONFIG_DM_LVM)		+= lvm-md
- 
- ifeq ($(CONFIG_SANDBOX),y)
- 
-diff --git a/test/testdata/fuzz/lvm-md.dict b/test/testdata/fuzz/lvm-md.dict
-new file mode 100644
-index 0000000000..40b378e7f8
---- /dev/null
-+++ b/test/testdata/fuzz/lvm-md.dict
-@@ -0,0 +1,29 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+#
-+# libfuzzer dictionary for the "lvm-md" fuzzer, which exercises the
-+# LVM2 metadata tokenizer. Pass it with -dict=, e.g.
-+#
-+#   images/fuzz-lvm-md -dict=test/testdata/fuzz/lvm-md.dict
++bselftest(core, test_lvm_seqno);
 +
-+# Separators
-+# (libfuzzer only supports escaping backslash, quote and xAB)
-+"#"
-+" "
-+"\x09"
-+"\x0a"
-+"\x0d"
-+"="
-+"{"
-+"}"
-+"["
-+"]"
-+","
-+"\""
++/* An LV that references a PV which is not present must not be mapped. */
++static void test_lvm_missing_pv(void)
++{
++	struct test_vg tvg = {
++		.num_pvs = 2,
++		.num_segs = 2,
++		.segs = {
++			{ .pv = 0, .start_extent = 0, .extent_count = 2 },
++			{ .pv = 1, .start_extent = 2, .extent_count = 2 },
++		},
++		.seqno = 1,
++		.xfrm = { TEST_VG_XFRM_DEFAULT },
++	};
++	struct lvm_vg *vg;
++	struct lvm_lv *lv;
++	char *table;
 +
-+"sec_name {"
-+"prim"
-+"complex+prim.0"
-+"\"string literal\""
-+"\"FLAG\""
-+"\"unterminated"
-+"unopened\""
-diff --git a/test/testdata/fuzz/lvm.dict b/test/testdata/fuzz/lvm.dict
-new file mode 100644
-index 0000000000..7be7d04574
---- /dev/null
-+++ b/test/testdata/fuzz/lvm.dict
-@@ -0,0 +1,30 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+#
-+# libfuzzer dictionary for the "lvm" fuzzer, which exercises the LVM2
-+# header parser. Pass it with -dict=, e.g.
-+#
-+#   images/fuzz-lvm -dict=test/testdata/fuzz/lvm.dict
++	if (tvg_init(&tvg))
++		goto out;
 +
-+"LABELONE"
-+"LVM2 001"
-+" LVM2 x[5A%r0N*>"
++	/* Take the second PV away again, leaving the metadata on the
++	 * first one referring to a device that is not there.
++	 */
++	tpv_free(&tvg.pvs[1]);
 +
-+# Small le32 constants
-+"\x00\x00\x00\x00"
-+"\x01\x00\x00\x00"
-+"\x02\x00\x00\x00"
-+"\x04\x00\x00\x00"
-+"\x08\x00\x00\x00"
-+"\x10\x00\x00\x00"
-+"\x40\x00\x00\x00"
-+"\x80\x00\x00\x00"
++	if (!assert_cond(!lvm_vg_alloc_by_cdev(&tvg.pvs[0].blk->cdev, &vg)))
++		goto out;
 +
-+# Small le64 constants
-+"\x00\x00\x00\x00\x00\x00\x00\x00"
-+"\x01\x00\x00\x00\x00\x00\x00\x00"
-+"\x02\x00\x00\x00\x00\x00\x00\x00"
-+"\x04\x00\x00\x00\x00\x00\x00\x00"
-+"\x08\x00\x00\x00\x00\x00\x00\x00"
-+"\x10\x00\x00\x00\x00\x00\x00\x00"
-+"\x40\x00\x00\x00\x00\x00\x00\x00"
-+"\x80\x00\x00\x00\x00\x00\x00\x00"
++	lv = lvm_vg_lv_by_name(vg, "lv0");
++	if (!assert_cond(lv))
++		goto out_free;
++
++	table = lvm_lv_dm_ctable(lv);
++	if (!assert_cond(IS_ERR(table))) {
++		pr_warn("mapped an LV with a missing PV: %s\n", table);
++		free(table);
++	}
++
++out_free:
++	lvm_vg_free(vg);
++out:
++	tvg_free(&tvg);
++}
++bselftest(core, test_lvm_missing_pv);
++
++/* Documents that the tokenizer must reject, and one that it must
++ * not.
++ */
++static void test_lvm_md_parse(void)
++{
++	static const struct {
++		const char *text;
++		bool valid;
++	} md_cases[] = {
++		{ "", true },
++		{ "vg {\n}\n", true },
++		{ "vg {\nid = \"x\"\n}\n", true },
++		{ "vg {\nflags = []\n}\n", true },
++		{ "vg {\na = [1, 2, 3]\n}\n", true },
++		{ "# just a comment\n", true },
++		{ "vg {\nid = \"x\" # trailing\n}\n", true },
++		{ "a = 1\0garbage", true },
++		{ "vg {\n", false },
++		{ "vg }\n", false },
++		{ "vg {\nid = \n}\n", false },
++		{ "vg {\nid = \"unterminated\n}\n", false },
++		{ "vg {\na = [1, 2\n}\n", false },
++		{ "= 1\n", false },
++		{ "vg {\n}\n}\n", false },
++		{ "\x01\x02\x03", false },
++	};
++	struct lvm_md *md;
++	int err, i;
++
++	for (i = 0; i < ARRAY_SIZE(md_cases); i++) {
++		err = lvm_md_parse_alloc(md_cases[i].text,
++					 strlen(md_cases[i].text), &md);
++
++		if (!assert_inteq(!err, md_cases[i].valid))
++			pr_warn("\"%s\" unexpectedly %s\n", md_cases[i].text,
++				err ? "rejected" : "accepted");
++
++		if (!err)
++			lvm_md_free(md);
++	}
++}
++bselftest(parser, test_lvm_md_parse);
++
++/* The accessors on top of the tokenizer. */
++static void test_lvm_md_access(void)
++{
++	static const char text[] =
++		"vg {\n"
++		"  id = \"abc\"\n"
++		"  seqno = 42\n"
++		"  nested {\n"
++		"    deep = 7\n"
++		"  }\n"
++		"  arr = [\"a\", 2]\n"
++		"  dangling\n"
++		"}\n";
++	const lvm_tok_t *vg, *key, *tok;
++	struct lvm_md *md;
++	char *str;
++	u64 v;
++
++	if (!assert_cond(!lvm_md_parse_alloc(text, strlen(text), &md)))
++		return;
++
++	vg = lvm_md_vgsect(md, &key);
++	if (!assert_cond(vg))
++		goto out;
++
++	str = lvm_md_tok_xstrdup(md, key);
++	assert_streq(str, "vg");
++	free(str);
++
++	str = lvm_md_strdup(md, vg, "id");
++	if (assert_cond(str)) {
++		assert_streq(str, "abc");
++		free(str);
++	}
++
++	assert_cond((!lvm_md_u64(md, vg, "seqno", &v) && v == 42));
++
++	/* A missing key, and a key without a value, both come back
++	 * empty rather than as something one past the end.
++	 */
++	assert_cond(!lvm_md_find(md, vg, "nosuchkey"));
++	assert_cond(!lvm_md_find(md, vg, "dangling"));
++	assert_cond(lvm_md_u64(md, vg, "nosuchkey", &v));
++
++	tok = lvm_md_find(md, vg, "nested");
++	if (assert_cond(tok)) {
++		assert_inteq(tok->type, LVM_TOK_SECTION);
++		assert_cond((!lvm_md_u64(md, tok, "deep", &v) && v == 7));
++	}
++
++	tok = lvm_md_find(md, vg, "arr");
++	if (assert_cond(tok)) {
++		assert_inteq(tok->type, LVM_TOK_ARRAY);
++		assert_inteq(tok->size, 2);
++
++		key = lvm_md_first(md, tok);
++		if (assert_cond(key)) {
++			str = lvm_md_tok_xstrdup(md, key);
++			assert_streq(str, "a");
++			free(str);
++
++			key = lvm_md_next(md, tok, key);
++			assert_cond((key &&
++				     !lvm_md_tok_u64(md, key, &v) && v == 2));
++		}
++	}
++
++out:
++	lvm_md_free(md);
++}
++bselftest(parser, test_lvm_md_access);
 -- 
 2.43.0
 
