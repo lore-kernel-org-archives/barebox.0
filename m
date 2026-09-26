@@ -1,154 +1,174 @@
-Delivery-date: Fri, 25 Sep 2026 13:51:55 +0200
+Delivery-date: Sat, 26 Sep 2026 16:13:27 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xA4T5-0069yP-10
+	id 1xAT9a-006Zgp-1p
 	for lore@lore.pengutronix.de;
-	Fri, 25 Sep 2026 13:51:55 +0200
+	Sat, 26 Sep 2026 16:13:27 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 8A7702008EB
-	for <lore@pengutronix.de>; Fri, 25 Sep 2026 13:51:54 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 0858C20075E
+	for <lore@pengutronix.de>; Sat, 26 Sep 2026 16:13:26 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=vFB5mimr;
-	dkim=pass header.d=waldekranz-com.20251104.gappssmtp.com header.s=20251104 header.b=eAYhd+ij;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="t/apZrRp";
+	dkim=pass header.d=leica-geosystems.com header.s=selector1 header.b=pMCTbtLO;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790337114;
+	dmarc=pass (policy=reject) header.from=leica-geosystems.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1790432006;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:list-id:list-help:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=3HlbgYOmmpt/g4DrTM5qd1JV8iDRzOL7CCwkFUje4xA=;
-	b=MJE1Yhujo5R1l2m1kfjPal36mtOe/uz6lWmNaOHkMjhTvfrVyFQUREkqCyyDMEYBGYt7zD
-	EYWQJjHp4iCJYg6Pqqs/bBoTx5PojoK4CEg7dVdsmsBrAqlvWTFsEA4SU7cBggd0+HkSwF
-	bwGxLdn/Try62VXKKgrjGqmwtHxyF9nkWv+fIBf7Fk1o/SRuaZOP2wTqfhxXoANMOoqm5S
-	Vk02WOZVhUfw+xW7Lq3VdEr5VttRbjauD+TWsRnnZUL8loDSv1AzbcjfDBgwjKCpoeopqd
-	y4NB7wmKs+yFFdwsvR20YOFa5uqYuex9hKidnfxy6B0uZ15IqobN5pErlbN4NA==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790337114; a=rsa-sha256;
-	cv=none;
-	b=cekhz53sVLpLl6LAWf+8aK1OGESToEsUv/c2KKddc2hfO6yCGk/Ov0vmyG/f1aK3Mqk6TB
-	q/sRDiKgjWIpPtIUFtq3Fv1HUU6VppNst360VdObZa2nC/JY2zGszGyO+wgu5iD7n118uN
-	+/V5q1S0o8K6wlJPPbvKWLTVeIaTMSAgYkbUYAPfnf4ZSWpMEkZP17x62XrkOdChQpP0o6
-	K20Dqdn3E1Zg8JRRIhHNNGj9abvBk1HHg2Gk1cTk452qYA41tqhQzAMpqbxcVl1WuLPkpp
-	EcP8PWxioOCs/Q2DOPA/EkjlKZXEWTv8SmpuHNGyVgKePiqbbN1kO9PFBxBvRg==
-ARC-Authentication-Results: i=1;
+	bh=Ic6ScYvJgNY93IoH3Zqdr51lt2K940qTXCfouxuSBag=;
+	b=gh23T8PIIX+N47HIEDob+V8sZevo+BGeVq9Xfo9vHZj92VNw3X74Eh7Q8boz9hgw8AmPI/
+	X9b8VkJ7H6uOsd/Q3o2Zcr1w5ufJzYNHFIeqVfdZjsdeecMw+bb+0PJJqNb2EdEmAW/B1n
+	Ya5lCzujx2tEQL2HxGjGY8qn1cHCAtNgGASOt6m3RhFsh1RoxH7V9FFEbpqfo1UnpI31c1
+	t+yLD1whTYh62aY4E+EfeyHGU3dWAJ0kZgagDrQHqMMmYqhAR80sdN5BKLBRUkFneD+d7J
+	kULMyU96D8inF8HwXxCiYk0Mgxx3Yo65YZMJxa7G6I3yNWD8auIMBBAM+r45Qg==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790432006; a=rsa-sha256;
+	cv=pass;
+	b=IL2Zk2WPWfSNa3+XQ8LPhvzuH7/fbHaUynv4WiI0bt7rjo8oE7A3jgW9e1NY8U9F060ni2
+	w2GlE/G4q4yBpVgXLfFZWa9H3x7m+iem/hZ+ILv2VcBxtQbNzVSEM1y1mfYgz45oMJ0vWh
+	+fR/kLu2oUYbvSHTsbqDhiasDE9LxMRg27Who1qa/diwxDGmu6ffj/czKNE8Ykqm2Otk2+
+	mrimFzZhhbwTx39yR5YL2IgcWIJzXJcb6raJMiHD548mztFxazLwJ8An8zmxspwywsFvJ5
+	xQ5R0doPcD/EBj0B+xSyvllvThSnCfsfAe73X30Vts1A5l7gpUftmEaKQ5cdpw==
+ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=vFB5mimr;
-	dkim=pass header.d=waldekranz-com.20251104.gappssmtp.com header.s=20251104 header.b=eAYhd+ij;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="t/apZrRp";
+	dkim=pass header.d=leica-geosystems.com header.s=selector1 header.b=pMCTbtLO;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
-	dmarc=none
+	dmarc=pass (policy=reject) header.from=leica-geosystems.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3HlbgYOmmpt/g4DrTM5qd1JV8iDRzOL7CCwkFUje4xA=; b=vFB5mimrvQ0SPRK75bCjD0wZmv
-	LKWihH9AJ30JlpESdgMwHnqhrK6ayfrkfD60zzWeiqyBsLDbhweh3ZjaZrJUGHqfv1SFII0tQApG9
-	vjOaf8wUakVDNe0RAH3x1pD6zjNqsH8imFX9OLFYDpOBAvYynvEvGjd/Y6Qn3S9q9vr7VhvtiSXT6
-	ot54QTD3umhxb1IXO+gY6dlzQo90WERPG4DKSQYzlpD2GCkSjbyZyqfZuD60DyqZXIWmyDbHOtL/D
-	aJUMZUfQCJoF1i38LtrI8l2Cv91bJAuwPlcKCr3C3rZkQHNpmyL+EnCxaWX6OLJ8zPCYKGDmtoteW
-	/BniZdqA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=Ic6ScYvJgNY93IoH3Zqdr51lt2K940qTXCfouxuSBag=; b=t/apZrRpe8WHUqv14gC8t10w74
+	Jj4qhxAITHZ7pMUy/oO9lDzJ9XRhMS6ncFjMxjzvaeTubnfcqRIX7jx73UsQIF5g2LgqdgxAh923d
+	sKq9iyE3oJqFXuGlNCRbZ3hyiZXZ8/jlk1T8+WSHtzLSsRD1tYGYPpzn5HWONm74z+1QYOJgHzpnO
+	wEOqAPfFxnpcBZJZzql0lbJhNSeAcyXM4IWNRXFMPMyGJGUIsXSxqTdsZjtPAaDAfc9A72h9Du3UJ
+	Z99ABn+KauS8QGJQEcxwaUNNrqAEV3HH7Mf3Q7IqwPW7l8ccDqYCpAxWS5GaTL3tfB9OzDdhoZ0Wi
+	y8NFBDLg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xA3aR-0000000D8b2-0KYJ;
-	Fri, 25 Sep 2026 10:55:27 +0000
-Received: from mail-ej2-x10.google.com ([2a00:1450:4864:34::10])
+	id 1xAT82-0000000FVar-0Wmh;
+	Sat, 26 Sep 2026 14:11:50 +0000
+Received: from mail-westeuropeazlp170130006.outbound.protection.outlook.com ([2a01:111:f403:c201::6] helo=AM0PR02CU008.outbound.protection.outlook.com)
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xA3aM-0000000D8Yx-1xY5
+	id 1xAT7z-0000000FVaI-1Pxd
 	for barebox@lists.infradead.org;
-	Fri, 25 Sep 2026 10:55:25 +0000
-Received: by mail-ej2-x10.google.com with SMTP id a640c23a62f3a-c29703cb470so114254266b.0
-        for <barebox@lists.infradead.org>; Fri, 25 Sep 2026 03:55:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=waldekranz-com.20251104.gappssmtp.com; s=20251104; t=1790333721; x=1790938521; darn=lists.infradead.org;
-        h=content-transfer-encoding:organization:mime-version:references
-         :in-reply-to:message-id:date:subject:to:from:from:to:cc:subject:date
-         :message-id:reply-to:content-type;
-        bh=3HlbgYOmmpt/g4DrTM5qd1JV8iDRzOL7CCwkFUje4xA=;
-        b=eAYhd+ijX41jF9ZRdwlVBQk62+0wn3ltEVjTUbacMw+aG8eOWUr5IZ6HI8WBfZpngg
-         dNa8d2OupfVaedhC4zS0piU+jWwOO7iPQboV8gl3dEt238VTcgLr4/l7YijiGB2O1ldc
-         8MJpWGWd3D7QrF8gB8vxQ8k8lcttcUpGn0fzh19BByVwbzzfaFP9b057T+VV76mc5sw1
-         BNIs3vTUehSUwS0q6OxYKI+pTb4gYMq7vRGqtsmKskfO5PZ5WEIk4nLNlUmlpG+YolS3
-         B84x2K9OWpN+PhV3ujvuR6XZlJetl6Ds7R+06ZyvMbxSoXV6guitOb8PCdrdTd/Gp4uU
-         ZUEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20260707; t=1790333721; x=1790938521;
-        h=content-transfer-encoding:organization:mime-version:references
-         :in-reply-to:message-id:date:subject:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to
-         :content-type;
-        bh=3HlbgYOmmpt/g4DrTM5qd1JV8iDRzOL7CCwkFUje4xA=;
-        b=0W/A5+9WtFJ3QlaIk4iqj2Io7P6n0q4hddLC5XcnKarbF59HBsjCF6EzGFIVUtUwas
-         EmIJFiK5B79A8l96iQn87zY/fYM5TK+OkG8xHBkpgjZV0nS9e6Jeyd55PhzBgPHBc/fU
-         CEoVw1+XLXlQanWz5T63pEPwJS3nAi4Hv+fkr01FAeq3Zpj0x/VNs3v+Y1lRZVaCcLRU
-         YU3+5jzEsAEbincrZMmaG9YsTic0xVkNrjjFkSvUPslYUHVF1E4RjQy5L5IH+StgapW7
-         HkJeFadCrTIGTqZnKuNtoNknehUy6pw/8tVnxYTFLYAre3yH0Wx84qyBPq4YOkM1Fm/P
-         view==
-X-Gm-Message-State: AFuF++lrVXNblRWtnQ1ag1pgwD3jEj/jl/pa/EFI5gqoFrahiIn3cMFa
-	OTc8xB1fYbOPxyF1belfsHn/HgbNWCwc2ea2/ZGfxjdj8niLWkVaDAkJ/g5eQA9b7wh+ntFx7y0
-	NKQBu
-X-Gm-Gg: AYBFou1pvr4Ma/7gVshaM8egxU9mbdg3xmaAXP6V7+zlqz4Z4CyEEYNNXgI2FC3xOX7
-	ioAQOTvAz2euccGakF4ubacPuuNbaBAnafttPmMCU1IoiQk7+x2igmIOKEO4GpT7JeMs0bnLC1j
-	WD3IyT8cYsLbd6s87ac+kJ/KA3WGLYWGIb7km+Lp+mygREmKlBlmE47e+2gF4nHDY7GD7qkLCcy
-	VytLu58joirWcV78Xm/8qlgGx1BmaHbcwvcjuwAUB0pCXVA+BVG4+HRPgvhjsTdphj0K26/bh1j
-	5CkmiXYqUP8/+J3iB49zEGkg2FMpF0eeuk8bhp9T5g+OMk4I8EdjNxAD4wnLyGb2zVlAgD2bmPo
-	h7SU7GdoYWlcP5biihOrGqS4mtb0U6Nxt1karqPReWaIEaDM2wQFhJ0e6TN9XZZTsY1rUNbBHlt
-	E1kd2YOVShO/xL7ILWaQRX8AnpqiU8RZSxOjd7R13SnBKhqBcCwsiUmKUu1BMs7Yhp5q1nOCg8A
-	xUROECiQos3mc6aQwY14qZPts0L+Ttoq5L9GnPHcEzB+3db5/4wcQfVZAOaGTNl5buuXlV1Zdx6
-	cod+/LOE1ua4av7eXGPq
-X-Received: by 2002:a17:907:e155:b0:c2a:c799:d068 with SMTP id a640c23a62f3a-c2ac799d409mr305965466b.28.1790333720769;
-        Fri, 25 Sep 2026 03:55:20 -0700 (PDT)
-Received: from spa.addiva.ad (h-79-136-22-50.NA.cust.bahnhof.se. [79.136.22.50])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-c2ae757ac8dsm98416066b.25.2026.09.25.03.55.20
-        for <barebox@lists.infradead.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Sep 2026 03:55:20 -0700 (PDT)
-From: Tobias Waldekranz <tobias@waldekranz.com>
+	Sat, 26 Sep 2026 14:11:48 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XMYeKvED0rL9YVwfDq48OLJTQ7br7Gjsg29ywOSrcf++1Sw1GpIhODD7SKJuNuMQrwFvymOVX+s/X3mWczPD94JGf7JDNqQJKw0l6h2+xp13qAKrqBGXHla3T+9WSzvh1HS3krOXf1HJGdBNzyGaGIqC/STtHIppu5m0k6QmvxvmaxczzTMYgLEszJfYMv/g6+Yo/jJX5b9dbQxdasL7/PPb7YQGKFknrFnxFPVijMNlHpfxdEKzDv3vE4d5ar6IKiLxJ+Pe/dmvgvgLr2vgDGVJDeWnb+JD2BoizdEzgAfhAuou81pQKUzqEEbXfK9h/H7mAcxQjW/CMRMwqTBG2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ic6ScYvJgNY93IoH3Zqdr51lt2K940qTXCfouxuSBag=;
+ b=bGZgk799rjEE0CjDX3FnyQv/gmmJuMyFWkVO07d74QBvTfVySrv8g85zeFsReHr1HFo3YNhS6PYmTEU6FTFZPCtRxcBqHCz6QNp6YtEuvG1esIg+XZkXDBuk6kLhoMCRb4zMBV6iXg+mmN4l78SDgBR99EAWocBYAFyfVn37MHca9xgTMOBqEORzX4eb+7Wk7tDVbs2P1HMS+Jm+uLqAeXY7PS5TGAy/TTBo3CxWU4SbeQO8qHgQiJeVBJpwZX8iX11bZW0hCABnAFO91SS9BW8vrLkeO3UV3XTBTlANiJWM5YuP34cCXIieshQ6tLWdtqz8Ll4ANsv7pdCoj27Rwg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 193.8.40.99) smtp.rcpttodomain=lists.infradead.org
+ smtp.mailfrom=leica-geosystems.com; dmarc=pass (p=reject sp=reject pct=100)
+ action=none header.from=leica-geosystems.com; dkim=none (message not signed);
+ arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ic6ScYvJgNY93IoH3Zqdr51lt2K940qTXCfouxuSBag=;
+ b=pMCTbtLOww75ucBwfOmPvPQR0qKDelDtersa2pNfNBZUZ8OPHiaL9tp1JeW4yV72a588UJj6fCNMbRSCfwD1aMEeNXetUx1APyu9n8Q87Uog3H11r7XAgg5vdkVX6RCvxkQ+PwZOTad/IhAWH8Bq3mre5Kyb1Ib8TpCQvhhcyMg=
+Received: from DUZPR01CA0116.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4bc::15) by PR3PR06MB6747.eurprd06.prod.outlook.com
+ (2603:10a6:102:68::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.451.18; Sat, 26 Sep
+ 2026 14:11:40 +0000
+Received: from DU6PEPF0000A7DE.eurprd02.prod.outlook.com
+ (2603:10a6:10:4bc:cafe::1c) by DUZPR01CA0116.outlook.office365.com
+ (2603:10a6:10:4bc::15) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.451.21 via Frontend Transport; Sat,
+ 26 Sep 2026 14:11:40 +0000
+X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
+ is 193.8.40.99) smtp.mailfrom=leica-geosystems.com; dkim=none (message not
+ signed) header.d=none;dmarc=pass action=none
+ header.from=leica-geosystems.com;
+Received-SPF: Pass (protection.outlook.com: domain of leica-geosystems.com
+ designates 193.8.40.99 as permitted sender) receiver=protection.outlook.com;
+ client-ip=193.8.40.99; helo=hexagon.com; pr=C
+Received: from hexagon.com (193.8.40.99) by
+ DU6PEPF0000A7DE.mail.protection.outlook.com (10.167.8.38) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.451.8 via Frontend Transport; Sat, 26 Sep 2026 14:11:39 +0000
+Received: from aherlnxbspsrv01.lgs-net.com ([10.61.228.61]) by hexagon.com with Microsoft SMTPSVC(10.0.17763.1697);
+	 Sat, 26 Sep 2026 16:11:39 +0200
+From: Johannes Schneider <johannes.schneider@leica-geosystems.com>
 To: barebox@lists.infradead.org
-Subject: [PATCH v2 next 4/5] commands: lvm: inspect VGs, activate LVs
-Date: Fri, 25 Sep 2026 10:54:26 +0000
-Message-ID: <20260925105510.1431927-5-tobias@waldekranz.com>
+Cc: Johannes Schneider <johannes.schneider@leica-geosystems.com>
+Subject: [PATCH] usb: dwc3: gadget: ack pending events while waiting for the halt
+Date: Sat, 26 Sep 2026 14:11:37 +0000
+Message-ID: <20260926141137.244764-1-johannes.schneider@leica-geosystems.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260925105510.1431927-1-tobias@waldekranz.com>
-References: <20260925105510.1431927-1-tobias@waldekranz.com>
 MIME-Version: 1.0
-Organization: Wires
 Content-Transfer-Encoding: 8bit
+X-OriginalArrivalTime: 26 Sep 2026 14:11:39.0582 (UTC) FILETIME=[F2EF6DE0:01DD4DC0]
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU6PEPF0000A7DE:EE_|PR3PR06MB6747:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: 39d96685-342f-4c22-c034-08df1bd81598
+X-SET-LOWER-SCL-SCANNER: YES
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|82310400026|23010399003|376014|36860700016|1800799024|10067099003|56012099006|11063799006|3023799007|18002099003;
+X-Microsoft-Antispam-Message-Info: ZezqFal8mw5K1LUUC1jDIQpKG4D3y9rJp1hgpNw0s5VX5PuzHzlopWVV/R+Xl4c+AncIjj/OGQrTCB22t4WnJn0GC93TjfsgZc51pzZn0ae19hg9lgZM4/zrSxJmQEthXo4kRu28ZjQVfKeok40IeIaFCsEQL+oO4YOu5DwjGbrAQcus5sufzsCAHvTifmqiIH2BB0AAGoB1AQCHN5s9OSpsY8ZCrpeGx0tkH2HQMqCc9NDQfWUIE79ggOVaO8MCVBALyup4LOj9ITHnLVWPiP1N/lQIM1P+77e52H9oZE8WDDU8OPsH0uaXDQaS4mssGMXakNCLBMHqxOZDY/P1t+2NUznNTdwcQUCwQOwzyEXKGHOFaT9Iszdg7TjT/Z8kC3QtaU68Pgn6AFBGvPRc2qaI8Bg23r7F2+ALaZgqeFG86mDJxdUwjGCYgpSyCBFNepZZjRdW6EJirl0X8lHQiu03fyQwooAjNXlYiB2rh5COig0HIzd6WWbv70n78uxdVNlS5CyUKdcejDrz4xabvNHi2ZF9A0c0C7kROiVVW6BOb8ahUoOCdDtE+DKz4qa2tMYZYoCVyTwFtjku7bmYwWLoWB/br9R7LC8ZqMNjG/5GAyyINx+KOQqXnAjptP+qdjId/dJTFLNdqXK5XINUpF8gQ2hOO/Rd8XLKeIGelszcdUEDLERhqwikEoL2HS8IzH6giR0CQldnCtGiXlX0eA==
+X-Forefront-Antispam-Report: CIP:193.8.40.99;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:hexagon.com;PTR:ahersrvdom51.leica-geosystems.com;CAT:NONE;SFS:(13230040)(82310400026)(23010399003)(376014)(36860700016)(1800799024)(10067099003)(56012099006)(11063799006)(3023799007)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: ebZtVrbBeI1l8bae4Q3byGtrUgWRxe0RWoVWO7jpyI6on3iBFzfbRM9e+8wNIscBNfkEjnZ8i27OI1EerAoigwxbAnV7JldJctkDqpfSmDg9vFMmdyBmvKGwjAdO4DELPkwXn0evA+IGunBbZSjYepIwI8DgHu+WxkgSNsam14tFj+NUq14/Wd3GE59ns8kzUW+wsY7ulVa61Dd/tlf7yghl6G7LSamA5UNBbDtlkQ6dKPnrNVVbgA3NmnrmU+9nMPfI1k0hnEQSOIgjYcINDbzlwei/i4ZXsJEUlOuYnrKbO/NVma53YLB1t8qo27f1ibJXtf//wwJKJErNgPwW3LebVuZ6HRPpVAXW0OShGaMPkKvV0ILW9Jy/PfUYQ2B8B6SgMkLpklsb8bKjREiwX73ea8CAI4evxB8ewrPkMeauEeHH6ZeZ0qMbpcbUvRMb
+X-OriginatorOrg: leica-geosystems.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2026 14:11:39.8476
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 39d96685-342f-4c22-c034-08df1bd81598
+X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.99];Helo=[hexagon.com]
+X-MS-Exchange-CrossTenant-AuthSource: DU6PEPF0000A7DE.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR06MB6747
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260925_035522_544382_A0A8A18F 
-X-CRM114-Status: GOOD (  19.25  )
-X-Spam-Score: -1.9 (-)
+X-CRM114-CacheID: sfid-20260926_071147_417410_A049F4B2 
+X-CRM114-Status: GOOD (  11.57  )
+X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
  message has been attached to this so you can view it or label
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Provide the most rudimentary commands needed to inspect and
-    activate volume groups (VGs) and logical volumes (LVs). Signed-off-by: Tobias
-    Waldekranz <tobias@waldekranz.com> --- commands/Kconfig | 11 ++ commands/Makefile
-    | 1 + commands/lvm.c | 264 ++++++++++++++++++++++++++++++++++++++++++++++
-    3 files changed, 276 i [...] 
+ Content preview:  The controller sets DSTS.DEVCTRLHLT only once every event
+   in the event buffer has been acknowledged. Linux relies on its interrupt handler
+    doing that while dwc3_gadget_run_stop() polls; barebox has no [...] 
  
- Content analysis details:   (-1.9 points, 5.0 required)
+ Content analysis details:   (-2.1 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
  -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/, no
                              trust
-                             [2a00:1450:4864:34:0:0:0:10 listed in]
+                             [2a01:111:f403:c201:0:0:0:6 listed in]
                              [list.dnswl.org]
-  0.0 SPF_HELO_NONE          SPF: HELO does not publish an SPF Record
  -0.0 SPF_PASS               SPF: sender matches SPF record
- -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
+ -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
+ -0.1 DKIM_VALID_AU          Message has a valid DKIM or DK signature from author's
+                             domain
+ -0.1 DKIM_VALID_EF          Message has a valid DKIM or DK signature from
+                             envelope-from domain
   0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
+ -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
  -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
                              [score: 0.0000]
-  0.0 DMARC_MISSING          Missing DMARC policy
+ -0.0 DMARC_PASS             DMARC pass policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -161,362 +181,103 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-5.91 / 15.00];
-	BAYES_HAM(-3.00)[100.00%];
+X-Spamd-Result: default: False [-7.41 / 15.00];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
+	ARC_ALLOW(-1.00)[microsoft.com:s=arcselector10001:i=1];
 	MID_CONTAINS_FROM(1.00)[];
+	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,waldekranz-com.20251104.gappssmtp.com:s=20251104];
-	R_SPF_ALLOW(-0.20)[+mx:c];
-	MAILLIST(-0.20)[mailman];
+	DMARC_POLICY_ALLOW(-0.50)[leica-geosystems.com,reject];
 	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	MAILLIST(-0.20)[mailman];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,leica-geosystems.com:s=selector1];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
+	RCVD_IN_DNSWL_NONE(0.00)[2a01:111:f403:c201::6:received];
+	TO_DN_SOME(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[waldekranz.com];
-	HAS_ORG_HEADER(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCVD_IN_DNSWL_NONE(0.00)[2a00:1450:4864:34::10:received];
-	RCPT_COUNT_ONE(0.00)[1];
-	PREVIOUSLY_DELIVERED(0.00)[barebox@lists.infradead.org];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	FROM_HAS_DN(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=1];
 	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_TLS_LAST(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	FROM_NEQ_ENVFROM(0.00)[tobias@waldekranz.com,barebox-bounces@lists.infradead.org];
-	TO_DN_NONE(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,waldekranz-com.20251104.gappssmtp.com:+]
+	RCPT_COUNT_TWO(0.00)[2];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,leica-geosystems.com:+];
+	FROM_NEQ_ENVFROM(0.00)[johannes.schneider@leica-geosystems.com,barebox-bounces@lists.infradead.org];
+	RCVD_COUNT_FIVE(0.00)[6];
+	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 8A7702008EB
-X-Stat-Signature: cdb3rfhd1odo6eim9bk6cwkn4k1rf6c9
+X-Rspamd-Queue-Id: 0858C20075E
+X-Stat-Signature: 6hcsqd7iuajfpaitbgfasdrw57hemiou
 
-Provide the most rudimentary commands needed to inspect and activate
-volume groups (VGs) and logical volumes (LVs).
+The controller sets DSTS.DEVCTRLHLT only once every event in the event
+buffer has been acknowledged. Linux relies on its interrupt handler
+doing that while dwc3_gadget_run_stop() polls; barebox has no
+interrupts, and gadget_unbind_driver() unregisters the UDC poller
+before it disconnects. Any event left pending at that point keeps the
+controller running, and the poll ends in its 2 s timeout with
+-ETIMEDOUT.
 
-Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
+On an i.MX8MP board with the gadget enumerated by a host, 1 to 15
+events (GEVNTCOUNT 4 to 60) were pending on most boots, and each such
+boot lost 2.0 s between the start of shutdown_barebox() and the jump
+to Linux; with the events acknowledged, the controller halts within
+1 ms.
+
+The gadget is being stopped, so acknowledge the events from the poll
+loop without processing them, keeping lpos in step with the hardware.
+
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Johannes Schneider <johannes.schneider@leica-geosystems.com>
 ---
- commands/Kconfig  |  11 ++
- commands/Makefile |   1 +
- commands/lvm.c    | 264 ++++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 276 insertions(+)
- create mode 100644 commands/lvm.c
+ drivers/usb/dwc3/gadget.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index c8804c8e17..1eb81f30b3 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -808,6 +808,17 @@ config CMD_VERITYSETUP
- 	  commands:
- 	        open <data-dev> <name> <hash-dev> <root-hash>
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index 8b26a0c102..46a70231a7 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2322,6 +2322,19 @@ static void __dwc3_gadget_set_speed(struct dwc3 *dwc)
+ 	dwc3_writel(dwc->regs, DWC3_DCFG, reg);
+ }
  
-+config CMD_LVM
-+	tristate
-+	depends on DM_LVM
-+	prompt "lvm"
-+	help
-+	  lvm - inspect and activate LVM2 logical volumes
++static void dwc3_gadget_discard_events(struct dwc3 *dwc)
++{
++	struct dwc3_event_buffer *evt = dwc->ev_buf;
++	u32 count;
 +
-+	  commands:
-+	        info
-+	        activate <vg> <lv> [<name>]
++	count = dwc3_readl(dwc->regs, DWC3_GEVNTCOUNT(0)) & DWC3_GEVNTCOUNT_MASK;
++	if (!count)
++		return;
 +
- # end Partition commands
- endmenu
++	evt->lpos = (evt->lpos + count) % evt->length;
++	dwc3_writel(dwc->regs, DWC3_GEVNTCOUNT(0), count);
++}
++
+ static int dwc3_gadget_run_stop(struct dwc3 *dwc, int is_on, int suspend)
+ {
+ 	u32			reg;
+@@ -2356,6 +2369,9 @@ static int dwc3_gadget_run_stop(struct dwc3 *dwc, int is_on, int suspend)
  
-diff --git a/commands/Makefile b/commands/Makefile
-index 7f0c68a5e5..7dae582225 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -172,6 +172,7 @@ obj-$(CONFIG_CMD_EFI_HANDLE_DUMP)	+= efi_handle_dump.o
- obj-$(CONFIG_CMD_HOST)		+= host.o
- obj-$(CONFIG_CMD_DMSETUP)	+= dmsetup.o
- obj-$(CONFIG_CMD_VERITYSETUP)	+= veritysetup.o
-+obj-$(CONFIG_CMD_LVM)		+= lvm.o
- obj-$(CONFIG_CMD_SCONFIG)	+= sconfig.o
- obj-$(CONFIG_CMD_RKSECURE)	+= rksecure.o
- UBSAN_SANITIZE_ubsan.o := y
-diff --git a/commands/lvm.c b/commands/lvm.c
-new file mode 100644
-index 0000000000..9ae9e091c1
---- /dev/null
-+++ b/commands/lvm.c
-@@ -0,0 +1,264 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+// SPDX-FileCopyrightText: 2026 Tobias Waldekranz <tobias@waldekranz.com>
-+
-+#include <block.h>
-+#include <command.h>
-+#include <device-mapper.h>
-+#include <driver.h>
-+#include <fs.h>
-+#include <stdio.h>
-+#include <xfuncs.h>
-+
-+#include <linux/err.h>
-+#include <linux/kernel.h>
-+#include <linux/sprintf.h>
-+
-+#include <lvm.h>
-+
-+static int lvm_vg_by_devpath(const char *devpath, struct lvm_vg **vgp)
-+{
-+	struct cdev *cdev;
-+
-+	cdev = cdev_by_name(devpath_to_name(devpath));
-+	if (!cdev)
-+		return -ENODEV;
-+
-+	return lvm_vg_alloc_by_cdev(cdev, vgp);
-+}
-+
-+static int lvm_vg_by_spec(const char *spec, struct lvm_vg **vgp)
-+{
-+	int err;
-+
-+	err = lvm_vg_by_devpath(spec, vgp);
-+	switch (err) {
-+	case 0:
-+		return 0;
-+	case -ENODEV:
-+		err = lvm_vg_alloc_by_name(spec, vgp);
-+		if (err)
-+			printf("Found no volume group named \"%s\"\n", spec);
-+
-+		return err;
-+	}
-+
-+	printf("No volume group found on \"%s\"\n", spec);
-+	return err;
-+}
-+
-+/* Total size of a VG, in sectors, i.e. the sum of the extents of all
-+ * its physical volumes.
-+ */
-+static blkcnt_t lvm_vg_size(struct lvm_vg *vg)
-+{
-+	blkcnt_t sectors = 0;
-+	size_t i;
-+
-+	for (i = 0; i < vg->num_pvs; i++)
-+		sectors += vg->pvs[i]->pe_count * vg->pe_size;
-+
-+	return sectors;
-+}
-+
-+/* LVM UUIDs are conventionally displayed in 6-4-4-4-4-4-6 groups. */
-+#define LVM_UUID_STR_LEN (LVM_UUID_LEN + 6)
-+
-+static const char *lvm_uuid_str(char *buf, const char *uuid)
-+{
-+	static const int grp[] = { 6, 4, 4, 4, 4, 4, 6 };
-+	char *out = buf;
-+	size_t g;
-+
-+	for (g = 0; g < ARRAY_SIZE(grp); g++) {
-+		if (g)
-+			*out++ = '-';
-+		memcpy(out, uuid, grp[g]);
-+		out += grp[g];
-+		uuid += grp[g];
-+	}
-+	*out = '\0';
-+	return buf;
-+}
-+
-+static void lvm_info_vg(struct lvm_vg *vg)
-+{
-+	char uuid[LVM_UUID_STR_LEN + 1];
-+	char esz[32], vsz[32];
-+	struct lvm_pv *pv;
-+	struct lvm_lv *lv;
-+	struct cdev *cdev;
-+	size_t i;
-+
-+	strcpy(vsz, size_human_readable(lvm_vg_size(vg) << SECTOR_SHIFT));
-+	strcpy(esz, size_human_readable(vg->pe_size << SECTOR_SHIFT));
-+
-+	printf("VG \"%s\":\n"
-+	       "  UUID:    %s\n"
-+	       "  SeqNum:  %llu\n"
-+	       "  Size:    %s (%s extents)\n"
-+	       "  #PV:     %zu\n"
-+	       "  #LV:     %zu\n",
-+	       vg->name, lvm_uuid_str(uuid, vg->uuid), vg->seqno, vsz, esz,
-+	       vg->num_pvs, vg->num_lvs);
-+
-+	for (i = 0; i < vg->num_pvs; i++) {
-+		pv = vg->pvs[i];
-+		cdev = lvm_pv_cdev(pv);
-+
-+		printf("  PV %s:\n"
-+		       "    UUID:  %s\n"
-+		       "    Size:  %s\n",
-+		       cdev ? cdev_name(cdev) : "[missing]",
-+		       lvm_uuid_str(uuid, pv->uuid),
-+		       size_human_readable((u64)pv->dev_size << SECTOR_SHIFT));
-+	}
-+
-+	for (i = 0; i < vg->num_lvs; i++) {
-+		lv = vg->lvs[i];
-+
-+		printf("  LV \"%s\":\n"
-+		       "    UUID:  %s\n"
-+		       "    Type:  %s\n"
-+		       "    Size:  %s\n",
-+		       lv->name, lvm_uuid_str(uuid, lv->uuid),
-+		       lv->type == LVM_LV_LINEAR ? "linear" : "unknown",
-+		       size_human_readable((u64)lv->size << SECTOR_SHIFT));
-+	}
-+}
-+
-+static void lvm_info_all(void)
-+{
-+	struct lvm_vg_iter *iter;
-+	struct lvm_vg *vg;
-+	int i = 0;
-+
-+	iter = lvm_vg_iter_new();
-+	while ((vg = lvm_vg_iter_next(iter))) {
-+		if (i++)
-+			putchar('\n');
-+
-+		lvm_info_vg(vg);
-+		lvm_vg_free(vg);
-+	}
-+
-+	lvm_vg_iter_free(iter);
-+}
-+
-+static int lvm_info(int argc, char *argv[])
-+{
-+	struct lvm_vg *vg = NULL;
-+
-+	if (argc > 1)
-+		return COMMAND_ERROR_USAGE;
-+
-+	if (argc == 0) {
-+		lvm_info_all();
-+		return COMMAND_SUCCESS;
-+	}
-+
-+	if (lvm_vg_by_spec(argv[0], &vg))
-+		return COMMAND_ERROR;
-+
-+	lvm_info_vg(vg);
-+	lvm_vg_free(vg);
-+	return COMMAND_SUCCESS;
-+}
-+
-+static int lvm_activate_lv(struct lvm_lv *lv, const char *name)
-+{
-+	char *defname, *table;
-+	struct dm_device *dm;
-+
-+	table = lvm_lv_dm_ctable(lv);
-+	if (IS_ERR(table)) {
-+		printf("Cannot map %s/%s: %pe\n", lv->vg->name, lv->name, table);
-+		return PTR_ERR(table);
-+	}
-+
-+	defname = name ? NULL : xasprintf("%s-%s", lv->vg->name, lv->name);
-+
-+	dm = dm_create(name ? : defname, table);
-+	free(table);
-+	if (IS_ERR(dm))
-+		printf("Failed to create %s: %pe\n", name ? : defname, dm);
-+	else
-+		printf("Created %s\n", name ? : defname);
-+
-+	free(defname);
-+	return IS_ERR(dm) ? PTR_ERR(dm) : 0;
-+}
-+
-+static int lvm_activate(int argc, char *argv[])
-+{
-+	struct lvm_vg *vg = NULL;
-+	struct lvm_lv *lv;
-+	int err;
-+
-+	if (argc < 2 || argc > 3)
-+		return COMMAND_ERROR_USAGE;
-+
-+	if (lvm_vg_by_spec(argv[0], &vg))
-+		return COMMAND_ERROR;
-+
-+	lv = lvm_vg_lv_by_name(vg, argv[1]);
-+	if (!lv) {
-+		printf("Logical volume \"%s/%s\" not found\n", vg->name, argv[1]);
-+		err = -ENOENT;
-+		goto out_free;
-+	}
-+
-+	err = lvm_activate_lv(lv, (argc == 3) ? argv[2] : NULL);
-+
-+out_free:
-+	lvm_vg_free(vg);
-+	return err ? COMMAND_ERROR : COMMAND_SUCCESS;
-+}
-+
-+static int do_lvm(int argc, char *argv[])
-+{
-+	const char *cmd;
-+
-+	switch (argc) {
-+	case 1:
-+		cmd = "info";
-+		argc--;
-+		argv++;
-+		break;
-+	default:
-+		cmd = argv[1];
-+		argc -= 2;
-+		argv += 2;
-+		break;
-+	}
-+
-+	if (!strcmp(cmd, "info"))
-+		return lvm_info(argc, argv);
-+	else if (!strcmp(cmd, "activate"))
-+		return lvm_activate(argc, argv);
-+
-+	printf("Unknown command: %s\n", cmd);
-+	return COMMAND_ERROR_USAGE;
-+}
-+
-+BAREBOX_CMD_HELP_START(lvm)
-+BAREBOX_CMD_HELP_TEXT("lvm - inspect and activate LVM logical volumes")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("Assembles the volume groups described by the LVM physical volumes")
-+BAREBOX_CMD_HELP_TEXT("found on the available block devices, and activates logical volumes")
-+BAREBOX_CMD_HELP_TEXT("as device mapper devices.")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("A <vg> may be given either as a volume group name or as the path to")
-+BAREBOX_CMD_HELP_TEXT("a block device holding one of its physical volumes.")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("commands:")
-+BAREBOX_CMD_HELP_OPT("info [<vg>]", "Show volume groups (all if <vg> is omitted)")
-+BAREBOX_CMD_HELP_OPT("activate <vg> <lv> [<name>]", "Create a dm device for an LV")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(lvm)
-+	.cmd = do_lvm,
-+	BAREBOX_CMD_DESC("inspect and activate LVM logical volumes")
-+	BAREBOX_CMD_OPTS("<command> [args...]")
-+	BAREBOX_CMD_GROUP(CMD_GRP_PART)
-+	BAREBOX_CMD_HELP(cmd_lvm_help)
-+BAREBOX_CMD_END
+ 	do {
+ 		udelay(1000);
++		/* the controller only halts once pending events are acked */
++		if (!is_on)
++			dwc3_gadget_discard_events(dwc);
+ 		reg = dwc3_readl(dwc->regs, DWC3_DSTS);
+ 		reg &= DWC3_DSTS_DEVCTRLHLT;
+ 	} while (--timeout && !(!is_on ^ !reg));
+
+base-commit: 75819f9e196e2da048e96c8589898fdc38ef8e7a
 -- 
-2.43.0
+2.53.0
 
 
 
