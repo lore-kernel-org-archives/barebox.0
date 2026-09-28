@@ -1,18 +1,18 @@
 Delivery-date: Mon, 28 Sep 2026 13:33:17 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xB9bh-007Gzb-0s
+	id 1xB9bh-007Gzw-26
 	for lore@lore.pengutronix.de;
 	Mon, 28 Sep 2026 13:33:17 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id B353F2001C8
-	for <lore@pengutronix.de>; Mon, 28 Sep 2026 13:33:16 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 1B6382007E1
+	for <lore@pengutronix.de>; Mon, 28 Sep 2026 13:33:17 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=0vdwf2Kb;
-	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=iTXTGR2u;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=BDhMptk8;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=u8wmfjLi;
+	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=pcXvuJSq;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=OrCkJ6Sc;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
@@ -23,24 +23,24 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=FNeOF2G464lO1vqtP6PgO4ai7A+CHcrK7jt4ByAiDGs=;
-	b=XmaO4zpHzSBlzwDyvseqV5scDSA3k4p8+ClQHeZwYQK8pJ0VAMtIdqF3aMn8vKZu0JTW9B
-	0D5z6nv2a3IcNFJA/KJqfPqdmabYUDGv7JOE47vFgIt2TQn65s47GTvkvM5QMUt3Yd3Gci
-	ulmRWAU42wWr5+MylFY6UDJucw3fMd7AFwZgEwemvBSFZ8xBw0oEG3qqwQ3ZA1elueCruH
-	BRU3P7DCSQt8p9+9sBZuDu7unR/mCf3lD07GNtMWqAK3wL0w83ymBQz+NQG+qvCS+PIcwJ
-	8dzzLRY1O3iIM0Wygiz6bZNey1oXdpvUsvR0LFHFzv7PZOJ8GL5ROj8ASP5SFA==
+	bh=4c5Z0ZsFuEi8nJTz+d/3YRDrC3joxiWJ4qEcCHtbaoc=;
+	b=R8kIjnUQCmG9B1ClK60E7mSBaJedMEomxNhG/uxItCQTQ4dpFi8ratpKLx+2Csdnb2T26P
+	IRd59LrJOoLA/JEMwhF/CITTqLooGnXd70NmV3qp2BnAvb1X74fhHNjTvgC+aSEsYmS9do
+	mHJzRAjMa1+JdIkWCJ63Tfs4BAr0mVJNVfw884YkosMA84XQH2aQvsNpij1MAFWpMTkkJQ
+	PT8TJY6YpLmMCtSBMmOqDFEnyY13XyzAtQ7DpyzECjcaI7oNuEl4LLoIfYZ4F+MkXLpLJF
+	C2o1wBxHWn4FF36qYeooj9JjwrWAla2w18VhZfc8zS1b8i/qXEhZiDmfH3Ngow==
 ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790595197; a=rsa-sha256;
 	cv=pass;
-	b=NDvpcHEGoSh3UVhVNrEdiq0d/tZokajVqmgOVullEvxmNfSsmi2OZIGCts3CodcHjeS0pP
-	Zy2WA7bZuV6OmcchN2TVDwlOjAJgRBrvWWT24G2sN1EbVW8/CYrqAvqsDFWspO2JlS3AIA
-	Up942HrHDzwF5IQd2xF09Tau/Jhf9oUMl8nd/RoVgOvuNv6CUx2R27wetSBr2tVV27jWIy
-	+aowllzzKPpmYH1pDlhAczxSFqYxj10KUpKXimROgtvIjHwsZUWs9JLwAFHMpGtjjz1ee5
-	IxsbuQBEfO4hc/P227YFZHb45wT6h8TUVpsgw3/7T8J7nSdus902AUQr4YT9YQ==
+	b=SWH/sVb39NvylAYJME6X2NJm/qxmvZNAZzKBgNx3ofiEit4RPNeKgK7UaAWxO7deDN06mZ
+	L51W3lmhrotMrpk1Xfkr2O6M5LkQkGk78MQNnfUJ0569LNe36b2q/1kAFhn/ekXKWT+iWK
+	wu8UGXL5b5j73s7+1d+7SeNzlaGr/1dmc1CvQgiVwQRsfzzRm5t052jkBP5eEOiuasgfth
+	2v1L8fRUyiYvfwHrYwvkospZwk7ARmHY/dEUuF4fCAD191taPuCcIR49BD997ku4ldaEKg
+	neWCU252jO7NEAX2E7Uo7OI5izXvJ3DBet8BbrZve4PEglGh2w/HTdhPPATkeg==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=0vdwf2Kb;
-	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=iTXTGR2u;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=BDhMptk8;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=u8wmfjLi;
+	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=pcXvuJSq;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=OrCkJ6Sc;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
@@ -50,39 +50,39 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=FNeOF2G464lO1vqtP6PgO4ai7A+CHcrK7jt4ByAiDGs=; b=0vdwf2KbUgEBdssjLzeJ0xaXwD
-	aP8175p0nrUYD5qr/fj+JZFwHig16vd9GDXX5k43nl5RCbIWvqvhoAWzKaDNgMvcpZNt4j1ZVkact
-	NKaJJluUqrbkl39ohoVkc6h9SEr9vQtQW7HlWwICIa6B64OiM/ef03P6tEOLsaOiq22z8WMFs1Tmo
-	rApdHG5BhiiN3GEllXFFCW7ZIkfJjQkHqQwftteBUaRyuS/NWi/GA1Be3wHNXH/UnYeZ6ad24hTbO
-	UO0FkEIUKYLyloi9S+ECfkIYw4QUq+3oTIJEX1zfQfJE9WYLxRxk3AUcUhOT+XjH35D2LCMfeQUex
-	JRhy9PlA==;
+	bh=4c5Z0ZsFuEi8nJTz+d/3YRDrC3joxiWJ4qEcCHtbaoc=; b=u8wmfjLi414jpVon01xrGBlA0Y
+	PD9HqC/nfmk0NvCx75Wbth2ij/D3VDCN3ndaPLJh0mOEP1py8uBdnzrb78ibK+X7ddVThIZyMXZVB
+	gCjaLdwGj+rXSgPPiTgadXeYcOEaiP6MlveRiFfbl6UWpBOFRMM9SRhwUYicZIQrh79abzPdHRX5d
+	YB1+Cb4JcKCmkfQhsS6BJbL8NyLGaUxwcQPD7IrgJpbBSlmV65T5+fApabm8ojYmDKrMSnHljiDn6
+	YCH9Fh4XdL0tD2IipFzGhIRM59D7BMa4sKRsPrmaBvaX/tm+zhrrWJZ4vSlAE7CbcJ52n98cgT+RL
+	p0g4Gs+Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xB9Wv-00000000S54-2vvw;
-	Mon, 28 Sep 2026 11:28:21 +0000
+	id 1xB9Wz-00000000S9S-0ztN;
+	Mon, 28 Sep 2026 11:28:25 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xB9Wt-00000000S2A-1Thb
+	id 1xB9Wv-00000000S3h-0PlE
 	for barebox@bombadil.infradead.org;
-	Mon, 28 Sep 2026 11:28:19 +0000
+	Mon, 28 Sep 2026 11:28:21 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=FNeOF2G464lO1vqtP6PgO4ai7A+CHcrK7jt4ByAiDGs=; b=iTXTGR2uoQ/V0HE8lrtIQ1bwli
-	uCysDgG+zLK9c9FWFgCKBMZwYjGZnUlHIiaDa40DJmIvEy/ib2wBQn2wJ/GQAtrJmFuCYxbrPjQwL
-	HkMJFFNAyxAuoKS3URb1g7Jl2ZbJa/qBKY17k3IEX5wqtVzFJ7G6QE1u+gE8gDJkCLJls4jsazb2b
-	mODiLwmbKxbu9d4dM07lHIfHwO47Bf0UlMqwuhXTqeKVtWfxrswxE6kyWDMA32jNFNWzrXgvY+fCQ
-	EhwOnjuguJ5KQFRDZn4NNH4gU8RyoE04A5VuW8slhThXkOV3ohyD5eBjUvhsd3eD76BRsmnmhrxX7
-	U7Pg/j/w==;
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	bh=4c5Z0ZsFuEi8nJTz+d/3YRDrC3joxiWJ4qEcCHtbaoc=; b=pcXvuJSq0U3vEZ72rNAQO5mbhu
+	0k8eCBOEtcbbUTcXWu6/D7Mul8HGr1Js8jLwHJreSoq1dBSIi69pAHiujuQOrTd0fATMaV/FzEsxb
+	gKBYZOL+BnfHEipc55SDCysuOQQ5OLDnuYqQxIpwEVNvJJ58xloMfQGtZhzan3IpDKYTTdj06T1Gd
+	kQODGY3h8dW2LQjDSC8JSDtCw5fDt1pC5dRmjEX2pDZfRtH+ld6BjzOJmvbkiVIy6ZtvRnRmUDSRb
+	srCcjEhr4v2ds4NwrdMu0tHwQNZohBIBMFhgLFiIcelcuIZRk8OqEqiP27kXbEAnwae2glD2VyS4R
+	+4wZ4Hag==;
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by desiato.infradead.org with esmtps (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1xB9Wq-00000001PmC-1e3r
+	id 1xB9Wr-00000001PmZ-2aQP
 	for barebox@lists.infradead.org;
-	Mon, 28 Sep 2026 11:28:18 +0000
-Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.pengutronix.de [IPv6:2a0a:edc0:0:1101:1d::54])
+	Mon, 28 Sep 2026 11:28:20 +0000
+Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.4.pengutronix.de [10.17.1.19])
 	(Authenticated sender: relay-from-dude05.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 01B0A201F12;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 22830201F23;
 	Mon, 28 Sep 2026 13:28:11 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1790594891;
@@ -90,51 +90,52 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FNeOF2G464lO1vqtP6PgO4ai7A+CHcrK7jt4ByAiDGs=;
-	b=BDhMptk89Mq2v2Powrw3agZw+/dek1dUdFUlAdas1eObdCN0UOpPP6xGezXi5d6i1OOzTg
-	59GHTxnVsM2g0hgorkB+NQk2vgopyi+ngKwop1ib8CBfmfklU3lakjr7M3TSg5DYPxvtWS
-	pLxBLeaotopPClkmRFcGl+6b5+eaT3AM+Zrlp7Sw753yM0rbH7jfW3bYfbfEs/jF2UUbUx
-	N3M4drFH+Th0VTP/prH2byKkXp1ifTDkYkw79roZ82i/sknmJoUUtIZ1pDKmVfTNESsNE9
-	BgOluEZnrzOUSWI2N1hXtTtd3MdXufxVJ14ue474iXTPUgnbJsXMzHNlCMIcIg==
+	bh=4c5Z0ZsFuEi8nJTz+d/3YRDrC3joxiWJ4qEcCHtbaoc=;
+	b=OrCkJ6ScydwFrOUGAnKTSqcJNfnoLKrj7kIYUDJ8iI/kd4ZELqdKqIKWSUnE02+DHub2Ew
+	ITHL4gYb4d6dZ5n62IqghG2DnmClSgdktzCtTrUj5CErxACLK6eBfr5dNxy91PyxZifK2a
+	yxvEYS0LLnong07VX28eCLh9LzIOHb/XDN4AYtjIPRQXylFmI+WVQnzHRDSAt05g7x4uLr
+	yXPCUHjJvz7LOi+zCXkvoSXMZdUlM4EXfE2bg7CM6flq8RCJ4Z+QJVVa47u7fZolZr/dik
+	vuEKxjaGHW2ivFhcsmzbP4fgvER75RbaGw3zLiL3J52D2cyw0hxu+kefNxo9tQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1790594891;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FNeOF2G464lO1vqtP6PgO4ai7A+CHcrK7jt4ByAiDGs=;
-	b=eesRMm/2HPQ9n2C84Z68nEukswdvrrOsNgjmQciIVj2WrU/KaxKiU+rdka3tKt30w62u8h
-	ChstUf+BVWXpoeO3finsAl9qTNyF13N91fHiVd8RdzCi+UC6NZenK9P+gnuYIBkg8uHRP+
-	25Pgh68V1rVPYGM6yE0ICAnFUT7EQCWYcHYgSrJGJSk/pSafaWMZTl0tmsOHIAm8OcqtHr
-	6ZymmJwQ/IDBA86JqLQSjlwMWamaZqOmfokPgMW8JptlwDhdhAw/TKWGsuIiFwNxYyAIMv
-	4SFLG+Wr/Iz4Lu24WNTF5GOaUnA8SQm0PAsaV1hC/hiGiSmUO6VucZ0zkfVpXg==
+	bh=4c5Z0ZsFuEi8nJTz+d/3YRDrC3joxiWJ4qEcCHtbaoc=;
+	b=Im5itVmmPXT2EOogwOK56BgdQUPjpz5Y4+rgmwOpkwbHCk7M4mswP+i6lqTj1jOQAYglHG
+	ivakGrhxgKu9EvxYuaCDs6uyCqphPBEo1IpopgYnrNtlALEdbpCqBxLcRs87eyGlx7q5Ga
+	VwimYN6eZ7s/XDSLGjJbIyi9JgDahzWyZV4X7l8yDxOvwToCHscQPPsZQNHtC83QAL+NZE
+	DHx4MVog+HSJRizvr8rU3usj5/KgmG96vMigRfU78aG+jjoMjlzK1K9HmggjapGOYTiTNo
+	hJsXj+0MEucqfoNSteJH/hdPTD0sPi83S9ZkYZaoJfM6SNdm2DV6+wItbydtXA==
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790594891; a=rsa-sha256;
 	cv=none;
-	b=Rq13/Kz9pVjF/icGM3DpquJqtgpMymPJm8qC4xUXIccmhdUI7Pyza7Q1LyIwebSN6LFcYO
-	icNJNY1CYII75PyQz9TBi7fZ//PBVfO2XKAz7oVx2VGZISECWbxLL9xUxMBSJWNV9Ku8oW
-	0aoILQABbTvDWWYEIMK0HgNAP9tjqoqsbArAi0BlNMxrUBVjkfdqSiK0wgEV+I9SpL7ZbC
-	V1Yp/9zwdDvHhvMwXkGUeqJmy1iZRz0i4Y6N/M//MxgT9OIsdgMYWJw2IHK0slgbY7vYcn
-	7TV/wubwGaf8hdGZDBH5rtO+hdb+ASexOaZ6RhQPHIUI4VNcw5ZKLt98OVhT/A==
+	b=I+nNC8QFx8vIHpk/ZRZOJH7LZtVAqR+S9/I1j4RKO/LKwFrQ4KAZc13oOWzVltRXMLlYaw
+	kHyv/JtZiUlBgmipOw7x9tjzFhLBKrfRybDTOd/SBBANPYMZ1ZpRxd/htkD5i6Vxk+15Fg
+	bFqLaAs9aNMmlcyEPcVlh2hZVsOBnQrIzC4iHQTiENzC55g6bHjFpDjKkf2MuEPgjJ2QqQ
+	kzBl6texu8NeetSc3ULCK/moUVwJcumQjYcrfkut7JY0JS/QT5NmYfcSLxMoBHGtPs1GHZ
+	ow457RoOJY12LkJFGtQmOz+g0CYeGVmafDYSG4nOgqjn9XAzLyH9n7L18DPHVw==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-dude05.red.stw.pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
 Received: from dude05.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id DBFF07421D5;
-	Mon, 28 Sep 2026 13:28:10 +0200 (CEST)
+	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id 07EAA74D0A4;
+	Mon, 28 Sep 2026 13:28:11 +0200 (CEST)
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Subject: [PATCH 08/11] Documentation: security: update for barebox dm-verity support
-Date: Mon, 28 Sep 2026 13:27:03 +0200
-Message-ID: <20260928112731.1271094-9-a.fatoum@pengutronix.de>
+Subject: [PATCH 11/11] README, SECURITY.md: link the threat model and security considerations
+Date: Mon, 28 Sep 2026 13:27:06 +0200
+Message-ID: <20260928112731.1271094-12-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260928112731.1271094-1-a.fatoum@pengutronix.de>
 References: <20260928112731.1271094-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260928_122816_707259_C75255B8 
-X-CRM114-Status: GOOD (  14.04  )
+X-CRM114-CacheID: sfid-20260928_122817_956204_5D57D835 
+X-CRM114-Status: UNSURE (   9.74  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -0.2 (/)
 X-Spam-Report: Spam detection software, running on the system "desiato.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -142,10 +143,11 @@ X-Spam-Report: Spam detection software, running on the system "desiato.infradead
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> We have gained dm-verity
-    support in the meantime, so there is actually something we can offer users
-    that want to use file systems in a secure manner, even though they will need
-    to bring their own sche [...] 
+ Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> SECURITY.md says
+    where to report vulnerabilities, but not what counts as one. The README says
+    nothing about security. Link the new threat model from both files. In the
+    README, add a short Security section that also links the Security Considerations
+    chapter. 
  
  Content analysis details:   (-0.2 points, 5.0 required)
  
@@ -172,92 +174,104 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-59.31 / 15.00];
+X-Spamd-Result: default: False [-59.11 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[99.99%];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	MID_CONTAINS_FROM(1.00)[];
-	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
-	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:1101:1d::54:received,2607:7c80:54:3::133:from,2001:8b0:10b:1:d65d:64ff:fe57:4e05:received];
+	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
+	MID_CONTAINS_FROM(1.00)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	MAILLIST(-0.20)[mailman];
-	R_SPF_ALLOW(-0.20)[+mx:c];
+	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2001:8b0:10b:1:d65d:64ff:fe57:4e05:received];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
+	R_SPF_ALLOW(-0.20)[+mx:c];
+	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	DMARC_NA(0.00)[pengutronix.de];
 	RCPT_COUNT_TWO(0.00)[2];
+	DMARC_NA(0.00)[pengutronix.de];
 	FORGED_RECIPIENTS(0.00)[m:barebox@lists.infradead.org,m:a.fatoum@barebox.org,s:lore@pengutronix.de];
-	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
 	FORGED_SENDER(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	FROM_HAS_DN(0.00)[];
+	FORWARDED(0.00)[barebox@bombadil.infradead.org];
+	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[barebox@bombadil.infradead.org];
-	DKIM_MIXED(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,infradead.org:-,pengutronix.de:+];
-	R_DKIM_REJECT(0.00)[infradead.org:s=desiato.20200630];
-	RCVD_COUNT_FIVE(0.00)[5];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	DKIM_MIXED(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,infradead.org:-,pengutronix.de:+];
+	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
+	R_DKIM_REJECT(0.00)[infradead.org:s=desiato.20200630];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: B353F2001C8
-X-Stat-Signature: kpcw3xpizpu8kzp9pzikcamswn41irhz
+X-Rspamd-Queue-Id: 1B6382007E1
+X-Stat-Signature: nom17zirapsbgrkaosoi5qno7ggu9aub
 
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-We have gained dm-verity support in the meantime, so there is actually
-something we can offer users that want to use file systems in a secure
-manner, even though they will need to bring their own scheme on how to
-discover the signed root hash.
+SECURITY.md says where to report vulnerabilities, but not what counts as
+one. The README says nothing about security.
 
-Reflect this in the documentation.
+Link the new threat model from both files. In the README, add a short
+Security section that also links the Security Considerations chapter.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- Documentation/user/security.rst | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ README.rst  | 10 ++++++++++
+ SECURITY.md |  6 ++++++
+ 2 files changed, 16 insertions(+)
 
-diff --git a/Documentation/user/security.rst b/Documentation/user/security.rst
-index b204e6df8d23..185adac2d51c 100644
---- a/Documentation/user/security.rst
-+++ b/Documentation/user/security.rst
-@@ -190,14 +190,18 @@ Avoiding use of file systems
+diff --git a/README.rst b/README.rst
+index fe783028dfad..1800f5e51822 100644
+--- a/README.rst
++++ b/README.rst
+@@ -284,6 +284,16 @@ are the release rules:
+   does never change, in order to make life easier for distribution
+   people.
  
- File systems are among the most complex parser code in barebox and a common
- source of bugs.
--Unlike Linux with its dm-verity support, barebox currently has no way to
--verify a file system before mounting it.
- 
- The consequence is that in a verified boot setup, barebox should **never**
- be allowed to mount file systems.
--Especially, :ref:`bootloader spec files <bootloader_spec>` should not be used
-+Especially, :ref:`bootloader spec files <bootloader_spec>` or
-+:ref:`extlinux.conf <extlinux_conf>` should not be used
- in verified boot setups and signed FIT images **must** be located outside
--a file system and directly in a raw partition.
-+a file system and directly in a raw partition and not pointed at by a plain
-+unsigned file on an unsigned file system that can both be tampered with.
++Security
++--------
 +
-+If file system use is desired anyway, its integrity should be ensured by
-+other means, e.g. by being mounted from a dm-verity block device that was
-+setup with a correctly signed root hash.
++The `threat model <https://www.barebox.org/doc/latest/user/threat-model.html>`_
++describes what barebox does and does not protect against and which bugs are
++considered security vulnerabilities. The
++`Security Considerations <https://www.barebox.org/doc/latest/user/security.html>`_
++chapter describes how to configure barebox for verified boot. Refer to
++``SECURITY.md`` for how to report vulnerabilities.
++
+ .. _contributing:
  
- Prevent the kernel from booting the rootfs in verity boots
- ----------------------------------------------------------
+ Contributing
+diff --git a/SECURITY.md b/SECURITY.md
+index 862dd14623d9..39407514a361 100644
+--- a/SECURITY.md
++++ b/SECURITY.md
+@@ -19,7 +19,13 @@ releases:
+ Please report security vulnerabilities to security@barebox.org.
+ We will work with the reporter to create a fix and to coordinate the disclosure.
+ 
++The [threat model](https://www.barebox.org/doc/latest/user/threat-model.html)
++describes what barebox does and does not protect against and which classes of
++bugs are not vulnerabilities. Report those as ordinary bugs on the
++[mailing list](https://www.barebox.org/doc/latest/user/introduction.html#feedback).
++
+ ## Securing barebox
+ 
+ Refer to the [Security Considerations](https://www.barebox.org/doc/latest/user/security.html)
+ chapter of the documentation for information on how to configure barebox securely.
++That advice relies on the assumptions listed in the threat model.
 -- 
 2.47.3
 
