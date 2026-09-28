@@ -1,17 +1,17 @@
-Delivery-date: Mon, 28 Sep 2026 14:47:12 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Mon, 28 Sep 2026 14:47:13 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xBAlE-007IIt-0x
+	id 1xBAlF-007IJE-0N
 	for lore@lore.pengutronix.de;
-	Mon, 28 Sep 2026 14:47:12 +0200
+	Mon, 28 Sep 2026 14:47:13 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id C77D820026F
-	for <lore@pengutronix.de>; Mon, 28 Sep 2026 14:47:11 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id E56D920026F
+	for <lore@pengutronix.de>; Mon, 28 Sep 2026 14:47:12 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=GJiI29bu;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=gwUhf0Y9;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=SaqUfrtW;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=cGE30f+k;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
@@ -20,110 +20,110 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:list-id:list-help:
+	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=fddUnPcSvGQNwF2ZEOVoom5UhiilPleOo9Ws7Exn9V8=;
-	b=UEr8eaZEK7TZqueGrv9kehyQQPA1Q+YM2Ou+ljl8/aoGe+j57/9Kg4qHo3YAqSLqM+PVqb
-	L6rW9gVTh2W9LSzObxjgT05Jvqnx54OnSgcnDl1L5YMibvEYxeq4D3Wy00nmsvIXtVSr2z
-	cUyS2j504AVGc4dM8ckxZ3qsRf4Eff6Ucy+fC/dERCrkoxKYiw28bg7pa37xOsCf+q6c7n
-	gzu+u6064p/iJBfVDnNStqUhLeYA8myyBJ6lH44ktjag6FrjARbqZLVfNZEPsDt2WeNBuM
-	uhknA/bSVVjRKKJv4sVBS88fhMAKwt9e222iHAY0bMF4DKoOcm4fTi9nLwbQXw==
+	bh=qrjSAC7SAmpDUYWq+vNC53L+09u47wFz/1UIM9ff65M=;
+	b=abPt/DCJUkjo0By60ALHyn47ErcWIawXG4a8H79spKto/KfXWwjJwtmhiw3x/ftmHTVPh4
+	PRLmiKO9Qdz92YSWiiAYc5UY8+BsHipuv+kMhol1Sm2L3UyG0EKY/yg0ceUSah5AST1/VS
+	lr4OfUybQCNxE8IJSdBYex+U9cERiJ4nJ8Y1G6vRJlHsMoHTQnDVpX5CniYiW4qW9rmZJr
+	JgmgfPAj0x3k2NcQNIFlR71lvqONBGN1uhkuN5VVRNbChqTeiW83gPExbqKw/Z2yh02w3v
+	oCpNVJbz4t4C7IAma2wbfnnocCTOP0uBZtRQn6EanipYwyHzUw+I7CS91OJuLg==
 ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790599632; a=rsa-sha256;
 	cv=pass;
-	b=Sdg/14g+Vvm/Wpqfll60r72VrHN8E0wEBmw5mZ2mmy2sV4WusiM81Vw+MS22CDtzv8J/Xv
-	ob+spXqW20tz8aIVI2oDJZAr3SYnBu5XceZqXeUEXKenMHRSxZKmYgWGpl3rYqpJPX8nCD
-	ASnuDvBuxI9Wm8hKGXGKezWexuMTACbQv2zgHI67MrTNGXmDcEuRHLgzxWKta6f2j717gY
-	zQU2DHxNvyNSf6aMbh60mSwvO6e7aBE4kGraitkPbQlWbxxEyXdyXgObN4MKEebFKztgEi
-	O6cXEqbbLduOsWbQ3Br3ez6NQtprasN/iLfcK3WuXHVZB5aZOkb0vCqRDvaeFw==
+	b=LheVfLCw2HdYhsS+F+TMcPs6lZIFXcW5zB8yA9BdREFC5/FaTpRMh3kyiDLvMz2Ezhrdpm
+	yorc5XGxoSysciK/ZCSPsjRqlRheRvtUEab9aYh31FhyAZCAL2DFe/SX34Wu5vgQV7GfQB
+	0nWNSPEq9GXiZ7q8pMXA3GlOzqMyrKi9Ec9PT9UO3LdFYghn4Vur753MblIvpsO5FJEA93
+	3e9ja1/BUSJQn0N8X5DXX6kUssCd0qYiGC2X6tU58SfSkLAllRnE3hZT++Suf4Ax6SNCF+
+	n/ZhEBBD/XbLb0WxWPEwqLgcBCxMlJr7W4Dhf7uHk4B+a6+CXk0Hukj6NWpN4Q==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=GJiI29bu;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=gwUhf0Y9;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=SaqUfrtW;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=cGE30f+k;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fddUnPcSvGQNwF2ZEOVoom5UhiilPleOo9Ws7Exn9V8=; b=GJiI29buWRwOoGDWCb4Jqq/l1g
-	U9Tejzq+9scpOTpxOoVEd0DC6ZWQNKqjhM9kU9rDIJccaTTehnKved9C6SNMLHQMquKUyZXvY4xwi
-	xTqRwv4SClE+VT6JR9zti9WVFznxqwTx4F/qQJbHNlx76qSO9DGjhyuqAvIr3ogk1NzKFq2WyC+9B
-	M463UK7orciph6uXjv7D8wouzOJPheAFyDBWdUxlVJd1E6RH+r+YCe38f8QLFf99iWxatSxWHcPua
-	ApmY9/oNPBMjf/skOfu+3KbBF8QCNhmUMMGU3K0B1Y5DRZv6k8rmpDAZpMwOSEPSqMrz3MKYr+0zW
-	odPLCwPg==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=qrjSAC7SAmpDUYWq+vNC53L+09u47wFz/1UIM9ff65M=; b=SaqUfrtWzqfGdD
+	tS4a7pS2BTn7OQb74Fi0TDY4sC/K/KJIB4Vcn0xmNBNZ+MfDIpeg9oF6NfsGNmQqAsQ6spjIkfZkK
+	YD0U6nIYbYjr9b+cnqvf3vQYahPs/dY59Bu7lmxsL1oIUw5jJUy1zrG70j2UAyGIdMyKeeR6jtBPV
+	FHzaGCPVPVzHKvxAvQm5t/FJ8IK2BDXcZJC5RBCnzA/bZk34POWY3KFRWcocVw/lGjkTW9kmXqAKM
+	+aUjPpSsQevIu52eG0sFdD+JDDnOFDh5qQiULeKSt+8C4B7x1FiJIFDQJfrRnqrzz4tFr6oUkhvxL
+	yaxEryMadkHwcUIo7lvg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xBAk9-00000000abr-18iW;
+	id 1xBAk9-00000000abk-0ewB;
 	Mon, 28 Sep 2026 12:46:05 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xBAk5-00000000aa0-0rFX
+	id 1xBAk5-00000000aZy-0r9A
 	for barebox@lists.infradead.org;
 	Mon, 28 Sep 2026 12:46:03 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 652FF201E7E;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 560C1201E1B;
 	Mon, 28 Sep 2026 14:45:59 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1790599559;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fddUnPcSvGQNwF2ZEOVoom5UhiilPleOo9Ws7Exn9V8=;
-	b=gwUhf0Y9NoyXgI3hSdef76EysJ/fNYh8jKe4bUoYYXQ8w3JhBPKpf6rYjxHm0nLVHPUzHU
-	TFemsDUYNw8W7MEQNOhTz2BkOgs/Nnu1x5oz6eqASt39lNPt4eSZd41TRv2k4lFayA3No+
-	M0BrfKNPXPtCwZjK4agqXQVkeSQDkRaAOlKsUFMvT+nzT/bpMASXiDr+JMZDZm3ZXzONMa
-	j4intisosuB7zrPRcD44f9WHwLbQRa3/P+Q8fe65RUDDi5mj/e9vXvHpqqBWYA/e8N1kW0
-	wabx03JQ0YKUDiisrR7dnbPxmrAZdOaQs9VGK+YW1OQ81d2S2V2tbGLDgVXxpQ==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=qrjSAC7SAmpDUYWq+vNC53L+09u47wFz/1UIM9ff65M=;
+	b=cGE30f+kB6xzWhmh5ovYInFbvM5xLeiGY9w85O6bszQgkVIEV4bYOhzALzKZK4r3z8ggbG
+	S4QAnhqGmwcn+D3PBS602FQtAc39gXBCGSG7SiT8hHsCBGxxvDRBdud++lSZRlbC0WUn1n
+	p/dGF/svbmiAfpWz97Va0JM3Cl9CESVaveU3ANx+OadgRNmshP42VUUYfqCZkbUcTJZfV6
+	lG/Pu4M84a3/UjCoH3KHcTXMe706Y3Iw9kR8+PqLE2aQp96TlUMz5gnkafIn+vyIQf7O18
+	wBUs/mR/MtE1Z2l8B5B4m+CENP6wkmBsS7a9PEPfVVWuxEnZRIcJq3raV7jVDA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1790599559;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fddUnPcSvGQNwF2ZEOVoom5UhiilPleOo9Ws7Exn9V8=;
-	b=ZJyxHka3/7izEB7f/dgB5YXwEXJodJdh1A5iRoOk7nHcpkFhMfut7XW22VldFmouUNSuZ1
-	02hhSwphNNLBw1xDnKFD0m0O2/TW3GZxHAIco0C5KTZQV2p2KoXz6wG4YCRaZphP+SwYYc
-	gZ+row/xxMAWU/SO9SfTR3JCvugk2ZoPOkkkGsFQCgJ/OQwTJWQRYs+Y5roTsfT2P6Zk/B
-	t8/UZThyP0a7V8TUCA9NHMRcJcuni5kaB1uf0zV6oEbHKNmKIGZs93FP7xTgQg0jhd6dwA
-	vGaNHHeG2IlTxRQpntuV4mL1u78hVZ1Ezksbk9yvrGAog1aut6dom9+Xjxjykg==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=qrjSAC7SAmpDUYWq+vNC53L+09u47wFz/1UIM9ff65M=;
+	b=YYhscK/RrRsHUfd7nJB+CH7OvEaKePximxXz4x7ztz0fCAwJnnb5doqfA4lJo/ho4cxp9Q
+	JRSPgSJ0NXKg0aP7RfDQBINx74rgtUATbyuxbqHZaTJ8HOeJJBIvEirEsRubSdqgkd3YQG
+	ZPEch99uej8mD7qLpUn0Xve2cWry+8P+I+GfcYXWQxRdH9dh1e5yCkaaCq+KsFvvzqNjpI
+	4BBcTw27d7aalkM8kByaSOSK/onEPyh4YL105/2CoL6rUV/G24Mlf8nq/CdbFjwsKBMPtz
+	dyDF6Z3ibhd+DsWktTVGzrYF21YO8CZoz5lZBSpusQsKp4sPYHQNqkj5Q3FyKw==
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790599559; a=rsa-sha256;
 	cv=none;
-	b=JAFM21EmZ1pBjaRDSH+c9+xXza2TjaO5iQ3gxgYHkB/+tcXJ51qFIWCmQxcPP+vSVLQBf1
-	PVyT/AjWfH0Rpd8o3GTzWbO+pOSuN9Uv6Z5A230Tu6mS0itFaZESxNHUv1r1XCPh5NoQXH
-	pZf6GWKmPiwUTDHNHANqstZPypKyFp+RwgS+ifyuY8neFXQTz/lTvYOmUqHgIBzXvaWloX
-	si13dTqWL/dDPM7OArQXuBYilYk9+eX46ptQNHFeR8yfzTNn5C0BcJuL4+6hEZ189uXpQt
-	IxAOUeJEkNeWiRhZz0DM+tB2fLTks562J7gyeNtwfI1D6Wc6JrhfV9yUQH0utA==
+	b=Ys8auOFPIq0Fvq5YREW4ILpGUdSN04LbhXEv7W0Gpbp2kQRiBOs+R9U4OIGnXXjt4lRTLN
+	Voe9ZhnVNxa7jBSV+l9HYlzOZVMpvOky6HiJKlO5+q1OIAsEY+kkPiY/btTeMZoKXMv7K/
+	kOrmYbWywYmfy+70uDfKu1CHNCJQPIDCkjjt3UcQf5cPf0w2lvzapohb66ejcO46q/Ts2d
+	lvbTms1qEJsuf9jaifW54/vFehbKWB98OPhdExCfEYJiztqNHt54KPo0zVC6iAr65MV9Tl
+	jW/P7lt6RHzREg/E7oPfzYV1PsFa3BNcoXlYuACGtcohqmjcOq1DXYg8wNkqFQ==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=m.tretter@pengutronix.de
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <m.tretter@pengutronix.de>)
-	id 1xBAk3-003ECA-14;
+	id 1xBAk3-003ECA-0r;
 	Mon, 28 Sep 2026 14:45:59 +0200
 From: Michael Tretter <m.tretter@pengutronix.de>
-Date: Mon, 28 Sep 2026 14:45:58 +0200
-Subject: [PATCH 2/2] arm: socfpga: mailbox_s10: add wrapper for
- CONFIG_STATUS
+Subject: [PATCH 0/2] arm: socfpga: mailbox_s10: add more wrappers for
+ commands
+Date: Mon, 28 Sep 2026 14:45:56 +0200
+Message-Id: <20260928-socfpga-agilex5-mbox-v1-0-9f6ec865e882@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260928-socfpga-agilex5-mbox-v1-2-9f6ec865e882@pengutronix.de>
-References: <20260928-socfpga-agilex5-mbox-v1-0-9f6ec865e882@pengutronix.de>
-In-Reply-To: <20260928-socfpga-agilex5-mbox-v1-0-9f6ec865e882@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAIRhumoC/x3MQQqAIBBA0avErBsobaK6SrTQmmygMhRCiO6et
+ HyL/x+IHIQjDMUDgW+J4s+Muixg3szpGGXJBlWptupVh9HP6+UMGic7J8LD+oTcEzVkrSZtIKd
+ X4FXSvx2n9/0A0tN6imYAAAA=
+X-Change-ID: 20260928-socfpga-agilex5-mbox-e95545bb353a
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Michael Tretter <m.tretter@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260928_054601_542368_04CC07D8 
-X-CRM114-Status: GOOD (  11.09  )
+X-CRM114-CacheID: sfid-20260928_054601_396942_ADF36B0D 
+X-CRM114-Status: UNSURE (   5.84  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -131,9 +131,11 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  The CONFIG_STATUS command allows barebox to request the current
-    bitstream configuration from the SDM firmware. This includes potential errors,
-    the boot configuration and the Quartus Version that was u [...] 
+ Content preview:  The mailbox interface of the SDM firmware on Agilex 5 provides
+    various commands that enable the software in the HPS to request information
+    about the system configuration and status. Add wrappers for the mailbox commands
+    to add some convenience in barebox when requesting information from the SDM
+    firmware. 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -164,12 +166,12 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Spamd-Result: default: False [-60.81 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[100.00%];
+	BAYES_HAM(-3.00)[99.99%];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
-	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:1101:1d::54:received,2a0a:edc0:0:c01:1d::a2:received,2607:7c80:54:3::133:from];
+	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:1101:1d::54:received,2607:7c80:54:3::133:from,2a0a:edc0:0:c01:1d::a2:received];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	MAILLIST(-0.20)[mailman];
@@ -198,79 +200,32 @@ X-Spamd-Result: default: False [-60.81 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: C77D820026F
-X-Stat-Signature: 685cpifc4n9tfk8e5kcghbti3y3mnxh5
+X-Rspamd-Queue-Id: E56D920026F
+X-Stat-Signature: 659mfdk8jzmr14qbbpzwi1tezd3ugies
 
-The CONFIG_STATUS command allows barebox to request the current
-bitstream configuration from the SDM firmware. This includes potential
-errors, the boot configuration and the Quartus Version that was used to
-create the image and the SDM firmware.
+The mailbox interface of the SDM firmware on Agilex 5 provides various
+commands that enable the software in the HPS to request information
+about the system configuration and status.
 
-Add a wrapper to have a more convenient interface to the SDM firmware.
+Add wrappers for the mailbox commands to add some convenience in barebox
+when requesting information from the SDM firmware.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
- arch/arm/mach-socfpga/mailbox_s10.c | 21 +++++++++++++++++++++
- include/mach/socfpga/mailbox_s10.h  | 11 +++++++++++
- 2 files changed, 32 insertions(+)
+Michael Tretter (2):
+      arm: socfpga: mailbox_s10: add wrapper for RSU status
+      arm: socfpga: mailbox_s10: add wrapper for CONFIG_STATUS
 
-diff --git a/arch/arm/mach-socfpga/mailbox_s10.c b/arch/arm/mach-socfpga/mailbox_s10.c
-index a3e208a2aa17..1cf92813b5a7 100644
---- a/arch/arm/mach-socfpga/mailbox_s10.c
-+++ b/arch/arm/mach-socfpga/mailbox_s10.c
-@@ -369,6 +369,27 @@ int mbox_rsu_get_spt(struct rsu_spt_offset *rsu_spt_offset)
- 	return 0;
- }
- 
-+int mbox_config_status(struct config_status *config_status)
-+{
-+	int ret;
-+	u32 *resp_buf = (u32 *)config_status;
-+	u32 resp_buf_len = sizeof(*config_status)/sizeof(*resp_buf);
-+
-+	ret = mbox_send_cmd(MBOX_ID_BAREBOX,
-+			    MBOX_CONFIG_STATUS,
-+			    MBOX_CMD_DIRECT,
-+			    0, NULL, 0, &resp_buf_len, resp_buf);
-+	switch (ret) {
-+	case MBOX_RESP_STATOK:
-+		break;
-+	default:
-+		pr_err("MBOX_CONFIG_STATUS failed: %d\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
- int mbox_rsu_status(struct rsu_status_info *status_info)
- {
- 	int ret;
-diff --git a/include/mach/socfpga/mailbox_s10.h b/include/mach/socfpga/mailbox_s10.h
-index b006fb18ff09..bc0fd97ff0fc 100644
---- a/include/mach/socfpga/mailbox_s10.h
-+++ b/include/mach/socfpga/mailbox_s10.h
-@@ -190,6 +190,17 @@ int socfpga_mailbox_s10_qspi_close(void);
- int socfpga_mailbox_s10_qspi_open(unsigned long *master_ref_clk);
- int socfpga_mailbox_s10_qspi_get_device_info(u32 *resp_buf, u32 resp_buf_len);
- 
-+struct config_status {
-+	u32 state;
-+	u32 version;
-+	u32 pin_status;
-+	u32 soft_function_status;
-+	u32 error_location;
-+	u32 error_details;
-+};
-+
-+int mbox_config_status(struct config_status *config_status);
-+
- struct rsu_spt_offset {
- 	u32 spt0_hi;
- 	u32 spt0_lo;
+ arch/arm/mach-socfpga/mailbox_s10.c | 63 +++++++++++++++++++++++++++++++++++++
+ include/mach/socfpga/mailbox_s10.h  | 34 ++++++++++++++++++++
+ 2 files changed, 97 insertions(+)
+---
+base-commit: 4a752d2303440195e12ed1a4e642b0be5b450b8e
+change-id: 20260928-socfpga-agilex5-mbox-e95545bb353a
 
+Best regards,
 -- 
-2.47.3
+Michael Tretter <m.tretter@pengutronix.de>
 
 
 
