@@ -1,44 +1,44 @@
-Delivery-date: Mon, 28 Sep 2026 13:29:28 +0200
+Delivery-date: Mon, 28 Sep 2026 13:29:30 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xB9Y0-007Gv1-1P
+	id 1xB9Y2-007GvN-0j
 	for lore@lore.pengutronix.de;
-	Mon, 28 Sep 2026 13:29:28 +0200
+	Mon, 28 Sep 2026 13:29:30 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 473B92001C8
-	for <lore@pengutronix.de>; Mon, 28 Sep 2026 13:29:28 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 9B06F201E7E
+	for <lore@pengutronix.de>; Mon, 28 Sep 2026 13:29:29 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=wb69WtLS;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=CtzDUUO2;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=QTfMu0U+;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=LSlLwdLP;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790594968;
+	s=20260414; t=1790594969;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=PyiA7kClxoF+JWMi6MohvsZyEqQ4neapkhScVJgqp0A=;
-	b=aycO+HeWb7ITSzv9Q6y4BOO8JvUpql8DVON6taajCIVgk6oNmU6nZRG0XN072jpn97AiJp
-	e5cICZs/kaYMT6t2zZnX3fjcRFZY3/oF9WjlB5/s1VqZcgZHIXompnalKXPrIP5q1Uchcs
-	lwLex6xFqL69trXkH0ebbUtK7eiBCbMRGRCn0L8imQvoxgaA/LSc/PL6kdh89kCrJagUy0
-	AK9p6wubRfChqqA1qNmTBFWAklCRJMlH+gFA5bd7zEdItbaUmpZSQyeyayvfRujPGefo0M
-	qftQPwHaLI2Vn8ofpCCyikFPSzGnCz8bvhfY8xZuCZyqednPNKBl1pza/ImBwg==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790594968; a=rsa-sha256;
+	bh=Cz3CU7ilSx+ENRQIDc9UTi72jPFizRwIoYEYNI9Q8Ws=;
+	b=I5X1buHrkFprI77ABsUrrHC+cXNvxQ8ZjpffB9+d+7pkOPSKOqf3zZpWJck0gRrUFiBurg
+	YxATegP6tmhVxtZQ2fct+MdKDO2sKVw/mndOPZHCPa8eVcHiQjNo17vXiObIRyjPwVK7Nn
+	HI2Mr3VEbS+qq/dgTCS+QrxxNMiaUMJOOCe9Dm23QqkItm0P4jfnVJ96wh8LJG5uiqporL
+	rf7o2Ada2Jm7nmZPvxFy4TQ/y8S8nTWBtQkU/nDCovJnlMUNyy8uxChpNLdYQUsEqwHBKn
+	TPQMZEN842ODza0cKdJa2JY7F2nzVqwrZ+/BrlkpUvxF+XdY2snc5lvSPP0GQg==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790594969; a=rsa-sha256;
 	cv=pass;
-	b=GcjfGkS6trfIXzjb0nEE3W5+BuhxoPaZvsDTSSm+E9ECRa4v4/OxLA/1142T2Yu+/eAKR7
-	lNDHEX0RW/U0HSGtdBPieYZEpVSmNIL9nd2iUV1+5SQEH4jBTBu2NgKTvR581cJbi3f1oI
-	yuzL2nwVGGyFpwvKmkoppnyAeqDQchJFdA5PZ6UB4Pc+0mOyMOF6aQwLf+xsg6CzFU0Bdo
-	CQTjejFN0HP16AoeLbQ+OLK+orBdYFgMgJGRZrk7koO380Jo0TtJQPNZpV+zw8hkojcHK1
-	U60Vnhxb7Mcjhyd5po1ZBIxsT6hxU7r/nS7U93fQQHitNUxtp4Y64JoFhqjBNw==
+	b=fB0Fv2UF/T67j1+HY7HwX7oVVUjF14Q8C8hIOaZwS6mvIRyzhNe1d/jUNNOE5+e7gKun6V
+	3jN8Y05tJWy6ChtkFh3aWOCZwYuykV3u+zmI9tIeP9z2yXZbrMwUYFr3PA2cELpnc4Mzib
+	PJybhLF0lGwmvlMiNDYvPaZPsP3i0IqYlnAnCZ02FzVRU/j1IJCxJhxKZOieJkJCnVnxau
+	bWz96ZO+YhvWk85mria1xmE4K6s0St42IbnLyb4eep4Duf7hbcqkXSbwhFH/x20B7KRa8Z
+	bCvixJCX0vkC5Ua56MkXHuZRDvkqG+Gpf2HuLNppYbFIkQ5yd0kJ4Rr1BkqTUA==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=wb69WtLS;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=CtzDUUO2;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=QTfMu0U+;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=LSlLwdLP;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
@@ -48,24 +48,24 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=PyiA7kClxoF+JWMi6MohvsZyEqQ4neapkhScVJgqp0A=; b=wb69WtLSvD5WwmOH9gY+HwjBI7
-	iqlk4DCdS88SEJu/ZJdtyTMvwCj9yCpXBkiQB+B25olF9Hg3gXuj3/3tPMR64HaRYN3CuDM/HyqGM
-	R4DanhS/Sj1V4Vbh1NBwMDX791GP+NUZgD3duCL3qGjCBKa+qKk4AQ6qrZzgdT7oE7vpXSnlguCiH
-	jDHTQMJcaxaYW8N/r10KUUN4IEpjlegGMabEGhBXtT1UlsY+5Ux5spRkCTsSfwfs6051qaSkimJLC
-	loFKI5x3H6Mi5xHqsAaVnKOm39W8/c6OO1H09VXkfhN/ZeAb5H9VgvFyGfkoSxoGiE2IcP+eri1Zg
-	Wdqulq4Q==;
+	bh=Cz3CU7ilSx+ENRQIDc9UTi72jPFizRwIoYEYNI9Q8Ws=; b=QTfMu0U+4Vb/1xJQA48QZ3kMaC
+	Y3gFUMbmBa35qHbWNLKvv6dEnN/VclkMkDHa1Rr58HnlyDx7UasvQOqrboWRqZbP5TQzXds0+Q5n9
+	ciGEmlB5XJPWJqVoeRr77oe5wXE0qajcdhHZqyfVWG5wtNasrfm12JFDfUNcW7DPXB/dPNVuelcVC
+	JbRpST1tWi6l/T54dBmGGTSD6lxeqm9nk37wJjf1En2qTGwdnZO5pnmpIzSKEUGId4hCrBnWW67f1
+	jleDd3z3b7yWWjwEa5P5PcHuGG9yk+1brpIpbzjlsDxl+ZJDZrSEDEh7KdonmS1wxcgEVJqJKgCpN
+	B/fgkS4w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xB9Wu-00000000S3G-0IIW;
-	Mon, 28 Sep 2026 11:28:20 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1xB9Wq-00000000S0k-1U20;
+	Mon, 28 Sep 2026 11:28:16 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xB9Wq-00000000S0L-2V5L
+	id 1xB9Wn-00000000RzS-15yo
 	for barebox@lists.infradead.org;
-	Mon, 28 Sep 2026 11:28:17 +0000
-Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.pengutronix.de [IPv6:2a0a:edc0:0:1101:1d::54])
+	Mon, 28 Sep 2026 11:28:15 +0000
+Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.4.pengutronix.de [10.17.1.19])
 	(Authenticated sender: relay-from-dude05.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id CDAB5201E7F;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C65C0201E6E;
 	Mon, 28 Sep 2026 13:28:10 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1790594890;
@@ -73,51 +73,52 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PyiA7kClxoF+JWMi6MohvsZyEqQ4neapkhScVJgqp0A=;
-	b=CtzDUUO2sDqdILZ6uGjY2eAYd4WixF6b4XfdlTN/F5VxDiryy9nFMiMrZuxX6s8+29YNr/
-	3UJGWE1/nBtC5g33PpoUX72YY3o8XfjnNkhRs7nzcr+oLoazzJr2nW2IImv5trRhFPrthy
-	AffSmK88n82uKXO7OskyvC0e1amOvGCSU9teKwTO00i7W0Y7P/mH+2EH6aBm4iFjTJPNZu
-	LOFc5g8bEIsBgbWpMfD+/lZmAafDeC8Mw3Oj3p4waLVAop1ikDy1pfPKr/9fBeR7/Ekea1
-	DptA4lerAkjBxwlgjyvvV5tmA1X+ocrDyNlZXJYEywm+W88tN42258ulHAzKPQ==
+	bh=Cz3CU7ilSx+ENRQIDc9UTi72jPFizRwIoYEYNI9Q8Ws=;
+	b=LSlLwdLPy5/JVEDsOo5bFPGD53CIsA4usq0jzKaEejX+oSY5sYSG1P0p40blOMqiSHJ4MY
+	H+Y+d0Ftit303NMKJpl6kzbVrbY3/zAh696WD5d4LIWLwpws+dMt/FCn+ZdKjLjJoAAB9A
+	QaW8fSFh86Ce9lqy9behMtRDDrjkBXFx0NMVstBsyRcF0I96kPWupYJjIX9ygXP9oAdcWu
+	ZxBQEMjDpgEQdKa3zdQ4mZvP/0ZYv5Yl619Li+QsxZt6BMzrfgZHda3rZxUnbYT+ZHZV3K
+	D5O64g80akSkJ1xpwUCEkB7d6MWUGt69iuUgvynLai2fKesysY0qwPlVTwh2Sw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1790594890;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PyiA7kClxoF+JWMi6MohvsZyEqQ4neapkhScVJgqp0A=;
-	b=JCUY3Tc439DHP5P7+rgTBAhoqTRXGHgEsdBw0CQiS+a/aFXr6bldAPHUTsMLcUKBxb/DN4
-	v6wVv4VH9ObVwcob3gk0Tl9ae8TRDhIpmDyUr2WmpszepL2Zvw2yUvoBjm/wyL5FKwnKKu
-	J1XnEff7bdim++/O4tyZ3Yygrq29eWa7jmhJIsVEcQVOyrZE7X924bi5PECKpGFK1AKQWs
-	HZw28SLFGWaqxija8Q4FzgUWNbhHT4jB/9+daRzXzIqLFIm+iXAN1ZN2TWcGCbQMeo0k7l
-	YtJNPElqNgtGO4fRAXt/3nypnBNmDxc9iMoQyTyHphXV571TEzIXsIZ9hW42dQ==
+	bh=Cz3CU7ilSx+ENRQIDc9UTi72jPFizRwIoYEYNI9Q8Ws=;
+	b=d9OVKro7oKAO49kPpeiUiC24mvykj/M9jlz4xBBDYafJilD686pKqGuV/4VF2C1b7u3Ekv
+	K781h73fVsX8s3uqRhloT9j/r/Q3LcAnOA2yGABWv055q+HgXEj3wjiZM0eqFzRilszFf7
+	cNrFN1ghYHQrfwLFkG2KbT0OIE6JeS85Kb7p/s10gwV68V8FaIeiH62NfLf4jNgsIODXAZ
+	XxBOAHzR66zmG3CZuac4/otYzg/Rj9s2MRO88tGVddTjNIcdnNqTzC4J3Pp6E7JjTCKSah
+	56RW2ERDy9fW3UFxjcxCfq2lOSfhtaDQYfWbg8dtKGOcf66linPWsgpSJKdEvA==
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790594890; a=rsa-sha256;
 	cv=none;
-	b=fJnrSvHc8ens+CD18Hay+P5UuQuWR7hC//5CT3XH3cpZfO2lCWaoML1O3IT5UphP82g3RC
-	ovsczSHwQBBgAjcKRUgR7lm/D7lY6Qfbq1PNY9kigjvRqnAuWbYItw7pVLeGouGUHxilc8
-	2iKdPblXTbm5tMo2VMwwY7Xf7EaN06zmOGkv33kzCSy070AXI2ouiSQFlgQxlbCMn9XASa
-	fVEvusrRWoFaJrv07+/AztFJAktEcWU25b7yHY+bYj+sa5f5HgLWyoG6zW2jMAJ+Q5vuDq
-	0NYa6ZDlJipXVRmnPbV+nWR98cxzcUgRAzfJYSolC3u0DU+5SwO7eXSv1mPtPA==
+	b=Yt/0rEwnlHX5ZP7E1JmX/c8HTwrLvddRrFym63plk37QTCLfaVV62BjqPGV6Cl3YRsqusw
+	+tgYqK8sjlLk+Czqq125e+fK6ExtgRYV0nCzFWkO66ErpR5jUYj+PqOZHgqiJtvFxHsi0Z
+	qjjWqKFwHov2OtGLXIJb2xZbPzvdQP/9jVtIbHcvKablCifk/2CyOB7ivOeOZL0NYB7Gn1
+	PoCxUy0IfIUjJmEDyLh/AN+Y2NICLsa7V57mu7DdKJ/HCx3132zt/GBBG7WM52+8RzEn1c
+	9mzCQafJ+v31RwOYkgz/LrRu1KKOD/hqH42Zb+mdgRRQqqrVprUYwF8pXue88g==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-dude05.red.stw.pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
 Received: from dude05.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id BBAFF74D045;
+	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id A64BF74D0A4;
 	Mon, 28 Sep 2026 13:28:10 +0200 (CEST)
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Subject: [PATCH 05/11] Documentation: security: clarify the environment section
-Date: Mon, 28 Sep 2026 13:27:00 +0200
-Message-ID: <20260928112731.1271094-6-a.fatoum@pengutronix.de>
+Subject: [PATCH 03/11] Documentation: security: require signature verification to be pinned
+Date: Mon, 28 Sep 2026 13:26:58 +0200
+Message-ID: <20260928112731.1271094-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260928112731.1271094-1-a.fatoum@pengutronix.de>
 References: <20260928112731.1271094-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260928_042816_806520_50BA5997 
-X-CRM114-Status: GOOD (  10.14  )
+X-CRM114-CacheID: sfid-20260928_042813_455073_9835E618 
+X-CRM114-Status: UNSURE (   8.56  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -125,9 +126,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> CONFIG_ENV_HANDLING
-    can be problematic, even when the environment isn't mutable, i.e. it's simply
-    read from external unauthenticated storage. Clarify that in the docs. 
+ Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> global.bootm.verify
+    defaults to "available", which accepts an image that carries nothing, and
+    "hash" never looks at the configuration signature. Document that we expect
+    signature to be set and enforced in verified boot setups. 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -156,29 +158,29 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-59.11 / 15.00];
+X-Spamd-Result: default: False [-58.91 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[99.99%];
-	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:1101:1d::54:received,2607:7c80:54:3::133:from];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[4];
 	RCPT_COUNT_TWO(0.00)[2];
 	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	DMARC_NA(0.00)[pengutronix.de];
+	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
@@ -191,43 +193,46 @@ X-Spamd-Result: default: False [-59.11 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 473B92001C8
-X-Stat-Signature: wgdnzebbgdantw986zqi1ptiiqc4ie6z
+X-Rspamd-Queue-Id: 9B06F201E7E
+X-Stat-Signature: tz58aewkz5bukujqked75w46r54dnc44
 
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-CONFIG_ENV_HANDLING can be problematic, even when the environment isn't
-mutable, i.e. it's simply read from external unauthenticated storage.
+global.bootm.verify defaults to "available", which accepts an image that
+carries nothing, and "hash" never looks at the configuration signature.
 
-Clarify that in the docs.
+Document that we expect signature to be set and enforced in verified
+boot setups.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- Documentation/user/security.rst | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ Documentation/user/security.rst | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
 diff --git a/Documentation/user/security.rst b/Documentation/user/security.rst
-index d981d89268c8..9a241b0e2e8d 100644
+index e650c03a1023..7160f8f8e3c2 100644
 --- a/Documentation/user/security.rst
 +++ b/Documentation/user/security.rst
-@@ -140,13 +140,14 @@ In addition, there are alternative methods of accessing the shell like
- netconsole, or fastboot. These should preferably be disabled or at least
- not activated by default.
+@@ -91,6 +91,19 @@ be allowed to boot any images that have not been signed by the correct key.
+ This can be enforced by setting ``CONFIG_BOOTM_FORCE_SIGNED_IMAGES=y``
+ and disabling any ways that could be used to override this.
  
--Disabling mutable environment handling
--^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+Disabling the non-builtin environment
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- 
- Anything done interactively by the shell can also be done automatically by
- means of init scripts in the environment. Even without shell support, the
- non-volatile variables in the environment could be used to reconfigure
--barebox in an insecure manner.
-+barebox in an insecure manner or to influence the command line and device
-+tree passed to the kernel on boot.
- 
- A secure barebox should thus only consult the environment that it has built
- in and not parse an externally located environment.
++How thoroughly an image is checked is controlled by
++:ref:`global.bootm.verify <magicvar_global_bootm_verify>`. Only ``signature``
++is suitable for verified boot. ``hash`` checks the image hashes, but not the
++configuration signature, so it detects corruption, not tampering. The default
++``available`` verifies whatever the image carries and accepts an image
++carrying nothing.
++
++As a global variable, the setting may be changeable at runtime unless barebox
++is built with ``CONFIG_BOOTM_FORCE_SIGNED_IMAGES=y`` or the
++:ref:`security policy <use_security-policies>` denies
++``SCONFIG_BOOT_UNSIGNED_IMAGES``. Either pins it to ``signature``. This
++will also result in :ref:`command_bootm` refusing to boot any non-FIT images.
++
+ For development convenience ``CONFIG_CRYPTO_BUILTIN_DEVELOPMENT_KEYS``
+ can be enabled after enabling ``CONFIG_INSECURE`` to compile well known
+ development keys into the barebox binary.
 -- 
 2.47.3
 
