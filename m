@@ -1,18 +1,18 @@
 Delivery-date: Mon, 28 Sep 2026 13:33:17 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xB9bh-007Gza-0s
+	id 1xB9bh-007Gzb-0s
 	for lore@lore.pengutronix.de;
 	Mon, 28 Sep 2026 13:33:17 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id BE4272001F2
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id B353F2001C8
 	for <lore@pengutronix.de>; Mon, 28 Sep 2026 13:33:16 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=DjF5uI+W;
-	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=LH7buXjg;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=QrJJ+h1o;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=0vdwf2Kb;
+	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=iTXTGR2u;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=BDhMptk8;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
@@ -23,24 +23,24 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=IuOkJbk5AYUdyeg/C2O56ofP+UrXa7ZIfqrzM2sghjg=;
-	b=YX37FhpCnH8t1Yuf47uqUL9X2sDAOEFESNymWrB4jjxEHCYFtvyMttK2wz4z08GyLGDIbQ
-	XHkyCQtYax1daaHX777+SOvei3/q9ea3IP0bJUhgtaYGkZ8aFXtthZ9W3biMlAXuolCHiu
-	EzLchxNb2Jg0ZIQHHTlIYBGTeXyPnuBrZtNcq3+5Xar10p7sbYWUARubaBFRrCdZnQGxJ1
-	3/gwPcTzytMfXzWmyYR8QiTAFlV4fGfT3/bUdF7i9fJAc/5Tda04BK3L8OyA9Snsv1+5E1
-	qXskKtT64tl7HwrtkiiVxSlsnL55Rd5YRXJ9Ay4GiCiJd/eTCNW6roFDPL5QsQ==
+	bh=FNeOF2G464lO1vqtP6PgO4ai7A+CHcrK7jt4ByAiDGs=;
+	b=XmaO4zpHzSBlzwDyvseqV5scDSA3k4p8+ClQHeZwYQK8pJ0VAMtIdqF3aMn8vKZu0JTW9B
+	0D5z6nv2a3IcNFJA/KJqfPqdmabYUDGv7JOE47vFgIt2TQn65s47GTvkvM5QMUt3Yd3Gci
+	ulmRWAU42wWr5+MylFY6UDJucw3fMd7AFwZgEwemvBSFZ8xBw0oEG3qqwQ3ZA1elueCruH
+	BRU3P7DCSQt8p9+9sBZuDu7unR/mCf3lD07GNtMWqAK3wL0w83ymBQz+NQG+qvCS+PIcwJ
+	8dzzLRY1O3iIM0Wygiz6bZNey1oXdpvUsvR0LFHFzv7PZOJ8GL5ROj8ASP5SFA==
 ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790595197; a=rsa-sha256;
 	cv=pass;
-	b=DP1zwzZ/g69PPXDyM8SJDNBJjx/mByY3NRqDASroMGf/gB012u+2H9ZxxQh0pQpVUsBksa
-	y1zQyXk77aql07KOf/lbXf3SLTvLVqqHeropGTPlpKoPLUeegFL8wwXIkBmHF8cj9gWK7u
-	rsytlvM9nKpzhl6VsKNCOzP17O9kI28sv14j2YfOm1B7APJyW6roegNYb9/C7vPJ9T0LAz
-	xkP/kNU0XRIel78ueVWsG1BHOS8GyRk+qZxeCdOAozPGEPQn+y11nurCqrhbrkL3jeuhLJ
-	RIoQLHFJdPx+ZHBmg+pMPQzsBK6nkJNYFUTDkYJoyLsKdr5VtwMboAJDT5cOvA==
+	b=NDvpcHEGoSh3UVhVNrEdiq0d/tZokajVqmgOVullEvxmNfSsmi2OZIGCts3CodcHjeS0pP
+	Zy2WA7bZuV6OmcchN2TVDwlOjAJgRBrvWWT24G2sN1EbVW8/CYrqAvqsDFWspO2JlS3AIA
+	Up942HrHDzwF5IQd2xF09Tau/Jhf9oUMl8nd/RoVgOvuNv6CUx2R27wetSBr2tVV27jWIy
+	+aowllzzKPpmYH1pDlhAczxSFqYxj10KUpKXimROgtvIjHwsZUWs9JLwAFHMpGtjjz1ee5
+	IxsbuQBEfO4hc/P227YFZHb45wT6h8TUVpsgw3/7T8J7nSdus902AUQr4YT9YQ==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=DjF5uI+W;
-	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=LH7buXjg;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=QrJJ+h1o;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=0vdwf2Kb;
+	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=iTXTGR2u;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=BDhMptk8;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
@@ -50,91 +50,91 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=IuOkJbk5AYUdyeg/C2O56ofP+UrXa7ZIfqrzM2sghjg=; b=DjF5uI+WpdTQWUOLaWL9ex/fRW
-	6CWFw5+2D9cvKnqVovKmFGfJW6/MTjOuiq1GukzNv1sC8/HlNC9ctPydl3emv2z1Ukb8g+C+QzKy7
-	1aFQWWZuMwtNU9ompDDBcl01hvN8MxvBs2zsHSKeaOlWL3zvTkn77D0RoM2p9Yhtj68H9ItzIkS1c
-	uuTOjP/uGd5Ajn/ZDALUKUDLYXOfceigMT7yF9u2oeYf2Xr7/X+v5sR0HPu81W3A1WN4w/aY6NUVT
-	Jr5IK9uRe43Ji3EcmGkFgYN8dRqIuUBOSxPCgJDPJzaTHfAjqYxZbgIEXAhirdXL2aXAOzCqeThdD
-	O8sr5xDw==;
+	bh=FNeOF2G464lO1vqtP6PgO4ai7A+CHcrK7jt4ByAiDGs=; b=0vdwf2KbUgEBdssjLzeJ0xaXwD
+	aP8175p0nrUYD5qr/fj+JZFwHig16vd9GDXX5k43nl5RCbIWvqvhoAWzKaDNgMvcpZNt4j1ZVkact
+	NKaJJluUqrbkl39ohoVkc6h9SEr9vQtQW7HlWwICIa6B64OiM/ef03P6tEOLsaOiq22z8WMFs1Tmo
+	rApdHG5BhiiN3GEllXFFCW7ZIkfJjQkHqQwftteBUaRyuS/NWi/GA1Be3wHNXH/UnYeZ6ad24hTbO
+	UO0FkEIUKYLyloi9S+ECfkIYw4QUq+3oTIJEX1zfQfJE9WYLxRxk3AUcUhOT+XjH35D2LCMfeQUex
+	JRhy9PlA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xB9Wt-00000000S2d-20bi;
-	Mon, 28 Sep 2026 11:28:19 +0000
+	id 1xB9Wv-00000000S54-2vvw;
+	Mon, 28 Sep 2026 11:28:21 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xB9Wr-00000000S15-2NiF
+	id 1xB9Wt-00000000S2A-1Thb
 	for barebox@bombadil.infradead.org;
-	Mon, 28 Sep 2026 11:28:17 +0000
+	Mon, 28 Sep 2026 11:28:19 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=IuOkJbk5AYUdyeg/C2O56ofP+UrXa7ZIfqrzM2sghjg=; b=LH7buXjgC/zF0AbZaJDzuCzfkL
-	e/iFphluzNJdZp7kiFg47/BNaAhUPVjKggiB3eUChDl8851FRuVYytoDlc+DlgnyRLGZ0HF1YEt1k
-	dvkU10Es940ofUbhpdZirG0B0mv03CfzPRoDlkANn8o/e1FutEP5mWbMP5f9wZMQMWnHV8w2pCMdh
-	U1kJdMhqcZ+3Hesnnvv2vf1UCVrXsqjCTdqEQNCHLQSd+nattFBsJZ+AREWlF+sPMk/bg1Yx1bCAn
-	GqnMQNLwuhC/fbaFwy+zjWXTUjZP/IcIUO/DuubH9xky9mgqNnqdxKmhygCJfFrvsNY5+QcrUtbkb
-	eAx4cohg==;
+	bh=FNeOF2G464lO1vqtP6PgO4ai7A+CHcrK7jt4ByAiDGs=; b=iTXTGR2uoQ/V0HE8lrtIQ1bwli
+	uCysDgG+zLK9c9FWFgCKBMZwYjGZnUlHIiaDa40DJmIvEy/ib2wBQn2wJ/GQAtrJmFuCYxbrPjQwL
+	HkMJFFNAyxAuoKS3URb1g7Jl2ZbJa/qBKY17k3IEX5wqtVzFJ7G6QE1u+gE8gDJkCLJls4jsazb2b
+	mODiLwmbKxbu9d4dM07lHIfHwO47Bf0UlMqwuhXTqeKVtWfxrswxE6kyWDMA32jNFNWzrXgvY+fCQ
+	EhwOnjuguJ5KQFRDZn4NNH4gU8RyoE04A5VuW8slhThXkOV3ohyD5eBjUvhsd3eD76BRsmnmhrxX7
+	U7Pg/j/w==;
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by desiato.infradead.org with esmtps (Exim 4.99.2 #2 (Red Hat Linux))
-	id 1xB9Wo-00000001PlQ-0oW9
+	id 1xB9Wq-00000001PmC-1e3r
 	for barebox@lists.infradead.org;
-	Mon, 28 Sep 2026 11:28:16 +0000
-Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.4.pengutronix.de [10.17.1.19])
+	Mon, 28 Sep 2026 11:28:18 +0000
+Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.pengutronix.de [IPv6:2a0a:edc0:0:1101:1d::54])
 	(Authenticated sender: relay-from-dude05.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id CC212201E7E;
-	Mon, 28 Sep 2026 13:28:10 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 01B0A201F12;
+	Mon, 28 Sep 2026 13:28:11 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790594890;
+	s=20260414; t=1790594891;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IuOkJbk5AYUdyeg/C2O56ofP+UrXa7ZIfqrzM2sghjg=;
-	b=QrJJ+h1oBmaoryWmOpJLiElR8N5Xtya3rUc3Ofi+zFs2iAgdgkaJ5y2djcfXIisSGoSwUK
-	jay1rPv7osgH4GkLDs7dytElI6AGbXNGrwWiAs7nszZ1034+JUFCaNa7IAvfq8b2ht2Puj
-	Uz7IUnY/wu3AD91yjKGelElow/iQ3svqwg1XJPoewJXY/wEIsk9+cOX0YFlT2r0CbCyxfL
-	G3KQzqcdb+QFxmbNlbKwQF7iKIzuGIrNWJFUDxwwzpUUVsh9RFNbtJq+tL7q03UmwA5YtX
-	QBV+HBBPQ6sasJDIgqY7pbO148MaRXEH0ynTj6MTpFJkrZyibC9RfaYuB575YQ==
+	bh=FNeOF2G464lO1vqtP6PgO4ai7A+CHcrK7jt4ByAiDGs=;
+	b=BDhMptk89Mq2v2Powrw3agZw+/dek1dUdFUlAdas1eObdCN0UOpPP6xGezXi5d6i1OOzTg
+	59GHTxnVsM2g0hgorkB+NQk2vgopyi+ngKwop1ib8CBfmfklU3lakjr7M3TSg5DYPxvtWS
+	pLxBLeaotopPClkmRFcGl+6b5+eaT3AM+Zrlp7Sw753yM0rbH7jfW3bYfbfEs/jF2UUbUx
+	N3M4drFH+Th0VTP/prH2byKkXp1ifTDkYkw79roZ82i/sknmJoUUtIZ1pDKmVfTNESsNE9
+	BgOluEZnrzOUSWI2N1hXtTtd3MdXufxVJ14ue474iXTPUgnbJsXMzHNlCMIcIg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790594890;
+	s=20260414; t=1790594891;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IuOkJbk5AYUdyeg/C2O56ofP+UrXa7ZIfqrzM2sghjg=;
-	b=Tq2EYOl40hq8WyrseO4FYdAnclMZIGGB0X8ecfdnmowYxvtBgz7eXZ5t0JNY2J8Kwy825S
-	u3AxFECxxLSODgMn/qV6YhLMTrxgZTanCaJ8Lrahcm3AeDOyjtZdz/rScS4YdT6bJlOORs
-	nWgeXOboDY6mLh7lzX+flG7nXcUAUy22ABIZ0MHf3HAUvxDfJ6+EJijzEnV5cnOsdrrfhd
-	rX21vUlE5dS8DhO46px2P2HMXdUGekqDlpHkYekAIZsIz9baxnPpqlWqS7yGcdXVmLJays
-	as/uOQ7E0gkFyvLLROG239fcEDCHcoXroECuUnNE5R/C5kSgggG952fGtrFMTw==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790594890; a=rsa-sha256;
+	bh=FNeOF2G464lO1vqtP6PgO4ai7A+CHcrK7jt4ByAiDGs=;
+	b=eesRMm/2HPQ9n2C84Z68nEukswdvrrOsNgjmQciIVj2WrU/KaxKiU+rdka3tKt30w62u8h
+	ChstUf+BVWXpoeO3finsAl9qTNyF13N91fHiVd8RdzCi+UC6NZenK9P+gnuYIBkg8uHRP+
+	25Pgh68V1rVPYGM6yE0ICAnFUT7EQCWYcHYgSrJGJSk/pSafaWMZTl0tmsOHIAm8OcqtHr
+	6ZymmJwQ/IDBA86JqLQSjlwMWamaZqOmfokPgMW8JptlwDhdhAw/TKWGsuIiFwNxYyAIMv
+	4SFLG+Wr/Iz4Lu24WNTF5GOaUnA8SQm0PAsaV1hC/hiGiSmUO6VucZ0zkfVpXg==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790594891; a=rsa-sha256;
 	cv=none;
-	b=EvicLJgXfdHOqOoq9a8ySeNBKl76NklxhPNviSrDFPTTrhyA7UC6ViBwkkVekzGvFffOLi
-	T4SxjY5bqzO67bM2bUUdJT/88MwGizJjYMgeZeQPckegOkjsDBQcGYhyByDcYLO4NaAda2
-	U5DLJvnq7qmnWtKVjKQohC88F+Ncs+ZhmjWBNru5BVsYvSnzGnWJZOo5sUavAvkwkf1Odv
-	u/y/L+00kCgaTETLQoLnLkg4NFWnzr6CoZkxiHyNulmL7F2SqmJq3B+FESp04ot7ZGA6Fs
-	dvEwl+1CQXPylGiRvT6SpLXEb8xDXlerl19RKVkaB5NlEa5cjt1jQ+Gw0jjeSA==
+	b=Rq13/Kz9pVjF/icGM3DpquJqtgpMymPJm8qC4xUXIccmhdUI7Pyza7Q1LyIwebSN6LFcYO
+	icNJNY1CYII75PyQz9TBi7fZ//PBVfO2XKAz7oVx2VGZISECWbxLL9xUxMBSJWNV9Ku8oW
+	0aoILQABbTvDWWYEIMK0HgNAP9tjqoqsbArAi0BlNMxrUBVjkfdqSiK0wgEV+I9SpL7ZbC
+	V1Yp/9zwdDvHhvMwXkGUeqJmy1iZRz0i4Y6N/M//MxgT9OIsdgMYWJw2IHK0slgbY7vYcn
+	7TV/wubwGaf8hdGZDBH5rtO+hdb+ASexOaZ6RhQPHIUI4VNcw5ZKLt98OVhT/A==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-dude05.red.stw.pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
 Received: from dude05.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id B0F4E7421D5;
+	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id DBFF07421D5;
 	Mon, 28 Sep 2026 13:28:10 +0200 (CEST)
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Subject: [PATCH 04/11] Documentation: security: document trust for builtin devicetree
-Date: Mon, 28 Sep 2026 13:26:59 +0200
-Message-ID: <20260928112731.1271094-5-a.fatoum@pengutronix.de>
+Subject: [PATCH 08/11] Documentation: security: update for barebox dm-verity support
+Date: Mon, 28 Sep 2026 13:27:03 +0200
+Message-ID: <20260928112731.1271094-9-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260928112731.1271094-1-a.fatoum@pengutronix.de>
 References: <20260928112731.1271094-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260928_122814_449901_20E3168A 
-X-CRM114-Status: GOOD (  14.01  )
+X-CRM114-CacheID: sfid-20260928_122816_707259_C75255B8 
+X-CRM114-Status: GOOD (  14.04  )
 X-Spam-Score: -0.2 (/)
 X-Spam-Report: Spam detection software, running on the system "desiato.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -142,10 +142,10 @@ X-Spam-Report: Spam detection software, running on the system "desiato.infradead
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> barebox-dt-2nd.img
-    exists to allow booting barebox like one would boot a Linux kernel. This
-   is a convenient way to use barebox without modifying existent firmware, but
-    it's not suitable for use as par [...] 
+ Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> We have gained dm-verity
+    support in the meantime, so there is actually something we can offer users
+    that want to use file systems in a secure manner, even though they will need
+    to bring their own sche [...] 
  
  Content analysis details:   (-0.2 points, 5.0 required)
  
@@ -172,114 +172,92 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-59.11 / 15.00];
+X-Spamd-Result: default: False [-59.31 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[99.99%];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
-	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	MID_CONTAINS_FROM(1.00)[];
+	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
+	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
+	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:1101:1d::54:received,2607:7c80:54:3::133:from,2001:8b0:10b:1:d65d:64ff:fe57:4e05:received];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2001:8b0:10b:1:d65d:64ff:fe57:4e05:received,2607:7c80:54:3::133:from];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
-	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
+	R_SPF_ALLOW(-0.20)[+mx:c];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWO(0.00)[2];
+	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
 	DMARC_NA(0.00)[pengutronix.de];
+	RCPT_COUNT_TWO(0.00)[2];
 	FORGED_RECIPIENTS(0.00)[m:barebox@lists.infradead.org,m:a.fatoum@barebox.org,s:lore@pengutronix.de];
-	FORGED_SENDER(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
-	FORWARDED(0.00)[barebox@bombadil.infradead.org];
 	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
+	FORGED_SENDER(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	TO_DN_SOME(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	NEURAL_HAM(-0.00)[-1.000];
+	FORWARDED(0.00)[barebox@bombadil.infradead.org];
+	DKIM_MIXED(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	RCVD_COUNT_FIVE(0.00)[5];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	FORGED_RECIPIENTS_FORWARDING(0.00)[];
-	DKIM_MIXED(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	DKIM_TRACE(0.00)[lists.infradead.org:+,infradead.org:-,pengutronix.de:+];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
 	R_DKIM_REJECT(0.00)[infradead.org:s=desiato.20200630];
+	RCVD_COUNT_FIVE(0.00)[5];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: BE4272001F2
-X-Stat-Signature: 75dwp65fa9am96bin3c1c6f48rcqc8gw
+X-Rspamd-Queue-Id: B353F2001C8
+X-Stat-Signature: kpcw3xpizpu8kzp9pzikcamswn41irhz
 
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-barebox-dt-2nd.img exists to allow booting barebox like one would boot a
-Linux kernel. This is a convenient way to use barebox without modifying
-existent firmware, but it's not suitable for use as part of a boot chain
-if the device tree hasn't been verified beforehand.
+We have gained dm-verity support in the meantime, so there is actually
+something we can offer users that want to use file systems in a secure
+manner, even though they will need to bring their own scheme on how to
+discover the signed root hash.
 
-Spell that out in the documentations and also add the missing help text
-for CONFIG_CRYPTO_BUILTIN_KEYS.
+Reflect this in the documentation.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- Documentation/user/security.rst | 17 +++++++++++++++++
- crypto/Kconfig                  |  8 ++++++++
- 2 files changed, 25 insertions(+)
+ Documentation/user/security.rst | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
 diff --git a/Documentation/user/security.rst b/Documentation/user/security.rst
-index 7160f8f8e3c2..d981d89268c8 100644
+index b204e6df8d23..185adac2d51c 100644
 --- a/Documentation/user/security.rst
 +++ b/Documentation/user/security.rst
-@@ -56,6 +56,23 @@ fusing for both HABv4 and AHAB.
-    touch the subset of fuses relevant to most users. It's up to the integrators
-    to fuse away unneeded functionality like USB recovery or JTAG as needed.
+@@ -190,14 +190,18 @@ Avoiding use of file systems
  
-+Ensuring the barebox devicetree is verified
-+-------------------------------------------
-+
-+Whoever controls the devicetree barebox uses for itself can inject RSA keys
-+to be used for FIT verification and control what drivers are probed.
-+
-+The devicetree must therefore be either:
-+
-+- verified by the previous boot stage before passing it to barebox
-+
-+- part of a barebox image and thus verified by the previous boot stage
-+
-+``barebox-dt-2nd.img`` is bootable like a Linux kernel and takes its
-+devicetree from the previous stage. It's thus only suitable for verified
-+boot if that stage verified the devicetree as well, e.g. because both are
-+part of the same signed FIP image.
-+
- Loading firmware
- ----------------
+ File systems are among the most complex parser code in barebox and a common
+ source of bugs.
+-Unlike Linux with its dm-verity support, barebox currently has no way to
+-verify a file system before mounting it.
  
-diff --git a/crypto/Kconfig b/crypto/Kconfig
-index 528e9a0d2204..977e502e8a14 100644
---- a/crypto/Kconfig
-+++ b/crypto/Kconfig
-@@ -130,6 +130,14 @@ config CRYPTO_BUILTIN_KEYS
- 	bool "builtin keys"
- 	select KEYTOC
- 	select IDR
-+	help
-+	  Compile public keys into barebox. See CRYPTO_PUBLIC_KEYS for how to
-+	  specify them and their keyrings.
+ The consequence is that in a verified boot setup, barebox should **never**
+ be allowed to mount file systems.
+-Especially, :ref:`bootloader spec files <bootloader_spec>` should not be used
++Especially, :ref:`bootloader spec files <bootloader_spec>` or
++:ref:`extlinux.conf <extlinux_conf>` should not be used
+ in verified boot setups and signed FIT images **must** be located outside
+-a file system and directly in a raw partition.
++a file system and directly in a raw partition and not pointed at by a plain
++unsigned file on an unsigned file system that can both be tampered with.
 +
-+	  This also enables reading RSA keys from /signature of the devicetree
-+	  barebox runs on, like U-Boot does with its control FDT. Such keys
-+	  always end up in the "fit" keyring. Prefer compiled-in keys. Either
-+	  way, the devicetree must be verified together with barebox.
++If file system use is desired anyway, its integrity should be ensured by
++other means, e.g. by being mounted from a dm-verity block device that was
++setup with a correctly signed root hash.
  
- config CRYPTO_PUBLIC_KEYS
- 	depends on CRYPTO_BUILTIN_KEYS
+ Prevent the kernel from booting the rootfs in verity boots
+ ----------------------------------------------------------
 -- 
 2.47.3
 
