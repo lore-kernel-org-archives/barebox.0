@@ -1,155 +1,164 @@
-Delivery-date: Mon, 28 Sep 2026 14:26:19 +0200
+Delivery-date: Mon, 28 Sep 2026 14:43:44 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xBAR1-007Hxk-1r
+	id 1xBAhs-007IFx-19
 	for lore@lore.pengutronix.de;
-	Mon, 28 Sep 2026 14:26:19 +0200
+	Mon, 28 Sep 2026 14:43:44 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 655912010E2
-	for <lore@pengutronix.de>; Mon, 28 Sep 2026 14:26:19 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id CE8F82004BB
+	for <lore@pengutronix.de>; Mon, 28 Sep 2026 14:43:43 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=NXm2rRfe;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=PgcwxeeC;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="BG/6lHiw";
+	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=MKrmlk1T;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=cudFz4gT;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790598379;
+	s=20260414; t=1790599424;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=AoBRslJ2pdRxWqAB08AHfYS9ffU5qZQGnCrhUVSHXAY=;
-	b=avJ30x9LjubVYR4srWBc+FuzRT7cfQJTjZy+lSjuVhLZNulFuhQTQ1J0yVD6WITXgj2pWT
-	WhPplZXiMBbsIeHOqz66mGGvYH5PapGnWjx1FSRmKtil8sI5Cf36HLdacFqafXqVeeuNxs
-	G2HrcB1kOHQwaNpc4Hk6ZDcDqao0D+AQdZ5ZILtSN8WF0pFBl1HfOzWfqjOb6m2ebRq6+x
-	K1Rc/lpX7J/4zSzapVaO71IXsBcvUlvP4eAdi62PAQooNAhkuDessMU7YdGAqzxXCuGudR
-	X4KK8l0YtE8ih08E3zGnRJbm64Xyl1cyMxpw+a0cMJlxC03rqU01QePjNeylyQ==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790598379; a=rsa-sha256;
+	bh=J1m5v9He2P56QV+UQYwM4s5st1wWOS+crOPEI9WJYjI=;
+	b=OoyRRH19a99VMypB6lCTH6FMB+AjUQ01gZB1fc7+OKS4ruGv11ZbGmuMbBnLdmo2fgaiu4
+	SVbcrdlmt1KEqrDb6RDzkYfvjo3bmRjVvZQtUUg1EhIVmUOOlaJBJoyzK3ik59kUFYyUNE
+	njzD7mB/w4qc3T4ATfVWMPut+tQjte+IFmS7C5jb8olH0Q+C6zb5C+8PuyZPuOE/WdTrwt
+	FoXFLi3VcLcfGe/hAvesZ/SivFPCsvO5w+VCyJJx4AXhpQ/XviCg/fZBUZX1D/F2wvONlV
+	8OsqLsziYQ7XwQt5rvPjHcA88uwwx1Ty+yEayUEx3qlLpMYvVqBrRV3AuhfVMw==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790599424; a=rsa-sha256;
 	cv=pass;
-	b=ah9GBKH4ff+lStWUYyMytiRbwrCvHZ0TYBX1IXZ+ufcmvVYkwNPGqTv7TOctm8TTVYOQCJ
-	F4tiYk8Q2p4iL+jVFiLZi3q+Tch/rGdAMbnOLPJa3mSumSQejcAcOj7N922/yTSgsdTs4B
-	LFLEwdWqiQ8Fafd57Eao81LYO8Nroj716kGKFsSkynchihs/IR9OipLahyXuMzg+7g3lZm
-	bVzeO3hIT4TIDqcJBOjogv4iiqhL2DDq+yUvVhk4jh4x+oIR3Njs4KZBN26qer6VF1oQe6
-	lRwcPCOux0xWcUYHLiedwlr0VIEaZ3UL2yc80u7hqpqsDDkGxKa7B7jyazJMiQ==
+	b=gdJdbbeRkVEMSzF29P55Ox+SmpeC5EsubT9rx9oqJgzhHBOS7RMiwAD/5ZNrUIqVMiT48p
+	EfErGU0TXIA+XYRK49bqGOJwlTkwef2ds2eREUsUBZV3Q7EqGtrBHjXabJ4mzwfGdX0YrL
+	EFx1MZij0s7B7DEvxnbC4zsayeriNen3HMBumOZzqY46cTTAMVbfpU0q/kAEnzFVpa6Vz/
+	lIIITjBiYacWAmaE2sInxZ9I+gx0I2zRm8lC98tNge7EWdiakm7FL6P7CxTSva4Cyu4yzJ
+	gyF/C5qUby5H8XVJxTQjVZ54L+OKZsHAVdoE1j3LDWRwkGRnNED8fqfYI4stWQ==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=NXm2rRfe;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=PgcwxeeC;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="BG/6lHiw";
+	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=MKrmlk1T;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=cudFz4gT;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=AoBRslJ2pdRxWqAB08AHfYS9ffU5qZQGnCrhUVSHXAY=; b=NXm2rRfeVXuNbk
-	NboZUX/4g0diWQMj53EmVZJ3AkypjwHFP1T32ReB6ITSJy1zu0fI34bNI78w88z56rGLxXjS+eIuV
-	IkpwSUxMuu8Zcs1xNVwCCgO919PfXcM2YugNwOia4IZEn5t+Q5sX2gK9dHFOSHbGPacqcSe4OBQbw
-	PoDwxB20fydy8DKZmyqyAnga39VvM8Qx0HtHWBew6no5WBGdklMYHmYGuBh+E0YnyxFRGg1Kiadg+
-	ol48Zru0QdBOHJiS/Ph5ablMnXJ3ZzT2z4JVDdAmAuAp6iPvzpl1GnoN7c/zHA61JYNMrochX0xI0
-	l+dO+pc+gjTtYDJ8MBqw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=J1m5v9He2P56QV+UQYwM4s5st1wWOS+crOPEI9WJYjI=; b=BG/6lHiwvZK0n67XHcmOpYUicA
+	DsEpIzy98p7JHDF6ycSWUk3NSyc2C5/n7QH1lpKGICScMKNuJCXFx4UTXgwWl1D3AJh0qMjQvOqaW
+	Bhl5K8rZolIIBLNLUkprt+ejS/m1aJD4U1feL1wDjbvyeyIOV7p8+h9pSghnGtyJRekVdC3K52q1w
+	ebkR4iWuyUoOWCtziCV3ScLynCEVn/hupg3LlY95vX8j49Z3AkzgPvbR4TXwEDNxgit6YAcbRKZam
+	Ub9neewGjIXoZDgAF8qzlMXmNnW3YOs3DLsOYUvC8UbGUOEBrgkMPKWvoNSfRextMvRXI7PqxQfBw
+	bpBASUQw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xBAPs-00000000XyI-2MrJ;
-	Mon, 28 Sep 2026 12:25:08 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1xB9Wv-00000000S5V-3VPy;
+	Mon, 28 Sep 2026 11:28:21 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xBAPp-00000000Xx1-1bMs
+	id 1xB9Wt-00000000S29-0qA6
+	for barebox@bombadil.infradead.org;
+	Mon, 28 Sep 2026 11:28:19 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=J1m5v9He2P56QV+UQYwM4s5st1wWOS+crOPEI9WJYjI=; b=MKrmlk1T064ootEE0xDu4cb5Jv
+	u5EE4x+E9o17TvqPa7yMnvCJHym3aB/4RrU7FbznvGPcU1kAlpNc6yZo8Z13LLAB4sSPxZvABXaA7
+	UZ2xs8tUKJE3mgU6UuWvwEnOivy4csMNGpVII98XSEr1ijC/mTsash7F4yiezYIoGF5OXeEKBB2E4
+	ipNjg910GSydi1rlWGkG1OpQsvLeP43KEzJYlO+EG5QlqViNRMM8p7M2yzBYEtwVECSrhxviF9b4y
+	ozjXJe85/S+9aZZw3VbpnbJUAdLhMPOirJOBy1X4HHWC/ldJhAimK6wsV3mE8hAPImKgI36CAY8Q/
+	VIhumrnw==;
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	by desiato.infradead.org with esmtps (Exim 4.99.2 #2 (Red Hat Linux))
+	id 1xB9Wo-00000001PlS-0mAM
 	for barebox@lists.infradead.org;
-	Mon, 28 Sep 2026 12:25:07 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
-	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B35ED200109;
-	Mon, 28 Sep 2026 14:25:02 +0200 (CEST)
+	Mon, 28 Sep 2026 11:28:18 +0000
+Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.4.pengutronix.de [10.17.1.19])
+	(Authenticated sender: relay-from-dude05.red.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B044F2007E1;
+	Mon, 28 Sep 2026 13:28:10 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790598302;
+	s=20260414; t=1790594890;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=AoBRslJ2pdRxWqAB08AHfYS9ffU5qZQGnCrhUVSHXAY=;
-	b=PgcwxeeC1mjHv6XmFGYEtjATp+8dzzWJPNbjiWw2wuMDwj7JBnBoT+IuN1dQFgFWpH1Kat
-	by6e06T7p0FcJZI5mGBqW2ushDE4hr5ac/lsWgkkfMGpsboBh2jy0+xecPfJ1K6ez7Bc77
-	83V/fQ8JxycMgdNPE34ikSuRx4Ln+M22v9CDnAidupoP0159nsbCrnNZnlb5aSHrqgbY3h
-	790EK5B9N9yCoq4Tv8sPGcSixwRJoUS1MpJALILwlpdbqI/q7tsJe5qJYR49VdtwAQ7Pdb
-	8JfwAyPRf2uHTBeftBhxv16xxJIw/rKUpo1e0wGAokRbUvt4YQCm6r4bhXy2yQ==
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J1m5v9He2P56QV+UQYwM4s5st1wWOS+crOPEI9WJYjI=;
+	b=cudFz4gTx5nPP/Ov1If2nvHSRxAxzhhqCCOwI9GUaVZa+taNFPi3wsLQTL4W6feFXmmqXJ
+	uP1yCAJZoW0g00mCIIyDV54FS1/dxKuepSpfWuBSD4os6Qy3EW2+ENCQ5qmNffF3XGLsV0
+	KUA56ldutVvw7QEAkVoEDiaccr7+tZTDJI2erQZ/Tbk7R4du1HnF9oJtBv988hJXJ1Nhrp
+	vkaEbVLb3EAaJyNsBAM42mfCr8x/5NgMnIoJFN6v+uVzGch42xhD52ffkXZgGg0pOD0DfQ
+	E87khYArZ2X9vOz6dZue8XZPvOoTrPuk9NzP133bOcRI76L2BPiGZgfj58Qheg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790598302;
+	s=20260414; t=1790594890;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=AoBRslJ2pdRxWqAB08AHfYS9ffU5qZQGnCrhUVSHXAY=;
-	b=DuyYFVnG9rR32PLEpwULRq8Y+oJlZg19Q9u4vYCd77EcAvxLA5h+nsExZNS5udrBMFmUXj
-	n3aASmWMME2BJKKltRyBSa3FE8lEgjUz+U+WB1A2hEBWAmdVilQxeRXTeaEiXYg8okN3jj
-	6+ouetIDVUfyY9QM2RGQDgtdd6eJi4j2T9/u/kUr1xyBBala2dfPtSUmjzXPMOhVx5LVux
-	fYDbWcWmuwycuxftwRPGjrH7OXWeXvgpqAHtnEgfWdkDUfrQ6jd3+jUzn770wSb0LOmCNm
-	A6KkiveyamSIUVoqn5g2uXUcym3RFV6RhbB/byOgQA7nKNhuqwfWFVo0yLaRfQ==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790598302; a=rsa-sha256;
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J1m5v9He2P56QV+UQYwM4s5st1wWOS+crOPEI9WJYjI=;
+	b=EykIVXJHgACpIj7CgMZKebUKIOaLkG+YQlti6PWDCEtIMpRs2DMWvO8Q5tj2ffK1b4lzFA
+	73brntKE4Jar2umy7ZfqEWbVVXemYf/HqM015rWVkP0dqhqRE+6jZ4MnZCFLEMn1oLILGC
+	dWgFXIczuheGNcYN3YxSJCA/Njc2y0wZSjeX3uGrOAaGZBYUMgtJqJlZ03ejwNitNrpVav
+	KUggGlCaOwrAVjp+74GHBO/pxcMdJ0+aRPFSos9xW8p0ov0sjc4Y5HYD9LLdzjNDgwlnxw
+	NwWykKOqF7zHCci1ktBB318aYLV97/Lc72jlMzSCUsQ5Gt4WX8179LlX4ktXtw==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790594890; a=rsa-sha256;
 	cv=none;
-	b=KDKlyrMHQiXzjZC+8HYqbzPv+hLEsxxSHSxX7Bt5YJDtvYCtmL+OvMaLC9ZPrTMHB7CKzh
-	SOCm5KBZ1O2vEuRwS9kaGE/eGvuJ7ZIkz/cBQ+U509AR/ro6GGja3ApsX95fdVEtC/W4gW
-	rUZENz0+VVUZjmyGakbfaSBX5siUKZ9YM41xYk5qYMbroJ606f+pOwcQGGSTGzh10NnJvM
-	hXhIHGK8b73kBbB/NRtV5JXaDWG2MahrcDTa9undxrXvCQwN3KPzB7f5/0xlnz03mQVAAW
-	0P7pr/QOel1qMb6pS+3bMuZC8y3tVRpgPu5N84vBn4/3Mfn1FvbOMTfqS/siBA==
+	b=XKl0VJ/WTc+Qq9fVIDD1fleKqyE/Khjjbq4U11+cgz0w6xQZ+t5z6nmOi7h00d1pz6cQHo
+	eKuR2XBn2DsuxtD1GRy8UclstzeuzRUeSrF0TSa2fTiMVsmvDB3gkZzjmD+NqfwiiiXi4X
+	z5GxPLWou8O0+9veNMgXz/GIIxtCr6EeDpIeFkZtFrMDDDs689ROZMgPmQ1SGa/z5I6dNj
+	DwQXUE+51VdLQ7h6VJHA0HOZ0gfzzoNU9/EUNL8j7sTY9NJTSWE1a+FGpuTqn9s73BKI+U
+	urVxg23y5KTWH6TKFwsKyj3r4w/EZoSdlb/DBSP2z3k3M5mCHzZu3/xSNOQnQg==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
-	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=m.tretter@pengutronix.de
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <m.tretter@pengutronix.de>)
-	id 1xBAPm-003Dty-21;
-	Mon, 28 Sep 2026 14:25:02 +0200
-From: Michael Tretter <m.tretter@pengutronix.de>
-Subject: [PATCH 0/2] PBL: enable hash functions for Vendor Authorized Boot
-Date: Mon, 28 Sep 2026 14:25:00 +0200
-Message-Id: <20260928-crypto-pbl-sha384-v1-0-bc7095590123@pengutronix.de>
+	auth=pass smtp.auth=relay-from-dude05.red.stw.pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
+Received: from dude05.red.stw.pengutronix.de (localhost [IPv6:::1])
+	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id 9024B74D045;
+	Mon, 28 Sep 2026 13:28:10 +0200 (CEST)
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@barebox.org>
+Subject: [PATCH 01/11] Documentation: security: unnest hardening sections from dm-verity section
+Date: Mon, 28 Sep 2026 13:26:56 +0200
+Message-ID: <20260928112731.1271094-2-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260928112731.1271094-1-a.fatoum@pengutronix.de>
+References: <20260928112731.1271094-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJxcumoC/x3MTQqAIBBA4avErBtQ++8q0aJ0qoEw0YgivHvS8
- lu890IgzxSgz17wdHHgwybIPAO9TXYlZJMMSqhadKpF7R93HujmHcM2FW2JVHXaNHOpjTSQOud
- p4ft/DmOMH48FaeZjAAAA
-X-Change-ID: 20260928-crypto-pbl-sha384-e59cd7b4cd1d
-To: Sascha Hauer <s.hauer@pengutronix.de>, 
- BAREBOX <barebox@lists.infradead.org>
-Cc: Michael Tretter <m.tretter@pengutronix.de>
-X-Mailer: b4 0.14.3
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260928_052505_574906_88BC1688 
-X-CRM114-Status: UNSURE (   5.98  )
-X-CRM114-Notice: Please train this message.
-X-Spam-Score: -2.1 (--)
-X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
+X-CRM114-CacheID: sfid-20260928_122814_468879_F6ACA974 
+X-CRM114-Status: GOOD (  16.33  )
+X-Spam-Score: -0.2 (/)
+X-Spam-Report: Spam detection software, running on the system "desiato.infradead.org",
  has NOT identified this incoming email as spam.  The original
  message has been attached to this so you can view it or label
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Altera's Vendor Authorized Boot (VAB) uses a sha384 hash for
-    verifying the second stage boot loader. As preparation for adding VAB, make
-    the sha384 and sha512 hash functions available in the PBL. Loading the second
-    stage loader from flash and verifying the signature will follow as separate
-    patch series. 
+ Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> The sections on
+   disabling the shell, on the non-builtin environment and on avoiding file systems
+    were meant to be subsections of "Ensuring the kernel is verified", but this
+    got lost with the addition [...] 
  
- Content analysis details:   (-2.1 points, 5.0 required)
+ Content analysis details:   (-0.2 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
  -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
  -0.0 SPF_PASS               SPF: sender matches SPF record
+  0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
+ -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
  -0.1 DKIM_VALID_EF          Message has a valid DKIM or DK signature from
                              envelope-from domain
  -0.1 DKIM_VALID_AU          Message has a valid DKIM or DK signature from author's
                              domain
- -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
-  0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
- -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
-                             [score: 0.0000]
   0.0 DMARC_MISSING          Missing DMARC policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -163,71 +172,149 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-60.81 / 15.00];
+X-Spamd-Result: default: False [-59.11 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[99.99%];
-	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
-	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
+	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
-	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:1101:1d::54:received,2607:7c80:54:3::133:from,2a0a:edc0:0:c01:1d::a2:received];
+	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
+	MID_CONTAINS_FROM(1.00)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
+	R_MISSING_CHARSET(0.50)[];
+	RCVD_IN_DNSWL_MED(-0.40)[2001:8b0:10b:1:d65d:64ff:fe57:4e05:received,2607:7c80:54:3::133:from];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCPT_COUNT_TWO(0.00)[2];
 	DMARC_NA(0.00)[pengutronix.de];
-	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[m.tretter@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_ALL(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[m.tretter@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FORGED_RECIPIENTS(0.00)[m:barebox@lists.infradead.org,m:a.fatoum@barebox.org,s:lore@pengutronix.de];
+	FORGED_SENDER(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	FORWARDED(0.00)[barebox@bombadil.infradead.org];
 	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	RCVD_COUNT_FIVE(0.00)[5];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_FORWARDING(0.00)[];
+	DKIM_MIXED(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,infradead.org:-,pengutronix.de:+];
+	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
+	R_DKIM_REJECT(0.00)[infradead.org:s=desiato.20200630];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 655912010E2
-X-Stat-Signature: gn3fzikejoffpxuu3kpr45y7db64ts9u
+X-Rspamd-Queue-Id: CE8F82004BB
+X-Stat-Signature: hrzmz6zmzp9y1w8xwfu5nw4wi3kdkx98
 
-Altera's Vendor Authorized Boot (VAB) uses a sha384 hash for verifying
-the second stage boot loader.
+From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-As preparation for adding VAB, make the sha384 and sha512 hash functions
-available in the PBL.
+The sections on disabling the shell, on the non-builtin environment and on
+avoiding file systems were meant to be subsections of
+"Ensuring the kernel is verified", but this got lost with the addition
+of "Prevent the kernel from booting the rootfs in verity boots", which they
+have nothing to do with.
 
-Loading the second stage loader from flash and verifying the signature
-will follow as separate patch series.
+Move them around to fix this. No change in content.
 
-Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
-Michael Tretter (2):
-      crypto: make sha384 and sha512 available in PBL
-      PBL: add oneshot helper for sha384 and sha512
+ Documentation/user/security.rst | 54 ++++++++++++++++-----------------
+ 1 file changed, 27 insertions(+), 27 deletions(-)
 
- crypto/Makefile          |  1 +
- crypto/sha4.c            | 11 ++++++-----
- include/crypto/pbl-sha.h | 29 +++++++++++++++++++++++++++++
- 3 files changed, 36 insertions(+), 5 deletions(-)
----
-base-commit: 4a752d2303440195e12ed1a4e642b0be5b450b8e
-change-id: 20260928-crypto-pbl-sha384-e59cd7b4cd1d
-
-Best regards,
+diff --git a/Documentation/user/security.rst b/Documentation/user/security.rst
+index a7b2cc61c9b0..657bcd690b8e 100644
+--- a/Documentation/user/security.rst
++++ b/Documentation/user/security.rst
+@@ -69,20 +69,6 @@ Firmware) should happen as early as possible, i.e., within the barebox
+ barebox will run with elevated permission, which greatly increases the attack
+ surface.
+ 
+-Ensuring the kernel is verified
+--------------------------------
+-
+-barebox can embed one or more RSA or ECDSA public keys that it will use to
+-verify signed FIT images. In a verified boot system, barebox should not
+-be allowed to boot any images that have not been signed by the correct key.
+-This can be enforced by setting ``CONFIG_BOOTM_FORCE_SIGNED_IMAGES=y``
+-and disabling any ways that could be used to override this.
+-
+-For development convenience ``CONFIG_CRYPTO_BUILTIN_DEVELOPMENT_KEYS``
+-can be used to compile well known development keys into the barebox binary.
+-The private keys for these keys can be found
+-`[here] <https://github.com/pengutronix/ptx-code-signing-dev>`__.
+-
+ Pinning the FIT configuration
+ -----------------------------
+ 
+@@ -96,21 +82,19 @@ booted without altering any image. If that matters, ship only one configuration
+ per FIT, or name the configuration explicitly, e.g.
+ ``bootm /dev/mmc0.kernel@conf-production``.
+ 
+-Prevent the kernel from booting the rootfs in verity boots
+-----------------------------------------------------------
++Ensuring the kernel is verified
++-------------------------------
+ 
+-In systems, where barebox loads an initramfs that sets up a dm-verity rootfs and
+-passes the location of the root file system on the kernel command-line, make
+-sure not to use ``root=``!
+-``root=`` is also interpreted by the kernel and can lead to the kernel mounting
+-the rootfs without dm-verity, if the initramfs failed to load, e.g. due to a
+-different compression algorithm.
++barebox can embed one or more RSA or ECDSA public keys that it will use to
++verify signed FIT images. In a verified boot system, barebox should not
++be allowed to boot any images that have not been signed by the correct key.
++This can be enforced by setting ``CONFIG_BOOTM_FORCE_SIGNED_IMAGES=y``
++and disabling any ways that could be used to override this.
+ 
+-The fail-safe alternative is to use a parameter name understood only by the
+-initramfs (e.g. ``verity_root=``) in all bootloader scripts. If the
+-``root=$dev`` is fixed up by barebox dynamically, the
+-:ref:`global.bootm.root_param <magicvar_global_bootm_root_param>` variable can
+-be used to customize the name of the parameter passed to Linux.
++For development convenience ``CONFIG_CRYPTO_BUILTIN_DEVELOPMENT_KEYS``
++can be used to compile well known development keys into the barebox binary.
++The private keys for these keys can be found
++`[here] <https://github.com/pengutronix/ptx-code-signing-dev>`__.
+ 
+ Disabling the shell
+ ^^^^^^^^^^^^^^^^^^^
+@@ -154,6 +138,22 @@ Especially, :ref:`bootloader spec files <bootloader_spec>` should not be used
+ in verified boot setups and signed FIT images **must** be located outside
+ a file system and directly in a raw partition.
+ 
++Prevent the kernel from booting the rootfs in verity boots
++----------------------------------------------------------
++
++In systems, where barebox loads an initramfs that sets up a dm-verity rootfs and
++passes the location of the root file system on the kernel command-line, make
++sure not to use ``root=``!
++``root=`` is also interpreted by the kernel and can lead to the kernel mounting
++the rootfs without dm-verity, if the initramfs failed to load, e.g. due to a
++different compression algorithm.
++
++The fail-safe alternative is to use a parameter name understood only by the
++initramfs (e.g. ``verity_root=``) in all bootloader scripts. If the
++``root=$dev`` is fixed up by barebox dynamically, the
++:ref:`global.bootm.root_param <magicvar_global_bootm_root_param>` variable can
++be used to customize the name of the parameter passed to Linux.
++
+ Configuring barebox
+ -------------------
+ 
 -- 
-Michael Tretter <m.tretter@pengutronix.de>
+2.47.3
 
 
 
