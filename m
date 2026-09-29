@@ -1,45 +1,45 @@
-Delivery-date: Tue, 29 Sep 2026 09:43:08 +0200
+Delivery-date: Tue, 29 Sep 2026 09:43:46 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xBSUW-007b4y-30
+	id 1xBSV7-007b5m-3C
 	for lore@lore.pengutronix.de;
-	Tue, 29 Sep 2026 09:43:08 +0200
+	Tue, 29 Sep 2026 09:43:46 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id BFA68200B6B
-	for <lore@pengutronix.de>; Tue, 29 Sep 2026 09:43:08 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 411362001F2
+	for <lore@pengutronix.de>; Tue, 29 Sep 2026 09:43:45 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=Kd5m9LWU;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=LywdxBa0;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=QzA2q94a;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b="QOsVI/Z7";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790667788;
+	s=20260414; t=1790667825;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=R7utKQKkG85QFDDDa6Jf8+hpBkcGt+izVXpfPVgm7do=;
-	b=OSDb8b/UtEPNdbPq1+qukTSnSldgNFq0KcQ7Z1N5+LDEq4SKFDft0DkI0TvI+UG6wz6FNN
-	+quY4YR1vmb3MfZ1RwmZLXI8gAoY3mukzVf4o0maIxS7F/r6d5QQjpJBHDxBLqlLJsbNng
-	IBpSHoKJ9PtYRJ6wMRuo1gzs7RaAw6KobzovJw6ACz6GwI44ypFnxKLEBjopKLV8O6B21/
-	gZOn4GYSAIonj2AKCzfjvf8GMFi458+hoZOCLEfUjSecNX7gJxGY9nyuMI9/LpyGbg5dAG
-	JixWOQAobo0WiLRfH10lqzHnOi9iTWaDkzD+3O3vetRPAngo+71DY7/Q75LsGA==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790667788; a=rsa-sha256;
+	bh=0hXQeY9fV/lgEBA7BL/pi/3XsNE6fVTcvN7bhSvc+OA=;
+	b=cx6Q9Z+E9hCu1HXkGxzYwUGhsVmCRZswYOMeMVYxD8kaMO0hkm1DLxET1vDNGIFHG5VnjB
+	UbayU5pkaZV0l2iqOhjCSFiFm91BiZ4GOu9OarFAIteS4LFZmWh1Lx+b4OQwVElWxjkV8t
+	KWzI1Q7Xrkdxk+5q8zoFlok+MzQtOGyN7DrAZd/MpHNpEq/8Sf9D5wqTl5PDnXra3Dtpkw
+	B16kHJFUebtOMb5/qAn9oOPFO5Qk41K5ph1g/xt39HtD246mF2RaTHhdJgEK6tz49umDw+
+	qDaiZGIs87MfC8PyMkQrPUxoYGdTc2pA1c73CpaziLoJBKEzBEdI2ZdTY3LOeQ==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790667825; a=rsa-sha256;
 	cv=pass;
-	b=ZY/YcHOa+UIAv65ggHgoFHNO9y3PLZ1WAkr9hddp3GFygx+sjXywOwW9Txw/eB8khT5tNx
-	HU1b3gEht+CLAmuHLZSBTHxrsT4VCLabKPOw5KqcjwMYXl3GNKN86siF0zR4mrFJLjvrjh
-	yEvhZgfGuuoyYEM4kd1WQRtIb3TsB26X/V/POtyndV2+R7xiylKoDijmvLZYezV4Az3Bq5
-	Ua4lPml0GZT+fJURmh4KF5lUipf53n2CoCwrG5qxTzCDmrDbCEtrTK6veQW4Se1Kb4of3B
-	aQ8MSd+ybKHpnMiexUvcyOFYLYOsDCCx6DtIdneBymzLF503ESefDbEXNtnpDg==
+	b=N0Qm/K6KbhKQN9k2MtSHbCkvSWBvpo1yAlh0VKLZTjzz/Tpp0zJ75LeD1k9xsl1vOpxA9R
+	tAZwiul8MJer14Ym7FCdyyiOaUJrvX8mQtgVF9TFbR1poOgA/EbFr4y9RSN+ddbAcly/V5
+	Z100vduFc7/2FLLKPygf3JkhSXBb10oLaTrDrR7+o87Jovz+pYKjCirguYKLSHonQjY7bT
+	i4Ek48s4RLUz01qzX4qsPBVC+wYSg7R0NOhgAo01EUzdOM0EYkolnhoLFZsgZI1daEXrq8
+	P3zqToVUCBZpw2QdB3eA8aUBS/3xUl1khbPMlsW13U/0ews8Of70lrO6H0emxw==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=Kd5m9LWU;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=LywdxBa0;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=QzA2q94a;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b="QOsVI/Z7";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
@@ -49,78 +49,76 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=R7utKQKkG85QFDDDa6Jf8+hpBkcGt+izVXpfPVgm7do=; b=Kd5m9LWUFiINqqyHHuVTGyM/dU
-	mxQ+SoMSID3NxvA34fbEaY+cbL7wIHQoFZo0Qrt+eTCbVMdbwAu54HkxIPtD4avxsOU2LLssx7807
-	NLih1MT/4jqgqDMfLf3FshVsTGLdyAvL0OBHDZC68b1VfaEukhEvhlL8oWFOmZi8imZC0xI7kI9Ts
-	ZM4PwmU1QKImRXMGAD1z0L3qpnYIbcGqcT9wpHvU9F5mehIe93a/0IFRvyXavvaFYjzevdRS7Z5DO
-	L6EnSrj2ok2V9c+r43pnnIX4mrZCCuQAVPuGsBE/RkgbFc+/JSd1Jn6hk3VDz852reYJWPKLQOq/d
-	OADjuPAA==;
+	bh=0hXQeY9fV/lgEBA7BL/pi/3XsNE6fVTcvN7bhSvc+OA=; b=QzA2q94acMIAgmRNXvK689M97I
+	N4UFYsYuD5DEnkOokhwqJDs63VmeWBW+YrPaoUCIsyBp7OZmqnllZhfDd6BaQu0z+1eJ2U7JL+xp3
+	PlkdAz8UpdlKyTM5oh470thI+/8TZ/816ZRblG3EoepK9Rmx9P8b+wgftAdAsoIrIwVkL49XAkK3V
+	0kgRdf7f8btxDIbRdBKelcRN7z/PZh1HICzaPmhYP2lLgeyciuM31XYQlno8QFqj7IO6nwUU/JE4P
+	mOujXxcLk5rsIOvarBZnOBrlQ8gkQFbT2YjRN7/bVxlAbuF2x5VgAtN3pJKKeWS6p9l+v3h+WM1XV
+	a9JXKDaw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xBS0D-00000002Z0X-302k;
-	Tue, 29 Sep 2026 07:11:49 +0000
+	id 1xBSTs-00000002e2u-41Mf;
+	Tue, 29 Sep 2026 07:42:28 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xBS0A-00000002Yzo-3dCJ
+	id 1xBSTq-00000002e22-0qZ0
 	for barebox@lists.infradead.org;
-	Tue, 29 Sep 2026 07:11:48 +0000
+	Tue, 29 Sep 2026 07:42:28 +0000
 Received: from dude02.red.stw.pengutronix.de (dude02.red.stw.pengutronix.de [IPv6:2a0a:edc0:0:1101:1d::28])
 	(Authenticated sender: relay-from-dude02.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 36FDB2016D9;
-	Tue, 29 Sep 2026 09:11:45 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 509A1201547;
+	Tue, 29 Sep 2026 09:42:24 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790665905;
+	s=20260414; t=1790667744;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=R7utKQKkG85QFDDDa6Jf8+hpBkcGt+izVXpfPVgm7do=;
-	b=LywdxBa0x7A1V9yrCiBkTd4JcHKR+mkoKMrgVjdzj87ImpRAI4hIGQPHj015tzWZ+0MGEd
-	eo6kXP0+c+dbWIMiCUGKXtwMv7QFaT8sH/XESSIuzWSFtzwIuiQQohdx8au5Sx0pE6w/uL
-	EUT7MOI5BU9l+WQjRSH3rmvoEUeMRxe1Wow1JJYIi5ZSzDla9oUo6wtnQhDoMPA+xeUp72
-	s4G19YGMib64NIQ0f2euilkvKvOYG8w33Cs+Jc8zdUrJd03Ulyetb4V1v7h0oHZeLYxByd
-	vx6a+B1loGuULo5wTBURSb5uJ2LN4+DU/Ju+hoH0IuMmtG2jFDr6jpjWdrL4Rg==
+	bh=0hXQeY9fV/lgEBA7BL/pi/3XsNE6fVTcvN7bhSvc+OA=;
+	b=QOsVI/Z7zWzgJsNLXMT15mlf8rMxNaBIbcMW9YswnoFa77Z9zMvsjF7KfHtANmGjPk9JnG
+	A34oSqgA1VkiA/RxiLfFoU1YxZsfqTCfAPef9QLFiCNVyBflWliQIk5Uv9qr2mB30MyVtC
+	rwAPLebrX9TrSqVoDRsK8Au7lQWfLekMX/8iQi5FNQmiVsmk0/YtpOLy45RK8eil+RH8jK
+	94SgDdVtOTjfFuvE8o6gwAraIVsp0hoLRmEUscGY4+jTO6SydyM8sTdfX3WKHCyORfLdMS
+	qmjAXaVlgUbkXd7orzQEod5iOyTrGG8zgDi2zgZjjgpoEDHAPxmtaJ0GajEr/g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790665905;
+	s=20260414; t=1790667744;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=R7utKQKkG85QFDDDa6Jf8+hpBkcGt+izVXpfPVgm7do=;
-	b=Jgyd+2ncaeK0+ssshWrWy9ULjmFOK0vxzQhGFcpU/Bq47f3l15yd0TC8GBfyD6oqbQYwFB
-	1vAjK85TiH0CaugAili4pas5RrnaMaVvy6Zeb+W0C+47J58S7jGP/ZR51hSZGqA/2OeBpu
-	HXIC7J9+gn9Toc0fqV5KzxAGaDh8MEIKc4mXovXrVFZhcX0xr1k1Ei1wgNBeJpw2x34Kf5
-	ybZ//49hRbevzo0MOBtDTlOwPwMK6yyEeHBgy3q5HEroe8jc0IhuJxzygJ8ys3JgcA4U/D
-	6JV6ZxLvzBgdhbItvobRaXhg6SIBQsLHTt/ejrut45JrSFA/g+ra7Yn45oyucA==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790665905; a=rsa-sha256;
+	bh=0hXQeY9fV/lgEBA7BL/pi/3XsNE6fVTcvN7bhSvc+OA=;
+	b=EmG4Zjk+jm8kWAtH1YVxXTrojQiQLMG6HhDb4+lMJcEUZk9sQ7K1diQkvROCWYbPHXk/9w
+	MABBUOxZNfORzI8RMjsvqeTQMR8I17KRm7tnQ+Yk0Q68a8LihjMjhckcX58un0tuVosBQs
+	mqtgDPUNNGPpxvD9xUBicZKqbfVQaPCInCv+l+HymnLojmJgu6Lf5BtTz29Mng7+08SqvM
+	gkrlAvVXz2lW5CmOXC9KsRQq8dHXe4M48M62CySZo9Xo83MMYcbG19MAbqsYrL7hcww4A+
+	ef8qCOMO6j0xje4i6vMC5SFDKLdGwG96NHiR2T3dysYIRAfQTUBkRReJWe9Zag==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790667744; a=rsa-sha256;
 	cv=none;
-	b=T3WCdBiVNZiy0pCzyvbJOCN/Q9EZUsDxRxWxr1B1SRV9+mgY8GJMs9zoeRHbpQxeHOnbEw
-	lxSpGdUC/4jGmeeLPdzkfnJCB/pAnrh8LzCztpKcsF+4LoiMF6Zecs/GjrvtfrSnvv6/9Y
-	ph8EC0POiQd2bsbYxUHIIB9d5bjVE/f7s/1md7VQUHgaNjFkcOy95+hGzyG+5cdv680/JX
-	30sfMgo7b9ZHFJj0F0HzeWmb6+9w2wgOf7Y2FXlf5SDJYOu9h5XlXHo3xxbsgHdsZ3Xfvf
-	moDghHTZYb4ewzLF43m1UzqBN5RZ0whW/v/2wgvyz5RtA76MUjDXYcBJnOVEcA==
+	b=GThHdbOgohzEvMYlzDnNlWXhljiekf+kW0rBxCD5+ajtlx9yjMGTP++qET4wAt4nrWjuqC
+	Uz8NhGNCmp9pzOrb9EcGFegf0/C1NyTFcfuDXGei/mNVFg8zFs1/rfX5IgzvtrMUhBqpSP
+	OyddNNWbvgiy6JuA3pT/xsIbpF6ap/+5sE1+AmZAisrMtMUu/FElctY/Lgj0GinKAOkx3b
+	qEd+RgVPZXdM7NqRUdqqYEKH8G2gc2BlM0rJNBw1Pm3EkazuBUF6/QJB49Dq8WY/r/ZMNd
+	xFBDCBOHf6xFZ4PI2fpQvRHr45GV8pKL9h9ua0cdcgPcbXfnzqX+U2ztrGIkXg==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-dude02.red.stw.pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
 Received: from dude02.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude02.red.stw.pengutronix.de (Postfix) with ESMTP id 2C50AFF954;
-	Tue, 29 Sep 2026 09:11:45 +0200 (CEST)
+	by dude02.red.stw.pengutronix.de (Postfix) with ESMTP id 3BB3FFF954;
+	Tue, 29 Sep 2026 09:42:24 +0200 (CEST)
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>, 
- BAREBOX <barebox@lists.infradead.org>, 
- Michael Tretter <m.tretter@pengutronix.de>
-In-Reply-To: <20260928-mci-cadence-sdhci-v1-1-e18fdf9070c0@pengutronix.de>
-References: <20260928-mci-cadence-sdhci-v1-1-e18fdf9070c0@pengutronix.de>
-Subject: Re: [PATCH] mci: cadence: adjust name of reset line to dt binding
-Message-Id: <179066590516.722607.5689472986820009197.b4-ty@pengutronix.de>
-Date: Tue, 29 Sep 2026 09:11:45 +0200
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20260928112731.1271094-1-a.fatoum@pengutronix.de>
+References: <20260928112731.1271094-1-a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 00/11] Documentation: define a barebox threat model
+Message-Id: <179066774422.746017.3999649954446570551.b4-ty@pengutronix.de>
+Date: Tue, 29 Sep 2026 09:42:24 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260929_001147_061887_676EFBDC 
-X-CRM114-Status: UNSURE (   7.07  )
+X-CRM114-CacheID: sfid-20260929_004226_395279_6900F4B4 
+X-CRM114-Status: UNSURE (   6.37  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -129,9 +127,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Mon, 28 Sep 2026 13:56:15 +0200, Michael Tretter wrote:
-    > The driver has been implemented with a preliminary dt-binding. The > lastest
-    version of the binding patches [0] use the name "combophy" fo [...] 
+ Content preview:  On Mon, 28 Sep 2026 13:26:55 +0200, Ahmad Fatoum wrote: >
+    The security considerations chapter is written for integrators and > tells
+    them what to configure. > > Security researchers may not know how [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -169,51 +167,68 @@ X-Spamd-Result: default: False [-60.61 / 15.00];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:1101:1d::28:received,2607:7c80:54:3::133:from];
-	MAILLIST(-0.20)[mailman];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
+	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWO(0.00)[2];
+	MIME_TRACE(0.00)[0:+];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	DMARC_NA(0.00)[pengutronix.de];
-	FORGED_SENDER(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
-	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
-	TO_DN_ALL(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: BFA68200B6B
-X-Stat-Signature: kokekmt3qbbotc9yennqqzaojxawga4r
+X-Rspamd-Queue-Id: 411362001F2
+X-Stat-Signature: deho93erx1no33e6syj19oxnp6gc6rj4
 
 
-On Mon, 28 Sep 2026 13:56:15 +0200, Michael Tretter wrote:
-> The driver has been implemented with a preliminary dt-binding. The
-> lastest version of the binding patches [0] use the name "combophy" for
-> the softphy-reset line.
+On Mon, 28 Sep 2026 13:26:55 +0200, Ahmad Fatoum wrote:
+> The security considerations chapter is written for integrators and
+> tells them what to configure.
 > 
-> There are no upstream device trees in barebox that use the driver with
-> the preliminary binding.
+> Security researchers may not know how barebox is integrated, so let's
+> document what we count as a security vulnerability and what's a normal
+> bug.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] mci: cadence: adjust name of reset line to dt binding
-      https://git.pengutronix.de/cgit/barebox/commit/?id=78cb205a90aa (link may not be stable)
+[01/11] Documentation: security: unnest hardening sections from dm-verity section
+        https://git.pengutronix.de/cgit/barebox/commit/?id=c0cdd23b4c61 (link may not be stable)
+[02/11] Documentation: security: clarify development key insecurity
+        https://git.pengutronix.de/cgit/barebox/commit/?id=8dc76a8df393 (link may not be stable)
+[03/11] Documentation: security: require signature verification to be pinned
+        https://git.pengutronix.de/cgit/barebox/commit/?id=2ed2d9dc91fc (link may not be stable)
+[04/11] Documentation: security: document trust for builtin devicetree
+        https://git.pengutronix.de/cgit/barebox/commit/?id=19aa2d73e335 (link may not be stable)
+[05/11] Documentation: security: clarify the environment section
+        https://git.pengutronix.de/cgit/barebox/commit/?id=6f05b3974006 (link may not be stable)
+[06/11] Documentation: security: describe shell and environment as trust boundary
+        https://git.pengutronix.de/cgit/barebox/commit/?id=e3cf9dcf37a1 (link may not be stable)
+[07/11] Documentation: security: document the barebox update attack surface
+        https://git.pengutronix.de/cgit/barebox/commit/?id=e970228de462 (link may not be stable)
+[08/11] Documentation: security: update for barebox dm-verity support
+        https://git.pengutronix.de/cgit/barebox/commit/?id=cdc811322e49 (link may not be stable)
+[09/11] Documentation: security: add anchors for the different sections
+        https://git.pengutronix.de/cgit/barebox/commit/?id=e6c151d4b3e8 (link may not be stable)
+[10/11] Documentation: define a barebox threat model
+        https://git.pengutronix.de/cgit/barebox/commit/?id=482b9b909058 (link may not be stable)
+[11/11] README, SECURITY.md: link the threat model and security considerations
+        https://git.pengutronix.de/cgit/barebox/commit/?id=6c54a2974517 (link may not be stable)
 
 Best regards,
 -- 
