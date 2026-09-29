@@ -1,119 +1,128 @@
-Delivery-date: Tue, 29 Sep 2026 09:10:18 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Tue, 29 Sep 2026 09:15:15 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xBRyk-007aaq-2t
+	id 1xBS3X-007ait-32
 	for lore@lore.pengutronix.de;
-	Tue, 29 Sep 2026 09:10:18 +0200
+	Tue, 29 Sep 2026 09:15:15 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 5D328201548
-	for <lore@pengutronix.de>; Tue, 29 Sep 2026 09:10:18 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id C3E4B20168E
+	for <lore@pengutronix.de>; Tue, 29 Sep 2026 09:15:15 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="WELSa/IS";
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=RMKkatjw;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ijuV+rUE;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=SWTp9QdJ;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
-	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
+	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790665818;
+	s=20260414; t=1790666115;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:content-type:content-type:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=u1OSPpndh/JuBylCXaTl+ynIIqJWm4XGiP/zSC8Alwo=;
-	b=EVsn1aaKKZyZIwYheEjzVtvHo15yF22Yk9C9Z+MTAsOZceSzPtwoOqFuxHijDwNl5Ta6l7
-	lDJwP9TUmypkmr2sIZhyxio0ghX17b17ALrwFJHaxhXmEGvYBz0gYAcDI20ZS1k5S463ba
-	jI2LjOsbiEaTKMms1YX1n6vblOTuWXXuhXUTcDOGJuKHjhGIGAP9RdIDWdTo7p5lL0TOS4
-	NZ/JFf1rC149Aa02A6+lRWatgi7Fn7xnp1hINqX8Z1z+cWo2FApm9uMKI1XNErqj9hS6hf
-	BiY9vMzUqt5b1WxAj7Y3F2W6/hE+f7IvDtym8YkiSWCg3IAsDwBvL4z25sEFVA==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790665818; a=rsa-sha256;
-	cv=fail;
-	b=UQp7W1OMOwdxHvaaaFQ6JOl3FwZwWX1wg1zJ3ozqobNa9eU5nLfK8TqDz5dmYj1UAzd5vi
-	LQitPiLnwVH0QTKAu3dtfVsbC40hK0XYANKFP0zFXhgERGou9jT6Ycjj8x5RD2EWm5Buir
-	WD3jgM4FitSOGQOvq8fGLD/bS/CLD/6AtW3B4OMZxPydL7B2LbmdFyZp6p48SuLH3WGbiS
-	wTTktzVP2Z07umOVzMiztH6doXFZqjbxtZ+qC5Cu5CpekptcMbx3zTolFjPi7luf3YH3l0
-	mO06BzgLuzp8sonf0Cc6IlpFRJZI41Qf5Mixu9yvV83OliXtT0j8xEVAfP5iaQ==
+	bh=oSkZLZKiptTiU07873RpJv7BWVp2In53ZvKWStFrfro=;
+	b=G7lt/wnjY0JVuY8paeyNiXRrWGpQoPfT0xZf+Da2h7TvmYA8s5cGyqFFZcF3TzzeEym+FP
+	Y18sencj9dYu6eMWk2F2D3lSLoJdKtFUKK54UI9Jtc9tbs5PbBJyLBp5YCt8ufDJk+lcKv
+	8/k2XA5Uc3giANS3TL+Wod/IIf6N3zeuYx03uQrygbwm3d5rc2Y5wgMaw5nh0DmbR0ydc7
+	UrTrxM5qcBuUHHNM7NCG8yxWNbw5Vh2peOIcf1bPfjsO7vf/EcsgRJOVSyVfCHIPAMTVXX
+	H0WyaKapoRpuoUyRBvonwNgzqQfYn/LXPmv3jC+6yZzqQvoRw9E2xbqVdsUQQw==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790666115; a=rsa-sha256;
+	cv=pass;
+	b=Z0dQfa3dzx+UasuViKZq2b6WvkuujC4XRFKvsK6B0+d5xQirb1Uw9ayT2Wb2v6p5UKiMhr
+	N7Siu0FYzV9WlrRn6dOXmV7RZp25SgTpSxJqWYzIMnXbnb7LebqpJdlWz4IeyIZSWek7rv
+	cKRfHPJrqJt9UEJDodRBgOBzfBfibQQNjw1G8PYuFIU5n7QvSlw56frRogKkcP97VBmUn/
+	+qYXTDnRyMX12tD3zV3QFgWgCj09ZhXNF0FDDe2irDEl1entnHiMZtWLOyAXYjvFMZOoWu
+	ZBnSXXK6Nc+YsekHI1puJ7TDtmNgIpW+xZ/QIStK21b/hiCV0QB4dWAbISTHPA==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="WELSa/IS";
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=RMKkatjw;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ijuV+rUE;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=SWTp9QdJ;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
-	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
+	arc=pass ("pengutronix.de:s=20260414:i=1")
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Date:
-	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:To:Subject:From
-	:Message-ID:Reply-To:MIME-Version:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=u1OSPpndh/JuBylCXaTl+ynIIqJWm4XGiP/zSC8Alwo=; b=WELSa/ISTvMOB3lIjjDJfqtmje
-	BjkB3GANSdHrxJ2rW46r0SDbL615GQyZvNsUuchl4Txco5V9mRMy3KrzI9kEdQQ81ND/95OptQljb
-	4z7OdglTbzuRWtd4bBQgtwcxC4YHXnKiHiEQcNsTQM48yLWavy/L0yTawiw/J2xE7jWd8zjIsrHgH
-	A9J0bvhLFD+kNOnSYAiJbztDvcRdhUkED6ikWL5eCXEJCQ0zLtPwYhKWdyyYoD53Iht2VRqkdnpgy
-	EdaBWfb9c4+FDVDJjQNlYR7BTlEvVd6Zsoi2kwVIDUQtrxxfatjjKtv2hvcaOkzEbmGqRBy7fIzmk
-	DCBVe7SA==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=oSkZLZKiptTiU07873RpJv7BWVp2In53ZvKWStFrfro=; b=ijuV+rUEKaAmph1et8g0YYjzdY
+	BNABEmfrH33EJuIBcte4fBoOqJujeQecIjYXMT9g/isxkuN7Rb0Mnx+qI8iLvl20qb74nLdcj94XY
+	SruRwlTX+jpu2Pt5an9it4N155lvY31toWRznb7CB7ltUNZp/tjdronPH94OfLWfVy/mCx0PESliQ
+	xrd+1DwN6rAWTYEhpJi8+2fyFnSvaphkOjWzejBwbWsK6pI6jNtBcafp/rTOL82BIyujnEPCkTDZm
+	7jxd6Sx543hJy7NkLo+8SAn6VqHamIinMBAGvLewIMy3oDcOqHdtjFifhWxfRoBYLFTS2FJHRxN0p
+	w1uuRGQg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xBRxW-00000002YkK-1Msp;
-	Tue, 29 Sep 2026 07:09:02 +0000
+	id 1xBS2Q-00000002ZM0-3Z7L;
+	Tue, 29 Sep 2026 07:14:06 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xBRxT-00000002Yjq-0fY9
+	id 1xBS2N-00000002ZKm-1ce9
 	for barebox@lists.infradead.org;
-	Tue, 29 Sep 2026 07:09:01 +0000
-Received: from [127.0.0.1] (unknown [IPv6:2a02:560:5dd5:4b00:9ebf:dff:fe00:fdb5])
-	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 1F77320168E;
-	Tue, 29 Sep 2026 09:08:57 +0200 (CEST)
+	Tue, 29 Sep 2026 07:14:06 +0000
+Received: from dude02.red.stw.pengutronix.de (dude02.red.stw.pengutronix.de [IPv6:2a0a:edc0:0:1101:1d::28])
+	(Authenticated sender: relay-from-dude02.red.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 7392F201548;
+	Tue, 29 Sep 2026 09:14:01 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790665737;
+	s=20260414; t=1790666041;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=u1OSPpndh/JuBylCXaTl+ynIIqJWm4XGiP/zSC8Alwo=;
-	b=RMKkatjwdjkFEhy701gkwXdsCdFTC8Z+LmAajCrasajvF+IY9JnbN7aYXRwnG06rlehj4R
-	Q/Vt58DJ1wrEfBT+e67Qw1AMy8qUp95VlGBzu6e1clOT6pi/5JmStjhGBimGEZA0bH0pr4
-	AKVBin+uSrO8NiFMsHRoK0mxlRxQPS1EzazJQFPhfLyZOt4St4E0nDp02gjejTfWEshwy1
-	elyNMe/2VXJupF/l6dvC7Krgb2FtYElKsoD0Tx5IYxeP26aOyv5xiUx6QWYi4KCmHpRqqV
-	Gf7nB2+Vy/P67lSVyq0LxufSIpVKMc3RhajdA79auF930XAin0hFWCfZMxQ7Zw==
+	bh=oSkZLZKiptTiU07873RpJv7BWVp2In53ZvKWStFrfro=;
+	b=SWTp9QdJckUVEoakskL16EPN8fiEWZMlewqRownqBAU2na8F0TDv0dAh93kF6eq5RbD62L
+	0yKlWOBB8/vy1nOlBtRb5RCoa2cLK9448ISMjdmWPFgzGV6bwhuzTvciALSIZb/8QBSeJY
+	gYutrLPUWC+TDK84aXN4ftHQC1gnTakRgPbr6/PUy/X5qt2jrJEhoWtRShVKQhRmYKFZ6x
+	nUUjR4f29F0HZMuMtYQvPuhRAJ72HjXs/oiDXQFLTm+XmdkUAP1DZQadBKVvoASbddfCxJ
+	vrMAk5pFbOg3JCijWTxZaIAazv1dqbVS4nhkTa0SMTN17surWdtxrGpWsP3hmQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790665737;
+	s=20260414; t=1790666041;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=u1OSPpndh/JuBylCXaTl+ynIIqJWm4XGiP/zSC8Alwo=;
-	b=LECoLUkn3QbN4OJtMONOTOkX/eA36LH3R3SFMW0FnMLSBSw/vqzYN7/sJ0UBXMpejvg5sK
-	aYR9eyFomh0d22LQV3XxQ7inKpsSa5uFzQKROLR/BrOSFAzIvFlRVwY1J+z3yzuwPZ+F+u
-	48U9w4bnuGIujykCs5oMM7t0IXd3qgRmHTP57j2uxy8chpqt8Bb44SIHFeC0p46jPL0b2G
-	3BXZPtVGl8jI5rcnOVjIFB9krFjCLZhdSm/Z/EJWKQAqDT5nGQCUg+FhUOH7TH6PCh/qGi
-	c+Cv1MuvVS3OidBfk0t88HoFKkp7V6XoiLGpL8RiHfs+NolBLzpvfh+dAgfK8g==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790665737; a=rsa-sha256;
+	bh=oSkZLZKiptTiU07873RpJv7BWVp2In53ZvKWStFrfro=;
+	b=BNedOBDLOxEv7BeVyJBiNVxGCPp6OJ6sRw3nGG5sv2B9rXlYS5/WHymu25L2BwYzngo0ck
+	t1vmcfMdXOJgqdF0DyHjEH0dY4d5z6OQRBNHglFBVNAmR8buBGBcjxs2jOJX3NpxgtS/Wt
+	k8cV5NEkEb7CLYjp+B8BtJyuwxWtgqy2BNABDp8cYyILDJofnt2cfhxP78fwKZTLH00o3O
+	i6UeuB8vZ6wWkXvGVlPCqxuhLfo1wv/eq45mzyI/k+/NNiGoTIoNCX+4IYVxJcA/7B2czI
+	jSBURGx5kvFR27s1xiM8sfmxvviyQVml30kt7nCGJkP9V5s24dRlNkCxrz3qDw==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790666041; a=rsa-sha256;
 	cv=none;
-	b=bcWQ/cnjn4ycLFNR2Wwt0iyEpWbEod2PoBRFT5B1Z3Q4fzz2rQ3OZJwmcLNW5IoAsFLFVA
-	447JtKZIuSAeTrjAwvcgKt4BCYkvoVJd4buDyeMPV4NdQRIkJT2NwyJeokWTFcthvOKuqL
-	IG/U++cBmO22RIm7wOzgygphxCFRpwg/msZkp7oX1hvNCz4jVUf7+On8y3jtRjG3uS5TlR
-	KJbZMKAF/BKlwi2sN/dXIvZHLFKQr0zegY8ZVq4K5LK1axirL6GHr6v/tB/+fP1etMsUqU
-	LUoGPfShU0wqojxdsIEReVbVCZOYLYQpkMtqbznpr4otfxNalMzHZmZ9cH9Ptg==
+	b=bVu/1Omnj34ZpNMcBfjXbaBRazgFZlK1AUQO+uWHVrT2Tt5sos54KjgRgPfQ9FNpzSVaLl
+	wNpAVfJ7u8OGTiO8Y3Wl/1NSavwW4PHSqMeqbkVhdOezSjOvm6wsDSpTa6FhIzUwWGrJuT
+	j9CICPjc5E85/h60NbJrELrrXyvxHt/qS7GxEV4ruXjFRQVVkjX7fbd49nwzbwngGsuH4Q
+	xMJKvlcKTxvCLyyqubnBt/PM9oDv04Nyvfqjx/eGA4JEKcHhjUslcfL2Z5tQYWnsLjR7zx
+	Ox6o0FEiVgWdYFnza1/oFT9WwHKQTS+vbp7pZTkw3SeSuO5eHbySnwOreDptyA==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
-	auth=pass smtp.auth=sha@pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
-Message-ID: <07b3447f-f077-4664-b906-aa949b8ca6eb@pengutronix.de>
-From: "Sascha Hauer" <s.hauer@pengutronix.de>
-Subject: Re: [PATCH 2/2] PBL: add oneshot helper for sha384 and sha512
-To: "Michael Tretter" <m.tretter@pengutronix.de>
-In-Reply-To: <20260928-crypto-pbl-sha384-v1-2-bc7095590123@pengutronix.de>
-References: <20260928-crypto-pbl-sha384-v1-0-bc7095590123@pengutronix.de>
- <20260928-crypto-pbl-sha384-v1-2-bc7095590123@pengutronix.de>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 29 Sep 2026 07:08:56 +0000
+	auth=pass smtp.auth=relay-from-dude02.red.stw.pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
+Received: from dude02.red.stw.pengutronix.de (localhost [IPv6:::1])
+	by dude02.red.stw.pengutronix.de (Postfix) with ESMTP id 60693FF954;
+	Tue, 29 Sep 2026 09:14:01 +0200 (CEST)
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: BAREBOX <barebox@lists.infradead.org>, 
+ Christian Berry via B4 Relay <devnull+christiankbberry.gmail.com@kernel.org>
+Cc: Christian Berry <christiankbberry@gmail.com>
+In-Reply-To: <20260927-nvme-ready-poll-v1-1-6a3f63b0ea3e@gmail.com>
+References: <20260927-nvme-ready-poll-v1-1-6a3f63b0ea3e@gmail.com>
+Subject: Re: [PATCH] nvme: check for readiness more quickly to speed up
+ boot
+Message-Id: <179066604138.724510.3885131411368357735.b4-ty@pengutronix.de>
+Date: Tue, 29 Sep 2026 09:14:01 +0200
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20260929_000859_348618_3E6D5EEE 
-X-CRM114-Status: GOOD (  14.92  )
+X-CRM114-CacheID: sfid-20260929_001404_275945_CE558002 
+X-CRM114-Status: UNSURE (   6.55  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -121,9 +130,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On 2026-09-28 14:25, Michael Tretter wrote: > Similar to the
-    oneshot helper for sha256, add helpers for sha384 and > sha512. > > The helper
-    functions don't use the ARMv8 Crypto Extensions, yet. > > Si [...] 
+ Content preview:  On Sun, 27 Sep 2026 19:03:49 -0400, Christian Berry via B4
+    Relay wrote: > nvme_wait_ready() polls the controller status every 100ms,
+    although > the controller may become ready much sooner. Every prob [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -151,93 +160,68 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: BAREBOX <barebox@lists.infradead.org>, Michael
- Tretter <m.tretter@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-54.41 / 15.00];
+X-Spamd-Result: default: False [-60.55 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[99.99%];
-	MISSING_MIME_VERSION(2.00)[];
+	BAYES_HAM(-2.94)[99.75%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
+	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
+	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	ARC_REJECT(1.00)[signature check failed: fail, {[1] = sig:pengutronix.de:reject}];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
-	MAILLIST(-0.20)[mailman];
+	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received];
 	R_SPF_ALLOW(-0.20)[+mx:c];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
+	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_ALL(0.00)[];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	RCVD_TLS_LAST(0.00)[];
+	TO_DN_ALL(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	DMARC_NA(0.00)[pengutronix.de];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:-];
-	DKIM_MIXED(0.00)[];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	RCPT_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	R_DKIM_REJECT(0.00)[pengutronix.de:s=20260414];
+	FREEMAIL_CC(0.00)[gmail.com];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	MISSING_XM_UA(0.00)[];
+	TAGGED_RCPT(0.00)[christiankbberry.gmail.com];
+	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 5D328201548
-X-Stat-Signature: gka446heyddicqkmrfnwy9rorxm6brqy
+X-Rspamd-Queue-Id: C3E4B20168E
+X-Stat-Signature: wkeofzrroamzrezp5ojkhpoje768f4m6
 
-On 2026-09-28 14:25, Michael Tretter wrote:
-> Similar to the oneshot helper for sha256, add helpers for sha384 and
-> sha512.
->=20
-> The helper functions don't use the ARMv8 Crypto Extensions, yet.
->=20
-> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
-> ---
->  include/crypto/pbl-sha.h | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
->=20
-> diff --git a/include/crypto/pbl-sha.h b/include/crypto/pbl-sha.h
-> index dbfb79647462..8a20e0a2b84b 100644
-> --- a/include/crypto/pbl-sha.h
-> +++ b/include/crypto/pbl-sha.h
-> @@ -28,7 +28,29 @@ int sha512_init(struct digest *desc);
->  int sha512_update(struct digest *desc, const void *data, unsigned long l=
-en);
->  int sha512_final(struct digest *desc, u8 *out);
-> =20
-> +static inline void pbl_sha512(const void *buf, size_t len,
-> +			      u8 out[SHA512_DIGEST_SIZE])
-> +{
-> +	struct sha512_state state =3D { };
-> +	struct digest d =3D { .ctx =3D &state, .length =3D SHA512_DIGEST_SIZE };
-> +
-> +	sha512_init(&d);
-> +	sha512_update(&d, buf, len);
-> +	sha512_final(&d, out);
-> +}
 
-Instead of making these static inline functions, could you follow the
-template in pbl/sha256.c to give future developers an idea how for
-example the crypto extensions should be implemented?
+On Sun, 27 Sep 2026 19:03:49 -0400, Christian Berry via B4 Relay wrote:
+> nvme_wait_ready() polls the controller status every 100ms, although
+> the controller may become ready much sooner. Every probe then waits
+> at least 100ms longer than needed, and possibly twice, since both
+> nvme_disable_ctrl() and nvme_enable_ctrl() wait for readiness.
+> 
+> Poll every millisecond instead, as Linux does since commit
+> 3e98c2443f5c ("nvme: Check for readiness more quickly, to speed up
+> boot time"). The overall timeout is still based on elapsed time, so
+> it is unaffected.
+> 
+> [...]
 
-Sascha
+Applied, thanks!
 
---
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+[1/1] nvme: check for readiness more quickly to speed up boot
+      https://git.pengutronix.de/cgit/barebox/commit/?id=22e19b4ec939 (link may not be stable)
+
+Best regards,
+-- 
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
