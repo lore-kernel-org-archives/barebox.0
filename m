@@ -1,124 +1,123 @@
-Delivery-date: Fri, 02 Oct 2026 13:28:11 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Fri, 02 Oct 2026 13:37:10 +0200
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xCbQx-008p4a-2j
+	id 1xCbZe-008pBB-2d
 	for lore@lore.pengutronix.de;
-	Fri, 02 Oct 2026 13:28:11 +0200
+	Fri, 02 Oct 2026 13:37:10 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 56B0B201F0C
-	for <lore@pengutronix.de>; Fri, 02 Oct 2026 13:28:11 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 48DC0200758
+	for <lore@pengutronix.de>; Fri, 02 Oct 2026 13:37:10 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=GXw0mUND;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=MAsHgAPZ;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ivMr2WiN;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b="cnl/BQcW";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790940491; a=rsa-sha256;
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790941030; a=rsa-sha256;
 	cv=pass;
-	b=cjJxeIp294uWq457pTP1DBjZRTfOyTA5i/xd4WfSH39N154UI1FB6Aa/j3T7ODrZyi9uv/
-	KJ9BxbxdhJZxQNkqTUbFSlfJybpNUHMD3abvBE1fZ0xNxiNusvpcLrlUQpBIPyneJRAHhT
-	p0uII+fUGLxcgp7xHG6JWxqg6PHrB/gIkUIb9xW/uXgsHW6PmSzY3irdcwjWbDvntSEJrO
-	Ocl626G4cFgtg88K0nMmLewg+KMybS18RSVaZ9L9PUw+zM3TsTpzYQUciR+93iB1bBsKM5
-	ZEZkH9wTj81taJUrV8f3TvjgqZovSjAUW8kWcF1Nm7UdD6eTah92AGd+pfMOwA==
+	b=TctDdNcHYAONRUDbWHq14oXYPPOc0aCOGyXJ5i/iMKPxTC3CV60Ep390+nkyfxX+93wTwe
+	TU5TQDrwl8VV48spFVJKS1ehZi/S/FJ8hilHWklgqsbuD3wT2qrjrctOQJ7D9JvywA9EAO
+	gGwcq/pplyvFtLG0HfeRLmwqGnPTYaAJXgsBmZuMORE7y99URKWlGdUZwD8sJl09Wt/3d/
+	guyHMnsYhcskCP2Px3/plStqUKnvoKC8aEqhaT60IDyD3BSIpjqBMjNS4UnR+6Ayh/2kwV
+	VTT/TB5+O4Kd45trNvVhQHqN2ebAZinQyKJDgcVDzsgQHbXfakdy1EIgonuVwQ==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=GXw0mUND;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=MAsHgAPZ;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ivMr2WiN;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b="cnl/BQcW";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790940491;
+	s=20260414; t=1790941030;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=NIbC4+WqtvB89/3Qn71PR4Q4reBcsf3zhOndgPbMwhE=;
-	b=fv9RqkjEBz3psm9ZCAz5VKlfkJfi/NhjEX8BT4/RBisl+39Z7Ttca4u8yhCNwOukZTFwwF
-	EkIzxzN28Tw19Fkd6RStUid7SivT1o/UOF8zEQcKqFmhZbvS07aazSUZcmFpdUHyOCaB+u
-	2LPtXoExPVZ5Y8sMBYrvEsAr09lT5jRSS1yA3EzDCrh8s8y0na2IkuDAnwMYPqWcpNVFdR
-	NcEV7RL8n8e6DmNEoyyX2TvuQG8OLFtSHin5yqrCbQu5ZVIPmKcNqBN51F7ZnCSAil722b
-	mCO6ZrZcnZL5O94pPZOvy/Sz6mKOxNdj16riNejp5Be9IQCuJRVsnsQeAxxg7Q==
+	bh=NvJ7+l7HKTy0sSEXA/0yK+UJq90ci0/IuFs29XQJivA=;
+	b=V+07iorN8fVBxRLmnpIrHldiXGjFRvcZMP4vS8YqvUt/IzqGZ9HEwKu/cefjZGcdHD1uPq
+	piXZRAdvaNcyR5caKfRdflx9GqRmrT7PQu6CWLPs505gp5TeZIR4jAb9pCh2q+mUPqe2EU
+	dx67k7LwiAqvZJVSn/RV7tI1qebHoLog999+Df4f7Hpw3GGNYDGTR4h47WMRcQUNbWFbQ7
+	vgmjzEWIr6hb9ojvgmQHCXEoZ9WnJ+Fhrr6w6c1elFG0e+zyQmK125rrQZP38zZBpvoxh/
+	AZ4VaPbOWSlwNj4d2D6R9DGwYEFOnK3zqQj99qsRHMUsN0p6Oh7oWDg3+wQINQ==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=NIbC4+WqtvB89/3Qn71PR4Q4reBcsf3zhOndgPbMwhE=; b=GXw0mUNDwyPHLg1hQPENmTPBpU
-	BFPOY18+o23gh6cwa5Jalz/vPU85pN3mXQMSiW7fWyFO3uhDuRFOvExKKc/Qr6yEXjw+U1RLI06wq
-	iEcOWY0FTPUXplXcqlAXFdOHP+JOhe3/A9NngzzKaWVbcku9x4PytQWnv31rXndX6BUUY56qs1YtT
-	fkgIfnGLUR9hV3YQHnGGBib2BU8cbEQev76ptd3k8XvScyE18+mMNBRBoXsikinVvP2HuxDQaGYnq
-	piZ8gieqbNFq6oab/v85J1OdG/CGbAXlqSyTppJFkU8VCrcH2F5bfRR8AsPydFo6XlSuElZJi7GlX
-	M5WTb8UA==;
+	bh=NvJ7+l7HKTy0sSEXA/0yK+UJq90ci0/IuFs29XQJivA=; b=ivMr2WiNqRjiq4+fsGxx5yZBU0
+	W4rM7Jr1oqZhbIZqHp/fpA7Qo0od9Am5/kPJov/mwjKiFRPJU3/0roGK4mqffpRtf9gB+gkzJysPF
+	LrBchX9SCMJBIynHDxkggPPJ4U77jupZ8XCMVqJy+bvTJd4hIyxAZYx4JTXA0JCRNsoWCFrMGPE2R
+	EViFlTz9sZd46FLkaljukGtPRcEw6IBx+IGpA9j6ieA7hOOiUlH8i8hwiIAHkUbpYqcOCiEMVWWmv
+	9ioPNtthW2AKyDNRAVI1aQJYoyUo+M9fsRYiYZeFw+HPxme+QFu9UfTNk9X/mYuF/1FkUNuWcVcMc
+	OB2ixmcw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xCbPo-0000000BTJy-442m;
-	Fri, 02 Oct 2026 11:27:00 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1xCbYW-0000000BUP5-3ESo;
+	Fri, 02 Oct 2026 11:36:00 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xCbPj-0000000BTH2-1XFS
+	id 1xCbYS-0000000BUN6-3sZZ
 	for barebox@lists.infradead.org;
-	Fri, 02 Oct 2026 11:26:58 +0000
-Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.pengutronix.de [IPv6:2a0a:edc0:0:1101:1d::54])
+	Fri, 02 Oct 2026 11:35:59 +0000
+Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.4.pengutronix.de [10.17.1.19])
 	(Authenticated sender: relay-from-dude05.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 75FFC201C7E;
-	Fri, 02 Oct 2026 13:26:53 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 39C8320196E;
+	Fri, 02 Oct 2026 13:35:55 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790940413;
+	s=20260414; t=1790940955;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=NIbC4+WqtvB89/3Qn71PR4Q4reBcsf3zhOndgPbMwhE=;
-	b=MAsHgAPZ8IbNQDeZ12f4F95HMBb/CStGLT8sjdFfENNshtW1sN1els9z2ggCvYw8EGVfcp
-	rqkmQsHeEdURqSb3BgcNAeUg+PniZkq8/PEa4bb7sy6JD6DEt1dvvsp9MPEaKJL/B4PpjX
-	E9qiRw5DGGL6Fx6XFYlpY9yfrWXNhgyrumT+aaxi9rrH8CLtDXxIXsBF3iSkAVKkIUdp/D
-	0kYyNdDVeejN/PSrADR8ixv86wZquhG4wMOnV8PztVr+iukJ60kK7iAfAXIDV6gK6WIsgJ
-	M/5R3vWypug5fQl3GLsArJWnN1s6KHb2czP5Mz2KiQ6ad4667fxecfCQxGl9xQ==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790940413; a=rsa-sha256;
+	bh=NvJ7+l7HKTy0sSEXA/0yK+UJq90ci0/IuFs29XQJivA=;
+	b=cnl/BQcW1XmNwWYkzVUgNUHl0DLrrQOt+RAErcgsl32oeaH1oLAW4xF3cXy/2zkZ0nzYe5
+	RCGtFGfZJtqH/rP/FSLGhFz2WH0Z3OeIoF+eZY6Hm6e0K8WsFNkVZV84GOdvMF1t6siR9u
+	ymOgzqwrKY2LfjlRLzacM9vEetD7nGB2O6QP9An3vkjmWF4YwiRW9QS14oVjAhDCkkisos
+	7oOCf1EHk7pU0N1Ie46w4E2WTcG8ko3hemDU8qFvcOboXmRhrKn+QvRjuG50G5dQc3g+eq
+	YbtVwARmOHAUXjYGPcblmfOvIcZ/MVL8XOQ0/FOJvmrfJZ4XaFdWUOL+G+pPTA==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790940955; a=rsa-sha256;
 	cv=none;
-	b=RFe8RgxrvVKPulq9uUycfxbA/5jvrT59s1sseMmbXRKVWIzxh81gQzsJVyt5kwSqhTDudS
-	S3Y6z/G96ugwDdkG5bxA8++C9ra8e6vvHGPwqMspxk9GTrJfTuYm0jxdgo0yiV+ozkcmrV
-	rVJCP58YgDfRA5SB8qjwKOZEZqGCEPU/O9/CNom42KNDHD8vWjTWGPWDG9YBnhR8GRaWab
-	6QiTlns111bQhlu08iSxXrAGOabrOgqBWWbuzDpVTAFThHCh6Jl10N0iJQzRO9ws/b+O3H
-	lqfHyXpudp9PTftDr2UMTn2ppaZuBNeZj/+KF5PJhQao0L3wgHDSqvrJgWDCcw==
+	b=ENPFdiXrbhNRy5hcIPfQg10KzeVwAZ36jfkcuXYk2Jw8r8DyV7zWamGYtlR7qXzJtMNsp+
+	gMMj+BadugnIMBzTFJurdZ/HUDDdNujqBrlGW7Qp4PIDJvv40JH8JWvX/nvA0ve3PoS2Gg
+	EHstH4r+4tmZ+KzdenZct5ZUbYIJMUudXucUcHP0ANtXfBxjyEJSpi3+nk5UXv+mrVndlM
+	adp1/hrRTGYo2V/NflRIuv/t7LyyPawVUM4BIBEDzh3fHDU1Jg5aBzpjmqyen+/AXbChxh
+	NPCcZTliN41nCh5X4TMFQgTCGW0BaEUF+VQYyrFYlflQ7O44oU+6uRZaShhE1g==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-dude05.red.stw.pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790940413;
+	s=20260414; t=1790940955;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=NIbC4+WqtvB89/3Qn71PR4Q4reBcsf3zhOndgPbMwhE=;
-	b=dvYQi0FkLtpjVEv3plEcQMQOS7/eer5rZpWRiCfUhWBUM1vHAfOdfHTfoEw0QKye2elgsv
-	JLz6RVKWubWmsW973uyrFpi/iln4qLcleGXAt/ZNia7c0GTeFtHMJl8g2EZewyXHJRtG7F
-	lUCmkTTCy5uiLVuA7pBdCnM48lFLtBVjU+e+5fGTCwhBgWIbgA/aTvfu+xJq6qrXyeI19x
-	em5Sb/xmE3bg0VunPiNeg9P4PfPG3e91cLjoC5HuJgFsHUsPL2/H7ENziDtSknVy2NzGH5
-	/cnrx944RM65SVBcPZIeeRcTeMQk10F4fpBnfwYiVd5UWr+LeYUe/+42IBI1qQ==
+	bh=NvJ7+l7HKTy0sSEXA/0yK+UJq90ci0/IuFs29XQJivA=;
+	b=Ebh6pPTADdEaoIlMEZNcrwnEUwrGlRpe1qOSnwZamYmDs1mW/2S/sB9Uli4OqDyJIYdBi/
+	4O7XHCOf7m1gcp/XwR1aH/0HPXBIFVY0aGPcQxuB+0Ltdw7Zsuiwvk7d8fOBKpNxECONok
+	j1wFveGekArn/MBqhFrq4cDSTYUl9DX8YEf2xi9NTB00ru6aPqEjEfKoho01rG7SJuDs2o
+	Gjm09Jq63/jzgCinjViAMI/k2t/G9in2IcTv21hnhliRSfybNxHqvYtORFlwQKXxqzQWQX
+	qBjVcAefTPqR7hVGN1rd/a5aPjCIjY1ve4zuZjZBtp6DnHKj3BxSrB/dLk+vDw==
 Received: from dude05.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id 62E2D7415A1;
-	Fri, 02 Oct 2026 13:26:53 +0200 (CEST)
+	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id 1F84A741708;
+	Fri, 02 Oct 2026 13:35:55 +0200 (CEST)
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Thomas Bonnefille <thomas.bonnefille@bootlin.com>,
-	Ahmad Fatoum <a.fatoum@barebox.org>
-Subject: [PATCH 3/4] amend! bootm: add fitimage command line to bootargs
-Date: Fri,  2 Oct 2026 13:26:33 +0200
-Message-ID: <20261002112648.2899729-3-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: [PATCH master 4/5] ARM: i.MX8M: source dram_apb from sys_pll2_200m in early clock init
+Date: Fri,  2 Oct 2026 13:35:49 +0200
+Message-ID: <20261002113554.2902941-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261002112648.2899729-1-a.fatoum@pengutronix.de>
-References: <20261002112648.2899729-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20261002113554.2902941-1-a.fatoum@pengutronix.de>
+References: <20261002113554.2902941-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261002_042655_561250_E44A724C 
-X-CRM114-Status: GOOD (  10.55  )
+X-CRM114-CacheID: sfid-20261002_043558_312657_7D7C9EBB 
+X-CRM114-Status: GOOD (  12.19  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -126,9 +125,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> bootm: add fitimage
-    command line to bootargs Since FIT image specification v0.9, it is now possible
-    to pass command line arguments for the next boot stage in FIT images. 
+ Content preview:  barebox derives the 200MHz dram_apb clock from sys_pll1_800m
+    divided by 4, while U-Boot's clock_init() selects sys_pll2_200m, which needs
+    no divider. Let's do the same, so both can be compared side by [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -144,9 +143,6 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
  -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
                              [score: 0.0000]
-  0.0 T_PDS_OTHER_BAD_TLD    Untrustworthy TLDs
-                             [URI: linux.bootargs.dyn.bootentries.fit]
-                             [(fit)]
   0.0 DMARC_MISSING          Missing DMARC policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -160,7 +156,7 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-59.11 / 15.00];
+X-Spamd-Result: default: False [-58.91 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
@@ -170,68 +166,95 @@ X-Spamd-Result: default: False [-59.11 / 15.00];
 	MID_CONTAINS_FROM(1.00)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:1101:1d::54:received,2607:7c80:54:3::133:from];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWO(0.00)[2];
 	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
-	SUBJECT_HAS_EXCLAIM(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
+	RCVD_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_TLS_LAST(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_THREE(0.00)[3];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 56B0B201F0C
-X-Stat-Signature: swxwcia1eabgxnuhj3yzrupeyxzxb5j7
+X-Rspamd-Queue-Id: 48DC0200758
+X-Stat-Signature: emicgmodggz1fddkenbxewk97wo97yxi
 
-From: Ahmad Fatoum <a.fatoum@barebox.org>
+barebox derives the 200MHz dram_apb clock from sys_pll1_800m divided
+by 4, while U-Boot's clock_init() selects sys_pll2_200m, which needs
+no divider. Let's do the same, so both can be compared side by side.
 
-bootm: add fitimage command line to bootargs
+Move the DRAM clock setup below the code enabling the SYS_PLL2 outputs,
+where U-Boot has it as well. This is ordering only: all SYS_PLL2
+outputs are enabled at reset already.
 
-Since FIT image specification v0.9, it is now possible to pass command
-line arguments for the next boot stage in FIT images.
+No functional change: imx8m_ddr_init() reconfigures DRAM_APB_CLK_ROOT
+via ddrphy_init_set_dfi_clk() before the DDRC is first accessed, so
+the value set here is overwritten before any register access uses it.
 
-Add parsing of the cmdline optional property when reading the fitimage.
-Create a new bootm-scope global variable that will be appended to the
-command line when CONFIG_FLEXIBLE_BOOTARGS is enabled.
-
-Signed-off-by: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
-Link: https://lore.barebox.org/20260924-add-cmdline-fitimage-v2-1-4a665e165002@bootlin.com
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-[ahmad: use LINUX_BOOTARGS_BOOTM_EARLY to fix bootargs order and cleanup]
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/bootm-fit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-imx/imx8m.c | 27 +++++++++++++--------------
+ 1 file changed, 13 insertions(+), 14 deletions(-)
 
-diff --git a/common/bootm-fit.c b/common/bootm-fit.c
-index c7142f490fa5..f0a4c83f5950 100644
---- a/common/bootm-fit.c
-+++ b/common/bootm-fit.c
-@@ -108,7 +108,7 @@ static void bootm_fit_config_cmdline(struct device_node *config)
- 	if (of_property_read_string(config, "cmdline", &cmdline))
- 		return;
+diff --git a/arch/arm/mach-imx/imx8m.c b/arch/arm/mach-imx/imx8m.c
+index 66a3b376ed94..23a920ffae2e 100644
+--- a/arch/arm/mach-imx/imx8m.c
++++ b/arch/arm/mach-imx/imx8m.c
+@@ -59,20 +59,6 @@ static void __imx8m_early_clock_init(int cpu_type)
+ 	void __iomem *ana = IOMEM(MX8M_ANATOP_BASE_ADDR);
+ 	u32 val;
  
--	globalvar_add_simple("linux.bootargs.dyn.bootentries.fit", cmdline);
-+	globalvar_add_simple(LINUX_BOOTARGS_BOOTM_EARLY "fit", cmdline);
+-	imx8m_ccgr_clock_disable(IMX8M_CCM_CCGR_DDR1);
+-
+-	imx8m_clock_set_target_val(IMX8M_DRAM_ALT_CLK_ROOT,
+-				   IMX8M_CCM_TARGET_ROOTn_ENABLE |
+-				   IMX8M_CCM_TARGET_ROOTn_MUX(1));
+-
+-	/* change the clock source of dram_apb_clk_root: source 4 800MHz /4 = 200MHz */
+-	imx8m_clock_set_target_val(IMX8M_DRAM_APB_CLK_ROOT,
+-				   IMX8M_CCM_TARGET_ROOTn_ENABLE |
+-				   IMX8M_CCM_TARGET_ROOTn_MUX(4) |
+-				   IMX8M_CCM_TARGET_ROOTn_POST_DIV(4 - 1));
+-
+-	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_DDR1);
+-
+ 	/*
+ 	 * The gate is not exported to clk tree, so configure them here.
+ 	 * According to ANAMIX SPEC
+@@ -96,6 +82,19 @@ static void __imx8m_early_clock_init(int cpu_type)
+ 		INTPLL_DIV20_CLKE_MASK;
+ 	writel(val, ana + IMX8MM_CCM_ANALOG_SYS_PLL2_GEN_CTRL);
  
- 	pr_info("Using command line from FIT configuration: %s\n", cmdline);
- }
++	imx8m_ccgr_clock_disable(IMX8M_CCM_CCGR_DDR1);
++
++	imx8m_clock_set_target_val(IMX8M_DRAM_ALT_CLK_ROOT,
++				   IMX8M_CCM_TARGET_ROOTn_ENABLE |
++				   IMX8M_CCM_TARGET_ROOTn_MUX(1));
++
++	/* change the clock source of dram_apb_clk_root: source 1 sys_pll2_200m */
++	imx8m_clock_set_target_val(IMX8M_DRAM_APB_CLK_ROOT,
++				   IMX8M_CCM_TARGET_ROOTn_ENABLE |
++				   IMX8M_CCM_TARGET_ROOTn_MUX(1));
++
++	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_DDR1);
++
+ 	if (cpu_type != IMX_CPU_IMX8MP) {
+ 		/* 8MP ROM already set GIC to 400Mhz, system_pll1_800m with div = 2 */
+ 		/* For everything else, config GIC to sys_pll2_100m */
 -- 
 2.47.3
 
