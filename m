@@ -3,29 +3,29 @@ Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xCbgM-008pMg-2B
+	id 1xCbgM-008pMf-2B
 	for lore@lore.pengutronix.de;
 	Fri, 02 Oct 2026 13:44:06 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 8781B2022EA
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 77D5E2003A3
 	for <lore@pengutronix.de>; Fri, 02 Oct 2026 13:44:06 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=0KwZuywr;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=D7d3Wx4z;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=c7xMn2IG;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=Um4HUDIm;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
 ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790941446; a=rsa-sha256;
 	cv=pass;
-	b=ds9zVUIZ0sSo/RoTVFUkRMQ59nriqukBXbVE1gUZO4JgGu3n9daFfqHaXxxIAHJVU/6fXk
-	Kf3Z1Fgaz9U07I18Sowr+WRCthUFWaCB35dqwfR+6bX5xTjR8KSXsBgw2F31rDJ90B1YSa
-	jYI9hoQdWN3tuLd1xZrfZYaNg9TV5QfQ1WP37loHp0l0Nj8K6bNh0lhe+gfYNrUDF69hjw
-	Z+fr3xfCjK1vsGNREzfKjMSATt6ePbpj6Xb3YFRZHFHZ6gS4OqspUb9VHRKr1QIpctGw+u
-	yXsIKmtNLNIu6DFYue7iHEhGE/Jf2vTZL+ID21aTjV2zRe02tvhfE0w461odcA==
+	b=KtldHR6Tk3ugynsnhxz6nrbHppTBoTlM8XRzB7SSGqJ2Ildp29EOs1Hxh/IYAPdUkOPwRy
+	i23qBr1/2+n+vwpkuQ1EnCKavZV6ZUPhhBN3s0aTuoBvjP0DA4gK6Bk+bHn6iDaNXiwfl5
+	vYP7xX8dVYyY/jqRaJ+sSUmgL0Isj7QpYWoBsex/1BwSb13BSEgSZ2xGdR5NQuytm85Da+
+	ejFbouxjGai4ig0wDhTBZFO4HsOr91Tct4DW3dUVfNzqbjwihHzL4jvPJ3JAjOInYTlpoB
+	H+rcbpYG6WstWTSGw1vdrJjeSTqT+tSSk2eP8yIiQTxUJj2+qvFk5ZbP+AGS4g==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=0KwZuywr;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=D7d3Wx4z;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=c7xMn2IG;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=Um4HUDIm;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
@@ -36,36 +36,36 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=65Y+Uu5b2gw4m6KhzH+DPGWYYuSnZVP0yLzOSaY9eRw=;
-	b=ARF6LxKmq6JqARvyLw8WMXcffseKOQo3C/kiigwNxP94FNNB2JmdR78Hri+kcZQZcwAPFh
-	NxoOdWHGC6w8AUwCPWo91ntIGZM1cpBUx4F9EbeZcIJ8PPjA8UdtKEAWmjqomTpqHUjzjI
-	rZ10R6UdutOjEuktPCibYFYO49YOydP7ZTHFXE7jRAywyIVzM4uZKl2jAJuPYnkQgjMd6l
-	jQ+pYaHEN3R0CPIGb97927UcxNWkUKKS/p3GKT/fU1YL1UQIbXyG4AsAOMhup9Y1aKFHsJ
-	DScfFq8Sj+7tAreNYWsGlJxTa/50zfDwS2Ktyt3QvxuHPUheS9PbU4V3Mm7PsA==
+	bh=sUGRti9mm3myhNnpoeDdfjM0QC6pw2iElK13YZ0uTPA=;
+	b=UFzVK65bHytU/vQFl8IpRDt/4MDScjQYuN94iEdaB3dTsuWMpi3KSMuxpJs9wvJ+eohNwI
+	CCaFzfqnPMXga8xaFYWvRK9kXZ6DIgSCG5jPpV55GWS00cOlqeywO4SvCKbDtRaSDQdLzB
+	kblyNgc7gsjExi6z76KJlU+bNnTYLhhknnuZz9ZNsnZC2Cr6tGsMlTA9Rm3uhrSG3fL1u3
+	GGgMrawt2z0nOKcj3D5QzuCC0L4iY3xkfO7h0owtoC+mw2qtuaApmVJJBjpzOzUKmCI2Jf
+	B1HZd4FB4NfL7IV8htBLA5gvjfJ7pn8+Nt63F1Dub5+zpwbbTEvNH3cFDwpTGQ==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=65Y+Uu5b2gw4m6KhzH+DPGWYYuSnZVP0yLzOSaY9eRw=; b=0KwZuywrD6IN8ikLwm+IEAsxBF
-	GGiqAIs04f6YBTvI+G2HqG25QqWfjNkYHWQfLi3S+PVY5skN19FNl+WmNunB8XcxNhYmhuQzzY2u6
-	61TWzbFToF3tbsaEkzjBza1y7AtWIkJHYKZfMWikzgDjch75kssJDfcNeWGQHffaL+FYtWZvOmi0V
-	rgG9Xbai0otG22rfDPROKmyTxxSpQcwrp79paYKVz13rYIzEkajtPh35J+X5+oFkdKyYQrFgfsxO9
-	6fhecsfocMbNjwBlGJS1SIW2QmgDTl12mDZRnVxBoQIKP6YJimizb/vX10zX/qFnEE2owoWJcjipa
-	Fqw5pS1A==;
+	bh=sUGRti9mm3myhNnpoeDdfjM0QC6pw2iElK13YZ0uTPA=; b=c7xMn2IGdde2ZbksFui5jE2rs+
+	PxwGzhlLhrjDUU4hdTWVAJYIGZqTO1nyhGZBuYPd+nAqimyIJGfet8NV4/OJKRDIFq38cOzN4n/Ly
+	es3s2bQoPnaAMBY0PX6K7uR0ccmFbRMjRFONzZn3tXU6rCyEEJbHcavUPr1n2I2PCTGlqmbitM3fA
+	1fhc9Bbn+Lw3o9Du51V8UhNekXMOGqZdMBLWTgCg1T8zKPxLPk2aGyHUAq7+G5Z+Aa7OMX7ROmaHa
+	BPlBb7stRh2Z/rZjbbRzDqiY3TIaRLSckeZooYoqyf3DpJBAtuO6p2Nzy7Kn8pxZVOAQeHQdmw/Hs
+	ZQchtN8g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xCbfJ-0000000BVGZ-3GOu;
-	Fri, 02 Oct 2026 11:43:01 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1xCbfO-0000000BVL5-1iqb;
+	Fri, 02 Oct 2026 11:43:06 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xCbfE-0000000BVEY-2IkH
+	id 1xCbfJ-0000000BVGA-10eI
 	for barebox@lists.infradead.org;
-	Fri, 02 Oct 2026 11:42:59 +0000
+	Fri, 02 Oct 2026 11:43:02 +0000
 Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.pengutronix.de [IPv6:2a0a:edc0:0:1101:1d::54])
 	(Authenticated sender: relay-from-dude05.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 94B42201F0C;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B3139202303;
 	Fri, 02 Oct 2026 13:42:54 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1790941374;
@@ -73,19 +73,19 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=65Y+Uu5b2gw4m6KhzH+DPGWYYuSnZVP0yLzOSaY9eRw=;
-	b=D7d3Wx4z+0ukfEUrxG95cHU/YUFq6UyVKYzQz4Jec5yLlOk5DdZkDO2nxB34hkcBEKNQh8
-	be3qW5iAQ8i3m9NUPRQpTWkKcNSKY6qiMlJQWGWJJOTdan+1yETqk9zNuG+OGiv3l7Airr
-	YWQ8UYPji+gZ7vaIv4MTIYQI2GJX5AGyvpvuudxACkrT2M2uWBoo38v8RsUWkaah05RFGd
-	es2Q8pcBx9Epmgln8g2caZ5eyf2sKQcR2tSzkumT72i4+JxE26lkEb4HwUnhaxuwA0JdFm
-	akl9YwYb1zmqGzdI0b9Qm7fNXoyVTc65wvz7JHA3GebErdfGyWF/SACNEhevGw==
+	bh=sUGRti9mm3myhNnpoeDdfjM0QC6pw2iElK13YZ0uTPA=;
+	b=Um4HUDIm2CprJjIi0qvj/+NoPeUINGHNxPUk3SBqRDxBxkM/vZ1AWO0KVJK1CWHOLVP4Dh
+	9JTJqUPTwvoonuzGSlPXasWEa+Spwf0QPrdb9/eMAHtJz5iuG1naSZuVXOJIdrZQ11fUmM
+	icNK37K+rYpQMxZysOvcSXqESU854RW3deRpofsFdgRnaRrx3L1j5PfjnNtW69qIyRRrDm
+	OQwvG0ZJlrZ87p2jltikgRzpxLOKi0bfV/o8Ku3UTQviBBdLVqHkCDWNktGo1AbynwbA10
+	c62HJKW0zuD7ej3E2GJ8g/0tgLn/VG59Ve8tPfpLrSALpJYwtzHsSEpoZzwLdw==
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790941374; a=rsa-sha256;
 	cv=none;
-	b=Vm2IrezktqYSAkupcq/E+kK4On6SQ34byO9SB0xW2OTtKiProyHTssHKzXXxcB3qxn1t51
-	vyjxUo6NR+m0l8JCb67H3i9TZs6RHd/XTjbfjcwAV+QhfsAj867+S97ZjG1W7sv9b2n6WG
-	u/z/MYl64Y5C2CGDmdIbvSsWdc78p2S9CBKfUKPSEwq6yyv8eXqzvmdI1z0tdY1rjeOO4X
-	hcu2wNtMARpyPmA1O1J0H1+S+w12++cUyP+hLHSeFkar4IuNHwr0UyLISPaSH+ljDX9Z6S
-	lvW53PRuBLkAcELL7bCZIsK2Iok6b82Hh0wqpLckIsgkfzL5HwEZUYoLitWe/Q==
+	b=Xjt1eNqGyq2K5CSnsp1VV9qZZksRqaYVDAaj1mFayDIZpgjHQjVnhTQr2VEsKKjyDea+hM
+	oQml8Ol40fyMv/B76S89MNt8VAvoNXX4xdWgCceq2cOUR+Fwrb7p/Tj72RmvECSeQTs+4b
+	D8lzDtrgZ9YVIwl1tPede3ExeJLr9iDwU44ZOGC3X4Hc19OLOsb2kdT8rovzhLVnVYlr62
+	WxswESlk3kVl58hTsiATkgqzdcQJka++BvgKQOX+RfHN21ceZ8alJmjXiVMhgHQ2S3fGXH
+	mGDITGaCNh5+Kcv2MKVkpm5K8/BFCDuvsMuhs82c5hkkb9jlHOYM4dBaLxnlbg==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-dude05.red.stw.pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
@@ -95,29 +95,29 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=65Y+Uu5b2gw4m6KhzH+DPGWYYuSnZVP0yLzOSaY9eRw=;
-	b=P00ROmnPSfCYEH8oUS5jOCcaR7PY6m3wss92Rxbj8P3xOgn4GFLaYF7lJ6fiTNp+OW03Be
-	WznUqK0I8bG8lU4X7hxE2Ka/7fhR0ksu1UIpJKXeXDHntSb5w8KZSqXsJzUnxwHy61nKOr
-	5+Svmz8RxrrKtU6gUmwywrIn+IQfRFeZXCxYA4XiyksE7Izp8/pfkBcc0d5Kq/qBj5jOsM
-	dcdpRuloLL+sfn5H324YEN/f+chEtdbxcRKBStETSWiWBpceuM7StYD3wtjFdgPZFl9ATg
-	NUwHvHBUwQdbISre1X3F/fzznFc4GBwe5EOelTD5pyD0ZQyaoFCG+QTAUesN3A==
+	bh=sUGRti9mm3myhNnpoeDdfjM0QC6pw2iElK13YZ0uTPA=;
+	b=ZrqLSUVK1F2cEFd8d5w5h6sCjc3oLwUlymvyf91GX6tE2kBEt+WTXg8GwFR0vew2YnDtcj
+	fZ0h4gzaH9IpQvuA5tuVwqkSPbjpKOuKQW0axoCZDBDrGc6DxnKTsd4CfCmvBhkZoOXP/S
+	uHWzURFXGXu4SMxchZL1mkRUkz9RVqsgBIEdMLX7vaZWJU0j6TW0eZ3XfJpMpU4jVsHszd
+	pCNGuzk2SYlmJ38GR32USy0nqsWB0DPmfgZJ5fu3vba8YhBKhAt9s2ZteB90RhwmztxGEU
+	/TRkFAxBRJS/50iKFYK7622gl2U1gtTWZBP0W9uEXSUW2o4oA8Yul78NKeUhJg==
 Received: from dude05.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id 77300741476;
+	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id 9967874145E;
 	Fri, 02 Oct 2026 13:42:54 +0200 (CEST)
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Subject: [PATCH 2/6] fs: reject negative lengths in ftruncate()
-Date: Fri,  2 Oct 2026 13:40:05 +0200
-Message-ID: <20261002114253.2906535-3-a.fatoum@pengutronix.de>
+Subject: [PATCH 5/6] fs: ubootvarfs: reject variable names containing '='
+Date: Fri,  2 Oct 2026 13:40:08 +0200
+Message-ID: <20261002114253.2906535-6-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261002114253.2906535-1-a.fatoum@pengutronix.de>
 References: <20261002114253.2906535-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261002_044258_367764_39D5334A 
-X-CRM114-Status: GOOD (  10.36  )
+X-CRM114-CacheID: sfid-20261002_044301_752741_41A1A935 
+X-CRM114-Status: GOOD (  10.79  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -125,10 +125,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> ftruncate() passes
-    any length on to the file system driver and then records it as the new file
-    size. None of the drivers expect a negative one, so e.g. ubootvarfs moves
-    the rest of the environment to [...] 
+ Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> Creating a file
+   named x=y on ubootvarfs stores the variable as "x=y=<value>". That works until
+    the environment is parsed again, which splits it at the first '=' into a
+   variable x with the value "y=<va [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -192,40 +192,43 @@ X-Spamd-Result: default: False [-59.11 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 8781B2022EA
-X-Stat-Signature: 6mj9g3zow8rneq9a58cxrfkc5imwmyus
+X-Rspamd-Queue-Id: 77D5E2003A3
+X-Stat-Signature: cpg8xy74wbm9iq3ceokoabhajz8djbmm
 
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-ftruncate() passes any length on to the file system driver and then
-records it as the new file size. None of the drivers expect a negative
-one, so e.g. ubootvarfs moves the rest of the environment to before the
-start of its buffer when asked to truncate a variable to -100 bytes.
+Creating a file named x=y on ubootvarfs stores the variable as
+"x=y=<value>". That works until the environment is parsed again, which
+splits it at the first '=' into a variable x with the value
+"y=<value>". The file the user created is gone after a remount or
+reboot and another one has taken its place.
 
-A negative length is easy to come by: truncate -s parses its argument
-as unsigned and truncate -s +SIZE can wrap around. Let's return -EINVAL
-for it like POSIX says, before any driver sees it.
+U-Boot cannot represent such a name either, so let's refuse to create
+it with -EINVAL.
 
+Fixes: 8daaa21b3949 ("fs: Add a driver to access U-Boot environment variables")
 Assisted-by: Claude:opus-5.5
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- fs/fs.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/ubootvarfs.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index e18e3b9cd7b2..977635d41082 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -393,6 +393,9 @@ int ftruncate(int fd, loff_t length)
- 	if (IS_ERR(f))
- 		return -errno;
- 
-+	if (length < 0)
-+		return errno_set(-EINVAL);
+diff --git a/fs/ubootvarfs.c b/fs/ubootvarfs.c
+index 72d0627fb0cd..b0353d7cedef 100644
+--- a/fs/ubootvarfs.c
++++ b/fs/ubootvarfs.c
+@@ -281,6 +281,11 @@ static int ubootvarfs_create(struct inode *dir, struct dentry *dentry,
+ 	struct inode *inode;
+ 	struct ubootvarfs_var *var;
+ 	size_t len = strlen(dentry->name);
 +
- 	if (!i_size_is_bound(f->f_inode))
- 		return 0;
- 
++	/* U-Boot splits a variable at its first '=' */
++	if (strchr(dentry->name, '='))
++		return -EINVAL;
++
+ 	/*
+ 	 * We'll be adding <varname>=\0\0 to the end of our data, so
+ 	 * we need to make sure there's enough room for it. Note that
 -- 
 2.47.3
 
