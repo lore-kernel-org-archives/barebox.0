@@ -1,91 +1,89 @@
-Delivery-date: Fri, 02 Oct 2026 13:27:21 +0200
+Delivery-date: Fri, 02 Oct 2026 13:28:08 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xCbQ9-008p2l-29
+	id 1xCbQu-008p3k-09
 	for lore@lore.pengutronix.de;
-	Fri, 02 Oct 2026 13:27:21 +0200
+	Fri, 02 Oct 2026 13:28:08 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 21C132001F2
-	for <lore@pengutronix.de>; Fri, 02 Oct 2026 13:27:21 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 8398A201C7E
+	for <lore@pengutronix.de>; Fri, 02 Oct 2026 13:28:07 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=JeF93naQ;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b="d0SJ7H9/";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=YnNxDtpQ;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=DsWWVBNm;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790940441; a=rsa-sha256;
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1790940487; a=rsa-sha256;
 	cv=pass;
-	b=Y1oodAYAktpTsEbDKkLwKp77PJeZhD8gF9wwkzN2M+JP7gk8SFIPTH191rJn+tz6hjaw50
-	eDweeHtIsh7PouPhGb0vboTuQ68Mi4vBWZzpGCEzBPPC5lAaNLpnWXOPv7bImMfnwB2J1d
-	qcysmpuYCB6epw3XAzSXF/4q8zMnwp4mMw2BmhyFcLXAU0pCCJR2V65Bkd31nov7mFkeS9
-	vNYgfUNBQQDYuHP4CrfpHSTAa2LE6NtmwrN7oqMCNH/h4wTuvEbVQ2i3/NwWXb6mmBgO/t
-	X8ipI3ni4qhkpq1NaihRr+MixdML2o+O4lpypdxHmsJ0GkLNmmUreZSVHxy8cg==
+	b=SNt5B6T6urQ3grgKcW656heKPoEEz47W1GSoHpslyyKkLpwgLO9hz/WgFXJ/0Uw8l+oOgl
+	OH4JERgCv2k3gW7mTNxAksh/rjHCoo0IuuFu1ARqOsI/xpAPKUcQq9FsQX8w1KeFBaev/P
+	8OSjVIJqsSoJihblHmx6qQkOFNDrGOs+C/8HTVBCOcd7KIGN6+OvQp5CxdNYdOK7UxhL0P
+	r7t6OIsnmFiFNjgxrW4LiDeandY6pX4VXP/yTNUzWPQ8ZSF6swNXm8528clyTLISnq9mGW
+	35Lmic/M/r+KLUtmP0HcXBd4uxXeohzUXQA+s3kFK+0rcylUg/vZOBYWUcta7A==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=JeF93naQ;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b="d0SJ7H9/";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=YnNxDtpQ;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=DsWWVBNm;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1790940441;
+	s=20260414; t=1790940487;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:list-id:list-help:
+	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=0Zbl7X9zJSCmEGqCOMxwV9dMvOo08qr8JLTG/N1Gt6E=;
-	b=Mmf3mCbA0Dp1xxXt+SzAozkP0cv/SMI+2ly3VNEFlPE0EN4wE9ljsdEtsGWWbutKdKD8dV
-	WH7umYLfy/v3N/4V/yEkYT019Fg7xaJB9kYt9d2bpzzgt9b8KfygbOoOAtS83c7hEZRuhn
-	LxREP3R6sJNadMVaNxbdthMFyi6ADKuNnBpqTzNbjiasUIGtaf/SHdgPV91G0Y7QpkGLfC
-	0NrqDymHyBPEGqEBu63UlamJx+G8A7J6pJ8KN4cY2EtxXkr+CZRVQoCnsI/fsp6kdcJGxA
-	QWY/MVlqoYRO8JT646EuxlbsjyVtG5+4I6UA6Q+xQvRq81/odAdrzoqL4l2dAw==
+	bh=8veQQ8kzcHqjV424nMUVVArAZHFbb+DgagvzL+2ICI8=;
+	b=Af+gBBKVZnG3UbTEp1/qcWKWw3g+hFm5rsGfnLvIJiXx9afOyHlKdh46zuu01MsiA3m0PM
+	DcoQuu4XlT8xM3M2lVLuzReu7t/ZMpETQTGWMZg7ABvC9k5h9B4rszZcwecqh2FSNsm+o8
+	8RlBhXG5DR4cIi2Zcn677YJsCNhGlne8CXeoBoGWCBS+JT8qiAj8J3Olu/mJWy+Xcoohym
+	9kbhagM8dnOYC3gPyyePbbSPr7bj9GFleu3iWSQCgu4cU84TqOEX/HzaE/AxJ5x4GzQQ+2
+	ks9mZTXhbSgzzq1QcYxtvvogrRVpCX9K77oIlJh4rsZPeOW3AIy74twsw7UgUQ==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0Zbl7X9zJSCmEGqCOMxwV9dMvOo08qr8JLTG/N1Gt6E=; b=JeF93naQMc+WXvG5z+6PdZITSf
-	F191tuFdG3dcHjm2dKaJ6jIV1xj+q0KLe5Mn2oCdFa76E6+iJYe5vpaVCQmF3J38HJzA+j+bj77ul
-	FDJ+jnRHZioxtBjYt+AI9vXQlxoU9jrDCq3cgG6NDS2/MGY/k9VTryzM5jMBwbLvDWv15hlBgrBRw
-	aSX225qaSv1gj7gNeliyq0i8WNxOva+RBzDpx4K2Ku+J6uNMvaAITwT5fwZb8roenMRwRlJ422qpj
-	b8RaZt0lDUM2ox/8Q3sSvIOtV7AwzqxNjtyRspgK6DIWApAL/upi7YSZZ821mdYPH5aSeG3JPgQQ4
-	V88WJXaA==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=8veQQ8kzcHqjV424nMUVVArAZHFbb+DgagvzL+2ICI8=; b=YnNxDtpQ5BYEF33TlI5Lu2q+7g
+	qRA7cs0aEZtpik5SaHSW7CfMGBcdag/j0dm89ntTSF4a2AJMLukyxlesaSwEX1wBiMcPAG5quC2DV
+	bpxzEKaaHYx/uAr/YArwRYJx7barlZNA5MuPZd6OiA80zNa4ptCjMps3OA6JabuYyaNVWqyN63fOO
+	71sKjPKnuS+Fcl0TckSluDjFfqZIQR/Wai+6ITdeH+91/mtX1LCmAnDBrifwvVZ3cMdr6Oa2k4wNG
+	Un5ZXTvgrmRPZsjevbkyshp2zGkqc/SXyuRobDU2AnBJeucJ3YytYoqEO8HimEKkLljbFpnujQHLu
+	sSbIj/bA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xCbPm-0000000BTIs-3cgK;
-	Fri, 02 Oct 2026 11:26:58 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
-	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xCbPj-0000000BTH4-1Y7J
-	for barebox@lists.infradead.org;
+	id 1xCbPl-0000000BTIJ-2ZAM;
 	Fri, 02 Oct 2026 11:26:57 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1xCbPj-0000000BTGx-0w75
+	for barebox@lists.infradead.org;
+	Fri, 02 Oct 2026 11:26:56 +0000
 Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.4.pengutronix.de [10.17.1.19])
 	(Authenticated sender: relay-from-dude05.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 8E321201F18;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 633AF201991;
 	Fri, 02 Oct 2026 13:26:53 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1790940413;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0Zbl7X9zJSCmEGqCOMxwV9dMvOo08qr8JLTG/N1Gt6E=;
-	b=d0SJ7H9/9iQh1Tf9C96qcZaJtlJO/C1WYEAgk4q5fPqK7/VD10/XzlYQd/42dW04pSufxL
-	VgLv52Yb1QiKpDNjSw5djy50C1J5LZCf4XhTd2osnQYKO7IWYWBMyD9qgygcyTTvnPhqnh
-	hBD3YidSyXAitHw8A16aL8vHu8jaAU2LVwAGwfMKLDtQ8+6OFNbXXGVDrpyVBT7JpSsJFk
-	NqzfPDyBpIEbTX0tJziXfaeJNbirGR+68Zl8vmz7Khj+k1imvr++zrz8mOiHzHdEMJ6Qa5
-	aLXegXM7iRY0RYhbxV/obdrr5i54kyhshAFRaAH6rXC1DUZCj+Zrt5BZqEusMg==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8veQQ8kzcHqjV424nMUVVArAZHFbb+DgagvzL+2ICI8=;
+	b=DsWWVBNm0IAwTljpgxmO5qg77W31TmwvA21kwocWZEA2lLBkOAYLqXOjopQa1JYfanl93A
+	RrgZuVt2LEf9s8jWvPLjGpS8VhX0D5VKaYT07QGOWjdO8vSUuwLNLwZFwVeluUcOeCVrZU
+	vdKcKo561tROelNF15VeVcATK4pftpcVOxsq+ZnuRKO5z0twPxUtPHEe7tP46xeQ3O1zrL
+	E06Sb9wFWjWPgPz1ndkGKmkhnOQcFEuelSdq7mjm9jF4u6LBCQjKFtkPzzUeuCJdHMZUc/
+	vxa8KX768PmxQv0B8V5/4d5azmpDRvlOPpK634Fc61ezwtlrpsDVGJhGOyw3rA==
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1790940413; a=rsa-sha256;
 	cv=none;
-	b=B1OKi0SilkgI+M/wMLXzdl8X2PEirLYQQX5hHyqiOb+a2zz3p887qJi6F0ZzhXc/Rkxmac
-	R6P0Nj+TDjNY/h8KtVM8XGgtPYrbpoHP2vWDjh9xxmBI63J1EoHFwmF3MIoi/CpLa6FA4+
-	z9XKuoHEul+B2NMxofXE05J0be2LVk8oXvOtIgVglLKvcixLokKz7adj1M9vEMe96TQGuj
-	aTmSLh5HwXEcJ0RAYFz26Bc6Ds+/7Bo031wUigVSJuUqJwGELvhWIfjV35Gwvo6qQWG5c3
-	81ZVwB/za+G24RYksNYovVoxvRb/Ht7mfCJ202mA7tdSNHnh4T/RLyZ+Csu+uw==
+	b=KX8aV7pucSGKJTOGhKFIoU4kEJ6sOBYaYgC2QIAWnhlSzKKeLD3ArimBVQpheksxPQ5Clm
+	qq5EYoBktVNWqa0fDeQ0OGtvQzgi0qrlfbA25T9Kn4Jm+hIXW9RVfTQjIoL8mEUe+gsGjY
+	tfsAiB5HaCtK4n44T4I168EDC/ghcVBwUwu/hRo2Co6Kv7F4Peh1Ln0G1L4lVWupYXELe3
+	0zQmUj34CMk8RdSTMzPIG+vzmo8P0cPx5cVr+qQ6gxTGafnRds43K9iSv7QzAgTUAQcyhN
+	O+yuCPkJ3vDBP9siC9eeGzB4mq7Ge36UfClBt5bnxiKkQbgzi6JtnNzTTs2oZw==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-dude05.red.stw.pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
@@ -93,33 +91,29 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1790940413;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0Zbl7X9zJSCmEGqCOMxwV9dMvOo08qr8JLTG/N1Gt6E=;
-	b=Px8Wh6VKL+/mAsp86mtw88GhPksGq2GKswBw9669pWwmWdi25o3+muCENBCkp37NvhsQie
-	xzxBckS2jok5HTKmQimWE3boUdkgBG8VDseQTWZb041JSGP2k/h/z7X3pAm1dmFSuOjitj
-	SAS9tUl6qLQmlnIL3uGw17rFerCquXqNAVgVgaDDzpr50qnYHBP5mFywUxUBHH9uHwVQHt
-	vXaYVEFRZSgCqAVUPVZOnHsh0ncVo3N7StAzKuE7SKOEOCdoyAjfjCEpA8vyp/zeBogcHt
-	kcdtfUkks8OJvzgesHFt3hjixpUyjqlid8HwFAlQs4TZJp2Ilpud0J7DRoPGnA==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8veQQ8kzcHqjV424nMUVVArAZHFbb+DgagvzL+2ICI8=;
+	b=KHfJb9jqLnkbst4LzgZwzRH1WPeVuuTsImx9PPtwIPz4Jzn0I160xyGtkF2/UOdjnfTT/W
+	QpnF+7uJdCnu2P3iLmOjFPh5WoTwyHXaxl+KGl+JdmON7JxOtBP3EnOtYJWSU3/tordPzM
+	b5uVXV6JiiEugJWeYTJac5ZaD5jX1QG2YEAHIneVY9ooJneWXvO1PxoTCVzhTjzcpEZqby
+	DJ9DKohemqum5/QNUiEHv111K8tqoCs9XyEkKNhMcWlvBfiA1ruPunKWhy85lb6mKOVbRf
+	43lY3DraFEoHFzIFsvhXeBX9LdHyq72wtFDV3Uc4woldEiaTTxBmxg0X4+nQXQ==
 Received: from dude05.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id 6DD3274021F;
+	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id 4D6BD74021F;
 	Fri, 02 Oct 2026 13:26:53 +0200 (CEST)
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Thomas Bonnefille <thomas.bonnefille@bootlin.com>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH 4/4] test: py: add test for fit cmdline parameter order
-Date: Fri,  2 Oct 2026 13:26:34 +0200
-Message-ID: <20261002112648.2899729-4-a.fatoum@pengutronix.de>
+Subject: [PATCH 1/4] bootm: define LINUX_BOOTARGS_BOOTM_EARLY/LATE in <bootm.h>
+Date: Fri,  2 Oct 2026 13:26:31 +0200
+Message-ID: <20261002112648.2899729-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261002112648.2899729-1-a.fatoum@pengutronix.de>
-References: <20261002112648.2899729-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261002_042655_562162_FFD602CC 
-X-CRM114-Status: UNSURE (   8.91  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20261002_042655_410636_45965CDB 
+X-CRM114-Status: GOOD (  10.11  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -127,10 +121,11 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  The order of the FIT cmdline is important as we want boot
-   scripts and boot entry files (blspec, EXTLINUX) to be able to robustly append
-    options after it. Extend the test to check that this is the case and while
-    at it, also verify that it doesn't survive beyond the bootm call. 
+ Content preview:  We had previously laid out a prefix convention for the Linux
+    command line options added by bootm, but only the late variant was added
+   as nothing yet needed the early one. The FIT cmdline support will need it
+   and lives outside bootm.c, so let's introduce LINUX_BOOTARGS_BOOTM_EARLY and
+    move both prefixes into the header. 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -161,7 +156,7 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Spamd-Result: default: False [-58.91 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
@@ -193,61 +188,98 @@ X-Spamd-Result: default: False [-58.91 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 21C132001F2
-X-Stat-Signature: qgm8ink5q3fpteftddb9nrmwtih7qq9a
+X-Rspamd-Queue-Id: 8398A201C7E
+X-Stat-Signature: k4zbhrmxtkry1bpzgywk1cp55rbwke8q
 
-The order of the FIT cmdline is important as we want boot scripts and
-boot entry files (blspec, EXTLINUX) to be able to robustly append options
-after it.
+We had previously laid out a prefix convention for the Linux command
+line options added by bootm, but only the late variant was added as
+nothing yet needed the early one.
 
-Extend the test to check that this is the case and while at it, also
-verify that it doesn't survive beyond the bootm call.
+The FIT cmdline support will need it and lives outside bootm.c, so let's
+introduce LINUX_BOOTARGS_BOOTM_EARLY and move both prefixes into the
+header.
 
-Cc: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- test/py/test_fit.py | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+Please reorder before Thomas' FIT command-line series
+---
+ Documentation/user/booting-linux.rst |  4 ++++
+ common/bootm.c                       | 14 +-------------
+ include/bootm.h                      | 14 ++++++++++++++
+ 3 files changed, 19 insertions(+), 13 deletions(-)
 
-diff --git a/test/py/test_fit.py b/test/py/test_fit.py
-index b4c01459924e..2e866a28266a 100644
---- a/test/py/test_fit.py
-+++ b/test/py/test_fit.py
-@@ -87,6 +87,13 @@ def test_fit_dryrun(barebox, strategy, fitimage):
-     # If we actually did boot, this variable would be undefined
-     barebox.run_check('[ "$global.dryrun_attempts" = 5 ]')
+diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
+index 529d4de5c5b8..de40b6a57dc0 100644
+--- a/Documentation/user/booting-linux.rst
++++ b/Documentation/user/booting-linux.rst
+@@ -112,6 +112,10 @@ their ``linux.bootargs.``-prefixed parameter names.
+ Kernel command line arguments that barebox generates internally are not
+ interleaved with externally provided command-line arguments:
  
-+    # Apply fixups and check the FIT's cmdline did not outlive bootm -d
-+    stdout = barebox.run_check("of_dump -F -p /chosen")
-+    for line in stdout:
-+        if line.startswith("bootargs"):
-+            assert "fit.param" not in line, \
-+                   f"FIT cmdline survived bootm dry run: {line}"
++* Following arguments will be concatenated **before** all other options:
 +
- 
- def test_fit(barebox, strategy, fitimage):
-     # Sanity check, this is only fixed up on first boot
-@@ -112,6 +119,7 @@ def test_fit(barebox, strategy, fitimage):
-     actual_size = int(fileinfo.split()[1])
- 
-     boottarget = generate_bootscript(barebox, fitimage)
-+    barebox.run_check("global linux.bootargs.dyn.bootentries=entry.param")
- 
-     with strategy.boot_barebox(boottarget) as barebox:
-         assert of_get_property(barebox, "/chosen/barebox-version") == ver, \
-@@ -125,6 +133,12 @@ def test_fit(barebox, strategy, fitimage):
-         assert "barebox.chainloaded" in bootargs
-         assert "fit.param" in bootargs
- 
-+        # The FIT's cmdline comes first, so everything else can override it
-+        assert bootargs.index("fit.param") < bootargs.index("barebox.chainloaded"), \
-+               "fit.param found later than bootargs set by scripts"
-+        assert bootargs.index("fit.param") < bootargs.index("entry.param"), \
-+               "fit.param found later than bootargs set by boot entries"
++  * the ``cmdline`` property of the booted FIT image configuration
 +
-         initrd_start = of_get_property(barebox, "/chosen/linux,initrd-start", ncells=0)
-         initrd_end = of_get_property(barebox, "/chosen/linux,initrd-end", ncells=0)
-         initrd_size = initrd_end - initrd_start
+ * Following arguments will be concatenated **after** all other options:
+ 
+   * ``root=`` and ``rootwait=`` controlled by :ref:`global.bootm.appendroot <magicvar_global_bootm_appendroot>`
+diff --git a/common/bootm.c b/common/bootm.c
+index 27da1a590bf1..90b99d62b01e 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -22,19 +22,6 @@
+ #include <security/config.h>
+ #include <security/policy.h>
+ 
+-/*
+- * All device parameter iteration happens in lexicographical order.
+- * To ensure that bootm options are consistently applied before or after
+- * other options from the environment or boot configuration files, we
+- * employ following convention for the prefix:
+- *
+- *   !		0x21 is less than any non-space printable character
+- *   ~		0x7e is greater than any printable character
+- *
+- * Users will never see those as bootm_boot_cleanup() will delete them again.
+- */
+-#define LINUX_BOOTARGS_BOOTM_LATE	"linux.bootargs.~bootm."
+-
+ static LIST_HEAD(handler_list);
+ static struct sconfig_notifier_block sconfig_notifier;
+ 
+@@ -803,6 +790,7 @@ void bootm_boot_cleanup(struct image_data *data)
+ 	if (data->of_root_node)
+ 		of_delete_node(data->of_root_node);
+ 
++	globalvar_remove(LINUX_BOOTARGS_BOOTM_EARLY "*");
+ 	globalvar_remove(LINUX_BOOTARGS_BOOTM_LATE  "*");
+ 	free(data->os_header);
+ 	free(data->os_file);
+diff --git a/include/bootm.h b/include/bootm.h
+index 946713971eb5..8e574040f497 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -7,6 +7,20 @@
+ #include <linux/list.h>
+ #include <loadable.h>
+ 
++/*
++ * All device parameter iteration happens in lexicographical order.
++ * To ensure that bootm options are consistently applied before or after
++ * other options from the environment or boot configuration files, we
++ * employ following convention for the prefix:
++ *
++ *   !		0x21 is less than any non-space printable character
++ *   ~		0x7e is greater than any printable character
++ *
++ * Users will never see those as bootm_boot_cleanup() will delete them again.
++ */
++#define LINUX_BOOTARGS_BOOTM_EARLY	"linux.bootargs.!bootm."
++#define LINUX_BOOTARGS_BOOTM_LATE	"linux.bootargs.~bootm."
++
+ enum bootm_verify {
+ 	BOOTM_VERIFY_NONE,
+ 	BOOTM_VERIFY_HASH,
 -- 
 2.47.3
 
