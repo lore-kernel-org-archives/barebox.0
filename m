@@ -1,31 +1,31 @@
 Delivery-date: Sun, 04 Oct 2026 03:25:19 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xDAyd-009USS-1a
+	id 1xDAyd-009USd-2O
 	for lore@lore.pengutronix.de;
 	Sun, 04 Oct 2026 03:25:19 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id EC948201E1B
-	for <lore@pengutronix.de>; Sun, 04 Oct 2026 03:25:18 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 0CE2B2022EC
+	for <lore@pengutronix.de>; Sun, 04 Oct 2026 03:25:19 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=KKVGLNK0;
-	dkim=pass header.d=leica-geosystems.com header.s=selector1 header.b=bHi5fqDH;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ck0EP7kX;
+	dkim=pass header.d=leica-geosystems.com header.s=selector1 header.b=ey5XB7Yc;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
 	dmarc=pass (policy=reject) header.from=leica-geosystems.com
 ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1791077119; a=rsa-sha256;
 	cv=pass;
-	b=Jr4IVaXJsS7FwR3aCWuYDeCyhP7SC0Ef1M2/o0tQbPXMcRTTHxK2RRpM4MB85vgw4JWJiR
-	s2KS/gKxZfoHI62jzMu4GVz8foE8JTysyBPtwLvATrTtce4eCvVKnAen37vZa+Mk/ow/3F
-	p2yLBtQ1CT2NmjsxcANRJr7ETW54Nt9tgN2RQY5Rf5ptwMTUwFRiM2Y5s7Ohjo91OM1NQd
-	xuzCbkMhXQ7mvjAAVpf3hVu6DG1o07sO21hdHRL6c+GHpetLTR2VkRunY/0vZR5Jb+AQO1
-	rDEFu2Zba3OTEz1wNck7r1y7B2giJ9QPW4kOMXeBS+T8z9ckWvY8msRmrNiLFg==
+	b=XqLI6cGK4Nsg0I+LVKS3K5Zc5XZEbLvs7QE1vfrFy1vR+eHACSRdN5+UY2sCtZfTQ+fXDs
+	wdPtzjRSbE/Hw7xvTEzMvhmz7nFwhBAg6+v+O3SeUjLsH6lcmQzpYEo6cc5DJmeownzm4x
+	bIn4vr2fqY1Zb58GXboyAKrpPqyOxUM9ZJT1vBsARxvyRNTxdmeCyLymR51cDV2NBleKgg
+	9gnAUXsr8xaGXs5Fx1yeacf8ZvNA0BGhzFgFLLOocYV67K7IMB+E/ZxBRoQZtXvf7Szed5
+	IwUL0irHfShZZ9O3V7Bl9hjG6M9QXBbz6LS0xqvKUW/6avZXWS5/SoamfIb60w==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=KKVGLNK0;
-	dkim=pass header.d=leica-geosystems.com header.s=selector1 header.b=bHi5fqDH;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ck0EP7kX;
+	dkim=pass header.d=leica-geosystems.com header.s=selector1 header.b=ey5XB7Yc;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("microsoft.com:s=arcselector10001:i=1");
 	dmarc=pass (policy=reject) header.from=leica-geosystems.com
@@ -37,40 +37,40 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=m6x89DIUxnyUMbmbT8Lrxr+Ejykzk8KitJJLtfLztao=;
-	b=Ug69COSpsRQ9N35QB5w/XXAtxDNzF0GWifTbO8a8Vwj40DDGedchJ20VpVCMzDAO/1bS/p
-	23FZ5kA5VXBYEpjDkJQbo6mcN2CVVrp724l4E6S32FWTO2AnnY8ZfnB4aBnex1mBIgTETG
-	8mmxVmQFOtkxwCb9ykbdjAzVH3WvaombWuBXCLBl4UZ7kzkENi/Fktp4i4F49S45t4a248
-	uh8GzFSPWEi7yqEW6FTUCG1hD4OgwspHbTlQ/TZQDOzkNXcNA6Gl9814PfUmuUzPg1scuF
-	1BNUQt4F2R3Qaj/kfm4WMzLl9V9DuRi3Pi+AOR4NYaYhao1hOnin1TXzqqr05g==
+	bh=PHmiWE+f6kK0u2gP05IkVLR8zE97+P6sETGr/2ShMGw=;
+	b=TZJ3EAmFFYR7kT/3OvO2IoyVECyvSYvfm7rnwMwKKHa7/YMOgOgyjcCTy0fdQbgfFznOWa
+	bRDjX20mouMpvXLn7PUYBI2CpnlKUIfX1yEcCpeDveS5gpPM5PoSBa3EjfRPDvVykjX3bg
+	ySAdLv4LIs0/3j3+P1tOU1I0zXCK7WKeAghlGTSJMIAOnaGkyOYojOuGhbUDrmzi/YUsuO
+	lO0drwzKgowtSsCep+UJoqZvLpe2G9i7fAdTDrZJ0J6DdfaS5ZuRpTygavA5hYAFpEhD0H
+	239NFY9EDbR/rP/3hEjsiLCWSIe4GQ9fDfGcCiMnw06Iyh1+UZfyXJw8cud2Nw==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
 	:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=m6x89DIUxnyUMbmbT8Lrxr+Ejykzk8KitJJLtfLztao=; b=KKVGLNK01AfYLLAjAGloFKzZj+
-	5cdx2lxN6jvpHtbnbtPEsl9BhBL/ywNuPHvBxPM8y3Wsn/xP3oZ5HkSy+uRS/rK90HYravLbfkEF4
-	VkXIC5wlP785wOOMRbc2yVqfScZbLsES++587dG2q2hC3mCN5mde7MXmNUvEDYHSGsvSlgum3fJRf
-	9nTgJaDV5Don3LcDKkWtAp3+yhtirmeYcwkPtzMwNCyVkW+gfUj3BWdVAwkIcWkyBmbz7Xjx3Cpqn
-	If8GoKbZCFQDKLWNdG2+gevG3NMwT1kghakhmA9k452YJGVoRDjwJ6E9rNYLxkGxGyRm0j7G531Ys
-	HzU6pLbA==;
+	bh=PHmiWE+f6kK0u2gP05IkVLR8zE97+P6sETGr/2ShMGw=; b=ck0EP7kXdK6lzUX4cZWJkqzS7/
+	pUNYPbo8xM65YBfVBHg8WPNcAXqD/vs7hY1tFybr/O3a+AOy3VpsZqLtKOagkpcFIRYJn6i4ys1AC
+	3uKtKKpdfKJesEep5Pwsbaeq64Rv0QWNFry5DWeuLZkpI0uxVnqKmCRgunRK1aVWk+lQZmj+rU0pc
+	dgYmBNZTnPZnmW/TR8RcNEmIhlUrQ38dy4ZuwPeMO2zkiTyKuONyhtZpOBmNRgSOWCm1qyG3JMZVj
+	ivXRmiCntJrhlCDAfJxyxUH9vFTb4VNReOT4z9DmZMnfS/UXupYobVLaId5tVtRyMO1Ir/SkSSlJ+
+	9wQLgK6Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xDAtj-0000000EE17-3GtX;
-	Sun, 04 Oct 2026 01:20:15 +0000
-Received: from mail-westeuropeazlp170130006.outbound.protection.outlook.com ([2a01:111:f403:c201::6] helo=AM0PR02CU008.outbound.protection.outlook.com)
+	id 1xDAtf-0000000EDvY-0ePn;
+	Sun, 04 Oct 2026 01:20:11 +0000
+Received: from mail-westeuropeazon11010043.outbound.protection.outlook.com ([52.101.69.43] helo=AM0PR83CU005.outbound.protection.outlook.com)
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xDAtf-0000000EDtN-346F
+	id 1xDAtb-0000000EDsN-37Kq
 	for barebox@lists.infradead.org;
-	Sun, 04 Oct 2026 01:20:13 +0000
+	Sun, 04 Oct 2026 01:20:09 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JFK7/u65OtlgHqF0hI3UEoaCKMH7FvBV6aXJEc/rndM2JjLKS+1d+JhOQ8RlhGoA/uumFfgA0mMNZAY147PKnaT57QTAI2Z132kHq5BW2/rFOchbNGZ89ElDMszKLLL0eO8yROfM5ddZTvyAnYuBvn+aW7fY6O5+e/x4jTYukxKLH0tF9zu/mAqMowb0r1Ds+UX+ZN/DgwDQmP5RcgEsEQ3Xoe2yVdKXm4JaiGFh592NlBdt7FeI82YDy3LPrIg3xEyDIupJ1xvBBjgYbX+drtUSn7m0LCbM56EXF+JbxOknmZY6w3B/tl7afnVRyIH+O+p6oP5NTMP/SWOulYLelA==
+ b=CrEY5NUD7b6l11j3jdDxUkVKNyGAAaJdqvHFsN2aqLGVkXoMd68cv99I49ClE6uW4/QwyCm155iysQ8irD7+5FX8TstQDtIcFiXM+isARaZi+/pNskKh3OM43Ph+kRaEiHpm+fDmjoeTXOG2ZuLkWkS7PQzkfHsiCg6ErwF2S9cVCXC+xn4ZAY9vMlhENGZV1VgUzYnZKjQKtB+XOXk77L9pn5FOjcpyDsiVu/54/sLKLpSCLWAyKcxANgpEormExAHuIfC8jGu25ZQ6tb858P6baABACuplke9mI7nZORQ7j94ef+Sb+OlySAS3PkiCbEnUr6nyIefYGP/a12cpIg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=m6x89DIUxnyUMbmbT8Lrxr+Ejykzk8KitJJLtfLztao=;
- b=vuDueGMSFPBgwUfpxFipSs3GMHl8c79m1XbwI0ULYpGFM7cNVuVvlU3/xWtM/kkQ32GNZ5kfyIRtLXX6nDJ7hWoUibICFIp09YFVAie9lbEIEZW6CBGDGuXAC8Stid+1nV6tokIoJKU0I07H0j7w7tiYuU6rkhk/3b3+fK0i2zRXVrEOpZwkPMkHqRQHtOKFh5mrIkiVFQ5AIrkSry+1k769FFNnWSQyWWLsItsT6SA3xxJ6lpxdWwN0XM2QRC9Jwv4oh9qwpMEJC2h3X6XLFUD8KYrWfRkILpuF+ch4kX2I25AEfR0Z3L8PAY+BO1/lkNYzsvxYZZR/S9HrLIpuxQ==
+ bh=PHmiWE+f6kK0u2gP05IkVLR8zE97+P6sETGr/2ShMGw=;
+ b=ruUcr/iopQX8G4VwK02dzGQ3t30465HwcF09T2N7FZpSVXOh151vZRAIIXYAfiRcbx/c97TgJKDOzv2R9gnVo7cIoiS6oBGIplqedtzT/Oy+14uD1sVVENBRfd7w4g3yIJt6ym/UQcRFp7NEdva3y5RA4LIurl8Asf6WrP11QV2RyAoD+nu9tSVdNtWYTKKPti/YWXO/DeJP6U2F0J3zEHBTHHOrLt+8p8sP7Emz7qXAGWwArclVEPCtp+G78sRy9BPG03M54qkso59XQ+aaa5MnKV+QG2mXph+8/9GEU29S1KFkpCrnNbSmQOBWy/1iu12txn+wwWwfD/xD842e/w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  193.8.40.99) smtp.rcpttodomain=lists.infradead.org
  smtp.mailfrom=leica-geosystems.com; dmarc=pass (p=reject sp=reject pct=100)
@@ -79,18 +79,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=m6x89DIUxnyUMbmbT8Lrxr+Ejykzk8KitJJLtfLztao=;
- b=bHi5fqDHrNpiJHgShZcTL91DTIygMdSP+9Qy9XGrbd7JMDDpDFS5g+6M+pyvp9pTF7SGiThl04F01zeB11cBqt/g5ThnENdw01VNJ+wsgjEpTo9SD6DXFnUByC8CNymFl7SEGVz+oLvg+KXdsw5zxHMDw02dPPMJ/1cKKsxk7nM=
-Received: from PAZP264CA0145.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1f9::14)
- by AM8PR06MB7538.eurprd06.prod.outlook.com (2603:10a6:20b:366::20) with
+ bh=PHmiWE+f6kK0u2gP05IkVLR8zE97+P6sETGr/2ShMGw=;
+ b=ey5XB7Yc42ktPmtusfeyxm0T2R0ggf8KK3BRQ1eUL6mL7Ycr8owZfwMvKfRwVFjZKYpGHTW+4DACs4ZIyqcDXu1Cdj9x2NzGC7RProi9hIgX9t89lg3HvOBzn85KoIWiiK7cHbP4OsixIlZoMh4TXIv8ingm2AWIOk2VqJqO0ls=
+Received: from PAZP264CA0152.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1f9::10)
+ by PA1PR06MB9326.eurprd06.prod.outlook.com (2603:10a6:102:455::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.15; Sun, 4 Oct
- 2026 01:20:05 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.472.20; Sun, 4 Oct
+ 2026 01:20:02 +0000
 Received: from ZR1PEPF0000E6B0.eurprd05.prod.outlook.com
- (2603:10a6:102:1f9:cafe::2c) by PAZP264CA0145.outlook.office365.com
- (2603:10a6:102:1f9::14) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10a6:102:1f9:cafe::9e) by PAZP264CA0152.outlook.office365.com
+ (2603:10a6:102:1f9::10) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.21.472.20 via Frontend Transport; Sun, 4
- Oct 2026 01:20:05 +0000
+ Oct 2026 01:20:02 +0000
 X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
  is 193.8.40.99) smtp.mailfrom=leica-geosystems.com; dkim=none (message not
  signed) header.d=none;dmarc=pass action=none
@@ -101,48 +101,48 @@ Received-SPF: Pass (protection.outlook.com: domain of leica-geosystems.com
 Received: from hexagon.com (193.8.40.99) by
  ZR1PEPF0000E6B0.mail.protection.outlook.com (10.167.241.87) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.472.14 via Frontend Transport; Sun, 4 Oct 2026 01:20:05 +0000
+ 15.21.472.14 via Frontend Transport; Sun, 4 Oct 2026 01:20:02 +0000
 Received: from aherlnxbspsrv01.lgs-net.com ([10.61.228.61]) by hexagon.com with Microsoft SMTPSVC(10.0.17763.1697);
 	 Sun, 4 Oct 2026 03:20:00 +0200
 From: Johannes Schneider <johannes.schneider@leica-geosystems.com>
 To: barebox@lists.infradead.org
 Cc: Marco Felsch <m.felsch@pengutronix.de>,
 	Johannes Schneider <johannes.schneider@leica-geosystems.com>
-Subject: [PATCH v1 12/14] bootm: efi: boot signed EFI images when signed images are forced
-Date: Sun,  4 Oct 2026 01:19:45 +0000
-Message-ID: <20261004011958.3255011-13-johannes.schneider@leica-geosystems.com>
+Subject: [PATCH v1 04/14] efi: loader: provide EFI_DT_FIXUP_PROTOCOL
+Date: Sun,  4 Oct 2026 01:19:37 +0000
+Message-ID: <20261004011958.3255011-5-johannes.schneider@leica-geosystems.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20261004011958.3255011-1-johannes.schneider@leica-geosystems.com>
 References: <20261004011958.3255011-1-johannes.schneider@leica-geosystems.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 04 Oct 2026 01:20:00.0273 (UTC) FILETIME=[79B38810:01DD539E]
+X-OriginalArrivalTime: 04 Oct 2026 01:20:00.0070 (UTC) FILETIME=[79948E60:01DD539E]
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: ZR1PEPF0000E6B0:EE_|AM8PR06MB7538:EE_
+X-MS-TrafficTypeDiagnostic: ZR1PEPF0000E6B0:EE_|PA1PR06MB9326:EE_
 Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: 292477b3-373d-4318-b05c-08df21b59f13
+X-MS-Office365-Filtering-Correlation-Id: 45deb2b1-059b-46d4-30de-08df21b59d5f
 X-SET-LOWER-SCL-SCANNER: YES
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|36860700016|376014|1800799024|82310400026|10067099003|5023799004|11063799006|56012099006|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info: 0GhxLMThR2csRiM47AiE6EN2u5+OPiPVFWErtjMb9nEDdkyA7ogj6goNcF2hfpCEsxzllhwSI+i4yNxYBenbidFh6gsGOAqISijZsHIG82wrW3lAt5XY81i3z8YCTW0DOVHCwDnt8D0bwDyXU/tIagzX05gpQzMgQQieXSurPxSCPmjM+gLXRYHR9hcftpXaCgH7sVORBDDIUbJfbhxVnejoAGVzbbXTQhcYYnA7Md9pr6yBfRGsGOe2BgwAC1jrUGTD4IRQMAmAefGBHQwpPXqK3PdpQHhCSTW5SwbZoXmHV7kNqxrf4xKF5GimEDtr3pQYWeQH2nmALm9VE498Cl9iy6c/Ei5B8WAT031rDwWfs6yb51VNs92wsULbHRtk9S/MRqaUW8Dy/9k86yA3+yBjKoRjTG3IgqyRiemNof8i/Kz4j7yG/FlBmSTR/e/zLhF5qKsId3jOopdI1wCqZzDYuGNZ2/LqS4OEvZfCtNU8PXD3C7CfMv/mKWSJIPTaR7EATBeM30FdeoDFOebTLqyMzmpemZBBozvoK+Al9w/Mm+oaDmBS4Hm/ewDPTwXubkGRbIXOlaz9hgPjr+W0hSjN6jnl/y2gnduTa/4MQsJcMwZAM4QzpFpFuCraeurxLBdw+yJHJVec1bcZ+mLEbexZRsZYDIzb12ptVvKPGTyhnsmiyeVHMJdB3JC7DRionfegtf/Nz/QrTJtLImDyjA==
-X-Forefront-Antispam-Report: CIP:193.8.40.99;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:hexagon.com;PTR:ahersrvdom51.leica-geosystems.com;CAT:NONE;SFS:(13230040)(23010399003)(36860700016)(376014)(1800799024)(82310400026)(10067099003)(5023799004)(11063799006)(56012099006)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|36860700016|23010399003|1800799024|82310400026|376014|18002099003|22082099003|56012099006|11063799006|10067099003|260925021311599003|260925022911599003|260925021911599003|6133799003|3023799007;
+X-Microsoft-Antispam-Message-Info: aH6cOA4n3l6cNonz20N8rOycr/QTqXH6yXXbrBlyg31guYNY6xgpSaZRGmbOmuRVQqDL6LU3wV1QQjQOm7UgFV+RFoCuhfZGKXnOEeLgxKqmDDlSAuyrSoXuv8GOUuI6PgZ4PWoAMHDb8Y7ko4zH5FQzMtapkOL4sK8FnelN++ld/pQKq6cf/zBi5RuRE9DDhSQd8kJfyrfjk6WnCmFIfV4G2ACe+325tO5dbXkSjT7oGY5mch6AQai1Va/OhkBzuxIKD0zVfC6ETIbPJdvcRCK5NgXhYG8MsUknts6Sk+EMjmB6Bm8divRdV00lQSIQ4iPW8zAlnqhJ/N1R3bHClDgBQ9+YQAdsw7dxLBcRhbfyMqgBYAZpIjDXw4uaj8rUW9p/M3t5x8Xe03vFZE4UQBl7UFh9DXxKTBTgy4jIcsC9CS9wUeJKPhvgctWgnFto7MPRMSbVUhy3Pm6IpbkQi6/pSi55dNXH0mAnkOL0YSW8LalIWeyt5wGDNrwJadbMgULjOMW7e4i2ouQ7gBvIZmMYsb/wabwALdKjPbwUyTIhXDklfVCOR3sMTGeM0m+jiPB2joHZx4QcH+v/KGyRbLhDaaIHjQr7Zrkjfifyp5zF6aoOPzvW9WiQeLS8IedEIARqrTdIgPn3QYSjmFN03Ew73eakgQSBcMbtx7540uZ1+bphUY0PeySXiSHN8cUYHpn+WD3yr2vwOm4GKj9RFA==
+X-Forefront-Antispam-Report: CIP:193.8.40.99;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:hexagon.com;PTR:ahersrvdom51.leica-geosystems.com;CAT:NONE;SFS:(13230040)(36860700016)(23010399003)(1800799024)(82310400026)(376014)(18002099003)(22082099003)(56012099006)(11063799006)(10067099003)(260925021311599003)(260925022911599003)(260925021911599003)(6133799003)(3023799007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: +98mE4kjqC2wEmq1CmRp/R2ZFJsdvEGtOxnQeXqiVXlM6GLxXUUyb1tKbaJRmvR45Cubovp1sTZuGpu/w6J+77Nc+5Lx/HYP5YkrjtGUGQiWAuYnt3xfIrLO0FLB2pRWf0ZFbP6wT3eEt9oKs+LJvOiBEUdAYUBgMtZYZmmgfrGSid5/yqHNIzn5AqqILEP2Ot6Fn19XdITzRP25fH3nLHX3sWi8z1d/duEdNvUCnxUGKnZd0msYI8QXv+SkcX1foVMGHM4EB1r7dJzI6ZqwiLv6oHXcXG0dTFXvN1QTn1oQScqfbltqsQgzN2IZ0f3BJGywZ6tmnYj7wIKJ4fQaIbteJyYpi33vym2s9yZ5aqK2drdJK09qXpBfP+Rd+0QGMKcrM8R1Y44TfpfWWJg8gWFKvaKOWhtA51HmquyUGbVfPNLNJyZM9nL7G/ngS59e
+X-MS-Exchange-AntiSpam-MessageData-0: VLv7RmwuRj4e682gOVPnfOV0P0WftzHrn1ltsDwUV+YQnMoHVO7+IV2yn8T1nhCvL+LxHMqeCIgxE1p8QqIpy6GoYjb2/QYMqrbFRqn94D+aj3co3ZmjSpeMFKQ33Y7c/PfUkeU2fux9QXStRQliPI6zA5za5GG9EDiMCqVtp5JSXkenSD1PuRCazqgnNI3iuMuaSa60WcwnQ+bAeGinYkFDYIqI9F0k2XF61ni1xzS41PhaGqCATanYJ2KPlZLULAPO+DR8AKbdnWfQHXQ4f9ohhbvaTedgLdbQoNZ0LyFqlIY8Z0zq98am4YPCxKHsFQHiAxpU31pz57AKOXCVk4Ap4qTPVcDd8/2vY8QLbmpS8i4vfzInjTiMcEEAeUVXHWs3MKdUt09fdZDgalLP/gOf2XBZzLcbFEdeHkB37fHt8W8rALxXXMsxlNV9P1W3
 X-OriginatorOrg: leica-geosystems.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Oct 2026 01:20:05.1486
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Oct 2026 01:20:02.2879
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 292477b3-373d-4318-b05c-08df21b59f13
+X-MS-Exchange-CrossTenant-Network-Message-Id: 45deb2b1-059b-46d4-30de-08df21b59d5f
 X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.99];Helo=[hexagon.com]
 X-MS-Exchange-CrossTenant-AuthSource: ZR1PEPF0000E6B0.eurprd05.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR06MB7538
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR06MB9326
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261003_182011_804170_FEAB7B27 
-X-CRM114-Status: GOOD (  16.47  )
+X-CRM114-CacheID: sfid-20261003_182007_933634_4B5BEFBA 
+X-CRM114-Status: GOOD (  23.78  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -150,18 +150,14 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  With signed images forced, bootm refuses everything but FIT
-    images. Let EFI images through when Authenticode support is built in, and
-    have the EFI loader verify them against the "efi" keyring before l [...] 
+ Content preview:  A payload that installs its own devicetree, like systemd-stub
+    with a UKI's .dtb or .dtbauto sections, replaces the one barebox installed
+    and with it every barebox fixup: machine compatible, serial num [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
- -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/, no
-                             trust
-                             [2a01:111:f403:c201:0:0:0:6 listed in]
-                             [list.dnswl.org]
  -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
  -0.0 SPF_PASS               SPF: sender matches SPF record
   0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
@@ -172,6 +168,11 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
                              domain
  -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
                              [score: 0.0000]
+  0.0 RCVD_IN_MSPIKE_H2      RBL: Average reputation (+2)
+                             [52.101.69.43 listed in wl.mailspike.net]
+ -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/, no
+                             trust
+                             [52.101.69.43 listed in list.dnswl.org]
  -0.0 DMARC_PASS             DMARC pass policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -205,7 +206,7 @@ X-Spamd-Result: default: False [-7.41 / 15.00];
 	NEURAL_HAM(-0.00)[-1.000];
 	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
 	TO_DN_SOME(0.00)[];
-	RCVD_IN_DNSWL_NONE(0.00)[2a01:111:f403:c201::6:received];
+	RCVD_IN_DNSWL_NONE(0.00)[52.101.69.43:received];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[johannes.schneider@leica-geosystems.com,barebox-bounces@lists.infradead.org];
@@ -217,105 +218,285 @@ X-Spamd-Result: default: False [-7.41 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: EC948201E1B
-X-Stat-Signature: g4an7agq5y8jpryif3qrdxy788ohr3mn
+X-Rspamd-Queue-Id: 0CE2B2022EC
+X-Stat-Signature: mbrj5xaohwzo61txc8rbrcofogj3sh3y
 
-With signed images forced, bootm refuses everything but FIT images. Let
-EFI images through when Authenticode support is built in, and have the
-EFI loader verify them against the "efi" keyring before loading:
-mandatory with signed images forced or bootm.verify=signature, skipped
-with bootm.verify=none, reported otherwise.
+A payload that installs its own devicetree, like systemd-stub with a
+UKI's .dtb or .dtbauto sections, replaces the one barebox installed and
+with it every barebox fixup: machine compatible, serial number, OP-TEE
+reservations, global overlays. systemd-stub asks the firmware to apply
+them through EFI_DT_FIXUP_PROTOCOL, of which barebox only has the GUID.
 
-Not when barebox itself runs as EFI payload: its EFI application
-handler passes the image to the firmware's LoadImage() and verifies
-nothing itself.
+Implement it on the root node:
 
-An image booted this way is verified twice: here, so that barebox does
-not parse anything of an image that is not authenticated, and again in
-LoadImage(), which verifies every image a payload loads and cannot rely
-on an earlier verdict. Skipping either would need the result of the
-first carried over to the second, a shortcut that has to stay correct
-as both paths change; the second verification costs 70 ms for a 30 MiB
-UKI on an i.MX8MP.
+- APPLY_FIXUPS runs of_fix_tree() on the payload's devicetree and
+  returns EFI_BUFFER_TOO_SMALL with the required size if the result
+  does not fit. The result is kept for the retry, so fixups and overlays
+  run only once.
+- RESERVE_MEMORY keeps boot-services allocations out of the memreserve
+  entries and /reserved-memory nodes. The regions are requested as
+  boot-services data, as the EFI loader cannot allocate
+  EFI_RESERVED_TYPE; that suffices, because the kernel honours the
+  devicetree reservations after ExitBootServices(). Regions barebox
+  already holds, such as OP-TEE's, are skipped.
+- INSTALL_TABLE installs the result as configuration table.
 
 Assisted-by: Claude:claude-opus-5-5
 Signed-off-by: Johannes Schneider <johannes.schneider@leica-geosystems.com>
 ---
- common/bootm.c     |  6 +++++-
- efi/loader/bootm.c | 29 +++++++++++++++++++++++++++++
- 2 files changed, 34 insertions(+), 1 deletion(-)
+ efi/loader/protocols/Kconfig    |   9 ++
+ efi/loader/protocols/Makefile   |   1 +
+ efi/loader/protocols/dt_fixup.c | 185 ++++++++++++++++++++++++++++++++
+ include/efi/protocol/dt_fixup.h |  21 ++++
+ 4 files changed, 216 insertions(+)
+ create mode 100644 efi/loader/protocols/dt_fixup.c
+ create mode 100644 include/efi/protocol/dt_fixup.h
 
-diff --git a/common/bootm.c b/common/bootm.c
-index 27da1a590b..c8fc5220a6 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -576,7 +576,11 @@ struct image_data *bootm_boot_prep(const struct bootm_data *bootm_data)
- 		 */
- 		data->oftree_file = NULL;
- 		data->initrd_file = NULL;
--		if (data->image_type != filetype_fit) {
-+		if (data->image_type == filetype_exe &&
-+		    IS_ENABLED(CONFIG_EFI_LOADER_AUTHENTICODE) &&
-+		    !efi_is_payload()) {
-+			/* authenticated by the EFI loader before it runs */
-+		} else if (data->image_type != filetype_fit) {
- 			pr_err("Signed boot and image is no FIT image, aborting\n");
- 			ret = -EINVAL;
- 			goto err_out;
-diff --git a/efi/loader/bootm.c b/efi/loader/bootm.c
-index 8a83865458..fa12caf560 100644
---- a/efi/loader/bootm.c
-+++ b/efi/loader/bootm.c
-@@ -35,6 +35,7 @@
- #include <efi/error.h>
- #include <efi/initrd.h>
- #include <efi/devicepath.h>
-+#include <efi/loader/authenticode.h>
- #include <efi/loader/pe.h>
- #include <loadable.h>
+diff --git a/efi/loader/protocols/Kconfig b/efi/loader/protocols/Kconfig
+index ad7896065a..bc0d3adc8f 100644
+--- a/efi/loader/protocols/Kconfig
++++ b/efi/loader/protocols/Kconfig
+@@ -71,4 +71,13 @@ config EFI_LOADER_DEVICE_PATH_UTIL
+ 	  The device path utilities protocol creates and manipulates device
+ 	  paths and device nodes. It is required to run the EFI Shell.
  
-@@ -195,6 +196,30 @@ static efi_status_t efi_install_initrd(struct image_data *data,
- 	return EFI_SUCCESS;
- }
- 
-+static int efi_loader_verify(struct image_data *data, void *efi, size_t size)
++config EFI_LOADER_DT_FIXUP
++	bool "EFI_DT_FIXUP_PROTOCOL support"
++	depends on OFTREE
++	default y
++	help
++	  Provide EFI_DT_FIXUP_PROTOCOL, so that an EFI payload installing its
++	  own devicetree (like systemd-stub from a UKI's .dtb/.dtbauto section)
++	  gets the barebox devicetree fixups and overlays applied to it.
++
+ endmenu
+diff --git a/efi/loader/protocols/Makefile b/efi/loader/protocols/Makefile
+index d0b55bde46..ffc86ce84d 100644
+--- a/efi/loader/protocols/Makefile
++++ b/efi/loader/protocols/Makefile
+@@ -9,3 +9,4 @@ obj-$(CONFIG_EFI_LOADER_UNICODE_COLLATION_PROTOCOL2) += unicode_collation.o
+ obj-$(CONFIG_EFI_LOADER_RNG) += rng.o
+ obj-$(CONFIG_EFI_LOADER_DEVICE_PATH_UTIL) += device_path_utilities.o
+ obj-$(CONFIG_EFI_LOADER_DEVICE_PATH_TO_TEXT) += device_path_to_text.o
++obj-$(CONFIG_EFI_LOADER_DT_FIXUP) += dt_fixup.o
+diff --git a/efi/loader/protocols/dt_fixup.c b/efi/loader/protocols/dt_fixup.c
+new file mode 100644
+index 0000000000..fe48d4a160
+--- /dev/null
++++ b/efi/loader/protocols/dt_fixup.c
+@@ -0,0 +1,185 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * EFI_DT_FIXUP_PROTOCOL: apply barebox's fixups and overlays to a devicetree
++ * an EFI payload brings itself
++ */
++
++#define pr_fmt(fmt) "efi-loader: dt-fixup: " fmt
++
++#include <common.h>
++#include <init.h>
++#include <malloc.h>
++#include <memory.h>
++#include <of.h>
++#include <linux/libfdt.h>
++#include <efi/loader.h>
++#include <efi/memory.h>
++#include <crc.h>
++#include <linux/err.h>
++#include <efi/protocol/dt_fixup.h>
++#include <efi/loader/table.h>
++#include <efi/loader/trace.h>
++#include <efi/guid.h>
++#include <efi/error.h>
++
++static void dt_fixup_reserve(u64 addr, u64 size)
 +{
-+	bool required = bootm_signed_images_are_forced() ||
-+			data->verify == BOOTM_VERIFY_SIGNATURE;
-+	int ret;
++	u64 start = ALIGN_DOWN(addr, EFI_PAGE_SIZE);
++	u64 len = ALIGN(addr + size, EFI_PAGE_SIZE) - start;
 +
-+	if (!IS_ENABLED(CONFIG_EFI_LOADER_AUTHENTICODE)) {
-+		if (required) {
-+			pr_err("signed image required, but no Authenticode support\n");
-+			return -EPERM;
-+		}
-+		return 0;
-+	}
-+
-+	if (!required && data->verify == BOOTM_VERIFY_NONE)
-+		return 0;
-+
-+	ret = efi_authenticode_verify(efi, size, EFI_AUTHENTICODE_KEYRING);
-+	if (ret && required)
-+		return -EPERM;
-+
-+	return 0;
++	/* only needs to hold until ExitBootServices() */
++	if (!request_sdram_region_silent("dt-reserved", start, len,
++					 efi_memory_type_to_resource_type(EFI_BOOT_SERVICES_DATA),
++					 MEMATTRS_RW))
++		pr_debug("0x%llx+0x%llx already in use\n", addr, size);
 +}
 +
- /* The image may sit in a much larger partition: load only the image */
- static const struct resource *efi_load_os(struct image_data *data,
- 					  resource_size_t start,
-@@ -266,6 +291,10 @@ static int efi_loader_bootm(struct image_data *data)
- 		return -EINVAL;
- 	}
- 
-+	ret = efi_loader_verify(data, (void *)os_res->start, size);
-+	if (ret)
-+		return ret;
++/* Keep boot-services allocations out of what the devicetree reserves */
++static void dt_fixup_reserve_memory(const void *fdt)
++{
++	int i, node, sub, len, na, ns, entry;
++	u64 addr, size;
 +
- 	/* systemd-stub passes the load options on as kernel command line */
- 	if (filetype_is_linux_efi_image(data->kernel_type) ||
- 	    efi_pe_find_section((void *)os_res->start, size, ".linux",
++	for (i = 0; i < fdt_num_mem_rsv(fdt); i++) {
++		if (!fdt_get_mem_rsv(fdt, i, &addr, &size) && size)
++			dt_fixup_reserve(addr, size);
++	}
++
++	node = fdt_path_offset(fdt, "/reserved-memory");
++	if (node < 0)
++		return;
++
++	na = fdt_address_cells(fdt, node);
++	ns = fdt_size_cells(fdt, node);
++	if (na < 1 || na > 2 || ns < 1 || ns > 2) {
++		pr_warn("/reserved-memory: unsupported #address-cells/#size-cells\n");
++		return;
++	}
++	entry = (na + ns) * sizeof(fdt32_t);
++
++	fdt_for_each_subnode(sub, fdt, node) {
++		const fdt32_t *reg = fdt_getprop(fdt, sub, "reg", &len);
++
++		if (!reg)
++			continue;
++
++		for (; len >= entry; len -= entry) {
++			addr = of_read_number(reg, na);
++			size = of_read_number(reg + na, ns);
++			reg += na + ns;
++			if (size)
++				dt_fixup_reserve(addr, size);
++		}
++	}
++}
++
++/* Kept for a caller retrying with a larger buffer, so fixups run only once */
++static struct {
++	void *fixed;
++	size_t in_len;
++	u32 in_crc;
++} dt_fixup_pending;
++
++static void *dt_fixup_apply(const void *dtb)
++{
++	size_t len = fdt_totalsize(dtb);
++	u32 crc = crc32(0, dtb, len);
++	struct device_node *root;
++	void *fixed;
++
++	if (dt_fixup_pending.fixed && dt_fixup_pending.in_len == len &&
++	    dt_fixup_pending.in_crc == crc) {
++		fixed = dt_fixup_pending.fixed;
++		dt_fixup_pending.fixed = NULL;
++		return fixed;
++	}
++
++	root = of_unflatten_dtb(dtb, len);
++	if (IS_ERR(root))
++		return ERR_CAST(root);
++
++	of_fix_tree(root);
++
++	fixed = of_flatten_dtb(root);
++	of_delete_node(root);
++	if (!fixed)
++		return ERR_PTR(-ENOMEM);
++
++	fdt_add_reserve_map(fixed);
++
++	free(dt_fixup_pending.fixed);
++	dt_fixup_pending.fixed = NULL;
++	dt_fixup_pending.in_len = len;
++	dt_fixup_pending.in_crc = crc;
++
++	return fixed;
++}
++
++static efi_status_t EFIAPI dt_fixup(struct efi_dt_fixup_protocol *this,
++				    void *dtb, size_t *buffer_size, u32 flags)
++{
++	efi_status_t ret = EFI_SUCCESS;
++	void *fixed = NULL;
++	size_t size;
++
++	EFI_ENTRY("%p, %p, %p, %u", this, dtb, buffer_size, flags);
++
++	if (!this || !dtb || !buffer_size || !flags || (flags & ~EFI_DT_ALL)) {
++		ret = EFI_INVALID_PARAMETER;
++		goto out;
++	}
++
++	if (fdt_check_header(dtb)) {
++		ret = EFI_INVALID_PARAMETER;
++		goto out;
++	}
++
++	if (flags & EFI_DT_APPLY_FIXUPS) {
++		fixed = dt_fixup_apply(dtb);
++		if (IS_ERR(fixed)) {
++			ret = PTR_ERR(fixed) == -ENOMEM ? EFI_OUT_OF_RESOURCES :
++							  EFI_INVALID_PARAMETER;
++			fixed = NULL;
++			goto out;
++		}
++
++		size = fdt_totalsize(fixed);
++		if (size > *buffer_size) {
++			/* the caller retries with a buffer of this size */
++			*buffer_size = size;
++			dt_fixup_pending.fixed = fixed;
++			fixed = NULL;
++			ret = EFI_BUFFER_TOO_SMALL;
++			goto out;
++		}
++
++		memcpy(dtb, fixed, size);
++	} else if (fdt_totalsize(dtb) > *buffer_size) {
++		*buffer_size = fdt_totalsize(dtb);
++		ret = EFI_BUFFER_TOO_SMALL;
++		goto out;
++	}
++
++	if (flags & EFI_DT_RESERVE_MEMORY)
++		dt_fixup_reserve_memory(dtb);
++
++	if (flags & EFI_DT_INSTALL_TABLE)
++		ret = efi_install_configuration_table(&efi_fdt_guid, dtb);
++
++out:
++	free(fixed);
++	return EFI_EXIT(ret);
++}
++
++static struct efi_dt_fixup_protocol efi_dt_fixup_prot = {
++	.revision = EFI_DT_FIXUP_PROTOCOL_REVISION,
++	.fixup = dt_fixup,
++};
++
++static int efi_dt_fixup_init(void)
++{
++	efi_add_root_node_protocol_deferred(&efi_dt_fixup_protocol_guid,
++					    &efi_dt_fixup_prot);
++	return 0;
++}
++device_initcall(efi_dt_fixup_init);
+diff --git a/include/efi/protocol/dt_fixup.h b/include/efi/protocol/dt_fixup.h
+new file mode 100644
+index 0000000000..fd418793f6
+--- /dev/null
++++ b/include/efi/protocol/dt_fixup.h
+@@ -0,0 +1,21 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef __EFI_PROTOCOL_DT_FIXUP_H_
++#define __EFI_PROTOCOL_DT_FIXUP_H_
++
++#include <efi/types.h>
++
++#define EFI_DT_FIXUP_PROTOCOL_REVISION 0x00010000
++
++#define EFI_DT_APPLY_FIXUPS	0x00000001
++#define EFI_DT_RESERVE_MEMORY	0x00000002
++#define EFI_DT_INSTALL_TABLE	0x00000004
++#define EFI_DT_ALL		(EFI_DT_APPLY_FIXUPS | EFI_DT_RESERVE_MEMORY | \
++				 EFI_DT_INSTALL_TABLE)
++
++struct efi_dt_fixup_protocol {
++	u64 revision;
++	efi_status_t (EFIAPI *fixup)(struct efi_dt_fixup_protocol *this,
++				     void *dtb, size_t *buffer_size, u32 flags);
++};
++
++#endif
 -- 
 2.43.0
 
