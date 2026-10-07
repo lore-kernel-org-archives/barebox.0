@@ -1,31 +1,31 @@
-Delivery-date: Wed, 07 Oct 2026 16:58:41 +0200
+Delivery-date: Wed, 07 Oct 2026 16:58:42 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xET6P-00AyNU-1X
+	id 1xET6Q-00AyNg-0D
 	for lore@lore.pengutronix.de;
-	Wed, 07 Oct 2026 16:58:41 +0200
+	Wed, 07 Oct 2026 16:58:42 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 155372023B1
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 90AF22023AF
 	for <lore@pengutronix.de>; Wed, 07 Oct 2026 16:58:41 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ZqHNIJs8;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=N+EqOYI5;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=sablIx18;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=L7dCltfR;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
 ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1791385121; a=rsa-sha256;
 	cv=pass;
-	b=byma1MKqXpo2n/om4GiolzDHlKqNF9puCgt03nzaSdwjxAO9Oj4eIWnAT9LNLZIbkD76ZI
-	RxYRRCb28lUKU/oLMJJCNiyvMmgbxBMpCAP3MyI6OyjoUtr6PlJR/zJoMVrgM26mstNUez
-	+DpM77CnqNMm7f3SduXEslwgDlQqD0Kf4+fzmbSXaQvCvo3/ar4Xf9ReQD4+pKQGExeVHQ
-	LkfjBOIkXSgjZ1c5TEwj+3g/nFeXLZSiAsET6morSUH8GWXymKdrkz2RbITYG0AS1wj9Hp
-	aQG3mMSg/2m0FUnuS5sqZ5irJ8uU1JnqFnpzNoa2dqf+E9UF6p7rMNvc65hSKQ==
+	b=VDUubxBViFAiNTsSYn4/FDiPSEG7XPy2uiIfzgzUXHbw1vfaWCfzKGwFj71bCb1AP9ySSW
+	To8iNnJVFV/zG9ce9+DcxOUJqedlv5cuiX1Cl/qkVWUD1u3rQMHFe7UMP/YG2pQ391nLNW
+	gCCaRlxEDQPc5Sh+SoahaORVL1hzA7PEx6AqX8xzzCrJVRaVSwz9KcjKUzhh5hPgv8uASZ
+	5AcfhaZne8wVa5D2T/kDSovxXG6hy/doAzYmqMiqp7BygPaDYnDUH8PFQ/IxV+cbcvbyus
+	a95M6Mopjbt4owElxZDkB/m8FyjnMFwkh3x3PGMas2zJDrYvN8EErVdwDGSTXA==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ZqHNIJs8;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=N+EqOYI5;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=sablIx18;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=L7dCltfR;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
@@ -34,57 +34,59 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=LbK2SIuI3e+E6CZ/fyWewq3+MG1LgfZfRNgDEvxylsY=;
-	b=EUUGPHgYPojA63C+WJdgofiAe3WJejYR0S+BqNrHsqI0cAdCsTMo0Je1szv0ef9eX+j7+E
-	M+iwQOnTfWzqy7xs2UxkityHdfVrMaOoa8spsbXPkA05C/23Py+uzN8g1EKxPQS/xyV8KW
-	723xaQKUwcpxtV8nw3BI6Dsl3sDgmCJ/LS6DBOfqQKxiO2ydacVu7WP7Mmcc3bPAZbS26o
-	519yl82xRDOl6oEgTjBBSlvTaTlh+RuqxOinO/68w56mcXrllXAOcTya22ckH5sxlzQcN8
-	bqoPDswx8WIoYe2TsXUPooJZQd+/o3ItAS4QoW2TQL67PFtesK2ZKnnv0JetKQ==
+	bh=wZCf+07/KI8moDf8pjl9z/4I8X4OeRzERYpAkY38Hm0=;
+	b=XvpGXUnsPEeLIbIvQHJZ/FFwjp4LdzFuxrjnkgGlJaTFwo872IVBp97GtBlN+98kah1hCQ
+	9ef4U+pSBJoiqvKJ9TvqkZACxYPUWGaOxed3R+5D1mhVlVNcqyLYcKIYHRT4qq0/XEqebg
+	MYafQGLZQozvRFbWhiuxU7I4ue3XGE8OAS/rpfLtJiYcUlkmHHOmyiEnBRQB8Zr7EgkO2+
+	lwW57DtkRIGc7qHgyh407PzLz7fFQFC4mToFivF5j4SwO9NugPY17jH38tBsEY/GQ7TCmu
+	UsAdPtgmq0MFwGebLypICvhxDCtFAnkPjLocS/PBl4itcQeAOtd09bHeJEzVpg==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=LbK2SIuI3e+E6CZ/fyWewq3+MG1LgfZfRNgDEvxylsY=; b=ZqHNIJs8Ut/GEx
-	Y8dMB23Xe3k9fRBKxZsMBNG0mq7MZpxGC+R1CBNIamygx9V/CnuS4TepCCl/3Z7p4eQ2dWnkfFuFC
-	d8Vmz7enTb+UYjuY/6r07JWUWD7WQmebbgMDpYBCIGvA8yIpsi+qFHUehzdyoLZhk6dAcmjoHhP7U
-	xjRqbZhD5jaIJulxP198SOKNtTg+uOEVBOzp51/S2FwEmut0ufj/9Ne+8/CzyEznQCmMjfP8Vlv1N
-	qD+FMCx1npwuy3L+aB3ojNn44+nUYpM29cg3KEq4YOqEQw8wR2ja3w5hFTsuDuBe8AdP/vrkDXpQ0
-	bal13B9k+sCDHnhp9IhQ==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=wZCf+07/KI8moDf8pjl9z/4I8X4OeRzERYpAkY38Hm0=; b=sablIx18+d8m3RHoIyxlOPO8/9
+	lxrQYq6EDqNfdX0QYuhYg6iC+uwXS3xMgg/Rd1PD3EENLf6AVnSeKBTcuZcHcmBG63j2/fU3S+ohs
+	mBskwU+MFd1MUTiWfJZgbuQ0FwRLfpUNOGlPek38+irrK5NCXu6KWoO0oiMK1roFcFC0xS1BCFK3a
+	xtsv/Ne5swj+VpME0Zv955pSb8LByBFVMBS4xbrLcgaLnmvI3wYpllL8TaI+a2bRVNclQJoL6gKlE
+	PsVBcTG6ddVIIj1zjZ593cpM+cTKa9v9E0zt065+msZ/13TVIpUQbPJhlSEXaGYOcoH4kFDjkyRvb
+	ExXs8BdA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xET58-00000002f36-0Em4;
-	Wed, 07 Oct 2026 14:57:22 +0000
+	id 1xET57-00000002f2x-3thH;
+	Wed, 07 Oct 2026 14:57:21 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xET54-00000002f1u-1C5h
+	id 1xET54-00000002f1w-1C0b
 	for barebox@lists.infradead.org;
-	Wed, 07 Oct 2026 14:57:21 +0000
+	Wed, 07 Oct 2026 14:57:20 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id CF7D920238F;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id E15942023B1;
 	Wed, 07 Oct 2026 16:57:15 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1791385035;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=LbK2SIuI3e+E6CZ/fyWewq3+MG1LgfZfRNgDEvxylsY=;
-	b=N+EqOYI5OITX4xjfwsqWM17EixXoUK3vIIs5MII7xmQGopDcNtn+pySyqATnqo/YAPkYJg
-	CqB9dgWbYAXLCopx0i8dO7J8HEfJoOBXmjPy3tcicLPmx2hYnHWhSFjLGfr0GspBM142u8
-	tcowG8D7fZRXCvmUqyYLXQ2BilAEkZ6ddCdGeEeFMkykb9VLOpFwo54kuJI8ac46d7dLJl
-	qPsPuJNGobrvJB5Pr4kK4ssEQm8tME3IY6fu2v5TCGz6C3AU7VXfqI88iN1Io0uo0eW2Dd
-	IimbHGCUIM9CcKH5LZNtMiw5EZz6i4Z7EylPMLDKh1IhERjoVSdDc+VUYcoXUA==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wZCf+07/KI8moDf8pjl9z/4I8X4OeRzERYpAkY38Hm0=;
+	b=L7dCltfRUGO/Ti7CR+kYJsJX4uUauMdb11oTReRZ2JBWPuJ7VV1Zh315GEOB4zy1CQHr2n
+	P7pnyXCY6ZHXnnf+LHd+WbO+WbzdYQV1xMIvYgFPbNECrhDarPERv2xCPrGKjAeYrucznm
+	mPoCJnhg7sm7KxbwwoJnXnBLjVE9D/x6HdmX3PNWnrrgPDU+OQs4lsfCT1ckwgKit1RzKj
+	FpkuqAZqewMg8S7N5KjtwWU4GhC7ExHPUgkkFtEetnF2sa0fJh+kZW6zTjK9fRjgx2KYw7
+	2MJoV4mDJATJHtDi7+FobRrlZ4TKn4MWFDsMoqs1xiOSnNgp+R18x4RF8gH7Yg==
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1791385035; a=rsa-sha256;
 	cv=none;
-	b=PIiQ7lw9CmaT09+7F5j8MfzQQXT/CBY/g9Y1aqYjXf0KQBdrP7Ej6QAqZodlTWzYoTFctt
-	cGYXDJcRNz8elQ36R3ShOJbU5ZHWFBlGL7ClaF2uA6InQ3yIHanOKWCYemerWmMc/7WHWl
-	UMf7Uyuu1doUmI36O4GlMX16v/NEyW3OZ18ztDAbDnBRtEcqAY9jxLGjT6Bf2ckqmUHOzx
-	mHN0r8sjPNRQlvcSaJ6+WrokWSnzE9M1IKD7jCeGNkAIqwB/KXTXQv4gu1Gjr/x8Mif8zO
-	LrkBclPsJ4Vb96VydZvJT3UXxgd4yqJlkZSaKmKJvWxn6vzX5LjolnKL2xEg1w==
+	b=D4ZaS6dDyFk00kNuo7/gPczcn7ImQImjVGnFxx8OavJtFgxSUrkx6yA61M690878gIf3DS
+	0NiOFXxBjRMN4LHzOevqJGBwwtba3ONdGgkCfIuiPB6lV0RAGMhwEmRoz3uU66jt8Q5iqr
+	ZzsE8gSB0NuYT2A98vwR/GfGmVyfRKWM4ZwuwNQrQvJIJwW22a+hFYR/SOiy1Ov8nme69L
+	QHXvupMfyHY9dyRlOoMue68YwrP+xd4uP8fvWFGZGk8iG/LEs0zqYme+5A5fAjPYAURYCN
+	WtqFzLgiHu4JUKkkXVGPBqP3AUhkwUBSfcCMiMSRBNu+0IDrf8AR8KEfJSbXiw==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=m.tretter@pengutronix.de
@@ -92,36 +94,36 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1791385035;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=LbK2SIuI3e+E6CZ/fyWewq3+MG1LgfZfRNgDEvxylsY=;
-	b=a1+lSGjIoZLuixIayKipfyfU9JZk6xYLDc/jCkIgR3KrsKa2yxjJiX40kWn4xRhvbR6B8X
-	j+nqlEID8zPejxs0pLis1/cIuvRQCZkqEOGbnc9kNWu0Fnl0BSm7OFxMWyRX1jP/8T0VcL
-	FBxUugO4hK1pvlN49aPTfEHhkOdQl33m3wfvhT0mzlzsKJMhQVqYDUuxrHbK0n0UnNEgUN
-	HvmOXsjt2/zJNcSd2g2RrjriGy+2xGWfHLqQxiKFEGcVLThayzExijK042rNKFaYRwaNfj
-	pzcgefnUt2VL2tArYwrRXQH3GgAFDJr2P8LNStdxBlw1Fpjgw5dWEqXcBYRuYA==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wZCf+07/KI8moDf8pjl9z/4I8X4OeRzERYpAkY38Hm0=;
+	b=RYSxMaRYE4UzJ4Y+FTPgfnoAnnVFFRlvVnf0DFNnTnrHjge4T1YkKbGNHzOJWHYkReqxdR
+	a+TPwTosXuyOQpxz3l3UYSzjAjx2MJDXmNGoPUoNqNhKUyPGZQH+sX26nqP5NW3VoEg9Fy
+	9XAEDZMLWG5bi2piAln5bHQo6YppE4dR+VJahD7fG8NO4uk0BgaCn6hXoxKqkhrAQOI3na
+	21/t8tegeJZDhaeazyIezUM9eSB6Fjkk0wR8aSml20jW0iRCEFqgFdeuV7/tewQVsp62W3
+	fakpHHu/saVa78HhgjL5FLgMHP9j/LScdAzlSN1Vb8ghb7z2U15IsujU8wWpyg==
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <m.tretter@pengutronix.de>)
-	id 1xET51-004jZX-2O;
+	id 1xET51-004jZX-2c;
 	Wed, 07 Oct 2026 16:57:15 +0200
 From: Michael Tretter <m.tretter@pengutronix.de>
-Subject: [PATCH 0/2] arm: socfpga: agilex5: remove custom GPIO toggle
-Date: Wed, 07 Oct 2026 16:57:14 +0200
-Message-Id: <20261007-socfpga-agilex5-gpiolib-v1-0-a2911b434fc0@pengutronix.de>
+Date: Wed, 07 Oct 2026 16:57:16 +0200
+Subject: [PATCH 2/2] arm: socfpga: axe5-eagle: drop hard-coded PHY reset in
+ board code
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMpdxmoC/x3MMQqAMAxA0atIZgM1UkWvIg5RYw2ILS2IULy7x
- fEN/2dIElUSjFWGKLcm9VdBU1ewHnw5Qd2KgQx1jTE9Jr/uwTGy01Meiy6oP3VBbrmlhQY7kIV
- Shyi7Pv95mt/3A0aMv0JpAAAA
-X-Change-ID: 20261007-socfpga-agilex5-gpiolib-a3a32b295925
+Message-Id: <20261007-socfpga-agilex5-gpiolib-v1-2-a2911b434fc0@pengutronix.de>
+References: <20261007-socfpga-agilex5-gpiolib-v1-0-a2911b434fc0@pengutronix.de>
+In-Reply-To: <20261007-socfpga-agilex5-gpiolib-v1-0-a2911b434fc0@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Michael Tretter <m.tretter@pengutronix.de>
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261007_075718_511289_DAAFD895 
-X-CRM114-Status: UNSURE (   7.76  )
+X-CRM114-CacheID: sfid-20261007_075718_502647_40CBD8AF 
+X-CRM114-Status: UNSURE (   8.52  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -130,9 +132,11 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  The Arrow AXE5 Eagle board has some custom code for toggling
-    the reset of the Ethernet phy, because barebox is built without GPIOLIB for
-    binary size reasons. These limits are not clearly defined, not [...] 
+ Content preview:  Since GPIOLIB is now enabled for Agilex 5, the Ethernet driver
+    resets the Ethernet phy via the GPIO. Remove the hard-coded reset code from
+    the Arrow AXE5 board code. Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+    --- arch/arm/boards/arrow-axe5-eagle/board.c | 24 1 file changed, 24 deletions(-)
+    
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -197,37 +201,60 @@ X-Spamd-Result: default: False [-60.81 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 155372023B1
-X-Stat-Signature: 7oob14s6ak61s9hnq9btqoy1oqzwc34x
+X-Rspamd-Queue-Id: 90AF22023AF
+X-Stat-Signature: w5syybjbxpd7dnj66gzx38drzj4w74kk
 
-The Arrow AXE5 Eagle board has some custom code for toggling the reset
-of the Ethernet phy, because barebox is built without GPIOLIB for binary
-size reasons. These limits are not clearly defined, not reliably
-reproducible and not enforced.
+Since GPIOLIB is now enabled for Agilex 5, the Ethernet driver resets
+the Ethernet phy via the GPIO.
 
-With xloading of the SSBL, the GPIOLIB doesn't have an effect on the
-FSBL size anymore. Otherwise, disabling a few drivers is probably more
-significant than disabling the GPIOLIB.
-
-Therefore, enable GPIOLIB for the Agilex 5, and get rid of the custom
-code to toggle the GPIO for resetting the Ethernet phy.
+Remove the hard-coded reset code from the Arrow AXE5 board code.
 
 Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
 ---
-Michael Tretter (2):
-      arm: socfpga: agilex5: select GPIOLIB
-      arm: socfpga: axe5-eagle: drop hard-coded PHY reset in board code
-
  arch/arm/boards/arrow-axe5-eagle/board.c | 24 ------------------------
- arch/arm/mach-socfpga/Kconfig            |  1 +
- 2 files changed, 1 insertion(+), 24 deletions(-)
----
-base-commit: 70421fc4591e6b4b9c7172ca72b60ef1868ecc5c
-change-id: 20261007-socfpga-agilex5-gpiolib-a3a32b295925
+ 1 file changed, 24 deletions(-)
 
-Best regards,
+diff --git a/arch/arm/boards/arrow-axe5-eagle/board.c b/arch/arm/boards/arrow-axe5-eagle/board.c
+index b197367f45e4..1ce48385f80d 100644
+--- a/arch/arm/boards/arrow-axe5-eagle/board.c
++++ b/arch/arm/boards/arrow-axe5-eagle/board.c
+@@ -3,33 +3,9 @@
+ #include <init.h>
+ #include <io.h>
+ #include <bbu.h>
+-#include <mach/socfpga/soc64-regs.h>
+-
+-static void axe5_ethernet_phy_reset(void)
+-{
+-	writel(0x14, SOCFPGA_PINMUX_ADDRESS + 0x224);
+-	writel(0x14, SOCFPGA_PINMUX_ADDRESS + 0x228);
+-	writel(0x14, SOCFPGA_PINMUX_ADDRESS + 0x23c);
+-	writel(0x14, SOCFPGA_PINMUX_ADDRESS + 0x234);
+-	writel(0x14, SOCFPGA_PINMUX_ADDRESS + 0x248);
+-	writel(0x14, SOCFPGA_PINMUX_ADDRESS + 0x24c);
+-
+-	writel(0x410, 0x10c03304);
+-	writel(0x410, 0x10c03300);
+-	/*
+-	 * reset the phy via GPIO10. We currently haven't got enough space
+-	 * to enable the gpio driver in barebox.
+-	 */
+-	writel(0x000, 0x10c03300);
+-	/* FIXME:  can this be decreased? */
+-	mdelay(1000);
+-	writel(0x410, 0x10c03300);
+-}
+ 
+ static int axe5_probe(struct device *dev)
+ {
+-	axe5_ethernet_phy_reset();
+-
+ 	return 0;
+ }
+ 
+
 -- 
-Michael Tretter <m.tretter@pengutronix.de>
+2.47.3
 
 
 
