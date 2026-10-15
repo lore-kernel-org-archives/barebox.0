@@ -1,88 +1,71 @@
-Delivery-date: Thu, 15 Oct 2026 11:23:54 +0200
+Delivery-date: Thu, 15 Oct 2026 11:24:30 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xHHgo-00DrLg-2L
+	id 1xHHhO-00DrMq-2Q
 	for lore@lore.pengutronix.de;
-	Thu, 15 Oct 2026 11:23:54 +0200
+	Thu, 15 Oct 2026 11:24:30 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 3B26E201BBB
-	for <lore@pengutronix.de>; Thu, 15 Oct 2026 11:23:54 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 94460200467
+	for <lore@pengutronix.de>; Thu, 15 Oct 2026 11:24:30 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=wghlyepx;
-	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=hQL97CkE;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=EJYyMoRQ;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="w2GiRM/H";
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=CYFdmLtP;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1792056234; a=rsa-sha256;
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1792056270; a=rsa-sha256;
 	cv=pass;
-	b=bbBKX4KqmhCWn+9jTeqH68THu3SpDUOHTdf9hJNaBN0sUloG9szJ0ukZYUroaxtDZdV1sE
-	5Aelnn0PZf65q2LkMR3S1QDQxsWHwFxL6dT9mbT8Ickx6rEs4yPWKiSrVk2QI9z0K0Qr2Q
-	ZEbESFLfeDGkUmvUmfYPP6qPk9ENjKu0kBPbHOQxpGDUi6fJaIarVP6d28ZTP9dNq8datK
-	FblwURZIteMEPeaX+CehveNoWVe+pYYj5rTxJjK4i1dvjNZaJl6n0+kdfJ3R+fin2Js4RT
-	HY4GV4UdtFjoV4fyk1MwniL7dZMz4FuL/BxKMLJ8Xh76YJh0bs/lvamZ/fdEaQ==
+	b=XxpqzSZ1R8+uIgQ/5MWZndleC7s+FBxzHde3mPLAfh4Fl9K5u5KLvtgAVmQkEXhE1coR2M
+	S04Zr31pG6IQKBcNa26vOZ4Tbz+WSkcDVQZvk/o7y3izWR4LheeAkAv4o7RiucUqUmTjNX
+	myQAoIkMNTajjAFHYkXoMZla0vCqsxwa7B5zvGtnLJOnavTamvsiI9zYICQXaAYzPh4LwE
+	dtRMQlIij6fzN4hseqi38ErOuso++aNSpsEIyIZG8VPJ+/UHsNyNoEB8ZeBjrVayzp/uEs
+	9JMUiyqEfWLSesX3m0jllyl5G9cVzUiavpTGaovr07XRFb+4YdsijrBkqTm6Xw==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=wghlyepx;
-	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=hQL97CkE;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=EJYyMoRQ;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="w2GiRM/H";
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=CYFdmLtP;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792056234;
+	s=20260414; t=1792056270;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=INe4vA8mDkMDAZn0MRkyhPKpTlRKMV5WX8u3r9MHbt8=;
-	b=GxrklHnSTYkE+cTbFFt+Inhtd+VTqrXv1GqA/nN3uovkscI/l2ih/kkQKOnLiMhtxtgX8B
-	pY/PPUTrFiAk7qWIur8KGXNpHItU0o2z75XCV1h7CbCIJ2wb35PpmnnKAWIAKAHtBnFtyE
-	f8oGcSZQ3/4/5hBah7lmuM42Kn0BkE4wIb+/Mf6IkkZAVBQ4qfMb0lwPTNIrgiTLF2qogL
-	e8ODflnTTqSSVlRtBNHzxESRujsufIGV6Q/J2ojyG4vJBqSJ9bmw0l1edxfZYwC48aswrD
-	QOZVNwdu/f3iDPCCtysc58DDiOnsc/NBhSgXlYM8Ag8SsPqF9a8urVddzVNDmQ==
+	bh=ZESW7Pfdy/F2xbKLbq4hzShzvJEhS+UqNowYrD/v8eU=;
+	b=cbcz38M7yHv+FCMh8A6jW3ty+Vl8o8oCosRW7MTrjpxVAXxWG+Dk3gzBCZ45Z69dqZoh+f
+	9JNCikPw5fpuw/jkemkbRZ3WB7OKDA+s7zXSdxCsYhPSzTACoZkuEmlg4/Y7uf4ssZLhcd
+	IUnLn9P7Fx2Vgvqk19DA5YMnmT9eIcf8R0kOLp2GmfRKlG2U/frA8SBogpChwKtTDLEyi2
+	ctQYmqKHgeuJ+C5RTL1o+Cm9aE4phdqzveiTKqX8YhQ2yCJmGwoFl3D5nNC1pijgwTu9TU
+	cNB2nZgwzOkNBoCL9QjYqCuw/Qw1YRiNQL0g0pVAtaD8PtJoSGv8uKf884PGWg==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=INe4vA8mDkMDAZn0MRkyhPKpTlRKMV5WX8u3r9MHbt8=; b=wghlyepx21xHaVZ7+iJ+j56BPJ
-	DPOHgThJL5JOEOF/27N3jOUkUUVil/HReATVhzhzLC99Hs/kmZHjPb4+v2ACEiCp+GNwrAEzmTHYi
-	lryv6orRgFhNu6os0l5kLxHlWu5A49ZizjYYbaKTEDLF32M03VmPd/KNodt7o/m47BBLmwnW3Hgve
-	NmQdUDHWBJETWq8yEkpmFjot+4cJgdgBZU7l7In1dqo2SnG4dcDRzR/18kpfvIPur5bPXjl+NcFlL
-	0MgOwD+/ag3JjXis+LbRletM/iiFKOn22llOayUQfSie8A7EqedfgXEWao1FfO4tYyUEACKv7GNvk
-	7ka8BTWQ==;
+	bh=ZESW7Pfdy/F2xbKLbq4hzShzvJEhS+UqNowYrD/v8eU=; b=w2GiRM/H5OTB7aiKPDg63GOtvD
+	/JEjGJTrcxoHOY88CwnooBOlH/yrbIdKjP9ZAYYUBhCdXPKWMQy2XDHEC59kL/JzXtxXv3O2EF4y9
+	y89yz/0RFeafyANG1zqAPPWdKA4vbsS3xNz6hRDuWHBBAtKoR0568IG82UEbnbOfgY2IWWNdSNRHq
+	hsDvomnsTHcME8napna53Br3dEDAR6kzcR6KLT1ZaqSWukUiO4ZJGoiYbeEmseyAvgdZC5Uq9Zx2g
+	3olOn1vkIXHyBuF/+t0Q5ibe1rpiLbWoDyA38WYlP3bJCTL/MXu8IXmxi93wGoNQWHWQIcFGQSr3B
+	VQWiGzog==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xHHgO-0000000HFhy-45cl;
-	Thu, 15 Oct 2026 09:23:28 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	id 1xHHgG-0000000HFYy-2O39;
+	Thu, 15 Oct 2026 09:23:20 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xHHgN-0000000HFej-1kOV
-	for barebox@bombadil.infradead.org;
-	Thu, 15 Oct 2026 09:23:27 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=INe4vA8mDkMDAZn0MRkyhPKpTlRKMV5WX8u3r9MHbt8=; b=hQL97CkEDKrkLYL4BqYD+5NW4n
-	zZpEKLnqZ5m56mDOjMouiVtGNbf7FoQr1tnz0GnRasK0A++fmGLVzKC+BdaUy0gQYvHMORHYztik0
-	BckUOWO7taGT75qi0UEOcjBeVZcS5wq9hT7dvHr8DcRCepO3Qd28KcnGTLM9UO98dZXNLzUZQq4oC
-	uX/mK6Sej85ntpSESwTQBKBUnEE7BOiJEktXQv15My1cz2VAOc2FVIEo6b7MgBLnMBDrSYzdGaEcS
-	QGYLEsn2uQwTdJX2UZOZJjBq5m15HnBt9CdVDLF7bQEPhijO/GaVvoWD4o7RpQRMoWzC9O/JDiShq
-	jxYf983A==;
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
-	by desiato.infradead.org with esmtps (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xHHgC-00000000AOa-3DDt
+	id 1xHHgD-0000000HFW3-0YCR
 	for barebox@lists.infradead.org;
-	Thu, 15 Oct 2026 09:23:26 +0000
-Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.pengutronix.de [IPv6:2a0a:edc0:0:1101:1d::54])
+	Thu, 15 Oct 2026 09:23:18 +0000
+Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.4.pengutronix.de [10.17.1.19])
 	(Authenticated sender: relay-from-dude05.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C1AA12027D5;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 997552027CF;
 	Thu, 15 Oct 2026 11:23:11 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1792056191;
@@ -90,19 +73,19 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=INe4vA8mDkMDAZn0MRkyhPKpTlRKMV5WX8u3r9MHbt8=;
-	b=EJYyMoRQA4Uw95oILm/Q2E8oHbnn+KXKcwVMRdHzXw11Ua8Hzf613zzA5eF0qrWKYmcsyX
-	TQauwzsaxVH4TSAVdI9kBLIR9yhoLhss/8FUCqc3vEphe3rJIz0U2ofb89erMbBmezu2OE
-	pPTO6LRsnJmSvqZLKnV60J3HVObNAtHmuowlKQuGEcUQh/zqTGIN2JGLDfOv3LwSgki4dM
-	vpFGF+qrh8v4yZcDmmdEZ9bzWkNelrvXOyd/0gHjwPeP8zp2TeX9MdEQzDT8wQxyhYqaOm
-	LThC8OiK0V0tQduyCv1C38uLFXPVbsgPruiShYYfm6G9r3d0RIeoDxMV9E4R3Q==
+	bh=ZESW7Pfdy/F2xbKLbq4hzShzvJEhS+UqNowYrD/v8eU=;
+	b=CYFdmLtPn1+pckA3ncWTzdnsOlpN7LRgRy48vRf1bwYhE5iQgvt3xz5sDhwKy0AGjXmwmo
+	ni1mQs4B1OKcDUvaYxSUTLqJXhA3wKyouZ+gHPk02oWy5cM1WJBy6+0LZCJmmrjaaCxN1r
+	RiAs2EOSZfCur7R2z4Uj3b405sfO1Z9lYmyRRDLrhlk5VAnOn24SRoHXkzjoHNx+ZKYNHA
+	Et4yoYY6UnCQrCxrtXneY1ZBIQKQXfLRblBtdPwjAGCq1YKyiha4mmXtmEtSi6czvG0X6x
+	J4YMpPToBD/nxG8BD5Hu5YDFpUAsaG8QKD3zEsuhGPyGhj3JOowjBpPlC9CU3g==
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792056191; a=rsa-sha256;
 	cv=none;
-	b=OQRsNvHLxoq42wcUtt0DH+YP5rNdtWgtxioDbpxElbvE4t0s1MqQBgolfih8pFDFatyOTv
-	9FAsZZ6u/FBbTLDBRO9+kDupfLuvp+fbwBiF5Jy1ZITNcLnyQEP4kMzsXBhjSPa7itVI3v
-	BRfl59PyqwUn1tRgFnR7ZL9ujUURoT9jFXIcgok3lmmh5PSXXEcceUyojaFA3RrD1Z3WPS
-	E7jZlNhdapsi6lAkr2jel+egJ+j4+aehgUzTuhj03nm+TcZaaGULGOA0WyKX5YYfU8/QPj
-	JZZdSIkxcBqpyuI0OBeSKE68E/cYh2goCz/5fy8HjcGzzzKQsX/FF4b23eyI/Q==
+	b=CGihOddFBGN2vvHvnyObSD801ehrck9RH0GndC3qKaeK1XWffb2hZJZz60z35QchcnzGqs
+	OJMFQjpBi8jFLCUHcezkO8cbcayYE4nQ6FvzxqsH+f+me/g1pMg9nwHuVDUApXSsH8TUqy
+	34aE+Lj2/qZ17T0dU8X1olsR6DzrZTR+xbXjvT18g7CPkstZtkqH1oJofsSsz9Rfe91Qjq
+	+WzsdA6lXdEHs8vdPVNSCsJdfEduFQnPK1MBpRufNENblOwN8O5jWTGMxWWHN5ND/cwutl
+	zHD8aE0KZtLOOd6pLMyMfg+1OKFsIDz3uyohHT02MO1RO8dA1htakrxQZakmAg==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-dude05.red.stw.pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
@@ -112,53 +95,56 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=INe4vA8mDkMDAZn0MRkyhPKpTlRKMV5WX8u3r9MHbt8=;
-	b=Fvsm46tqf1ykRozfDF1/KYk/8D9E6nmIkkuqNmQr0T5bJipxPMCmGKErn7Z0DPH6trQrsr
-	AROYNeatIWNHSl90+ZCTWJKbnbiXkheaiEn06eRsMMqTPk1zfWSOVDM+ilUBtRrWpIgXQc
-	QIQgXTEEdQFjYXTP5RBie5ZDFcUUiKddHUjmjxyRKOgAAs+xzmBebey9axr+d6RlORfIqx
-	tB7jyUy4tozwsfGlq6Gp/tEnu4mki98zSGo64ZZ/A1psnxg9tS1yc3cssbF0QRbY4yb6q2
-	Fubi3hKgKrnjbQbNde6gv7w2atTuwMO5VYkK5cyEYW/I+KbZgB/3xqsEI2VEEA==
+	bh=ZESW7Pfdy/F2xbKLbq4hzShzvJEhS+UqNowYrD/v8eU=;
+	b=UCvYkSPmz/K1MbXA/NFMY/x+Xj3kDLCcziiM6gfJamaL8a+Alnkr5CivR2qY86V9qAg9Cx
+	fDVfXEru/JBGrmMR9Kq10DxvppVHeaBgLriYuJDG/XjMp6FGDkTDGrTBXDFBS4B1nvf+2X
+	EqxfidDUqpcZFUI4Afy1bFxVTmFmjJi02HkiqZLe+udpZHkU5Rv6eaJsYoliNwEjyJcaKq
+	q6nTCkODNMOdL6K6HaRgXh061MbTZrp61y9XEpev+3DHVY7LUoHUTIf8SBeEINjK+JL/DU
+	sA5TABXAoDJ1AvQsw9Fsu0mJHcNznqKcRe96tmGaOxGvySwqNinp0IruOx/Dgg==
 Received: from dude05.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id A854D741297;
+	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id 7A735741297;
 	Thu, 15 Oct 2026 11:23:11 +0200 (CEST)
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: fpg@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH v2 09/10] Documentation: efi: describe load options handling
-Date: Thu, 15 Oct 2026 11:18:51 +0200
-Message-ID: <20261015092308.146516-10-a.fatoum@pengutronix.de>
+Subject: [PATCH v2 05/10] efi: payload: honour bootm dryrun in the EFI application handler
+Date: Thu, 15 Oct 2026 11:18:47 +0200
+Message-ID: <20261015092308.146516-6-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261015092308.146516-1-a.fatoum@pengutronix.de>
 References: <20261015092308.146516-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261015_102324_283810_70C95003 
-X-CRM114-Status: GOOD (  18.18  )
-X-Spam-Score: -0.2 (/)
-X-Spam-Report: Spam detection software, running on the system "desiato.infradead.org",
+X-CRM114-CacheID: sfid-20261015_022317_330671_A36E3365 
+X-CRM114-Status: UNSURE (   9.43  )
+X-CRM114-Notice: Please train this message.
+X-Spam-Score: -2.1 (--)
+X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
  message has been attached to this so you can view it or label
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Document that arguments following an EFI application's path
-    on the shell command line become its load options, that bootm populates the
-    load options from global.efi.bootargs.* and that the Linux boota [...] 
+ Content preview:  Unlike do_bootm_efi_stub(), the "EFI Application" bootm handler
+    never looked at data->dryrun and went on to StartImage the application, so
+    "bootm -d some.efi" ran the image it was only supposed to loa [...] 
  
- Content analysis details:   (-0.2 points, 5.0 required)
+ Content analysis details:   (-2.1 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
- -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
  -0.0 SPF_PASS               SPF: sender matches SPF record
- -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
-  0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
+ -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
  -0.1 DKIM_VALID_AU          Message has a valid DKIM or DK signature from author's
                              domain
+  0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
  -0.1 DKIM_VALID_EF          Message has a valid DKIM or DK signature from
                              envelope-from domain
+ -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
+ -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
+                             [score: 0.0000]
   0.0 DMARC_MISSING          Missing DMARC policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -172,160 +158,73 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-59.31 / 15.00];
+X-Spamd-Result: default: False [-58.91 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
+	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
-	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:1101:1d::54:received,2607:7c80:54:3::133:from,2001:8b0:10b:1:d65d:64ff:fe57:4e05:received];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
-	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
 	TO_DN_SOME(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	FORWARDED(0.00)[barebox@bombadil.infradead.org];
+	RCVD_COUNT_THREE(0.00)[4];
 	MIME_TRACE(0.00)[0:+];
-	FORGED_SENDER(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	DKIM_MIXED(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,infradead.org:-,pengutronix.de:+];
+	DMARC_NA(0.00)[pengutronix.de];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	FORGED_SENDER_FORWARDING(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[5];
 	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	R_DKIM_REJECT(0.00)[infradead.org:s=desiato.20200630];
 	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 3B26E201BBB
-X-Stat-Signature: g7xeu5herupt51qhjtfmrx9w33kuqe3q
+X-Rspamd-Queue-Id: 94460200467
+X-Stat-Signature: mpy1hzp5epzqeimxc6eqcdhbnab79yi6
 
-Document that arguments following an EFI application's path on the shell
-command line become its load options, that bootm populates the load options
-from global.efi.bootargs.* and that the Linux bootargs follow for
-EFI-stubbed kernels, both for barebox as EFI payload and as EFI loader.
+Unlike do_bootm_efi_stub(), the "EFI Application" bootm handler never
+looked at data->dryrun and went on to StartImage the application, so
+"bootm -d some.efi" ran the image it was only supposed to load.
 
-Assisted-by: Claude:fable-5
+Unload the image and return once it has been loaded and its type
+detected, which is as far as the stub handler goes for a dryrun too.
+
+Fixes: 35fb1743f5ac ("efi: payload: bootm: add support for efi stub boot")
+Assisted-by: Claude:opus-5
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Documentation/boards/efi.rst         | 64 +++++++++++++++++++++++++++-
- Documentation/user/booting-linux.rst |  6 ++-
- 2 files changed, 68 insertions(+), 2 deletions(-)
+ efi/payload/bootm.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/Documentation/boards/efi.rst b/Documentation/boards/efi.rst
-index 5f7dd60998dc..2dde52bc6665 100644
---- a/Documentation/boards/efi.rst
-+++ b/Documentation/boards/efi.rst
-@@ -112,8 +112,70 @@ means passing control to the calling instance. Note that currently the :ref:`com
- command will pass the control to the calling instance rather than resetting
- the CPU. This may change in the future.
+diff --git a/efi/payload/bootm.c b/efi/payload/bootm.c
+index 2f9cc3cbf76b..3168e07a3dc1 100644
+--- a/efi/payload/bootm.c
++++ b/efi/payload/bootm.c
+@@ -220,6 +220,11 @@ static int efi_app_execute(struct image_data *data)
  
-+Arguments following the path on the command line are passed to the
-+application as its load options, so an EFI shell can for example be
-+started with:
-+
-+.. code-block:: sh
-+
-+  barebox:/ /boot/shell.efi -nostartup
-+
- Although the Linux Kernel can be directly executed one should use the :ref:`command_bootm`
--command. Only the bootm command passes the Kernel commandline to the Kernel.
-+command. Only the bootm command passes the Kernel commandline to the Kernel
-+and provides it with an initrd and a device tree.
-+
-+.. _efi_load_options:
-+
-+Load options
-+^^^^^^^^^^^^
-+
-+When booting an EFI application via :ref:`command_bootm`, barebox populates
-+its load options from the :ref:`global device<global_device>` variables
-+beginning with ``global.efi.bootargs.``. Like the Linux bootargs, these are
-+concatenated in lexicographical order of their names. For EFI-stubbed Linux
-+kernels, the ``global.linux.bootargs.``-prefixed
-+:ref:`kernel arguments <booting_linux>` are appended to the load options,
-+so that the EFI stub sees both as the kernel command line:
-+
-+.. code-block:: sh
-+
-+  global efi.bootargs.base="efi=debug"
-+  global linux.bootargs.base="console=ttyS0,115200"
-+
-+  bootm /boot/vmlinuz.efi
-+
-+  ...
-+
-+  Kernel command line: efi=debug console=ttyS0,115200
-+
-+This works both when barebox runs as EFI payload and when it acts as
-+EFI loader for the application. The load options are not used when booting
-+x86 kernels via the legacy handover protocol (``global.linux.efi.handover``),
-+as the EFI stub, which would interpret them, is bypassed in that case.
-+
-+Like :ref:`boot entries <boot_entries>` do for the Linux
-+bootargs, boot entries should add load options to variables with ``.dyn``
-+in their name, e.g. ``global.efi.bootargs.dyn.initrd``. These are cleared
-+after each boot entry, so that load options do not leak into subsequently
-+booted entries.
-+
-+Unified kernel images (UKIs) are not detected as Linux kernels, but as
-+regular EFI applications. Only ``global.efi.bootargs.*`` is passed to them
-+as load options; the Linux bootargs, including the ``root=`` option added
-+by ``global.bootm.appendroot``, are not appended. systemd-stub uses
-+non-empty load options in place of the command line embedded in the UKI,
-+unless Secure Boot is enabled and the UKI has an embedded command line, in
-+which case the load options are ignored.
-+
-+To pass a ``root=`` option to a UKI, have :ref:`command_devlookup`
-+generate it for the root partition, the same way ``global.bootm.appendroot``
-+would, including the option name from ``global.bootm.root_param``:
-+
-+.. code-block:: sh
-+
-+  devlookup -v rootarg -k /dev/disk0.1
-+  global efi.bootargs.root="${rootarg}"
-+  bootm /boot/EFI/Linux/uki.efi
+ 	type = file_detect_type(loaded_image->image_base, PAGE_SIZE);
  
- Drivers
- ^^^^^^^
-diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
-index 8e6f3bbbe9ce..dc7ac6dc8716 100644
---- a/Documentation/user/booting-linux.rst
-+++ b/Documentation/user/booting-linux.rst
-@@ -103,6 +103,9 @@ to the bootargs. Variables without a value are skipped:
- 
-   Kernel command line: ignore_loglevel console=ttyO0,115200 earlyprintk
- 
-+When booting an EFI-stubbed kernel as EFI application, the
-+:ref:`EFI load options <efi_load_options>` precede the Linux bootargs.
++	if (data->dryrun) {
++		BS->unload_image(handle);
++		return 0;
++	}
 +
- .. _bootargs_concat_order:
+ 	return efi_execute_image(handle, loaded_image, type);
+ }
  
- Concatenation order
-@@ -170,7 +173,8 @@ This takes the kernel from ``/mnt/mmc1/zImage`` (which could be an
- boot entries should always add Kernel command line parameters to variables with
- ``.dyn`` in it. These will be cleared before booting different boot entries.
- This is done so that following boot entries do not leak command line
--parameters from the previous boot entries.
-+parameters from the previous boot entries. The same applies to the
-+:ref:`EFI load options <efi_load_options>` in ``global.efi.bootargs.dyn.*``.
- 
- This entry can be booted with ``boot mmc``. It can also be made the default by
- setting the :ref:`global.boot.default <magicvar_global_boot_default>` variable
 -- 
 2.47.3
 
