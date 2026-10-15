@@ -1,123 +1,127 @@
-Delivery-date: Thu, 15 Oct 2026 13:31:07 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Thu, 15 Oct 2026 13:33:10 +0200
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xHJfv-00Dtwd-1Q
+	id 1xHJhu-00Dtyx-2a
 	for lore@lore.pengutronix.de;
-	Thu, 15 Oct 2026 13:31:07 +0200
+	Thu, 15 Oct 2026 13:33:10 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 936D1202012
-	for <lore@pengutronix.de>; Thu, 15 Oct 2026 13:31:06 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 962962004B4
+	for <lore@pengutronix.de>; Thu, 15 Oct 2026 13:33:10 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=NZmzQPHm;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=HAsXeUP2;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=5ESqBm9b;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=Ec8+ZfJ7;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1792063866; a=rsa-sha256;
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1792063990; a=rsa-sha256;
 	cv=pass;
-	b=MRiyxFufLFjDIphoVkoRfxBW8GgOXgVvDMhg4l5VI9oJkqnyjJouQIFcNiZmrLNRGMFZYx
-	VuRsAIb0Z9ksey6fjPWv84OWJGA+At9P3PfETemFLtiU4u1+tfLzGGvmqBCZil+iEPHjM7
-	12rhpkCjzHNS6khHFmhJFkDt73gqtXq7618wXmURaRt55vUBPOH2ZP3woHpV49sxcq44R6
-	sV3wKCpQZYpqKl0t69RVua3O5yeIENDDrvlHT7KWI6uI1UkPtP35s/yz6wftHiDGwKmhhJ
-	tDvBcre+MmBRmHleh2F/aIl8ebMDv+gaQcbljVkPStJStQ30/MTreOTUJc2jGA==
+	b=MR7sfYEQI6ers5pAWP9rr6I9BxKRW0CdoKC9OrraqIGEXM8NGlVHIIR2KHPuSZJ1PcLk6V
+	7R6WQXqBjsyM2JdItT6luiRyRZ97hSPsnl8P7M+Q9brDVlz4BiJzNVtDEJpZeTeionfZSf
+	ogym4agnGGF2C5rP0Hp1BNj87mz8rLh5Z2/hgYQZKBmMY9BmGvJ+MxT3ykHas8bZ1dTst/
+	I21ycTrehfNV2ec9sxcbyFWDaSx3n7tu2mYLnuIYOaf6t6vEunadjxPuiBSpDs9vYOixXv
+	MjSy8Px1dQKGsMgO9tDgHMJvgfVipg+eqbMH3d9j01apGBqH5z3QATD1ONFZ9Q==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=NZmzQPHm;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=HAsXeUP2;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=5ESqBm9b;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=Ec8+ZfJ7;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792063866;
+	s=20260414; t=1792063990;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=IKxOItVrrOBreMV+SVfmjJxudEyeNQo4iThYIy53FSo=;
-	b=INz84t66CXwgx7l4O+9jvglpsqD6mvS1uiDfUgHzRgMjfKtBSiuLuiG+MnNlJEW+uDhvHE
-	rs88nOeBuv1e7qlPRgZer0CHkoa0mIJhSIHiOFmm2cKM1UfPxtQc6NBZWcvoN9goqAhzNl
-	lWWrKqEDu86+PyHLe3shlkR0Fsomj/eYSPsjZbowD9kzsBS9wRcckQXWTLW6vcv4GrJt16
-	pdpcb8MDb61zOZAu9GBzhXWuUMLdK43yB/PJHiMAwvRc+P3K7EQxFvGoFpAD2JEOg9amJD
-	MotVah420+3kcZomMus9R5XA60ciwShWcnyaknlo5ehAz93UWwjmQE3UEUveqQ==
+	bh=ysFAgBLjkco56cATzUiVy9IAnFADTDqoU7eseO3LgWk=;
+	b=Wcrs7DvRk/2fisSxQ3FKgUPX64TjAlKeRQTwMTfXtTR1X6A4LTMNnXLC3dnCqQnvwTBjab
+	OR9sQOYkFOZcqoP5IPpEKSxQCTvs4dU5+K6OwX7xiuYOtLPE4MH3Si7B1tb47YaL0y5SpR
+	gQKn3P0/ROUDpSIG7V8rdStWQbMp5UJZnm3xoJ8JvpNZFTXur/1kQHUjYG3X6dpFyoDZr6
+	iaM4kFwJ34g30FDsSjTQtTv58Dvh92A3pSHFcjjw8IN9fHbFkAILKlMlZ4/5KiYEzVHmjp
+	NtcHP7Jajrg+3R+aVoCBi5/NjqgwG02KdhGKZo7nVlQvMy9440O/xhh3FkvNYw==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=IKxOItVrrOBreMV+SVfmjJxudEyeNQo4iThYIy53FSo=; b=NZmzQPHmhaEenCqDiPpKACKsnD
-	B36f4dzxz9vdMnP+GAVGGljL0YxGHbj9O7oHmD1+zcrgb+1MkJrQW4JEMk4+jnk2/uTrzID//uqh8
-	CkOD24Nopm7v/WLjap3N90lXo8BanGbLf1WPtCvhuX7nWJCWV3T+IiylOvGmSmkVBR4FL642vNX+H
-	FNZ7rmfEY3NRNnuMy0rJuyocnKc4gHXLiDLq2HODop9yIE1+MJVp/7Tu4bR0S31dc+ZAdbu0vLGDg
-	3ygllhMUXOTFtobjdHO7jNZxzwWu7mjY6su9Xls+Icj4I78P7Srl9QQHaF/9QGJePN7JTsM7FSdz5
-	bj+6QKkA==;
+	bh=ysFAgBLjkco56cATzUiVy9IAnFADTDqoU7eseO3LgWk=; b=5ESqBm9b8JbeJcahzIp3hJtZpS
+	+ReHXV7BSy2rnFXSzlOljad6xnakOXMT97JI3KUoiEUjX8gXBspg8iYWvsx1XOswuNkyJ8hAtDWnR
+	+9uoc6O1we+CqM3iBhmPGEunekP8uJM/xZ1E0xWcb/sUVoFpqw0O6TM9N/+7mRin9R1Q/609IKHIK
+	MEs3nkTSi5KnIWwAghRh973FM6D2EGNeG2C7JfhQspuukoliV7xkyk4abdFwhxzNxX9yx4tT4fIvZ
+	MejN3rGWaWXWcr7cEj4kpwDjndpRmTQ1E1rqxU0TmSloBG94FXivB2scvIO8TvIX13ZK8jO0YMImL
+	6/BxvjRA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xHJeo-0000000HZg1-1K7k;
-	Thu, 15 Oct 2026 11:29:58 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1xHJgs-0000000Ha5L-3MzC;
+	Thu, 15 Oct 2026 11:32:06 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xHJei-0000000HZdW-16WD
+	id 1xHJgo-0000000Ha4r-0HiA
 	for barebox@lists.infradead.org;
-	Thu, 15 Oct 2026 11:29:54 +0000
-Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.4.pengutronix.de [10.17.1.19])
-	(Authenticated sender: relay-from-dude05.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 6D8232027CF;
-	Thu, 15 Oct 2026 13:29:50 +0200 (CEST)
+	Thu, 15 Oct 2026 11:32:05 +0000
+Received: from dude02.red.stw.pengutronix.de (dude02.red.stw.4.pengutronix.de [10.17.1.16])
+	(Authenticated sender: relay-from-dude02.red.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 66782201BC6;
+	Thu, 15 Oct 2026 13:32:00 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792063790;
+	s=20260414; t=1792063920;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IKxOItVrrOBreMV+SVfmjJxudEyeNQo4iThYIy53FSo=;
-	b=HAsXeUP2PUpQTGuIAO4a3s5uxuxdo5ZUC8pvc08P2/51vrbImd5KmPUvAAALPW/Saa+VM6
-	jJCJfRwrbAOLxNamb9refU2mFekrFKYlnc2k3UTbQpPdjYrKeFduwrN8LOuh1q/b+Q4ThF
-	O59x6owdCCaC0wx9qJGHSlSNxyRGnfAu0jJn7R3w35jUO1lnRkPjQg7FFt8p9ugn1cpf1D
-	hkfqbXy/1tRSZUmnB48uGmUvFB4RxTzwhBmMdq3oetl0XFZ7Jy+TnxcYbJe0QQatathbfx
-	O+YNXBZaIXYcVKmM8RnChNa9OuRSrFvKwTztf6m8Ua41rZxMxTNLQGPvVoI4RQ==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792063790; a=rsa-sha256;
+	bh=ysFAgBLjkco56cATzUiVy9IAnFADTDqoU7eseO3LgWk=;
+	b=Ec8+ZfJ7L012qJTiQ4AjGAaVYDya0BvOP1X+gXlhNy5cB1TZbuaFQMnmalGJEGYQcfVb0l
+	5iurkTEvo/5ChE2zjeKFNwAaMDJmfmEegxl96rmUoQKNv6tHME9+p5zIC1QZ768jnLGNtD
+	/MWIukFQPbm/oK0Hcw66kIvVuFauOGNMQwg/IwYQ3qVuM0BAUTdjpli8dD6S0uNwaGeQd/
+	wggOLrlaoCdxnmTAByzbaapjbsSUsFuBwsyQSTwhCbER+Wnkc/mtWFgxRqdFFFODdPoLzW
+	x8SuyRy/zWVQ1TBZ5gtFVdW3FTr84sX1eQCQ2uf64fT2x+YtylUAdRAe44YRsw==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792063920; a=rsa-sha256;
 	cv=none;
-	b=aTupjNAm7l+YOQfNilRdu1jIBaBSSvJmqqAwuGqzgX9xrHgfX65I/m434y9T9doBQ748/Z
-	SCQl/BA1WXQdoyT5G8zLeUOYvDB5eqzAq0NkrbXupJDlqyb0h7Te3jsALDspZwQNy32UBN
-	gx4TfaYbykd3AXVWZPT7o5xvIp8MSegnx7Fpvt0HPkm3KXYsyBEolDFdvLvNlnptx0/dlq
-	4YBZ4fV+Q04P2FByHDn6EUup1bNY16bOA9vbAFZO+l8sRwB3tIBFM1HL7fHUbc5ZAFKCMB
-	Oe0uCA4jNaqAEKfO1z4OROnuuR4oAqWrRtwsCujTdaQZl9+TW1ox1bx0iOPp0w==
+	b=fH5ezQM9VG1u83KYVVU2LkJtyzg9JTZfIdPnuLfnLh/HD7S1fihlHZ57FF13MzCHxUVTTg
+	ab8t+ako3uH/uwUw3az8g99ZTA5jUkEiXiq1OEdFIfmqNWebj2tZF0zLsHtnyPjckKv6vs
+	2uk2zhcpg+wOkCCcogMSoNB6THa6dTxKHCIY4YX4gNR+0zkp35hPrWYj+YJcOt3vCsspM9
+	p40ef5hGI51nGGpN7fZrs67jS2doClTCxPYahgN2HuLZQu9th3cYaJgKpwvogN5QPSvoOk
+	zd+KEjEAEacRXCYleFNWUXP1d4dHWbCvTkyNWLmLw6UFwIrEwxMAOosOnloA8w==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
-	auth=pass smtp.auth=relay-from-dude05.red.stw.pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
+	auth=pass smtp.auth=relay-from-dude02.red.stw.pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792063790;
+	s=20260414; t=1792063920;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IKxOItVrrOBreMV+SVfmjJxudEyeNQo4iThYIy53FSo=;
-	b=Brpq20DQjaWrq4pGR7BH0JfrGePuFtiLABpYnD/G58k0pf/Pj+BTwAE4F7isYp2SmbH1Cd
-	bpSWdFugZRF2NFljV5pZAdYtBcFVGUG4qbsLlOiH6HBO3CvhuyBU2VE8/fkACUpPsrWDBg
-	T3UMFYpV9G0qSUTX5HYCAKGibelYdmdykfZZbFnIS1IO6/RUxIt6lBq2HwK9LjO6jnKKx0
-	jrYOzii0m0Ccob5EWkCth6jZMRkatRl7sOJ6MtmHobP3W71cL0kVZP+agbv7VqAPEEMAnZ
-	MrP9DwPi/f4I8MXNyl8B9PhC3pEmhH7k8Hrtp727MGyjeDJB70jy7EP1B+ip2Q==
-Received: from dude05.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id 4528D7415DA;
-	Thu, 15 Oct 2026 13:29:50 +0200 (CEST)
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Subject: [PATCH 2/2] test: py: add test for FIT images in global.of.overlay.path
-Date: Thu, 15 Oct 2026 13:29:41 +0200
-Message-ID: <20261015112949.2983458-2-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261015112949.2983458-1-a.fatoum@pengutronix.de>
-References: <20261015112949.2983458-1-a.fatoum@pengutronix.de>
+	bh=ysFAgBLjkco56cATzUiVy9IAnFADTDqoU7eseO3LgWk=;
+	b=WVba5B9dYBH7ZGk4z8Mfi/rPI7vIK0mZ1tEAk7cgvuCpwQOTpApQ2hANBaH06HMqyiFuV1
+	f3FleasRnj5Dci3iYwDS0UCX3QitbF2P3DTUrWhqIjr7JMV4nKHmBeu5XZdm5qpIXh3ajn
+	ZDkuItM+Ccp3XfYwz5JIhWNA+YvgaymxPxQqWNSjtF+t8BAokDk7GhX2NRdSy3tMHq2YTE
+	7UiA+7duQJfSrt2r0ZsgOq5/dSZuL6f8aNqUoaO1cfJyE4h5MnrEhhbUvUbVvLXPgiAu7g
+	ul+dBBPfiH+frkKKz04piDwd2yu/W7Vu/63C0pf2PZFXl77K5CVL/bqzhztc/Q==
+Received: from dude02.red.stw.pengutronix.de (localhost [IPv6:::1])
+	by dude02.red.stw.pengutronix.de (Postfix) with ESMTP id 55BD2FF88D;
+	Thu, 15 Oct 2026 13:32:00 +0200 (CEST)
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
+In-Reply-To: <20261002112648.2899729-1-a.fatoum@pengutronix.de>
+References: <20261002112648.2899729-1-a.fatoum@pengutronix.de>
+Subject: Re: [PATCH 1/4] bootm: define LINUX_BOOTARGS_BOOTM_EARLY/LATE in
+ <bootm.h>
+Message-Id: <179206392032.3996211.12261864827349051206.b4-ty@pengutronix.de>
+Date: Thu, 15 Oct 2026 13:32:00 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261015_042952_458834_EC6C54C6 
-X-CRM114-Status: GOOD (  18.17  )
+X-CRM114-CacheID: sfid-20261015_043203_158580_A2CABA26 
+X-CRM114-Status: UNSURE (   6.89  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -125,11 +129,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> Applying overlays
-    from a FIT image in global.of.overlay.path has no test coverage so far. Let's
-    add a test that builds a FIT with three overlay configurations and a kernel
-    configuration and checks the fixed-up device tree: the kernel configuration
-    is skipped, the pattern and compatible fil [...] 
+ Content preview:  On Fri, 02 Oct 2026 13:26:31 +0200, Ahmad Fatoum wrote: >
+    We had previously laid out a prefix convention for the Linux command > line
+    options added by bootm, but only the late variant was added as > [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -145,8 +147,6 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
  -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
                              [score: 0.0000]
-  0.0 T_PDS_OTHER_BAD_TLD    Untrustworthy TLDs
-                             [URI: overlays.fit (fit)]
   0.0 DMARC_MISSING          Missing DMARC policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -160,274 +160,66 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-58.91 / 15.00];
+X-Spamd-Result: default: False [-60.41 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
+	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	MID_CONTAINS_FROM(1.00)[];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_MISSING_CHARSET(0.50)[];
-	MAILLIST(-0.20)[mailman];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
+	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWO(0.00)[2];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
-	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
 	DMARC_NA(0.00)[pengutronix.de];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	DBL_PROHIBIT(0.00)[0.0.0.0:email];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
+	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 936D1202012
-X-Stat-Signature: 89xjxun3rdq8ye6m643yd3qtkwfjk84q
+X-Rspamd-Queue-Id: 962962004B4
+X-Stat-Signature: 89ujwr355txt8djskhy54yokprx3nia7
 
-From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-Applying overlays from a FIT image in global.of.overlay.path has no test
-coverage so far.
+On Fri, 02 Oct 2026 13:26:31 +0200, Ahmad Fatoum wrote:
+> We had previously laid out a prefix convention for the Linux command
+> line options added by bootm, but only the late variant was added as
+> nothing yet needed the early one.
+> 
+> The FIT cmdline support will need it and lives outside bootm.c, so let's
+> introduce LINUX_BOOTARGS_BOOTM_EARLY and move both prefixes into the
+> header.
+> 
+> [...]
 
-Let's add a test that builds a FIT with three overlay configurations and
-a kernel configuration and checks the fixed-up device tree: the kernel
-configuration is skipped, the pattern and compatible filters are honoured
-and an overlay with a bad hash is not applied.
+Applied, thanks!
 
-Assisted-by: Claude:opus-5.5
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
----
- test/py/test_of_overlay.py | 204 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 204 insertions(+)
- create mode 100644 test/py/test_of_overlay.py
+[1/4] bootm: define LINUX_BOOTARGS_BOOTM_EARLY/LATE in <bootm.h>
+      https://git.pengutronix.de/cgit/barebox/commit/?id=50c071d36461 (link may not be stable)
+[3/4] amend! bootm: add fitimage command line to bootargs
+      https://git.pengutronix.de/cgit/barebox/commit/?id=f7317456662a (link may not be stable)
+[4/4] test: py: add test for fit cmdline parameter order
+      https://git.pengutronix.de/cgit/barebox/commit/?id=d5492a253d61 (link may not be stable)
 
-diff --git a/test/py/test_of_overlay.py b/test/py/test_of_overlay.py
-new file mode 100644
-index 000000000000..8eb2e5e30aa7
---- /dev/null
-+++ b/test/py/test_of_overlay.py
-@@ -0,0 +1,204 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+import os
-+import shutil
-+import subprocess
-+import pytest
-+from .helper import skip_disabled, filter_errors
-+
-+TESTNODE = "/barebox-fit-overlay-test"
-+
-+# name: (compatible, value of the order property)
-+OVERLAYS = {
-+    "a": (None, "a"),
-+    "b": ("barebox,fit-overlay-test-b", "b"),
-+    "c": ("barebox,fit-overlay-test-c", "c"),
-+    "kernel": (None, "kernel"),
-+}
-+
-+ITS = """/dts-v1/;
-+
-+/ {
-+	description = "global.of.overlay.path test";
-+	#address-cells = <1>;
-+
-+	images {
-+		kernel {
-+			data = /incbin/("kernel.bin");
-+			type = "kernel";
-+			arch = "arm64";
-+			os = "linux";
-+			compression = "none";
-+			hash-1 {
-+				algo = "sha256";
-+			};
-+		};
-+%s	};
-+
-+	configurations {
-+		/* has a kernel, so it is not an overlay configuration */
-+		conf-kernel {
-+			kernel = "kernel";
-+			fdt = "overlay-kernel";
-+		};
-+%s	};
-+};
-+"""
-+
-+ITS_OVERLAY = """		overlay-%s {
-+			data = /incbin/("%s.dtbo");
-+			type = "flat_dt";
-+			arch = "arm64";
-+			compression = "none";
-+			hash-1 {
-+				algo = "sha256";
-+			};
-+		};
-+"""
-+
-+ITS_CONFIG = """		conf-%s {
-+			fdt = "overlay-%s";
-+		};
-+"""
-+
-+
-+def mkdtso(name, compatible, order):
-+    compat = f'\tcompatible = "{compatible}";\n' if compatible else ""
-+
-+    return f"""/dts-v1/;
-+/plugin/;
-+
-+/ {{
-+{compat}	fragment@0 {{
-+		target-path = "/";
-+		__overlay__ {{
-+			{TESTNODE[1:]} {{
-+				applied-{name};
-+				order = "{order}";
-+			}};
-+		}};
-+	}};
-+}};
-+"""
-+
-+
-+def run(cmd, **kwargs):
-+    subprocess.run(cmd, check=True, **kwargs)
-+
-+
-+@pytest.fixture(scope="module")
-+def overlay_fit(testfs):
-+    path = os.path.join(testfs, "of-overlay")
-+    os.makedirs(path, exist_ok=True)
-+
-+    images = configs = ""
-+    for name, (compatible, order) in OVERLAYS.items():
-+        with open(os.path.join(path, f"{name}.dtso"), "w") as f:
-+            f.write(mkdtso(name, compatible, order))
-+
-+        if name != "kernel":
-+            images += ITS_OVERLAY % (name, name)
-+            configs += ITS_CONFIG % (name, name)
-+
-+    images += ITS_OVERLAY % ("kernel", "kernel")
-+
-+    with open(os.path.join(path, "overlays.its"), "w") as f:
-+        f.write(ITS % (images, configs))
-+    with open(os.path.join(path, "kernel.bin"), "wb") as f:
-+        f.write(b"not a kernel")
-+
-+    try:
-+        for name in OVERLAYS:
-+            run(["dtc", "-I", "dts", "-O", "dtb", "-o", f"{name}.dtbo",
-+                 f"{name}.dtso"], cwd=path)
-+        run(["mkimage", "-f", "overlays.its", "overlays.fit"], cwd=path,
-+            stdout=subprocess.DEVNULL)
-+    except FileNotFoundError as e:
-+        shutil.rmtree(path)
-+        pytest.skip(f"missing dependency: {e}")
-+
-+    # Change a property name in overlay-b, so its hash no longer matches
-+    with open(os.path.join(path, "overlays.fit"), "rb") as f:
-+        fit = f.read()
-+    assert fit.count(b"applied-b") == 1
-+    with open(os.path.join(path, "tampered.fit"), "wb") as f:
-+        f.write(fit.replace(b"applied-b", b"applied-x"))
-+
-+    yield "/mnt/9p/testfs/of-overlay"
-+
-+    shutil.rmtree(path)
-+
-+
-+@pytest.fixture(scope="function")
-+def overlay_vars(barebox, barebox_config):
-+    skip_disabled(barebox_config, "CONFIG_FITIMAGE", "CONFIG_OF_OVERLAY",
-+                  "CONFIG_CMD_OF_DUMP")
-+
-+    yield
-+
-+    barebox.run_check('global.of.overlay.path=""')
-+    barebox.run_check('global.of.overlay.pattern="*"')
-+    barebox.run_check('global.of.overlay.compatible=""')
-+
-+
-+def fixed_testnode(barebox):
-+    """Return the applied overlays and the order property of the test node
-+    in the device tree a kernel would be started with"""
-+    stdout, _, returncode = barebox.run(f"of_dump -F -p {TESTNODE}")
-+    if returncode != 0:
-+        return set(), None, stdout
-+
-+    applied = {line[len("applied-"):-1] for line in stdout
-+               if line.startswith("applied-")}
-+    order = next((line.split('"')[1] for line in stdout
-+                  if line.startswith("order = ")), None)
-+
-+    return applied, order, stdout
-+
-+
-+def test_of_overlay_fit(barebox, overlay_vars, overlay_fit):
-+    barebox.run_check(f"global.of.overlay.path={overlay_fit}/overlays.fit")
-+
-+    applied, order, stdout = fixed_testnode(barebox)
-+
-+    assert filter_errors(stdout) == [], stdout
-+    # conf-kernel is skipped, the others are applied in FIT order
-+    assert applied == {"a", "b", "c"}, stdout
-+    assert order == "c", stdout
-+
-+    # Only the device tree passed to the kernel is changed
-+    _, _, returncode = barebox.run(f"of_dump {TESTNODE}")
-+    assert returncode != 0
-+
-+
-+def test_of_overlay_fit_pattern(barebox, overlay_vars, overlay_fit):
-+    barebox.run_check(f"global.of.overlay.path={overlay_fit}/overlays.fit")
-+
-+    # The pattern matches on the configuration name
-+    barebox.run_check('global.of.overlay.pattern="conf-a overlay-b *-c"')
-+    applied, order, stdout = fixed_testnode(barebox)
-+    assert applied == {"a", "c"}, stdout
-+    assert order == "c", stdout
-+
-+    barebox.run_check('global.of.overlay.pattern="conf-kernel"')
-+    applied, _, stdout = fixed_testnode(barebox)
-+    assert applied == set(), stdout
-+
-+
-+def test_of_overlay_fit_compatible(barebox, overlay_vars, overlay_fit):
-+    barebox.run_check(f"global.of.overlay.path={overlay_fit}/overlays.fit")
-+
-+    # Overlays without a compatible are always applied
-+    barebox.run_check("global.of.overlay.compatible=barebox,fit-overlay-test-b")
-+    applied, order, stdout = fixed_testnode(barebox)
-+    assert applied == {"a", "b"}, stdout
-+    assert order == "b", stdout
-+
-+
-+def test_of_overlay_fit_bad_hash(barebox, overlay_vars, overlay_fit):
-+    barebox.run_check(f"global.of.overlay.path={overlay_fit}/tampered.fit")
-+
-+    # overlay-b sets applied-x instead of applied-b in tampered.fit
-+    applied, _, stdout = fixed_testnode(barebox)
-+    assert "x" not in applied, stdout
-+    assert any("hash BAD" in line for line in stdout), stdout
+Best regards,
 -- 
-2.47.3
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
