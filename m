@@ -1,119 +1,118 @@
-Delivery-date: Thu, 15 Oct 2026 16:08:49 +0200
+Delivery-date: Thu, 15 Oct 2026 16:09:23 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xHM8X-00DwzP-0V
+	id 1xHM95-00Dx0Y-30
 	for lore@lore.pengutronix.de;
-	Thu, 15 Oct 2026 16:08:49 +0200
+	Thu, 15 Oct 2026 16:09:23 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 927062027CF
-	for <lore@pengutronix.de>; Thu, 15 Oct 2026 16:08:44 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 5C4EA2027F7
+	for <lore@pengutronix.de>; Thu, 15 Oct 2026 16:09:19 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=lAASXmIb;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=GDHbrE9f;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="gzEq/U7J";
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b="J6zLCq/p";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1792073324; a=rsa-sha256;
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1792073359; a=rsa-sha256;
 	cv=pass;
-	b=FXXeyllSOgcx6wmjSvlQTAsRP3amWh3kGQMMpTApe1T3rXD1plKT/OWC/Xl7ipxIBHyGVf
-	y8aFedssYyQvXMGlHfCtNt+Yw/wT+1WVPQm/3ioCAM/mUa/4KPp6RQx9GcqaJjrlDX0K1h
-	t3r1SAEO0+4xD31BN9SmBHqv/53HCzIQbP+ueLdMa60YPTZeTA/AevIGND0YZMzT9xmD9z
-	WWS1Wsv3cczY4b4hJIBPkJYxbNyiMwhcSVMSmaFG+j1vbqPtninU5PQ4gFJHME9VDG4b5d
-	1Z9InblqzH5NkwbpOHjVUcxVvmrluRWEe9c+7pSDlMv1JXI8vFOoOx2dSTbPGQ==
+	b=TtssIx3uIdcSrKXBZPT0Xd3TacM0wRRvnj0EOaNBCtrquwCMl9CYevx2iLnLcPlHQrKtcc
+	aoqU4LAy/r9gxP00yKk1+K7GfIfu8rSyWY1YFbJUali082DIVIaUFexy07GHa8snJhS6pI
+	R+t7sqpRU1GViMu5CJ2b27lRvxm4GMTzQn6p2vd+yZ3U7P8GMpcS+e1/lCWwoI2Q1apKTm
+	TMx5dBDkbP7XgLPfL46E75HvjSNho+yv6N8OR4ldj6ksBm1xtfWVrc1ZSyzNXoZO/FzJ7p
+	g/f03uoZtyb3sRea7PTgQ9Znx1XVxuYyiQJhxP0G39PYQhwTvsXq+uuVju0F8w==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=lAASXmIb;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=GDHbrE9f;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="gzEq/U7J";
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b="J6zLCq/p";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792073324;
+	s=20260414; t=1792073359;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=FGSyqxAP0yucnoaeBKeAVpVIB8rgDFeVYte3LYbKFbM=;
-	b=ZmPT/vO+0+6PQQkETGKOcLhRPfde06s4orunjSVua8GK2bx1826ccX+hnPTVn+kfMSnQs0
-	V9evrO40yyH2s2VMgn1c84Ff8LmjINRX61AAXGA1VGbqRzVjorS4T0Z1B6PYfcQidwWAMq
-	I0EAhdydsUpwmbPn3pVKyP3Sa+RFyy3BdCl+udvxR+d/TJV4L7sQiTgU2Dab9mX+ZnWQDM
-	URpqLbVKbYJPrU1hR2td3Ng1VLRLAGMIoa0M09E53hk0XitxzDxfnFrR9pOigGmA4p6Gn/
-	VI5dBJsu+oGHCHQTt6QGG+w5xGx8PSrHG1XszwU1ZQUNn5oJaUYRE/QeTK+vhw==
+	bh=Sy6oJxFe9IXljjHcl/0ujMz+Zj1x9fZ2iGJoxRodIz0=;
+	b=GEMLJOqRyD7HncExJMho/UQRbTOD4l5vpKm/0pVg6nVwp9eT02tcBC3yAQsHyyi5bGv0e0
+	BqoD8fJJ5KXWWb9nDpr0764d1G/8IbUacUia9u4H3JEkoxdKKwDj1du0IToCknpEdxbFCN
+	5DjnaA1ng2GPrf7duROVA669ZdTFSRHIDpex4hxAspvrNrKypqtBZbmK72YQal5B4tjTu0
+	Dp+qMLf5sNqE4SvJYOcVO//52q8wWJ4qQmCIwvx6NQW7HimWWFUszX8J0Tni+a2aJtl6vb
+	kSn1NUlax/LwHKhXWmo5Y4aw+IMeJGcoh3oY9yJOY2aHYxtUWoScmXfpqH4hYA==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=FGSyqxAP0yucnoaeBKeAVpVIB8rgDFeVYte3LYbKFbM=; b=lAASXmIbv9+cSFkN+3CP6SH/En
-	RxB4sfZ+rHhA6xPu7oodk0LFs2+uaHi/6VnY80CiKFJ6EYsXZdxNcXjF5vc8WqOW4sGYIBnll64zF
-	etBVspmA/KaXaaNi6UYC+olC8pkzNXC2lKnOALTvFK8/PpDVJY9RJiQPtFdCWjaPl+rpd1LCCvwfh
-	L47J6yNPPVu94Odr0yrfCz7RxcMFSrbhCDFvqGtBQDWgg2CNrF+8vrtf1FU3X6yudkI5wABJB1wuR
-	89/fPmAylpDWHduL5re9Kr6L+MO9oN/jHXbCagtVrj4fZYndxBV39Oe1rE4CEMKPfT424AlyGxhzU
-	bdOPYBnQ==;
+	bh=Sy6oJxFe9IXljjHcl/0ujMz+Zj1x9fZ2iGJoxRodIz0=; b=gzEq/U7JNncZ5IzdRzAoTKrMIa
+	CRlsjjG+u4GGv5v8+9qvbAN/2H+ZrMkDIdli5f6lPy4jGBPYOZzTthBL1XBBPfKjM+51nr9Il7nGr
+	g0K9Bxsd/yMUylQ6XS06Sl6vGoUgEaWrDG28hkw+iIOwN1nrIGYzc3EO1UNw/EoBaqHIaKxMQtCg8
+	5InAt6oC/o6vuqvbBQBaSNRUg9oJjtMsp30PNa8d5jf3tQanizUJZzcJ1x5n3nEFuzKzBwpCPf6Dj
+	tadLT4rmOofSPtWhK2tq1BycnAn4kES1s6lx8+7ZA+J9Gd6P4zhBBjOwjWNFSWArsZMI4MI58kdVO
+	O757Vt2Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xHM7w-00000000KSL-3JlN;
-	Thu, 15 Oct 2026 14:08:12 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1xHM7h-00000000KOs-2A7b;
+	Thu, 15 Oct 2026 14:07:57 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xHM7s-00000000KRU-3buN
+	id 1xHM7b-00000000KNq-0gKB
 	for barebox@lists.infradead.org;
-	Thu, 15 Oct 2026 14:08:10 +0000
+	Thu, 15 Oct 2026 14:07:53 +0000
 Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.4.pengutronix.de [10.17.1.19])
 	(Authenticated sender: relay-from-dude05.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 283A82027F5;
-	Thu, 15 Oct 2026 16:08:03 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 054672027F7;
+	Thu, 15 Oct 2026 16:07:44 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792073283;
+	s=20260414; t=1792073264;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=FGSyqxAP0yucnoaeBKeAVpVIB8rgDFeVYte3LYbKFbM=;
-	b=GDHbrE9feudx9s5ysMd/4z0vqyU/L+lcG2a3Nn8+gVObAEv+kW84whar7pKUFLa+hKnptw
-	+avblircX6OJZg98NbxanGK+GxfaLMS86tq4dJ19e040KpZLKbce+u4WLHyg3tjSWd47za
-	9ovuqICxMM+VOa6b3sdXF+rS6EFPm8TS0ax2/vFmGqdnwINhPOIEqtO6xiVZrhxvPhL8jO
-	BbThqNTK67y/x1DIqK0kiUfkQuGY2y0Ly3uriJja6Ak1edJxC71FoHqbvmnHc4MuUsbRju
-	wCoIT9+P9mhw+zQO3w0mZ3r7FsT2gOxLaWm5oC9xS6ZN38TEQIO21QP9kaMl9w==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792073283; a=rsa-sha256;
+	bh=Sy6oJxFe9IXljjHcl/0ujMz+Zj1x9fZ2iGJoxRodIz0=;
+	b=J6zLCq/pMwLgNJzQAlH1ARPK9G/oXKPTqLblicJkcsx6Pqm8LmYkbo/tAzwhEsqvsrOX4v
+	xAMqutwtpitgfxbqfYFb3tSu3lwraiJ9sMIySsQOe/PVC61W3CIT0HEhvZhlxrLUdOjIZ4
+	MQR8nEoMWqAxr39Y7TeRtRiRcNbIUz3O2Algu5S9FXbg1I1wvdQuQ2l0kFemUO6Gluefp/
+	SGhuinf9Ou1tUQnrfyHtZGdNg9R2zh2jkZBLl3M0+ImQv5ZSJ2iNBAXQP8L/JxrnLYtyUR
+	wO06ol5tXYm3VAIarez944xqbBjRxNY7nKx066In+ZNxzvSEbCcYrEXuj9wv0w==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792073264; a=rsa-sha256;
 	cv=none;
-	b=M2G0iZM7LtBy/Qg3oNSQjHqt2T83ZMvWTN+uetLK7Bxw68aKyaAeIsQ/qT7RPY03rxvs6O
-	cPu/EdCqb0QX+bi+ryavzGT4wrtex3fR5Is7VWu5d0DyXb1p0JDiNpLhd/lf6uLQohLWk9
-	bww0/FZ9LZSsBKMMgmvEHIEy38/W0sPoMr887Pd2d3jJOUmuJnaWnVN0vigSn59sf1kI8E
-	9e/PR6igXabFjGPneI1AnzQETJEnpP4M5Ne8izViOMe4HAGseTNLkysDY9gGnPA4g0xTmF
-	Jdq/piYeVVpln/r/2wO+tFHhw1fLM1oCI0+GYVBH6I9sYyyyUh+AC3LSiOHUwg==
+	b=O4whtO1lLdONOfOA8y+oyZeHUDvkkd0ogTblAdP9+t3FLuWo22bLJqjksjMHdD5SMuzmMV
+	bOvv97XGXGYoNHdqz2f4jPEWWeknHWsEmHN6jjDvJPr8w4sSMK7fRcTQYAWikievlYz8DB
+	uW0k7bE26Qhp39pBz3xbDeWX9GQ2o0OWAfQCW0m1VhX8rjY5zHvnYg+cFKsd0jtDUlZNP/
+	gQJXhnwRAVDgroDoZmJNSa4HnQJ2iFPAUXksuIvJUc4njA5xeG063VkvWpQp+sd8NED7aZ
+	w/6Esif0d6M9akbSRqsmCVye9RoOBbWN73kYsPjsC9M1sObxfRV9eAvV0cTEVg==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-dude05.red.stw.pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792073283;
+	s=20260414; t=1792073264;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=FGSyqxAP0yucnoaeBKeAVpVIB8rgDFeVYte3LYbKFbM=;
-	b=FxKymYBZxCCQqUs4O7Q2UPzsJw5m03Mb1l9gMBwHhvAJzpmRkJCUwOZ8ljjlWAdq/maorF
-	iAlxF8oPEO9juPIB9WimiwDpgmTOtMJlkqI2giGxg15ZIW4dISoSPp9svQSmfcx5XsgXbp
-	Qh5Um9YIL6fnkMG10U+VTya/qh4px8R86MtkW+JlhUZu/wg8FEqC4rTNTStZPaCpDF4E1n
-	9S2hJSIj30M2RcHzzio1AXE1TUYYD9NDMkICLnS0KQMDxXpxl/aZ1PIWq6hImrBujU7AaT
-	H0HemdX8L9LjFo0cIbFkkZ6ZacdMe2oSlsQTrX+6gzAF86ztTVrGdZRhL5KCqQ==
+	bh=Sy6oJxFe9IXljjHcl/0ujMz+Zj1x9fZ2iGJoxRodIz0=;
+	b=FaEKdBBU+gxsuAcJXXWPkdoC4lSrB74sHbp8205u8T62eDG/riWrdkD7mAp/YHcJRmmqht
+	T5Zo88+1vT1FdJO4GLdq/0vWMfBwaTUBpDpmp4CphJwwiiIfD4oUUW+cghv2PQ0ACIAHkk
+	CQDGU9UI11YK+Oc7xBAJ/zPi5qjqJ/nJNQXvJ4fjpfszEezjio5+S1E+Khi+AtcA/iTKvd
+	L3yAHnRUDMtcTP1CNbqBz9BgDKWYREFn5IsOyLEcGPEWatVqxuv2J6kdYxPPaaRYi59Z+B
+	I4TrJ4VTFpBVNT9ED9N3elCDymp3QIkdRY48t3KS+nVIcP3UsycFe/4PYtZGUA==
 Received: from dude05.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id 0F71E74175C;
-	Thu, 15 Oct 2026 16:08:03 +0200 (CEST)
+	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id DFD297415DA;
+	Thu, 15 Oct 2026 16:07:43 +0200 (CEST)
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Subject: [PATCH] fs: efivarfs: skip variables whose name does not fit struct dirent
-Date: Thu, 15 Oct 2026 16:08:01 +0200
-Message-ID: <20261015140802.1227004-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Subject: [PATCH] nvmem: core: add nvmem_cell_nbits()
+Date: Thu, 15 Oct 2026 16:07:42 +0200
+Message-ID: <20261015140743.1214225-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261015_070809_667566_745A397D 
-X-CRM114-Status: UNSURE (   9.31  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20261015_070751_737899_560196B1 
+X-CRM114-Status: GOOD (  11.16  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -121,10 +120,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> efivarfs fills struct
-    dirent in its own readdir, so it doesn't benefit from the length check in
-    fillonedir() and strcpy()s the variable name and GUID suffix into the 256
-    byte d_name unchecked. 
+ Content preview:  A cell with a bits property is narrower than the bytes nvmem_cell_read()
+    returns and nvmem_cell_write() doesn't mask the value written to it, so anything
+    that doesn't fit spills into the neighbouring [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -156,94 +154,105 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Spamd-Result: default: False [-58.91 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[99.99%];
-	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
-	R_MISSING_CHARSET(0.50)[];
+	MID_CONTAINS_FROM(1.00)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	R_MISSING_CHARSET(0.50)[];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
 	RCPT_COUNT_TWO(0.00)[2];
-	TO_DN_SOME(0.00)[];
+	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
 	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	DMARC_NA(0.00)[pengutronix.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 927062027CF
-X-Stat-Signature: 68mnw886r43dpqtruhryweojjot7kieq
+X-Rspamd-Queue-Id: 5C4EA2027F7
+X-Stat-Signature: babojdaz3yoq7kpdk4otztqxomf8rrem
 
-From: Ahmad Fatoum <a.fatoum@barebox.org>
+A cell with a bits property is narrower than the bytes nvmem_cell_read()
+returns and nvmem_cell_write() doesn't mask the value written to it, so
+anything that doesn't fit spills into the neighbouring bits.
 
-efivarfs fills struct dirent in its own readdir, so it doesn't benefit
-from the length check in fillonedir() and strcpy()s the variable name
-and GUID suffix into the 256 byte d_name unchecked.
+A consumer that computes the value it writes back, like a counter, thus
+needs to know the width of the cell. Let's add a helper that returns it.
 
-The names come from the firmware, which allows up to 1023 characters
-here, and efivars_create() takes them from the path, so creating a
-variable with a 300 character name and listing /efivars overruns the
-directory allocation.
-
-Let's skip such variables with a warning like fillonedir() does.
-
-Fixes: ef4f9d77b72c ("fs: implement EFI variable filesystem driver")
 Assisted-by: Claude:opus-5.5
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/efivarfs.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/nvmem/core.c           | 16 ++++++++++++++++
+ include/linux/nvmem-consumer.h |  6 ++++++
+ 2 files changed, 22 insertions(+)
 
-diff --git a/fs/efivarfs.c b/fs/efivarfs.c
-index b9f514c51cd9..da826234b959 100644
---- a/fs/efivarfs.c
-+++ b/fs/efivarfs.c
-@@ -261,16 +261,22 @@ static struct dirent *efivarfs_readdir(struct device *dev, DIR *dir)
- 	struct efivarfs_dir *edir = container_of(dir, struct efivarfs_dir, dir);
- 	struct efivarfs_inode *inode;
+diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
+index 79a36bb9b996..9fb7049c0116 100644
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -928,6 +928,22 @@ void *nvmem_cell_read(struct nvmem_cell *cell, size_t *len)
+ }
+ EXPORT_SYMBOL_GPL(nvmem_cell_read);
  
--	if (edir->current == &priv->inodes)
--		return NULL;
-+	while (edir->current != &priv->inodes) {
-+		inode = list_entry(edir->current, struct efivarfs_inode, node);
-+		edir->current = edir->current->next;
- 
--	inode = list_entry(edir->current, struct efivarfs_inode, node);
-+		if (strlen(inode->full_name) >= sizeof(dir->d.d_name)) {
-+			pr_warn("skipping variable %.32s...: name too long\n",
-+				inode->full_name);
-+			continue;
-+		}
- 
--	strcpy(dir->d.d_name, inode->full_name);
-+		strcpy(dir->d.d_name, inode->full_name);
- 
--	edir->current = edir->current->next;
-+		return &dir->d;
-+	}
- 
--	return &dir->d;
-+	return NULL;
++/**
++ * nvmem_cell_nbits() - Get the width of a nvmem cell in bits
++ *
++ * @cell: nvmem cell to be queried.
++ *
++ * Return: the number of bits in the cell, which can be less than its size in
++ * bytes times 8 if the cell has a bits property.
++ */
++unsigned int nvmem_cell_nbits(struct nvmem_cell *cell)
++{
++	struct nvmem_cell_entry *entry = cell->entry;
++
++	return entry->nbits ?: entry->bytes * BITS_PER_BYTE;
++}
++EXPORT_SYMBOL_GPL(nvmem_cell_nbits);
++
+ static inline const void *nvmem_cell_prepare_write_buffer(struct nvmem_cell_entry *cell,
+ 							  const u8 *_buf, int len)
+ {
+diff --git a/include/linux/nvmem-consumer.h b/include/linux/nvmem-consumer.h
+index ff9b87442852..efce9bb0e593 100644
+--- a/include/linux/nvmem-consumer.h
++++ b/include/linux/nvmem-consumer.h
+@@ -28,6 +28,7 @@ extern struct class nvmem_class;
+ struct nvmem_cell *nvmem_cell_get(struct device *dev, const char *name);
+ void nvmem_cell_put(struct nvmem_cell *cell);
+ void *nvmem_cell_read(struct nvmem_cell *cell, size_t *len);
++unsigned int nvmem_cell_nbits(struct nvmem_cell *cell);
+ void *nvmem_cell_get_and_read(struct device_node *np, const char *cell_name,
+ 			      size_t bytes);
+ int nvmem_cell_read_variable_le_u32(struct device *dev, const char *cell_id,
+@@ -68,6 +69,11 @@ static inline char *nvmem_cell_read(struct nvmem_cell *cell, size_t *len)
+ 	return ERR_PTR(-EOPNOTSUPP);
  }
  
- static int efivarfs_closedir(struct device *dev, DIR *dir)
++static inline unsigned int nvmem_cell_nbits(struct nvmem_cell *cell)
++{
++	return 0;
++}
++
+ static inline void *nvmem_cell_get_and_read(struct device_node *np,
+ 					    const char *cell_name,
+ 					    size_t bytes)
 -- 
 2.47.3
 
