@@ -1,124 +1,125 @@
-Delivery-date: Thu, 15 Oct 2026 12:50:57 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Thu, 15 Oct 2026 13:04:21 +0200
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xHJ33-00Dt4x-1k
+	id 1xHJG1-00DtS0-31
 	for lore@lore.pengutronix.de;
-	Thu, 15 Oct 2026 12:50:57 +0200
+	Thu, 15 Oct 2026 13:04:21 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 07008201BC6
-	for <lore@pengutronix.de>; Thu, 15 Oct 2026 12:50:57 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id B0179201B55
+	for <lore@pengutronix.de>; Thu, 15 Oct 2026 13:04:21 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=mEj4SpeW;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b="bR/uwnWJ";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=G8Nxtbk3;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=LyGPvlsP;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1792061457; a=rsa-sha256;
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1792062261; a=rsa-sha256;
 	cv=pass;
-	b=UeZMCFPtp8s/VWWBubThK3b1l4QVCkc3PRc1JV099mD3bxzs+eFw2xwxqsLRDlpvCo9RX+
-	X5s3VVv4b4lhDILfK36JrLWnQ5TFxi3+opnUEr4keHwEMyExlcFMa5UQzSGqJMFpRoSN/L
-	hY8tCLDhs3OHcq/EYRh37xMe8pPVuuz5Tb7LfPZu/watf15gWO/UgmuRonDQEhfLRWgzUP
-	q3DWJtxjk+3xNSXxfzAlIYLzqn6iPy7HpMoL2igVU9UI9kaAF9jW13Kll3OnnaiHk/5n45
-	uvVhK+5cwxroStH+DiX8wn9jcZpruaN+qj2Xu1zzZi1fKL4Ftb0c2BJU/DizbQ==
+	b=OE/4jIPj/+49AoJPNk5VEf0tRQwM5hF+z42UsHSFYhwyTUTuDVIoYdIpabx5GsVvqhn5a0
+	o/2AC41I7RTtMiI4yVrwyT4PtmBOaxVNPfJYP6z64DTB+tii8LXZyTago+qFIUx2j7Bu7i
+	o4tod2gBG0aseTMZPIRwfpGvSuNN/bznMRaQTOab/wg3CLRsuMK7Sd8+GcgzBCDL73u6Wv
+	hRuC+lYYCgwbzZ8eTka3K90iRlSZ7dt9xuqTtyqb9fKZAgShHNRUySkvFkXbpq1UXRRtAS
+	riz7wcDsW40eZYvzn9R6M5wD9BrEjXflX7Hy2f6Cx6VlhhbIo41+tHPr1Jv8ZA==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=mEj4SpeW;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b="bR/uwnWJ";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=G8Nxtbk3;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=LyGPvlsP;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792061457;
+	s=20260414; t=1792062261;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:in-reply-to:in-reply-to:
-	 references:references:list-id:list-help:list-unsubscribe:
-	 list-subscribe:list-post:dkim-signature;
-	bh=Saz85SEtR3HvWRzkWkUwj1nB0q7gEyL1yo2WCIFQiiA=;
-	b=TqsbnpQ6cdp245ejZSmTyJN64oiJfprgVCkAmyWVuSEzrerlgQdouXEMaJPIyZoZnITsDL
-	ZuLqr04gdT/v4QZhL2kF3XOIzifUdVE+HRoJJDOzeEXaSbOF1yNTYh7umCvaOxxgBfSDOK
-	Gnxkm0ab5wvh3BYSfTenSn2SPC/QR+ZNKiY+BGUCAV2vsQ9eTT90vguCSssfy88nHVrFGV
-	BbmZr8VeDul/5H1hK80xOyd+fAmFg9s1+aoW7dWeWbGyhtGDPg56d7S52BpbX9/ydtlPz/
-	q+LOx1bbmWyUirYEVDnrMZJqWvogBzhfUPZRGiYfGsFoAcguf5BMzqlzoFTovw==
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:list-id:list-help:
+	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
+	bh=kS3lxhh/K+N/BikEqgRQ5mGb2q7L+3M331ggVdcZZjk=;
+	b=Tw/q8ZQCpkDDRCM/A9Y84WN3I+jNjXdduGgh6a2oQGOvOcdatrgDX4q9pCXXq/OAKIyX6Q
+	71CDz2JphyGGatDfrdCdY3YCg9QcYDoO3KaU3VyH7idRVMJv8ReXHL5YYVyzZQtdHR7h+4
+	wHFTDMzHCrrgMl1SHUAIYwrbcRKrj1Sq1MIuC7u5A/7oWdYqERcjQeNKGszwVogLhEmyOE
+	jhlQiMnUXEOZlhGp/q8O9e6ysSzfdaPlJL3RsJEv/kNIdrre/9j9topxjXYxb9Hb8nQMMU
+	wVTy9RaJ4PgUOcPCZRrX63zlASdkbJlIUXY+VBapBfDvBSBbggl0vivP3Zg/9Q==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Saz85SEtR3HvWRzkWkUwj1nB0q7gEyL1yo2WCIFQiiA=; b=mEj4SpeW9/qMGpVTPx9GvMkH+c
-	GnPiQGn5D/EV1IkWIxpzF/lX2Gr2KKbMTdE9kU4XV+SmQP4LUMkrJMipoDkj8GdJalKPR+nXapbgu
-	J3HAuO+q3s6u709qOGjdO561UnLGgZcgrNUtlgtbasqqepoc6OwGbBPtkhsitkGmJMtTbyF7fcsuJ
-	+U/E3AdLXUJg1j1YwlR9hG5Fd6rnB1Lvq3puO0qSCrqclSmQLesZ9jtoNKCAupQ4qw8rVRfojo9k9
-	AUGxCUvU9+G2E365NzqTGZX0dqdCgpP/H1mnYteELyb4OZxvObUiXIOSOrfK76SRi3piEFIX6iu2c
-	qNhokhfw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=kS3lxhh/K+N/BikEqgRQ5mGb2q7L+3M331ggVdcZZjk=; b=G8Nxtbk3sum0ORHJjhT7ysDxH9
+	q/RjgyEVFqpuJNskM7FOnbkfXTNgotf3qE4LTzMApuz+UV9VQWSbSG/et/lQtp+M5EqJ4F9x5L3IW
+	7EgaEMQ0YtOMniAsYi0nC5rCpLMmnZfF4hTKMBbjJghSnOvdhrHYx605NVZvEtMZD6TdvxQJlSGVE
+	uEbZKZf3Pdvd0+5PsJNF2jErCjw2shyY+5yernDb7Fuvu/7EActz+amphtK7FwHMdoEfwxEQZaBQ0
+	kDtbiE0neltiO7vQu1Uy6fTpcQTwqBaT6PimEo7lUu6/MIAh/I1U4PPyK/8xWJqilNlMDwvwQRYcP
+	QyPXFnYQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xHJ1v-0000000HTyL-3K5G;
-	Thu, 15 Oct 2026 10:49:47 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1xHJEp-0000000HVu7-2Rq9;
+	Thu, 15 Oct 2026 11:03:07 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xHJ1s-0000000HTwu-2SEa
+	id 1xHJEm-0000000HVq6-1luV
 	for barebox@lists.infradead.org;
-	Thu, 15 Oct 2026 10:49:46 +0000
-Received: from ptx.office.stw.pengutronix.de (ptx.office.stw.4.pengutronix.de [10.9.0.3])
-	(Authenticated sender: relay-from-ptx.office.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id E409F201BC6;
-	Thu, 15 Oct 2026 12:49:42 +0200 (CEST)
+	Thu, 15 Oct 2026 11:03:06 +0000
+Received: from [0.0.0.0] (ptz.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::77])
+	(Authenticated sender: ske@pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 58805201BBB;
+	Thu, 15 Oct 2026 13:03:02 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792061382;
+	s=20260414; t=1792062182;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Saz85SEtR3HvWRzkWkUwj1nB0q7gEyL1yo2WCIFQiiA=;
-	b=bR/uwnWJzLE5upnRCMplVf5M6sKD4yrFCJL2VJI/1/MY41y570GMxUPaT8hFUBuZ/5ldLZ
-	/GNoXBJIdKdUxM6E6thybIpBIwMfepePycMC9DIfEPfJEMwTcCXgZhYzf8UGAduuPzRybR
-	3vr8vcvlRPgZEiLleZ9UC3yzZrbhUI+OC7w7h+JpEGXMZjlMBhi5QPZb9URiaav6c3+0te
-	JzfP/2JUt3tVa33rhT12MdMX8eo3dvVtevSJs2YVGl9+9f0SO6aEGHQIG/kxd/oIhMiOEu
-	COhiKI6smwzPLMVNaUeMkJefNjU65XhCC1h1ERm9xskUI3F5kKlkpWaJPVKtnw==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792061382; a=rsa-sha256;
+	bh=kS3lxhh/K+N/BikEqgRQ5mGb2q7L+3M331ggVdcZZjk=;
+	b=LyGPvlsPHZAJLL+LCsQmABtKzkAKDtawnCInBZ4Af4d3UEkFhsjwv82lzOs+aHuGYugqtP
+	OViSg3ESbY3e0IWkwk3OK1xDMrbQwm8/0stjhdx6CROAPD9j9uAPouff17X7bpEN4EI8Jb
+	/0JocVs7cfq8tQd3DeAFPzfHfmxIuIND6uFvZTF8dmsjevLKtkeWmWvTzCp/aeOI2v4bjE
+	GQdZqiAAJO67LQRHBdWXkEjz67Y9hFIkPrhEGhzV29eOMSmcmYmFfH8oWllYTIJOdJUJDo
+	CaOJ6bJxMDUY0xUp0YbyQw7s8Etkuy7MYyuDUA5iDizspuWOM1V1ddA4DBkbFg==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792062182; a=rsa-sha256;
 	cv=none;
-	b=S/gO+XXRf8gPgCqxFmpYiczXHK5TZKjHBoztADkSnRvkz98V7wvv14w7Ljyf69XIPahJ8P
-	un4qmOG3xAGS9gmQ5dzgeaymLkU/fbNX0rF+wqaB7QmRCX54loB113W9mbAYty009lhVhw
-	kS0BC9sS4CXnbYPjiouDOufhO/KH0NcjEo4EYqRwtiR49mYteTrUW2WIb72uM/Es1v6z+l
-	Ewy8xAIUyeTi5I2ILaC02IKNk0op8zYLs3DQcXVkL7uBSQKjZ1jwy4TV1XbFcJDUTc59Ul
-	Se1L/glZvpR128AwvdqnAZ54jv6Ra4yORAfkcphki3laIAClGBB0+Jz28pdgDw==
+	b=IfWvaLKbYBq4MR5JYXbNmfZ6JgLy9fJe/kbUk+wjRntpxK47C1yCH27XVkZ7WwkoNTqMVT
+	x6HSMl6tQ18l8afIsSkzYHr1efcJCdKXLtssReVRErQjlU0NX89LqSaayd85H0jn6qtHiZ
+	2xyYCHSfVYaU6m3EjkWt007n38aB/0TqcV2kTi3XR1KjVxOPSpWO4+F4YuiU7N4axQrp/V
+	4GBwnSQO8HJ25D/5mvHNX1K3n7bBCQTLNmJtnjHx7E9t13mIgUd9dWenGnXZEFddUIQwgG
+	LHgbepu5wUcWYwY6UgdHgjLcTVOpUTOhcAYPX3Iw9HwiIvah0K9uE66eQ4iETw==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
-	auth=pass smtp.auth=relay-from-ptx.office.stw.pengutronix.de smtp.mailfrom=mfe@pengutronix.de
+	auth=pass smtp.auth=ske@pengutronix.de smtp.mailfrom=s.kerkmann@pengutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792061382;
+	s=20260414; t=1792062182;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Saz85SEtR3HvWRzkWkUwj1nB0q7gEyL1yo2WCIFQiiA=;
-	b=Hiwomhd2aSkbEj5RCUTVjF+zmIHu4yqtkJk8gmkxmmlzz8/IKRrNhVNc6xW3k02N7HLJak
-	659uiyu5kMh5baRsgofI8o/PYsruiuTGjk456RWoJl46/sc2133LXGqkEQzSvfvlwmSaTL
-	pmdYB0w3TgAaW1dcuFuQFxdOTzw6xK2n8xIKj91YPwUC0a5tvNRCgwTf9qTt+MZ7SUbzqh
-	CAyxcIp64F2JUsgEQgR4TJG6Mag0FEqI6XPBMlgzMGEcCAHYunP+R3MgkpDMDkgJ5oY08F
-	+o6Is5whAkp9CuuanE1RMwTcqmrEUwaV3iiUypT/TJpNRnP4Q8m8SD4ee8GeeQ==
-Received: by ptx.office.stw.pengutronix.de (Postfix, from userid 1064)
-	id C5A441C0239; Thu, 15 Oct 2026 12:49:42 +0200 (CEST)
-Date: Thu, 15 Oct 2026 12:49:42 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, fpg@pengutronix.de
-Subject: Re: [PATCH v2 07/10] efi: payload: pass shell arguments as load
- options to executed images
-Message-ID: <7sjfcovg65kw6ubwxaw7eddwuxb25aaxx6qaejrivia7cl2om3@iowsggx2jyx7>
-References: <20261015092308.146516-1-a.fatoum@pengutronix.de>
- <20261015092308.146516-8-a.fatoum@pengutronix.de>
- <i7yppy6p2fg2zee4fyegh7s4sskby6bpcvivcg4fqy6gijbq7h@z6akbpadbuia>
- <210ca087-2e99-4bb5-8d25-a774fff5920e@pengutronix.de>
+	bh=kS3lxhh/K+N/BikEqgRQ5mGb2q7L+3M331ggVdcZZjk=;
+	b=MyBa0y9pAU1LmduGbbp4t7++436gAXWMNEqI8pFMKbBQWXPCW5qAQioTrKmQFmUzHRV5Ru
+	1+6yvkb+wuNVvWmtyBx0R2zhTJlKS5sdPiFCjQPXtiuQwIEesKGxmmMICZHfpJsGAvcwsq
+	ZqKDFapD1l8AmuFmUNHtyofIe8vOr2Xh+Cb3nnoLgceN5z3QEt2CRNpfRYfCaoqryQY58k
+	/4LOxyunOCmgbXRMOQypompx7dPtzNn9ntbVd2AexZsCVK4btynmPW2Di9Xxu7g7YqK67n
+	aMPnRfhn/TaF+4u8u+jt6paal86zAxCSRXOHASNfB757tizRN7N645MhTYVGHw==
+Message-ID: <aee643eb-2b14-4ddf-924e-37e66de77f06@pengutronix.de>
+Date: Thu, 15 Oct 2026 13:03:01 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <210ca087-2e99-4bb5-8d25-a774fff5920e@pengutronix.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] of: overlay: of_overlay_fix_path: allow symbols
+ without __overlay__
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ "open list:BAREBOX" <barebox@lists.infradead.org>
+References: <20261014-fix-overlay-v1-0-cfd44746d985@pengutronix.de>
+From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+Content-Language: en-US, de-DE
+In-Reply-To: <20261014-fix-overlay-v1-0-cfd44746d985@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261015_034944_775393_0E1FD8EF 
-X-CRM114-Status: GOOD (  33.51  )
+X-CRM114-CacheID: sfid-20261015_040304_639215_4911C9C4 
+X-CRM114-Status: UNSURE (   8.57  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -126,9 +127,11 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On 26-10-15 12:25, Ahmad Fatoum wrote: > Hello Marco, > >
-   On 10/15/26 12:14 PM, Marco Felsch wrote: > > On 26-10-15 11:18, Ahmad Fatoum
-    wrote: > >> if (filetype_is_linux_efi_image(filetype)) { > >> - [...] 
+ Content preview:  Hi Sascha, I'll sent a V2 shortly which adds self tests and
+    one more fix. Please don't apply. On 10/14/26 17:09, Stefan Kerkmann wrote:
+    > Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de> > --- > Stefan
+    Kerkmann (2): > of: overlay: of_overlay_fix_path: allow symbols without __overlay_
+    [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -157,7 +160,7 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-59.91 / 15.00];
+X-Spamd-Result: default: False [-60.61 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
@@ -165,180 +168,67 @@ X-Spamd-Result: default: False [-59.91 / 15.00];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
-	MAILLIST(-0.20)[mailman];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:900:1d::77:received,2607:7c80:54:3::133:from];
 	R_SPF_ALLOW(-0.20)[+mx:c];
+	MAILLIST(-0.20)[mailman];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	TO_DN_SOME(0.00)[];
-	FORGED_SENDER(0.00)[m.felsch@pengutronix.de,barebox-bounces@lists.infradead.org];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	RCVD_COUNT_THREE(0.00)[3];
 	DMARC_NA(0.00)[pengutronix.de];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
+	FORGED_SENDER(0.00)[s.kerkmann@pengutronix.de,barebox-bounces@lists.infradead.org];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_THREE(0.00)[3];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	FROM_NEQ_ENVFROM(0.00)[m.felsch@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FROM_NEQ_ENVFROM(0.00)[s.kerkmann@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
+	TO_DN_ALL(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
+	MID_RHS_MATCH_FROM(0.00)[];
 	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 07008201BC6
-X-Stat-Signature: ebxzjttreppzw1o46sq7am6tj6mcd53g
+X-Rspamd-Queue-Id: B0179201B55
+X-Stat-Signature: 63gpxiy1uib5k3xxb3dd8ax6nfzoj5gm
 
-On 26-10-15 12:25, Ahmad Fatoum wrote:
-> Hello Marco,
-> 
-> On 10/15/26 12:14 PM, Marco Felsch wrote:
-> > On 26-10-15 11:18, Ahmad Fatoum wrote:
-> >>  	if (filetype_is_linux_efi_image(filetype)) {
-> >> -		options = linux_bootargs_get();
-> >>  		printf("Booting kernel via StartImage");
-> >> -		if (options) {
-> >> -			printf("with options '%s'", options);
-> >> -			loaded_image->load_options = xstrdup_char_to_wchar(options);
-> >> -			loaded_image->load_options_size =
-> >> -				(strlen(options) + 1) * sizeof(wchar_t);
-> >> -		}
-> >> +		if (load_options)
-> >> +			printf(" with options '%s'", options);
-> >>  		printf("...\n");
-> >> +	} else if (load_options) {
-> >> +		pr_debug("Starting image with options '%s'\n", options);
-> >>  	}
-> > 
-> > Can we please make use one print style either printf() or pr_*()? IMHO
-> > pr_*() is better since this goes into the log buffer which could be
-> > pstore backed.
-> 
-> This is consistent with how we do it for ARM64 and ARM32. An argument in
-> favor of printf is that test suites often match against these strings as
-> these are the final strings output by barebox prior to kernel boot.
-> 
-> Having the log level hide them would break this. I don't think it's the
-> purpose of this series to deviate from this.
-> 
-> > Furthermore this if-else now is only responsible for handling the print
-> > message, can we make this cleaner?
-> 
-> I don't understand what you mean by this.
+Hi Sascha,
 
-If the strings only differ minimal you could template it, e.g.
+I'll sent a V2 shortly which adds self tests and one more fix. Please don't apply.
 
-     printf("Booting %s", filetype_is_linux_efi_image(fileytpe) ? "kernel via StartImage" : "image")
-     if (load_options)
-     	printf(" with options '%s'", options)
-     printf("...\n");
 
-This harmonizes the output even further by adding '...' not just in the
-filetype_is_linux_efi_image() case.
-
+On 10/14/26 17:09, Stefan Kerkmann wrote:
+> Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+> ---
+> Stefan Kerkmann (2):
+>        of: overlay: of_overlay_fix_path: allow symbols without __overlay__
+>        of: overlay: fix_path/apply_symbols: add more debugging calls
 > 
-> >> -	if (!is_driver)
-> >> +	/*
-> >> +	 * The firmware unloads an application as soon as it returns, as well as
-> >> +	 * a driver that failed to start, freeing the loaded image protocol with
-> >> +	 * it. Only a still loaded driver's protocol may be touched here, and it
-> >> +	 * must be, as it references the load options we are about to free.
-> >> +	 * Unloading an application that already returned just fails, but is
-> >> +	 * still needed when StartImage failed before running it.
-> >> +	 */
-> >> +	if (is_driver) {
-> >> +		if (!EFI_ERROR(efiret)) {
-> >> +			loaded_image->load_options = NULL;
-> > 					^
-> > Don't we have to free this first?
+>   drivers/of/overlay.c | 14 +++++++++-----
+>   1 file changed, 9 insertions(+), 5 deletions(-)
+> ---
+> base-commit: e82842ffe3c7993dac4f8493fb4a44c4d35810ca
+> change-id: 20261014-fix-overlay-b53fbdff8ddc
 > 
-> See comment above. This pointer is dangling as the firmware would free
-> the load options on successful termination.
+> Best regards,
+> --
+> Stefan Kerkmann <s.kerkmann@pengutronix.de>
 
-Maybe my EFI knowledge is to limited but the above comments says:
+Best regards,
+Stefan
 
-| Only a still loaded driver's protocol may be touched here, and it
-| must be, as it references the load options we are about to free.
+-- 
+Pengutronix e.K.                       | Stefan Kerkmann             |
+Steuerwalder Str. 21                   | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany              | Phone: +49-5121-206917-128  |
+Amtsgericht Hildesheim, HRA 2686       | Fax:   +49-5121-206917-9    |
 
-So we're about the free it but already clear the pointer.
-
-As said, my EFI knowledge may be to limited.
-
-Regards,
-  Marco
-
-> 
-> Cheers,
-> Ahmad
-> 
-> > 
-> > Regards,
-> >   Marco
-> > 
-> >> +			loaded_image->load_options_size = 0;
-> >> +		}
-> >> +	} else {
-> >>  		BS->unload_image(handle);
-> >> +	}
-> >> +
-> >> +	free(load_options);
-> >>  
-> >>  	efi_connect_all();
-> >>  	efi_register_devices();
-> >> @@ -163,13 +182,21 @@ static int efi_execute(struct binfmt_hook *b, char *file, int argc, char **argv)
-> >>  {
-> >>  	struct efi_loaded_image *loaded_image;
-> >>  	efi_handle_t handle;
-> >> +	char *options;
-> >>  	int ret;
-> >>  
-> >>  	ret = efi_load_image(file, &loaded_image, &handle);
-> >>  	if (ret)
-> >>  		return ret;
-> >>  
-> >> -	return efi_execute_image(handle, loaded_image, false, b->type);
-> >> +	/* argv[0] is the image itself, the rest become the load options */
-> >> +	options = strjoin(" ", &argv[1], argc - 1);
-> >> +
-> >> +	ret = efi_execute_image(handle, loaded_image, false, b->type, options);
-> >> +
-> >> +	free(options);
-> >> +
-> >> +	return ret;
-> >>  }
-> >>  
-> >>  static struct binfmt_hook binfmt_efi_hook = {
-> >> diff --git a/efi/payload/image.h b/efi/payload/image.h
-> >> index 33f7e1a21b30..54494c71626a 100644
-> >> --- a/efi/payload/image.h
-> >> +++ b/efi/payload/image.h
-> >> @@ -14,7 +14,7 @@ int efi_load_image(const char *file, struct efi_loaded_image **loaded_image,
-> >>  int efi_execute_image(efi_handle_t handle,
-> >>  		      struct efi_loaded_image *loaded_image,
-> >>  		      bool is_bootm,
-> >> -		      enum filetype filetype);
-> >> +		      enum filetype filetype, const char *options);
-> >>  
-> >>  extern struct image_handler efi_x86_linux_handle_tr;
-> >>  extern struct image_handler efi_x86_linux_handle_handover;
-> >> -- 
-> >> 2.47.3
-> >>
-> >>
-> 
-> -- 
-> Pengutronix e.K.                  |                             |
-> Steuerwalder Str. 21              | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
-> 
 
 
