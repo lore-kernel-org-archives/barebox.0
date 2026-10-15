@@ -1,119 +1,126 @@
-Delivery-date: Thu, 15 Oct 2026 14:15:07 +0200
+Delivery-date: Thu, 15 Oct 2026 14:31:16 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xHKMV-00Durk-0M
+	id 1xHKc8-00Dv4v-1K
 	for lore@lore.pengutronix.de;
-	Thu, 15 Oct 2026 14:15:07 +0200
+	Thu, 15 Oct 2026 14:31:16 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 887BE202012
-	for <lore@pengutronix.de>; Thu, 15 Oct 2026 14:15:06 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 61BC7201ADE
+	for <lore@pengutronix.de>; Thu, 15 Oct 2026 14:31:15 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=LxImqENO;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=MVv3y6NP;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=H8dr4aGJ;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=N5okznco;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1792066506; a=rsa-sha256;
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1792067475; a=rsa-sha256;
 	cv=pass;
-	b=C0ebWlTri6RORNmU5EKY21aJakHJzey0FC4fVqgALtrRSpnPSTtAOL05JRhk88cCoz/OGB
-	fSIOiTk15g35BjuV/R7Za2hQdPp2ltRHZDDNClX3epq3fOX3WCPbfoQRKhlotb/47dcRe/
-	PC9vZCKMYmeqAp0y/kYelOH3BE7TI79SfD60EurSR3jggZ5l0HGdMlI4ZTuHl+TwuGLsb+
-	PK/0TEqBMMv3/3epWIE6b5dOngg6jPChFtPpxnDiUsZdzrpldsvV/4vohibNeIMqjzl4IF
-	Ig9yvdKZTqJM4x775uJFB9TWt5a7VS3rubMMzkc/qeFbRXv6eYht4ZpoZIJRZw==
+	b=AWxjT7hiOT59+vo+pAds2CHRQVv91Lx3r5yJcBpdRMPG6b1sB1EOJ469LZWbVBUADS83PB
+	JYkneYvD4JonyyiUd4+G3Bvk8k6/9W5kGTd/zeCsPi9dXFnrR8k0RqfiYigaIHNgOPSP9F
+	aMiGiumZibsCf6TtN6m1ufbFxicZbmwF2k+Sl6b1Eyb6cDiXiaBcXNe1yZy0R5fruKjbyq
+	L28YWANg9BqvWdS/6/RRQHJ/B++cdxFwBNbLZtoKhVbgcB3vJ/GR8v02DMkb43OdnCuRrS
+	Xfuxr4jA+iiAxIRWfjCSs/Drl3+ITmzBsHI8Oen+U4lP/ywkWhUHSLi1oKIlRA==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=LxImqENO;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=MVv3y6NP;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=H8dr4aGJ;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=N5okznco;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792066506;
+	s=20260414; t=1792067475;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=TDXBSTlkSDFdg96uxz+0FCzZOrMrdXM8m+a1hk06nUk=;
-	b=HJLwsnZVRQiH6QL0izmWA0GYCDtGNBbgC+P8V6pr9iOH52sZTvWZYaCpVK8eVTizSWtP6O
-	e/zwzXPn7jNxDldHQHAGfxgYPW7n60OA69FbOCoCXME4hvikS1k/vrWTT6UHffT5qo6Q6Q
-	8yCESR2mHKqGM7Y7fPp1tTGfPPJ7eKwv7kMKAUtKW4Qvh/2vO8VnGPbQXrM3m1M74YNnvZ
-	u/r5mybf6Dsy+3lK2qiuMP6HMxQ3VYrSeH+Bgu6BEWG0P4LG3ZNrYG+N6DJF2v1BFryfYi
-	ueX604X2teWJZhJEleDCxg8QE51zrGZPlM5ddccscvDfbKVHLUWGwu9ppXs4iQ==
+	bh=IjBgktAxAc3a4meIrt/6P8PlBssj3TwBv5Ne7vq81/0=;
+	b=XQUmyRXWXdzLIEB2sJ7nfCecMTwS9cFjvxBoVV7E7gqaHVEBneCSWmvFukScbCtM1Uc+87
+	mG6eOkKtk/zSBeVjZ51N1A7IfYU3cd95LzvRiQsCQHpVaQ/Nv8tdSS4pRlLYhZaEvAaYh7
+	NMN4eZyo1GNPcY2q8LuB4PSeXNmEmC5kIAv8VMldAH0sPy4tnDZWG/oE7YwUi2fzsiLiXl
+	bq16o4umxJxepmFvGoPzUiHIGC7zReTmNln2PUxR+bNLWCNUEDEJ0cuvncSoD28atA3izC
+	zgukLUsRiRWC5ntvKd+6JKH1WBpY3x5aJfhl+B2Ia2UeE5hTt3I84J12jTqavA==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=TDXBSTlkSDFdg96uxz+0FCzZOrMrdXM8m+a1hk06nUk=; b=LxImqENOZmtgiyXG3zQYmlMPOC
-	sWCbJrW5xXWtS4gMR8KHWTXSkzpfORhsTbR1oT9TkGIuySynQKkOTo8RgREJT4ySff3V8BolVZ9Rc
-	Rc8NrcGqZEWE4ogYYzCGFtjJa52BXe5SpFa+4yx7H/epW7A52db3u9/5Temj53xRWhU27CtNsW+A9
-	djmJZyO9Giy9rSRSkHlL85O0is+9s31iMXalci9FrxgzSEIVFRruXYRG9JoZtW68HSaaFdhOvIV1k
-	o03NhK/yD4/LB2LOEOan9nA9hNkvihdj/D4kd1D5tbtpLYG14t/ss7gIYYdlP3u2H6YTtZkWbsFMC
-	/JS+TyMA==;
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=IjBgktAxAc3a4meIrt/6P8PlBssj3TwBv5Ne7vq81/0=; b=H8dr4aGJDsZysMkZEASmpZYRCD
+	p+8N05nE4YUZc8NwT9wsgbJK7/GrpUuEImLDTpl7D7j8ea5D5n3K8yMiVjIQHxyqHB6kypt6y49Bh
+	b26PcUuRORgpu5Gs2feLgTAvufrQVo8Bynzp8w9MMFKIMGelu9VIlxaHJlg529JLTT/YHw/PdrAV/
+	NQGYZ/5g3qhptersnbmW1AfFmkB4tUysDt+ersX3DuRcsT4QkA562vyeqBQb4sZeLPdPFg+cFaUVQ
+	HSDyAZawidz8v1ajvD6wefgqos5DnF9JJGoZbeiBkJUBaxTQwV8nT3xj/zH85upBYVPTjfnq1KBfj
+	tfUMAEjQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xHKLK-00000000455-24iJ;
-	Thu, 15 Oct 2026 12:13:54 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1xHJUx-0000000HYPQ-2VTp;
+	Thu, 15 Oct 2026 11:19:47 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xHKLH-0000000044c-1QEU
+	id 1xHJUs-0000000HYOm-0YUm
 	for barebox@lists.infradead.org;
-	Thu, 15 Oct 2026 12:13:52 +0000
-Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.pengutronix.de [IPv6:2a0a:edc0:0:1101:1d::54])
-	(Authenticated sender: relay-from-dude05.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B4CE0202615;
-	Thu, 15 Oct 2026 14:13:49 +0200 (CEST)
+	Thu, 15 Oct 2026 11:19:44 +0000
+Received: from [0.0.0.0] (ptz.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::77])
+	(Authenticated sender: afa@pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 0991B202012;
+	Thu, 15 Oct 2026 13:19:40 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792066429;
+	s=20260414; t=1792063180;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=TDXBSTlkSDFdg96uxz+0FCzZOrMrdXM8m+a1hk06nUk=;
-	b=MVv3y6NPPfjU7Wa4Y3HiVqkQXIqDv4SkdiUAonJjK2OZk4hqYgB5aQnQsFdu2Y/M79zf0m
-	2NDHnjgFFVnVRsVcMdPlu6gvs/IYDP6w/ALpj/0vhs36qO4h5TOZVQxEEkymgIRk0seuoF
-	QTiFMcuQI8Cy7h/edYVGHNXKIC9sQQCPDLDEY0f8i41jo/JYKMFTY0LXP5VIW92kwIrY//
-	RUj65bhnKXkujK0PW9uAR50/cJA7OzbzyxrasYol0/7az41XBUO2SB2Lzu4GVrCbLzNvBV
-	T0sOJQW1bBB0zFaQ9tOgNJc3EZyI+zCwfk6dyeZArY4f0UNXxBR5RlMJCMkbgg==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792066429; a=rsa-sha256;
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IjBgktAxAc3a4meIrt/6P8PlBssj3TwBv5Ne7vq81/0=;
+	b=N5okzncoo6WmQF/lPAzO6mPfptfqocsaOQ9W8yxVWRFsYtJ+yyRPzF4F3fgHGL8pUB36ge
+	YMw5Txejg68j8IMWMnm41UHWhtI5Kykz+l4qx/sE9LKUOSHkK88rph17/T0VrnL+vS/WeJ
+	hBUXKhg0klwKcjBg305O3rAh6pvbh479OmsLfxgIavAYPQ5bx4NgZiJ1rg/hE/+E/jvnin
+	vWsGdoqa607WFBfV8Vqp7LpNMdL/GXMYCYw8w03uM3bYRYiWhxVJk9YHSVFsfhi71XQ54J
+	O2kWm1xCgUBTNRY7hEc3QD1a0pBtOtEPUJ/U6Qr6tEBNjPfu9gRkbn8hqyvW3g==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792063180; a=rsa-sha256;
 	cv=none;
-	b=INO3MT4ykZ37dKL0wO6WEMta6O3JKuya7Qfqa0jN1WAPFzcLrT+Q82e0VP4C0MZc8uuOTr
-	pop9NEOFvOILcj2sULbDdFMt3feAswVfic/oIkp3H4mPuDZcjGdzMTmAxmmWcBaxwE4rF9
-	UMh4RnG9EIhiXgPx+gB0uiPU1pF1bjDPWu4CCA7KRxB8riK98uq2nQeXcH0T+OnazVEkOs
-	Se/FWQguC/msYgWIzAZDqz0bfoUsiXesTR1KD96WEZTc77AFm0cRXfz3faXrq0VsiS6/Ln
-	BGfRIjZMHkRZ5+NKNNFhIF63dyUAAkWRvZPqOFZTmlApLZstZgsJpRPZpKRgTQ==
+	b=BmFL5xBJAfEC4/uu/7Asl4UtOuz7+L4ECFVlnYbznfUPVf95XDmlxx6cEl+OmI86Wv/1BS
+	TqghSsyDAOzGORe7q5kIoj7Q/e0di88Avgwsm244WGQJMLr3H5mvD3MHWw5qu2bJStDuB9
+	8uqXaesgg/1oSlNplXB+sLjLa+De2RxQ2cf3QLeTijWjH4eUMhI2F/UMyPIVuaQEMlBrrt
+	BsqsMBldcZB/8g8N+KMTKhOVDadY9axmBm1qToRG7t59EEsAw/L2ensJ/jN3UTJbllZGcP
+	bbz9vCYrCfxNiNUepXAMFHEPUuql27JgJzu+xfCi0ifoDbG1hkJO6oP8SDADMQ==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
-	auth=pass smtp.auth=relay-from-dude05.red.stw.pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
+	auth=pass smtp.auth=afa@pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792066429;
+	s=20260414; t=1792063180;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=TDXBSTlkSDFdg96uxz+0FCzZOrMrdXM8m+a1hk06nUk=;
-	b=RaRghg9QvgwpfrWT+VAgSMrDTUZmTXzIU049IsD4O8tyfjImoih6KfGXsC7kaAFmGO8ZTD
-	ReQMTvL6pQ/nsWF6D/MOJ+xBagGCrZpNelqn2cvd0N5AfZusy3ne9HyVRw/K8scBojHg6y
-	xV7bUljIW0IJVr4dxom6bInIE5KokQsXZ2Yrxkigb+HJUxtDAKoKrUGcKge+iAjd+PCOJz
-	5LS/ZjE0eSXMDMweWxocfYdxqssbsoSbFRuc5jRDRKNy3OAsWkdOxBoKF304KyuAXjwzFN
-	HClGKzWCAEpqFSJh/OvNp6c+J91EZZk6VBCnUgyYCAjVP3jbBWXxUJxHGJ57zQ==
-Received: from dude05.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id 9B9A4741297;
-	Thu, 15 Oct 2026 14:13:49 +0200 (CEST)
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Subject: [PATCH master] ARM: zynq: reduce barebox-avnet-zedboard.img size by 21K
-Date: Thu, 15 Oct 2026 14:13:46 +0200
-Message-ID: <20261015121348.3356506-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IjBgktAxAc3a4meIrt/6P8PlBssj3TwBv5Ne7vq81/0=;
+	b=NDn4gZmpY//c9CzVMsr8yYzctddYQjzN/ZMNyF4EG//9cD3L4lIaWqnE9FPUgJENuKEX7w
+	1f/QNl1sMh2JijqCOzbThgZdIqFP1JqM/Ahtp2BBWcj03HBwGKlbKG7bzlb/LU9H3VG9KP
+	swyZJ5yObEHoJvMgIT1Jd7CYrsBbkDtQg1Kjd6JZFJgdNzELilp6mYdlqDimSYDxqgt076
+	gIX1fRWwIPIs41dNZ9/ioSc/rsuY5HIolytFnC2vIczu7YFxcpopD6ZPoOotZhgYp/ZFoy
+	21CXqYc9VFFCAKBNNIKhTM73wwacPpEkiqzM6+2QALKKtLmHYq2JcwP1+3COIw==
+Message-ID: <7b26bdee-d4c5-401d-9a51-1aeba18f239b@pengutronix.de>
+Date: Thu, 15 Oct 2026 13:19:39 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 09/10] Documentation: efi: describe load options
+ handling
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org, fpg@pengutronix.de
+References: <20261015092308.146516-1-a.fatoum@pengutronix.de>
+ <20261015092308.146516-10-a.fatoum@pengutronix.de>
+ <tqorcgwnas5oc5nfyuswbns7cazd2jghiqcqrk2ra7esagx2ys@4kzonh3562zf>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+In-Reply-To: <tqorcgwnas5oc5nfyuswbns7cazd2jghiqcqrk2ra7esagx2ys@4kzonh3562zf>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261015_051351_597620_08043C09 
-X-CRM114-Status: UNSURE (   8.42  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20261015_041942_892127_86CFACA8 
+X-CRM114-Status: GOOD (  25.26  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -121,10 +128,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  The full barebox image needs to fit into 192K of OCRAM on
-   the Zynq. This is getting tight, so disable some options that are not always
-    necessary: Savings from everything but kallsyms: 3460 Savings from disabling
-    kallsyms: 18936 
+ Content preview:  Hello Marco, On 10/15/26 1:08 PM, Marco Felsch wrote: > On
+    26-10-15 11:18, Ahmad Fatoum wrote: >> +To pass a ``root=`` option to a UKI,
+    have :ref:`command_devlookup` >> +generate it for the root partition, the
+    sam [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -153,108 +160,130 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-59.11 / 15.00];
+X-Spamd-Result: default: False [-60.61 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
-	MID_CONTAINS_FROM(1.00)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_MISSING_CHARSET(0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::54:received];
+	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:900:1d::77:received,2607:7c80:54:3::133:from];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWO(0.00)[2];
-	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	RCVD_COUNT_THREE(0.00)[4];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
+	DMARC_NA(0.00)[pengutronix.de];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
 	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 887BE202012
-X-Stat-Signature: fpnifzpf7ifzy7hhdic8xiepmt8tg6np
+X-Rspamd-Queue-Id: 61BC7201ADE
+X-Stat-Signature: kaf9oyrutus6m8aszhscetwhsxktbmy6
 
-The full barebox image needs to fit into 192K of OCRAM on the Zynq.
-This is getting tight, so disable some options that are not always
-necessary:
+Hello Marco,
 
-Savings from everything but kallsyms:  3460
-Savings from disabling      kallsyms: 18936
+On 10/15/26 1:08 PM, Marco Felsch wrote:
+> On 26-10-15 11:18, Ahmad Fatoum wrote:
+>> +To pass a ``root=`` option to a UKI, have :ref:`command_devlookup`
+>> +generate it for the root partition, the same way ``global.bootm.appendroot``
+>> +would, including the option name from ``global.bootm.root_param``:
+>> +
+>> +.. code-block:: sh
+>> +
+>> +  devlookup -v rootarg -k /dev/disk0.1
+>> +  global efi.bootargs.root="${rootarg}"
+>> +  bootm /boot/EFI/Linux/uki.efi
+> 
+> Just a comment on this: devlookup can't be compared to the appendroot
+> mechansim, due to the partition enumeration mismatch between barebox and
+> linux, e.g. mmc block device partitions start at 0, whereas linux starts
+> counting at 1.
+> > On embedded devices booting from an MMC device the root=/dev/mmcblk*
+> mechanism should be used if the device supports dual boot e.g. from SD
+> and from eMMC.
 
-This gets barebox-avnet-zedboard.img size down to 171K.
+devlookup -k follows the same code paths appendroot would follow, so it
+will be 1-indexed /dev/mmblkXpY if that's what appendroot would have
+produced.
 
-Hopefully, disabling kallsyms is only a temporary measure until we have
-either have RELR support for ARM32 or kallsyms is updated to not
-emit so many relocations.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/configs/zynq_defconfig | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+> Therefore I would have liked to see that the appendroot mechanism would
+> be supported for UKIs as well which would stop the requirement of having
+> different UKI profiles just to encode the different boot mediums.
 
-diff --git a/arch/arm/configs/zynq_defconfig b/arch/arm/configs/zynq_defconfig
-index 76c73639d6a0..fd5fb4129849 100644
---- a/arch/arm/configs/zynq_defconfig
-+++ b/arch/arm/configs/zynq_defconfig
-@@ -1,25 +1,25 @@
- CONFIG_ARCH_ZYNQ=y
-+# CONFIG_CPU_V7VE is not set
- CONFIG_MACH_ZEDBOARD=y
--CONFIG_FIRMWARE_ZYNQ7000_FPGA=y
- CONFIG_AEABI=y
- CONFIG_ARM_UNWIND=y
--CONFIG_IMAGE_COMPRESSION_XZKERN=y
- CONFIG_NAME="zynq_defconfig"
-+CONFIG_IMAGE_COMPRESSION_XZKERN=y
- CONFIG_MMU=y
- CONFIG_STACK_SIZE=0xf000
- CONFIG_MALLOC_SIZE=0x8000000
--CONFIG_MALLOC_TLSF=y
- CONFIG_KALLSYMS=y
- CONFIG_HUSH_FANCY_PROMPT=y
- CONFIG_CMDLINE_EDITING=y
- CONFIG_AUTO_COMPLETE=y
- CONFIG_MENU=y
--CONFIG_BOOTM_SHOW_TYPE=y
- CONFIG_BOOTM_VERBOSE=y
- CONFIG_BOOTM_INITRD=y
--CONFIG_BOOTM_OFTREE=y
-+# CONFIG_BOOTM_UIMAGE is not set
-+# CONFIG_DEBUG_BUGVERBOSE is not set
- CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
--CONFIG_DEFAULT_ENVIRONMENT_PATH=""
-+# CONFIG_BAREBOX_DT_2ND is not set
-+# CONFIG_FILETYPE_STRINGS is not set
- CONFIG_DEBUG_LL=y
- CONFIG_LONGHELP=y
- CONFIG_CMD_MEMINFO=y
-@@ -52,6 +52,8 @@ CONFIG_MCI=y
- CONFIG_MCI_ARASAN=y
- CONFIG_GPIO_ZYNQ=y
- # CONFIG_PINCTRL is not set
-+CONFIG_FIRMWARE_ZYNQ7000_FPGA=y
-+# CONFIG_VIRTIO_MENU is not set
- CONFIG_FS_TFTP=y
- CONFIG_FS_FAT=y
- CONFIG_FS_FAT_WRITE=y
+I believe barebox can't provide this universally.
+
+- On an x86 system with secure boot, the systemd-stub will ignore any
+extra command-line arguments, except for the profile.
+
+- On the ARM systems with device tree, we may be able to cheat by
+patching the DT, but I have not checked how Linux or systemd-boot handle
+/chosen/bootargs if they are booted via EFI.
+
+Cheers,
+Ahmad
+
+
+> 
+> However, as said this is just a comment and doesn't block this patch:
+> 
+> Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+> 
+>>  Drivers
+>>  ^^^^^^^
+>> diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
+>> index 8e6f3bbbe9ce..dc7ac6dc8716 100644
+>> --- a/Documentation/user/booting-linux.rst
+>> +++ b/Documentation/user/booting-linux.rst
+>> @@ -103,6 +103,9 @@ to the bootargs. Variables without a value are skipped:
+>>  
+>>    Kernel command line: ignore_loglevel console=ttyO0,115200 earlyprintk
+>>  
+>> +When booting an EFI-stubbed kernel as EFI application, the
+>> +:ref:`EFI load options <efi_load_options>` precede the Linux bootargs.
+>> +
+>>  .. _bootargs_concat_order:
+>>  
+>>  Concatenation order
+>> @@ -170,7 +173,8 @@ This takes the kernel from ``/mnt/mmc1/zImage`` (which could be an
+>>  boot entries should always add Kernel command line parameters to variables with
+>>  ``.dyn`` in it. These will be cleared before booting different boot entries.
+>>  This is done so that following boot entries do not leak command line
+>> -parameters from the previous boot entries.
+>> +parameters from the previous boot entries. The same applies to the
+>> +:ref:`EFI load options <efi_load_options>` in ``global.efi.bootargs.dyn.*``.
+>>  
+>>  This entry can be booted with ``boot mmc``. It can also be made the default by
+>>  setting the :ref:`global.boot.default <magicvar_global_boot_default>` variable
+>> -- 
+>> 2.47.3
+>>
+>>
+
 -- 
-2.47.3
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
