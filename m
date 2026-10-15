@@ -1,126 +1,124 @@
-Delivery-date: Thu, 15 Oct 2026 13:42:04 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Thu, 15 Oct 2026 14:15:03 +0200
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xHJqW-00Du7E-18
+	id 1xHKMQ-00DurK-2z
 	for lore@lore.pengutronix.de;
-	Thu, 15 Oct 2026 13:42:04 +0200
+	Thu, 15 Oct 2026 14:15:02 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id EB1362027CF
-	for <lore@pengutronix.de>; Thu, 15 Oct 2026 13:42:03 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 91EDA201BC6
+	for <lore@pengutronix.de>; Thu, 15 Oct 2026 14:15:01 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=mP2aji1W;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=AKXkJ+G8;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=QTUFux+i;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=UECQyIEj;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1792064523; a=rsa-sha256;
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1792066501; a=rsa-sha256;
 	cv=pass;
-	b=ae8GPEDYbCVAPnxG9kGQdVluOf+KwTlxusIvd3oZvX88bKvkUe5r9c3w1m9I7ZNDaUx7Vd
-	yqdS18pOIpb5CF5bmrw4wNRI12xAiHU+w5HhU6SdDSHPwFR5dvHYS6xYZMZ83Tylp4za99
-	5KkuHAz/+hpXXDsEXRHl+/hWz2YiT0Vg3I49cM7GrI3Rvg9YxZv4OFZDk31EUaElrEE3OO
-	o68ionQZVfnFqewNCbtE341PTzeS3Rv3j80x6G2J/c9w0xaLgs4n/teHY1te7PkhVDSGrk
-	FVBH0HWVEVFNkSS77wNl6CzDRtT65UHtcMa1SmglJxw0eI14dqiwPPqu6hIpXg==
+	b=Fl+j1EcWFKp6ELxxQG4Kt21a2ZAin667y6AJkDgLpNFEBXR2N+HCJgw6X48K6eLq39EfsA
+	wT3KFdLreVksSptP7rskRMWK0dNornc2LFyiD2VaF49DP5uIwqwjJYtmmHRsDX+MUdWEH8
+	hWJcABtXyfcdMAf6qYNHYp/4udMyP8BNFen6w+si9Ct7z38Z8WoS9nUJbFnA/WBQXyTg2L
+	JcOLc+LwVkkMdsLICdoNnn+NQpmmy7QQERIjWA9qnvg5aB1L2rJhPJhQZPlG7ba/VWo5bX
+	EjvllBs5dcRDxMj0godx+qRYgPTS4wmiNY25PZlE/EQjKH3qGHbJrqbSMOum/w==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=mP2aji1W;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=AKXkJ+G8;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=QTUFux+i;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=UECQyIEj;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792064523;
+	s=20260414; t=1792066501;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:list-id:list-help:
-	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=hs31rfRWTzi8+zBwGnWvlKBMYZSQRLVtBkG5p0Kj9Ss=;
-	b=S0aQApqIYCTrJeAaQYh+NLrgrCSLhnJk8bmt+XaQprg8HKfzz0EKgh0JWk2gd1pfZl+uwc
-	4DCBllI/ykVRBqTtkHOGEQU2CSXvlHWcO46Wcy0KP1CVHU5+J6j6wLBAa2dVNpuJ5Mcx5J
-	zvmdg7HYV/dt2y8/6JQmi+Sv6tuDHJj9ITCEaKVJiwaiUjCddX7NGoqcXpU96kJqK6PrK0
-	gYj4A4UAjmnAtPxoX2CNOrlJJNe6yOFLzCRGmpOWVfISLGTYInCnh2Kgo8wiE2Tj57YPlV
-	fi0EEPzkhBuH7tkQS1mLZOz8dpbAUyP1l+anfYYrTRodO1OHFgyw8uyb4Jf/Tw==
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:in-reply-to:in-reply-to:
+	 references:references:list-id:list-help:list-unsubscribe:
+	 list-subscribe:list-post:dkim-signature;
+	bh=2NSMuu0ShMTqf7gGClPUsmeQiKsa0Auvvt2TY0HAJZM=;
+	b=a4J4dsDQRC6YXDWb/WMl1tyRXeWtRe4fKii3zs1ruzrotzmoRSccoxqxMWfky8eV4okMRa
+	w5sXgnddAMwcrAivQtI8SvXoVEDap/+WUTA+LkEzHbxjKtg5pIBeFIlkXHZ51di4tLXJuZ
+	v2wAqIqBmjlnV086hy56CJD3heGf7vuFBHeq/g9HcANxW0759BqWvobIJCucPZIQLo85Na
+	bCEjIt/Oa18nlJnIJOH5hyByc8p043ejKz3s4ZvnAy1/09eu0XqjIYJpDr0tlbeEnLgSlD
+	TvFhumibOmKPBbY+92YTKDCBfVehGqxhV2llOHvg5VKa53xAG0QHLFI2mnIvfg==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=hs31rfRWTzi8+zBwGnWvlKBMYZSQRLVtBkG5p0Kj9Ss=; b=mP2aji1Wimt3Gac8aIgn0aZaGt
-	duY0zbRNueCztNJBUM68TGhKtlQQ+rULU2d1eYwFgDnfaSm8aUCjHgQAKACaONoNL0ovDuk0ZWEC/
-	kuA4Q+FKK5kERKL0oc6/FXKtowulQ4MzGtasyOsip8G6MDUMpcjjmn8mVA5mqAqSEMJY9kUycn+Xr
-	fg8Qn0wOP6J7w5zMVwmpzQ473OYw1Qd9a6ZXk3LnRkeX+y3xG1iNdbifxh15bh/tmD4btFBSbMBdi
-	M0/Md8nVmipOUuCqfDCLyt8gxM7Jf/uWRr7/5bT/Lb70uMXbfV3hzv98RvaFKZcljE1CYNlSjs7/H
-	gz++g2TA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=2NSMuu0ShMTqf7gGClPUsmeQiKsa0Auvvt2TY0HAJZM=; b=QTUFux+i/byyYCtWs5kwo9l5+I
+	EcD7/st9JTyfCGx7L6ltTOblWF2Q2L6V+e/atvLBMGIA+HZXB0kPt4XLkH8EEGXjiCzMQra83xPAZ
+	jhyVFjvK0Uz0BHKE1yJXJOHT4zA2h2li+S/87aBmI7CNo/Hcw6WFxOteyBGHbk/MCpDII0jMPIuu1
+	9UIT+EwE9ekp7fic9Sfcf5FCClRo3G1moxbyAAcBOC6bseydNPJvFTHl3E97ee4izabB0YNnQ/Isg
+	yWnXkTvQ9d1Y1ZCVlqWz8N70A6LJaSMYYxlN5i0inA/XVAYH4qzApZ5DyFLun4cS3k1SrO1LeuMfl
+	TxEmaJ0g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xHJpO-000000000CG-0dpa;
-	Thu, 15 Oct 2026 11:40:54 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1xHKLD-00000000448-0phf;
+	Thu, 15 Oct 2026 12:13:47 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xHJpK-000000000AF-25Md
+	id 1xHKL7-00000000438-3OhF
 	for barebox@lists.infradead.org;
-	Thu, 15 Oct 2026 11:40:52 +0000
-Received: from dude02.red.stw.pengutronix.de (dude02.red.stw.4.pengutronix.de [10.17.1.16])
-	(Authenticated sender: relay-from-dude02.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id D199A2004B4;
-	Thu, 15 Oct 2026 13:40:48 +0200 (CEST)
+	Thu, 15 Oct 2026 12:13:45 +0000
+Received: from ptx.office.stw.pengutronix.de (ptx.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::109])
+	(Authenticated sender: relay-from-ptx.office.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id CD7C72027D0;
+	Thu, 15 Oct 2026 14:13:39 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792064448;
+	s=20260414; t=1792066419;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hs31rfRWTzi8+zBwGnWvlKBMYZSQRLVtBkG5p0Kj9Ss=;
-	b=AKXkJ+G8Ipu4NO7CSQmurmQQ3wvLcI+R8qiPWAWLIj4i9Cld9kbVqjD72wxV100cLXbToz
-	ZYqVTQG+4PCGie8Aa4lP5o7lE891mrECp3+aqqOrmr5JrwVBf1ODStVJCUtIVvrM0hGI/J
-	YntiynKqNwxrtRVcRZDYzHnTgU9e+++LQA2JC6dfuu45kv7+GUFcfK3c3sJl1K8MV6wiK3
-	KY4ReTk5vqFrdTnQ2EhAzLcZJzc3dAb53xXk9u96XsVbjh+zM9k2c6L2oCLkNC92iXHYp2
-	IgoR+5x6mQ61Sr8YxLRMfu7YDhiqvbWX6gZDXtZFXp4xrSgvdbfsqe8YMb8Trw==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792064448; a=rsa-sha256;
+	bh=2NSMuu0ShMTqf7gGClPUsmeQiKsa0Auvvt2TY0HAJZM=;
+	b=UECQyIEjwcRUYuIY6FIXl9zoKctqB30iKcoELgwtKdurnJc1SVxjrfQ5LE94NkXVImlcDM
+	6AM7bXtnuVqQtEB18xDUmOuI085ACEIUxmwhczXVbj4M+P88FAMQ14J6Nx0eAwlFak4ION
+	BuPhntXrCCzaDaqKxEqGr6+bSLY36+vUc0M1icgDFgNlGurwxx5ZaRHjf9rpkyts+MTtQa
+	RHi3PX7m52HzjTaLSnyjOZE92AoNaAaHZB3JnFNAVa1qjsGMj7MOx6in+4oJT4imuq2zNf
+	np2AgG7DD2dRy/9jaIpnmXbysl6/i6aHvEpe451tHtIwG0Ep1mzGafni1Q+3VA==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792066419; a=rsa-sha256;
 	cv=none;
-	b=PMbh8kSTEcEtC0KO/PDiss4Pg98aLuuxwSZ7ncRPlQSLR3Ke/6RD/eDoEn1VUi2uQPiocz
-	6r3bH29lXUcUBICqfjEHRp+0mgRGL3btbUZgTEFQyRUr9oCl+GvVN2uzvcOTCyZdpEljiN
-	bIpTw5aD0cNrYfM2bw9ydHJKBhZqxlv9bTULIGkbft6qSlue660KqCuIOFsW2NyeFi8PMq
-	0mdqE3HaK+PQAxUXGCXRXfR6UbM498o1IYY0+J+ErKjgcOnZxOI71V2Cq9gNKcSuLHOMVH
-	6QYKqDs8qQtnPQdOf4HFM9ig3XOeLs3wdQDzbmlGh1OAPcL8GnMBDY8cOKdoGQ==
+	b=ez3cM22i4+qLynG5/H66c5IvwBIR/tSp93amwc4mQeBi4ORIx1QUYbVGiiQfezfbrRLIwj
+	lxz3DADPf2wPCedm/Up7Am7mTDHKrfjRF4zfohCduyfsBJwG1vUz42w1ZcoaoB/7yP8dUk
+	kS/3OO0IwQUirG+agEFUsr5i7+ytTLR0gQHnQID3FN/CCfOEeR6nvMR2HrdgFKxXEXcA8B
+	itP7m4+tBLhoJT6d07DgYk+reDFLdN309DTpuwZb6w3aYDRU+ZKNH0s8cxlo2wSqctksEv
+	HLwQdJUNoH58SCnOpjMS9SuhPu4QRFAgUhIKbWarWLYDpdmk4DJmaOwFtvJQIw==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
-	auth=pass smtp.auth=relay-from-dude02.red.stw.pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
+	auth=pass smtp.auth=relay-from-ptx.office.stw.pengutronix.de smtp.mailfrom=mfe@pengutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792064448;
+	s=20260414; t=1792066419;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hs31rfRWTzi8+zBwGnWvlKBMYZSQRLVtBkG5p0Kj9Ss=;
-	b=AyWciSE2pYlylaxa4GEEYPqBiOFcDcamLT583w1+Y0aDLYXUyLcI3KoKn0Tc1GSXL6/JZ/
-	EJKzHKUhRZFk/oZWUtFOajjZ+WdFCjDvDgYdn5Gz87xo90Q/NlHg+O2Nk6541JWEizXn2F
-	nXkJU4wsu51Cu8eL75WaxJgfNeLHSHjq27pF7u/GbQHhmsHZFrLgfnbVE74sKwihZhjQ47
-	99xEt1gTjGG6mhKydAaAqPYWFM+r7/i0pJVa/RzFw0zXEQUsuvlB71pGtSA3Gup3VIZP9m
-	JFi5H1elk8WE0/00aZHJ4uushmS0Xu3ZWnlpCVPsBPDVUJ73ePnPBlcPNMqzsQ==
-Received: from dude02.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude02.red.stw.pengutronix.de (Postfix) with ESMTP id B8CBAFF88D;
-	Thu, 15 Oct 2026 13:40:48 +0200 (CEST)
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20261015110335.2285479-1-a.fatoum@pengutronix.de>
-References: <20261015110335.2285479-1-a.fatoum@pengutronix.de>
-Subject: Re: [PATCH master 1/2] Documentation: migration-guides: add
- heading for v2026.09.0
-Message-Id: <179206444874.154876.10824558513819619681.b4-ty@pengutronix.de>
-Date: Thu, 15 Oct 2026 13:40:48 +0200
+	bh=2NSMuu0ShMTqf7gGClPUsmeQiKsa0Auvvt2TY0HAJZM=;
+	b=O/8RWOrdNEHPucyq95WmTGMNeq9a6iFvQyDSn6XueQFL1rWj4TAZnhFZHoP5Y5Glc57gnU
+	VpE5Q26J+E7iZ0qJyp05q4VUteOkSG+cqhIQom9dIZAH2e7kwWzzZ8ydW1oTBLEvfDWjpb
+	AuxTzmsGcTfeofeAXOGtr4HYEbdDTrT68TIdWF/w2c6eEd+Fva8Nz6hW+BAMNo3crmFjUN
+	HnrUfiKdJjoyL1thM25Xr31ckMfiBKbRyWYYWhovhWsqRYNjE9stBJ2va8n/Ds536kPxzN
+	9Q/PaUvX4nXEX3aM7JYupJSXnXSTq/eB/giOAj2AeXxkTynlzt80DpUxCvOpEA==
+Received: by ptx.office.stw.pengutronix.de (Postfix, from userid 1064)
+	id B0D131C0239; Thu, 15 Oct 2026 14:13:39 +0200 (CEST)
+Date: Thu, 15 Oct 2026 14:13:39 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, fpg@pengutronix.de
+Subject: Re: [PATCH v2 09/10] Documentation: efi: describe load options
+ handling
+Message-ID: <gveoo4ebchsh4jsc4zclydgka5ri5ju5cmzemknugondbcpjzv@34gotzeh3jiw>
+References: <20261015092308.146516-1-a.fatoum@pengutronix.de>
+ <20261015092308.146516-10-a.fatoum@pengutronix.de>
+ <tqorcgwnas5oc5nfyuswbns7cazd2jghiqcqrk2ra7esagx2ys@4kzonh3562zf>
+ <7b26bdee-d4c5-401d-9a51-1aeba18f239b@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7b26bdee-d4c5-401d-9a51-1aeba18f239b@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261015_044050_692719_B0342339 
-X-CRM114-Status: UNSURE (   4.57  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20261015_051343_408533_5AD8A069 
+X-CRM114-Status: GOOD (  33.97  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -128,12 +126,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Thu, 15 Oct 2026 13:03:30 +0200, Ahmad Fatoum wrote: >
-    Otherwise each entry is shown at the same level as the other releases. >
-   > Applied, thanks! [1/2] Documentation: migration-guides: add heading for
-   v2026.09.0 https://git.pengutronix.de/cgit/barebox/commit/?id=8ba0d28dcd92
-    (link may not be stable) [2/2] Documentation: migration-guides: turn m [...]
-    
+ Content preview:  On 26-10-15 13:19, Ahmad Fatoum wrote: > Hello Marco, > >
+   On 10/15/26 1:08 PM, Marco Felsch wrote: > > On 26-10-15 11:18, Ahmad Fatoum
+    wrote: > >> +To pass a ``root=`` option to a UKI, have :ref:`comm [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -162,58 +157,144 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-60.41 / 15.00];
+X-Spamd-Result: default: False [-59.91 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_SPF_ALLOW(-0.20)[+mx:c];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	MID_RHS_NOT_FQDN(0.50)[];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	MAILLIST(-0.20)[mailman];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	RCPT_COUNT_TWO(0.00)[2];
-	MIME_TRACE(0.00)[0:+];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FORGED_SENDER(0.00)[m.felsch@pengutronix.de,barebox-bounces@lists.infradead.org];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
 	DMARC_NA(0.00)[pengutronix.de];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_THREE(0.00)[3];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FROM_NEQ_ENVFROM(0.00)[m.felsch@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
+	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: EB1362027CF
-X-Stat-Signature: qiddw5sr753dtkkh4qdjdgfgzd4xbcgr
+X-Rspamd-Queue-Id: 91EDA201BC6
+X-Stat-Signature: sun7whyi9obygsia8oquk1txwsacohm3
 
+On 26-10-15 13:19, Ahmad Fatoum wrote:
+> Hello Marco,
+> 
+> On 10/15/26 1:08 PM, Marco Felsch wrote:
+> > On 26-10-15 11:18, Ahmad Fatoum wrote:
+> >> +To pass a ``root=`` option to a UKI, have :ref:`command_devlookup`
+> >> +generate it for the root partition, the same way ``global.bootm.appendroot``
+> >> +would, including the option name from ``global.bootm.root_param``:
+> >> +
+> >> +.. code-block:: sh
+> >> +
+> >> +  devlookup -v rootarg -k /dev/disk0.1
+> >> +  global efi.bootargs.root="${rootarg}"
+> >> +  bootm /boot/EFI/Linux/uki.efi
+> > 
+> > Just a comment on this: devlookup can't be compared to the appendroot
+> > mechansim, due to the partition enumeration mismatch between barebox and
+> > linux, e.g. mmc block device partitions start at 0, whereas linux starts
+> > counting at 1.
+> > > On embedded devices booting from an MMC device the root=/dev/mmcblk*
+> > mechanism should be used if the device supports dual boot e.g. from SD
+> > and from eMMC.
+> 
+> devlookup -k follows the same code paths appendroot would follow, so it
+> will be 1-indexed /dev/mmblkXpY if that's what appendroot would have
+> produced.
 
-On Thu, 15 Oct 2026 13:03:30 +0200, Ahmad Fatoum wrote:
-> Otherwise each entry is shown at the same level as the other releases.
+Ah, good to know, thanks.
+
+> > Therefore I would have liked to see that the appendroot mechanism would
+> > be supported for UKIs as well which would stop the requirement of having
+> > different UKI profiles just to encode the different boot mediums.
+> 
+> I believe barebox can't provide this universally.
+> 
+> - On an x86 system with secure boot, the systemd-stub will ignore any
+> extra command-line arguments, except for the profile.
+
+According the comment from system-stub, the cmdline is only ignored if
+the UKI already has a cmdline and we're in secure-boot:
+
+---8<---------8<---------8<---------8<---------8<---------8<---------8<--
+| * We'll suppress the custom cmdline if we are in Secure Boot mode, and if either there is already
+| * a cmdline baked into the UKI or we are in confidential VM mode. */ 
+---8<---------8<---------8<---------8<---------8<---------8<---------8<--
+
+Regards,
+  Marco
+
+> - On the ARM systems with device tree, we may be able to cheat by
+> patching the DT, but I have not checked how Linux or systemd-boot handle
+> /chosen/bootargs if they are booted via EFI.
+> 
+> Cheers,
+> Ahmad
 > 
 > 
-
-Applied, thanks!
-
-[1/2] Documentation: migration-guides: add heading for v2026.09.0
-      https://git.pengutronix.de/cgit/barebox/commit/?id=8ba0d28dcd92 (link may not be stable)
-[2/2] Documentation: migration-guides: turn migration-master into directory
-      https://git.pengutronix.de/cgit/barebox/commit/?id=a2af2723dbec (link may not be stable)
-
-Best regards,
--- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+> > 
+> > However, as said this is just a comment and doesn't block this patch:
+> > 
+> > Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+> > 
+> >>  Drivers
+> >>  ^^^^^^^
+> >> diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
+> >> index 8e6f3bbbe9ce..dc7ac6dc8716 100644
+> >> --- a/Documentation/user/booting-linux.rst
+> >> +++ b/Documentation/user/booting-linux.rst
+> >> @@ -103,6 +103,9 @@ to the bootargs. Variables without a value are skipped:
+> >>  
+> >>    Kernel command line: ignore_loglevel console=ttyO0,115200 earlyprintk
+> >>  
+> >> +When booting an EFI-stubbed kernel as EFI application, the
+> >> +:ref:`EFI load options <efi_load_options>` precede the Linux bootargs.
+> >> +
+> >>  .. _bootargs_concat_order:
+> >>  
+> >>  Concatenation order
+> >> @@ -170,7 +173,8 @@ This takes the kernel from ``/mnt/mmc1/zImage`` (which could be an
+> >>  boot entries should always add Kernel command line parameters to variables with
+> >>  ``.dyn`` in it. These will be cleared before booting different boot entries.
+> >>  This is done so that following boot entries do not leak command line
+> >> -parameters from the previous boot entries.
+> >> +parameters from the previous boot entries. The same applies to the
+> >> +:ref:`EFI load options <efi_load_options>` in ``global.efi.bootargs.dyn.*``.
+> >>  
+> >>  This entry can be booted with ``boot mmc``. It can also be made the default by
+> >>  setting the :ref:`global.boot.default <magicvar_global_boot_default>` variable
+> >> -- 
+> >> 2.47.3
+> >>
+> >>
+> 
+> -- 
+> Pengutronix e.K.                  |                             |
+> Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
+> 
 
 
