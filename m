@@ -1,151 +1,150 @@
-Delivery-date: Fri, 16 Oct 2026 10:24:11 +0200
+Delivery-date: Fri, 16 Oct 2026 12:33:00 +0200
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xHdEZ-00EHWy-0R
+	id 1xHfFE-00EJsK-1j
 	for lore@lore.pengutronix.de;
-	Fri, 16 Oct 2026 10:24:11 +0200
+	Fri, 16 Oct 2026 12:33:00 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 95F512007F9
-	for <lore@pengutronix.de>; Fri, 16 Oct 2026 10:24:10 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 03619202374
+	for <lore@pengutronix.de>; Fri, 16 Oct 2026 12:33:00 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=uB9Yo8ec;
-	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=lrwWcOHH;
-	dkim=fail ("headers rsa verify failed") header.d=norik.com header.s=default header.b=SJgXBQv5;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=egv2bmAn;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=ISiU+zVS;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
+	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792139050; a=rsa-sha256;
-	cv=none;
-	b=b3sFM535kAz2GYYGgafrPH4wLyCQdQ1tNFMGzLO+a8AdV39Wd8ah92swiROY5mMfhb/KNT
-	96rgip5J6+OKKCl+WgQoADIjXf8pvQhPnmmzylmQAgiW+IesV5Bk6X2MRy4yV6yLBh0/L4
-	iPjRZpAP/oIhmGrE0p/h6glaiNUALAhG8qrUcQbkxdjisOQJ8LbOJ7TQz69sPpmOTm5rBL
-	2rMNpZlAYHWx7jLnwTMksYW93t0CaM2JSk/IaNtZXBpyaaXsk9/hMJvNloFMUQD1jE4dSi
-	VPXnPa9Q3bON/Gy97mZmnQhSCXkWwzRs0io7dvCqKXJyNSHFxK8fhpBwe72pLw==
-ARC-Authentication-Results: i=1;
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1792146780; a=rsa-sha256;
+	cv=pass;
+	b=J7iRQBftpYqLky1QRZ/1STPxJNENAdZ2C1xNRUNW9MSEG1WrQvo1W7wDvuaePQ3pEOvYN0
+	h3QN6c3kKqrhVKHImQSbHuTzdJBK/fHgn3KXxy2lmUl7X5PX2iHZHhrIDeQFpbjxluKH3G
+	lLPOFnNwOm1WByIrGFAlUlM/tDvw1JZ5jm3MbgC+sZGGYClMNWj+enxpw1D9zlZORjT05I
+	g1jaomvCr0CC7XEVExeyti0MmtkurCeMs8VMp8Kpv8p30cSXUABrweSJIKV8sYL4kpmbZP
+	V6WNMf7nmuw5weXcBZYp3V2kiWdbEnIGV1NDHnitxvNwcH/MFN8csl3Agqxnyg==
+ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=uB9Yo8ec;
-	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=lrwWcOHH;
-	dkim=fail ("headers rsa verify failed") header.d=norik.com header.s=default header.b=SJgXBQv5;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=egv2bmAn;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=ISiU+zVS;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
+	arc=pass ("pengutronix.de:s=20260414:i=1");
 	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792139050;
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792146780;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=bSt2z43xpxBuEbHA6J4cR9LLeHc6wr5aNDGAYVxOZzk=;
-	b=O+jep0ZXB8KtsmsvskUB/Vqw9Qm6oYBqQ7L6AtHTJt+iAd2Y9sN4w9kCooiy188j9oafyB
-	GpdGEEoQIScX0umH9XYlZlRJV6s/Tn2+Vq/wLFSBhoZ477VtmlB10/yIij06fe+oy8QQGt
-	dPyX7h6/8nKta4x2cWo5OhU2b+ucTAIfR8y+498tcUlDDK/Iz2dyfy2hAfQzFtApJf8Zjp
-	FK7CDVBD8f2/ZLtqUM86ukgLYa+1+G6vtcO6nT1bw+DUHd6d525R10TAEtfi6vx5iMZltE
-	7hPuEnMBR2M13bmL9VmSk068OeFWcI1Id2bK7cQ0NjfwAB6nVJFFUwVwFcI7wA==
+	bh=tKdqeWvFTvL9BEGrxHQVmqhBLqwv0VXq9547IaBSgpQ=;
+	b=L5mxahsRxtr84NwjF7EsJTg14MXBplFQFT53VZzGYnavUL64gBFzKu2iStpXJuwHJxhG1l
+	kvCmIZaoEA3Qurr2TwozH7z7Wwj/OHTpoJCj/wnwi1tcmoT/W2xgNEkIp660p8E6bZ24YT
+	tO5y8y+2iz9gkcu6o8ycRXrk4Stac4wKlj1M9UOm4Z6C/A3i+WL+mddOzy1du+OEXRGPBj
+	FtACSRzCGFPBCovAOG44Gncj00AqKahMA9mU/CSOoi0vVhYLnuk03u68XBb+tQwg00btdo
+	PAdz5tMJOiPsK6BfGelSuQ5i2Ml32W1gVnpCKmF3rJ1FdEgDP0wtzavp1Abo/w==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=bSt2z43xpxBuEbHA6J4cR9LLeHc6wr5aNDGAYVxOZzk=; b=uB9Yo8ecMXQuouSmwh+yiEE3TG
-	33RqA26o/CUPIHv1skXXKdZsI6/8gZ3Hw4UoNRFkjSman7FVR8E8Esy4S2NIt5nRSIWS3sunNWwka
-	WvA5qTn6Ko6Ia2ALT92eRit+rraTqKwPVBiCS9Ac4PFFb3f8GVG/2ruBCzm1+RvhF87AT2z//3IWL
-	8igp9hhpATACCK/IaiwZ3eIs0ypGp969yXcRccgjnWDxkdI1Wqt6JN69NIDIikAGfaF3PJQ+RCMR1
-	TQppVRCBB5QzNF1bJKKeq5cPhFKAZaClIuqY39CA1WYWzbzlLAMhNuu65sHk841eivvfCig7ojxbi
-	xoCCqi8g==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=tKdqeWvFTvL9BEGrxHQVmqhBLqwv0VXq9547IaBSgpQ=; b=egv2bmAngrYQ6Y+IHcvh0bQsKk
+	cpaCfszq+eGwiFGvgBvhQX5NeAGrZ5kPUkMbggVOihoWQcTsPsTrse1c4SK7g4D8RZVJRDVyrIDNH
+	PHSo+WQt5iMz/oZ1iywPALURZGR7HX5FaxjPjBePBQmyPfNZwT+LxNPm02Dp+v/smx1Ot5gQ7pKjG
+	ePxM1KNaKOKRlJo9p+GJKwWTydJxRaSxItXiNKXRQVyE9dclDST/yVk4/+ZkQq9e4ukCZT7aZWmNO
+	mp8sY+qsD0GeFhg9HS+8CRTT1qY79gj1u6LsrHWOgZNfUwpL3/By/4BHlwinNJuAqW3E3lMk0kG8b
+	M+eCKKww==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xHdDv-00000002KAk-0C0B;
-	Fri, 16 Oct 2026 08:23:31 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	id 1xHfDs-00000002dRC-1WUF;
+	Fri, 16 Oct 2026 10:31:36 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xHdDt-00000002KAM-1lSD
-	for barebox@bombadil.infradead.org;
-	Fri, 16 Oct 2026 08:23:29 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=bSt2z43xpxBuEbHA6J4cR9LLeHc6wr5aNDGAYVxOZzk=; b=lrwWcOHHWE/3luzGUTxBbVYV8F
-	RYrmzQT2jkwTZgGcH77ZoU5rUjjO9u/yuaXS7YrJ2N5G+bj7QTG5RYx1zUhWb3NtiKuxphqOyV9Lh
-	F1uejgPzXu/TIjizZRy9nd7zNO5EwFdS9Lu3ZHW5X0hT3ohDmEqewv10FCPkOK2mdnLeO86fhpwee
-	Sh9r2BDT5HoIc/ZfFqSQzWUNfvdCSa8RaG7YlWWpykLrcEjxoP5XD1txhFVQ7s/P3+WESSD33es3l
-	Y2npb5+vdMebmdwADpWhWoFNi8PXzsB09l7yhG0qgtdLZIu+Ru/3HrxypiwO97N+d9y46eSmfEDfm
-	wv9aCreA==;
-Received: from cp2.siel.si ([46.19.12.180])
-	by desiato.infradead.org with esmtps (Exim 4.99.5 #2 (Red Hat Linux))
-	id 1xHdDp-00000001GCV-332g
+	id 1xHfDo-00000002dPO-3l3F
 	for barebox@lists.infradead.org;
-	Fri, 16 Oct 2026 08:23:27 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
-	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:
-	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Unsubscribe-Post:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=bSt2z43xpxBuEbHA6J4cR9LLeHc6wr5aNDGAYVxOZzk=; b=SJgXBQv5wOTZQtNsw7Vyf4ZRoc
-	kj6ikZUsTQi3YIzu+v8NiY8EdOFqrb+CKju5rfAeVorYxWBY42GGLokWI2KuzQLdy2thWtL4QG8zE
-	5Grp6bIPUKsZws1eEHfabpFCOg0Yocbp8v4jJ31/BFvhZs5r7y5Fcr2kecyJI3cWSnRGmPjeVSi8d
-	a3JB0DuVRKgX9ERGwsLBHH+OXl0VZnvjHYXAETPDv4no8CurY4A+vA0pDBYi8xUYz1aVmkgRQMAbv
-	YuUywwletuWdXiFh6m23XaB6gDr1hrLdOaJ59/xZ07hn3TLFSe7zy299ayalpJicq9V3aCOWjmg7O
-	ZsHuMvCQ==;
-Received: from 86-58-88-254.dynamic.telemach.net ([86.58.88.254]:43415 helo=florijan-nb.localdomain)
-	by cp2.siel.si with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.100.1)
-	(envelope-from <florijan.plohl@norik.com>)
-	id 1xHdDA-00000003mLy-1WOT;
-	Fri, 16 Oct 2026 10:22:43 +0200
-From: Florijan Plohl <florijan.plohl@norik.com>
-To: barebox@lists.infradead.org,
-	s.hauer@pengutronix.de
-Cc: upstream@lists.phytec.de
-Subject: [PATCH] ARM: boards: phytec-som-imx6: Add KSZ9131 PHY support
-Date: Fri, 16 Oct 2026 10:22:14 +0200
-Message-ID: <20261016082240.381141-1-florijan.plohl@norik.com>
-X-Mailer: git-send-email 2.43.0
+	Fri, 16 Oct 2026 10:31:35 +0000
+Received: from [0.0.0.0] (ptz.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::77])
+	(Authenticated sender: afa@pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 1B73A201765;
+	Fri, 16 Oct 2026 12:31:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792146691;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tKdqeWvFTvL9BEGrxHQVmqhBLqwv0VXq9547IaBSgpQ=;
+	b=ISiU+zVSVpqTF9N1GwqHtG5dWiw7a+zXIsQXrehyzOPNDFOTENZ+Lfhgg7zCXVxLbS86kA
+	yGE75BDzMxj55TYPpGlsfLIjW/aNW/daIlqpIi5daOt34USsvmA754yOIjc7I/LrcISgX3
+	VOiGvTTOgK269YKpAjh76ZADil3pXZVq3Hz8OqadyiZBUdNGqqv8RkXo2MK551hqo9WVNE
+	/c8mW8H7h61nbVz2ItQYkKmPYOXtzrg2PXeL08C3l27HtH7AOWadrwnxrdtnQ8a1g43hfG
+	A0VuU+A5L0Ag/9RhIIBdfZHWemJxGKW/j7g/fIX3kZWOI3SMEvfzp1rNFnWLeg==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792146691; a=rsa-sha256;
+	cv=none;
+	b=Wh2gxWOWZA3SIWOVnGQXo4gDhd41S/7ko9gDJdyfk5yQsUpTTd6+FEsiL2FIgNPQCNU06R
+	t1ha1kMtoVjNp9KEoyKeDU1tdZi96PNV3NOW0Cs0fVSwbKBJOOuTnYvXA/rDLHPqRoQyIc
+	hRH0HdRTzYa63tTmWP5/uYrGYnYjMWgAXciXJ3n6mMGC6UCQqRgHJb4ZMojUMm9K6AtmAe
+	10TPIN7kUEUGc2a9mUEtnU8Gc8R8hD4aXOJy0qOt8899EpzuV0ZSZcs0JP6QlBzF7CHXm3
+	ZUm6j/BW6sLHwN/2DKKxBhK3jEOFTUttpitn+CbEiLgPJ1sPkEgBr9ckjB1ZyQ==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=afa@pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1792146691;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tKdqeWvFTvL9BEGrxHQVmqhBLqwv0VXq9547IaBSgpQ=;
+	b=UZuOCIFgT0Wx4uSGLQW1Zuscac/b239F0aWTJUT1Ry3U0xNs/W1t+2lB6pBAxGnOzOLhzA
+	KsVP1pX7rNMA4SZD/MPgjukjTXtXvmg9Pe8BUMTJMEoV4bUkZ76uPhJPoOyvLOJR/f9i/r
+	KwY2BTmjlS3zBRoGVhM5B18uFlgv58pqOzEbnoDEO7aU20TruLAn/kyt62LDX8JSsu2xa1
+	8y9xQi1+IBXq4908dQ5MjNPfvExKndgQOHkGm02WwDzIc3lfisKdxtSSnicc9zNk2O3H6n
+	IZgh44SN63x0kPSnrOSjtQg6/e0yttm6OJT6w75mVk3y/odJ2D3xWl6Uf7y7Ag==
+Message-ID: <50e72463-4202-4dce-9203-144c109016d1@pengutronix.de>
+Date: Fri, 16 Oct 2026 12:31:30 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cp2.siel.si
-X-AntiAbuse: Original Domain - lists.infradead.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - norik.com
-X-Get-Message-Sender-Via: cp2.siel.si: authenticated_id: florijan.plohl@norik.com
-X-Authenticated-Sender: cp2.siel.si: florijan.plohl@norik.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] dma: add dma_xalloc() and dma_xzalloc()
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ BAREBOX <barebox@lists.infradead.org>
+References: <20261016-dma-alloc-v1-0-31fc7afe3954@pengutronix.de>
+ <20261016-dma-alloc-v1-1-31fc7afe3954@pengutronix.de>
+Content-Language: en-US, de-DE, de-BE
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20261016-dma-alloc-v1-1-31fc7afe3954@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261016_092326_073721_32A453E6 
-X-CRM114-Status: GOOD (  11.82  )
-X-Spam-Score: -0.1 (/)
-X-Spam-Report: Spam detection software, running on the system "desiato.infradead.org",
+X-CRM114-CacheID: sfid-20261016_033133_088325_7EA90AD0 
+X-CRM114-Status: GOOD (  17.92  )
+X-Spam-Score: -2.1 (--)
+X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
  message has been attached to this so you can view it or label
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  The phyCORE-i.MX6 can be populated with a KSZ9131 instead
-   of the KSZ9031 PHY. The KSZ9131 driver reads its pad skews from the *-psec
-    device tree properties, which the KSZ9031 driver ignores, so add th [...]
+ Content preview:  On 10/16/26 9:36 AM, Sascha Hauer wrote: > dma_alloc() and
+    dma_zalloc() are implemented with xmemalign() and > can't fail, yet many
+   of their callers check for NULL, while others > rely on them never r [...]
     
  
- Content analysis details:   (-0.1 points, 5.0 required)
+ Content analysis details:   (-2.1 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
-  0.0 SPF_HELO_NONE          SPF: HELO does not publish an SPF Record
  -0.0 SPF_PASS               SPF: sender matches SPF record
+ -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
+ -0.1 DKIM_VALID_AU          Message has a valid DKIM or DK signature from author's
+                             domain
   0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
  -0.1 DKIM_VALID_EF          Message has a valid DKIM or DK signature from
                              envelope-from domain
  -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
- -0.1 DKIM_VALID_AU          Message has a valid DKIM or DK signature from author's
-                             domain
-  0.0 NORMAL_HTTP_TO_IP      URI: URI host has a public dotted-decimal IPv4
-                             address
-  0.1 URI_HEX                URI: URI hostname has long hexadecimal sequence
-  0.0 NUMERIC_HTTP_ADDR      URI: Uses a numeric IP address in URL
+ -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
+                             [score: 0.0000]
   0.0 DMARC_MISSING          Missing DMARC policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -159,137 +158,143 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-6.11 / 15.00];
-	BAYES_HAM(-3.00)[99.99%];
+X-Spamd-Result: default: False [-60.61 / 15.00];
+	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
+	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
+	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_MISSING_CHARSET(0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2001:8b0:10b:1:d65d:64ff:fe57:4e05:received];
-	MAILLIST(-0.20)[mailman];
+	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:900:1d::77:received];
 	R_SPF_ALLOW(-0.20)[+mx:c];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
+	MAILLIST(-0.20)[mailman];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	HAS_X_AS(0.00)[florijan.plohl@norik.com];
-	HAS_X_GMSV(0.00)[florijan.plohl@norik.com];
-	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWO(0.00)[2];
+	RCVD_COUNT_THREE(0.00)[3];
+	DMARC_NA(0.00)[pengutronix.de];
+	FORGED_SENDER(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DMARC_NA(0.00)[norik.com];
-	FORGED_SENDER(0.00)[florijan.plohl@norik.com,barebox-bounces@lists.infradead.org];
-	FORWARDED(0.00)[barebox@bombadil.infradead.org];
-	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=1];
-	ARC_NA(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	DKIM_MIXED(0.00)[];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
 	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	HAS_X_ANTIABUSE(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_PROHIBIT(0.00)[0.152.150.128:email];
-	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_NONE(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	HAS_X_SOURCE(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[florijan.plohl@norik.com,barebox-bounces@lists.infradead.org];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,infradead.org:-,norik.com:-];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	R_DKIM_REJECT(0.00)[infradead.org:s=desiato.20200630,norik.com:s=default];
+	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_ALL(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 95F512007F9
-X-Stat-Signature: ym6u7peyofjarnmfju4opses64wf5czc
+X-Rspamd-Queue-Id: 03619202374
+X-Stat-Signature: 1fmzqwqmkfiefgrjsbhsn67oi3yfnwdd
 
-The phyCORE-i.MX6 can be populated with a KSZ9131 instead of the
-KSZ9031 PHY. The KSZ9131 driver reads its pad skews from the *-psec
-device tree properties, which the KSZ9031 driver ignores, so add them
-to the PHY node.
 
-The KSZ9131 additionally needs the 2 ns RXC delay of its internal DLL,
-but with the "rgmii" phy-mode the driver disables it. Changing the
-phy-mode in the device tree is not an option as it would also change the
-RGMII delays of the KSZ9031 and ADIN1300, so add a PHY fixup that
-switches only the KSZ9131 to RGMII-RXID before its config_init runs.
 
-Co-developed-by: Andrej Picej <andrej.picej@norik.com>
-Signed-off-by: Andrej Picej <andrej.picej@norik.com>
-Signed-off-by: Florijan Plohl <florijan.plohl@norik.com>
----
- arch/arm/boards/phytec-som-imx6/board.c      | 16 ++++++++++++++++
- arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi | 18 ++++++++++++++++++
- 2 files changed, 34 insertions(+)
+On 10/16/26 9:36 AM, Sascha Hauer wrote:
+> dma_alloc() and dma_zalloc() are implemented with xmemalign() and
+> can't fail, yet many of their callers check for NULL, while others
+> rely on them never returning NULL.
+> 
+> As a first step towards making dma_alloc() and dma_zalloc() fallible
+> like malloc() and calloc(), add dma_xalloc() and dma_xzalloc() as
+> counterparts to xmalloc() and xzalloc() for the callers that rely on
+> the allocation to always succeed.
+> 
+> Assisted-by: Claude:claude-opus-5-5
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-diff --git a/arch/arm/boards/phytec-som-imx6/board.c b/arch/arm/boards/phytec-som-imx6/board.c
-index 031d11d816..a1ff4b2c3b 100644
---- a/arch/arm/boards/phytec-som-imx6/board.c
-+++ b/arch/arm/boards/phytec-som-imx6/board.c
-@@ -129,6 +129,19 @@ static int adin1300_phy_fixup(struct phy_device *phydev)
- 	return 0;
- }
- 
-+static int ksz9131_phy_fixup(struct phy_device *phydev)
-+{
-+	/*
-+	 * The KSZ9131 needs the 2 ns RXC delay of its internal DLL, but with
-+	 * the "rgmii" phy-mode shared with the KSZ9031 and ADIN1300 the driver
-+	 * disables it. Switch the KSZ9131 to RGMII-RXID before its
-+	 * config_init runs, the pad skews are set from the device tree.
-+	 */
-+	phydev->interface = PHY_INTERFACE_MODE_RGMII_RXID;
-+
-+	return 0;
-+}
-+
- static int phycore_da9062_setup_buck_mode(void)
- {
- 	struct i2c_adapter *adapter = NULL;
-@@ -249,6 +262,9 @@ static int physom_imx6_probe(struct device *dev)
- 	phy_register_fixup_for_uid(PHY_ID_ADIN1300, ADIN_PHY_ID_MASK,
- 			adin1300_phy_fixup);
- 
-+	phy_register_fixup_for_uid(PHY_ID_KSZ9131, MICREL_PHY_ID_MASK,
-+			ksz9131_phy_fixup);
-+
- 	switch (bootsource_get()) {
- 	case BOOTSOURCE_MMC:
- 		environment_path = basprintf("/chosen/environment-sd%d",
-diff --git a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-index 7199c416c8..7b70f885bb 100644
---- a/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-+++ b/arch/arm/dts/imx6qdl-phytec-phycore-som.dtsi
-@@ -38,6 +38,24 @@ environment-spinor {
- 
- /delete-node/ &{/memory@10000000};
- 
-+&ethphy {
-+	/*
-+	 * Pad skews for the KSZ9131, which can be populated instead of the
-+	 * KSZ9031. Only the KSZ9131 driver evaluates the *-psec properties.
-+	 */
-+	txen-skew-psec = <(-600)>;
-+	txc-skew-psec = <2400>;
-+	txd0-skew-psec = <(-600)>;
-+	txd1-skew-psec = <(-600)>;
-+	txd2-skew-psec = <(-600)>;
-+	txd3-skew-psec = <(-600)>;
-+	rxdv-skew-psec = <800>;
-+	rxd0-skew-psec = <800>;
-+	rxd1-skew-psec = <800>;
-+	rxd2-skew-psec = <800>;
-+	rxd3-skew-psec = <800>;
-+};
-+
- &fec {
- 	/delete-property/ phy-supply;
- 	phy-reset-duration = <10>; /* in msecs */
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-base-commit: b8b7f9eb319d642a52fc09114abb79245d8b963d
+> ---
+>  drivers/dma/map.c | 17 +++++++++++++++++
+>  include/dma.h     | 12 ++++++++++++
+>  2 files changed, 29 insertions(+)
+> 
+> diff --git a/drivers/dma/map.c b/drivers/dma/map.c
+> index 11671f9f66..806439a05d 100644
+> --- a/drivers/dma/map.c
+> +++ b/drivers/dma/map.c
+> @@ -9,6 +9,12 @@ void *dma_alloc(size_t size)
+>  }
+>  EXPORT_SYMBOL(dma_alloc);
+>  
+> +void *dma_xalloc(size_t size)
+> +{
+> +	return xmemalign(DMA_ALIGNMENT, ALIGN(size, DMA_ALIGNMENT));
+> +}
+> +EXPORT_SYMBOL(dma_xalloc);
+> +
+>  void *dma_zalloc(size_t size)
+>  {
+>  	void *buf;
+> @@ -21,6 +27,17 @@ void *dma_zalloc(size_t size)
+>  }
+>  EXPORT_SYMBOL(dma_zalloc);
+>  
+> +void *dma_xzalloc(size_t size)
+> +{
+> +	void *buf;
+> +
+> +	buf = dma_xalloc(size);
+> +	memset(buf, 0x00, size);
+> +
+> +	return buf;
+> +}
+> +EXPORT_SYMBOL(dma_xzalloc);
+> +
+>  void dma_sync_single_for_cpu(struct device *dev, dma_addr_t address,
+>  			     size_t size, enum dma_data_direction dir)
+>  {
+> diff --git a/include/dma.h b/include/dma.h
+> index c285b2095a..600b91c485 100644
+> --- a/include/dma.h
+> +++ b/include/dma.h
+> @@ -28,17 +28,29 @@
+>  
+>  #ifdef CONFIG_HAS_DMA
+>  void *dma_alloc(size_t size);
+> +void *dma_xalloc(size_t size);
+>  void *dma_zalloc(size_t size);
+> +void *dma_xzalloc(size_t size);
+>  #else
+>  static inline void *dma_alloc(size_t size)
+>  {
+>  	return malloc(size);
+>  }
+>  
+> +static inline void *dma_xalloc(size_t size)
+> +{
+> +	return xmalloc(size);
+> +}
+> +
+>  static inline void *dma_zalloc(size_t size)
+>  {
+>  	return calloc(size, 1);
+>  }
+> +
+> +static inline void *dma_xzalloc(size_t size)
+> +{
+> +	return xzalloc(size);
+> +}
+>  #endif
+>  
+>  static inline void dma_free(void *mem)
+> 
+
 -- 
-2.43.0
+Pengutronix e.K.                  |                             |
+Steuerwalder Str. 21              | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany         | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686  | Fax:   +49-5121-206917-5555 |
 
 
 
