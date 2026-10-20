@@ -1,31 +1,31 @@
 Delivery-date: Tue, 20 Oct 2026 09:11:00 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xJ3zv-000vwA-2l
+	id 1xJ3zw-000vwK-0B
 	for lore@lore.pengutronix.de;
 	Tue, 20 Oct 2026 09:11:00 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id B0B2A202285
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id DD0602021F2
 	for <lore@pengutronix.de>; Tue, 20 Oct 2026 09:10:59 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=PIjmU+Pk;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=Mh56ugqo;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=43AKA89B;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b="W/GcNMTH";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
 ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1792480260; a=rsa-sha256;
 	cv=fail;
-	b=W7WUnHt90k1soYoeFBqkrH/vQzoib3tDAm3Kz8BQTeOKZ4/TRqQ/8VR4bxKtggvh9AKTVJ
-	Q5j5Kdb3VJHC+8KJkDvjj91fOschnbw1kU6OZ9owwDpWERNK3BTB92E/i58NdG8adcXhP5
-	3jH7e+9vpHwCEAHwLoWkF5AV4URXchKLG28sWchVDO6ePMvpew27MDS8zBhIWgdv848k8R
-	F4Wy1Y5Oy08rUovvc+VVzuzHL6SfEL16lLAmNK18LW1GrBAU2wuRZGAWTOLst2PsjP7BYv
-	Q2zX45ET3EjvDSpwcNvarHFfdXNQJpGYxD1iDNM3KQ1ZWF4if3Ueawg7XZlSXQ==
+	b=EYx97RDNvcBkZ0Rc50fsqbl1n12uK56OrsdHoj/mg8YdHvkzaJaRKgHBBc3lGwnkuDUYS6
+	ijS30XeYTXPrihcMNfv0iis33+26zRcgUkXQdjBOGDOc9jZp4O0Sps4grzTZOsYyxrxsl0
+	HbkI2VoHg0Le/NzuULdBdGnuhqMy27nhgK11wItfz1xnGDCrrysu+fcavwWwRhJS2TW1Vf
+	B+Np718YSSaTzXhaA/zHEde5nNkAOcGoakvM4ZFDd2uUyppncMK+cFvvg4ksIqzFEZXalY
+	r+pqFIUfkDH+PZ+QPO059pfFjeN5iuL5KjGdhw8Y31TrpKKdq1fSvDo/6csQDg==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=PIjmU+Pk;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=Mh56ugqo;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=43AKA89B;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b="W/GcNMTH";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
@@ -37,92 +37,93 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=IFV6JPg5RQWDVJCIfTxV1M/E1OkbhiL3bN22V4rIIMo=;
-	b=fHBoXMx+vlX3ggjofONkRMGXUGKljUDKqnkp6usoYK19n3IL19w4z02zGNH9vu4NxWharY
-	zsFDRapfyyNMhO0iFs3u/tTkpYr3XinsFxr6HXIkjmlR1+VbR4wUfYJlkHZR9SoqE9SCO6
-	HjC7ByjUG5E3Cv0kwFeHdK0maHv9WmKK5WTpskQi7rt6hdt7pldqcMEXGFW5+Gs1oNnw5H
-	qJqbMCSo49DcfOH6baoaCGYJGxi0NNgCVf7A0cqR5lRban/gwiFuuexr5m7rHz8KyW5RRj
-	6arKV4vDwJXXNbhr8us95IjZngLAtJnaguowSHTHJ+gifq9TSwvRQ7Z1/Cq5zA==
+	bh=kokKSc4KLQCmyJjk4RbK2T/dBJIsZ3ne8oWDRtUafO8=;
+	b=gdxchpDNvxs2AlclE3v1YYcSDfZPPJJPXsBy5FZQEkWOevgFs7Q6tWBQtCNr8rmF9T7sGM
+	/oPtCkU+vWbSiOA/EfI+pB+TPVnICszrFF/0zG2qUIqCJGT10LB4B6XdjRfB5XEdSKaWQg
+	a4n/AzyTdTc8sgp1e5tAL+en0NB2p7WOaeLR2nPfgOOFfQAhy0IC9UGxl9U2PwvgBxNms7
+	6ODpcvyxycFNqSfAI+Dx02g4kwe3wIC9iOxv2hrKGnKEDg9OL5GKLiceruwVHlWAug2SwZ
+	nh4ld2w5HQiXEk7hgSly14U+uQ/wKZDjr8aYxh/QasCx8CpkRXoDlOsLrrUmVQ==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=IFV6JPg5RQWDVJCIfTxV1M/E1OkbhiL3bN22V4rIIMo=; b=PIjmU+PkN+wvRe4dWyzIMtajl+
-	mPpwK/7MQW5S6P/R2NOhKtauzkL4+//p3tfLkhg0YCZwOKUiQU+5m+ybuZ6e4Q+HrSIIApS1um3PR
-	zKqS9W7D7d//WPTnI1J5mThVjyFCqvNzS3S69RhA5An8Z5UTBq8cPMlNAwH8xMs4kB3fCQIdFf6ks
-	aonyZDt0tty5l9j2TpWjHazYEuoHMVpjeDjsiOIt+5g2YYAx6i9691Du1477WuGGIUKftDY1we29D
-	+kviZ8I2SCitRB9bW6/AM8gGcMYf4owXxrE9qm0lWMT3GAw5kBLDL2CACXCc2c+2ZREtKOSDM5Qkx
-	pQURj7QA==;
+	bh=kokKSc4KLQCmyJjk4RbK2T/dBJIsZ3ne8oWDRtUafO8=; b=43AKA89B90YofHySdpkLxoM8sR
+	IzPqL+uITChQ26Mnzsiu2VwvVmNTRyB4jzWVAmlAIFK6fCZkS1bskvjFLxfdDEzdmQc+89qbW/I3G
+	XlWKcJFltuz0Sd/9OQmC7V9ByARyJ4pxg6YqySbsm7G30Y0KyQQwROkQs2XbFwvSw2KJVAOJNZQBO
+	5JXbB6rkSP4HjzzewP1IpTiarIrqvUhWx4A7LtAJrGqpvNsCZNFQiVi7sLWK7DUWzXOHdJsVNd22+
+	FJjYJxyHyZdHn40xd46wuqRxhLGFzZaxA8Ee/L8DApL50G5GNTBh6ESf/O+aTw+/GQLAb8kCpJusj
+	i//X8qDg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xJ3ye-00000008zKG-3kQ0;
+	id 1xJ3ye-00000008zJs-2kiE;
 	Tue, 20 Oct 2026 07:09:40 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xJ3ya-00000008zGi-0rsK
+	id 1xJ3yZ-00000008zFV-1O2I
 	for barebox@lists.infradead.org;
-	Tue, 20 Oct 2026 07:09:38 +0000
+	Tue, 20 Oct 2026 07:09:36 +0000
 Received: from [127.0.1.1] (unknown [IPv6:2a02:560:5ca5:d100:9ebf:dff:fe00:fdb5])
 	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 1251E2022CC;
-	Tue, 20 Oct 2026 09:09:31 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id AC573202136;
+	Tue, 20 Oct 2026 09:09:30 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792480171;
+	s=20260414; t=1792480170;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IFV6JPg5RQWDVJCIfTxV1M/E1OkbhiL3bN22V4rIIMo=;
-	b=Mh56ugqo7cXdgeuH5ZImlnYyejJrn3Z0PDIBAhfL5+Jwa2zgENyevCsQeTaoOSJU/WXgiW
-	LQbYjylbsPDXxDXUoBlo/MXDEXYqgd4n8EsLn5IrTTRk+iReiz3l9Omm1jtq9X/2iHUXez
-	XQyksd81TFMOCjpPesnMGxptUtEKf8e6Gt8qpiGG2254CNKq0e/pVUBOpBMgwnd+Jn6Sd8
-	KHA0iJmT5Z+Y/hATxbMDl01uBkV5VJVyf0TnDiYdERkTaYKJD10uZmNA3nJE1gHNFBZsdj
-	Lpa7aLpwBIGTI/V7FLiY5IBTdeU7nRs1sAQ6Xc5C+6JHGYaWBUTPyx7WsgkWEg==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792480171; a=rsa-sha256;
+	bh=kokKSc4KLQCmyJjk4RbK2T/dBJIsZ3ne8oWDRtUafO8=;
+	b=W/GcNMTHGVg1rBsDDpf/r81LwTpoxjOgWG+iLdvjNjDHKkCtgU8+Fyw7jH5rjUOF/AbWDH
+	JbFiegvN/eR46bsi7sYhGaM8nUbSq2ZwRbAe3nczi7lcnEV0kaDh1ud+rheRbP29Bks3/R
+	t+ZuMcphWJSTuum/BbimvLbypILdYj9Q634T+s60ZjJdIAPtwl3KYK2+rXTuMfunKf9lm7
+	fLZve0ND/vhCrEtLwcy4paLjXEQPleJySo63WZWtyUNyfHUeGEfmYMArV59ur3rHISjuLX
+	d81iwCYQAWfK4uWu2JRMZp79TVctHwj7XF17eFEi6BkzM/SPXhxRNlve3atnHQ==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792480170; a=rsa-sha256;
 	cv=none;
-	b=e7RLErtzUEng2gnrqrW11WLN/WGwuaAE2lo+gTBxY/R9clyBtezPDM41Bb09JcIV2XkbBw
-	/tYSCV7A091+1yIDcVzszeVPHK3Hm2P55yVQYJB/SAqsb/KjjoH1/Vxpj6LeUGENfp2B3J
-	PvUThXTpvB+zRxpw7z+S3y3Vby/3MPTibH+BRBlGepmMQZSF0V47bpqXhhcpp6etmnO3hh
-	CuMCr7cEjAmwuQi183XUlDw3ZRKxOQHD1AMhuKePizvhwkJeTS1UcHFspm8/zjAI3eAOhb
-	/+7oAnT5mJl84hB9++Fx3qTX+u5i0pkUPzQA37dMb/iZWyRU7nXpoBarLIPLLA==
+	b=S9mVXUH1maz80XhzUJ3p6yFiW31Fx1Pf/42rBQk+RvQGghcmRPCTUpqIpmmdPcaFEA6PK1
+	9LBJfm2ydyu7zrb2yVzYC5HyNbYr4c71k0Lzbny0QR5r68msPmWNYvrObxjh/XwDm0hBb1
+	ANAvGG3rxLysI4WtT8mDnzEIUC4GYqgkMJu50T31piDxXZtezkGKVayGaZbo2gxcOAyhdb
+	JqlKhIFsIT74enjKzfrmHbscLvp9Kat2PtM0Yjs9bQ2SW7JyyLHJq3o0cfoIyBTwVCnPDD
+	Z3HZbZG58aPeEB4rR8axOpMU0RTxx+vLWGs8A/iHg2lSvH8oVE7QgQJiuQoQGA==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=sha@pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792480171;
+	s=20260414; t=1792480170;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IFV6JPg5RQWDVJCIfTxV1M/E1OkbhiL3bN22V4rIIMo=;
-	b=apN9Qmc6CbNs4hS195+GjV6jjV5GYvtzafNNHw2gklqHDWEsLJKFsQKTiRxe3rJ632QlTC
-	WtvMA9HkZwEtcEUP2PUFrISFiCdF8LnyN/DyGVuJoiK+ibTTUpQO3YdDvvdobcPfGXpM6c
-	KROsaSgA87aRJbDu4dCENGHNe4/YURhO9yFkS1Gyxok6UEILDoRp/Vm9tZrSPGK/o/qw1j
-	V3XTKmdKxJK+xRYcpDgj57c6rqavHU/aQoc0v/Z/5gz+QhrqnCLkN8ddiL3COCGToPABFL
-	AjD10iUBv2ZN8JqekQt2Y6c+HD+7s2B8coMeq9/xEdD6psVc74kCCQ2O5QIhwA==
+	bh=kokKSc4KLQCmyJjk4RbK2T/dBJIsZ3ne8oWDRtUafO8=;
+	b=a8+wBLFc/UM+GGhD0+0gTm/lY5o6/COzoz1hCDxcC9erZlLASFKQjAQvIzy0UbWvGGjeOh
+	/rD6292RMGEVi6pqhVVujGEm70WSb8MgNxEydlEVLMYRRMSM7kVhkjlTuqrfTpsRVcqjYd
+	TmGbuLj9kBHA6dJq4qYHoVIe/Y4hhCWg84K474MW9FDCLshs06hf3CA2N2lrNX3SmFS4tj
+	1pCeVBR9ced87M1zWMKFZbXoRvx5RmrbIIUjCnjNlxrbTBwHruQyhPyTIZ4aFz4frvFeRj
+	nomJMZriKJXXYZN8xzzdKFaDPCWWrCq6OR9ny9YoLadLPTb/R97YLNrjoPW1OA==
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Tue, 20 Oct 2026 09:09:33 +0200
-Subject: [PATCH 8/9] commands: ln: accept -s option
+Date: Tue, 20 Oct 2026 09:09:26 +0200
+Subject: [PATCH 1/9] fs: ramfs: report symlink target length as st_size
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261020-fs-symlink-fixes-v1-8-e7ac8c29b08a@pengutronix.de>
+Message-Id: <20261020-fs-symlink-fixes-v1-1-e7ac8c29b08a@pengutronix.de>
 References: <20261020-fs-symlink-fixes-v1-0-e7ac8c29b08a@pengutronix.de>
 In-Reply-To: <20261020-fs-symlink-fixes-v1-0-e7ac8c29b08a@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1792480170; l=1778;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1792480170; l=1221;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=snEVNz6Qlgp7tR3rnJLVu4F+fE1NIuwFwlmrsPAVyuw=;
- b=tZAc20UGFixS2tUQMtO7lODTesRU8/zBixv+8xTnb5yOg0LZqBG6RAVhdmlZdSGt5phrJRPXo
- ZbivxIfCjqPBUliV8JNKOGozuMlLuMaSEIrclTXXkV2/L/ELih5+/eZ
+ bh=QawOe14C8wzmohHZXTsOrAlz9v5Y/NRXHhP8A8M1FxE=;
+ b=xvHuDQWny5wzPwjSy5ubQZNcXgaZfPWiizyq7qS4Ji5rUqsEXw9opTzhEtHVzCHYMzsgNBbZN
+ 61RpHLAWtXRDk6qAalTduGqpRReds4WfFdc+pyGLJFjJU2fgJkGK6hK
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261020_000936_441037_E4B52C28 
-X-CRM114-Status: GOOD (  11.30  )
+X-CRM114-CacheID: sfid-20261020_000935_544980_D2346111 
+X-CRM114-Status: UNSURE (   8.17  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -130,9 +131,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  All links barebox creates are symbolic links, but ln does
-   not accept the -s option, so the common 'ln -s SRC DEST' fails with a usage
-    error. Accept -s and ignore it, so that users and scripts can use [...] 
+ Content preview:  Since the switch to the dentry cache, ramfs symlinks report
+    a size of 0. Before that, st_size was the length of the link target, as on
+    Linux and as all other barebox filesystems that support symlinks [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -162,7 +163,7 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: B0B2A202285
+X-Rspamd-Queue-Id: DD0602021F2
 X-Spamd-Result: default: False [-56.41 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[99.99%];
@@ -177,12 +178,12 @@ X-Spamd-Result: default: False [-56.41 / 15.00];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	TO_DN_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCPT_COUNT_ONE(0.00)[1];
-	RCVD_COUNT_THREE(0.00)[3];
 	DMARC_NA(0.00)[pengutronix.de];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCPT_COUNT_ONE(0.00)[1];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	DKIM_MIXED(0.00)[];
 	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
@@ -197,75 +198,43 @@ X-Spamd-Result: default: False [-56.41 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Stat-Signature: 9dz7uwpkmxqmejhcitb7ezct1dx1hfms
+X-Stat-Signature: 5bxswosocfee6mnbuoqu3cj4mgxgrbu5
 
-All links barebox creates are symbolic links, but ln does not accept
-the -s option, so the common 'ln -s SRC DEST' fails with a usage error.
-Accept -s and ignore it, so that users and scripts can use the familiar
-syntax.
+Since the switch to the dentry cache, ramfs symlinks report a size of 0.
+Before that, st_size was the length of the link target, as on Linux and
+as all other barebox filesystems that support symlinks still do.
 
-While at it, add a help text for the command.
+Besides the cosmetic issue in 'ls -l', this breaks saveenv: file_action()
+allocates the readlink buffer based on st_size, so every symlink in /env
+is stored in the environment truncated to its first character:
 
+  ln env/init/automount /tmp/e/foo
+  saveenv /tmp/e.img /tmp/e
+  loadenv /tmp/e.img /tmp/l
+  ls -l /tmp/l
+  l---rwx---                    0 foo -> e
+
+Set i_size to the length of the link target again.
+
+Fixes: b283b72639 ("fs: ramfs: Switch to dentry cache implementation")
 Assisted-by: Claude:claude-opus-5-5
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/ln.c | 30 +++++++++++++++++++++++++++---
- 1 file changed, 27 insertions(+), 3 deletions(-)
+ fs/ramfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/commands/ln.c b/commands/ln.c
-index 9206480300..c907b306c9 100644
---- a/commands/ln.c
-+++ b/commands/ln.c
-@@ -9,22 +9,46 @@
- #include <environment.h>
- #include <fs.h>
- #include <errno.h>
-+#include <getopt.h>
+diff --git a/fs/ramfs.c b/fs/ramfs.c
+index d86bf6144e..c843df6c5c 100644
+--- a/fs/ramfs.c
++++ b/fs/ramfs.c
+@@ -176,6 +176,7 @@ static int ramfs_symlink(struct inode *dir, struct dentry *dentry,
+ 		return -ENOSPC;
  
- static int do_ln(int argc, char *argv[])
- {
--	if (argc != 3)
-+	int opt;
-+
-+	while ((opt = getopt(argc, argv, "s")) > 0) {
-+		switch (opt) {
-+		case 's':
-+			/* all links are symbolic, accept -s for compatibility */
-+			break;
-+		default:
-+			return COMMAND_ERROR_USAGE;
-+		}
-+	}
-+
-+	argc -= optind;
-+	argv += optind;
-+
-+	if (argc != 2)
- 		return COMMAND_ERROR_USAGE;
+ 	inode->i_link = xstrdup(symname);
++	inode->i_size = strlen(symname);
+ 	d_instantiate(dentry, inode);
  
--	if (symlink(argv[1], argv[2]) < 0) {
-+	if (symlink(argv[0], argv[1]) < 0) {
- 		perror("ln");
- 		return 1;
- 	}
  	return 0;
- }
- 
-+BAREBOX_CMD_HELP_START(ln)
-+BAREBOX_CMD_HELP_TEXT("Create a symbolic link DEST pointing to SRC.")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT("-s", "ignored, all links are symbolic links")
-+BAREBOX_CMD_HELP_END
-+
- BAREBOX_CMD_START(ln)
- 	.cmd		= do_ln,
- 	BAREBOX_CMD_DESC("create symlink (make a new name for a file)")
--	BAREBOX_CMD_OPTS("SRC DEST")
-+	BAREBOX_CMD_OPTS("[-s] SRC DEST")
- 	BAREBOX_CMD_GROUP(CMD_GRP_FILE)
-+	BAREBOX_CMD_HELP(cmd_ln_help)
- BAREBOX_CMD_END
 
 -- 
 2.47.3
