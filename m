@@ -1,126 +1,124 @@
-Delivery-date: Tue, 20 Oct 2026 15:56:43 +0200
+Delivery-date: Tue, 20 Oct 2026 15:57:15 +0200
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xJAKZ-0013D6-0n
+	id 1xJAL5-0013E7-0N
 	for lore@lore.pengutronix.de;
-	Tue, 20 Oct 2026 15:56:43 +0200
+	Tue, 20 Oct 2026 15:57:15 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 7A98E2019D1
-	for <lore@pengutronix.de>; Tue, 20 Oct 2026 15:56:43 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 5BEF3202013
+	for <lore@pengutronix.de>; Tue, 20 Oct 2026 15:57:15 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="IoQHO/j8";
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=E2zVdXoF;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=Uted6fOF;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=ZUH+OC8V;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1792504603; a=rsa-sha256;
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1792504635; a=rsa-sha256;
 	cv=pass;
-	b=SwgmFMmP9ExyFtC1b36cnb++BdyCK3qbwC74yRUqIa8USddOd0+tELY4SPS+ZRj2GIO41b
-	6MjEx/G8yCCFLbXNdgUjuE/y5mwNTmtrCR8AmILCOfAwMyml39AeC09Ud0EhwNjLa3KaQb
-	+F9WFA67BCPuB67kuLTkAPOFZzrKG5iDVBZ986FNhHhEWKMrXW8eJg4fhte0oDCsOaz/NU
-	ZKc739dYEOjmoVXafFXHuFG1RTc8oup7oyqN0Phjgd+DJF+wkCp6CwBw4xLnH6/VmkTa4b
-	v+UiE1vRRfpBE8726P99slhPFNlz//v1BwhLK96GY4Y2F8PRHCBItayFPlffxw==
+	b=KAmUobQ4w+yFv08jN9/lxo1HIfX75GISu7THESBwvNt9ULDPTdCioKUV+fTQdpJIGjslTY
+	JHpljFcpPrSgecCD9cf4K3RimWQdyFuJF4hWyyMZMQZRT8j+sBUVmsYKmDldvEpocU4t0Y
+	uOChiii8en9KnB6zafbdF2/D+UnHJ0fyOxn4JtA0BBOw8Yu5zy2r671CrvyP8C5xozTIN1
+	wCjz5Ujb6CZiLOdSYz1hb4672SVg0Ch0Sy9ozeWIEJOjuJyg7w3mo0bgsPm2UOv9lS6ZoQ
+	Xv6K9TwQAkUBwq0THWeiRfQDzfIYLCqevOh+BZ0kq0F2E3x2TEHF129wqwSc6w==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="IoQHO/j8";
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=E2zVdXoF;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=Uted6fOF;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=ZUH+OC8V;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792504603;
+	s=20260414; t=1792504635;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=d3/aiBbzUIDQWm8zTtVZ796J3FlVBA01shR9vHtZSqA=;
-	b=Lj6xbZSi/hcTDJxVKZjGv/7UeeDyQlUOVWZt/a9YVVftp7x1/2EGC0f69Pc1E0e+esKP/y
-	wl3UJ1tbJvgHINdsQmQd6FJe7UKARogpIPii7C27gc1IU4CsxSnpABD3CyGn00ReZML03U
-	U7V1UoEPEQzTssk9KUQoKidVJPNVtjXsBzkzJ+ZCVZ0HnIzXKq6S7hftoKNAym3YzTz5ix
-	tciSOUj+Cd12jXerf3kYq0rAKwWtI73J71Szk6xLYl7yG7n/GtmYfNxY59/6toTlHVS+oj
-	lWuSuZijcWpi7uqPgL6FmcdOPrbECT4XrKxrJoPJ+9Jzvj32Ykh6Eb6B3Xc6WQ==
+	bh=nIef0aHYUEVl50FAuV62BP6tsTjccsObIjeECFfF7NI=;
+	b=P00j4n6icqUn77Bm+zPzp5DjIcacdPR371KXofIXRY0uZ4DQf+wpZvpMhZC/1IU6Mx/x6u
+	nkvj36+RG7iBIIauGFzFH8S9H3SA6ol7STBP9RsoH/MfkKrw70bIaHsHyKEfy4epw4t5FS
+	ayEcMG1+Yj0LzWy3G1RQPsIVBb5n5PvFYjYvpFBCrPuV31DMW+alOWKtSMeAHyVrqh+0YX
+	8sZsRf5R+5i0WbwVmAFJGqwmYdkZ4gys0zf2ScMTuzdSSwAR05TCXiGz0izDkoraQC9D1y
+	znzO4+509y34aDaCyhrlqlwvpDSl5HkSXk+E80Ue6NXWzLrEXhs4cV9JDnKHEg==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=d3/aiBbzUIDQWm8zTtVZ796J3FlVBA01shR9vHtZSqA=; b=IoQHO/j8oBSp7lJVK6mvzNsm09
-	DquAn2930QtMUhurVmUR2AzyRmE1wWR2u9l0VVapuqiomwEJGwcSLk1X+82V+buBoMaFTdRUR9tjz
-	xhVeYOYnArdHqTBg+zYxgrptDB3wXnnrn0WVXIA8l9lfEZVhof1rSN1UcVCEfcuBeI/erUa72BM+T
-	dT1mCYCtqgFhtBP7oDBr7BJHFKxXKnqyEMOLXseI+fEu3BUDGkMvEBuzTG9YmWxcA5z0sYOz07kRo
-	BAqeh6N2AF/mJdIvV5irtq445Lliux++Ms0IQV9W64+Pm3U7Bmo41hSMqGjOzb7r0lDdHx8Px04d9
-	62WqeeiA==;
+	bh=nIef0aHYUEVl50FAuV62BP6tsTjccsObIjeECFfF7NI=; b=Uted6fOF73YTANuzAcbd5dwAmB
+	ntL7/GMKpgWwudefaLjoQx1hPC1kGU0dxE+3XnqsKUu+RCEHXtUnXhgoh8oAA7gYuTZcQYlV6iYhy
+	ew+Wp+a1ErYVCGE8XbMU8uCJ4OGsEudLTtL+gi8C0C6iupj2vDbzWQQetwbHoQM0mGnmpzvrpHLue
+	Ca/KTCa6upAWOQG/xlAwubc2uzEaUoS5Mt/FcwgaGe56lQwDD+Qn2N3ysik1/RFhUV8PgSk3oAcK/
+	WEroRztHlUhoZMAvwqA2JwSQztWkhwBp/ZCqPgk6LV+Pbf0X2VhaHzJ1kktzrNh207DBF/uVl1Owp
+	3wgUDtGA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xJAJP-00000009qMA-2pV9;
-	Tue, 20 Oct 2026 13:55:31 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1xJAK0-00000009qRV-3e4v;
+	Tue, 20 Oct 2026 13:56:08 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xJAJL-00000009qLl-3vhX
+	id 1xJAJx-00000009qQs-2bMj
 	for barebox@lists.infradead.org;
-	Tue, 20 Oct 2026 13:55:29 +0000
-Received: from dude02.red.stw.pengutronix.de (dude02.red.stw.pengutronix.de [IPv6:2a0a:edc0:0:1101:1d::28])
+	Tue, 20 Oct 2026 13:56:07 +0000
+Received: from dude02.red.stw.pengutronix.de (dude02.red.stw.4.pengutronix.de [10.17.1.16])
 	(Authenticated sender: relay-from-dude02.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 104FA201709;
-	Tue, 20 Oct 2026 15:55:26 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id F1DAB20227A;
+	Tue, 20 Oct 2026 15:56:03 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792504526;
+	s=20260414; t=1792504563;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=d3/aiBbzUIDQWm8zTtVZ796J3FlVBA01shR9vHtZSqA=;
-	b=E2zVdXoFjdfBlkL29oPOta3KtLaazS+uyoY8uqynQ5aPc6j7bCn27WDNbjI8c8pYmUq9N8
-	4QsFQsEh9TcC3Eh7Pn9VPR/dBuvcqdp8eXxAw3oSdr2KheOMLy/vYoq72v19Wv2pQ7yq2M
-	NOINm6z7SVYxnx9Ohn4QQbrCOBt/NTBeRKbYDQwOcv9Lp1OSAoOuGCpAKde8FVfOUMbGza
-	NXP/x2mV+V84S1SlKrInNpWsm637NRVuE4A3yFT28n5DQ0aDRARfBFAEDsApbtdI4sXaWY
-	KtxDn22CNGxF1Om6++17VZ7kVJVM/n4sdzXm55Z98g0WBRqzWf3Qg5yN5kquzg==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792504526; a=rsa-sha256;
+	bh=nIef0aHYUEVl50FAuV62BP6tsTjccsObIjeECFfF7NI=;
+	b=ZUH+OC8VAnY5xe6uzEgn+tjT7O6vRDkPyGgsNKNyAXkahp6QjekzYI5LzWn2I/Zh5JM7yI
+	DyEgAZ5C4ip0DIMfdUt+ED6z76+LAW3VQUdkWVfNZBupU2hVBUEDHC43ZkpibLRJ5nsxba
+	CnthTzg6qFeagXaYmSipZeY95PZZoWXMG157XRzIz+UcQ9u1qYeVkb7SfNymmhhUnjgeRP
+	hQdK6aE0v3zR1hhcx9yj8htsXm6e8B8NVYMXaBDiICSmXcR+nOOwkJc5yMKs5no/17NNBI
+	cL1Bs9t5XXGPrR8NmhAF8H9F+ascRtIDUZTsqIphdY4ruiEyoltWNgtnWlKJdg==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792504563; a=rsa-sha256;
 	cv=none;
-	b=ImGz1e+q9tXrS5IaRr2rkauGC9DDBPTg0ki3tjfmx7Gpk+Rvxnq8SNEMuWOMioRtcR2Ubc
-	De8O6XI7kgMIFRhi/ytZ08zYpNuZBzyZ0W/ndBvEHKP5yjELcWEdQ/OLGWvSBR+J3upV4p
-	CJV5SwwHNJNpt5AflMIIE/2RSkds7czaSM9aM2iBw6kB8nAdUtGSTWOsbDWvLIRXenkcG6
-	3uV97Vao+5rJ+QAggLpZ6vUBv79tB82JxogSF8fv1N1cF3D6f8EAidUCFBj2zhYfupm+X3
-	iuknUd90b2K6kziMy71d6RC5BSHjLoCGOypkGCKsmvtOa6hnubbVfTfeM+LcRg==
+	b=Mzby+eQxkDZjQ2n/QHB34OU4T3wr/ARMvlqsymolhgVtBsW2aaRacjuMavRw2foP6qNMMw
+	O0vyDMxwe0egL6gshXJtV/dveornb+VuGU7Fxc9DK1NvORE4MfxMi3eVE4yAxWSCwmHL9W
+	aTlTmhvQ+kIKY57Q/a8AZwTSBXQFXc5wEPZBlglcPlLUM8HPwePs2w2MQkn12PRoTQ7+rp
+	FHajIB0mR8uZaWB9pe6qF54e2x/V+vtTyuIHbnKU55UqhMxxj8LGHWLQTM8J2myECIwqlz
+	6c+mK0Gnq0pUj/lwXlpw3jSo5YxFcQNS6aF5ExT+K9FLzvYR5awFmZg4tqvKYQ==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-dude02.red.stw.pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792504526;
+	s=20260414; t=1792504563;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=d3/aiBbzUIDQWm8zTtVZ796J3FlVBA01shR9vHtZSqA=;
-	b=DcgGf2iKrtjKbBKRgfYAfWVIIQLo/M7yYW8C/Zmua9iwrNTrb7w8rMXTAoT/aKTTjAdUh9
-	GaQy6G35NIYd62OavbjYievPyfDgt932xFY4IJaibssAFRKf571gMuFIBGaqgzDYCwziAn
-	Eg4tbBEv9hQXjjiju1hy9T8zpgqojOVjA7EvROXVwWFsghtt01vCahLx4Cqswq+iakf3TN
-	Yl2pZQmUwPcXkYnmMdm8NSn8uMKtuOH95dtkX5Asfk1d48NWLzwgSb2VQnv2ShqPFpZnix
-	PO4KUK4rOThPJD006ECdYk6iUKk2lI8dg+whjkXu/oBomH8QjZeMYMHk6MtCig==
+	bh=nIef0aHYUEVl50FAuV62BP6tsTjccsObIjeECFfF7NI=;
+	b=gmDlu9x7ShPSzGrXgJ/OyC3qhtUjk0OA7NUSBRCo4ZQ36k4DbNghbK/dzKTFYZF/oeLaF2
+	1LtvbTC1JiXJhxMprC0VuLC/uA1jXM5yJfEgSssWsCzV7gdWSJa77QhHg6gYq2webPQY1l
+	QC5Anqs/Hm7OHpoaoZkb6YiVc7PwgyitP7tdw9Rwy4sNwCTiEFHhBjmeFvtP+8RGaWC3Ga
+	PSWcyNGxGeyJo/RWBLGP2dN75a12pIuVF6ayozHIKd201p83HE2kacQQfA4atQuTtZGUp2
+	u4e/2jrptsm8qFurqglor5pZYM/O5bb68VXXfWrd1rmlaZNECfihZegYUUgcfg==
 Received: from dude02.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude02.red.stw.pengutronix.de (Postfix) with ESMTP id E9E05FFA47;
-	Tue, 20 Oct 2026 15:55:25 +0200 (CEST)
+	by dude02.red.stw.pengutronix.de (Postfix) with ESMTP id E26F4FFA47;
+	Tue, 20 Oct 2026 15:56:03 +0200 (CEST)
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20261015140606.1181053-1-a.fatoum@pengutronix.de>
-References: <20261015140606.1181053-1-a.fatoum@pengutronix.de>
-Subject: Re: [PATCH] blspec: allow devicetree-overlay to be specified
- multiple times
-Message-Id: <179250452594.2718059.11089900992392336196.b4-ty@pengutronix.de>
-Date: Tue, 20 Oct 2026 15:55:25 +0200
+In-Reply-To: <20261015140743.1214225-1-a.fatoum@pengutronix.de>
+References: <20261015140743.1214225-1-a.fatoum@pengutronix.de>
+Subject: Re: [PATCH] nvmem: core: add nvmem_cell_nbits()
+Message-Id: <179250456392.2718514.4514803961868491681.b4-ty@pengutronix.de>
+Date: Tue, 20 Oct 2026 15:56:03 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261020_065528_180573_0B476338 
-X-CRM114-Status: UNSURE (   7.52  )
+X-CRM114-CacheID: sfid-20261020_065605_830280_025E8F35 
+X-CRM114-Status: UNSURE (   7.41  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -129,9 +127,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Thu, 15 Oct 2026 16:06:06 +0200, Ahmad Fatoum wrote: >
-    So far, every devicetree-overlay line in a blspec entry replaced the > previous
-    one, so only the overlays on the last line were applied. > > [...] 
+ Content preview:  On Thu, 15 Oct 2026 16:07:42 +0200, Ahmad Fatoum wrote: >
+    A cell with a bits property is narrower than the bytes nvmem_cell_read()
+   > returns and nvmem_cell_write() doesn't mask the value written to i [...]
+    
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -161,57 +160,56 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 7A98E2019D1
-X-Spamd-Result: default: False [-60.61 / 15.00];
+X-Rspamd-Queue-Id: 5BEF3202013
+X-Spamd-Result: default: False [-60.37 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-2.96)[99.84%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:1101:1d::28:received,2607:7c80:54:3::133:from];
-	MAILLIST(-0.20)[mailman];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	R_SPF_ALLOW(-0.20)[+mx:c];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
+	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
 	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCPT_COUNT_TWO(0.00)[2];
 	MIME_TRACE(0.00)[0:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	DMARC_NA(0.00)[pengutronix.de];
-	RCVD_TLS_LAST(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	NEURAL_HAM(-0.00)[-1.000];
 	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	RCVD_TLS_LAST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
 	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Stat-Signature: cb8f1f8onezqhu5pzsg3357u5xzfq4m6
+X-Stat-Signature: zzfcxybpc1yt71y3swnzitf1a9sbir11
 
 
-On Thu, 15 Oct 2026 16:06:06 +0200, Ahmad Fatoum wrote:
-> So far, every devicetree-overlay line in a blspec entry replaced the
-> previous one, so only the overlays on the last line were applied.
+On Thu, 15 Oct 2026 16:07:42 +0200, Ahmad Fatoum wrote:
+> A cell with a bits property is narrower than the bytes nvmem_cell_read()
+> returns and nvmem_cell_write() doesn't mask the value written to it, so
+> anything that doesn't fit spills into the neighbouring bits.
 > 
-> The spec only describes a space-separated list on a single line, but
-> systemd's bootctl accumulates repeated devicetree-overlay keys like it
-> does for options. Let's do the same and append the overlays of each
-> line in the order they are listed.
+> A consumer that computes the value it writes back, like a counter, thus
+> needs to know the width of the cell. Let's add a helper that returns it.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] blspec: allow devicetree-overlay to be specified multiple times
-      https://git.pengutronix.de/cgit/barebox/commit/?id=0aa79ca4e97c (link may not be stable)
+[1/1] nvmem: core: add nvmem_cell_nbits()
+      https://git.pengutronix.de/cgit/barebox/commit/?id=4830dc51b191 (link may not be stable)
 
 Best regards,
 -- 
