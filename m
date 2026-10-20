@@ -1,126 +1,119 @@
-Delivery-date: Tue, 20 Oct 2026 15:59:34 +0200
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Tue, 20 Oct 2026 16:32:33 +0200
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xJANK-0013HK-0K
+	id 1xJAtF-0013uC-11
 	for lore@lore.pengutronix.de;
-	Tue, 20 Oct 2026 15:59:34 +0200
+	Tue, 20 Oct 2026 16:32:33 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 54CC520227A
-	for <lore@pengutronix.de>; Tue, 20 Oct 2026 15:59:34 +0200 (CEST)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 131BD2018A0
+	for <lore@pengutronix.de>; Tue, 20 Oct 2026 16:32:29 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=29JcQ5BH;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=SAnWmBPV;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=24Kgq71l;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=VYIVvCTw;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
-	arc=pass ("pengutronix.de:s=20260414:i=1")
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1792504774; a=rsa-sha256;
-	cv=pass;
-	b=UHRPSnOOIdv80af4fO/wd1TIFBsNWOYjgeWOrbL9iycs8hWQFbLw++vlP12uPZ8TEJML/O
-	sSYWNqOxgskSOh0vZIOxD4l4ohtYAUX9XgsA71+DBRP684rDSVQ8yyE42lXg/gy63henu2
-	Q+KkBndLPjiac+vvdGKeRj73Jr7Gz/Mnp2/9VJ3yKG5JjFkPZBNgJZ7QQZ3bFxb/1/2lcW
-	1KMY+CBlSuVoHtt3djGe2ZcCPBzWJQRJgvG9QxvfNwHIseRBN0/Ies0bIvNHLAt9FvfWwt
-	GKzfCFyfCnhBTmCvMAh6fNudLJS9aJ6h7r8S3rzWzwOIJmoDyIFPReJB7DTarQ==
+	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1792506749; a=rsa-sha256;
+	cv=fail;
+	b=SUqHMyAcQV8FUzgcbKftu3tku3J0mXXYKINjg2XWGKTyapkBtp6RirsZdYPIkTRKh/xqh4
+	41pc9jHENKvQxpaf/8rKNma84A4lKC87mlnanbU52y+Ga/xeZktiNihNHjQVNuNnxIdEaC
+	rTpf47D7zLoyQkK5ej5RE4JIjf7QyYSaSssUIv0FBr9yU3sy7q1j7KW1FWtIQms5YMUSO0
+	pleBFVzbF3pEE+yv5bZXMfbSIHNynhXQ9qeeR3T1ychFiIDxHrg6zo9ZMTzwkKfu3HLMQI
+	CglVCXFgthjZl3CVqUNk9PabzfwtWGqE/WmdF6pNxrbnAkvm0j0QZXWUGgXcdA==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=29JcQ5BH;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=SAnWmBPV;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=24Kgq71l;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=VYIVvCTw;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
-	arc=pass ("pengutronix.de:s=20260414:i=1")
+	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792504774;
+	s=20260414; t=1792506749;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	 message-id:message-id:to:to:cc:cc:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=DJ2/CsMOvrfACH8WFlEL5iBYxfwyfAri20Pi0c23jh8=;
-	b=A3r3cNLgKApn3XAW7KdY30EysXjCxguOCJxRAyuY9a2xZnHejpqzr8rFdKgksWzqFJ0ETU
-	uda1tpWNypXD8yC21koGjX2EXTMEvY6moY5oG2J/kLzCbos04iUjzBv2u+4Z4Enm+nL97P
-	9Q2JO14AaN3flT5UG125QFpqUT2xZ4D24HOtzm13Yrjwy5KavtgNp11Dx4uXL/FrIS+mel
-	VUXMTvGPQzm6lnJV7WhI37Hq138JSsdiE0UUvFiK2WXltmts1G3pJLfJmJzjrUJH3NHfXG
-	ySKfjUDvzlUVyIInSGCH2M3/Y8fpJ5X/ucWAS3GW+bGwWkuoNsSIZBjHRJw2IQ==
+	bh=Vtgp7PVXpM+aODRXnwME26wuXjtCcw+/BHjWWoIJkts=;
+	b=ZQIhNzHGmAMSjY/WO6f7PQkaSobPCdJw5o38AiSe1CVD2hFvp6r9ABaMOdZijYzE4bu0ak
+	0mPUzoGT9SDKuMDJOf3Du/gYvXO7NhrSruV2R8Z/Fd99/OdZx9rBFoF8q7KtjIxReaCuFg
+	XR4H7CuNYCOVMw1fAd3zfudVthx0thNYNBP2m9E7+KzFqsWbp53LKI1RmUNH8hrfyTW2xs
+	3CDcb9U0XpmMqdVFBMrzEzPOHyaGyMcYDzCt+GOLW8SgdwOWzj6vnGREj0w/SSC7U22vqu
+	rV5+YoEQOcWJWmWN8Fc7QvXqs1/TikRayjso7hPwb22tOxDplVJpwGxfoZJCgA==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=DJ2/CsMOvrfACH8WFlEL5iBYxfwyfAri20Pi0c23jh8=; b=29JcQ5BHrQCEGBrfgDa7wBzDrB
-	9Xwv4jYibRkJcogpnyOo/0Lx+pKJiQgMI+2uulqgisVmtmzHGmHFHFfB4yXmN4RnOCi0qThBllEUQ
-	MMz5toxdpDh670HVtvKl3da/tThAgH602pR7t6iZ7r91+ZmGZoSYdwgY/bHD4EPjTBrcB4+RGVO9Y
-	2SpkUmrYOCd6xOETiDJUh0JCCwviziC+NdrehbzFNqkwP0AiL02ZpfVYZYuntDIVLx4HQYs0Px6+R
-	7jzgxgO25GutnXN2RlhKg3g1kAVQMXJH8kQy1KXXCeiSXn0b3GukX56Xoh/n3V0KooJnVokX5zon8
-	TSn/ZQ2g==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Date:
+	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:To:Subject:From
+	:Message-ID:Reply-To:MIME-Version:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Vtgp7PVXpM+aODRXnwME26wuXjtCcw+/BHjWWoIJkts=; b=24Kgq71ljW3eLL4n2f7169K4lK
+	5Tj8eU8IDeXDQRLclhGpMh4sdVVp85u8OnKOu3WhvE6ZM4rwqdOtVvGR4lt/gf1kBcbFRMG9WKeE/
+	ogglz0FLB28fIfmTIgs9/eP+u8Zq0JpC1z2fYevLsRWmxhAzuP4opczBv+G1tfQD3IHVhm+nguRlV
+	rnYvEEAypbYMdRg02gLKNa1CJVQz4f9UMbu4KsUgQ08uGluYVW6dwUSQQT+EmMDBr5ufooVlOE8Hr
+	qkwJGYLBtKGtDTTHFTy2vjvW0TVpOTLgQawaNlxr1rnQ7nZvBwb9JigJFNjNomopo7U7+ASSMX1Ro
+	qEXuoV8w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xJAMO-00000009qut-3ScW;
-	Tue, 20 Oct 2026 13:58:36 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1xJAre-00000009wsT-0FaK;
+	Tue, 20 Oct 2026 14:30:54 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1xJAMK-00000009qtl-3pUq
+	id 1xJArb-00000009wrY-15HL
 	for barebox@lists.infradead.org;
-	Tue, 20 Oct 2026 13:58:35 +0000
-Received: from dude02.red.stw.pengutronix.de (dude02.red.stw.pengutronix.de [IPv6:2a0a:edc0:0:1101:1d::28])
-	(Authenticated sender: relay-from-dude02.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 4B65D201B9F;
-	Tue, 20 Oct 2026 15:58:31 +0200 (CEST)
+	Tue, 20 Oct 2026 14:30:53 +0000
+Received: from [127.0.0.1] (unknown [IPv6:2a02:560:5ca5:d100:9ebf:dff:fe00:fdb5])
+	(Authenticated sender: sha@pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 4F517200758;
+	Tue, 20 Oct 2026 16:30:44 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792504711;
+	s=20260414; t=1792506644;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DJ2/CsMOvrfACH8WFlEL5iBYxfwyfAri20Pi0c23jh8=;
-	b=SAnWmBPVzT7RBnZ55bupb9Ay2bHWc9yph6Z1HjZ/MugNdJ0zZNidP3fX7beIgMBuyeAlEy
-	NDQMJIeKQQRXbv8j8Y2MmeRcHD52WwJqb80HjE97yauPsH8DZ+AESAb2GAmO/m4y5uwz2X
-	6gvKjrnaBqUXgTx3nqsLW2+Mmx7iWAUIo3qzLJ5RF8tgWkAyjA+DZVe91aeQpH63qKh3zj
-	PVlPYgocX2zsfAowTsIB3nvQktRbUSyyc/YpH+HWW3NrAcE+HCemsDFYpf9wkP+q5Z4oDi
-	B4yzJ+6PXmB5jcwt7sgoIMyXP+Lz/g0/CdnoweBGEZkRR5MB6c5tm7ehwT1Waw==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792504711; a=rsa-sha256;
+	bh=Vtgp7PVXpM+aODRXnwME26wuXjtCcw+/BHjWWoIJkts=;
+	b=VYIVvCTwzYwmJ3B0gTi8CalFdN+QsgqQj2C1Bgogt6v62xLKdDz8rv896m8IDUR3y8+sIY
+	d5NMAdproOgbDh0ys2dNFr16mQuxQi90FFOERi3+vNNufqlVtom5ArYalnBo3MlK6Sn8JV
+	uUQd2vU2f0lv4YvDmWQF1LA0NBIPOUPbE7FclAoCxfPBLvFpNshe1xvDWiWmxq6Od9iWtz
+	XpRcG1Fsh2g7Sya3O+yQLgKUHE/mfkhCqzUjQnxy8Kz4X9/aqpZTClUwarhuO4F5N6ZffQ
+	qHqu2fTNlTo2lSbjT6Qmz5KX0jrnCGw7s3gm5O/jAil9yfll22385XwR7IuFlw==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792506644; a=rsa-sha256;
 	cv=none;
-	b=CLXZHQVoLGBqqe+oFSlGSO2CkcpL2dG0sm1osQ+9EVrPpGmsiLC1qxU3q7IjkwyMAOdfG0
-	v2huq21DCtO0ZgAVH8GOTFYWPBt9gMbBt4NAPe46kVprwKupL8HhK/tFKz5suMqK6DpQfB
-	m65TEvssu40WNfqLkIjTu4rjdQUk0g8viBRcCYnQ76O6/TC8GSyyyhEN1yM405d4aeUVqr
-	7YC2AS7USbdcMFL2xlyETAByM4ac5zzEMq4LSQhpf4FjawRtyZPka0gD6IZdwii+kXNJY2
-	W/lnJftZnMDCQAcSjzhwx71a7u/lohplgHEirMqjwefUuSYtaDVJ700gpfC44g==
+	b=EbD1VaTO6q/amn2+FZUBre64cjk5289oPYxUmzwoAtgRFaMSIMtvsSkZ/qIWxhPsJiF0bC
+	2m6Hy9ty9Ei3Qr4GxsqcCXsphhkp1F8V2u5f5vX3wYI0Yr95D3kg73ovq8bYmN7CAwUmf2
+	nXb+xprhL92MtBvezCyweODz+WLHwojL5KOSsKms1NwfBZ86MZugzBSFL2VJHFdbi7LFG4
+	+X+5imdy5STU+cfR5ZaXuqp7SVNyV4uz7PHrEhqdb9h4pn7dO2jO6xrMZLNqlbu0VyurwJ
+	9y0VQ2PKC4KiMK/mNMqi7b+4dPro2ixRpi/CxymW+YF2JoxeMIwigjDvMwzB1A==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
-	auth=pass smtp.auth=relay-from-dude02.red.stw.pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
+	auth=pass smtp.auth=sha@pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1792504711;
+	s=20260414; t=1792506644;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DJ2/CsMOvrfACH8WFlEL5iBYxfwyfAri20Pi0c23jh8=;
-	b=Gw8P4tIYssYqNM5rjAm/Fba78hD6qhOqYG3pmAdNoHTkjpg8xjiwlQZ8U0jTQ/8pt6a1B1
-	KysQu5oydOydH6lqif72PdmtfiKFg8NlHRIORdGtPt0OY5TF7EwEzra4XUIM+ZjF10CKGx
-	O31OuQywkWetRlFm0nzAwluy17Epyv3rsL6MDcsQL28vpGlvGDVQxDZf1cG7YpZ/mmdeBW
-	mSF+RRrQdfFMeSbcW6wY3aPCmcmOZihSCkwBimTexttAusma68Ox06JsB98ILa4C5WU7Wf
-	tjjiY7Pd7fzfvfdeEq4qRhDqm5+32hU0N57K9AoyQrnazxriR7RSt8B/e9r1vQ==
-Received: from dude02.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude02.red.stw.pengutronix.de (Postfix) with ESMTP id 3C65DFFA47;
-	Tue, 20 Oct 2026 15:58:31 +0200 (CEST)
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20261015141050.1329095-1-a.fatoum@pengutronix.de>
-References: <20261015141050.1329095-1-a.fatoum@pengutronix.de>
-Subject: Re: [PATCH] ubootvar: reject copies too small for their header
-Message-Id: <179250471124.2719553.6829430633953292111.b4-ty@pengutronix.de>
-Date: Tue, 20 Oct 2026 15:58:31 +0200
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
+	bh=Vtgp7PVXpM+aODRXnwME26wuXjtCcw+/BHjWWoIJkts=;
+	b=DY27jJ8NHlXkei+4MoQP60gt2x3MNTKc+6SRVmDaZmik2G6BFFd6GwNCCoo0dt41rkYHAg
+	oqqRnHa4PqAoqV0Lp19SV+Zu390z5ij037M9WJE0i7Yk6E2OvvL2txOfPxkfsyWeZq+hlU
+	gPC4A0MAfQ6FUeFODqURwxpjdMx/sg0Olv9GaXXV9cu120CPuiL5rdPusZkCztpGEBrmaJ
+	dZkA1ttzHB3guvkhlAGTFYjxSLMKxxLQyRqP5nKPcs4E5DOe0788AwyTKL7ZOzNjIkD+O6
+	i7Q1VRqp1s39h690euCFF0OASnVNTakkakt6lPDYiwJS5/i/VfOffVSwe3RrOw==
+Message-ID: <743f8734-e541-48db-8abd-76a79ee5651d@pengutronix.de>
+From: "Sascha Hauer" <s.hauer@pengutronix.de>
+Subject: Re: [PATCH 00/11] arm: socfpga: agilex5: add xload support for bl33
+ to FSBL
+To: "Michael Tretter" <m.tretter@pengutronix.de>
+In-Reply-To: <20261007-socfpga-agilex5-xload-v1-0-f8fb2d2819da@pengutronix.de>
+References: <20261007-socfpga-agilex5-xload-v1-0-f8fb2d2819da@pengutronix.de>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 20 Oct 2026 14:30:42 +0000
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261020_065833_797576_35FFE8F5 
-X-CRM114-Status: UNSURE (   6.37  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20261020_073051_449828_70D68EA7 
+X-CRM114-Status: GOOD (  16.92  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -128,9 +121,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Thu, 15 Oct 2026 16:10:49 +0200, Ahmad Fatoum wrote: >
-    Probe subtracts the size of the CRC and flag header from the size of > each
-    copy unchecked. For a partition smaller than that, the size wraps [...] 
+ Content preview:  Hi Michael, On 2026-10-07 12:55, Michael Tretter wrote: >
+   The image of the first stage boot loader on the Agilex 5 is limited to > approximately
+    256k. The SRAM is actually 512k, but there is some handoff > data a [...]
+    
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -158,62 +152,112 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: BAREBOX <barebox@lists.infradead.org>, Michael
+ Tretter <m.tretter@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 54CC520227A
-X-Spamd-Result: default: False [-60.61 / 15.00];
+X-Rspamd-Queue-Id: 131BD2018A0
+X-Spamd-Result: default: False [-54.41 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[99.98%];
+	BAYES_HAM(-3.00)[100.00%];
+	MISSING_MIME_VERSION(2.00)[];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
-	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
+	ARC_REJECT(1.00)[signature check failed: fail, {[1] = sig:pengutronix.de:reject}];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
 	MAILLIST(-0.20)[mailman];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[pengutronix.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	TO_DN_ALL(0.00)[];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	RCVD_TLS_LAST(0.00)[];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
+	DMARC_NA(0.00)[pengutronix.de];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:-];
+	DKIM_MIXED(0.00)[];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
 	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	R_DKIM_REJECT(0.00)[pengutronix.de:s=20260414];
 	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RCPT_COUNT_THREE(0.00)[3];
+	MISSING_XM_UA(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Stat-Signature: hbigo9czux5gxpcue8cqideac8bnrpqo
+X-Stat-Signature: unfj9ghdr94aut3cnfoao7bryymnjnjf
 
+Hi Michael,
 
-On Thu, 15 Oct 2026 16:10:49 +0200, Ahmad Fatoum wrote:
-> Probe subtracts the size of the CRC and flag header from the size of
-> each copy unchecked. For a partition smaller than that, the size wraps
-> around and the CRC is computed over most of the address space.
-> 
-> Let's fail probe with -EINVAL for such a copy instead.
-> 
-> 
-> [...]
+On 2026-10-07 12:55, Michael Tretter wrote:
+> The image of the first stage boot loader on the Agilex 5 is limited to
+> approximately 256k. The SRAM is actually 512k, but there is some handoff
+> data at the send of the SRAM, which must not be overridden. There are
+> some size checks, but due to compression of the FSBL image, it's the
+> possible image size cannot be determined reliably.
+>=20
+> The barebox PBL and a full featured barebox proper are easily larger
+> than the allowed size. Compression of the piggy data may even be counter
+> productive, since the entire FSBL image is compressed again when
+> creating the boot image.
+>=20
+> Add support to remove the piggy data from the FSBL image, and load the
+> second stage (consisting of a barebox PBL and barebox proper) from flash
+> in the PBL.
+>=20
+> Patches 1-4 rework the Cadence QSPI NOR flash driver to be available in
+> the PBL via the pbl_bio abstraction.
+>=20
+> Patches 5-9 extend the Agilex 5 support to initialize the flash driver
+> in the PBL and chain load an SSBL as bl33 instead of copying the
+> currently running barebox. The patches also add the infrastructure to
+> build the PBL without piggy data and device tree.
+>=20
+> Patches 10-11 enable the xload support in the Arrow AXE5 Eagle board.
+>=20
 
-Applied, thanks!
+This series currently breaks compilation on -next. socfpga-agilex5_defconfig
+fails with:
 
-[1/1] ubootvar: reject copies too small for their header
-      https://git.pengutronix.de/cgit/barebox/commit/?id=b6729fe4930d (link may not be stable)
+../arch/arm/boards/arrow-axe5-eagle/lowlevel.c:17:23: error: 'CONFIG_MACH_S=
+OCFPGA_ARROW_AXE5_EAGLE_XLOAD_ADDR' undeclared here (not in a function); di=
+d you mean 'CONFIG_MACH_SOCFPGA_ARROW_AXE5_EAGLE'?
+   17 |         .nor_offset =3D CONFIG_MACH_SOCFPGA_ARROW_AXE5_EAGLE_XLOAD_=
+ADDR,
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~
+      |                       CONFIG_MACH_SOCFPGA_ARROW_AXE5_EAGLE
+../arch/arm/boards/arrow-axe5-eagle/lowlevel.c:18:21: error: 'CONFIG_MACH_S=
+OCFPGA_ARROW_AXE5_EAGLE_XLOAD_SIZE' undeclared here (not in a function); di=
+d you mean 'CONFIG_MACH_SOCFPGA_ARROW_AXE5_EAGLE'?
+   18 |         .nor_size =3D CONFIG_MACH_SOCFPGA_ARROW_AXE5_EAGLE_XLOAD_SI=
+ZE,
+      |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                     CONFIG_MACH_SOCFPGA_ARROW_AXE5_EAGLE
 
-Best regards,
--- 
-Sascha Hauer <s.hauer@pengutronix.de>
+xload support is currently optional and disabled, the existence of
+CONFIG_MACH_SOCFPGA_ARROW_AXE5_EAGLE_XLOAD_ADDR depends on the xload
+being enabled, but they are used unconditionally.
+
+Could you send a fixup?
+
+Sascha
+
+--=20
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 
