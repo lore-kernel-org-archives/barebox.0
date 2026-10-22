@@ -1,34 +1,34 @@
 Delivery-date: Thu, 22 Oct 2026 12:10:06 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xJpkL-001ozF-1a
+	id 1xJpkL-001ozE-1b
 	for lore@lore.pengutronix.de;
 	Thu, 22 Oct 2026 12:10:06 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 919852022EC
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 6217F202293
 	for <lore@pengutronix.de>; Thu, 22 Oct 2026 12:10:05 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=4MsMt5ut;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=YSVjW5tk;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=UmR5bI+O;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=eWN1KsZV;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
-	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
+	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1792663805; a=rsa-sha256;
-	cv=fail;
-	b=FjPqRFnujokRTc1yUxZWySqMLzWlzJHXzYQ9lmAWancEeqDMtpdL4E12LeRz2RjMLhrZcU
-	2nMUdcsHFkG46v/be7Erwd3tDeMWLyjQkKUQGFYceqIGDcOufSh6yjrcGTzvGRsuSO5dGj
-	RCT+UvTd/3bcTDvDyGb3V3n6/xjYu50OjudsBohUWHKOEUvdNS3DiObjXuHWdC63T8K8CF
-	cGz0ZhC3ehtH2NEE0d6KfQNkcm3xgJ6wdKFFN2C7GehsnBPxUAtrCz+k8ym9Xx+K85Dg5j
-	esgrX6fToDnUWfmB6sAbw6lPpAXt8SRqzNAAEIkXt6S/4INe2phGURHf4Qq0Gg==
+	cv=pass;
+	b=BIQfrFLTE1XCMfzf+nOjUOukag4gdjRUdZOxrBilrM/ws6LQacdOkWsJ6ugEoWN8Ar5dih
+	dS7O5bW12doE7xsZk81vjHwGazPbREvaFHv2UsoWTjmc7Af9eIO44k0Yi9iVgNG2c+qfIb
+	vBTBlgsxe571fldD63sjkao53mwoB2bAU7M2d/JLwzIX00nQd9Q8qRWfKCQKN9e0soaksz
+	17bA+Bih8CdM6GQzSlRtrdhGulKVJJBdhKGyCStDtnNh1S0e8fxYTkZaW5zWqiTn+/3Asy
+	6iqysvoXRL/jn51e5ut0Xw+R7yg8QYmNASj/MU4VtC6jxK0Ogtm6DoAFUewhTw==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=4MsMt5ut;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=YSVjW5tk;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=UmR5bI+O;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=eWN1KsZV;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
-	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
+	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1792663805;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
@@ -37,89 +37,89 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=8OtEN5/+3a80irvugCQTpxxjx0rVJOfz6J61nEksqyo=;
-	b=eb7xhaupG0SFFCLPHlOIeTnTvcd1xWGWzWerfuwaUOAROBv5H9YbDu/Zru1PRp7zpfTVrF
-	9Ks1o20Pt6TBo1NWOOa+7+QWugxLmQkpAwnsk1xBqWWGqyQKF1w/pdhyeuqa4CXzXsIF79
-	90hi7McdxZaXPX7vPtIPtEJ9ZvMBbSE40txUk/62KkmjUY9XzE/Zobbb/PWkvD5zhpWZqQ
-	EZTxFFwAe78rWo3q+TJACI0f+Yp1D34EuJcy7NWe0tm/kn4c91B3Hm9qpJhhVFPRuN6C5F
-	474rAYoS1+ibtkkt7VLgCE7JdzqMJ+MHBZpmhH7YkTre409/O+lxqirY81B77Q==
+	bh=3cO/kf+RRTO0aLj56uu3XV6XM6kxOfoVg543TcDivKc=;
+	b=WJ6btdeVTQ4vWp0unaw29N7ahDZGI1vKvT/FF5gskW+qoWlYZMhCjajSI/19pntLaeiHI2
+	Kub6+KKJwkgf2VkmjMaMZqRHYTZI9uIa05txmComWPiicfrzgaDyMJQZJASIyzWvtCgdY3
+	xjwfbIm8TAlZzUNwiiwh73XrJiv5mq3gkwP9Wn+ZKtmrpt6r4QR2ar59RvJ7+tXOyFMskF
+	0eyE2Mw9qJz50mPbvdPtzfgAEi0Xx7BWPDunZLC2wks/GzrouxIjuX2tMiO9uQgeO/oMK5
+	Js+EDljeESR6KB3Uf+NKnaG47S+seZxKJUb/eBOUOfnwatqyaZOVIfAgTg7gjA==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=8OtEN5/+3a80irvugCQTpxxjx0rVJOfz6J61nEksqyo=; b=4MsMt5utWJZOoo
-	R7LKUAXhNCpZ38QUVGnsK30mJ5LmFlqWt5QisG+PH3fJqLVNu2y5ZnYpkwGY2pt0haEjyMFsP6BMj
-	y6jmvvM7ZJXaGEmwZSPguDwD1SD2+UgGFUgee5kt7bc4k5P0A862bWEnMsmrA0dWiO+hgdUcX4s9r
-	UCzjvyi3W7M/bnLtSNs14HeFPBkP8jq/1Ntt/sCa4ACOBTagT5suFVbxTARW6Vr77eVXir1l80zba
-	p7CP2a99M8dUeh6nvLG52eGXAnT0n52MhykkzBDFNHpWNhiAxhlTJxU5vhpsmudgGfFRM//jv1Tdo
-	AizJBafpnkFGxoN8DZnQ==;
+	List-Owner; bh=3cO/kf+RRTO0aLj56uu3XV6XM6kxOfoVg543TcDivKc=; b=UmR5bI+OzO0KQk
+	klDKlpeQ1IW3qva9TlWH8fL/n5MK4tDuIryDlIt7hjgciaeNmV11w95jq5MA6323VvYhoQt4mSI9Y
+	a/K11rNXy0KAQBH6mfhaI4mbCgk6+iwtBEx/hRsY85ccJLb5EoM6iC1LSfrDWDOGiKBBP8HTal+UP
+	FdFrP+qvn6N+TJcEwZylsoa05AeqZrBk/9HJh2OI/N/DFhWw8suVjmwoQS2s0PHy+H/cIOgFVo+5I
+	hVkcOgUJwMRnhsSZEHOe0yokr6/zEJUl84I8DVImJG1FiCn3/u/GU2iWMIiKv/4VpupB0/0utq8U4
+	yDo4eCYyqhgi0ijrSIqA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xJpjS-0000000DuJS-1mb7;
-	Thu, 22 Oct 2026 10:09:10 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
-	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xJpjM-0000000DuGf-1d5V
-	for barebox@lists.infradead.org;
+	id 1xJpjP-0000000DuI1-1EcT;
 	Thu, 22 Oct 2026 10:09:07 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xJpjM-0000000DuGe-0tbE
+	for barebox@lists.infradead.org;
+	Thu, 22 Oct 2026 10:09:06 +0000
 Received: from dude02.red.stw.pengutronix.de (dude02.red.stw.4.pengutronix.de [10.17.1.16])
 	(Authenticated sender: relay-from-dude02.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id A809B202013;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 9603E201E9D;
 	Thu, 22 Oct 2026 12:09:02 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1792663742;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8OtEN5/+3a80irvugCQTpxxjx0rVJOfz6J61nEksqyo=;
-	b=YSVjW5tkBOts+2Xf1x6EaSe+Nqqx1NTCxlxQPB/tF5UfwZsLwvsuHvsYJ6lMz0aCO40H2W
-	gBMfQrHufe27vIuqh9Kjbyh39arSRIdfx66GjDqlvsaEp9Y3ZnIzOKv1/PicCFtmugW9wB
-	bM6ZjihmCTf4+jY/AfXqWF7jtrL6IymybMTM7RVyLAZJK0PoeU3mazKvRQABMsqr7umOPE
-	VwNJajGLErOjorks3tXi3OZxlBpAi1ZWGexdb7dz9FXYNJaiKogcWY7L/XnPXNCdAVD3xp
-	7dgz/PyL/vDJ9E4U0nQn/bNCHP9SJ5subc/SDI0Lm4zcSJByGf7vICXl4LXIYw==
+	bh=3cO/kf+RRTO0aLj56uu3XV6XM6kxOfoVg543TcDivKc=;
+	b=eWN1KsZV1Qp8fnE+idH/sGbNCezoPRan+Avz6sY6mdSl6y1UpV6W6qtaABFe0FVT/bofoh
+	G4oChlG7WUEFvO36s7M3QZiEEHGiD8iq/x28sWVBClWFLZH9a/pl+9G0xDYeLQr9e7qPid
+	VrYcyieD/v053FsculFbY+e3c0juCsvbKpwgVcRdgtY6KUv1mLaXqnNTMAvi785NTG2qMB
+	OIIfD86SERYH+ja0AMhD1uyhFRbCTka1SKGv/+vgC+2n9Eft97rEIiy3g2CijMSPSKThLw
+	qXYO7f8kaxhWBR+8W0jhEXBbTWaScpnS0V5Ekbc50amyW0Ds0adeQs27e26eBQ==
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792663742; a=rsa-sha256;
 	cv=none;
-	b=c9BR31xAv+7y/0IOV0xKY/eaMlv3z4kaPk3sRXacivXOttaHXJqy3RLAL6XSWOKlWPdSKH
-	lEMQuCJYRsB0woZPTSiQd0LhH3djG3BVzAy/IjmHJjYBLEkXJm+xuPEQdY7Vlv1jKiK/V2
-	E5tTqix5szbLbmB+57Nv8Oy4el9XNChhXwWw2Xx2MMrJVH5zyYS7ABA/oqtxgmOJy0/5le
-	J/CaUy+ki0eb/Ps4GHzR6ihv4GpbnZBK2qpuO0xX7OYOKRJEeUaX60ZWtDFruJuXWJxAjv
-	LoRBA3jnYWBNs8IxbAS8vdLeh6NFmAhiJBcVZRpzRpHR9h9AllbzWXF6eMT7Sw==
+	b=K5Y/zX4+zPtBBPk9uWUQpvXEFsAYX4TPna3usxzGTKQQo+jFInZQ2hJV5DBpyGV5xC367L
+	OpJDQUHJNhG37/ZDmAStQmeqEIs0mQREmzDP24JPETJTYCRTt/6eF36YWg5rTPaaPJAm2D
+	fUG+X5NePR/2VyQeX1X4IcUHxf/23CSDXtHYlXVpXfpJ84sd4WyJ5cpPditseqr5aNhnaR
+	i6GUQe2SJLwHkM/cL6w7PU4jeIlnQwh6sNHTTHQ0Xp8MXQertTZ3HsRAGwRwdoIsIEkuA1
+	3672j3QyJkiFZ4aLppEhs1IrlEp0TxWqeBeWKVnKCggFPO/2TapX7yiFqnWvCw==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-dude02.red.stw.pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1792663742;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8OtEN5/+3a80irvugCQTpxxjx0rVJOfz6J61nEksqyo=;
-	b=fH8mGGeoW1luHjYzW0v0Rmab6t7cLjaMOMf1jPlgtnDlfSWLS6emxrmsWSvtuUKq5vWjdr
-	aQEar/oZGVVbOdwSfVlmFLnX2G+REX6BXa12QXRmLeACJ6SBHOsahvTOd0oejvwttY/Gq7
-	ilS3sEvEYMFvcLz0ejIX58Cu2zL3kSllCzZmdfNtn8KECjP866/UFemZD2zQXqNHO5zwpk
-	dOzLyT73sUsAoGFU3A7A6Xpo+8dZAmtUaHYqFHRC74T/Jq4W5CTht0FqngoS7b8XPgvUHg
-	WmqsS9YP+z3pZyVGZf5DhYWChOXyxV2PWip+KxoKpCcaY0R43PbIhfkB5XrLwQ==
+	bh=3cO/kf+RRTO0aLj56uu3XV6XM6kxOfoVg543TcDivKc=;
+	b=KuN+fy/Ca9SEfMh2wiyO0QPh+pUz4CYkalK6LctPPHUPiO0YXRi3KTeg6XLgdY1KNhNO01
+	0z7cGFAb5S4rrFKvWfg/TRuXGqxWDbeSXJh4AUi85Lr8/T3WFshaKmBaQ3DkJ3QapKWS50
+	o7YnuSJy+OvF0ib5GMNR9U5VQZTK70gor8PBUwvQxxZp9TMt0UTYWx77b6AA+irqJaPeD7
+	xzRcJTwIoO2vaSdVgv6z9yiBQzloaRqxH1ExcecZqjk9r802Qq6Mjj7KuI4YtdrQFfLjyt
+	Am4xvCPLEmZ9RBZdIlE38o+nyxJAByFUp2zKpQGWE6Q/i/js2DAmm8rTJtVSqA==
 Received: from dude02.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude02.red.stw.pengutronix.de (Postfix) with ESMTP id 864A9FFC9D;
+	by dude02.red.stw.pengutronix.de (Postfix) with ESMTP id 80FA7FFACA;
 	Thu, 22 Oct 2026 12:09:02 +0200 (CEST)
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20261021193607.1108006-1-a.fatoum@pengutronix.de>
-References: <20261021193607.1108006-1-a.fatoum@pengutronix.de>
-Subject: Re: [PATCH RESEND] Documentation: migration-guides: turn
- migration-master into directory
-Message-Id: <179266374254.1192486.9147851063753185568.b4-ty@pengutronix.de>
+To: BAREBOX <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20261016-dma-alloc-v1-0-31fc7afe3954@pengutronix.de>
+References: <20261016-dma-alloc-v1-0-31fc7afe3954@pengutronix.de>
+Subject: Re: [PATCH 0/3] dma: make dma_alloc() and dma_zalloc() fallible
+Message-Id: <179266374251.1192486.15385455426987546348.b4-ty@pengutronix.de>
 Date: Thu, 22 Oct 2026 12:09:02 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261022_030904_599130_0628DE60 
-X-CRM114-Status: UNSURE (   6.10  )
+X-CRM114-CacheID: sfid-20261022_030904_433853_4D655F4C 
+X-CRM114-Status: UNSURE (   7.59  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -128,10 +128,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Wed, 21 Oct 2026 21:36:01 +0200, Ahmad Fatoum wrote: >
-    This allows us to avoid conflicts, especially when basing on master and >
-    targeting merge into next. > > An extra benefit is that the upcomin [...]
-    
+ Content preview:  On Fri, 16 Oct 2026 09:36:52 +0200, Sascha Hauer wrote: >
+    dma_alloc() and dma_zalloc() are implemented with xmemalign() and never >
+    return NULL. That's unlike malloc() and calloc(), and many callers [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -161,57 +160,62 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 919852022EC
-X-Spamd-Result: default: False [-56.37 / 15.00];
+X-Rspamd-Queue-Id: 6217F202293
+X-Spamd-Result: default: False [-60.41 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-2.96)[99.82%];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
+	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
+	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	ARC_REJECT(1.00)[signature check failed: fail, {[1] = sig:pengutronix.de:reject}];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	MAILLIST(-0.20)[mailman];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
-	R_SPF_ALLOW(-0.20)[+mx:c];
 	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_COUNT_THREE(0.00)[4];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCPT_COUNT_TWO(0.00)[2];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[pengutronix.de];
 	RCVD_TLS_LAST(0.00)[];
-	R_DKIM_REJECT(0.00)[pengutronix.de:s=20260414];
-	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	NEURAL_HAM(-0.00)[-1.000];
 	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	TO_DN_ALL(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:-];
-	DKIM_MIXED(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Stat-Signature: bsj8bxjx7sdsr91ozoi7iw95rqbaigj7
+X-Stat-Signature: ydzoucuu76h33nrrfdigjt3r6u5zfrsy
 
 
-On Wed, 21 Oct 2026 21:36:01 +0200, Ahmad Fatoum wrote:
-> This allows us to avoid conflicts, especially when basing on master and
-> targeting merge into next.
+On Fri, 16 Oct 2026 09:36:52 +0200, Sascha Hauer wrote:
+> dma_alloc() and dma_zalloc() are implemented with xmemalign() and never
+> return NULL. That's unlike malloc() and calloc(), and many callers check
+> for NULL anyway, so they never get to handle an allocation failure.
 > 
-> An extra benefit is that the upcoming migration guides are no longer
-> hidden and thus easier to review after a local build.
-> 
+> This series adds dma_xalloc() and dma_xzalloc() for callers that rely on
+> the allocation to always succeed, switches all callers that don't check
+> the result over to them, and finally lets dma_alloc() return NULL on
+> allocation failure.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] Documentation: migration-guides: turn migration-master into directory
-      https://git.pengutronix.de/cgit/barebox/commit/?id=df53c88dfd4a (link may not be stable)
+[1/3] dma: add dma_xalloc() and dma_xzalloc()
+      https://git.pengutronix.de/cgit/barebox/commit/?id=fbf187a7d59e (link may not be stable)
+[2/3] treewide: use dma_xalloc()/dma_xzalloc() where the result isn't checked
+      https://git.pengutronix.de/cgit/barebox/commit/?id=54aeb3aabe4e (link may not be stable)
+[3/3] dma: let dma_alloc() and dma_zalloc() fail
+      https://git.pengutronix.de/cgit/barebox/commit/?id=560334ca9ea0 (link may not be stable)
 
 Best regards,
 -- 
