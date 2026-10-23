@@ -1,32 +1,32 @@
 Delivery-date: Fri, 23 Oct 2026 22:06:57 +0200
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xKLXT-002OQa-0z
+	id 1xKLXT-002OQb-16
 	for lore@lore.pengutronix.de;
 	Fri, 23 Oct 2026 22:06:57 +0200
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 233F320293E
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 2267D20293A
 	for <lore@pengutronix.de>; Fri, 23 Oct 2026 22:06:55 +0200 (CEST)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="er/qp5D4";
-	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=S3kQek5s;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="mqjMUD/M";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=QCVSqZiK;
+	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=nsnS6nqz;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IkElIRzF;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1792786015; a=rsa-sha256;
 	cv=none;
-	b=MD17rzIyNwXBXb+lsnIPep3hmc97dxLJ1IvKFjzLKwROjqPts+s35K3vYRtbyEwVuIOZ6j
-	NiW3dh/kAoVayIakucB1ThA9E2PADltJrH29/696t0NI78H5ttMzZk+HGJRTN9v5qBONDq
-	S+ytHHWSGEH052F+FwWVGeyqYMXFDeyoaUBddY42nhAYgE596WjCENPzG4/eR/LlXhREYY
-	HHoC/WZbCyKnx+J3mqcov8dFUfTn2m1gQ7qyVhtPpuZ9NTrg56seONerOF71g+kTsSnjB6
-	DxZ0n0fO7ykfJWlBYmlQek/lqSW3gUUID3/cLz1/Ny7E6g3yaDYtztu4CSTJxg==
+	b=b8yekRtZJKscdhmK4MFvCW44XvxPNek77kKgaa7RLd+NJ/BwqAOV4aHLgF5Q3wEwCjbEY/
+	r4CvyvH9R2m0ESY4gjl0I6LBToBtzmUf4w1WY13HW3rNMJrQK4ScglrFN8skmQ5qdwRPFo
+	1wjQqS/1QlX3TCwDyJHVxbIESnJdasE/VtsU0gMAjRn/HvE+bbitrBThN+wBVhzs5Xhqyd
+	rqwMTkLawjKdFevnAyxKcXdup7moPp7Tqs5E1pRDEjHUsvCqBkwX7Hu7F1bAreg7ohY2rG
+	8sKC2E1dbuiIyWsNKx/hvd3lkl8FW9Xr557P7oTzoJbwzveLRXheCfkqfPZFUQ==
 ARC-Authentication-Results: i=1;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="er/qp5D4";
-	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=S3kQek5s;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="mqjMUD/M";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=QCVSqZiK;
+	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=nsnS6nqz;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=IkElIRzF;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
@@ -37,69 +37,69 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=KztFZVlRLYQflXfaTDaJo6GHaGvsCDNVOn5BtGHkbWY=;
-	b=Pqj/9xwqNTXY/SkbKg0iTZUtsxUKvFxS3MuVZ8jQN/916YpxF7L8aWNjVBbx77ECpcn/cx
-	gkt2jCDJD/CKyex1bN6eMgrrLv/ph0mFc8/hIvDag1WhYgQX2wKZQWmqNwOLqfkFl0eAAh
-	8fU9rQXEsnNZELL5su4fxbt9keVcGw98BmVfqsCzJJ5A9fyOn8TctfhIXuwzlgZYpKFNIG
-	6qJE1RThgO6Zxdzgvpp1FmAsxlqvsvL/j68YyAsE1nD7oTdHI+kyP92kHUTzxK3H3OpiX+
-	MYsOL3z0MXLrtGEiVcWPgwC1SmEXVj3mG/uPcp/NHMEbCK+l6nEDTPtQ7uuzPg==
+	bh=j5vxrCU4mfCN3EI+2JwfuvDoiuu4uxgCtCVf1hM2QSY=;
+	b=XMmrS3vaZjwUlw+mo85SpVQ0Ht4L6apECIPQhazGDTbN6W7ggxmG7Ay5oTeOiORo4hrj3S
+	syFaE+WnMry9/v5w+nLmQ/+MuN9KSc9mhwBWwRs+o5a4akhjrqOuBUrnI19wEBCNNt6Bc/
+	cYp8TdtVJ6aMNE8bpCLY5VuSm7AcOiHG2SXkoKfzjJy4DJVAcMexY6qOj1oZVeewu2Dtwb
+	6BNMCzMr+uYOZ1YDky4zH/MeIe6nmx2J6SIHPcn1WsnzZuce1CljErTchTmqwNPk/chWgt
+	S0ZP4z0S7t+qEJ1H+f2Rd2GF9GXlqSJtx8fsMdwAuNsrPFApkNC0ybkpZB4m/A==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
 	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=KztFZVlRLYQflXfaTDaJo6GHaGvsCDNVOn5BtGHkbWY=; b=er/qp5D4l44U3S
-	DrawP+oSkR5vlmAnbIEB7K4MFt+XYAVKTeu5b/DRkdIuNi1pmjC5bbr0XeMqUBQAuyBdPg40aDbO0
-	NFx7xk34y+GMlvXqW1Bz+uPzerYiZq7qK1y6whhRbsA6RABCRVeY+/ErOOw4EVL49YLEoeb+f7da9
-	ZdOzfzOp6fEIMBGwSZoydq9wYZPGRpEtc0J8zSF8admpPAdGvZunJ8L0LFhSOEMVUNIm6CT/B/BrB
-	H1ykAp3OIZ4JzlDFlFnQiorHUuHRl/hJAagAL2ynIZFTqgL3oEb4Nr6alobhdHOi8X9q4D6NOQph5
-	rv2mmofKLuRulI4TqmKw==;
+	List-Owner; bh=j5vxrCU4mfCN3EI+2JwfuvDoiuu4uxgCtCVf1hM2QSY=; b=QCVSqZiKAYdv1S
+	DAI0nf9Z2TA+OOIlxievsPcTRd5StUpoISnLDbS8S/bWiHoFRgKiDAXODPvB+kihbuMk5W5REtSv/
+	ooQ9WTSsIGTyOzrka9ICI9RG8Pi6DKnHmKfLJNF72ue96se/tKOmMevCWTmLnx3UR5lEPKpUAp9T6
+	YT1yhbzffDiZDY/MNu7RpKGWvfqFNxq/A8JDFC8eRC+lUIlfGWWYK4lX9W7+DiOIq6Fh+eImpiV8P
+	U2XZ2N5WoiwQCqyyKuRvFMs1ihIP32GgjNUn5U4tiGcsPx2anYUq4o10u+kzx9W0Yj+aoXE/2YHKk
+	droRt37nRFg8k/xtG41g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xKLWH-0000000GuDC-0yJl;
+	id 1xKLWH-0000000GuDP-1Nlu;
 	Fri, 23 Oct 2026 20:05:41 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xKLWD-0000000GuBf-3TBm
+	id 1xKLWB-0000000GuBR-2B25
 	for barebox@bombadil.infradead.org;
 	Fri, 23 Oct 2026 20:05:39 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
 	:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Sender:Reply-To:Content-ID:Content-Description;
-	bh=KztFZVlRLYQflXfaTDaJo6GHaGvsCDNVOn5BtGHkbWY=; b=S3kQek5sI0c4qwPYXGLG1P0ndF
-	4d5uIVRpHwbasCK7gGbSlBcQW+QkS9SHVJ43ecyi1Khm0WCsVbrFgI3w4eqC+qR2o/hgzVze8UZD5
-	0lK995KHdFP/Nz56N8smmFwjhx13HhZAQ9n0pONNZBKtN1OPPfDUx1CiKaxpA7/kuDnw7H35/Iph7
-	ROF3zK7fzspmylMaHnNWmm68E0eSglPaRGdMg4qkkGTzW7Lgmq5GDxUf+gPcVpuI4m/SGRAVlbNOL
-	kreO4nmyWL5IuIQr1Z62Kd+Q/fK8Y7pF7YbgVeAF1GbKqHsxHv0R/QgPDsJlRKLPlfWIQcVxIcBNH
-	fiudkO5A==;
-Received: from out-134.mta1.migadu.com ([95.215.58.134] helo=mta1.migadu.com)
+	bh=j5vxrCU4mfCN3EI+2JwfuvDoiuu4uxgCtCVf1hM2QSY=; b=nsnS6nqzCpMWiZrXyBMOmqY0VF
+	UVbZwvQB7TJsnvVIRkUMhlk1W/fXT7Kff61ABOR+Uh9trO4CbMiNQP78ILxatwUoW8OZAIHuN14sz
+	OKQOWeWgNOtS66TFgVKevxhv+/Q5j/IIUfA1FU1AEcu3THQUiZoA7UG2DkS9e9Aqfia2jXSQs9HnV
+	4AgiNoHbkfob3ET3QvSHuHTllERmthlCDkXIdrOmEyQlsapbjzK4NuuOnfEtrypJjXHlVSRRRvPsW
+	bfxSyd4ABiYiBk83UF1/FeYe5YcKZx4PYESnIChi5TcuT8A4jp3mUGqHrmc33fowxeomT+rl5C9tr
+	STvPbNPA==;
+Received: from out-130.mta1.migadu.com ([95.215.58.130] helo=mta1.migadu.com)
 	by desiato.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xKLWA-0000000ASo6-3OtR
+	id 1xKLW8-0000000ASmp-1dIE
 	for barebox@lists.infradead.org;
-	Fri, 23 Oct 2026 20:05:36 +0000
+	Fri, 23 Oct 2026 20:05:34 +0000
 X-Envelope-To: barebox@lists.infradead.org
-DKIM-Signature: a=rsa-sha256; bh=OAiry05oOqSgxrjwUTrKh4hDUqgyzzJ7DJ/shTFoquU=;
+DKIM-Signature: a=rsa-sha256; bh=6j/ppQmDwyTr75/KrKnGO8nKKT40QDTmFT7opDT1wQc=;
  c=simple/simple; d=linux.dev;
  h=from:to:subject:date:message-id:mime-version:content-type; s=key1;
- t=1792785933; v=1; x=1793390733;
- b=mqjMUD/Mj12U4v5hWqQM4cMGTs23XhIiiUrn+k9cs+3dllcoGirClVj9Ub5zK4hUw7TpRC16
- qDuCrfvJGgUO9yw6RTTz9a8inlZbrupO1rDZrIT5vvv8FeDuO2T6Ea6MNON5xSaFv5JaEAoN/WX
- NxSW1CFzP+I9okUtHGBfL7HM=
+ t=1792785930; v=1; x=1793390730;
+ b=IkElIRzFz7ueB2lGSQUl/BZAOzUhD32wohlnA4W+BTd+JfXgqkqxEhRmtwyMP22wncIk1mrL
+ U7V8bIb2kcmWuPbVEVuCnYQydWTxeyMowHeSQrtyfnGui3l2j89yiI+GGgT4+Efjgas/rFs+PHp
+ xJ0t509rcAp6ULtPqpfoo1ro=
 X-Envelope-To: barebox@lists.infradead.org
-Received: by smtp.migadu.com with ESMTPS id 10981137183cf7c4;
-	Fri, 23 Oct 2026 20:05:32 +0000
-X-Mizu-Trace-ID: 10981137183cf7c4
+Received: by smtp.migadu.com with ESMTPS id 20dc180d2a705903;
+	Fri, 23 Oct 2026 20:05:29 +0000
+X-Mizu-Trace-ID: 20dc180d2a705903
 X-Migadu-Flow: FLOW_OUT
 From: clement.leger@linux.dev
 To: Sascha Hauer <s.hauer@pengutronix.de>,
 	barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>,
 	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <clement.leger@linux.dev>
-Subject: [PATCH 4/5] drivers: watchdog: remove KVX watchdog
-Date: Fri, 23 Oct 2026 22:05:06 +0200
-Message-ID: <20261023200507.63716-5-clement.leger@linux.dev>
+Subject: [PATCH 3/5] drivers: nvmem: remove KVX OTP support
+Date: Fri, 23 Oct 2026 22:05:05 +0200
+Message-ID: <20261023200507.63716-4-clement.leger@linux.dev>
 X-Mailer: git-send-email 2.55.0
 In-Reply-To: <20261023200507.63716-1-clement.leger@linux.dev>
 References: <20261023200507.63716-1-clement.leger@linux.dev>
@@ -107,8 +107,8 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261023_210534_999529_8A5B7575 
-X-CRM114-Status: GOOD (  13.85  )
+X-CRM114-CacheID: sfid-20261023_210532_761928_E2B094FB 
+X-CRM114-Status: GOOD (  14.38  )
 X-Spam-Score: -0.9 (/)
 X-Spam-Report: Spam detection software, running on the system "desiato.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -117,9 +117,9 @@ X-Spam-Report: Spam detection software, running on the system "desiato.infradead
  the administrator of that system for details.
  
  Content preview:  From: Clément Léger <clement.leger@linux.dev> Remove the
-    kvx watchdog driver. Signed-off-by: Clément Léger <clement.leger@linux.dev>
-    --- drivers/watchdog/Kconfig | 17 ------ drivers/watchdog/Makefile | 1 -
-   drivers/watchdog/kvx_wdt.c | 109 [...] 
+    kvx OTP driver. Signed-off-by: Clément Léger <clement.leger@linux.dev>
+   --- drivers/nvmem/Kconfig | 7 --- drivers/nvmem/Makefile | 3 -- drivers/nvmem/kvx-otp-nv.c
+    | 95 3 files [...] 
  
  Content analysis details:   (-0.9 points, 5.0 required)
  
@@ -127,7 +127,7 @@ X-Spam-Report: Spam detection software, running on the system "desiato.infradead
  ---- ---------------------- --------------------------------------------------
  -0.7 RCVD_IN_DNSWL_LOW      RBL: Sender listed at https://www.dnswl.org/, low
                              trust
-                             [95.215.58.134 listed in list.dnswl.org]
+                             [95.215.58.130 listed in list.dnswl.org]
  -0.0 SPF_PASS               SPF: sender matches SPF record
  -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
  -0.1 DKIM_VALID_EF          Message has a valid DKIM or DK signature from
@@ -150,7 +150,7 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 233F320293E
+X-Rspamd-Queue-Id: 2267D20293A
 X-Spamd-Result: default: False [-7.21 / 15.00];
 	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
@@ -158,11 +158,11 @@ X-Spamd-Result: default: False [-7.21 / 15.00];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	DMARC_POLICY_ALLOW_WITH_FAILURES(-0.50)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2001:8b0:10b:1:d65d:64ff:fe57:4e05:received,2607:7c80:54:3::133:from];
+	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2001:8b0:10b:1:d65d:64ff:fe57:4e05:received];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,linux.dev:s=key1];
 	MAILLIST(-0.20)[mailman];
-	RCVD_IN_DNSWL_LOW(-0.10)[95.215.58.134:received];
+	RCVD_IN_DNSWL_LOW(-0.10)[95.215.58.130:received];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
@@ -187,175 +187,153 @@ X-Spamd-Result: default: False [-7.21 / 15.00];
 	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=1];
 	DMARC_POLICY_ALLOW(0.00)[linux.dev,none]
 X-Rspamd-Action: no action
-X-Stat-Signature: g1x5jdjtwtgujeedjx1bkdnj5dkoikoa
+X-Stat-Signature: sg96yd1nfxapn4q7zhya11deqz74pxg5
 
 From: Clément Léger <clement.leger@linux.dev>
 
-Remove the kvx watchdog driver.
+Remove the kvx OTP driver.
 
 Signed-off-by: Clément Léger <clement.leger@linux.dev>
 ---
- drivers/watchdog/Kconfig   |  17 ------
- drivers/watchdog/Makefile  |   1 -
- drivers/watchdog/kvx_wdt.c | 109 -------------------------------------
- 3 files changed, 127 deletions(-)
- delete mode 100644 drivers/watchdog/kvx_wdt.c
+ drivers/nvmem/Kconfig      |  7 ---
+ drivers/nvmem/Makefile     |  3 --
+ drivers/nvmem/kvx-otp-nv.c | 95 --------------------------------------
+ 3 files changed, 105 deletions(-)
+ delete mode 100644 drivers/nvmem/kvx-otp-nv.c
 
-diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index 14fdb7cf68..068d3c93dd 100644
---- a/drivers/watchdog/Kconfig
-+++ b/drivers/watchdog/Kconfig
-@@ -83,23 +83,6 @@ config WATCHDOG_ORION
- 	help
- 	  Add support for watchdog on the Marvall Armada XP
+diff --git a/drivers/nvmem/Kconfig b/drivers/nvmem/Kconfig
+index d66c4a88fe..b7501798cb 100644
+--- a/drivers/nvmem/Kconfig
++++ b/drivers/nvmem/Kconfig
+@@ -106,13 +106,6 @@ config STM32_BSEC_OPTEE_TA
+ 	  trusted application STM32MP BSEC in addition to the older SMC SiP
+ 	  service.
  
--config WATCHDOG_KVX
--	bool "KVX Core watchdog"
+-config KVX_OTP_NV
+-	tristate "kalray KVX OTP Non volatile regs Support"
 -	depends on KVX
 -	help
--	  Add support for the KVX core watchdog.
+-	  This is a simple driver to dump specified values of KVX OTP non
+-	  volatile regs.
 -
--config WATCHDOG_KVX_EARLY_INIT
--	bool "KVX Core watchdog early init"
--	depends on WATCHDOG_KVX
--	help
--	  Activate the watchdog with early initcall
+ config STARFIVE_OTP
+ 	tristate "Starfive OTP Support"
+ 	depends on SOC_STARFIVE
+diff --git a/drivers/nvmem/Makefile b/drivers/nvmem/Makefile
+index cb5e6d6330..8f1bb0bf44 100644
+--- a/drivers/nvmem/Makefile
++++ b/drivers/nvmem/Makefile
+@@ -28,9 +28,6 @@ obj-$(CONFIG_STM32_BSEC)	+= nvmem_bsec.o
+ nvmem_bsec-y			:= bsec.o
+ nvmem_bsec-$(CONFIG_STM32_BSEC_OPTEE_TA) += stm32-bsec-optee-ta.o
+ 
+-obj-$(CONFIG_KVX_OTP_NV)	+= nvmem-kvx-otp-nv.o
+-nvmem-kvx-otp-nv-y		:= kvx-otp-nv.o
 -
--config WATCHDOG_KVX_EARLY_TIMEOUT
--	int "KVX Core watchdog early timeout in cycles"
--	depends on WATCHDOG_KVX_EARLY_INIT
--	default 100000000
--
- config WATCHDOG_BCM2835
- 	bool "Watchdog for BCM283x SoCs"
- 	depends on ARCH_BCM283X || COMPILE_TEST
-diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
-index c49d090f8d..4b7fd74dfa 100644
---- a/drivers/watchdog/Makefile
-+++ b/drivers/watchdog/Makefile
-@@ -11,7 +11,6 @@ obj-$(CONFIG_WATCHDOG_JZ4740) += jz4740.o
- obj-$(CONFIG_WATCHDOG_IMX_RESET_SOURCE) += imxwd.o
- obj-$(CONFIG_WATCHDOG_IMX) += imxwd.o
- obj-$(CONFIG_WATCHDOG_IMXULP) += imxulp-wdt.o
--obj-$(CONFIG_WATCHDOG_KVX) += kvx_wdt.o
- obj-$(CONFIG_WATCHDOG_ORION) += orion_wdt.o
- obj-$(CONFIG_ARCH_BCM283X) += bcm2835_wdt.o
- obj-$(CONFIG_RAVE_SP_WATCHDOG) += rave-sp-wdt.o
-diff --git a/drivers/watchdog/kvx_wdt.c b/drivers/watchdog/kvx_wdt.c
+ obj-$(CONFIG_NVMEM_ROCKCHIP_OTP)+= rockchip-otp.o
+ obj-$(CONFIG_STARFIVE_OTP)	+= starfive-otp.o
+ obj-$(CONFIG_IMX_OCOTP_ELE)	+= imx-ocotp-ele.o
+diff --git a/drivers/nvmem/kvx-otp-nv.c b/drivers/nvmem/kvx-otp-nv.c
 deleted file mode 100644
-index 3e66aa38ba..0000000000
---- a/drivers/watchdog/kvx_wdt.c
+index c4591f5822..0000000000
+--- a/drivers/nvmem/kvx-otp-nv.c
 +++ /dev/null
-@@ -1,109 +0,0 @@
+@@ -1,95 +0,0 @@
 -// SPDX-License-Identifier: GPL-2.0-or-later
 -/*
-- * Copyright (C) 2018 Kalray Inc.
+- * Copyright (C) 2020 Kalray Inc., Clément Léger
 - */
 -
 -#include <common.h>
+-#include <driver.h>
+-#include <malloc.h>
+-#include <xfuncs.h>
+-#include <errno.h>
 -#include <init.h>
+-#include <net.h>
 -#include <io.h>
--#include <of.h>
--#include <watchdog.h>
 -
--#include <linux/clk.h>
--#include <linux/err.h>
+-#include <linux/nvmem-provider.h>
 -
--#include <asm/sfr.h>
+-#define OTP_NV_ALIGN		4
+-#define OTP_NV_ALIGN_MASK	(OTP_NV_ALIGN - 1)
 -
--struct kvx_wdt {
--	uint64_t clk_rate;
--	struct watchdog wdd;
+-struct kvx_otp_nv_priv {
+-	void __iomem *base;
 -};
 -
--static void kvx_watchdog_disable(void)
+-static int kvx_otp_nv_read(void *context, unsigned int offset,
+-			  void *_val, size_t bytes)
 -{
--	kvx_sfr_set_field(TCR, WUI, 0);
--	kvx_sfr_set_field(TCR, WCE, 0);
--}
+-	struct kvx_otp_nv_priv *priv = context;
+-	u8 *val = _val;
+-	u32 tmp, copy_size;
+-	u8 skip = offset & OTP_NV_ALIGN_MASK;
 -
--static int kvx_wdt_set_timeout(struct watchdog *wdd, unsigned int timeout)
--{
--	struct kvx_wdt *wdt = container_of(wdd, struct kvx_wdt, wdd);
--	uint64_t cycle_timeout = wdt->clk_rate * timeout;
+-	offset &= ~OTP_NV_ALIGN_MASK;
 -
--	/* Disable watchdog */
--	if (timeout == 0) {
--		kvx_watchdog_disable();
--		return 0;
+-	while (bytes) {
+-		tmp = readl(priv->base + offset);
+-		if (skip != 0)
+-			copy_size = min(OTP_NV_ALIGN - skip, (int) bytes);
+-		else
+-			copy_size = min(bytes, sizeof(tmp));
+-
+-		memcpy(val, ((u8 *) &tmp) + skip, copy_size);
+-		skip = 0;
+-
+-		bytes -= copy_size;
+-		val += copy_size;
+-		offset += OTP_NV_ALIGN;
 -	}
--
--	kvx_sfr_set(WDV, cycle_timeout);
--	kvx_sfr_set(WDR, 0);
--
--	/* Start watchdog counting */
--	kvx_sfr_set_field(TCR, WUI, 1);
--	kvx_sfr_set_field(TCR, WCE, 1);
 -
 -	return 0;
 -}
 -
--static int count;
+-static const struct of_device_id kvx_otp_nv_match[] = {
+-	{ .compatible = "kalray,kvx-otp-nv" },
+-	{ /* sentinel */},
+-};
+-MODULE_DEVICE_TABLE(of, kvx_otp_nv_match);
 -
--static int kvx_wdt_drv_probe(struct device *dev)
+-static int kvx_otp_nv_probe(struct device *dev)
 -{
--	struct watchdog *wdd;
--	struct clk *clk;
--	struct kvx_wdt *kvx_wdt;
+-	struct resource *res;
+-	struct nvmem_device *nvmem;
+-	struct nvmem_config econfig = { 0 };
+-	struct kvx_otp_nv_priv *priv;
 -
--	if (count != 0) {
--		dev_warn(dev, "Tried to register core watchdog twice\n");
--		return -EINVAL;
--	}
--	count++;
+-	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
+-	if (!priv)
+-		return -ENOMEM;
 -
--	kvx_wdt = xzalloc(sizeof(*kvx_wdt));
--	clk = clk_get(dev, NULL);
--	if (IS_ERR(clk))
--		return PTR_ERR(clk);
+-	res = dev_request_mem_resource(dev, 0);
+-	if (IS_ERR(res))
+-		return PTR_ERR(res);
 -
--	kvx_wdt->clk_rate = clk_get_rate(clk);
--	clk_put(clk);
+-	priv->base = IOMEM(res->start);
 -
--	wdd = &kvx_wdt->wdd;
--	wdd->name = "kvx_wdt";
--	wdd->hwdev = dev;
--	wdd->set_timeout = kvx_wdt_set_timeout;
+-	econfig.name = "kvx-nv-regbank";
+-	econfig.stride = 1;
+-	econfig.word_size = 1;
+-	econfig.size = resource_size(res);
+-	econfig.dev = dev;
+-	econfig.priv = priv;
+-	econfig.reg_read = kvx_otp_nv_read;
 -
--	/* Be sure that interrupt are disabled */
--	kvx_sfr_set_field(TCR, WIE, 0);
+-	dev->priv = priv;
 -
--	return watchdog_register(wdd);
+-	nvmem = nvmem_register(&econfig);
+-
+-	return PTR_ERR_OR_ZERO(nvmem);
 -}
 -
--static struct of_device_id kvx_wdt_of_match[] = {
--	{ .compatible = "kalray,kvx-core-watchdog", },
--	{ /* sentinel */ }
+-static struct driver kvx_otp_nv_driver = {
+-	.name	= "kvx-otp-nv",
+-	.probe	= kvx_otp_nv_probe,
+-	.of_compatible = DRV_OF_COMPAT(kvx_otp_nv_match),
 -};
--MODULE_DEVICE_TABLE(of, kvx_wdt_of_match);
--
--static struct driver kvx_wdt_driver = {
--	.name		= "kvx-wdt",
--	.probe		= kvx_wdt_drv_probe,
--	.of_compatible	= DRV_OF_COMPAT(kvx_wdt_of_match),
--};
--device_platform_driver(kvx_wdt_driver);
--
--#ifdef CONFIG_WATCHDOG_KVX_EARLY_INIT
--static int kvx_wdt_early_init(void)
--{
--	/* Set Start watchdog counting */
--	kvx_sfr_set(WDV, CONFIG_WATCHDOG_KVX_EARLY_TIMEOUT);
--	kvx_sfr_set(WDR, 0);
--
--	/* Start watchdog counting */
--	kvx_sfr_set_field(TCR, WUI, 1);
--	kvx_sfr_set_field(TCR, WCE, 1);
--
--	return 0;
--}
--core_initcall(kvx_wdt_early_init);
--#endif
+-postcore_platform_driver(kvx_otp_nv_driver);
 -- 
 2.55.0
 
