@@ -1,125 +1,126 @@
-Delivery-date: Mon, 26 Oct 2026 14:05:04 +0100
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Mon, 26 Oct 2026 14:05:57 +0100
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xLKNs-003Vx3-1P
+	id 1xLKOi-003VyI-2M
 	for lore@lore.pengutronix.de;
-	Mon, 26 Oct 2026 14:05:04 +0100
+	Mon, 26 Oct 2026 14:05:57 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id A49C6202845
-	for <lore@pengutronix.de>; Mon, 26 Oct 2026 14:05:04 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 4BFEE202844
+	for <lore@pengutronix.de>; Mon, 26 Oct 2026 14:05:56 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=cp53NIT7;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=NEm6mksa;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=O8redyYd;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=BU8W8V35;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1793019904; a=rsa-sha256;
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1793019956; a=rsa-sha256;
 	cv=pass;
-	b=TSM8qmKGtZfmqC4I4wTaspRmGcH+KdcL+xqagti5JT5FzQr2bKsjy6n7EEmZ/+I9XLh+Nx
-	B+1O4jC8LdYzQbXiSi14Pqf7CaOGhTYUPLo9pAGMqGSI8eq8M6GYacTCTDPPSRTq7eZMpl
-	/Tq/Q0dDKF8DvHz4GFdNTQOqEBXaeWJv8DJCB50rMlb9Fv6IEA4ghfySaxgKm9KsIcui6h
-	sxmbMG54RuxIJnZpSfcygiFhKy2tSHlv7XpgmHtEbzwSX8BmcahVhgmoLTjnK+H//JinzF
-	QwW134aOH1ZSu66GthDzZpy7pugT5Na5ylul4Pp0RDDOit1NDMZ8g1UJV/RJhA==
+	b=Y2je4Zdvfqbrw1CCzAtWwlzUKVefI8O5gCFpgaOIQWIm85o9zndQO+p4Ffm8l2CEFhAGns
+	wUeezwld7QFUppG7rhXPSr5zgSxj8ag6d3omK2MJ0cPDTC9o7BEqNZ8hWPW+eW2Wya7Bos
+	OSo6C00Q5ifaK9qk/l7E4NUb9Phn2Q+ck74rXFp6yWEfplZqgaO/4GispGKxc4raEofIU9
+	Rkm8aubDOhPbqMyRJDMQeyc2FoZZVCttB/YufWdYXH19mSWhPJv1UH9wmnn4+VuTx/XvNB
+	e/a/KN+jCTaxra3XKI1EikZ/tP4n1/iJ7j19lYMqby+yK+87WfsOBADmkm51QA==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=cp53NIT7;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=NEm6mksa;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=O8redyYd;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=BU8W8V35;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793019904;
+	s=20260414; t=1793019956;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=iN63F4K+m4YI9V3NQQ3KBKNs6ztv+kLQdox6VTbHGis=;
-	b=CdqA74te8nooD2QAw90oF6k2WQ0q6LVcVLeeLq8cNZ5O8nfK0ZBbvY1Dy839Gmsl5F3JBP
-	3hqiHMZSN8hMYbh3UjlO3MLavTbpZJpwnEjE9h3kBYxHTOWTWpjQfwwqPSUjk5BPGqgCyj
-	QjIMjuBhN0lYZRW7bSV2GF/8PZgV3IKRDRUjh5Lrr4TXE40p6D6RtbAlx/P2FYXHLG2yvf
-	UXEoWPiO5Vd2HdIRUHJdSfTGGH1I9K7Vv8epqFXFf0XPSmPbMsQ+XnKYLLBpiU7PmfcE6m
-	jzrcoApLOAQA0IAwaLAURQEWl46C7js5IwP+IfVpQCastxBvCmhFo09BWnvamg==
+	bh=Sg1SnGerHveRUJH5HzVnLlNzaNlPyAyLegbkgQERevk=;
+	b=DKs6WNbhA8/RDw8gEz174PThVhnb6NfsY9jNlQ+odxrRPCToQ3FK/xNIhXxqINCL/uJxaY
+	Xl2c+rm+RKv8nTYlxKcLpUPWgBCw3uPUBoqJ/1us14OD/6YDpkXA5NQPQ4R92K5ddqBPby
+	LABLFw24YuUNIbY3eRi7lo1I2TI1NwuJoBCh7PYDXF6mrfbzC0NjHCBYbBLZOLQwNb6sXf
+	HD8tYwBUMwE88NHCuBeLaoW1gA6pS309WQGW6Xl9mEfG5PH37qA1sdo2taUbQ2+yYUHlSb
+	4Dfk+Qsotdh/a0pNbh9XEEtKqw2kshY78BuERJB+xFxYJAefRyTvzx79GzOaZQ==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=iN63F4K+m4YI9V3NQQ3KBKNs6ztv+kLQdox6VTbHGis=; b=cp53NIT7IxCV7T
-	JyJDZFgE26x3MtwdtkOI3K1+XPMRCkFcoBDylfc/e/0K6Nf7e6tixCuzXRz9c3OeZ6TZxMMpHFbpL
-	e0ZWsdiaLPx5X6YsUUWKx08mRyuVcrSMcAA1mYQhNqBZ1Jqibevdz2iHnV0uGvGYLYxHF9ndNRAEs
-	9MVvYA1a600vkCRQMkGI8YOw1cuBu6H5zFlpbZMoyDeAQvG8wZytypzkPORDt1LQw/pOphOjcDqaP
-	qN6NaLLtPuFPvKRhdGjmbOdVE3bNNLjSxoKHDz5MuEZUQaeWtFUA4R5+XBYewdLXm752Wa1DNc4lj
-	dNkyJ/ZRFFQjo/visS5w==;
+	List-Owner; bh=Sg1SnGerHveRUJH5HzVnLlNzaNlPyAyLegbkgQERevk=; b=O8redyYddcBELR
+	zY8OGCjw/74zY3IvPf8rhFXTnX1UtPELqLd/WF/GolKPWP4uZlQm9BMspd/ZGaUZW0e9dYkhOlKIf
+	BAbVoa3rxnO+W+EeXE/uD21JhRW6mRzBn3L7SdLH1kjeVmqoGC8z3aswxZmNaV8UfWIODFUQtW2Ku
+	mPAZoEfK04og99PmBc9hUkDvwCDuW1CY7j+ao8+Ko53DUrYB5qRugmHIxS5CWyK3MYgMNRty8gXpY
+	THkSLuv0N6+9hKr2Wv/QGNIeDBu+dBbXO/N9HgOsu21DQuchGgeQ4yj31siDkeLlLwz5FIQGE8tyB
+	/EZE0frL1VvZTfBytaog==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xLKMs-00000002YxD-2px0;
-	Mon, 26 Oct 2026 13:04:02 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1xLKNo-00000002Z5C-3Vkt;
+	Mon, 26 Oct 2026 13:05:00 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xLKMp-00000002YwD-1TTJ
+	id 1xLKNl-00000002Z42-0pZr
 	for barebox@lists.infradead.org;
-	Mon, 26 Oct 2026 13:04:01 +0000
-Received: from dude02.red.stw.pengutronix.de (dude02.red.stw.pengutronix.de [IPv6:2a0a:edc0:0:1101:1d::28])
+	Mon, 26 Oct 2026 13:04:58 +0000
+Received: from dude02.red.stw.pengutronix.de (dude02.red.stw.4.pengutronix.de [10.17.1.16])
 	(Authenticated sender: relay-from-dude02.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 78CDC20233A;
-	Mon, 26 Oct 2026 14:03:57 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 78B0C2022E2;
+	Mon, 26 Oct 2026 14:04:55 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793019837;
+	s=20260414; t=1793019895;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iN63F4K+m4YI9V3NQQ3KBKNs6ztv+kLQdox6VTbHGis=;
-	b=NEm6mksa2/Wg6+Y0D7IMORLe7zhX0a0+NjwxjTN3D1sbLXl7xTteKEVfZzbeJPoEtmzEKI
-	RWtA6/WvfnHfpmUG4zOZyPhTBnkX0KHiv6dsWLcAR+HySWGISjrxAxL/JXv9jldmvn5tzb
-	wvgTpSTU/iUey/mauX2gRhoQuKCoff8cxwiCbz7Z31LLcbWp2bgVLY9Ry65w/9esKawArD
-	6GoKEoCBjhql7IdA8MpS37aEyGLv9pUj+fqqBCpDl7JzktbywcLJdZyPLGpIlPw9RebDR1
-	UumhyvXmW0yxa2JIxV/5YJqRUsDlk22iwbbjbaFZHmCB7ZB91oQdg0VBwJqycA==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793019837; a=rsa-sha256;
+	bh=Sg1SnGerHveRUJH5HzVnLlNzaNlPyAyLegbkgQERevk=;
+	b=BU8W8V35dpFa9wz/AkYT7QUEtTf8oNlfunbCYJ+1mQNt0T95FQMpU+pfsYCs9oP4SKkvQY
+	xfoZaDNGswyvDz2IEy+dVX+wwsmNwhle4atbQz1IVq6wZcC1xbPOaQDwh4B2aFu3v9ZABp
+	xNVGx7xDjSxLkktQc+uMTT4pJDp3jHSdC39hv0Df0XCDjj2aNM94wafaTPoZuCfjM6Pvur
+	TbAjbMdePxsK4E0bAtqqEEeMQGKVPVfGoKG/6u5bbyuAOW1pQPZoyX/it0zLR6vd7RJAKD
+	xMbtkpR5DLhKbORJ5dhzZQYYythSPIYXJcB5JyBLBfiC2lgL1UHzcFC3H+Fwzw==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793019895; a=rsa-sha256;
 	cv=none;
-	b=f5Uh0Cxrf1TLfQYtvuMbdyon5q4XOkExjQBDhhVpX84MXXWovkUQvAnQWFkV4f5Ws07lm0
-	jmsCLJSqMmUxSRSizEXS7kFYDboIDhlTL41Vo8y5Sf01TUC4N45xdE4QzJ5Ud6MvgsDJVu
-	wQGNkQwSAfw/4C12DploRZrPcERR/3bYDdXVNh/jXBLEggAjQOSlNjzO1mtYRJ/5UXgHi8
-	ewoK241H+7s6/Gz6uboEI81MklfptXbzeVJjblyVwPCUbgPu9ZtFY7euuQBYMHVP4al73i
-	wy+Wa+QL4ootdST93ZwEF2c8c+yjxLHXvElRzO56tnvOVeUKMLM7xS3/GCBX/w==
+	b=PC10Q+Xc9mByW/QaMDGg9N53CQ7Hf17VdW9om1DAxfWdBl/OVPLtH07MuR45GXF2h5OXnW
+	tqzkVnIQ1LpyWJw3M85pAoCK4fBNoUW1PHR8r2JBjoH3GojPCGHTkjwD9QYoiIC5Fx2Fyh
+	WEpNtQbFJeLvN+FzyvEyJjZ8Fj2/xvOa2Kl+PHVAwCI3UtE3GKwgBCtynYJ7o0Xjpq9cGJ
+	vNtktRYyntci/AbK7bjBOmbSGry++p8Aqv0Dst7WYaUppwtgYpQw8EzqfCv2jmcit/mhho
+	Ak5tnqQzoGhapVQgZs+oVWIqQI6NTNNSn7kX0iIS6enlgkzUJH+ZfGDqeNJs+g==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-dude02.red.stw.pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793019837;
+	s=20260414; t=1793019895;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iN63F4K+m4YI9V3NQQ3KBKNs6ztv+kLQdox6VTbHGis=;
-	b=TsXmVu8fbNNCyjFyEEUclq8/sHcF7MiwZ4x5Xps0rVjvyRZRqQ9njMUc0AarM16K2smmVe
-	Nz/LGAhm3COqXGJJE9ai7ZIzjfKjyoem/tLb9RWbSZF5I2cSklTHZHZtDxrvZ8P6aFEgfy
-	sdlhIejNY3BDtBYrA6PMThewO0GjM4QVGUEdOjN4OaRGgj8Q8wIpXMvEEu0DahvgtSCbIx
-	7oK1VWKB56SWDM3eEC8EIkv+URw59gDkWMkVz/HX1ff/Rmp/YAH9zUiRgFifN8z+oSvbW9
-	BtiPLJIOsrzxggZHpcBOm2YP2G9ufNe2J3kL5dnYlQFgA6zPl5g+xFp+LBjedA==
+	bh=Sg1SnGerHveRUJH5HzVnLlNzaNlPyAyLegbkgQERevk=;
+	b=FrV0Jw0zstYZRxstQjBBy+dNuqMwFd2VCuNUB/d/9Fw203Y49swxi550lvfrXQ1ezhST5i
+	18UnX15WiSbkz3EcPECG5FDIV0JRVfnsEfKov8zch5FUbWHcqYtBoIvBDysVG9z3m1tjIi
+	UoudFuKekMLWcQmCDtUjWafioWrNKBUV15h9WDei/EoqAsQ86kzbBRa1qp4kyMv4948xPy
+	aKJuDt6jhHaw05t0fn30LkT4l6Ima9ySFn/ju4lYXiLG0hAncz2tbrGczb0gOWT2JiErGd
+	+TVKX41C1npmGb8n4tXHV5RWOkUZnqR+LEuveY/2zxY+ecZP/pELq+89xapGfA==
 Received: from dude02.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude02.red.stw.pengutronix.de (Postfix) with ESMTP id 63A1DFF946;
-	Mon, 26 Oct 2026 14:03:57 +0100 (CET)
+	by dude02.red.stw.pengutronix.de (Postfix) with ESMTP id 68FFFFF946;
+	Mon, 26 Oct 2026 14:04:55 +0100 (CET)
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20261025093121.2888368-1-a.fatoum@barebox.org>
-References: <20261025093121.2888368-1-a.fatoum@barebox.org>
-Subject: Re: [PATCH] clk: handle get_parent callbacks returning an error
-Message-Id: <179301983739.202647.3743824843064939890.b4-ty@pengutronix.de>
-Date: Mon, 26 Oct 2026 14:03:57 +0100
+Cc: jre@pengutronix.de, Lukas Wunner <lukas@wunner.de>
+In-Reply-To: <20261025085451.2871310-1-a.fatoum@barebox.org>
+References: <20261025085451.2871310-1-a.fatoum@barebox.org>
+Subject: Re: [PATCH 1/3] crypto: ecc - Fix carry overflow in vli
+ multiplication
+Message-Id: <179301989542.204598.3773962505554260627.b4-ty@pengutronix.de>
+Date: Mon, 26 Oct 2026 14:04:55 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261026_060359_552107_3D5FCE47 
-X-CRM114-Status: UNSURE (   7.03  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20261026_060457_396180_5939F032 
+X-CRM114-Status: GOOD (  11.98  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -127,9 +128,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Sun, 25 Oct 2026 10:31:20 +0100, Ahmad Fatoum wrote: >
-    A mux with a value table returns -EINVAL from get_parent when the > register
-    holds a value missing from the table. clk_get_parent() only > re [...] 
+ Content preview:  On Sun, 25 Oct 2026 09:54:44 +0100, Ahmad Fatoum wrote: >
+    This is an adoption of the corresponding Linux commit: > > | commit 27b536a2ec8e2f85a0380c2d13c9ecbc7aaab406
+    > | > | crypto: ecc - Fix carry [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -159,58 +160,80 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: A49C6202845
-X-Spamd-Result: default: False [-60.61 / 15.00];
+X-Rspamd-Queue-Id: 4BFEE202844
+X-Spamd-Result: default: False [-60.41 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[99.98%];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
-	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
+	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:1101:1d::28:received,2607:7c80:54:3::133:from];
-	MAILLIST(-0.20)[mailman];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	R_SPF_ALLOW(-0.20)[+mx:c];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWO(0.00)[2];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	DMARC_NA(0.00)[pengutronix.de];
 	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
 	NEURAL_HAM(-0.00)[-1.000];
 	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
 	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Stat-Signature: mrsorpgptse4bmfj9qi8rkp5ndbcss6a
+X-Stat-Signature: 38gs5415jm64huhmcsgmtjsf33bdtdas
 
 
-On Sun, 25 Oct 2026 10:31:20 +0100, Ahmad Fatoum wrote:
-> A mux with a value table returns -EINVAL from get_parent when the
-> register holds a value missing from the table. clk_get_parent() only
-> rejected indices >= num_parents, so -EINVAL went on to index the
-> parents array as u8 234 and clk_dump crashed on the Amlogic G12 clock
-> controller.
+On Sun, 25 Oct 2026 09:54:44 +0100, Ahmad Fatoum wrote:
+> This is an adoption of the corresponding Linux commit:
 > 
-> Let's return -ENODEV for negative indices as well.
+> | commit 27b536a2ec8e2f85a0380c2d13c9ecbc7aaab406
+> |
+> |     crypto: ecc - Fix carry overflow in vli multiplication
+> |
+> |     The carry flag calculation fails when r01.m_high is saturated
+> |     (0xFFFFFFFFFFFFFFFF) and addition of lower bits overflows.
+> |
+> |     The condition (r01.m_high < product.m_high) doesn't handle the case
+> |     where r01.m_high == product.m_high and an additional carry exists
+> |     from lower-bit overflow.
+> |
+> |     When commit 3c4b23901a0c ("crypto: ecdh - Add ECDH software support")
+> |     introduced crypto/ecc.c, it split the muladd() function in the
+> |     micro-ecc library into separate mul_64_64() and add_128_128() helpers.
+> |     It seems the check got lost in translation.
+> |
+> |     Add proper handling for this boundary by accounting for the carry
+> |     from the lower addition.
+> |
+> |     Fixes: 3c4b23901a0c ("crypto: ecdh - Add ECDH software support")
+> |     Signed-off-by: Anastasia Tishchenko <sv3iry@gmail.com>
+> |     Cc: stable@vger.kernel.org # v4.8+
+> |     Reviewed-by: Lukas Wunner <lukas@wunner.de>
+> |     Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] clk: handle get_parent callbacks returning an error
-      https://git.pengutronix.de/cgit/barebox/commit/?id=22f58f5dea50 (link may not be stable)
+[1/3] crypto: ecc - Fix carry overflow in vli multiplication
+      https://git.pengutronix.de/cgit/barebox/commit/?id=ee1ddfaf4e91 (link may not be stable)
+[2/3] crypto: ecc - Optimize vli additive operations using compiler builtins
+      https://git.pengutronix.de/cgit/barebox/commit/?id=a6a5e2e775ea (link may not be stable)
+[3/3] crypto: ecc - Handle exceptional points in Shamir multiplication
+      https://git.pengutronix.de/cgit/barebox/commit/?id=7423e4755ecd (link may not be stable)
 
 Best regards,
 -- 
