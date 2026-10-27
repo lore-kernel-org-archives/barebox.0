@@ -1,76 +1,76 @@
-Delivery-date: Tue, 27 Oct 2026 08:45:17 +0100
+Delivery-date: Tue, 27 Oct 2026 08:45:19 +0100
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xLbrx-003pTI-0c
+	id 1xLbry-003pTt-2N
 	for lore@lore.pengutronix.de;
-	Tue, 27 Oct 2026 08:45:17 +0100
+	Tue, 27 Oct 2026 08:45:19 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 12B1F202928
-	for <lore@pengutronix.de>; Tue, 27 Oct 2026 08:45:17 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 98B5D202845
+	for <lore@pengutronix.de>; Tue, 27 Oct 2026 08:45:18 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=d5IMeFcs;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=kZtQmDYZ;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793087117; a=rsa-sha256;
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793087118; a=rsa-sha256;
 	cv=none;
-	b=b9wLUwuAa9VG04DtKXfvAKf3F7Az4lbvnUAhOkXomdgtK1lm5tmtzcK8c1iJMkhTI9Xd6X
-	NXzV4F8eRaTdmpHPG8XAcwCw3Cg10kMbMkoBuu9HOYZ/zLk5SyFAjYFpQ/tgGf5u7a2fGw
-	0KgUlNiRMOptJGgfqRWZE0sQjlX0YWDmKONF9t5WEYzA2Z4QkmTcHMZbYkMlLZimlRC3gP
-	iOHGphm5Xo0C3Qk2WdBY6NSZBVkD//x1L7VmlAnz0lTkgi343j2NYmzvpzzJyErN7gqPpb
-	EjGRcjvOuTmCNOB5uqmw9C6GG7NncBSjOADxnAe4HI4qr00SeX0shqHBO/mbiA==
+	b=dvnGp4iwZZeF3QtaGZ64Rv6atD2s667s9rUpvXR2r+JhJfqc+100we5G0f+kxiszwwmSR/
+	zjkApzIkYLLA+GDyCVTcSZ3ZNljVP0wa+58VVi4Ft2uFNRO8W5m/nhpJYutzzF8HoDwylz
+	EIJ8Y/SyzEH3C5NrTi3z1oNVl7QGtx3dm1MOrEkibLslwE89C2aXCgclKB+XqCF+cpV6Gx
+	vCG6vxSV+Evd2+X1M1v/MthogIFfVS1fNdQIlyp6pNnZj0tEGEiwspcgDsATFS0EO1gr2P
+	DeMlnqclof8NAa8LB75FQv+NZdPmLSFxUoLD17kgNnNOqcxMlWpPrFqzyFhyLA==
 ARC-Authentication-Results: i=1;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=d5IMeFcs;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=kZtQmDYZ;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793087117;
+	s=20260414; t=1793087118;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=WOZcnM+oEa57ClHoNpWUS9BnQD7AHTinovhZI+QMwrw=;
-	b=HSBcKtVKL/Q0VX1E2/pdJ0GvtoEM0hb+2nH+YvsHcGMPJfyAssbA+wK7YP5/j+ek6CPFRS
-	61cfLuWnLE4BiDHLyccKJ4xB971HE4AwT+ye1JIFh77EBdey8RELvjiXhPEAZzwjn6e03p
-	A4JxrnJyqtIyZ+jJy1XYvhL2SRpCtRO7Z0WwHiPS8LBCsxNYUfxSXTDROnMjWiRnZf9lhw
-	nUnm/koJlBsoZffPkvirbntZna6hwLHt/jKHqqgK8iGmGJfIZn9N6Ar/ORhqK52JAPNH+w
-	BpYMEunQBKFI1y4Pyfp1krZovszLvWIINvORpSWVPFWemHA/6hEzqc+c6FjUKg==
+	bh=nqyyJeMxbSdDf8xn28Vft8QYhKMgFXtWYfU+B17k0pk=;
+	b=BeOjmFZHbmemYIJZxl02E+IwTZX9AjWyUVLqm/ewZDBNbIDGYyRovFd8/VsTb5ejy82wbk
+	T83sVlvn80VirnBNvt2xyz9DUmSodhMDWCgfc0Mq4STzH4tyDhf3Gb4BtH4IfT3u2c3LNZ
+	w26N9IkViaBILC+56n6eRFnC8eLYQNMJkkgyR2baUsF63PSQMmoegYLdzyA+x02e+GGfzi
+	mrkshdNUWFDhDFkxN50sdktsUc/do70WZspshOTbrmajvonVxfota+Y1hegS3WSZX774Dy
+	74N1PUxA7c6RnAYjdEDUtHPQmT4koliY4q4txfmKHGQt3a8io+NaI4LVn6u+cQ==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=WOZcnM+oEa57ClHoNpWUS9BnQD7AHTinovhZI+QMwrw=; b=d5IMeFcskgS4Q0
-	+qlTMNq9nLGLiM8v8Xvju4WEk1sLckqe3YOth2yH1/jYBRHkBH/zjAVpAKXefaYqWUYNz0keQEVAm
-	QISTlqeH2OjANppiOUvUzQNU1adAL142UXuO5iDyU8SR/e/aCF2Q+mvDoYxTT1TCDiCuMmeKFQtli
-	7SF1ExrjqVdaW/PCRUygyoNMIfUEWQ2UzTBRkpIOB2QtBhQ9z4LpfoG9F0RE7/68G+rRQEZg390wP
-	fQl0qmHv/PQ/iGLOEl3nCPvUecGnjckTP2l4nMT304oU11Twu1f5p6hZDMTQqB5ExJc9gw/JZoJcd
-	naHHa85cbqCKmubTlavw==;
+	List-Owner; bh=nqyyJeMxbSdDf8xn28Vft8QYhKMgFXtWYfU+B17k0pk=; b=kZtQmDYZ54h0yV
+	GYB2iZAMZq2HqY3edXUGl7GI8g1K31Ye6FR/28ayjZVoNUETfNKp6rxTsnFhRqgThyBjS3UgvZWvJ
+	inEIOpAvVatrELLMOnFHCtnU5qP6+wKl24NQVwhv/ROmwFY4NP97NuxPhuzAkgeqAG59cPl42PWX/
+	gI7goHFcV/ZQZ6IDEoqNkqpBL/VVriPNvxTuT82FtDg2RVLrt0oE9mDrnSE0rtaDFwcrdG9+rPRSz
+	0GQgj8afmd8KlneZxhS3/atA+gdAsKMexBAOHBMmW+wOOMiQA7Ggru3f/NM68OtU3hbMFA1WRJibY
+	YTEgx762+hXLaeHOF3aA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xLbnH-00000003uzi-0WEO;
-	Tue, 27 Oct 2026 07:40:27 +0000
+	id 1xLbnM-00000003v71-0ICH;
+	Tue, 27 Oct 2026 07:40:32 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xLbnA-00000003uu1-1R8t
+	id 1xLbnA-00000003uu2-2N93
 	for barebox@lists.infradead.org;
-	Tue, 27 Oct 2026 07:40:23 +0000
+	Tue, 27 Oct 2026 07:40:27 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1xLbn7-0003zV-Eh; Tue, 27 Oct 2026 08:40:17 +0100
+	id 1xLbn7-0003zV-Nk; Tue, 27 Oct 2026 08:40:17 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: mfe@pengutronix.de,
 	mtr@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@barebox.org>
-Subject: [RFC PATCH 06/17] PBL: describe the console in the board info and report the stage
-Date: Tue, 27 Oct 2026 08:24:39 +0100
-Message-ID: <20261027074014.3280396-7-a.fatoum@barebox.org>
+Subject: [RFC PATCH 07/17] RISC-V: make barebox_riscv_entry() non-naked
+Date: Tue, 27 Oct 2026 08:24:40 +0100
+Message-ID: <20261027074014.3280396-8-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261027074014.3280396-1-a.fatoum@barebox.org>
 References: <20261027074014.3280396-1-a.fatoum@barebox.org>
@@ -80,8 +80,8 @@ X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
 X-SA-Exim-Mail-From: a.fatoum@barebox.org
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261027_004020_412021_E755EC0A 
-X-CRM114-Status: GOOD (  23.55  )
+X-CRM114-CacheID: sfid-20261027_004020_606555_D196E300 
+X-CRM114-Status: GOOD (  16.46  )
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -89,11 +89,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Board entry points usually set up the console UART first thing
-    and print a '>' with putc_ll() to show that they have been reached. Let's
-    make the console part of the board info instead and have the stage dispatch
-    print the stage number followed by '>', e.g. "2>", once it's up. As the UART
-    may need clocks enabled by SoC init or a [...] 
+ Content preview:  barebox_riscv_entry() is a naked function that switches the
+    stack with inline assembly and then continues in C. GCC only supports basic
+    asm in naked functions and clang rejects anything else outright. 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -121,25 +119,25 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 12B1F202928
+X-Rspamd-Queue-Id: 98B5D202845
 X-Spamd-Result: default: False [-6.11 / 15.00];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	MID_CONTAINS_FROM(1.00)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:900:1d::77:received];
+	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:900:1d::77:received,2607:7c80:54:3::133:from];
 	MAILLIST(-0.20)[mailman];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	FROM_HAS_DN(0.00)[];
 	ARC_NA(0.00)[];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
-	FROM_HAS_DN(0.00)[];
 	DMARC_NA(0.00)[barebox.org];
 	RCVD_IN_DNSWL_NONE(0.00)[2a0a:edc0:2:b01:1d::104:received];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -153,201 +151,143 @@ X-Spamd-Result: default: False [-6.11 / 15.00];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Stat-Signature: cakrjeegwbt8tzsy1ciqhpmykidjqt7o
+X-Stat-Signature: goupbbzpm3afhtanfncgyyz8ojwr7urr
 
-Board entry points usually set up the console UART first thing and
-print a '>' with putc_ll() to show that they have been reached.
+barebox_riscv_entry() is a naked function that switches the stack with
+inline assembly and then continues in C. GCC only supports basic asm in
+naked functions and clang rejects anything else outright.
 
-Let's make the console part of the board info instead and have the stage
-dispatch print the stage number followed by '>', e.g. "2>", once it's
-up. As the UART may need clocks enabled by SoC init or a description
-only filled in by board init, the console is tried before SoC init and
-again after each of the two.
+Let's move the stack switch into an assembly __barebox_riscv_entry() like
+on ARM. barebox_riscv_entry() becomes an always inlined function, so the
+naked ENTRY_FUNCTION()s, which may run without a stack, can still call it.
 
-Without PBL console support or a console description, the stage number
-goes to DEBUG_LL. With DEBUG, each callback run is reported as well.
-
-Assisted-by: Claude:opus-5
+Assisted-by: Claude:opus-5.5
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- Documentation/devel/troubleshooting.rst |  6 +++
- include/pbl.h                           |  6 +++
- include/pbl/entry.h                     | 19 ++++++-
- pbl/entry.c                             | 67 ++++++++++++++++++++++++-
- 4 files changed, 96 insertions(+), 2 deletions(-)
+ arch/riscv/boot/Makefile               |  2 +-
+ arch/riscv/boot/entry.c                | 31 --------------------------
+ arch/riscv/boot/entry_ll.S             | 15 +++++++++++++
+ arch/riscv/include/asm/barebox-riscv.h | 30 ++++++++++++++++++++++---
+ 4 files changed, 43 insertions(+), 35 deletions(-)
+ delete mode 100644 arch/riscv/boot/entry.c
+ create mode 100644 arch/riscv/boot/entry_ll.S
 
-diff --git a/Documentation/devel/troubleshooting.rst b/Documentation/devel/troubleshooting.rst
-index 2aef57c3c1e2..39cc88a9a7dd 100644
---- a/Documentation/devel/troubleshooting.rst
-+++ b/Documentation/devel/troubleshooting.rst
-@@ -62,6 +62,12 @@ options:
-   the serial console needs to be done in software in some situations before
-   the UART is accessible from the outside.
- 
-+  Boards using the board info entry point (``ENTRY_POINT()``) will
-+  also indicate the boot stage before the ``>`` character, e.g. ``1>2>``
-+  means the prebootloader entered its 1st stage followed by entering the
-+  2nd stage. ``CONFIG_DEBUG_PBL`` would provide more information on what
-+  callback is being executed.
+diff --git a/arch/riscv/boot/Makefile b/arch/riscv/boot/Makefile
+index 936f6e2e0391..2cd6f098d5ef 100644
+--- a/arch/riscv/boot/Makefile
++++ b/arch/riscv/boot/Makefile
+@@ -1,4 +1,4 @@
+ # SPDX-License-Identifier: GPL-2.0
+-pbl-y += entry.o uncompress.o
++pbl-y += entry_ll.o uncompress.o
+ pbl-y += nmon_entry.o
+ pbl-$(CONFIG_BOARD_GENERIC_DT) += board-dt-2nd.o
+diff --git a/arch/riscv/boot/entry.c b/arch/riscv/boot/entry.c
+deleted file mode 100644
+index f5a536fc78a9..000000000000
+--- a/arch/riscv/boot/entry.c
++++ /dev/null
+@@ -1,31 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#include <types.h>
+-
+-#include <asm/barebox-riscv.h>
+-
+-#include "entry.h"
+-#include <debug_ll.h>
+-
+-/*
+- * Main RISC-V entry point. Call this with the memory region you can
+- * spare for barebox. This doesn't necessarily have to be the full
+- * SDRAM. The currently running binary can be inside or outside of
+- * this region. The PBL can be running inside or outside of this
+- * region.
+- *
+- * -> membase + memsize
+- *   STACK_SIZE              - stack
+- *   128KiB                  - early memory space
+- * -> maximum end of barebox binary
+- */
+-
+-void __noreturn __naked barebox_riscv_entry(unsigned long membase,
+-					    unsigned long memsize, void *boarddata,
+-					    unsigned flags)
+-{
+-	unsigned long stack_top = riscv_mem_stack_top(membase, membase + memsize);
+-	asm volatile ("move sp, %0" : : "r"(stack_top));
+-	riscv_set_flags(flags);
+-	barebox_pbl_start(membase, memsize, boarddata);
+-}
+-
+diff --git a/arch/riscv/boot/entry_ll.S b/arch/riscv/boot/entry_ll.S
+new file mode 100644
+index 000000000000..3611d72a3a78
+--- /dev/null
++++ b/arch/riscv/boot/entry_ll.S
+@@ -0,0 +1,15 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
 +
-   .. note::
-      Make sure the correct UART index or address is selected under
-      **Kernel low-level debugging port** in ``menuconfig``.
-diff --git a/include/pbl.h b/include/pbl.h
-index 45640c26e32e..9efc520d6a69 100644
---- a/include/pbl.h
-+++ b/include/pbl.h
-@@ -57,4 +57,10 @@ void __noreturn barebox_pbl_entry(ulong, ulong, void *);
- #define pbl_puts	puts_ll
- #endif
- 
-+#ifdef DEBUG
-+#define pbl_debug	pbl_puts
-+#else
-+#define pbl_debug	(void)
-+#endif
-+
- #endif /* __PBL_H__ */
-diff --git a/include/pbl/entry.h b/include/pbl/entry.h
-index 17056a3ab1ca..acf0ea1e1824 100644
---- a/include/pbl/entry.h
-+++ b/include/pbl/entry.h
-@@ -26,12 +26,27 @@ enum pbl_stage_idx {
- typedef void (*pbl_board_fn_t)(void);
- typedef enum pbl_stage_idx (*pbl_locate_pc_fn_t)(void);
- 
-+struct pbl_console_driver {
-+	void (*putc)(void *arg, int c);	/* as accepted by pbl_set_putc() */
-+};
++#include <linux/linkage.h>
 +
 +/*
-+ * arg is usually the UART base address. A console without setup callback
-+ * is registered before soc_init, else after. Without a console, the PBL
-+ * prints through DEBUG_LL.
++ * a0: memory base
++ * a1: memory size
++ * a2: board data
++ * a3: new value for SP
 + */
-+struct pbl_console {
-+	void (*setup)(void *arg);
-+	void *arg;
-+	const struct pbl_console_driver *driver;
-+};
-+
- /*
-  * Only the callbacks of the stage the PBL was entered in are run.
-  *
-  * prereloc_cpu_init runs on the stage's stack, but unrelocated and before
-  * BSS is cleared, so it must be __prereloc and may not use globals.
-- * The other callbacks run relocated with BSS cleared.
-+ * The console setup and the other callbacks run relocated with BSS cleared.
-  */
- struct pbl_stage {
- 	unsigned long stacktop;		/* stack top or PBL_STACKTOP_* */
-@@ -60,6 +75,8 @@ struct pbl_board_info {
- 	/* Called without a stack, so it must not spill */
- 	pbl_locate_pc_fn_t assembly_locate_pc;
- 
-+	struct pbl_console console;
-+
- 	struct pbl_stage rom_stage;	/* PBL_STAGE_ROM */
- 	struct pbl_stage first_stage;	/* PBL_STAGE_OCRAM */
- 	struct pbl_stage second_stage;	/* PBL_STAGE_DRAM */
-diff --git a/pbl/entry.c b/pbl/entry.c
-index 1349e7c56a93..827af905964b 100644
---- a/pbl/entry.c
-+++ b/pbl/entry.c
-@@ -11,7 +11,11 @@
++.section .text.__barebox_riscv_entry
++ENTRY(__barebox_riscv_entry)
++	mv	sp, a3
++	tail	barebox_pbl_start
++ENDPROC(__barebox_riscv_entry)
+diff --git a/arch/riscv/include/asm/barebox-riscv.h b/arch/riscv/include/asm/barebox-riscv.h
+index 9fdffb213e8c..4a7726ddc508 100644
+--- a/arch/riscv/include/asm/barebox-riscv.h
++++ b/arch/riscv/include/asm/barebox-riscv.h
+@@ -25,9 +25,6 @@
  #include <asm/reloc.h>
- #include <asm/sections.h>
- #include <asm-generic/registers.h>
-+#include <console.h>
-+#include <debug_ll.h>
-+#include <stdio.h>
- #include <barebox.h>
-+#include <pbl.h>
- #include <pbl/entry.h>
- #include <pbl/soc-type.h>
  #include <pbl/handoff-data.h>
-@@ -136,6 +140,44 @@ pbl_head_reloc_v1(ulong stage_ul, ulong entry_data)
- 	pbl_head_entry_v1(entry_data);
+ 
+-void __noreturn __naked barebox_riscv_entry(unsigned long membase, unsigned long memsize,
+-					    void *boarddata, unsigned int flags);
+-
+ #define barebox_riscv_machine_entry(membase, memsize, boarddata) \
+ 	barebox_riscv_entry(membase, memsize, boarddata, RISCV_M_MODE)
+ 
+@@ -82,6 +79,33 @@ static inline unsigned long riscv_mem_barebox_image(unsigned long membase,
+ 	return ALIGN_DOWN(endmem - size, SZ_1M);
  }
  
-+static void pbl_console_report_stage(int stage_idx)
++void __noreturn __barebox_riscv_entry(unsigned long membase,
++				      unsigned long memsize, void *boarddata,
++				      unsigned long sp);
++
++/*
++ * Main RISC-V entry point. Call this with the memory region you can
++ * spare for barebox. This doesn't necessarily have to be the full
++ * SDRAM. The currently running binary can be inside or outside of
++ * this region. The PBL can be running inside or outside of this
++ * region.
++ *
++ * -> membase + memsize
++ *   STACK_SIZE              - stack
++ *   128KiB                  - early memory space
++ * -> maximum end of barebox binary
++ *
++ * Inline, so naked ENTRY_FUNCTION()s can call it without a stack.
++ */
++static __always_inline void __noreturn
++barebox_riscv_entry(unsigned long membase, unsigned long memsize,
++		    void *boarddata, unsigned int flags)
 +{
-+	static bool stage_reported;
-+	char stage_str[2] = "0";
-+
-+	if (stage_reported)
-+		return;
-+
-+	stage_str[0] += stage_idx;
-+
-+	pbl_puts(stage_str);
-+	pbl_puts(">");
-+
-+	stage_reported = true;
++	riscv_set_flags(flags);
++	__barebox_riscv_entry(membase, memsize, boarddata,
++			      riscv_mem_stack_top(membase, membase + memsize));
 +}
 +
-+/* Called until there is a console, board_init may still describe it */
-+static void pbl_console_init(const struct pbl_console *console,
-+			     int stage_idx)
-+{
-+	static bool console_initialized;
-+
-+	if (console_initialized)
-+		return;
-+
-+	if (console->setup)
-+		console->setup(console->arg);
-+
-+	if (console->driver && console->driver->putc) {
-+		pbl_set_putc(console->driver->putc, console->arg);
-+		console_initialized = true;
-+	}
-+
-+	/* Without PBL_CONSOLE, pbl_puts() is DEBUG_LL's puts_ll() */
-+	if (console_initialized || !IS_ENABLED(CONFIG_PBL_CONSOLE))
-+		pbl_console_report_stage(stage_idx);
-+}
-+
- /* noinline, so &__pbl_board_info isn't computed before relocation */
- static void noinline pbl_head_entry_v1(ulong entry_data)
- {
-@@ -154,12 +196,35 @@ static void noinline pbl_head_entry_v1(ulong entry_data)
- 
- 	current_stage = stage;
- 
-+	/* A console needing no setup is readily usable in soc_init */
-+	if (!pbi->console.setup)
-+		pbl_console_init(&pbi->console, stage_idx);
-+
- 	if (stage->soc_init)
- 		stage->soc_init();
-+
-+	/* Initialize console if possible */
-+	pbl_console_init(&pbi->console, stage_idx);
-+
-+	if (stage->soc_init)
-+		pbl_debug("soc_init done\n");
-+
- 	if (stage->board_init)
- 		stage->board_init(entry_data);
--	if (stage->soc_chainload)
-+
-+	/* Initialize console if possible */
-+	pbl_console_init(&pbi->console, stage_idx);
-+
-+	/* Without a console, the stage goes to the DEBUG_LL fallback */
-+	pbl_console_report_stage(stage_idx);
-+
-+	if (stage->board_init)
-+		pbl_debug("board_init done\n");
-+
-+	if (stage->soc_chainload) {
-+		pbl_debug("Chainloading..\n");
- 		stage->soc_chainload(stage->board_data);
-+	}
- 
- 	hang();
- }
+ #define ENTRY_FUNCTION(name, arg0, arg1, arg2)                          \
+ 	void name (ulong r0, ulong r1, ulong r2);                       \
+ 	static void __##name(ulong, ulong, ulong);                      \
 -- 
 2.47.3
 
