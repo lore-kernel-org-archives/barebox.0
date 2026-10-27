@@ -1,84 +1,88 @@
-Delivery-date: Tue, 27 Oct 2026 08:47:50 +0100
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Tue, 27 Oct 2026 08:49:21 +0100
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xLbuP-003pXA-1p
+	id 1xLbvt-003pZS-1F
 	for lore@lore.pengutronix.de;
-	Tue, 27 Oct 2026 08:47:49 +0100
+	Tue, 27 Oct 2026 08:49:21 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 26FBB201BFB
-	for <lore@pengutronix.de>; Tue, 27 Oct 2026 08:47:49 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 81EA1202922
+	for <lore@pengutronix.de>; Tue, 27 Oct 2026 08:49:21 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=2DHB52VW;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="JAHus/zG";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793087269; a=rsa-sha256;
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793087361; a=rsa-sha256;
 	cv=none;
-	b=YwWjpjGQUcL2GRWqO4lFTXlFaFM8kiwfOdDGpoVZvtV6E1oGvv40MCp5weH4dB+t2jXPMX
-	3V+JScFPxhtyZ0dGordygPJtnFehGjHnBkLs0qJdQ01gSWJUa1coSbxrp1k2DgLWnmnnG1
-	6ycvdQ/7WwVRJQcH9Vawgfe6g1i45kir/DyOobvNVaBZbka8Mm2At1fAJO6wSsEVkFn5zh
-	HffuG+V253FkUn9G7rmCtskZRSyZrp8yyOP9FTQGTXINKiX39MJ7uDxEBEgQ5WMtvmIc76
-	kvKJXIximngECalRYkbTIevZg7TpVv4Uum76Txv/FkR7oHPbpXGo0IrlFDtxSg==
+	b=W9UyU3no62zLwslnSaVUiYa0Ts5/PV0YuEoXqdXGi/9J5vYYpDrBng5jWVRFyuStn2XZEP
+	Ch6toxtyFALM5YvLrbfXQUjLfa8JbZjAstfLBF/Wf+11l68wq8vMfxGzoPEfLFA8xU0kbU
+	USEz8Pbya9d34Q82Se0WUpb+GwqnF169xUnX2J2KtvGvVhxppEksAS96T2FL/f51tbm7vP
+	//0GMefj/yQwy3cwGG5NRB5hbI2O+3bvyraVTZ0h8OK1gHZ460fpcID8Gzl+EXmJl5ezns
+	Tdk6ZV1HfIWt5YffzL7LSXUngHTY92wzh5vJ1vtp7RoxwQysPMdA+mpwT/4DrQ==
 ARC-Authentication-Results: i=1;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=2DHB52VW;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="JAHus/zG";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793087269;
+	s=20260414; t=1793087361;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=da2f6KT/rAKWLD6AQjjAf6BxU4U64y1RYIE4Gi3q8v4=;
-	b=HviXIX69wk/DskBfKRb+fczmL5Oy8F0ExHyjj0J7GJkfmlz0NkLPB2fKpQWSgyzwU18pZ0
-	4uCd/8nHsKAiilSQ+iMP5kZVbPuCSps4bTK1ZQaoGwWdGTA/llm+wunu6ZuptHRfkAk3HT
-	kXgV+vcnaG3X1SRhm+pBy16rko2ZLZYLVIVe22y3Aj+kL8pqLc44/RJjJWE6Cz1SRZB563
-	EAfMo8K9PJrdFa45gICTd25WMWCX+3uuFm+uoKwP9SiVEv9n9OFGP3EjnnasoACHPV8jRp
-	4KR3A0j3/G7GrCjmfw7vxHF5Cu+qc+dF4DdlVEilviBNtryO/yMdjlyt4lFGWg==
+	bh=qDurCjOMAtEP0cCZCwQbXn/LOnXdJ0aLq5tbjgfmBeo=;
+	b=SgqUy2Cf6H5k1uZPYrZR42N5HezCnpUpRc7Kt64Mp97XmkFUqpIfh3Zf5nxBYBozO4emAD
+	Mkk85ERTEw7NaZWAtUsPMjshHBc0OSrXST3E7TsLmhbX7J3baMRbm9dE6JaXHuJYFoTIFU
+	dUCVQ48xW2Fy4shi1yr3gI215TkLGxF/Jk1PjHDjWAZR87UV/I3cgog085iohB90FBJTJM
+	eCE0epXlXFlMHp8pJmFRmz1+FzA6XLwbBKj+O69Wfp5fVlO7llhAww8z/cgNkWzLAyyAeI
+	IGW6pDv2TpaVmoaRriD+/iBcQn76xgt9NYpxdmOZlKMXbq02HKY9HhGynYOCuw==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Unsubscribe-Post:List-Owner;
-	bh=da2f6KT/rAKWLD6AQjjAf6BxU4U64y1RYIE4Gi3q8v4=; b=2DHB52VW1PF0rRvH8ea9D969qD
-	gfNb7XeoXN0BmAYifQNTquwUkH+iYysBdmzEV4pMc9GR+MecqvV2M5B6LJV6XYOZNRIU72xHy9swC
-	QdBAOVXnePjK4nbmOKe5Sx4cM7vrUCOH9AU6fd9J3YNG79xwcAw1qMry2/X3fMDcsS070zyYU81c4
-	meGlZyy8Myi1vI9ZyCfQnH/4rkQN0l/09OcUN5YSZNdoUZU+PjXWU/ZPHdsKVGaeV4XelY7MToLrP
-	Kxtw206eBVwxcrQOGW40zdIzlRCYLVAM7oGq9KjkRaYif3w4yo1Gy9sg9DTx9JggIvwTM03lIqi49
-	ieQaHjZQ==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
+	List-Owner; bh=qDurCjOMAtEP0cCZCwQbXn/LOnXdJ0aLq5tbjgfmBeo=; b=JAHus/zGOqn6Ga
+	TLa5uSx5w1AK+mG4iR6GHEEjIXOfEiF3mrFEr+uFmSRyl78m/U7jJGVwCDK/CX4ECDXxt/rszml1E
+	RXLpRaqYWasm4iT6jBqW5qRfffhphOjnlxJiw1+4m3rBxHuhgZXJvlp0XPzGL3XIJRHnsDdVBa1Zd
+	lxjEM4hCmtrZNgKsreegGUs5CwOvzWhkxzlrJlFG0xU2s4rKGzPpQ+7DgwBCItc5eqdT/3+EJ6xUB
+	Qoow5cqggfbMi1FbW7vyNNeoksPmrsg/rsvUpIkUbhMqiyns2kFtETgWlcvKus+xXLZFKVk1ieKJf
+	8Cm8oH4Qvv4T2PaFIT+g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xLbnE-00000003uyG-0QyB;
-	Tue, 27 Oct 2026 07:40:24 +0000
+	id 1xLbnL-00000003v5w-2b6E;
+	Tue, 27 Oct 2026 07:40:31 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xLbnA-00000003utt-1JWw
+	id 1xLbnB-00000003uvM-2R6M
 	for barebox@lists.infradead.org;
-	Tue, 27 Oct 2026 07:40:22 +0000
+	Tue, 27 Oct 2026 07:40:26 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1xLbn5-0003zV-JA; Tue, 27 Oct 2026 08:40:15 +0100
+	id 1xLbn9-0003zV-Fj; Tue, 27 Oct 2026 08:40:19 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: mfe@pengutronix.de,
-	mtr@pengutronix.de
-Subject: [RFC PATCH 00/17] Switch RISC-V to declarative entry points
-Date: Tue, 27 Oct 2026 08:24:33 +0100
-Message-ID: <20261027074014.3280396-1-a.fatoum@barebox.org>
+	mtr@pengutronix.de,
+	Ahmad Fatoum <a.fatoum@barebox.org>
+Subject: [RFC PATCH 13/17] RISC-V: beaglev: migrate to board info entry point
+Date: Tue, 27 Oct 2026 08:24:46 +0100
+Message-ID: <20261027074014.3280396-14-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20261027074014.3280396-1-a.fatoum@barebox.org>
+References: <20261027074014.3280396-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
 X-SA-Exim-Mail-From: a.fatoum@barebox.org
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261027_004020_417638_B601482F 
-X-CRM114-Status: GOOD (  23.62  )
+X-CRM114-CacheID: sfid-20261027_004021_621880_4F4DCCA9 
+X-CRM114-Status: UNSURE (   9.95  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -86,12 +90,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Every board currently open-codes its PBL entry point: set
-   up the stack, relocate, call setup_c(), do the lowlevel init and so on, all
-    in C code that runs before the C environment is ready. This is error-prone,
-    because board code authors need to be aware of some very subtle details:
-   global_variable_offset vs get_runtime_offset, not accessing global variables
-    before relocation, using noin [...] 
+ Content preview:  OpenSBI starts the BeagleV image below the 512M at 0x84000000
+    that barebox gets. Instead of relocating in place and having barebox_pbl_start()
+    copy the PBL again, the stage names the region as relocad [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -119,183 +120,100 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 26FBB201BFB
+X-Rspamd-Queue-Id: 81EA1202922
 X-Spamd-Result: default: False [-6.11 / 15.00];
 	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	MID_CONTAINS_FROM(1.00)[];
+	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:900:1d::77:received];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
+	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:900:1d::77:received,2607:7c80:54:3::133:from];
 	MAILLIST(-0.20)[mailman];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_IN_DNSWL_NONE(0.00)[2a0a:edc0:2:b01:1d::104:received];
 	DMARC_NA(0.00)[barebox.org];
-	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	ARC_NA(0.00)[];
-	RCVD_TLS_LAST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@barebox.org,barebox-bounces@lists.infradead.org];
+	RCVD_IN_DNSWL_NONE(0.00)[2a0a:edc0:2:b01:1d::104:received];
 	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=1];
-	NEURAL_HAM(-0.00)[-1.000];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	RCVD_TLS_LAST(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
-	RCPT_COUNT_THREE(0.00)[3];
-	TO_DN_NONE(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[]
+	RCPT_COUNT_THREE(0.00)[4];
+	FROM_HAS_DN(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[a.fatoum@barebox.org,barebox-bounces@lists.infradead.org]
 X-Rspamd-Action: no action
-X-Stat-Signature: piw63fzjd18yqp4u6j8pa4jbm1k61jwp
+X-Stat-Signature: mg9a6hktx5nxbp78rqdcxircxpj9wsge
 
-Every board currently open-codes its PBL entry point: set up the stack,
-relocate, call setup_c(), do the lowlevel init and so on, all in C code
-that runs before the C environment is ready.
+OpenSBI starts the BeagleV image below the 512M at 0x84000000 that
+barebox gets. Instead of relocating in place and having
+barebox_pbl_start() copy the PBL again, the stage names the region as
+relocaddr, so the PBL is relocated once, directly into it.
 
-This is error-prone, because board code authors need to be aware of some
-very subtle details: global_variable_offset vs get_runtime_offset,
-not accessing global variables before relocation, using noinline
-functions as compiler barriers, no spilling to stack when ENTRY_FUNCTION
-is used with no stack set up...
+DEBUG_LL init and nmon go into the CPU init callback, which runs before
+relocation like the old entry point did. The '>' is now printed by the
+stage dispatch.
 
-For the last point, we already had a solution in the form of
-ENTRY_FUNCTION_WITHSTACK, which takes a stack pointer and places it
-into a well-known location that a generic assembly entry point can read
-and use to set up the stack before branching into C code.
+Assisted-by: Claude:opus-5.5
+Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+---
+ arch/riscv/boards/beaglev/lowlevel.c | 30 +++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
-That approach is not generic enough however: It only accepts a single
-stack pointer when we really want one per execution level and even on
-ARM32, it's still implemented using __naked, which precludes use with
-clang as clang doesn't allow arbitrary C code there.
-
-Address all of this by generalizing the idea behind
-ENTRY_FUNCTION_WITHSTACK into a new ENTRY_POINT macro:
-Instead of a board having one board-specific entry point function and a
-single stack, it now has a struct of different callbacks and metadata:
-
-struct pbl_stage {
-	unsigned long stacktop;		/* stack top or PBL_STACKTOP_* */
-	unsigned long relocaddr;	/* 0: don't relocate to specific addr */
-
-	/*
-	 * Memory the stage runs from: barebox proper starts out with
-	 * mem_minsz, mem_maxsz (default: mem_minsz) is only used to find
-	 * the stage by PC.
-	 */
-	unsigned long mem_start;
-	unsigned long mem_minsz;
-	unsigned long mem_maxsz;
-
-	void *board_data;
-
-	pbl_board_fn_t prereloc_cpu_init;
-	pbl_board_fn_t soc_init;
-	void (*board_init)(unsigned long entry_data);
-	void (*soc_chainload)(void *board_data);
-};
-
-struct pbl_board_info {
-	unsigned int soc_type;		/* see pbl_set_soc_type() */
-
-	/* Called without a stack, so it must not spill */
-	pbl_locate_pc_fn_t assembly_locate_pc;
-
-	struct pbl_stage rom_stage;	/* PBL_STAGE_ROM */
-	struct pbl_stage first_stage;	/* PBL_STAGE_OCRAM */
-	struct pbl_stage second_stage;	/* PBL_STAGE_DRAM */
-};
-
-A board can now fill this out, define its own callbacks. Common
-functionality like the soc_chainload can be shared between boards of the
-same SoC. The hairy parts that can not be robustly done in C can be
-defined declaratively as data that will be acted upon by the assembly
-code. Code that must be written in assembly or run pre-relocation is
-explicitly marked as such.
-
-This can get quite verbose, so the idea is that SoC support will define
-a macro with DEFAULTS that fills out the common bits that can be
-extended (and overridden if needed) by the board code. See the last few
-patches for how this looks like.
-
-To make discussion easier, I am switching over all of RISC-V first in
-this series. If we reach consensus and this is merged, I will follow-up
-by doing the same on ARM.
-
-This applies on top of next (PR #93 is prerequisite)
-
-Ahmad Fatoum (17):
-  asm-generic: add registers.h with a pc_inside() helper
-  RISC-V: add call_with_stack() helper
-  RISC-V: implement relocate_to_adr_full()
-  PBL: add SoC type declaration and handoff support
-  PBL: introduce board info based entry point framework
-  PBL: describe the console in the board info and report the stage
-  RISC-V: make barebox_riscv_entry() non-naked
-  RISC-V: add PBL heads for the board info stage dispatch
-  RISC-V: board-dt-2nd: migrate to board info entry point
-  RISC-V: hifive: migrate to board info entry point
-  RISC-V: allow relocating the PBL more than once
-  RISC-V: nmon: preserve s1-s3 for the caller
-  RISC-V: beaglev: migrate to board info entry point
-  RISC-V: allwinner-d1: migrate to board info entry point
-  RISC-V: erizo: migrate to board info entry point
-  RISC-V: litex-linux: migrate to board info entry point
-  Documentation: porting: describe the board info entry point
-
- Documentation/devel/porting.rst           | 124 +++++++++++-
- Documentation/devel/troubleshooting.rst   |   6 +
- arch/Kconfig                              |  28 +++
- arch/riscv/Kconfig                        |   2 +
- arch/riscv/boards/allwinner-d1/lowlevel.c |  18 +-
- arch/riscv/boards/beaglev/lowlevel.c      |  30 ++-
- arch/riscv/boards/erizo/lowlevel.c        |  32 +--
- arch/riscv/boards/hifive/lowlevel.c       |  30 +--
- arch/riscv/boards/litex-linux/lowlevel.c  |  30 +--
- arch/riscv/boot/Makefile                  |   4 +-
- arch/riscv/boot/board-dt-2nd-head.S       |  36 ++++
- arch/riscv/boot/board-dt-2nd.c            |  89 ++++-----
- arch/riscv/boot/entry.c                   |  33 +---
- arch/riscv/boot/entry_ll.S                |  15 ++
- arch/riscv/boot/head.S                    | 198 +++++++++++++++++++
- arch/riscv/boot/nmon_entry.S              |   7 +
- arch/riscv/include/asm/barebox-riscv.h    |  36 +++-
- arch/riscv/include/asm/reloc.h            |   1 +
- arch/riscv/lib/Makefile                   |   1 +
- arch/riscv/lib/asm-offsets.c              |  27 +++
- arch/riscv/lib/call_with_stack.S          |  12 ++
- arch/riscv/lib/pbl.lds.S                  |  13 +-
- arch/riscv/lib/reloc.c                    |   6 +-
- arch/riscv/lib/setupc.S                   |  16 +-
- include/asm-generic/registers.h           |  33 ++++
- include/linux/compiler-clang.h            |  21 ++
- include/linux/compiler-gcc.h              |   3 +
- include/linux/compiler_types.h            |  10 +
- include/mach/sifive/entry.h               |  32 +++
- include/pbl.h                             |   6 +
- include/pbl/entry.h                       | 175 ++++++++++++++++
- include/pbl/handoff-data.h                |  15 ++
- include/pbl/soc-type.h                    | 170 ++++++++++++++++
- pbl/Makefile                              |   2 +
- pbl/entry.c                               | 230 ++++++++++++++++++++++
- pbl/handoff-data.c                        |   2 +
- pbl/soc-type.c                            |  71 +++++++
- 37 files changed, 1418 insertions(+), 146 deletions(-)
- create mode 100644 arch/riscv/boot/board-dt-2nd-head.S
- create mode 100644 arch/riscv/boot/entry_ll.S
- create mode 100644 arch/riscv/boot/head.S
- create mode 100644 arch/riscv/lib/call_with_stack.S
- create mode 100644 include/asm-generic/registers.h
- create mode 100644 include/mach/sifive/entry.h
- create mode 100644 include/pbl/entry.h
- create mode 100644 include/pbl/soc-type.h
- create mode 100644 pbl/entry.c
- create mode 100644 pbl/soc-type.c
-
+diff --git a/arch/riscv/boards/beaglev/lowlevel.c b/arch/riscv/boards/beaglev/lowlevel.c
+index db884dc762ce..b2eab26c3ca5 100644
+--- a/arch/riscv/boards/beaglev/lowlevel.c
++++ b/arch/riscv/boards/beaglev/lowlevel.c
+@@ -2,19 +2,31 @@
+ 
+ #include <common.h>
+ #include <debug_ll.h>
++#include <pbl/entry.h>
+ #include <asm/barebox-riscv.h>
+ #include <asm/riscv_nmon.h>
+ 
+-ENTRY_FUNCTION(start_beaglev_starlight, a0, a1, a2)
+-{
+-	extern char __dtb_z_jh7100_beaglev_starlight_start[];
+-	void *fdt;
++#define BEAGLEV_MEM_BASE	0x84000000
+ 
++extern char __dtb_z_jh7100_beaglev_starlight_start[];
++
++static void __prereloc beaglev_cpu_init(void)
++{
+ 	debug_ll_init();
+ 	barebox_nmon_entry();
+-	putc_ll('>');
+-
+-	fdt = __dtb_z_jh7100_beaglev_starlight_start + get_runtime_offset();
+-
+-	barebox_riscv_supervisor_entry(0x84000000, SZ_512M, a0, fdt);
+ }
++
++/*
++ * OpenSBI starts its payload below the memory handed to barebox, so the
++ * PBL relocates there first.
++ */
++ENTRY_POINT_HEAD(start_beaglev_starlight, __barebox_pbl_head_v1_supervisor)
++	.soc_type = SOC_TYPE_JH7100,
++	.second_stage.stacktop = BEAGLEV_MEM_BASE + SZ_512M,
++	.second_stage.relocaddr = BEAGLEV_MEM_BASE,
++	.second_stage.mem_start = BEAGLEV_MEM_BASE,
++	.second_stage.mem_minsz = SZ_512M,
++	.second_stage.board_data = __dtb_z_jh7100_beaglev_starlight_start,
++	.second_stage.prereloc_cpu_init = beaglev_cpu_init,
++	.second_stage.soc_chainload = pbl_stage_barebox_entry,
++ENTRY_POINT_END
 -- 
 2.47.3
 
