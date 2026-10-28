@@ -1,71 +1,71 @@
-Delivery-date: Wed, 28 Oct 2026 10:26:01 +0100
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Wed, 28 Oct 2026 10:26:03 +0100
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xLzuy-004H07-3C
+	id 1xLzv1-004H0r-0L
 	for lore@lore.pengutronix.de;
-	Wed, 28 Oct 2026 10:26:01 +0100
+	Wed, 28 Oct 2026 10:26:03 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id DB5BB20293A
-	for <lore@pengutronix.de>; Wed, 28 Oct 2026 10:26:00 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id F3B20202285
+	for <lore@pengutronix.de>; Wed, 28 Oct 2026 10:26:02 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=GOcrhJoz;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=B3ns+2wY;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="QV3/+55n";
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=RoAAgINb;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1793179561; a=rsa-sha256;
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1793179563; a=rsa-sha256;
 	cv=pass;
-	b=dsDi4lvkJFpGxCwuH3oVi9My5eznmCPXxZMrRAoY/Ry0Py0SK7z4Hvi7ui9ggeBaJEydBj
-	JI6br0q/tCk65K9idwegPaMLxc/cxr6EhGkFe++gNPQoM5YrnJCmuscDWA1moPzJ1lXenD
-	ey+Tw5QIM40MSi7tj/fv7v+U2GtyV7Px7Gm8z+sUs+0ZOLG3lCCzSgH2JrRlYgxZGl4FJJ
-	r/+pqexEK4HNyaUoe0HKPO+35Vy/YaODksFqIzcgKMRImPsyNlovlDPqu3ctz1kAZ1r4et
-	MJScBrlrmzHzFF1DhhXZGzBg+Kn7QomHRZXXxDJUQBz+CNRz5dcz3uRKXkvoYQ==
+	b=CXPM/yHg8hVEv1SM/Fyi/rXM7QTekQVuwcHsBUJf4ETb7W2vTE0W+CPBCCcLYVqJJvImBL
+	R3dYyNqVpLpoqvOqSqClnA3nNP5fSar7mbIECbT+fYiGMnpFq0V89Qo4+xDpjgHJs9H7YY
+	QSSXHosm2HWJvzG8Lz8sPFs7K80vMcLlvoLGIw3GGPUEg+lab+Iw5ws8FC7PPIBa7mQr4p
+	AKWGOuEpVOG+eSQpj3+2hXj8xrwz9NxFG08dMAQWYI2kJqq0xEAaj+meCrwl0rHiYfzM/X
+	wCTrKv8egdM9vEXk+cfIi6Bi21SzIdLe7vpG5YzVF4VxWkZQEBZe9G7da3ar5w==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=GOcrhJoz;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=B3ns+2wY;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="QV3/+55n";
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=RoAAgINb;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793179561;
+	s=20260414; t=1793179563;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=J4d9Taaw/lvGZb7KVJM/wjh9gj4JvZpYg7o1Ccpv4BU=;
-	b=TIzP1U4el6dTCA8D+AGJbVW9cooE3Untosv+PkRGIXVBigWmzj9BBpXH9PwYHV7ST2qqCj
-	CtWmFoA5SCbIMdxqmr34mgOoGksy49xdGTfut2+Koov5Cy1MuLiH9+E3106WHG521TBPp7
-	LjNK/F331qxZzd12KBGkbONM5gqAeMJ7GqU3FzJOL/el8TmTDUqaOw92aZB5BPNKHHkpBB
-	0teh5PkzsyExC7OSOS0GZvFf+izooncRvnT/mN3GUNcR+EaAmI0jRizBOSwCSAK7y7IqbI
-	xKlFkAUp9wg69vS/n1YF6gAVbx04xZMv2KBcP1FfQyEpW/UULi3pstZ0EUxcAA==
+	bh=9QyyHamrhH/7/WIqdISXb++EWx4r6EOzfLfrtyWNRRo=;
+	b=Sxn/9nFICQqoCq8YqTR7s7BiPWD7/1dcSbc5D8tQdlSNOpGh6DyKLl6ybfjmoxTQWWw10j
+	9qbxo7qUpvJUUdHbmVDrgkIAUfjnMgn/trtOKrd1fkBC9VTy9rzdc2YFw7pHbs5/+RExIT
+	g3lidUtbBGooQrqUougsCl8LGMkg6zN8w756IUb5+mNgVyoFzMBkzm2IuWvPzxHLgo57oI
+	Re2RYcX1iOJdzw3EmDWTXwSIEZeJx2Oa0ldzVxaJtHbUWhYWfBl9+/d6rSw3k07t6JeC1d
+	N7fPAbwBdht5cGa8Qrp2qLnD6Yfspch/dRob8rfb8LbAbBLFyiqnMJIbJliBug==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=J4d9Taaw/lvGZb7KVJM/wjh9gj4JvZpYg7o1Ccpv4BU=; b=GOcrhJoznVtXBW
-	v3I5r97DeOaZVhmxJlPUz/UL3TfbNdoPYkA3tBtudGtZ3mXEMnSo3KIK6O6aemGwyaYcYWo/NgNPw
-	SOIHMtXRMTmr+K5XjrOrHN6cFnzNQSsR/x5AOk/hp+Au2MvO77witQ7Bp1uAn56l0yH1+Q0UceRVH
-	m92nw3a1MT0jatROBrGnytg52s0mUGHOyyLYRDRFxt9qrcSb2YXKoak1LXZENLI1iCXSIeJgCW19a
-	o5ckVkGfqDX7rN87yGnuJ2Ot+cuOYpFnU1MUkV6nhf0d7ctOP6OwbVymNaDrzKTz21zvH3VS/wHaX
-	e8DV1xkHKHZBiXj8eqQQ==;
+	List-Owner; bh=9QyyHamrhH/7/WIqdISXb++EWx4r6EOzfLfrtyWNRRo=; b=QV3/+55nbRdx0g
+	Y9qp4WMPkfgDdCDPA1LKuTgFgxfsq4m3BxrAB5EW8NkrnB5ZvrbJG5MhR2kCU5xbWinXUfbwdSmWe
+	nUHdzXsYol8EsJKUmwhQkO/6Llbgn28Gjq35a5S1VaEwRnfW7obqWilC1EiYrJLp0626luXzjJaKM
+	i9agTTJ1WZX+dPkLUnINmoX/+VFKbejQuOiddKOoDaeGrDKYG8tto8XWMZAzUUf5nOXKSlv4ndxCn
+	XTBwCFf1124ehmWHMfd7glBIflzopno4WnuVQwWPONzagRxCx6l4zY/7KyPb+xaR6L8+gdSLLrdFm
+	6l31aFSBIo9awVtKk94g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xLzty-00000006eM9-08vt;
+	id 1xLzty-00000006eNi-3aAj;
 	Wed, 28 Oct 2026 09:24:58 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xLztt-00000006eFd-2Ypw
+	id 1xLztt-00000006eFa-2i3t
 	for barebox@lists.infradead.org;
-	Wed, 28 Oct 2026 09:24:54 +0000
+	Wed, 28 Oct 2026 09:24:57 +0000
 Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.pengutronix.de [IPv6:2a0a:edc0:0:1101:1d::54])
 	(Authenticated sender: relay-from-dude05.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id BCC5120294C;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id A4A89202930;
 	Wed, 28 Oct 2026 10:24:45 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1793179485;
@@ -73,19 +73,19 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=J4d9Taaw/lvGZb7KVJM/wjh9gj4JvZpYg7o1Ccpv4BU=;
-	b=B3ns+2wYalpeEf69vZjOrD1NrWwW0NMP7np+vpYgc02XiYyUkU38d5giy4+rOIMFuEkF6n
-	w+VIzVyqgEaMZOnaEV9dJSJjKZzXlTQ/kqdb2gJPXjkmzsdMOyWCkTgOhArQ7v4QPwHVhp
-	+82mzaqlmSGz45FRMIwaSMjZC75/VEqwjkzfCaUn1meMyQm5Fm3vgs1THjlDh7HFgxz6wJ
-	9zGgXTOeu12oN6f9Fz8fismtmaxeW6nE3GrYIpG7ZMft8Fqie8ehihS07xioPKu/+h+amF
-	VwpYbnyT6w93FvjDz67gBSxPmcOFJeuiskAgz3VTObAcaqL8QDMCUu8mpHuBMA==
+	bh=9QyyHamrhH/7/WIqdISXb++EWx4r6EOzfLfrtyWNRRo=;
+	b=RoAAgINbDs98Onnp7/KLZl2vvXodyUYpKFQU1/W+DMjytOA5E7GsqR0zveEaZAEKUTrbMH
+	VKpRLcvOoyZtFnS64vEP1GbfQ2qvv0Nb+8FJdMg74tEZciH79g6I0U2GIfIGFo49QAZxir
+	gMt+8LcndLtEILEnvmBBrj2fArwaLfC1+EGWb9G5K7Zxyx11BP+cGthZr0M2/zU7TP3t0F
+	QNLi6cohe5E7hQ+STxI14SPI30nw4rVEe3A11Mg5WhYEqq+DMaF1EfOC2wunTQCqsghbtt
+	zjnl3SsuW/u18PKhbBgvdE/x+7LBNE2zlSUCuZzIHidqlbSv5UBHWXR408Uapg==
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793179485; a=rsa-sha256;
 	cv=none;
-	b=gTTxc8x7oicIQ3cNgFGwlQJEUF64tssm4YzZp+g/ipv/fy4pyKKqVLkFAf0qzciWh81H5t
-	sxjXIn9YiGBM5g1Wc1ogiGQKxshmj8zUq0TJe2F+GS5GvCwEXmYzn0Ahk17gxbecqe5x86
-	C+Z4DTQ5B5cyfOqgO73co49w0iZLD+eq3dheFXO6tRsJO33PAhTRBFMJxTBfo/ulKqlxI2
-	1pR2Yc1lnJhxNxRt18I8UoALS8Xir5j8r5RO0ghB6b/0d76jSH5KHYKL+3mcPdRxFvMGlF
-	iapsc9nEW4KOEXxTSQ0te0xVF5Omq1SH1ULRhnywqVdXvkfC0PYEmL3Sm0xFyA==
+	b=ddj6hBjV9hXIO6xprbvvdSq6GHGkMTXs1JDnVHVBgqQMg4ffTABZ1iBeuJ/qWmRnFapw96
+	3bTyMzkk0ihm61JkWBsEHHzAF9y+3Uy1pXlrd4y3bAROyMZn61vf7WU7b1Qu1nsyhpghtb
+	XmhY1UynRqzwIxZOzxpIh/zgAPhLKNp/WKyQNGHcFh0oTxkF72Xq7LW2Eilckq43WXUthM
+	6FdoYhfWE6Az2/V9bOrKv3VdxZCw2yqTcZRBd1oStydGuqjM2n5Uuyn62Y2r7V5P2n/ac+
+	NXuWIqriIMlgvDoksaY3FWfjxYIKGSeR29gMmEJWFypz8oiFX3fq1m4oNobYZQ==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-dude05.red.stw.pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
@@ -95,29 +95,29 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=J4d9Taaw/lvGZb7KVJM/wjh9gj4JvZpYg7o1Ccpv4BU=;
-	b=gcrhCPl+8D4XcqaNC4uNuxkYMgrSowtF78PHrvE8ODIc01H13CQtFuNLnfplEIQFfQ/cuq
-	aOL+cUSk9YVmQ1rF33vhdbfuCuzuGaxZRRoc7ECTDdzYHWMaey6B+ti4Q9A1XTkg5nEq3C
-	4a/xNEByJtejMaOkj+MOAtGZO2gXMLyW29S7+CY+PN7yN0Z8CDB/eCY3pCB2ghTgaem6Cu
-	vJfym6YGj47LXc2a6DDBjSRCpRIgl+U0FjToNVvYXu0pGECvnb3am63Yr0CjhC4dGuItPI
-	+U13+l5Oxs0z8jaAsOWXuiNm1wTYOWJTznL+UoG6rh2ordUNz9AtL62eSgWvJw==
+	bh=9QyyHamrhH/7/WIqdISXb++EWx4r6EOzfLfrtyWNRRo=;
+	b=BP47DzWTmPmeN5YTfJZOCKQXjomHecOODPcOXHxggIvLq5gjOdpHYOJb7iB/GItG+EaBqj
+	GsTACQ/zRrgFPIN5WeUsvdvZS1/aJYDKKY9VfJXlOnH5IXw11emQ/AGEkymaohHRFfgdD1
+	b2u+bjt1JfoU098MFNLnLb/l/vrdfSRWATpfRykSn1rmTbR0dFUV/Z8LdFyduSz5d5en6k
+	eavVViGBx7SzasdqGwBsjCvF9l813GuAnFcqjVGWYnoh5c5k5WsGoT/9mQog2gd726DATi
+	BUzpVrYoeewUVEB5xdWAgxm3t7zUXA++rtY+cKbhxOhNHOwAwWsGEKUyFunxEQ==
 Received: from dude05.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id A1D6474094A;
+	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id 8A8847420DE;
 	Wed, 28 Oct 2026 10:24:45 +0100 (CET)
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Subject: [PATCH 08/19] mfd: pca9450: don't free device-managed memory in probe error path
-Date: Wed, 28 Oct 2026 10:14:42 +0100
-Message-ID: <20261028092442.3300753-9-a.fatoum@pengutronix.de>
+Subject: [PATCH 06/19] test: self: talloc: add destructor tests
+Date: Wed, 28 Oct 2026 10:14:40 +0100
+Message-ID: <20261028092442.3300753-7-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261028092442.3300753-1-a.fatoum@pengutronix.de>
 References: <20261028092442.3300753-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261028_022453_800275_2BFB0241 
-X-CRM114-Status: GOOD (  11.57  )
+X-CRM114-CacheID: sfid-20261028_022453_862901_949782E5 
+X-CRM114-Status: GOOD (  11.79  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -125,10 +125,11 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> The driver data
-   is allocated with devm_kzalloc(), but free()d on probe failure, which only
-    works as long as devm_ is a dummy. Drop the free, managed memory is released
-    when probe fails. 
+ Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> Cover ordering relative
+    to children and siblings, realloc and frees from within destructors. Assisted-by:
+    Claude:fable-5.1 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org> --- test/self/talloc.c
+    | 124 +++++++++++++++++++++++++++++++++++++++++++++ 1 file changed, 124 insertions(+)
+    
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -158,7 +159,7 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: DB5BB20293A
+X-Rspamd-Queue-Id: F3B20202285
 X-Spamd-Result: default: False [-59.11 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[100.00%];
@@ -193,67 +194,159 @@ X-Spamd-Result: default: False [-59.11 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Stat-Signature: aqdhwh4frnmypwsq57jkdgdu73jubarz
+X-Stat-Signature: qaxwfk9ntnedeffttufoedp934bk7nfn
 
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-The driver data is allocated with devm_kzalloc(), but free()d on probe
-failure, which only works as long as devm_ is a dummy. Drop the free,
-managed memory is released when probe fails.
+Cover ordering relative to children and siblings, realloc and frees
+from within destructors.
 
 Assisted-by: Claude:fable-5.1
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- drivers/mfd/pca9450.c | 20 +++++---------------
- 1 file changed, 5 insertions(+), 15 deletions(-)
+ test/self/talloc.c | 124 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 124 insertions(+)
 
-diff --git a/drivers/mfd/pca9450.c b/drivers/mfd/pca9450.c
-index 523071bf12ff..ff608dd1af8b 100644
---- a/drivers/mfd/pca9450.c
-+++ b/drivers/mfd/pca9450.c
-@@ -100,21 +100,19 @@ static int __init pca9450_probe(struct device *dev)
- 	pca9450->type = (enum pca9450_chip_type)(uintptr_t)device_get_match_data(dev);
- 
- 	regmap = regmap_init_i2c(to_i2c_client(dev), &pca9450_regmap_i2c_config);
--	if (IS_ERR(regmap)) {
--		ret = PTR_ERR(regmap);
--		goto free;
--	}
-+	if (IS_ERR(regmap))
-+		return PTR_ERR(regmap);
- 
- 	pca9450->regmap = regmap;
- 
- 	ret = regmap_register_cdev(regmap, NULL);
- 	if (ret)
--		goto free;
-+		return ret;
- 
- 	ret = regmap_read(regmap, PCA9450_REG_DEV_ID, &reg);
- 	if (ret) {
- 		dev_err(dev, "Unable to read PMIC Chip ID\n");
--		goto free;
-+		return ret;
- 	}
- 
- 	/* Chip ID defined in bits [7:4] */
-@@ -138,15 +136,7 @@ static int __init pca9450_probe(struct device *dev)
- 
- 	pca9450_get_reset_source(dev, regmap);
- 
--	ret = mfd_add_devices(dev, pca9450_cells, ARRAY_SIZE(pca9450_cells));
--	if (ret)
--		goto free;
--
--	return 0;
--
--free:
--	free(pca9450);
--	return ret;
-+	return mfd_add_devices(dev, pca9450_cells, ARRAY_SIZE(pca9450_cells));
+diff --git a/test/self/talloc.c b/test/self/talloc.c
+index a7bbf90b59fb..85fc74336f43 100644
+--- a/test/self/talloc.c
++++ b/test/self/talloc.c
+@@ -142,11 +142,135 @@ static void talloc_corner_cases(void)
+ 	talloc_free(root);
  }
  
- static __maybe_unused struct of_device_id pca9450_dt_ids[] = {
++static char destructor_log[16];
++static unsigned destructor_log_len;
++
++static void reset_destructor_log(void)
++{
++	memset(destructor_log, 0, sizeof(destructor_log));
++	destructor_log_len = 0;
++}
++
++static void log_destructor(void *data)
++{
++	if (destructor_log_len < sizeof(destructor_log) - 1)
++		destructor_log[destructor_log_len++] = *(char *)data;
++}
++
++static void self_free_destructor(void *data)
++{
++	log_destructor(data);
++	/* Must do nothing, we are being freed already */
++	talloc_free(data);
++}
++
++static void *other_to_free;
++
++static void other_free_destructor(void *data)
++{
++	log_destructor(data);
++	talloc_free(other_to_free);
++}
++
++/* Chunk holding @c, with a destructor that is passed the chunk */
++static void *talloc_char(const void *parent, char c, void (*fn)(void *))
++{
++	char *mem = talloc_size(parent, 1);
++
++	if (!selftest_check(mem))
++		return NULL;
++
++	*mem = c;
++	selftest_check(talloc_add_destructor(mem, fn, mem) == 0);
++
++	return mem;
++}
++
++static void talloc_destructor_tests(void)
++{
++	void *root, *a, *b, *c, *d, *x, *tmp;
++
++	selftest_check(talloc_add_destructor(NULL, log_destructor, "") == -EINVAL);
++
++	root = talloc_new(NULL);
++
++	/* Children are freed before their parent's destructors run */
++	reset_destructor_log();
++	a = talloc_char(root, 'a', log_destructor);
++	b = talloc_char(a, 'b', log_destructor);
++	c = talloc_char(a, 'c', log_destructor);
++	d = talloc_char(c, 'd', log_destructor);
++	if (!a || !b || !c || !d)
++		return;
++
++	talloc_free(a);
++	selftest_check(!strcmp(destructor_log, "dcba"));
++	selftest_check(talloc_total_blocks(root) == 1);
++
++	/* Destructors run in reverse order, interleaved with frees */
++	reset_destructor_log();
++	a = talloc_new(root);
++	selftest_check(talloc_add_destructor(a, log_destructor, "1") == 0);
++	b = talloc_char(a, 'b', log_destructor);
++	selftest_check(talloc_add_destructor(a, log_destructor, "2") == 0);
++	selftest_check(talloc_total_blocks(a) == 2);
++	talloc_free(a);
++	selftest_check(!strcmp(destructor_log, "2b1"));
++
++	/* Destructors survive realloc */
++	reset_destructor_log();
++	a = talloc_size(root, 1);
++	selftest_check(talloc_add_destructor(a, log_destructor, "a") == 0);
++	tmp = talloc_realloc_size(root, a, SZ_64K);
++	if (selftest_check(tmp))
++		a = tmp;
++	talloc_free(a);
++	selftest_check(!strcmp(destructor_log, "a"));
++
++	/* Freeing a chunk from its own destructor does nothing */
++	reset_destructor_log();
++	a = talloc_char(root, 'a', self_free_destructor);
++	talloc_free(a);
++	selftest_check(!strcmp(destructor_log, "a"));
++	selftest_check(talloc_total_blocks(root) == 1);
++
++	/* Same for an ancestor that is being freed */
++	reset_destructor_log();
++	x = talloc_char(root, 'x', log_destructor);
++	a = talloc_char(x, 'a', other_free_destructor);
++	other_to_free = x;
++	talloc_free(x);
++	selftest_check(!strcmp(destructor_log, "ax"));
++	selftest_check(talloc_total_blocks(root) == 1);
++
++	/* Ancestors of the freed chunk can be freed */
++	reset_destructor_log();
++	x = talloc_char(root, 'x', log_destructor);
++	a = talloc_char(x, 'a', log_destructor);
++	b = talloc_char(a, 'b', other_free_destructor);
++	other_to_free = x;
++	talloc_free(a);
++	selftest_check(!strcmp(destructor_log, "bxa"));
++	selftest_check(talloc_total_blocks(root) == 1);
++
++	/* So can siblings that are still to be freed */
++	reset_destructor_log();
++	a = talloc_char(root, 'a', log_destructor);
++	other_to_free = talloc_char(a, 'b', log_destructor);
++	c = talloc_char(a, 'c', other_free_destructor);
++	talloc_free(a);
++	selftest_check(!strcmp(destructor_log, "cba"));
++	selftest_check(talloc_total_blocks(root) == 1);
++
++	talloc_free(root);
++}
++
+ static void test_talloc(void)
+ {
+ 	talloc_basic_tests();
+ 	talloc_hierarchy_tests();
+ 	talloc_stress_tests();
+ 	talloc_corner_cases();
++	talloc_destructor_tests();
+ }
+ bselftest(core, test_talloc);
 -- 
 2.47.3
 
