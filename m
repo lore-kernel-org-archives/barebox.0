@@ -1,123 +1,123 @@
-Delivery-date: Wed, 28 Oct 2026 10:29:52 +0100
+Delivery-date: Wed, 28 Oct 2026 10:52:57 +0100
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xLzyi-004H8O-00
+	id 1xM0L2-004HW1-2e
 	for lore@lore.pengutronix.de;
-	Wed, 28 Oct 2026 10:29:52 +0100
+	Wed, 28 Oct 2026 10:52:57 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id C7E10201E0D
-	for <lore@pengutronix.de>; Wed, 28 Oct 2026 10:29:51 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id AFA6E202925
+	for <lore@pengutronix.de>; Wed, 28 Oct 2026 10:52:56 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="v3/bvnGz";
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b="DDI9n/BZ";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=YhJH2wwY;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=eSJ2xhne;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1793179792; a=rsa-sha256;
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1793181177; a=rsa-sha256;
 	cv=pass;
-	b=F+lvk2Zqi+BAOHbtLsAzsMWOMzj4wmzHQjKlhqi9SWqd4e8eLUVyf3c2oARKHLXSuc1Rij
-	AV1PfeEA9wrk2TcvN3MSygp3WH7dVo1DP5INL6+3vy2xvhLmg754aCo8G0gihK4sdUvNN5
-	3wH/b8JV4h2UyKvFy6ofL3whATkiWad+g2OEkFPknC36lYJ6LTWZKCTjGXvyz7GryYk+EB
-	y/QZQnQ6ltakiYmi6dedfRQJoswXLn89WHcVGS5jFEAeUiCd+LJTsAkjhr/rINSWrgCdMK
-	tNFQUIa6Vipe8hDx/CFjkGeyuyYLGuTNnCIUSjkQThacKOP6zjBhSzEf6ep3Lg==
+	b=FCYWTQNL+znhwzdRymmgHjY7KcThv2beO/IHIM2HHN4lWqobXGmCg5J8sxk6ZqCo7c4Niv
+	4hhyRguxZWsTBLQsJLPXW+6v2N1SLAl4vtdt62um3fIck65SXuraSe77xsrKzUz7NIfFBj
+	M3KYy4KxxHd+lTkp4ckpq8UM3gc7NMY2GNg2xKuiOufj5ztxPZKY5mGMieH2zsMaUcDZ29
+	3+iRNyShkVdMSM/zQRgweXSHjI0Jq6Wp3ihYE7N5scKCTE0VaU9zPOEBe+uOldfxp82lNe
+	hcqyDPk4DkfEB0Iu0cBKe1phkgQeYjP77Pr34Cov7cI2JANH4dWBL3zF0BZAIQ==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="v3/bvnGz";
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b="DDI9n/BZ";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=YhJH2wwY;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=eSJ2xhne;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793179792;
+	s=20260414; t=1793181177;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=x4bpOUcTZLlbdidSnxwjHEEJBlplINueF3h0NfYzpxw=;
-	b=WOmXhSJS7hp2zBynidYzIf4uTnfAM0JDK1xKLTzqsPFdu27jqLkiIec9+Lhzgzny3gPYue
-	q5lhUIqII91lZexhQG/imoIzT2IIb7gllnVnRBe/68QfOgvg8o+6QymLO1BMbZ1CNkHojX
-	qk2ZnKDaEvbBohsGGCZCBPOp5gej6kVgWsrnCevIHfLl7jWiA4sfTtRm4+2PU3ksycKHwo
-	ASdaNzfQzP7/Kbljadqjphinv/SDWQnRAeqZULSmKhp1VzzedtZWjLag90wjIIcJ9P+U1C
-	IFqDqhytvUY8yOHzbqM54v2/n5rAX2ARfFj4wyIrCP+chZWpAjmVldmPIpx+Pg==
+	bh=S9LW20jHhpLSsnEWzOv4ZOdhEKaOtHVGpK6RzcGuuac=;
+	b=W8x8D7ztyi8/nkHXC5L6gH5D3PZwqDmFiTH22vRS+KAYZKbDcqe50S/SBD3mDLqMnKdyhA
+	O5EaGfiUvpwLWliGF6XgOcte5wYqmhU0g13pNKM5DpprOBKa8RYaZalEjtA26aPtinWp5o
+	BJUWWclRXGiFcveqURP/wujggCYGJW+7WgoqPvYFHFj2J1AARBlDsM4ZUrPqYBG6o/89U0
+	1nEuPdCnycfSvedPnveI/m4ypma4/hCi0LHmUYDjAuBsXrIFLgkgVOnKgXBpppnYohlCC1
+	lXuZ/Ds7lCsKnxJRnSH4nXW6AgtYF1K8n7iABIdhoGxYjPAj2E0BB7q5m0XwCA==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=x4bpOUcTZLlbdidSnxwjHEEJBlplINueF3h0NfYzpxw=; b=v3/bvnGzW/LEVS
-	ZyiyknIrbLUUTDJGlxWGth12hpDOEwBSMlOLqHV4VkbAeit1iEdgdXa0sGKHF1f3wIa7sANOFvbQn
-	5PPJTdBcC0s4u8vrz87LOfy/bLjYFVFILGrAlnivw1GD+SY5uzxJCblsUFB1eS6Fmlr27tbUfAlfF
-	RugkJ0Hum4ZYES8sYVwJAOkS7Xmn9MfF+8QHOnhiCOASOvH5MA5PVJuDGJrQ8Q+KPcGZxTTuqIKMx
-	N6b65MN5Wg1HFdefL0SjLZ3ouuOcudsjbveybld6ogubqZIPZgqUKnVACtTtKPuYdadDNQyBgPMra
-	GjQD5PWPKPZPgGmVWOnQ==;
+	List-Owner; bh=S9LW20jHhpLSsnEWzOv4ZOdhEKaOtHVGpK6RzcGuuac=; b=YhJH2wwYXl9YTS
+	iAUHzjjxaEVE9jF57aKJbsROQ7m32HHGaPgTS34OKadFrTgl7dWMpRRAMf7h6jtE/yqbO6Qy17zsV
+	/DfBiKVpFznyCBpKHRXqLVLRxJ6u1nhaOwX6SU1II8gYryT8qRmMdi+VJDThTLEYkbc/qsLFfTzws
+	ld1ysDzPvT4rRapmaSVkKO2cYlhbUEdf+ulTRjdHhBkYAe6ZQ6EtH0VfF3uQGKE5RwF3RN4SK5qeu
+	TKwftOKH1nT5e4VQjy1ibTUxZFbbZA6bOt8xFckn2Kdut05+e8VMhkLfdNJ4U8eFBatA4A8xojPTN
+	eUwlNWZtWn6F6mNRfHNQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xLztv-00000006eIc-1l8t;
-	Wed, 28 Oct 2026 09:24:55 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1xLzu5-00000006eX9-1AAR;
+	Wed, 28 Oct 2026 09:25:05 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xLztp-00000006eE4-3v5N
+	id 1xLztw-00000006eIT-1q8O
 	for barebox@lists.infradead.org;
-	Wed, 28 Oct 2026 09:24:52 +0000
-Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.pengutronix.de [IPv6:2a0a:edc0:0:1101:1d::54])
+	Wed, 28 Oct 2026 09:24:59 +0000
+Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.4.pengutronix.de [10.17.1.19])
 	(Authenticated sender: relay-from-dude05.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 8AD09202923;
-	Wed, 28 Oct 2026 10:24:45 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 20744202962;
+	Wed, 28 Oct 2026 10:24:46 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793179485;
+	s=20260414; t=1793179486;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x4bpOUcTZLlbdidSnxwjHEEJBlplINueF3h0NfYzpxw=;
-	b=DDI9n/BZtmTnLIJAJASfa08RyiO0b3/UeDCLxbzLoe8ku4LldaqFS+cj0UECB8JHnrGPDW
-	fEmULczxFCSoWG//IGUxBY6OuSa9aGHSLUGbPvmsQb6MPrmUCu+8/kNfZYlDIKgGTQdsq5
-	5IiFMrdftJW68YyvHerhLYluHIUIgkY2ja+vk1Q4kk7ihVjN3go9b1F4dyW+12l5YRTgKA
-	AG6yAl6y9Y61zdSCJu/FjuyapQQZBR536zzd2kTmUi6yGsk7DdNU+zRnReS3yUH5gEaBwr
-	22z/3BkJf60ayh9if1PODWUVjn8v+QgPl5duJpbB29fgZTKlgJQZx6zELcroDQ==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793179485; a=rsa-sha256;
+	bh=S9LW20jHhpLSsnEWzOv4ZOdhEKaOtHVGpK6RzcGuuac=;
+	b=eSJ2xhneU9AkxXEHuB39sQ2HUGOo9jAqo9terxnGuuUrt/EztGtNUgXPrgSzFpvp/vWmdn
+	SirpBhsOmUOcAJO9P2sInf9DXz4iDq6/iUr6V4W2Sc9pES1xPAzm73s0H5rC9s8EN+VnP/
+	462/kiWGOq7GqVS5Pj2XOLplf6RpGolqQcQ+JMsd0mv2Whv4lhjUmyerYP6ElGJG5/YA9x
+	aAHjbtxstRclCm7rIczkK7sRnPJDc/3N3ya/C4nDatSB48e6CH0LdaeutyIPkdcVuBn65n
+	P86HMnxdOmhU5ueTp8dgciwWnN3XaJxmZfeHgux7nkgaAu+qoOONCkKPNzqhRg==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793179486; a=rsa-sha256;
 	cv=none;
-	b=eD+XuV+3hsSZpaeoeJzcKITpFs05dSHX16PA6NEphaGBH6s9/CBnh1DU4svxYWDoTj1piJ
-	ldEIJNvocNFxL9rzpvtPFhhyqZOa1YjhZ+L85zGueRTbppMB38U2rA31sSVnu0bkFqs3fD
-	mWjrRHSCqPSPmURdH9LywRHgH+P9NVwLfTv3qz0L1eIBjUfEKlpB0J69FGbM/jwE+JL2PD
-	rSO0dTbAhRl6J26oARtmGeDDlCj+dH5/zoY/Z1145TyFkbuoV2oPNleiPSukxBqyfqj0LV
-	uCRmUJM+TxNh3/PwP7K71gpxLkdnPTtvGjveozPMJ8ekxi4w03YTRQgd2UrMHA==
+	b=FIGcCuYhEWnVnESTUxRoUO1r1/X/Q9/0gyCtKp+Ww/eK9+wXGt+5XuRvtZRXThbSjbeZDH
+	NFobjW1vlqjU9lIjdNxpSs4eKtzxBjWtJWXcb/FCXZQIjvLwv2NSPlFVQxw2jg7Z2QOO1D
+	cVCilPXLy9ItPGByf+RZlM80lIVaE+mhLRdnDKVvh5Xevrw9IeezOVpSPpJq4R+A1TYPc+
+	ZZxHeU9bktHbV7FIljtiisX7VMK9ygBGEbWbbtLZvD3gEtv9XbR4S6Am8cSFDb25dY257b
+	+1hxk72dpTFUIDtcgH5sG3vbNospFn0IKgiLzzFPFdqMX1kaVRd8kwiddQEGzw==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-dude05.red.stw.pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793179485;
+	s=20260414; t=1793179486;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=x4bpOUcTZLlbdidSnxwjHEEJBlplINueF3h0NfYzpxw=;
-	b=OQqjBEeK31PzdHfw9vnhcrNJNup9QsJ0Wfi6fbNE4iSOIV5kQZvoa7EGsZ0nUIC0uzDU80
-	b/POKE4U4dx7ZlCVvinsKU2YUk12Wuw2nJ8ovqmhZIMx6ct+DH0WPaBMwSNhv065FH7E0A
-	EpXsf6hzjAPME1mvsUpQ9X0zQi2fhnbEu1LeDVVczX4gdS6/vwBVHo9DFG/iKsipBOvrv0
-	rvBA6RQORsuJch5vrsS1pSiXGVMYaWUVh6YhzmS3APIbCHNuikRX49N7c92sdJE34/VXK9
-	nxYoUiXARmzQvd5zDPL7yJqA8I2kTPtyRDSr+WGoxLxt+AHlZ3aEWN8qoSGORg==
+	bh=S9LW20jHhpLSsnEWzOv4ZOdhEKaOtHVGpK6RzcGuuac=;
+	b=XYY6Xxn2gTWl6vP4abR4wShVG8QmtuPNUShFDoluab7LGhShxgt648oiHSCMoCr2bEOLrg
+	9P8xw5IeT/bg/t0mtM1fpoo3sfTrPj8rhR6VGIkKnlyEdtPhSnh62NOCJd6jWLm6Yhb26r
+	aCbg/cFTDn14f9OnsNptJCBbIGipc5Q4MK6v5fzlwW3ylcZocftBivTMi8d0LIUXwBbGME
+	YKWvBpYXpBbNNwi+ltTpUIQfDn6AwhUKw/CRqvFBcoctDJCDFIjmuSStCg3aE8tow1KEOF
+	OfrgFK3VNGx10Mhpx69Hn3gM0EyE9NuJOxezJUxO8Zr0EO/5Ebp68lnBgCd6Wg==
 Received: from dude05.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id 6A3B2742F56;
-	Wed, 28 Oct 2026 10:24:45 +0100 (CET)
+	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id 0695674094A;
+	Wed, 28 Oct 2026 10:24:46 +0100 (CET)
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Subject: [PATCH 03/19] talloc: remove unused talloc_steal() and talloc_steal_children()
-Date: Wed, 28 Oct 2026 10:14:37 +0100
-Message-ID: <20261028092442.3300753-4-a.fatoum@pengutronix.de>
+Subject: [PATCH 16/19] driver: make dev_platform_ioremap_resource() device-managed
+Date: Wed, 28 Oct 2026 10:14:50 +0100
+Message-ID: <20261028092442.3300753-17-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261028092442.3300753-1-a.fatoum@pengutronix.de>
 References: <20261028092442.3300753-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261028_022450_379384_0BCBF420 
-X-CRM114-Status: GOOD (  15.01  )
+X-CRM114-CacheID: sfid-20261028_022457_004501_5F101179 
+X-CRM114-Status: GOOD (  15.55  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -125,10 +125,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> Neither has users
-    and devres doesn't reparent, so let's drop them instead of teaching them
-   about destructors. Internally, call mem_set_parent() directly, which talloc_steal()
-    just wrapped. 
+ Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> Unlike devm_platform_ioremap_resource()
+    in Linux, the barebox stand-in never releases its region. Most users call
+    clk_get() or regulator_get() after it, so a deferred probe leaves the region
+    requested [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -158,10 +158,10 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: C7E10201E0D
-X-Spamd-Result: default: False [-59.11 / 15.00];
+X-Rspamd-Queue-Id: AFA6E202925
+X-Spamd-Result: default: False [-58.91 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	MID_CONTAINS_FROM(1.00)[];
@@ -169,7 +169,7 @@ X-Spamd-Result: default: False [-59.11 / 15.00];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	R_MISSING_CHARSET(0.50)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::54:received];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
@@ -193,133 +193,94 @@ X-Spamd-Result: default: False [-59.11 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Stat-Signature: 38atoqkakb6iaw59h7fpgza7qku9qmpu
+X-Stat-Signature: fhtk7w8fdnwikdzg49b1ccugh8sk4y7p
 
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-Neither has users and devres doesn't reparent, so let's drop them
-instead of teaching them about destructors. Internally, call
-mem_set_parent() directly, which talloc_steal() just wrapped.
+Unlike devm_platform_ioremap_resource() in Linux, the barebox stand-in
+never releases its region. Most users call clk_get() or regulator_get()
+after it, so a deferred probe leaves the region requested and the retry
+fails with -EBUSY.
 
-Assisted-by: Claude:opus-5.5
+Implement it on top of devm_request_mem_resource() and move it out of
+line to devres.c.
+
+Assisted-by: Claude:opus-5-1m
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- include/talloc.h |  2 --
- lib/talloc.c     | 67 ++----------------------------------------------
- 2 files changed, 2 insertions(+), 67 deletions(-)
+ drivers/base/devres.c  | 32 ++++++++++++++++++++++++++++++++
+ include/linux/device.h | 11 +----------
+ 2 files changed, 33 insertions(+), 10 deletions(-)
 
-diff --git a/include/talloc.h b/include/talloc.h
-index 79a175bd5441..1f2dd346a7c1 100644
---- a/include/talloc.h
-+++ b/include/talloc.h
-@@ -35,8 +35,6 @@ const char *talloc_strdup_const(const void *parent, const char *str);
- void talloc_free_const(const void *ptr);
+diff --git a/drivers/base/devres.c b/drivers/base/devres.c
+index efc810a8898f..f68b8e7b6590 100644
+--- a/drivers/base/devres.c
++++ b/drivers/base/devres.c
+@@ -7,6 +7,7 @@
  
- void *talloc_parent(const void *mem);
--void talloc_steal(const void *parent, void *mem);
--void talloc_steal_children(const void *parent, void *mem);
- 
- size_t talloc_total_blocks(const void *mem);
- 
-diff --git a/lib/talloc.c b/lib/talloc.c
-index a1a7f8f0adc8..2bfbac2e9c29 100644
---- a/lib/talloc.c
-+++ b/lib/talloc.c
-@@ -34,7 +34,6 @@
- #include <asm/sections.h>
- #include "talloc.h"
- 
--// TODO difference between set_parent and steal?
- // TODO use a bit from TLSF for extra safety to differentiate talloc
- // TODO allow leaf nodes (that have no children to be destructors!!)
- #define  is_root(hdr) (!(hdr)->prev)
-@@ -69,7 +68,7 @@ static void *talloc_ctx_init(struct talloc *hdr, const void *parent)
- 	memset(hdr, 0, sizeof(*hdr));
- 
- 	mem = hdr2mem(hdr);
--	talloc_steal(parent, mem);
-+	mem_set_parent(hdr, mem2hdr(parent));
- 	return mem;
+ #include <barebox.h>
+ #include <driver.h>
++#include <io.h>
+ #include <dma.h>
+ #include <talloc.h>
+ #include <xfuncs.h>
+@@ -204,3 +205,34 @@ struct resource *devm_request_mem_resource(struct device *dev, int num)
+ 	return res;
  }
+ EXPORT_SYMBOL(devm_request_mem_resource);
++
++/**
++ * dev_platform_ioremap_resource() - request and map resource 'num' for a device
++ * @dev: device to request the memory resource for
++ * @num: index of the memory resource
++ *
++ * barebox maps everything outside the RAM banks suitably for MMIO, so this
++ * only requests the device-managed region.
++ *
++ * Return: a pointer to the registers or an ERR_PTR() on failure.
++ */
++void __iomem *dev_platform_ioremap_resource(struct device *dev, int num)
++{
++	struct resource *res;
++
++	res = devm_request_mem_resource(dev, num);
++	if (IS_ERR(res))
++		return IOMEM_ERR_PTR(PTR_ERR(res));
++
++	/* As everything is mapped 1:1 by default, drivers on unlucky
++	 * platforms can end up successfully requesting memory, but
++	 * getting a base address that looks like an error pointer.
++	 * Let's warn loudly about this case, as these drivers
++	 * should be using devm_request_mem_resource instead.
++	 */
++	if (WARN_ON(IS_ERR_VALUE(res->start)))
++		return IOMEM_ERR_PTR(-EINVAL);
++
++	return IOMEM(res->start);
++}
++EXPORT_SYMBOL(dev_platform_ioremap_resource);
+diff --git a/include/linux/device.h b/include/linux/device.h
+index 9b14bc74fef6..2b33580cd573 100644
+--- a/include/linux/device.h
++++ b/include/linux/device.h
+@@ -146,16 +146,7 @@ static inline int devm_add_action_or_reset(struct device *dev,
+ #define driver_unregister unregister_driver
  
-@@ -261,7 +260,7 @@ void talloc_free(void *mem)
- 	if (ZERO_OR_NULL_PTR(mem))
- 		return;
  
--	talloc_steal(NULL, mem);
-+	mem_set_parent(hdr, NULL);
- 
- 	__tfree(hdr->child);
- 
-@@ -335,68 +334,6 @@ void mem_set_parent(struct talloc *hdr, struct talloc *parent_hdr)
- }
- EXPORT_SYMBOL(mem_set_parent);
- 
--/**
-- * talloc_steal() - Reparent talloc'ed memory chunk
-- *
-- * @parent: pointer to previously talloc'ed memory chunk from which this
-- *          chunk depends, or NULL.
-- * @mem: pointer to previously talloc'ed memory chunk.
-- *
-- * Change the parent of a talloc'ed memory chunk. This will affect the
-- * dependencies of the entire subtree rooted at the given chunk.
-- */
--void talloc_steal(const void *parent, void *mem)
+-static inline void __iomem *dev_platform_ioremap_resource(struct device *dev,
+-							  int resource)
 -{
--	struct talloc *hdr = mem2hdr(mem);
--	struct talloc *parent_hdr = mem2hdr(parent);
--
--	mem_set_parent(hdr, parent_hdr);
+-	/*
+-	 * barebox maps everything outside the RAM banks suitably for MMIO,
+-	 * so we don't need to do anything besides requesting the regions
+-	 * and can leave the memory attributes unchanged.
+-	 */
+-	return dev_request_mem_region(dev, resource);
 -}
--EXPORT_SYMBOL(talloc_steal);
--
--/**
-- * talloc_steal_children() - Remove a talloc'ed memory chunk from the dependency tree
-- *
-- * @parent: pointer to previously talloc'ed memory chunk from which this
-- *          chunk's children will depend, or NULL.
-- * @mem: pointer to previously talloc'ed memory chunk.
-- *
-- * Removing a talloc'ed memory chunk from the dependency tree takes care of its
-- * children (they will depend on the specified parent).
-- */
--void talloc_steal_children(const void *parent, void *mem)
--{
--	struct talloc *hdr = mem2hdr(mem);
--	struct talloc *parent_hdr = mem2hdr(parent);
--
--	if (ZERO_OR_NULL_PTR(hdr))
--		return;
--
--	talloc_steal(NULL, mem);
--
--	if (!hdr->child)
--		return;
--
--	if (parent_hdr) {
--		/* Insert mem children in front of the list of parent children. */
--		if (parent_hdr->child) {
--			struct talloc *last = hdr->child;
--
--			while (last->next)
--				last = last->next;
--
--			parent_hdr->child->prev = last;
--			last->next = parent_hdr->child;
--		}
--
--		parent_hdr->child = hdr->child;
--	}
--
--	hdr->child->parent = parent_hdr;
--	hdr->child = NULL;
--}
--EXPORT_SYMBOL(talloc_steal_children);
--
- size_t talloc_total_blocks(const void *mem)
- {
- 	struct talloc *hdr = mem2hdr(mem);
++void __iomem *dev_platform_ioremap_resource(struct device *dev, int num);
+ 
+ static inline void __iomem *devm_ioremap(struct device *dev,
+ 					 resource_size_t start,
 -- 
 2.47.3
 
