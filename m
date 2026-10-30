@@ -1,128 +1,128 @@
-Delivery-date: Fri, 30 Oct 2026 09:17:39 +0100
+Delivery-date: Fri, 30 Oct 2026 11:55:16 +0100
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xMhnu-0054mn-1o
+	id 1xMkGS-0057HZ-0W
 	for lore@lore.pengutronix.de;
-	Fri, 30 Oct 2026 09:17:38 +0100
+	Fri, 30 Oct 2026 11:55:16 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 71A0820295E
-	for <lore@pengutronix.de>; Fri, 30 Oct 2026 09:17:38 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 10102202961
+	for <lore@pengutronix.de>; Fri, 30 Oct 2026 11:55:16 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="KDwP/PQV";
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=KUlT5ZiP;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="q/Nll3RE";
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=Wxz3XdH7;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793348258;
+	s=20260414; t=1793357716;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=/QJa2ZI3Uk6H93LJocQVlk3gWMayiTR/0TYfLv6rhOw=;
-	b=AAXtX8EfajKa78FYL02wRO9hOLIGYt64GrO7FZD3B36j8YYDcNghx9MPveHwFYav22x2zf
-	hMx81ebg/iOH+aUrCDUI4Mdd7lCrzSXVPjDuRAMo4xaCDXsHTrB7ionG44s65WvImOvbfA
-	5brLL8fuMCDsYWtuum2j/fCNhxItCz0jq1OlbOWcLciCuxnnhzDo5xizos6U4fMxxtUreV
-	ne+WNrIvKcnM+NCTCJqWVRa9HqGf5yYnfFckSMNm1pQUJ2SjHLmqyD5mwzTSaq1QJJmTr/
-	Ux3QVPTONRsHIOTEBVtXEfLHIBbjoqr+a8HOg62ocC0l7CEmiW/UbxKOFgOyqQ==
+	bh=Lk2B9AG5ds+pqeUjhbWMxre+nOyqBryQEJZgQ0YASpw=;
+	b=GblfFBiK+QXryx/GmLsZHwmmVrZtsbgoORM5/fuS+s2683fWj9k0zzb2P/sfAE/jgNdFc1
+	hQ8vphJWuLBxyqwfh/CXCaSnB0/9UmyHLeRwFpRNi5/c+HvmmjLRsEE+8a8Mfrk4z5zqGY
+	uxxW4dvPlx724h9HJjdewEItk3hk77epwLfzNsj/LA+89jHHfESo/hmhCI5GPNCjIqDBaL
+	BmAhXDP2lrr+p5fXumQB+G4mkMlukms+oGmeXEQdzPK+G68D2vc33XgTVeQ6PP10Xai+wn
+	ANleZm4noMPezxaCNO60gR+MXk96mey2hDGSEDoehTiMnkDejV268vJqvadZ5Q==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="KDwP/PQV";
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=KUlT5ZiP;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="q/Nll3RE";
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=Wxz3XdH7;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1793348258; a=rsa-sha256;
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1793357716; a=rsa-sha256;
 	cv=fail;
-	b=girYLSUDqlcvoPZXLAoK2FPe42h8gVVdcDbpL2gihRhyziXvvHW87HEFNnsKgZsvOyvnZL
-	zrAvm4ZnoH20ePmqgV1bdUkFzcsSpFpJ1o60t2izIREi0/y8XBx1nITyl/VR51ZCelXlyB
-	fxDNcowcxkuUVxKVZjFwfvhxspL4OCUCSEtVeDYczoNm/X7k0hod8jqF5RUCt+vVFKsAan
-	3U5Y+AHR0TTVUbxFoHxhwe9UyEDfZKFcV3i0zdJTrAzL8UbqVjV7iLTt2edXZVKX1v1jpH
-	n//ZlT52hE+BWDYRtGpupfCuN0GVMgF0yRelNCTc2/1gSe36S6mI/EReE2IDXA==
+	b=JrCwEKzoMdfzhveGCfiSTMkWpraJ3CyCdZSvMs+GCPGXxgv8hqe/inKv+ALTcOqWXWDYVS
+	iTfaLE1lxAk5MUIoCfw26I0UCY7SRSZoSLIyPex8qVPcbS5RvZ4h22mnY2QVDtA5cOidSa
+	QZh08uoT1DvreVfLx+hsYxC2+YumVpeC/lHu7a+MlSCMQNx2ArWhw0SdTB5Xc7PIr1aHO6
+	7OepxVL6y+Xt+wNBXsTr5z0eFFN/lWMYzL5BKKh1GPey3KVXnQdDvF+HrpK5oNV2spyF5y
+	vuicUNy3zDvrJommU7fqwAvvgXw0mCfHaqzZeEJbCCLO3D1lTz+Px+Rq32gHqw==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=/QJa2ZI3Uk6H93LJocQVlk3gWMayiTR/0TYfLv6rhOw=; b=KDwP/PQVGqsHbs
-	NA4wkFtp9QtKor0dQUM5hVO/lkImBdzZgZFAeFdmJoJtKz8RfrwFQ85HC+U+wOr5YiYSd4LQpYT4u
-	G5ssKnRgGt7xTbnDuVquAHCIYZLvQXeU8UKB1/TVUtFp98E4eVTG+AG8Df1T0Ehs6cxU1+nmlksmb
-	EJnyFyBQjtsZt68xfe/Ktk/kJ77ozlxx8xFS+YDWWpS71dqCkcT+CXv88oknbcMK9/CPHPzVaIb4T
-	KD8bI9nmmVyEW+mR/Qs02PN/1dEAIF03AymiXpfO82J3Hl6HIC3SaoffuKyxalY4uaJNg0UPALgY6
-	aYlVrM/17qPEaoRTlI1A==;
+	List-Owner; bh=Lk2B9AG5ds+pqeUjhbWMxre+nOyqBryQEJZgQ0YASpw=; b=q/Nll3RExlahWe
+	rXWCFWZOA04+KpoAGVvimAwIGUxdk293hWBcgM54LOXVSVCKf3tH5nruW7tUiUI1VE7d5w8mlqI5S
+	0ln9WZOoD4ZR/4IN12j8b/6Ul1KwkoZjE9IK70hj+lf8jTMvLtcnZ/1oL6Fw7COn7fnUNgn0HOBR5
+	3ytt1qn011LvjglzBTKkPLkLwbLgJBxgtF9UWQv+tAMN2mxemp8t/2lnLQp1O4AzsZk1rgknHVSBB
+	FHGYhnjGHwqSqKS552vojtwRfTiwgJ4AOr6T8sdVnXYK3szcxz34gR4rBwOyQWzx7Rv6sfo1ZEM7S
+	kCeAkb1hqSc5y4xQyeYQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xMgqm-0000000Az0G-0O89;
-	Fri, 30 Oct 2026 07:16:32 +0000
+	id 1xMkFN-0000000BSpb-0kjh;
+	Fri, 30 Oct 2026 10:54:09 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xMgqi-0000000AyzA-33Kz
+	id 1xMkFH-0000000BSlG-1xde
 	for barebox@lists.infradead.org;
-	Fri, 30 Oct 2026 07:16:30 +0000
+	Fri, 30 Oct 2026 10:54:06 +0000
 Received: from [127.0.1.1] (unknown [IPv6:2a02:560:5ca5:d100:9ebf:dff:fe00:fdb5])
 	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 3A70620295E;
-	Fri, 30 Oct 2026 08:16:24 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B3196202962;
+	Fri, 30 Oct 2026 11:54:00 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793344584;
+	s=20260414; t=1793357640;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/QJa2ZI3Uk6H93LJocQVlk3gWMayiTR/0TYfLv6rhOw=;
-	b=KUlT5ZiPuaMtvZdtrqjNyRoY3z4TRXkWHLyeBNWAvyqw5VHQ43PhnYqtOSW1t7jTos9zFG
-	gKS9rsJoceqdnixVpMBKLNIA2Zevp1Z3jE0+24+MNoc9yvsWSl0A5MQwVG336JUFCyenro
-	aWAsp8eG2/ZUEQbWVcCIw265t3sThGE+4y+IfEyoxPpD1h+DGNMNUiQsKVbtiTa6wR/aaU
-	rYlsbJbSepeUOrM0F3317CHhetPXhVnqrLL9fq2F6hS4e8jqCn4QyqosN1wL8yUdWOLxd4
-	w4GyL4RLWqPTsqcj3WVscOgNZM4L3as4zBgJrxDAnKIdl7bcgN/B4is8X65X8Q==
+	bh=Lk2B9AG5ds+pqeUjhbWMxre+nOyqBryQEJZgQ0YASpw=;
+	b=Wxz3XdH74QvQ+VSjpC5SnBOpliXISePtVQrKjkVqDUsQ1ziQWIfeRS9s/irxv0i4bEBQMG
+	UMhenBW44CaO5Onyzl4lh2qLfyVRa92aJYu904i7E38nn/cuQ0e9jMv+eQZ9p/EmavZiaC
+	YADMwR6iNVQu93KbikJTWTrDLd3VYPl7qajubx/4h5+Pcdps5f/QK4vY+Q2fHApOlJp8yd
+	ZH2sagPC70B7zTdRv4baW+dMNv8uzsb2piuFiJYixB+4ggX0FptkamN8l7Kxbtbu0ATcBU
+	2wyPYjgX+vY/0WuzycgrbKVtSVVemLl7S5pHxAc1waaLZ/oevWnV80Nm6ootXQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793344584;
+	s=20260414; t=1793357640;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/QJa2ZI3Uk6H93LJocQVlk3gWMayiTR/0TYfLv6rhOw=;
-	b=VYyc9jheTu4N4YlYnfuHCIksGfKkyHUu65eVocUi1DHXT+jXGBPBvK/YAg6I/tabM7cDK2
-	5JR6NcBZzYJtWsEKh/EW/AHS/kjeyH9kqjQSwXMpVpisX9ElSpvzmoLTDvAFX92qv9GTFH
-	Pj2n15dWwxFD7BRWTz/6vH0QsD1U9ePNJt8ZqwX9bVEAlIoDNP3foMomGfC1qrJfKWz/yJ
-	Axq6eSxO0BKeNM3kn3GVQsZXdfwMCI+20YoZb0D/i3k8hd9CfIQwAomwTjBs77tctvHqu6
-	c1DEgTfWvGKSi4uXX308D738IcP/+u1l0tie6FK0TXeN8JRtDgRkAX5ZuSer/g==
+	bh=Lk2B9AG5ds+pqeUjhbWMxre+nOyqBryQEJZgQ0YASpw=;
+	b=QsV6QNO+I6t14ICMaxchY0CluP9Bs792a72vjOaC9DYiP1sFzVjPhe/fcHX7XJxk8hJK5d
+	tYNdMKII5eQwZ6tQElpmS8gPsaK+hktsPHsW4jzMViU7JLYwUqilF50QjGDfHo8ytDsuH1
+	F+1Yz3eE2Az1Fuph4VK9807y68h8X50VvUIogvy9/TFZJlIqh9KTHIu10RmShvp1OPH6GE
+	MUjM08qqhWEJowqL7C3Cz6aCUcq6qGzT7bCCkSG7zJ+/XyRb/k5QlIkzGu+1d4/27ESO/h
+	SQYwaouP7QUcSdUZUeTn1B9zQiaV0k6f7maY9+fCoq7k9v5gm0oCjVyZALAPlA==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=sha@pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793344584; a=rsa-sha256;
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793357640; a=rsa-sha256;
 	cv=none;
-	b=DIV3tOTqvgcjUFa+b4DwFv09uZ0k4Kp16Q6yyIuNlLMEVtt+jnqa2wN+u+kO2/3LqQVmdv
-	2BsoNIgQ2u7BXukszuXMQuh9F1WRFan61DrnYCcgbSYOaOiVd++bkD0NPduu9TfqLbMder
-	HZOKkIP1lHUBVSUQsOBqewE1GogqZYbyf389QfTH3elKHl8eQEU7iEEPy5vx6JF2vP3gyG
-	YdFsvposJ7J5MKQunQFTU22NmRYW8Kfs8kKBuieOqO8GB8K/9ydXzxImlxyD+8cOe9BLnY
-	OwtvyrVkjmvwLq6XB3iU6axu/ir3xYXSsL4icwXMmYXYp16Wh5rKlI0Ka4vmJA==
+	b=JMHB0rUnQCvmpYKZBryLzcAIUuY7too4+dGyp196HBL6XItt4uC0JO5TqzTxHqpTbXLNgo
+	69ywUiG9GV9h6nTL/rmXkigtc5zn3JBxYstb/WOYuVekBUvkzGLFuR1+tZHUUiRWcbQXGs
+	yfc1bry7d/7xCIRMqeFWUM2jVK/m6PGB/hhjdVr48lqBX87bNPadJ4tkxk5oQKso48cOBF
+	57ql8lMQJLdM6gqan8Vm+DyLzv5xNz8nYWPJLiGFtDAfq25ij/p1AIYxsIeAqI2QcrtUXZ
+	8zKhPrfoD5RLFpRPqvCHTwTiH8H5Qch4fYztlHE2YPI1k5qa5aM89ngLV0ywRA==
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 30 Oct 2026 08:16:21 +0100
-Subject: [PATCH 1/2] libfile: add file_exists() helper
+Date: Fri, 30 Oct 2026 11:54:01 +0100
+Subject: [PATCH 03/10] boot: revert globalvar changes after each boot entry
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261030-file-exists-v1-1-34035d7392e5@pengutronix.de>
-References: <20261030-file-exists-v1-0-34035d7392e5@pengutronix.de>
-In-Reply-To: <20261030-file-exists-v1-0-34035d7392e5@pengutronix.de>
+Message-Id: <20261030-boot-globalvar-stack-v1-3-a03803e1100c@pengutronix.de>
+References: <20261030-boot-globalvar-stack-v1-0-a03803e1100c@pengutronix.de>
+In-Reply-To: <20261030-boot-globalvar-stack-v1-0-a03803e1100c@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793344584; l=3854;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793357640; l=9116;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=2r6H6iGq/FtY4VyUqWNnfhXTn2GL04vhZjYvnyiMe38=;
- b=8GiACmfK7mSA4ix8Ff8uP3992w29DDWb6ja8hTn/2ZULvWdas0FPfJtZwBVU9mkzD7jo5MCDf
- fD30GuzfKCCAXbggLuaLLScCa0JS2qHM8arksoZsMQK2ZUTD8nmy5IJ
+ bh=mnOOAToG4oaCc/i5cpEIO2nlb0SvtQaEIV4luzBp+Is=;
+ b=NfzzUhl1WbRVvLn+osXpasCxe9/mILmkHgkvn4Q2sJLH2jggu9/GnKtPFa2yz7A/gH1Xjx7mI
+ QQqLh0FApFeCBhY11GGdSJ0NF9Ev06Z6/DT5dhcNSajcbzdCJrkhNTl
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261030_001628_925036_D2202339 
-X-CRM114-Status: GOOD (  16.32  )
+X-CRM114-CacheID: sfid-20261030_035403_821200_620C788E 
+X-CRM114-Status: GOOD (  24.60  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -130,23 +130,20 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Checking whether a file exists, possibly of a given type,
-   takes a struct stat and a call to stat() that are otherwise unused. Many places
-    do that, some with helpers of their own. Add a generic file_exists_type()
-    helper that checks for a file of a given type, and file_exists() on top of
-    it, which checks for a file of any type. Use file_exists() in place of the
-    helpers of the sa [...] 
+ Content preview:  Boot entries, especially boot scripts, configure the boot
+   by setting global.bootm.* and global.linux.bootargs.* variables. To keep these
+    from leaking into the boot entries tried afterwards, there are [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
- -0.0 SPF_PASS               SPF: sender matches SPF record
  -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
+ -0.0 SPF_PASS               SPF: sender matches SPF record
   0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
- -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
  -0.1 DKIM_VALID_EF          Message has a valid DKIM or DK signature from
                              envelope-from domain
+ -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
  -0.1 DKIM_VALID_AU          Message has a valid DKIM or DK signature from author's
                              domain
  -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
@@ -168,167 +165,261 @@ X-Spamd-Result: default: False [-56.41 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	ARC_REJECT(1.00)[signature check failed: fail, {[1] = sig:pengutronix.de:reject}];
+	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	MAILLIST(-0.20)[mailman];
 	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
-	R_SPF_ALLOW(-0.20)[+mx:c];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
+	MAILLIST(-0.20)[mailman];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	RCPT_COUNT_ONE(0.00)[1];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_ALL(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
 	MIME_TRACE(0.00)[0:+];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
 	RCVD_COUNT_THREE(0.00)[3];
-	RCPT_COUNT_ONE(0.00)[1];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
+	R_DKIM_REJECT(0.00)[pengutronix.de:s=20260414];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FROM_HAS_DN(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	DKIM_MIXED(0.00)[];
 	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
-	NEURAL_HAM(-0.00)[-1.000];
-	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
-	R_DKIM_REJECT(0.00)[pengutronix.de:s=20260414];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:-];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[]
+	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:-]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: eyeenadts13k5jsrnxaj7ji6xk48n5ej
-X-Rspamd-Queue-Id: 71A0820295E
+X-Stat-Signature: rrpgb57db993e8c3ardp7egqh7d7jwgm
+X-Rspamd-Queue-Id: 10102202961
 
-Checking whether a file exists, possibly of a given type, takes a
-struct stat and a call to stat() that are otherwise unused. Many places
-do that, some with helpers of their own.
+Boot entries, especially boot scripts, configure the boot by setting
+global.bootm.* and global.linux.bootargs.* variables. To keep these from
+leaking into the boot entries tried afterwards, there are currently two
+mechanisms:
 
-Add a generic file_exists_type() helper that checks for a file of a
-given type, and file_exists() on top of it, which checks for a file of
-any type. Use file_exists() in place of the helpers of the same name in
-the fiptool command and the firmware loader, which would otherwise
-conflict with it.
+ - bootscript_boot() saves the global.bootm.* variables that are part of
+   struct bootm_data and restores them afterwards. Variables not part of
+   this struct, like global.bootm.tee, are not restored, and empty load
+   addresses come back as the hex values of UIMAGE_SOME_ADDRESS resp.
+   UIMAGE_INVALID_ADDRESS.
+ - Kernel command line options have to be put into
+   global.linux.bootargs.dyn.*, which boot_entry() clears after each boot
+   entry. Options set by a boot entry in any other variable stay.
+
+Replace both with a globalvar scope around the boot entry in
+boot_entry(). This reverts all changes to the globalvars covered by
+boot_globalvar_scope_push(), whatever the variable, and also restores
+values that were set before the boot entry instead of clearing them.
+This includes global.boot.watchdog_timeout, which boot_entry() reads
+before running the boot entry, so a value set by a boot entry so far only
+took effect for the following ones.
+
+global.linux.bootargs.dyn.* still works as before for boot entries, but
+values set in this namespace before calling boot are now kept instead of
+being cleared once the first boot entry returns.
+
+bootm_data_restore_defaults() has no users anymore, so remove it.
 
 Assisted-by: Claude:claude-opus-5-5
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- commands/fiptool.c |  7 -------
- common/firmware.c  |  8 +++-----
- include/libfile.h  | 13 +++++++++++++
- lib/libfile.c      | 28 ++++++++++++++++++++++++++++
- 4 files changed, 44 insertions(+), 12 deletions(-)
+ Documentation/user/booting-linux.rst | 20 ++++++++++++++------
+ Documentation/user/devboot.rst       |  4 ++--
+ common/boot.c                        | 35 ++++++++---------------------------
+ common/bootm.c                       | 21 ---------------------
+ include/bootm.h                      |  1 -
+ 5 files changed, 24 insertions(+), 57 deletions(-)
 
-diff --git a/commands/fiptool.c b/commands/fiptool.c
-index a0e67ed439..d83362b96a 100644
---- a/commands/fiptool.c
-+++ b/commands/fiptool.c
-@@ -174,13 +174,6 @@ static void parse_blob_opt(char *arg, uuid_t *uuid, char *filename, size_t len)
- 	}
- }
+diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
+index afc705ac86..0fbdc52c68 100644
+--- a/Documentation/user/booting-linux.rst
++++ b/Documentation/user/booting-linux.rst
+@@ -164,16 +164,24 @@ A simple boot entry in ``/env/boot/mmc`` could look like this:
+   global.bootm.image=/mnt/mmc1/zImage
+   global.bootm.oftree=/env/oftree
  
--static inline bool file_exists(const char *filename)
--{
--	struct stat st;
--
--	return stat(filename, &st) == 0;
--}
--
- static __maybe_unused int create_cmd(struct fip_state *fip, int argc, char *argv[])
- {
- 	unsigned long long toc_flags = 0;
-diff --git a/common/firmware.c b/common/firmware.c
-index 3df1606ecd..c72fcbe556 100644
---- a/common/firmware.c
-+++ b/common/firmware.c
-@@ -236,11 +236,9 @@ void firmware_set_searchpath(const char *path)
- 	firmware_path = strdup(path);
- }
+-  global linux.bootargs.dyn.root="root=PARTUUID=deadbeef:01"
++  global linux.bootargs.root="root=PARTUUID=deadbeef:01"
  
--static bool file_exists(const char *filename)
-+static bool firmware_exists(const char *filename)
- {
--	struct stat s;
--
--	return !stat(filename, &s);
-+	return file_exists(filename);
- }
- 
- /*
-@@ -266,7 +264,7 @@ int firmwaremgr_load_file(struct firmware_mgr *mgr, const char *firmware)
- 	dst = basprintf("/dev/%s", mgr->handler->id);
- 
- 	if (*firmware != '/') {
--		fw = find_path(firmware_path, firmware, file_exists);
-+		fw = find_path(firmware_path, firmware, firmware_exists);
- 		if (fw)
- 			firmware = fw;
- 	}
-diff --git a/include/libfile.h b/include/libfile.h
-index 3f5ea5255a..72c736d301 100644
---- a/include/libfile.h
-+++ b/include/libfile.h
-@@ -37,6 +37,19 @@ int copy_recursive(const char *src, const char *dst, unsigned flags);
- 
- int compare_file(const char *f1, const char *f2);
- 
-+bool file_exists_type(const char *path, umode_t type);
+ This takes the kernel from ``/mnt/mmc1/zImage`` (which could be an
+ :ref:`automount` path registered earlier). The devicetree will be used from
+ ``/env/oftree``. The Kernel gets the command line
+-``root=PARTUUID=deadbeef:01``. Note the ``.dyn`` in the bootargs variable name.
+-boot entries should always add Kernel command line parameters to variables with
+-``.dyn`` in it. These will be cleared before booting different boot entries.
+-This is done so that following boot entries do not leak command line
+-parameters from the previous boot entries.
++``root=PARTUUID=deadbeef:01``.
 +
-+/**
-+ * file_exists - check whether a file of any type exists
-+ * @path: path of the file to check
-+ *
-+ * Return: true if @path exists, false otherwise
-+ */
-+static inline bool file_exists(const char *path)
-+{
-+	return file_exists_type(path, 0);
-+}
++All changes a boot entry makes to ``global.bootm.*``, ``global.linux.*``,
++``global.of.*`` and
++:ref:`global.boot.watchdog_timeout <magicvar_global_boot_watchdog_timeout>`
++are reverted when the boot entry returns:
++modified variables get their previous value back, variables created by
++the boot entry are removed and variables it removed are created again.
++This way a boot entry that fails to boot doesn't leak its settings into
++the following boot entries. Older boot entries put their Kernel command
++line parameters into ``global.linux.bootargs.dyn.*`` for this reason,
++which still works, but is no longer necessary. Settings meant for all
++boot entries belong into an init script or an nv variable instead.
+ 
+ This entry can be booted with ``boot mmc``. It can also be made the default by
+ setting the :ref:`global.boot.default <magicvar_global_boot_default>` variable
+diff --git a/Documentation/user/devboot.rst b/Documentation/user/devboot.rst
+index e319636994..62cc357c3a 100644
+--- a/Documentation/user/devboot.rst
++++ b/Documentation/user/devboot.rst
+@@ -191,8 +191,8 @@ when ``CONFIG_BOOTM_OFTREE_FALLBACK`` is enabled), and appends the
+ contains.
+ 
+ Kernel command line fragments set by the script should use the
+-``global.linux.bootargs.devboot.`` namespace. Unlike
+-``global.linux.bootargs.dyn.``, which is cleared whenever a boot entry
++``global.linux.bootargs.devboot.`` namespace. Unlike variables set
++by the boot entries themselves, which are reverted whenever a boot entry
+ returns, it survives falling through to the next boot target, e.g. for
+ ``devboot system0 system1``. The ``devboot`` command removes the
+ namespace after the boot command returns, so a subsequent plain
+diff --git a/common/boot.c b/common/boot.c
+index 1d8768b864..eaeff7796e 100644
+--- a/common/boot.c
++++ b/common/boot.c
+@@ -97,7 +97,7 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
+ 	int bootm_nattempts;
+ 	int ret;
+ 
+-	struct bootm_data backup = {}, data = {};
++	struct bootm_data data = {};
+ 
+ 	if (dryrun == 1) {
+ 		printf("Would run %s%s%s\n", bs->entry.path,
+@@ -105,18 +105,6 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
+ 		return 0;
+ 	}
+ 
+-	bootm_data_init_defaults(&backup);
+-
+-	/*
+-	 * The strings point to the globalvars' current values, which the
+-	 * script frees when it assigns new ones. Keep our own copies.
+-	 */
+-	backup.os_file = xstrdup(backup.os_file);
+-	backup.initrd_file = xstrdup(backup.initrd_file);
+-	backup.oftree_file = xstrdup(backup.oftree_file);
+-	backup.root_dev = xstrdup(backup.root_dev);
+-	backup.root_param = xstrdup(backup.root_param);
+-
+ 	globalvar_add_simple("linux.bootargs.dyn.ip", NULL);
+ 	globalvar_add_simple("linux.bootargs.dyn.root", NULL);
+ 
+@@ -129,12 +117,12 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
+ 	ret = execute_binfmt(bs->args ? 2 : 1, argv);
+ 	if (ret) {
+ 		pr_err("Running script '%s' failed: %s\n", bs->entry.path, strerror(-ret));
+-		goto out;
++		return ret;
+ 	}
+ 
+ 	/* No point in repeating bootm if script already called it */
+ 	if (bootm_nattempts != bootm_command_attempts())
+-		goto out;
++		return 0;
+ 
+ 	bootm_data_init_defaults(&data);
+ 
+@@ -143,17 +131,7 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
+ 	if (dryrun >= 2)
+ 		data.dryrun = dryrun - 1;
+ 
+-	ret = bootm_entry(entry, &data);
+-out:
+-	bootm_data_restore_defaults(&backup);
+-
+-	free_const(backup.os_file);
+-	free_const(backup.initrd_file);
+-	free_const(backup.oftree_file);
+-	free_const(backup.root_dev);
+-	free_const(backup.root_param);
+-
+-	return ret;
++	return bootm_entry(entry, &data);
+ }
+ 
+ static unsigned int boot_watchdog_timeout;
+@@ -210,6 +188,7 @@ BAREBOX_MAGICVAR(global.user,
+ 
+ int boot_entry(struct bootentry *be, int verbose, int dryrun)
+ {
++	struct globalvar_scope *scope;
+ 	int ret;
+ 
+ 	pr_info("Booting entry '%s'\n", be->title);
+@@ -224,11 +203,13 @@ int boot_entry(struct bootentry *be, int verbose, int dryrun)
+ 		}
+ 	}
+ 
++	scope = boot_globalvar_scope_push();
 +
- #if IN_PROPER
- int open_and_lseek(const char *filename, int mode, loff_t pos);
- #else
-diff --git a/lib/libfile.c b/lib/libfile.c
-index 35ec631de8..2330d52d8e 100644
---- a/lib/libfile.c
-+++ b/lib/libfile.c
-@@ -745,6 +745,34 @@ int open_and_lseek(const char *filename, int mode, loff_t pos)
+ 	ret = be->boot(be, verbose, dryrun);
+ 	if (ret && ret != -ENOMEDIUM)
+ 		pr_err("Booting entry '%s' failed: %pe\n", be->title, ERR_PTR(ret));
+ 
+-	globalvar_set_match("linux.bootargs.dyn.", "");
++	globalvar_scope_pop(scope);
+ 
  	return ret;
  }
+diff --git a/common/bootm.c b/common/bootm.c
+index 22f2ca4081..2ad8c34bb4 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -101,27 +101,6 @@ void bootm_data_init_defaults(struct bootm_data *data)
+ 	data->efi_boot = bootm_efi_mode;
+ }
  
-+/**
-+ * file_exists_type - check whether a file of a given type exists
-+ * @path: path of the file to check
-+ * @type: file type the file must have, one of the S_IF* values like
-+ *        S_IFREG or S_IFDIR, or 0 for any type
-+ *
-+ * Symbolic links are followed, unless @type is S_IFLNK, which checks
-+ * for the link itself.
-+ *
-+ * Return: true if @path exists and is of type @type, false otherwise
-+ */
-+bool file_exists_type(const char *path, umode_t type)
-+{
-+	struct stat s;
-+	int ret;
-+
-+	if (type == S_IFLNK)
-+		ret = lstat(path, &s);
-+	else
-+		ret = stat(path, &s);
-+
-+	if (ret)
-+		return false;
-+
-+	return !type || (s.st_mode & S_IFMT) == type;
-+}
-+EXPORT_SYMBOL(file_exists_type);
-+
- /**
-  * make_temp - create a name for a temporary file
-  * @template:	The filename prefix
+-void bootm_data_restore_defaults(const struct bootm_data *data)
+-{
+-	globalvar_set("bootm.oftree", data->oftree_file);
+-	globalvar_set("bootm.image", data->os_file);
+-	pr_setenv("global.bootm.image.loadaddr", "0x%lx", data->os_address);
+-	if (IS_ENABLED(CONFIG_BOOTM_INITRD)) {
+-		pr_setenv("global.bootm.initrd.loadaddr", "0x%lx", data->initrd_address);
+-		globalvar_set("bootm.initrd", data->initrd_file);
+-	}
+-	globalvar_set("bootm.root_dev", data->root_dev);
+-	globalvar_set("bootm.root_param", data->root_param);
+-	bootm_set_verify_mode(data->verify);
+-	bootm_appendroot = data->appendroot;
+-	bootm_provide_machine_id = data->provide_machine_id;
+-	bootm_provide_hostname = data->provide_hostname;
+-	bootm_provide_policy = data->provide_policy;
+-	bootm_verbosity = data->verbose;
+-	bootm_dryrun = data->dryrun;
+-	bootm_efi_mode = data->efi_boot;
+-}
+-
+ static enum bootm_verify bootm_verify_mode = BOOTM_VERIFY_AVAILABLE;
+ 
+ enum bootm_verify bootm_get_verify_mode(void)
+diff --git a/include/bootm.h b/include/bootm.h
+index bbdbb8e69d..06eb90c5ed 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -196,7 +196,6 @@ static inline int bootm_verbose(struct image_data *data)
+ #endif
+ 
+ void bootm_data_init_defaults(struct bootm_data *data);
+-void bootm_data_restore_defaults(const struct bootm_data *data);
+ 
+ const struct resource *
+ bootm_load_os(struct image_data *data,
 
 -- 
 2.47.3
