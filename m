@@ -1,17 +1,17 @@
 Delivery-date: Fri, 30 Oct 2026 11:55:19 +0100
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xMkGU-0057IB-27
+	id 1xMkGU-0057I9-28
 	for lore@lore.pengutronix.de;
 	Fri, 30 Oct 2026 11:55:19 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 8D9FD20296B
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 8319C200AD1
 	for <lore@pengutronix.de>; Fri, 30 Oct 2026 11:55:18 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=2DiDUcYX;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=gM5Pcz1N;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=rZWb1Ewe;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=Gin6brWS;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
@@ -20,110 +20,109 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:list-id:list-help:
+	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=IbukKrCLsnwnxnKsZsdfQN8dqj/aZB5DyAFsSmzUA1Q=;
-	b=CuZpboao+PQ1XS5YHQsQy3cR+fF7AVAD/FzBf+7Ur9jQKGrztdNFIFGOv/wuH+byy9GbEd
-	dHU/9z3gVDoPoQcIfgxI737nc9NRB4owSg8CxGuj7jbW+mx9XnevLNep64/TTNx7r+VW5u
-	hKPSWXZDnXhKtBNr4RYTH7DlceJm/r2POZaGqMdQEollHwmWJheKYCP8dd8dVRGfXxFFij
-	J/fvy2Y9AThXc1ZVxnOvM5s3JN9BSTjC9+hz4D/rGpNuK6jM0QI3vCdoQw8jrBcsUd1ggV
-	Ic73eXvBrGP7Y4XO9CegiuxMeOj1GZta2+2kUR5UutT0OTqcQgas0pC4T41Pcg==
+	bh=0Hor9RlXHBq9L6Tp3YJ/bjmAAYeIl6kscFEAbc5CXos=;
+	b=fMIC6dA/VrgPlO4HnZZOehJRItwkGF/ivQyv6P8Bly262wREvy4Yxb+6P7y7b9xExe1jUd
+	3dQzP1Mu4U1e2AhJsqDUgu1I9Aa7YN2p56+OB9WTANsVVsz/DSTR7D08oYRqSRTcR65/8i
+	cDtkTOq6/8u0UYAhe/w/qwN2C6u2wy8+V8sSH6eIAhgcUaJFSX3tn7KIEzS76opB/LdrFC
+	EmdKroZpoJlJ7F4zP+B83xtJU3OoWgfKUC6wuxuQhC0RTLwRb/iXqdCLDq6o0aUeAFgUrU
+	CrDHXn0j0/sHCK3Ihfqb7Y2itkJ7rUYOLR1f3CSrdLu32u+bmcbWeUUC+uf/FQ==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=2DiDUcYX;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=gM5Pcz1N;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=rZWb1Ewe;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=Gin6brWS;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
 ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1793357718; a=rsa-sha256;
 	cv=fail;
-	b=G95djsMCeMFKe8uQ3ZaBRcUll4LykXaDHI21QvPPHy0AQmXlIp/YW+IP1h4jon+uynt9om
-	yl9WemqMsDMiD6KDhuYhzE6Dby3hqZzoHbk1YuAnFqNSQ8f7BdpeOCqx+1mvFc/qNlibwr
-	imIV41+c/D7ZI1wTkA3715XnK6FKuqKRGrz+90Oh8kEwx7kIgqlWewiEFEzunRm9tNxQVE
-	kr2Z4/y634NIa1XjTrfS69/9sZc/sNVpFgdqmrl2UWGKTc6no9cr3ofztZ5V/ZY/86E45D
-	kHEs1C2e0BDpkLE9R/1ReQMZwg093NffJSd6EsSzAdcjAfJT8PPjUArbUJqa2g==
+	b=W+uhZtU3tKodvpZ0MBfYbnJnExv58lHJ5lo7sYRSJVZbvlf+c9Wu+IoICGcQoLCKGZIII6
+	9F03einxb5S7Im5vKUSF+Ewibt1Qp5r7G+F88q36ThaviKRqqu5ti9i78peNdmornrOgC+
+	79sHDG2ajTopQ5V4DnCBgk434vxYB0jNteWhgAgTkmWrlUXf7CDTnYRzh5VPJX3xWjY66T
+	hPgQ20/ryZcRvGBjsa6ZXczINjUO/gAvKI6rXzV66BYszRE1NJpy5c6tiQ+sS0XkkqTEtK
+	/VuJ6g9OJZPi8GHXxdrYYFsmJbkj7i7MQF5tmnlx03V4aVetcP2P/6dQpRLYFQ==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=IbukKrCLsnwnxnKsZsdfQN8dqj/aZB5DyAFsSmzUA1Q=; b=2DiDUcYX8Aax8Z
-	bTzID56LT2mgIEX9vZCxEsbBS22FevUU1wnwcNglzVp8gEs/ah5jPjN19FUGrzlMXYKYOYNuBc6zN
-	7FPfjH07RCAtFjOiO/icrZXukRiLq4S3Bxt6F7K6WK3ZldS9oeQ6X7PVd4gr81DrH4ikmf/6pnj5P
-	jCVuoATp6vUXnBm5li+90PdMRywRha++XdjlRlwQniZruLJ91Ch+URmSXKeloRnOP4VIBuHrFKnmg
-	QfgGwdFrIiZwWlN4sJAqEraSmGhl7oZGTBKQnhS2Z9SJKCFOND5HCuCuIND2h3vedqxGT8o40jCzN
-	Cd6TlEzpt7/zDn7qY35w==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:Content-Transfer-Encoding
+	:Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Unsubscribe-Post:List-Owner;
+	bh=0Hor9RlXHBq9L6Tp3YJ/bjmAAYeIl6kscFEAbc5CXos=; b=rZWb1EweYkgJ7CLrdXlh+DrRmL
+	10fPMKz5FvDjkWAaupXVSSy0DIBOE03nDkfjcKsL/kEuPrTwJVcu6fvjjCprISISsJc+AVUdSYJr5
+	W3E7LaOD41n7KL5kv0Rnb7wvx3XlhmFN7PcK48KH8Vi7t36GDKVloQ46NS4P02vJvjgbZnsiE5L4/
+	dsZEenS+bYP1QqJUe4MPjKE1jXmP0UzEVE1zOwOHtx5pfSBVNyLoZ26wZxV5GtnSPTSyMwkS8hj/q
+	rk7Z0GPCEHtEkA/d1YnkVpGIxl6qz5I7KIDkpJr36nfHgUzCfzZmYUi1OH/qr+5DxtTOVJk4bk3/l
+	mmCewlMQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xMkFO-0000000BSrA-28aW;
-	Fri, 30 Oct 2026 10:54:10 +0000
+	id 1xMkFK-0000000BSmy-0U0B;
+	Fri, 30 Oct 2026 10:54:06 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xMkFK-0000000BSmj-1St9
+	id 1xMkFH-0000000BSlD-1dsj
 	for barebox@lists.infradead.org;
-	Fri, 30 Oct 2026 10:54:08 +0000
+	Fri, 30 Oct 2026 10:54:05 +0000
 Received: from [127.0.1.1] (unknown [IPv6:2a02:560:5ca5:d100:9ebf:dff:fe00:fdb5])
 	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id CDC7820296A;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 8539D201FF3;
 	Fri, 30 Oct 2026 11:54:00 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1793357640;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IbukKrCLsnwnxnKsZsdfQN8dqj/aZB5DyAFsSmzUA1Q=;
-	b=gM5Pcz1NtJNozjADRiaLm5XJHL0Q1qccnlRVReOGbck2R7xZb7p5DUQ4uArzPzQCwBlqe4
-	r1vAMuitUfPkYlCDHifOQBJ7AosigIpdE6jtv2vA0vKJ08Kngi7gcru0WYxeIIl8KxxlHi
-	I6QAdijuGQISPqRjCr5qLbFSJEiJRRq9FWTdB3WJw/E29aZ6rJQvYO2lsnmoOa85LuK9JM
-	Vac8Iq6qQvrZ16UnRLIG9v+X2HzuWo3acCINlj9j8/kLVsFK1EBntEe5KDnG1tXSQ64JWb
-	6kTSdeFf3+hEFBam9kuu4FnUnqjr9IjfpIWt28gv/bqCOaGrpkH9m31oXbP+kg==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=0Hor9RlXHBq9L6Tp3YJ/bjmAAYeIl6kscFEAbc5CXos=;
+	b=Gin6brWSm98/o0Z4/bEyU1kcFiV7CcaBf2b19q1rxRd04NeHsAoiCHDGXyDjIyurrvVjEI
+	rojIWAjOXRq5KuYlHwga29VV1HIC3odoqoOZ9eDPYuIUzUQPHAfedxHMp6VeX1MDsbxMr7
+	oE/TLpc1uqY+Y5R+kdnOAuet/DvtGmHocMUbIS5U58P9nHWB7hVhxQOw13HKNyF+Zv5oCB
+	4baQaNUwo8K4Jg8Ke6T47byEge+gktiWCHZ7SDX3tnOT6Xjpsimsd0y0+5QtnLnOONNVay
+	AyHaEYt2FQ0LnY2p50A8MGyUouARKpCaXF714H2Oh2rqXmhSL64oYT+XU54iqA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1793357640;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IbukKrCLsnwnxnKsZsdfQN8dqj/aZB5DyAFsSmzUA1Q=;
-	b=QQWHZrlu83/u90bdlSGQR6BRESaRxy35E7ZnLuLWJoh+LDp7iNXE8CVfvv5BVqzrWOb+/Z
-	SKSyTRKQM43WHshDw6SeF5C6AhHDyxIUvSZ9UP6uLHAY+U08lNpT0Ly2iPYXGMoG+Hb6rz
-	uLmtYBV1QklianN5FjyojixB3fupVUw+to+blfuZ1Nnd3D4XsZuHUvCoEAf9M8B1hdNUE7
-	gpg6r8+Iha0CyyznTZyU7KGJVECvurxehTZPQOIzgMKjIZ1stSxODqvnEppxSXwzNLffXO
-	XbvVmOxXOSTNCOQncJ0C72oNy2jahhUBPu/dHLhpknQTxhWOGJoJuDdjdLTeAg==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=0Hor9RlXHBq9L6Tp3YJ/bjmAAYeIl6kscFEAbc5CXos=;
+	b=cmdvwQsB34ai+VNFcRoW4KE1MMVGVd3phW+fu8QBbC0qcNpGpfJKaUT9ntxq9TZRjAmhY8
+	kLO/JAarfRpdOS4L0KmQFLd0jeTFA45+KuiuFT1CPcgMDo5M/zfz0nncjc556SyrsUGqve
+	v0oe+HRRA53qz4FSyA/FsVm72Th6MSTq0kcJA3ld4kR5a3Ru+Wbr5DEzeccYU8coQlEL6F
+	iLUnHgxI9/JYQU1Wtg1SBDq79FTopGvq6hgII6+v/JXmd9jk4CXS+8clirmBz8ILBlSqJY
+	oC43tRJ6t95kXsbhnzw1/O3dfQXdodAq0yNuCeYLPxL3tzB2N+P+UQXn9GcQHg==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=sha@pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793357640; a=rsa-sha256;
 	cv=none;
-	b=aMOighyYKFxId3O/Ruk8r2IXd9a4vI1P/elGj+7wn9CxoNnT3/3S5ufA876U9W7X4Feo8H
-	r/9It1J5ef3kIaZmEd3CtTbSZVzTi2gzBxhYiO4+V09eHttRL6Ue/JuTXTxlg6y3dWr2y1
-	Eb5dfriEBJvI2lU2Ls5XaHS8eJ8DMdsqpNMtTlM07EATJ/WF8XfxZDJTnDp7C2JA6qgRXh
-	hbyQ1WoZ267gSmL7I2y5qsXKjUxUMGfDwiwslxREU0k6nW3csf72nxpB6CRPD2MgtXfqle
-	nVxd9nPcbqKz/iX0RFjfhblokYAtY6LZno465OgIVsibpsHahxXoQjTzx4DTPQ==
+	b=BaevVYqM8CQhUwHXG6No/sOyOJ6PXATvj3nntW4UKvECCP/zfMRqdhgAF1i5KRtf2Bb99E
+	v88ePJhbL7HN/REFq3/tNsO9Q+wCR+nWPvYwvqUxrZNQmsi9V+s7724x+Gj7DHs6MEi1eB
+	olL4g4DCh08xw9duJQnswpSTPcXuTSGHKnRNpM5ndfOAD0VB7RLI5BBoMSf5Gt+3GLwMwE
+	VktiZZ6f65gC6H2Pqs2j+86T7XOuMrsgMCEQPUugkASxraCGbiGP24r+RySO3tSu8KRWSL
+	aeoBGZiHBK9lm5tsOZe3A+oV0CgoWbd2jdZs5yDIFjt54GVC6oOqkv78Mz4S8Q==
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 30 Oct 2026 11:54:03 +0100
-Subject: [PATCH 05/10] test: py: add test for reverting globalvars after
- boot
+Subject: [PATCH 00/10] boot: revert boot related globalvars after booting
+Date: Fri, 30 Oct 2026 11:53:58 +0100
+Message-Id: <20261030-boot-globalvar-stack-v1-0-a03803e1100c@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261030-boot-globalvar-stack-v1-5-a03803e1100c@pengutronix.de>
-References: <20261030-boot-globalvar-stack-v1-0-a03803e1100c@pengutronix.de>
-In-Reply-To: <20261030-boot-globalvar-stack-v1-0-a03803e1100c@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAEZ35GoC/x3MQQqAIBBA0avErBsYi6S6SrRQm2ooMlQiiO6et
+ HyL/x+IHIQj9MUDgS+J4o8MVRbgVnMsjDJlQ0WVVlQTWu8TLru3Zr9MwJiM27BzutHU2aYlBTk
+ 9A89y/9thfN8PLywvVmYAAAA=
+X-Change-ID: 20261030-boot-globalvar-stack-9c65609b5801
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793357640; l=5630;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793357640; l=2905;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=mFFDy3QWuRnRuAWNhn9VFsuXLRCHoxIhxDg7JS9MhKE=;
- b=CvZxFz46OD201birvzKQCnHDLAMG85pUH1NAziS7ree/QrBPQxwS6IffLXMSRLOUWNC6WFt3j
- qOTVq1crW5JDpq37yZiAIT0JWHrkT3rthMmdN7UxT9Ujte28QLbdw60
+ bh=VgGzmgMN74CG+uJ/Zaw5i4elPplnPmtr9K2jGwfvX2s=;
+ b=T4MDqKW2AERufJaNO9S4UjMZwN9igekADS/Lzu52DV0c+hzCWvPvgfkXmCdnm+zfp5IG+CT6N
+ OwzJvqCfNLzCVhtBhWwissVh5PalUyEuSCc6xOLHWp8KsXqbx8Xcl8q
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261030_035406_548592_5DB14CD6 
-X-CRM114-Status: GOOD (  13.39  )
+X-CRM114-CacheID: sfid-20261030_035403_584707_BF6B4C56 
+X-CRM114-Status: GOOD (  11.09  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -131,9 +130,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Add tests for the globalvar scope around boot entries: a failing
-    boot script that changes, creates and removes global.bootm.* and global.linux.bootargs.*
-    variables and changes global.of.overlay.path a [...] 
+ Content preview:  Boot entries configure booting through globalvars like global.bootm.*,
+    global.linux.bootargs.* or global.of.overlay.*. So far only some of these
+    were restored after a boot entry returned, by saving a [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -197,150 +196,63 @@ X-Spamd-Result: default: False [-56.41 / 15.00];
 	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:-]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: gz1iyek99w8mk5b1r9etxioozy5f6icc
-X-Rspamd-Queue-Id: 8D9FD20296B
+X-Stat-Signature: 7br6rtwnc8jhfodyq55yw4cz9sojqcn6
+X-Rspamd-Queue-Id: 8319C200AD1
 
-Add tests for the globalvar scope around boot entries: a failing boot
-script that changes, creates and removes global.bootm.* and
-global.linux.bootargs.* variables and changes global.of.overlay.path and
-global.linux.bootargs_append, where the configuration has them, must
-leave them as they were before, while globalvars outside the scope keep
-their new values. A
-second test nests boot entries like devboot does and checks that the
-outer entry's variables are visible in the inner one and survive it.
+Boot entries configure booting through globalvars like global.bootm.*,
+global.linux.bootargs.* or global.of.overlay.*. So far only some of these
+were restored after a boot entry returned, by saving a fixed set of
+variables and by clearing the global.linux.bootargs.dyn.* namespace.
 
-Assisted-by: Claude:claude-opus-5-5
+This series adds globalvar scopes, which snapshot all globalvars with
+given prefixes and restore them later, and uses them around each boot
+entry, bootm and bootchooser boot attempts. With that the .dyn infix is
+no longer needed, so it is dropped from the boot entries barebox ships.
+
+The series is based on the "boot: UAF and double free fixes" series.
+
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- test/py/test_boot_globalvar_scope.py | 117 +++++++++++++++++++++++++++++++++++
- 1 file changed, 117 insertions(+)
+Sascha Hauer (10):
+      globalvar: add scopes to snapshot and restore globalvars
+      bootm: revert globalvar changes in bootm_boot_cleanup()
+      boot: revert globalvar changes after each boot entry
+      bootchooser: use a globalvar scope for its bootargs
+      test: py: add test for reverting globalvars after boot
+      bootargs: remove unused linux_bootargs_overwrite()
+      of: add watchdog bootarg directly instead of via a globalvar
+      boot: drop the dyn infix from the bootentries bootargs variable
+      defaultenv: don't use global.linux.bootargs.dyn.* in boot entries
+      Documentation: migration-guides: describe reverting boot globalvars
 
-diff --git a/test/py/test_boot_globalvar_scope.py b/test/py/test_boot_globalvar_scope.py
-new file mode 100644
-index 0000000000..041d38c814
---- /dev/null
-+++ b/test/py/test_boot_globalvar_scope.py
-@@ -0,0 +1,117 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+import pytest
-+from .helper import devinfo, skip_disabled
-+
-+
-+def write_bootscript(barebox, name, lines):
-+    barebox.run_check(f"echo -o /env/boot/{name} '#!/bin/sh'")
-+    for line in lines:
-+        # Variable references must reach the script unexpanded. Neither
-+        # quoting nor a backslash achieves that here, so splice in the
-+        # dollar sign from a variable.
-+        line = line.replace("$", "${dollar}")
-+        barebox.run_check(f"dollar='$'; echo -a /env/boot/{name} \"{line}\"")
-+
-+
-+def globals_now(barebox):
-+    params = devinfo(barebox, "global")["Parameters"]
-+    # devinfo prints "value (type: ...)", strip the annotation
-+    return {k: v.split(" (type:")[0].strip('"') for k, v in params.items()}
-+
-+
-+@pytest.fixture(scope="function")
-+def scope_globals(barebox, barebox_config):
-+    skip_disabled(barebox_config, "CONFIG_CMD_BOOT", "CONFIG_CMD_GLOBAL",
-+                  "CONFIG_CMD_ECHO")
-+
-+    barebox.run_check("global.bootm.image=/preset/image")
-+    barebox.run_check("global linux.bootargs.preset=preset=1")
-+    barebox.run_check("global linux.bootargs.removed=removed=1")
-+    barebox.run_check("global.bootm.appendroot=0")
-+    old_user = barebox.run_check("echo ${global.user}")[0]
-+
-+    yield old_user
-+
-+    barebox.run_check(f"global.user={old_user}")
-+    barebox.run("global -r linux.bootargs.preset")
-+    barebox.run("global -r linux.bootargs.removed")
-+    barebox.run_check("global.bootm.image=")
-+
-+
-+def test_boot_entry_reverts_globalvars(barebox, scope_globals):
-+    old_user = scope_globals
-+    before = globals_now(barebox)
-+
-+    # boot related globalvars outside of bootm.* and linux.bootargs.*,
-+    # where the configuration has them
-+    others = {var: val for var, val in (("of.overlay.path", "/does/not/exist"),
-+                                        ("linux.bootargs_append", "1"))
-+              if var in before}
-+
-+    write_bootscript(barebox, "scope", [
-+        *(f"global.{var}={val}" for var, val in others.items()),
-+        "global.bootm.image=/does/not/exist",
-+        "global.bootm.oftree=/does/not/exist.dtb",
-+        "global.bootm.appendroot=1",
-+        "global.linux.bootargs.dyn.root=root=/dev/leak",
-+        "global linux.bootargs.leak=leak=1",
-+        "global.linux.bootargs.preset=preset=2",
-+        "global -r linux.bootargs.removed",
-+        "global.user=scope-test",
-+    ])
-+
-+    # bootm fails on the nonexistent image, so boot returns
-+    barebox.run("boot scope")
-+
-+    after = globals_now(barebox)
-+
-+    # values within the boot scope are restored...
-+    assert after["bootm.image"] == "/preset/image"
-+    assert after["bootm.oftree"] == before["bootm.oftree"]
-+    assert after["bootm.appendroot"] == "0"
-+    assert after["linux.bootargs.preset"] == "preset=1"
-+    for var in others:
-+        assert after[var] == before[var]
-+
-+    # ...vars created by the boot entry are gone...
-+    assert "linux.bootargs.leak" not in after
-+    assert "linux.bootargs.dyn.root" not in after
-+    assert "linux.bootargs.dyn.ip" not in after
-+
-+    # ...vars removed by the boot entry are back...
-+    assert after["linux.bootargs.removed"] == "removed=1"
-+
-+    # ...and the loadaddrs don't come back as 0xfffffffe after a failed boot
-+    assert after["bootm.image.loadaddr"] == before["bootm.image.loadaddr"]
-+
-+    # globalvars outside the boot scope are left alone
-+    assert after["user"] == "scope-test"
-+    assert old_user != "scope-test"
-+
-+
-+@pytest.mark.usefixtures("scope_globals")
-+def test_boot_entry_scope_nests(barebox):
-+    # devboot-style: an outer entry sets up bootargs that must be visible
-+    # in, and survive, the inner boot entry
-+    write_bootscript(barebox, "scope-inner", [
-+        "global.bootm.image=/does/not/exist",
-+        "echo inner-sees ${global.linux.bootargs.outer}",
-+        "global.linux.bootargs.outer=outer=clobbered",
-+        "global linux.bootargs.inner=inner=1",
-+    ])
-+    write_bootscript(barebox, "scope-outer", [
-+        "global linux.bootargs.outer=outer=1",
-+        "boot scope-inner",
-+        "echo outer-sees ${global.linux.bootargs.outer} "
-+        "inner=${global.linux.bootargs.inner}",
-+    ])
-+
-+    stdout, _, _ = barebox.run("boot scope-outer")
-+    assert "inner-sees outer=1" in stdout
-+    assert "outer-sees outer=1 inner=" in stdout
-+
-+    after = globals_now(barebox)
-+    assert "linux.bootargs.outer" not in after
-+    assert "linux.bootargs.inner" not in after
-+    assert after["bootm.image"] == "/preset/image"
+ .../migration-master/boot-globalvar-scope.rst      |  13 ++
+ Documentation/user/booting-linux.rst               |  27 ++--
+ Documentation/user/devboot.rst                     |   4 +-
+ common/Kconfig                                     |   6 +-
+ common/blspec.c                                    |   2 +-
+ common/boot.c                                      |  35 ++---
+ common/bootargs.c                                  |  17 ---
+ common/bootchooser.c                               |   6 +-
+ common/bootm.c                                     |  27 +---
+ common/extlinux.c                                  |   2 +-
+ common/globalvar.c                                 | 142 +++++++++++++++++++++
+ common/oftree.c                                    |  41 +++---
+ defaultenv/defaultenv-2-base/boot/net              |   5 +-
+ defaultenv/defaultenv-2-base/data/boot-template    |   2 +-
+ defaultenv/defaultenv-2-dfu/boot/dfu               |   4 +-
+ include/boot.h                                     |  16 +++
+ include/bootargs.h                                 |   5 -
+ include/bootm.h                                    |   9 +-
+ include/globalvar.h                                |  29 +++++
+ test/py/test_boot_globalvar_scope.py               | 117 +++++++++++++++++
+ 20 files changed, 396 insertions(+), 113 deletions(-)
+---
+base-commit: 9ae453b11d9e222b33247c95405f6a74ee845fa0
+change-id: 20261030-boot-globalvar-stack-9c65609b5801
 
+Best regards,
 -- 
-2.47.3
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
