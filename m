@@ -1,17 +1,17 @@
-Delivery-date: Fri, 30 Oct 2026 11:55:18 +0100
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Fri, 30 Oct 2026 11:55:19 +0100
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xMkGT-0057Hx-2m
+	id 1xMkGU-0057IA-28
 	for lore@lore.pengutronix.de;
-	Fri, 30 Oct 2026 11:55:18 +0100
+	Fri, 30 Oct 2026 11:55:19 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id B7378200AD1
-	for <lore@pengutronix.de>; Fri, 30 Oct 2026 11:55:17 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 86D92202962
+	for <lore@pengutronix.de>; Fri, 30 Oct 2026 11:55:18 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=g3m1Gqyo;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=If9h6d9T;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="nFeLuI/s";
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b="Vw/+VbYK";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
@@ -23,50 +23,50 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=wd+PpEjgAR8R5daORi/9ug/HkWtfQyp6UvrmeA5iC9M=;
-	b=JKazfNQZZbe/RF9RfNrbRviRyGr0G2it9WejPB7ngoDGzgB4CpJhWArtjsoKRWsr0hsoJ/
-	ci0u4aN//PmJgyazPBHn9Ve1KF5+mfWzAV5KeT2gsnkUzXa25kpWUo9HViMRNrTcGU916m
-	bb27X6u7Dk0TsPLx97w4qK1tvmVBHZwhfkxkuHa6cF2mModDa86zfbmt+db+sQhRLlco5K
-	UZmzhvhlCoFVCq91+gdU7HeM9zybdM4p3iwzE+rkmjLA7XZYlqjGLGdANXFfNJUYbZ9ynz
-	CFwd8fa4IxYkg+iiHJFWgl5ZK8IzeNeB7rvJA9x2pCnKBtL/0P1iR3G0UdyckA==
+	bh=T2DO4hWspbIcc32t+PiSlLERSMz1G8nT+7ErvEEIJcY=;
+	b=U5Ai1aVL1iFUsKLxBwflWUgC1vgN7vOFS/uocC2gXu/TwMKetQcE4c9CMcjSkTUY9t3CVT
+	OKg+T0wPQurHWEKAHWzfUZNXWIUG/cPcTPmz+Lh0jvO/miXSxG/F3c4NVQHqp3tnjgjX9m
+	Tt5azepH3mVaCntWg989oGddcoaS8vrKZXsBl62ojZT41Wisr1Hi+fWSREH6Ait3vkQkZ8
+	wRrbHn6XnwKgUrWy/Zv5Cr9M7volozkzdGpwQIGlHw2/6HodU0ml5MIPbFpPtPGN3DTWjl
+	ZbalcJU5OOwKt1YekA4bON86MN5j+A5wClQtw2Afn/LzRZSLsjHpLjEQ4i4pJw==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=g3m1Gqyo;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=If9h6d9T;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="nFeLuI/s";
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b="Vw/+VbYK";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
 ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1793357718; a=rsa-sha256;
 	cv=fail;
-	b=cKtZmmA5Y0dhAu8xL1oXtnHJStAfhKDtSs3dhp7+T84Nralf7X3f+NZ5NCvJrA+rOu+fk1
-	zuH/ClD/lLPUgLjzn9l6+bS8P9l0ARoNWAyec9yxu3H5rK31r0/7IUdeZhVnLg9zpWn1HL
-	9Fl8HzHeoXPPIwMrsTwMu3KwC+D00xSjtZpIkMLDwWeoQlGN4rAsIJkb0AIWiwvqr07H1V
-	ItmGUIUY9AWpw/8qJrrEP1aSsf895/rs21UTY77Tuux1v18Q2qbcN3zLrhDEtfCtCadYll
-	Txb9ZLmsukjjqeQ/p4Y4uOdUSVrRvHnqpgqakBdcuEXXh8w21/GGjYAYsqZ0oQ==
+	b=PHYPKJNoDf8j/PRRxyPVksIUjwfH3Lcnus9P+rt7wM7Jwn1rENrvxZhplwUFNi53YrVsyR
+	4AxTCXwWj+bwng8Jeo5xN9TuGLJ6jqxSWdF/7acsr7pwluoVAS7i4VLJXHST33TcdsDh9N
+	fq179OPYmz+qex+qAXUslkT/E15K+AFNYN4xruB9JSpbo5gQMaf2xk+/1GluBL4RzVJ7eT
+	6QyySZbF6h0KcYo6J+42RyMGOXkyudjgumpHIgpyr4kcLApHVuia57BEXGdM+E6PLzGRXj
+	ptdDReAzaKcrDteREZwhBKDcOS6Nk9FBn544yM8FQf2kBoKsPgkl1sSmP8YK2g==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=wd+PpEjgAR8R5daORi/9ug/HkWtfQyp6UvrmeA5iC9M=; b=g3m1GqyoQcqY8V
-	lrPEtIUmlL8k5/NGGFbwR7ishecwXFLJPh7NIvATahTltrJHdKmZEa7uJkqyc3tAPMnCj54LROdj2
-	aJl4T+klSGqJiFxpVFfcZcCb4L6zXyY5u+bD1iKakT9gtrpPw91453tK1zg/+zKkW0XXfH1cOJvR6
-	0xB3H+2ZKrC4+WSF9WABwT9d6PrG0DiTTr1s19VHaHS/6r7wVLl7IMxJZXvrguogA90CbIH58bKJc
-	xT6EwJ/EdXu/OT4zcdnYETukIkf6vn6O9aYWIMnppj1x0nTk0QoRSuYV2doIdspUccgGWggahcQ1i
-	58iudp6ECB3Kmm8a/W7A==;
+	List-Owner; bh=T2DO4hWspbIcc32t+PiSlLERSMz1G8nT+7ErvEEIJcY=; b=nFeLuI/shfGFSC
+	of/cYLJwFA7NHsuZbJp4B9D71TVzpHr+XRAl5mbRMFrqOJyRbxLazGwfKIyygXI7y/JaaqYPdfvLY
+	OTzk6/csqqBDT+CzAZvPQtMyT3hIKh2EC7vPyeU2Qr6hbnSSJGoY37GxIb+Etijt/NRfTWeNX4ai1
+	cZ6sghz7fIsO768n+uf1vKuEPYzMkhyQadlh2TSazoHBqHDZ5wMYa3km01v7L5GAY/iB1fzs1SLPu
+	cSggUkluMl6UAbiDdxBR71MgLwBL2qCQt+YHcaR7lUDfs7AKnRRHSdmazplMz8yBpkt6xPWqpSNhQ
+	t4s4X4EPFRv1v9hA5KFw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xMkFM-0000000BSpQ-45pI;
-	Fri, 30 Oct 2026 10:54:08 +0000
+	id 1xMkFO-0000000BSqs-1gcI;
+	Fri, 30 Oct 2026 10:54:10 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xMkFH-0000000BSlE-1xXp
+	id 1xMkFK-0000000BSmk-1fxa
 	for barebox@lists.infradead.org;
-	Fri, 30 Oct 2026 10:54:06 +0000
+	Fri, 30 Oct 2026 10:54:07 +0000
 Received: from [127.0.1.1] (unknown [IPv6:2a02:560:5ca5:d100:9ebf:dff:fe00:fdb5])
 	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 92CC82020BA;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id DB0DF20296B;
 	Fri, 30 Oct 2026 11:54:00 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1793357640;
@@ -74,56 +74,56 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wd+PpEjgAR8R5daORi/9ug/HkWtfQyp6UvrmeA5iC9M=;
-	b=If9h6d9TWVvSBDGmZPzelssfyiXVZotbguovI/ZOObAuGIr01olUyYIXq6GT9di09JIiYI
-	pngxbEfmdPRnNXd1LLsqUW1mUi4WuhUKDMJKROk+0ngKD203M8uBqF8OUuHULlMsCP5rDX
-	SunRo+EN2ej+xrhqGqffBw1bvoprvf4LOtceW3vZLOU7QQHSOaxQKTfgoh2h50JgyR1pFW
-	FTmGSbPTHHVVhStNpTPnoFijtGjYUUqHFEqqg+wSAnysLnO/RCJfBWKeNl/F4GOarskiED
-	RdU1Oudh1Dz32giE5y18c8liew73nXMKkuhgJhmeV7vmckDlchdLHIzs+HTtuA==
+	bh=T2DO4hWspbIcc32t+PiSlLERSMz1G8nT+7ErvEEIJcY=;
+	b=Vw/+VbYKTG0VlWXxOFW92G09iQGvujF6xvh03Cv6z6jk/bVrJ+UwsAXlr9qUVkn1DhLu0k
+	YA9UoKOuqohSWN7PbWwBqHaUfwmiI90K+qkw/YSBWKaHU6WFVTeAW6iX5ULT/gaWqXQErG
+	DeaF6TnLl4ifCNaRGIPIWi9DEMPhON/cAJ43/5+cF1DNwMUx3O150EehXr8uOzzKWcC93S
+	m3DNQo+eQFtVzdTvFn+CtljdeIw+Jczr90of1GlFQHTxxRnSfUfhmIiiy2SFrKNrdIDpn0
+	5mPpLyYyA1GPsqNKMeOibbi1DQZEUO78AdPv2AXg/ns6Kd13eoqjEJ7lKji86g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1793357640;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=wd+PpEjgAR8R5daORi/9ug/HkWtfQyp6UvrmeA5iC9M=;
-	b=aHGDIIYSO0T+wy1vdhBZN6EwgoaRwPYORH4ReCu5K6K1OMC4+xD1Wy7ciIgUp9q/N0VeJy
-	IlvfXrPyLFfGIOZYxexRUOKkFiSRpaiNKDNUvNNMGwW77ixwVkcHmGwwD1/ABimLS9oopI
-	zFbU1Wd3wv1zmoCzCS4l30yUSEdBAaFspHABYpirz6gaOP7CKdaLNFOBKt/zkUWzxDINAy
-	uR6JyB5MOUYTR/ThR3VZLEyPOaOLNcivAEoSIHr0fAwuvZoW6VxxXCSzzTRSwjgwGlmT7m
-	aDrtaAFn/7aTW0XroWOtuJM+sPH6p+vXfyNmhDGOPeML8x1isXopn7TRS1pKsw==
+	bh=T2DO4hWspbIcc32t+PiSlLERSMz1G8nT+7ErvEEIJcY=;
+	b=betdUVss+POTVY0rC8C1v2hKWGlvPZTqJ3XQynVyTsyiMTUzFBTbOzr1xzdXgB1656YULT
+	CFYIlcGuhVK6PVq2qp9a0afLTTKEvlBfwgubTkDyQIP2A4SCQ0tCDH0WDsK5C/UV3n0zYR
+	Eud+dY4omtqYhaLO+siaqmmfgTUae6MkB1+FU94Hwr8ImCK1PNKotQanLtoAVh4DDu8Rig
+	IMZ0MGQSXA04ARMb8X95z17L5bNLS67i8pI5iFi0JyGVrxO55cEqqsvphsuwVQ+e2GPCme
+	tCUZh1aWHjEdUW5MsHNwfRNL5UtTNODxILAtRr13hgag1f1vbMLPWQxVzXKh8w==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=sha@pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793357640; a=rsa-sha256;
 	cv=none;
-	b=HMYcTQlE5s8tW0wXg7mY2WeZhMXI+SicUGG3srOeZC/VmAGzsQdx6sSd+dcF43x+5+fm+8
-	DNpddWPAzUh1ZYVu4pfDS2vMmMzIOJ8Od6Hrm1ZAd/866TlyDtPcSwENxeywX1Lv6/e1+0
-	KGxgo4tHj/GKpanJstnXTq6VOjw9WogLA8kUm9FGMcdsBL0PicLUSiVjnqFOljsYHcVFZz
-	0rGOTXABys9kEzkpj/QTOrKuUvA5kEuCrQb7tPHQiqYZNTfKKX7uEVBRtoXTOna5ZGOi1B
-	JAPyj23oVRn6E31YkCjOIsz5pfr6HmUCwakjHqmf4WObCyhyDE47/QA4aErCyQ==
+	b=LoloIjCSr9C3ipXAj84R2jcF29u3p2K2NhorReO9GgwOqf0finru+fmYHW/rWfyQ9DqRjM
+	qcq3DAsNUfZuvHAAc9AkTIQIfNfMgc/O1/y2cRt6FRKKP4TpxupGPFCY7QEmUZHSBFJeNy
+	2xRhAeTz4rtZrS/qnITSGYG4BhaUzpioX+naXwXnjDkqGF1y5TyTcsLIyI7R5HdjpLz0Q+
+	7yXRSAK/1khODAR5Co965dHZjs3K8IypxNNGkk7ed6PkIo9nM9kBEnLOuxmNe2uA2Il8DS
+	Tvh3hLfovCmVkKXriijRMs97cfJwd9V7YjzqG4+X969rPFqL8T7ASWJQRcnKHQ==
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 30 Oct 2026 11:53:59 +0100
-Subject: [PATCH 01/10] globalvar: add scopes to snapshot and restore
- globalvars
+Date: Fri, 30 Oct 2026 11:54:04 +0100
+Subject: [PATCH 06/10] bootargs: remove unused linux_bootargs_overwrite()
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261030-boot-globalvar-stack-v1-1-a03803e1100c@pengutronix.de>
+Message-Id: <20261030-boot-globalvar-stack-v1-6-a03803e1100c@pengutronix.de>
 References: <20261030-boot-globalvar-stack-v1-0-a03803e1100c@pengutronix.de>
 In-Reply-To: <20261030-boot-globalvar-stack-v1-0-a03803e1100c@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793357640; l=7398;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793357640; l=2219;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=9neXRn9UI72rLbk4QP/D427M4AMNvPFUFynPGqS+FqA=;
- b=TfKZp5plIXj+mG4Vn8TUII9TFfi/5nvclfSPnt5CC4dklXinyK5O7Jf2nDDTM2en0LRKHGjQs
- bxfW58+oLHFC9H+jjXeKlQjp8qKIzGXPYdrW25GogULyGbUL1iiJxMO
+ bh=UiMQwnek/MfHvMLh/7B6TfixXxl4PStXp+9zhQ2OErQ=;
+ b=jIYrJemP3Jt9D6CcQBkDSUGM0dLM1dRS/igGssdPo1zJt89Kz/idzTQI8L8namyM5GyED08Jr
+ /QDECJO/jWMCW9PYAvasynwzktSnP0UGUTaZNonJW9mTpItt16EyMK2
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261030_035403_676539_50CDD299 
-X-CRM114-Status: GOOD (  17.34  )
+X-CRM114-CacheID: sfid-20261030_035406_604929_BA418594 
+X-CRM114-Status: UNSURE (   9.38  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -131,9 +131,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Code that runs foreign code, like boot scripts, often wants
-    to revert whatever that code changed in the global namespace afterwards.
-   So far this is done by hand for each use case: either by saving and [...] 
+ Content preview:  linux_bootargs_overwrite() lost its last user with commit
+   fe1e02cc68cd ("bootm: add generic android image handler"), which replaced
+   the old ARM32 specific Android image handler calling it. Remove it t [...]
+    
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -197,241 +198,86 @@ X-Spamd-Result: default: False [-56.41 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: effr1cztmmqqg7h17yzt5mm3qbpxcwc6
-X-Rspamd-Queue-Id: B7378200AD1
+X-Stat-Signature: wdp197jywykyspskbu4nngkx1rpdjw61
+X-Rspamd-Queue-Id: 86D92202962
 
-Code that runs foreign code, like boot scripts, often wants to revert
-whatever that code changed in the global namespace afterwards. So far
-this is done by hand for each use case: either by saving and restoring a
-fixed list of variables, or by putting variables into a dedicated
-namespace which is cleared afterwards.
-
-Add globalvar_scope_push() and globalvar_scope_pop() to do this
-generically. A scope records the current values of all globalvars whose
-name begins with one of the given prefixes. Popping it restores changed
-values, removes variables created in the meantime and creates removed
-variables again. Variables are only removed or recreated if they were
-created with globalvar_add_simple(), which is what the shell's global
-command and most dynamically created variables use. For all other
-globalvars, which are backed by a C variable, only the value is
-restored, through the regular setter so the C variable follows.
-
-Scopes can be nested as long as they are popped in reverse order.
+linux_bootargs_overwrite() lost its last user with commit fe1e02cc68cd
+("bootm: add generic android image handler"), which replaced the
+old ARM32 specific Android image handler calling it. Remove it together
+with the linux_bootargs_overwritten state it maintained.
 
 Assisted-by: Claude:claude-opus-5-5
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/globalvar.c  | 142 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- include/globalvar.h |  29 +++++++++++
- 2 files changed, 171 insertions(+)
+ common/bootargs.c  | 17 -----------------
+ include/bootargs.h |  5 -----
+ 2 files changed, 22 deletions(-)
 
-diff --git a/common/globalvar.c b/common/globalvar.c
-index 876379b253..4686378ded 100644
---- a/common/globalvar.c
-+++ b/common/globalvar.c
-@@ -456,6 +456,148 @@ void globalvar_set_match(const char *match, const char *val)
- 	}
+diff --git a/common/bootargs.c b/common/bootargs.c
+index 6373d9ccb1..06623bb60b 100644
+--- a/common/bootargs.c
++++ b/common/bootargs.c
+@@ -12,7 +12,6 @@
+ #include <environment.h>
+ 
+ static char *linux_bootargs;
+-static int linux_bootargs_overwritten;
+ 
+ /*
+  * This returns the Linux bootargs
+@@ -28,9 +27,6 @@ const char *linux_bootargs_get(void)
+ {
+ 	char *bootargs, *parts;
+ 
+-	if (linux_bootargs_overwritten)
+-		return linux_bootargs;
+-
+ 	free(linux_bootargs);
+ 	linux_bootargs = NULL;
+ 
+@@ -65,19 +61,6 @@ const char *linux_bootargs_get(void)
+ 	return linux_bootargs;
  }
  
-+struct globalvar_scope_var {
-+	struct list_head list;
-+	char *name;
-+	char *value;
-+	bool unqualified;
-+	bool seen;
-+};
-+
-+struct globalvar_scope {
-+	const char * const *prefixes;
-+	struct list_head vars;
-+};
-+
-+static bool globalvar_scope_match(const struct globalvar_scope *scope,
-+				  const char *name)
-+{
-+	const char * const *prefix;
-+
-+	for (prefix = scope->prefixes; *prefix; prefix++)
-+		if (str_has_prefix(name, *prefix))
-+			return true;
-+
-+	return false;
-+}
-+
-+static struct globalvar_scope_var *
-+globalvar_scope_find(struct globalvar_scope *scope, const char *name)
-+{
-+	struct globalvar_scope_var *var;
-+
-+	list_for_each_entry(var, &scope->vars, list)
-+		if (!strcmp(var->name, name))
-+			return var;
-+
-+	return NULL;
-+}
-+
-+/**
-+ * __globalvar_scope_push - snapshot a set of globalvars
-+ * @prefixes: NULL terminated array of name prefixes to snapshot, which
-+ *            must stay valid until globalvar_scope_pop()
-+ *
-+ * Records the current value of all globalvars whose name starts with one
-+ * of @prefixes. A later globalvar_scope_pop() reverts all changes done
-+ * to these variables in the meantime, including adding and removing them.
-+ * Scopes can be nested, but must be popped in reverse order.
-+ *
-+ * Return: the scope to be passed to globalvar_scope_pop()
-+ */
-+struct globalvar_scope *__globalvar_scope_push(const char * const *prefixes)
-+{
-+	struct globalvar_scope *scope;
-+	struct param_d *p;
-+
-+	scope = xzalloc(sizeof(*scope));
-+	scope->prefixes = prefixes;
-+	INIT_LIST_HEAD(&scope->vars);
-+
-+	dev_for_each_param(&global_device, p) {
-+		struct globalvar_scope_var *var;
-+
-+		if (!globalvar_scope_match(scope, p->name))
-+			continue;
-+
-+		var = xzalloc(sizeof(*var));
-+		var->name = xstrdup(p->name);
-+		var->value = xstrdup(p->get(p->bobj, p) ?: "");
-+		var->unqualified = p->flags & PARAM_GLOBALVAR_UNQUALIFIED;
-+		list_add_tail(&var->list, &scope->vars);
-+	}
-+
-+	return scope;
-+}
-+
-+/**
-+ * globalvar_scope_pop - revert globalvars to a snapshot
-+ * @scope: the scope returned by globalvar_scope_push()
-+ *
-+ * Restores all globalvars covered by @scope to the values they had when
-+ * the scope was pushed: changed values are set back, variables created
-+ * in the meantime are removed and removed variables are created again.
-+ * Variables which were not created with globalvar_add_simple() are never
-+ * removed or recreated, only their values are restored.
-+ *
-+ * @scope is freed afterwards.
-+ */
-+void globalvar_scope_pop(struct globalvar_scope *scope)
-+{
-+	struct globalvar_scope_var *var, *vtmp;
-+	struct param_d *p, *tmp;
-+	int ret;
-+
-+	if (!scope)
-+		return;
-+
-+	dev_for_each_param_safe(&global_device, p, tmp) {
-+		const char *cur;
-+
-+		if (!globalvar_scope_match(scope, p->name))
-+			continue;
-+
-+		var = globalvar_scope_find(scope, p->name);
-+		if (!var) {
-+			if (!(p->flags & PARAM_GLOBALVAR_UNQUALIFIED))
-+				continue;
-+
-+			pr_debug("scope: removing global.%s\n", p->name);
-+			param_remove(p);
-+			continue;
-+		}
-+
-+		var->seen = true;
-+
-+		cur = p->get(p->bobj, p) ?: "";
-+		if (!strcmp(cur, var->value))
-+			continue;
-+
-+		pr_debug("scope: restoring global.%s: \"%s\" -> \"%s\"\n",
-+			 p->name, cur, var->value);
-+
-+		ret = dev_set_param(&global_device, p->name, var->value);
-+		if (ret)
-+			pr_warn("Cannot restore global.%s=\"%s\": %pe\n",
-+				p->name, var->value, ERR_PTR(ret));
-+	}
-+
-+	list_for_each_entry_safe(var, vtmp, &scope->vars, list) {
-+		if (!var->seen && var->unqualified) {
-+			pr_debug("scope: recreating global.%s=\"%s\"\n",
-+				 var->name, var->value);
-+			globalvar_add_simple(var->name, var->value);
-+		}
-+
-+		list_del(&var->list);
-+		free(var->name);
-+		free(var->value);
-+		free(var);
-+	}
-+
-+	free(scope);
-+}
-+
- void globalvar_set(const char *name, const char *val)
+-int linux_bootargs_overwrite(const char *bootargs)
+-{
+-	if (bootargs) {
+-		free(linux_bootargs);
+-		linux_bootargs = xstrdup(bootargs);
+-		linux_bootargs_overwritten = 1;
+-	} else {
+-		linux_bootargs_overwritten = 0;
+-	}
+-
+-	return 0;
+-}
+-
+ char *linux_bootargs_append_rootwait(char *rootarg_old)
  {
- 	dev_set_param(&global_device, name, val);
-diff --git a/include/globalvar.h b/include/globalvar.h
-index e369616c63..7fbfdd1284 100644
---- a/include/globalvar.h
-+++ b/include/globalvar.h
-@@ -10,6 +10,24 @@
+ 	char *rootarg = xasprintf("%s rootwait=%d",
+diff --git a/include/bootargs.h b/include/bootargs.h
+index 4a51e81173..93ec621ad1 100644
+--- a/include/bootargs.h
++++ b/include/bootargs.h
+@@ -8,7 +8,6 @@ extern int linux_rootwait_secs;
  
- extern struct device global_device;
+ #ifdef CONFIG_FLEXIBLE_BOOTARGS
+ const char *linux_bootargs_get(void);
+-int linux_bootargs_overwrite(const char *bootargs);
+ char *linux_bootargs_append_rootwait(char *rootarg_old);
+ #else
+ static inline const char *linux_bootargs_get(void)
+@@ -16,10 +15,6 @@ static inline const char *linux_bootargs_get(void)
+ 	return getenv("bootargs");
+ }
  
-+struct globalvar_scope;
-+
-+/**
-+ * globalvar_scope_push - snapshot a set of globalvars
-+ * @...: name prefixes of the globalvars to snapshot
-+ *
-+ * See __globalvar_scope_push(). The scope borrows the prefixes until
-+ * globalvar_scope_pop(). Collecting them in a static array makes the
-+ * compiler reject prefixes that don't live that long, as only string
-+ * literals and addresses of static objects are allowed as initializers.
-+ *
-+ * Return: the scope to be passed to globalvar_scope_pop()
-+ */
-+#define globalvar_scope_push(...) ({					\
-+	static const char * const __prefixes[] = { __VA_ARGS__, NULL };	\
-+	__globalvar_scope_push(__prefixes);				\
-+})
-+
- #ifdef CONFIG_GLOBALVAR
- 
- static inline const char *globalvar_get(const char *name)
-@@ -24,6 +42,9 @@ char *globalvar_get_match(const char *match, const char *separator);
- void globalvar_set_match(const char *match, const char *val);
- void globalvar_set(const char *name, const char *val);
- 
-+struct globalvar_scope *__globalvar_scope_push(const char * const *prefixes);
-+void globalvar_scope_pop(struct globalvar_scope *scope);
-+
- int globalvar_add_simple_string(const char *name, char **value);
- int globalvar_add_simple_int(const char *name, int *value,
- 			     const char *format);
-@@ -126,6 +147,14 @@ static inline void globalvar_set_match(const char *match, const char *val) {}
- 
- static inline void globalvar_set(const char *name, const char *val) {}
- 
-+static inline struct globalvar_scope *
-+__globalvar_scope_push(const char * const *prefixes)
-+{
-+	return NULL;
-+}
-+
-+static inline void globalvar_scope_pop(struct globalvar_scope *scope) {}
-+
- static inline int nvvar_load(void)
+-static inline int linux_bootargs_overwrite(const char *bootargs)
+-{
+-	return setenv("bootargs", bootargs);
+-}
+ static inline char *linux_bootargs_append_rootwait(char *rootarg)
  {
- 	return 0;
+ 	return rootarg;
 
 -- 
 2.47.3
