@@ -3,15 +3,15 @@ Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xMh9a-0053xB-1U
+	id 1xMh9a-0053xA-1U
 	for lore@lore.pengutronix.de;
 	Fri, 30 Oct 2026 08:35:58 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id A974220295E
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 5B96E202962
 	for <lore@pengutronix.de>; Fri, 30 Oct 2026 08:35:58 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=eYnFDQde;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=T3GeJYti;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="F/lVACam";
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b="DcB8B/9R";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
@@ -20,110 +20,110 @@ ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=0yjZGngbLP2JsoAPDp4lE5orK2F5tLsPzE2BXR4HukE=;
-	b=bYEM1q4+iEvOYcKuHSH7MqxF9g5Mqv4hd12zSdNntS7T2UW+l++CsR4AjfRwot38CHHAhM
-	u7uu5R1doRMtS1djrKn2jZ28Vw+yrlgM4CxWoajw+19T5bXwG8ZpJiTLoSWt2Yr7LVX+uC
-	tk1hrldaR0ChzMrHs7o9SS6RnmFFkBJ8agWnQ/b891YtsKSgMl/iY3By/vxggmAhWOz3+V
-	17XHEJbD25d+al19xnruiY/e2c2ITev9MsCuLN5DL8GrRV9BKF+MBHHelhbWwg5kpMmIf7
-	ahbcl7A/STSGN7oquuM+2qMGVGjqMfM4RqUqhsLjWDQmEj0TIZP8uqBPiSm9Nw==
+	bh=oLzVe7D0TIDgAIyvQ0kCgaOUxEzmPFDEU8HCAn+Swvw=;
+	b=TzmNqiU/b5lIuq5OnJnIp2ZECi7sYaKc5mIqfseRa3kv40eMMqX2BvsVNY/wisO23uufZB
+	85Ac/iKrIuNC/ne4mjtK8STh/CPrsEnmS0WFXQwsmkhxuztMUZ3KrcmOd3Tcjcd+X5TS8c
+	a1VVmz+XKvflECAPQCJccctTVAimRDT7Zmixx5gI39xC2ucDOz2+S3/M0mKFHR9vq2R8/Y
+	PGGTbN41L8yTJPR9Iz9jevecvvS+OiQvMBCUvxBlhSAMgNsW9CCaOANuSmJwI/C/M0NXlm
+	D2AvI/FUt5oN5pyvtewF5Sa/7DhNam+1OZ4eQ/rvr3Y01sfQPM9/4fCxpJ3n7Q==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=eYnFDQde;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=T3GeJYti;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="F/lVACam";
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b="DcB8B/9R";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
 ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1793345758; a=rsa-sha256;
 	cv=fail;
-	b=JcV2Pn78vVWncO1iDBqrN9AMMuA/MoeqJ7wcWnRFIiXhr63pFFl99lS7gfH+0XWvu4gUHf
-	gj6NewbxzdhAIQMsED/uI5hwG6a5HCugv66w2eb7Pr+6DBwINcyW6KG/l4iMArF5/QKz8p
-	kFryh7P09yCnHKfeqImTgj7uKmFSs3q4wCSi039qdPegk37biyBvz3AJfEu4ne4drGx6CF
-	QO4e+ZRmB+l4P1qS5C5DlOO/OFfkZ75Hqg2z8F8DPM1IYhO6ByNYaBhkPzMG98z0RJdldn
-	A/qgIwaoi3f2tsQ/dEjl/O4GI10gwD0jApjPbYJaXDlKuziE+ESegc4ouDQjeQ==
+	b=SH3RcS4nLlnqXvSyFtlMG1av0EbYB+oxvgH23ym56LOuPUGsCL/+RnLUvvNGsq+JcwM5o0
+	FJJ6upMAYusFpJYnLnPn2BfTAF206sjUHquLzkuGLIi655KQN9G58DXDQm4OMNKUWU7nxF
+	M4lKgFPjKFFot9yy06wQLuDXL3+8yg2qqzoHbvnC0qXVhYUxfVH/CHIdULRYOROVABdjgI
+	NLv+1F878Qw/pDm2XjnlNJAFiser2L7MXCgHOwMr6meScu9SeI/ZM0KdKUEGXAZ4dldaCX
+	lhPQtvobisQgbcSh/RYzO90nx/W4jcC16O0IeMpoRNYOdQzMjibG5dZ477YdKQ==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:Content-Transfer-Encoding
-	:Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Cc:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Unsubscribe-Post:List-Owner;
-	bh=0yjZGngbLP2JsoAPDp4lE5orK2F5tLsPzE2BXR4HukE=; b=eYnFDQdegQehqYT/UkMBnrp/Yr
-	cdRlSRE3bvIR4e5U6Gq1YvKGDQ34EAtv8m1OmqvpSKO1q9buYEUenoTOCRGEjGxY5XPsHzcOs7XJ6
-	9r//AcSlfbrWkt2tFvAX+64E46G3NezzKF8C3o5s90HhvoBu2R0Atss2HpTJ8NpdXY8cqz++1Uu56
-	oMHWhNiGScEpiJzlET5ye3Vztkkq7pxqeZRAYYnO8jERdqoDZxfbkEP5igVOCdYKlN9GqaUKcc8xT
-	rFNre4B8QrSnH3ekRl3lPE/qHZX4uYQwl1cDXbKVnCP2wetMNEyU3PF6cmc/+jKgNoj0562xgVY8p
-	YXQJxPzQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
+	List-Owner; bh=oLzVe7D0TIDgAIyvQ0kCgaOUxEzmPFDEU8HCAn+Swvw=; b=F/lVACam16Yrd0
+	lsIQFqVIBdvamGypllC3+I9xsdfrUbDgKRQPFF2YKxiMijU0Av/JmC9pbCrg0/YNv8W01JSrRD3Y2
+	k+CiTHaui+TxLSR+YlPYMXPbgKWPcVW8m/S8aaROAVMjzxP+DWnvdiqZ/n1l6SzeGJ+Oy5ZeoL8on
+	KEQopenrovvkkeWpcHH+ytwmINiH/mec4esX//VVkSeEkhBmL3OGrmk6XTKWmPfH2jdWAypa9XT/x
+	4Xh7V5orAyChzEmOpbuXPQYxU1exQUVzhK/Xtm5GZXkZHIwkNHQYYHJdAP19BAQSQdppyIx7VrFFq
+	ayb+dOoe0p8dyP62a02g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xMh8U-0000000Azyo-0Vwy;
-	Fri, 30 Oct 2026 07:34:50 +0000
+	id 1xMh8V-0000000Azzw-3Ky0;
+	Fri, 30 Oct 2026 07:34:51 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xMh8O-0000000Azwr-28GF
+	id 1xMh8O-0000000Azwu-28Pt
 	for barebox@lists.infradead.org;
-	Fri, 30 Oct 2026 07:34:46 +0000
+	Fri, 30 Oct 2026 07:34:47 +0000
 Received: from [127.0.1.1] (unknown [IPv6:2a02:560:5ca5:d100:9ebf:dff:fe00:fdb5])
 	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 057042007F9;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 2D309202962;
 	Fri, 30 Oct 2026 08:34:42 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1793345682;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=0yjZGngbLP2JsoAPDp4lE5orK2F5tLsPzE2BXR4HukE=;
-	b=T3GeJYtiIz3gtQqc6+q01Py+iPsmu2TC6vgG0NgZBsGYeoAVT6m0V4Tw8vj0ngmF2K8qW6
-	Y7cFfPIgp319UmfEkT7o0V9Q1/skv+Rk/YQVcFfsXXWcR2VglavL1/+R3ldfCPCNrx3Gkp
-	gdHUTtP0KmE7beWHVLy5nozfoJb2YBezuv7IlQOdX3VrDup0cWRkJUDXqR/jpeV4lEdhyl
-	w9pdVhKSqpl0C7HCDEUvpTGGhhYYqlHTp4d8CAThkJDR+GAPauwatNUqGyEMZUa2RjIe+Z
-	zqdYTImeNwo8XmZmXEIE0+H9nFRKHLS8bFWM48XloYROpDMvafLk9F/sZcmPHQ==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oLzVe7D0TIDgAIyvQ0kCgaOUxEzmPFDEU8HCAn+Swvw=;
+	b=DcB8B/9RVSf/i8IN9/BuWzzvisLuMODVUynFA4Y7JFphaCGZGCfrZA205OfwFCSMJq2Zno
+	dNd36S6zekbSPXq2yzmuTGJfnUPaS08UzujG4LBpshM6F8Bl2DYLfaGhCqE512icSmgNJe
+	8o76onzwgsrQS7V0cC9ZQe0ODQNwuYGfYny4YGWlqhsNSAhzZALo5KiBRUctMqIqHc43/E
+	RX2fg8iGwVhi2SHgGw+TJ8wxeAGq44flSiuMRAKuJhIpn/HAx5GUz43BowEf/Zale7R+Yv
+	icoqATcYR5gEOezTbkr3IMmbnT90qKDbXGABrEBEJ39h9FSg+jT0RFPH1BHo+Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1793345682;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=0yjZGngbLP2JsoAPDp4lE5orK2F5tLsPzE2BXR4HukE=;
-	b=Bzq7TGIhan5LxdJz3zLPzS9ctHu+Jr8nQiPQAg1FktsLFY8JL5RpbX41u5gpHswWlLKgbF
-	zUEgbLicv/HkdFBh1UelAkpfb1Bl+SY0loukDkGzpeciOHiH8kcqqvl1Ke5ZeluTYnwb/g
-	G5G7So5WHTxm13bummxaelg7O1UqDHR9hpYr/BZ5t+RyLcwqauywYDOVcTDpCzo09nwKmU
-	wTrnQ/Bs0Yzo5b1YxkwqG/UHDCUssNFsPzbGtxqFU/7JqqtD6JqiqOf1X3yITwk6Sb9mIM
-	dUBYalNz6W9bzSYvdRfmjJxDsgB/TnlzP1dgJ3/RJ4EuLbiJa5FlPaA5HKhOzg==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oLzVe7D0TIDgAIyvQ0kCgaOUxEzmPFDEU8HCAn+Swvw=;
+	b=N8xBswhHgr0uKevaqCbnzpy9igL09CtwcbnJq3EsERYA326FnBNLlIdIJNfjSjgRjrLBXl
+	EMonUDx4xFVyE/15QgxDC7FAKcF+3xIc93N+y9kQCSit5f7NkaXncZcn+LtnCoQnkaSgKb
+	zDAkKKWW/+k/LHNyZGJWjzASWdoHwcZL7wsyzJIYwc/lgqDWz1brg6ZwQAPebeKmsJaCci
+	sLnJPeqS+0Ji9iz5XzbLsThYfJNT7exJHae5u3B5TdGJphuQz0lwJtv2ZIsI65DwgVtsaK
+	HFdrn6Aps4zkH+oU7f0NCsONG8+BuEEIsu0uC5MEV7W9HQeaO8VkS4kUQWfbaQ==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=sha@pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793345682; a=rsa-sha256;
 	cv=none;
-	b=PoaE65oBuivPU3hie8CZsoOZYTgwae4fUhN/4TJGVNb+Im2rP0vQmkBAr0Clkcfm1T5qr7
-	IxPHjBZSpqI90DGbPAwx7Ph11ftZ1EbNnl3pmYJnVTfpF3L3wkB3z6hd4nh+f6fDWLb21g
-	G4FkijFpphpFPFpCk4p11fGIkucI2F23EERmxCQPltSqU0D0mJLd5rEndH9ewXq19FwE1K
-	wB3Cns55JXgOEivJi625p3TyjoAMNEWvgFVXtgkJo03hOjBf1FzhFSbwLs6j03kx+Cp29d
-	RqYjqGdsmXN4RsLc/cPPcfwxUulh/n/R293gmzmwy1KkvEbXRb6c/+pDh1Po7Q==
+	b=XioCJTtv8Wur6emcDkSWRU6AQmkdNNGrOCNS8ZRN9jrQ//mhz7yrps6KO6aemWqz2TK+oI
+	h0hQm85BxlxwBq7iGzK7PL+5wNzgVDv9xqmOYonD5vnr0VnT/1ZHSTF4eS9OTgBuLPQ6Ns
+	ojYAvwW4SYGiiIMRC9T6XSBSTbIBDELGbSlXODtM+w2FLXAb+7NDlDzlIKgHQFmEz+uFug
+	C39NYKvjOpblBBhNRv0dqzMmG7qtRNugyjFq748ikxq1taf16JKEp2bQf5m517MSpgEdeM
+	qmocfnCyjsyZMdH7KIYyAiiIR9ZHLvEJJVekGuDx9A0hsNefk7ATed4ca42Vzg==
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH 0/4] boot: UAF and double free fixes
-Date: Fri, 30 Oct 2026 08:34:40 +0100
-Message-Id: <20261030-boot-mem-fixes-v1-0-6d64824356eb@pengutronix.de>
+Date: Fri, 30 Oct 2026 08:34:43 +0100
+Subject: [PATCH 3/4] commands: boot: fix use-after-free of overrides taken
+ from globalvars
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAJBI5GoC/x3LQQqAIBBA0avIrBtQA6muEi00p5qFGhoRSHdPW
- j4+v0KhzFRgEhUy3Vw4xQbVCVgPG3dC9s2gpTZK9hJdShcGCrjxQwVJjVJpa9ygPbTpzPSH9sz
- L+34H1H03YAAAAA==
-X-Change-ID: 20261030-boot-mem-fixes-e19012a6b82d
+Message-Id: <20261030-boot-mem-fixes-v1-3-6d64824356eb@pengutronix.de>
+References: <20261030-boot-mem-fixes-v1-0-6d64824356eb@pengutronix.de>
+In-Reply-To: <20261030-boot-mem-fixes-v1-0-6d64824356eb@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793345682; l=853;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793345682; l=3437;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=30G2a9MOT3aS12jAStQKyH1PD2RRHCbDZmLmfxMKkGM=;
- b=sfiMAQSy+0yYsJmHrhupn9oFo/wzji404lpuCT7J3zz+sTgVoqecDpNC2Z0fKYrgqLnHslC9V
- 5zUdYazgu4yB7dSBFEs8y1R8Ooxo2hyiuQy00JwhIeNooPQxMDHob6x
+ bh=rWRLKNgHDKsmLiJ/o5J9pw0ZnZPl2pGug7LAGNv+eX8=;
+ b=nyVkdonfQpl9f9LSZY70h4VuNs7imUFvFRj8S4YXHGj2MN0YkuMPB9cDD1QARiX/gnj2ASHqR
+ Auun0UCEinEAizAgsrpMHAgRfj5EuJtM6rlqJ/su1II6tTfZN3e10tq
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261030_003444_712783_79554236 
-X-CRM114-Status: UNSURE (   6.85  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20261030_003444_785978_BB077C99 
+X-CRM114-Status: GOOD (  18.09  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -131,11 +131,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  This fixes some Use after free and double free cases. Also
-    bring back the information that the kernel image can be overriden to the
-   boot help text. Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de> --- Sascha
-    Hauer (4): boot: fix use-after-free when restoring bootm variables bootargs:
-    fix double free in linux_bootargs_get() commands: boot: fix [...] 
+ Content preview:  When boot -o is given a variable without a value, e.g. "boot
+    -o bootm.image", boot_add_override() stores the pointer returned by globalvar_get().
+    That string belongs to the globalvar. When the boot en [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -199,31 +197,120 @@ X-Spamd-Result: default: False [-56.41 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: ygkrmzzft9g4obhqxfkeywxse7b19tpq
-X-Rspamd-Queue-Id: A974220295E
+X-Stat-Signature: dr9t8ajcne5tg6f6r7o3uqtdchf683qt
+X-Rspamd-Queue-Id: 5B96E202962
 
-This fixes some Use after free and double free cases. Also bring back the
-information that the kernel image can be overriden to the boot help text.
+When boot -o is given a variable without a value, e.g.
+"boot -o bootm.image", boot_add_override() stores the pointer returned
+by globalvar_get(). That string belongs to the globalvar. When the boot
+entry then sets the globalvar, which is what boot scripts usually do
+with global.bootm.image, the string is freed and the override points to
+freed memory. In practice the override silently turns into the value
+the script set, as the new value tends to land at the same address.
 
+Store a copy of the override values and free them when do_boot()
+returns. While at it, route the remaining early returns through the
+cleanup path, which also fixes leaking the boot entries when the menu
+default entry is invalid.
+
+Fixes: a5e4c4340ef6 ("commands: boot: add support for overriding boot artifacts")
+Assisted-by: Claude:claude-opus-5-5
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
-Sascha Hauer (4):
-      boot: fix use-after-free when restoring bootm variables
-      bootargs: fix double free in linux_bootargs_get()
-      commands: boot: fix use-after-free of overrides taken from globalvars
-      commands: boot: list bootm.image in the -o help text again
+ commands/boot.c | 38 ++++++++++++++++++++++++++++++--------
+ 1 file changed, 30 insertions(+), 8 deletions(-)
 
- commands/boot.c   | 40 +++++++++++++++++++++++++++++++---------
- common/boot.c     | 17 +++++++++++++++++
- common/bootargs.c |  1 +
- 3 files changed, 49 insertions(+), 9 deletions(-)
----
-base-commit: f2e574b9c63c6da07a06179a868cae8a471ec176
-change-id: 20261030-boot-mem-fixes-e19012a6b82d
+diff --git a/commands/boot.c b/commands/boot.c
+index cc7a64bcca..b436afa91d 100644
+--- a/commands/boot.c
++++ b/commands/boot.c
+@@ -25,6 +25,23 @@ static char *next_word(void *context)
+ 	return strsep(context, " ");
+ }
+ 
++static void boot_set_override(const char **override, const char *val)
++{
++	free_const(*override);
++	/*
++	 * Copy the value: if it was taken from a globalvar, the boot entry
++	 * may change that globalvar, freeing the original string.
++	 */
++	*override = val ? xstrdup(val) : NULL;
++}
++
++static void boot_free_overrides(struct bootm_overrides *overrides)
++{
++	free_const(overrides->os_file);
++	free_const(overrides->oftree_file);
++	free_const(overrides->initrd_file);
++}
++
+ static int boot_add_override(struct bootm_overrides *overrides, char *var)
+ {
+ 	const char *val;
+@@ -44,11 +61,11 @@ static int boot_add_override(struct bootm_overrides *overrides, char *var)
+ 	if (!strcmp(var, "bootm.image")) {
+ 		if (isempty(val))
+ 			return -EINVAL;
+-		overrides->os_file = val;
++		boot_set_override(&overrides->os_file, val);
+ 	} else if (!strcmp(var, "bootm.oftree")) {
+-		overrides->oftree_file = val;
++		boot_set_override(&overrides->oftree_file, val);
+ 	} else if (!strcmp(var, "bootm.initrd")) {
+-		overrides->initrd_file = val;
++		boot_set_override(&overrides->initrd_file, val);
+ 	} else {
+ 		return -EINVAL;
+ 	}
+@@ -124,10 +141,11 @@ static int do_boot(int argc, char *argv[])
+ 		case 'o':
+ 			ret = boot_add_override(&overrides, optarg);
+ 			if (ret)
+-				return ret;
++				goto out_overrides;
+ 			break;
+ 		default:
+-			return COMMAND_ERROR_USAGE;
++			ret = COMMAND_ERROR_USAGE;
++			goto out_overrides;
+ 		}
+ 	}
+ 
+@@ -139,7 +157,7 @@ static int do_boot(int argc, char *argv[])
+ 
+ 		def = getenv("global.boot.default");
+ 		if (!def)
+-			return 0;
++			goto out_overrides;
+ 
+ 		handle = freep = xstrdup(def);
+ 		next = next_word;
+@@ -181,8 +199,10 @@ static int do_boot(int argc, char *argv[])
+ 		int idx;
+ 
+ 		idx = bootentries_get_default_menu_entry(entries, default_menu_entry);
+-		if (idx < 0)
+-			return idx;
++		if (idx < 0) {
++			ret = idx;
++			goto out;
++		}
+ 
+ 		bootsources_menu(entries, idx, timeout);
+ 	}
+@@ -191,6 +211,8 @@ static int do_boot(int argc, char *argv[])
+ out:
+ 	bootentries_free(entries);
+ 	free(freep);
++out_overrides:
++	boot_free_overrides(&overrides);
+ 
+ 	return ret;
+ }
 
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.47.3
 
 
 
