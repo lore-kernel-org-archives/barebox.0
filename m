@@ -1,129 +1,128 @@
-Delivery-date: Fri, 30 Oct 2026 11:55:22 +0100
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Fri, 30 Oct 2026 11:59:01 +0100
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xMkGY-0057JY-0l
+	id 1xMkK5-0057Me-0M
 	for lore@lore.pengutronix.de;
-	Fri, 30 Oct 2026 11:55:22 +0100
+	Fri, 30 Oct 2026 11:59:01 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 1E6B9200AD1
-	for <lore@pengutronix.de>; Fri, 30 Oct 2026 11:55:22 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id CA54520296E
+	for <lore@pengutronix.de>; Fri, 30 Oct 2026 11:59:00 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=2BrhLPJb;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=b8hONcIJ;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=jA7Y+IyE;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=GK1PLBu4;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793357722;
+	s=20260414; t=1793357941;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=Vp58StDj/vc6MFnbO30McrOfNj37vT3GjaexcrOE2Gc=;
-	b=a/YIIpzwkIQvKY32xU55OBHQnDf2VGQeyCZTJ3AsbsVmXDUKwt/uPT3OBCVzUJiaNhQ1le
-	xcumDKrFwvOrjJQWjAf/H06NQ7YusVxlXgz0G778MkmI03D1N0nfdMios5ZfSsGqRnJPgH
-	xkK6Se1dQrVaDteeS32oSqRxZgMnFH5TrQry95CBiDnCT+m+Dt51e9Wrx7w6tub4AP6Jfd
-	MUoCy9YkDBXPBOM7lHGaffzh7MUkV3iOncP2PO/T6lspm8I67hBekSzJjS7h7NldgTcKDn
-	irHTSjuGwfrix3PpebZm3+rnxHzZhGZUzOHadsskAlDjGuzrEfRsM3N2LRN5IQ==
+	bh=jokWESmI3Q0IvlXvb2RMkiJ6Jp3UdzIgRNEchs0WCzg=;
+	b=NXXP93GmKQ+rMNngbQguukaLpKZu6vsJyZFkfMN98wFOPw7go+0uT2MVHNsUmxKv4+MSFc
+	eMk3kov5rJy6Bv2Cl0oZuEgK/bQtDvMkg1Qzfu7X4iG7RXRd/DOLBZJX0mYufKzlJiZsjs
+	X1jcj554uwz95lRTkH/Jmsnu4z+SUs1Kdj25VrcjAxjCP+UYFMuPZHSSb1kRDA52GzxDRI
+	QA+LFyh4HzarQf40Ul/7iky8nKWsoqyHvvd6BjPc9XSjlbEplQJmFAPXxFfoLZ+vBsW6CE
+	m70+Rurr8K769hj6irxqbfiy4Lk+qHcKYaZh4Ja3oo53hon5GRN9zBLa9rS/2A==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=2BrhLPJb;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=b8hONcIJ;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=jA7Y+IyE;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=GK1PLBu4;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1793357722; a=rsa-sha256;
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1793357941; a=rsa-sha256;
 	cv=fail;
-	b=R1KZKa//P1F9i6X51ZcGFXe1jCbEiCQFquXrmKRIpE/FH8s1uZg/CzeTFwmMiOtBSO5SqB
-	33W22oWWue/nFTaTaf0m2YpW78xYKpg4V9zeLOOshVmz7pRXAYqDAlFy6+j8s9p0H0pqRv
-	dtBwhzh82fYOwFlS00XFVlNfmtm8hPQ56PswVMNNjChE1nH5INd7VXvLp7H71dQyuJjnID
-	dBxhVVC8VF+YDUSv2o/S7wUQV+q8/22T766t8eJl40qjnX1srN6URma9ZcH9gM/6Y1q/Fc
-	Vg4Whrn1nDzlub7uMHnlX2dkPBsanVqKkf3x31esvH1v4LJvxXqOzvki5UrHPg==
+	b=FxnBs90CopG1OwSnhL9C8lhmGbp/aDmikmSlB2kpGJsPzN/KVNALmexN+xnGeNX9gG+Pw4
+	3hem0qhSfOYINMBDPSfq6mIUrqWnXbxUBFYEoPI0/k0FptGHeNfn1XyIOcSXll/bg2lk0N
+	xW4ziH7v8aiAlb/tBRVQuku/wZ5+ckH4fJaAtqCrTPueIXJdRJurA/HmFOZBQy6vRb5I7D
+	Msgsy/MeNtEqL9QR2ansZddzkc0wt0M2RpbJ+Cm7SFH7pucepImO29h0o6R4x18j+f73Ei
+	wK693xi6rPAGrTwZFyb5GyDX8gqkGKC3SNXygcNGytBWzjWSoInJit1BxAUP5w==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=Vp58StDj/vc6MFnbO30McrOfNj37vT3GjaexcrOE2Gc=; b=2BrhLPJbpFZ6Eh
-	Vt4XQPvJVPtu/W4jK4z1fOd2DHDgkF8cXn3wsVa2BC9qgHrUiBViXIJ+ET/jgL+UOVtbHdQ3YML9X
-	pSqth8VKErCC+fzefmU+XykmksEBTzSLh8o7qG8p6c+j3/IhPsUzBARg6f8mv89S7gUK5paYLZpFf
-	KQkR1YXQDQYQuD4+WSJga62Vjq1KHBWH/lTmMggmoNUukBVOLKZ+JbNulOkehCLwSYPrm3c4zudDH
-	vGMH8Vzd6VoF8ZnYlSybu2ULu0q/YJ/Fz/LbKJHzdLisbRTTNkuxFyb3//o51uOkUhOLjPWc1CXIY
-	qNrdUoEwtXyukQo9uKVA==;
+	List-Owner; bh=jokWESmI3Q0IvlXvb2RMkiJ6Jp3UdzIgRNEchs0WCzg=; b=jA7Y+IyE2Qo6rw
+	NFayxzvFvgKarVx2AV+JPIRBUdedRvKrtxRq4S5STNjYGIOOartqW+1CSpWKnYSkVknpCH+YORezA
+	E5sGW/8wKVYB02CqDUhf7J41QYI21MHzyotMiZMnyVfzJkw7kJVN7aX/BgcGFXVupdA/aEBAtMhET
+	m+zMHUpW5TcL9UjUshc65g64NM4rwcTfqJ3eVWxlW6v++HlVcR/FhVMqRK5MGzRR1YsXzoSlTiq75
+	ITrGBX6mVsFV4sQc1xKgSmaqtab/bcg1y+A5aVNbG4x9TC4GE+VIdfp07cQHV8/WTCb1V7wLwQxjD
+	JWNk9Kr6QTpGNSED3rYQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xMkFR-0000000BSul-1T6u;
-	Fri, 30 Oct 2026 10:54:13 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1xMkFJ-0000000BSmt-48x2;
+	Fri, 30 Oct 2026 10:54:05 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xMkFL-0000000BSnG-2eJ8
+	id 1xMkFH-0000000BSlH-1xdn
 	for barebox@lists.infradead.org;
-	Fri, 30 Oct 2026 10:54:09 +0000
+	Fri, 30 Oct 2026 10:54:04 +0000
 Received: from [127.0.1.1] (unknown [IPv6:2a02:560:5ca5:d100:9ebf:dff:fe00:fdb5])
 	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 1051620296E;
-	Fri, 30 Oct 2026 11:54:01 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C0AFE200AD1;
+	Fri, 30 Oct 2026 11:54:00 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793357641;
+	s=20260414; t=1793357640;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Vp58StDj/vc6MFnbO30McrOfNj37vT3GjaexcrOE2Gc=;
-	b=b8hONcIJ2zDFM2grLXiRf9aWo7+6XoVr1qe5wevNmg4IoA/p33qycWstG1/nGA3rYHVFUc
-	akU8bH6ategSHxH/9JSIdCLKXUz1sz8RiySAjwbVxghzlhSsiZKLPtr7YTJcx7KqiuxTny
-	wlGgOG6FFalgfqL1TeujZ9IXTwHPjK+iNr4f8cGQwC29MtOZMxNxvDShHmleFv9gHwCRDv
-	3eN1Bxz5Kt1cEnv3cyBSTkZkuYZdhavyW6fZhH/h117OSZHxkf69yRPsovqfKsoeP58oOW
-	YAsG26vXULp0Ab46UwNiNdrrpzmcDM1IFErNzIiT0THEEhAyXJ9y/suyEVpdRQ==
+	bh=jokWESmI3Q0IvlXvb2RMkiJ6Jp3UdzIgRNEchs0WCzg=;
+	b=GK1PLBu4S7xsIihiZwEbFPnkpkcdCi+W4xl2bmHBBPjidVaT1TyOV30jRK1/I3Yb5ETJZr
+	6Tr3A1Q03yvVb+tOydvCyA49+8VL4ut5d03KM+akaTGMZq57VLZEP/sDkAsG/Ycv/TDqWz
+	2htGcb8hcrolg8tBsjkqEnSdw5tIxWMyw7Tpy0AY1bi2Yp2FrigQE6sczDP9BcLzWxfspO
+	PwTPLmdGZSeOsZV4dpBH2CwdBR2jWY6IzfTQ3+r6Gv6/19T/S7t4nLbV63tldNL+fW9Ztz
+	YhpJHn7YkZfKOtOv2eS3mSDqsgPk43JHXvMdWk8zyqCbyxWfvC5u1kxvtj48Ag==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793357641;
+	s=20260414; t=1793357640;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Vp58StDj/vc6MFnbO30McrOfNj37vT3GjaexcrOE2Gc=;
-	b=antkHgwlV671D9G1wV0A2fZl+UZXmk2Sbt8ruUILaEDYWnM16Y+bQZvoLrMJoe+42HlGcX
-	JvVpQgIplY+swDazgQU72utREwUwAs4rNkE/n6Rz0lXisKAv+FGZ7P2XzyYEOZun/wXQFr
-	dEggB0vAbQaRFqCYN1ooa8Qqg1vRHCpwYme3hSG7Jx+HQ22XDE4ZC16XczEee0cxLeIhIs
-	xcUUZa9eOStlCrhopOSbbMq710IbdugSHZX4IMWCiqVRQl4UY0pSLyG61Sk76ie9uS87gC
-	lK4Nn+9W9kZmpFCKQ85sRiHp9Zc9HWDfqd/fB2doHtmnBrVVDzox0W2eHvX60g==
+	bh=jokWESmI3Q0IvlXvb2RMkiJ6Jp3UdzIgRNEchs0WCzg=;
+	b=TmmY1AU1/NCx0RqtIyUJst7w5afHCMoghhzqjZrdhxhIeIHrCfAApvOSP1E0+9zkEsmTK7
+	82ErE7vqyOqKlymsW+Bov7dMiLmtYhQGCHA/rD0DqHMKxNea0OPMCaJqAVntAhgB+3mJCC
+	XtJd9tFXqvmPjkxCkCUlUZ1dD1dxE/cb8pVREbgzRLzW1Ea0KTQqBZW6g2MXhPkDOhaFRc
+	hdVsSAUWufrj6A24oEJvnE7FgIouRaanB9QKnIwcedIMVsLh3kqSw0nU3qWjFHI/1HXJP/
+	eJoGgHERcBX1VTcC2UsgaLNn+trkN+doV8WNA5vmt+1m9MkDN3jSmxguVznULw==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=sha@pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793357641; a=rsa-sha256;
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793357640; a=rsa-sha256;
 	cv=none;
-	b=WKsu3lOiaG0lOkixpkyzqBiBD3ogLujbrYjD9SEOENuVbtEmiDakfGtyI2Ff4ndFDPvu6D
-	g3HeSSr/KzlPL1fVrLkR+UwIa0hAXuD72jutX58+bhJ2cV4hgYpeCMl1aPnyHf5XcvzrWV
-	pF6b5T3aKFkg8cYfA1orthil3EG67OOHg8sS61bmrMcrwJFVs+9zUwquVHJr2M3RhyAH0L
-	LL5JFtVjHLsgkmYlcuaFoz53kne5ahvoDEH9WEOuf1Shp2jVhvvF9BPZ00H1qSJO08zS/q
-	Wh5N/d/knukt1pRpsKKuckLeFgshDaLknBSp+ii8ThBbiIYG4wePdFZ8xPc62g==
+	b=VxFKcl0NWBpitt2gFIDH1eQfogy8Y4vgeTmaHlvrgOp9EfLD//+/0qgRXZSpR1dmBDMb3u
+	YGG2b1XsbJRhQBHmOuFwmKOZKyrCT1ag5UxnDB7aRpiN31sMcVJk2N8AdyOapk75Wc01Z7
+	AVkcSyGuExGVNzqvKGsUFuz5JA1/DZTjcodO4adTC2vOd5KMYuUOViDdSOilOAMtFrY7gG
+	o5DbVXKIY0OHUXcP7ihCGzdYigbY58iXTxLA5miD6Zd3IeFfwUDk8c2AOtf5Mx+ea1aOO/
+	XXdKD4DfdE0t0phHk2lPEYZmEKsV7fyF02JbF2MFadGmFvRYwnjSbr25V91aVw==
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 30 Oct 2026 11:54:07 +0100
-Subject: [PATCH 09/10] defaultenv: don't use global.linux.bootargs.dyn.* in
- boot entries
+Date: Fri, 30 Oct 2026 11:54:02 +0100
+Subject: [PATCH 04/10] bootchooser: use a globalvar scope for its bootargs
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261030-boot-globalvar-stack-v1-9-a03803e1100c@pengutronix.de>
+Message-Id: <20261030-boot-globalvar-stack-v1-4-a03803e1100c@pengutronix.de>
 References: <20261030-boot-globalvar-stack-v1-0-a03803e1100c@pengutronix.de>
 In-Reply-To: <20261030-boot-globalvar-stack-v1-0-a03803e1100c@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1793357640; l=3372;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1793357640; l=1775;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=IJfYUC6Y32LYeiqXpNb3Sno1+bK+k+Req7ksZBLoiOM=;
- b=SxUjtXj0ihsyCCtEpvQ++7cZkV5QVo79nKsbYXCSz3Z8e24tfLzyRIbjOT+IAJ+1QCWgpBVAg
- towXOGYx1YnDV7Fdev9JgPquyEX0+WltH+231VntvjXmnX5KTW5HWw/
+ bh=IC9+3GqUwYjm5aWCsh1gP9IPqU77kk5A4jLT88kOPWk=;
+ b=iSLv7hH48XxofFdV+99k1JcrVMtvoxP/7vmpGZJZDiRhpbb84NYiNJm5vjIfTQDvaUE1gM3lm
+ HRAlaIuIHUqAD/piMng45K4uFx3W+E1SH/o7EUMFCqiJAKYJWOqIGEh
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261030_035407_988561_B3F70656 
-X-CRM114-Status: GOOD (  11.59  )
+X-CRM114-CacheID: sfid-20261030_035403_672388_D7A8739F 
+X-CRM114-Status: GOOD (  11.69  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -131,9 +130,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Boot entries no longer need to put their Kernel command line
-    options into global.linux.bootargs.dyn.*, as boot_entry() reverts all changes
-    to global.linux.bootargs.* when the boot entry returns. Use p [...] 
+ Content preview:  bootchooser passes the active target to the Kernel in global.linux.bootargs.bootchooser
+    and sets it to an empty value again after booting failed. The variable is
+    never removed though, so it stays arou [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -197,84 +196,62 @@ X-Spamd-Result: default: False [-56.41 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: 9kcubhotycmqom6kbufetmist89oug8p
-X-Rspamd-Queue-Id: 1E6B9200AD1
+X-Stat-Signature: qewo1t4sweaywuk9b8m47ssmcxuiup4j
+X-Rspamd-Queue-Id: CA54520296E
 
-Boot entries no longer need to put their Kernel command line options
-into global.linux.bootargs.dyn.*, as boot_entry() reverts all changes to
-global.linux.bootargs.* when the boot entry returns. Use plain names in
-the net and dfu boot entries, the boot entry template and the matching
-example in the documentation.
+bootchooser passes the active target to the Kernel in
+global.linux.bootargs.bootchooser and sets it to an empty value again
+after booting failed. The variable is never removed though, so it stays
+around with an empty value after the first boot attempt.
 
-Unlike the dyn.ip and dyn.root variables, which bootscript_boot()
-creates for compatibility with existing boot scripts, the new variables
-don't exist beforehand, so create them with the global command.
+Use a globalvar scope instead, which removes the variable again and
+also reverts any other boot related globalvars changed while booting
+the target.
 
 Assisted-by: Claude:claude-opus-5-5
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Documentation/user/booting-linux.rst            | 5 +++--
- defaultenv/defaultenv-2-base/boot/net           | 5 +++--
- defaultenv/defaultenv-2-base/data/boot-template | 2 +-
- defaultenv/defaultenv-2-dfu/boot/dfu            | 4 ++--
- 4 files changed, 9 insertions(+), 7 deletions(-)
+ common/bootchooser.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
-index 158aa8b313..85f7694fe8 100644
---- a/Documentation/user/booting-linux.rst
-+++ b/Documentation/user/booting-linux.rst
-@@ -442,9 +442,10 @@ If the preconfigured paths or names are not suitable, they can be adjusted in
-   fi
+diff --git a/common/bootchooser.c b/common/bootchooser.c
+index 2a75dfdcc8..2049425ab3 100644
+--- a/common/bootchooser.c
++++ b/common/bootchooser.c
+@@ -6,6 +6,7 @@
+ #define pr_fmt(fmt)	"bootchooser: " fmt
  
-   nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
--  ip_route_get -b ${global.net.server} global.linux.bootargs.dyn.ip
-+  global linux.bootargs.ip
-+  ip_route_get -b ${global.net.server} global.linux.bootargs.ip
+ #include <bootchooser.h>
++#include <boot.h>
+ #include <environment.h>
+ #include <globalvar.h>
+ #include <magicvar.h>
+@@ -846,6 +847,7 @@ static int bootchooser_boot_one(struct bootchooser *bc, int *tryagain,
+ 	struct bootentries *entries;
+ 	struct bootentry *entry;
+ 	struct bootchooser_target *target;
++	struct globalvar_scope *scope = NULL;
+ 	int ret = 0;
  
--  global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
-+  global linux.bootargs.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
+ 	entries = bootentries_alloc();
+@@ -857,6 +859,8 @@ static int bootchooser_boot_one(struct bootchooser *bc, int *tryagain,
+ 		goto out;
+ 	}
  
- ``boot net`` will then retrieve the kernel (and also the device tree and
- initramfs, if used) over TFTP and boot it.
-diff --git a/defaultenv/defaultenv-2-base/boot/net b/defaultenv/defaultenv-2-base/boot/net
-index 8408ceaf39..f025bb4098 100644
---- a/defaultenv/defaultenv-2-base/boot/net
-+++ b/defaultenv/defaultenv-2-base/boot/net
-@@ -23,6 +23,7 @@ if [ -f "${initramfs}" ]; then
- 	global.bootm.initrd="$initramfs"
- else
- 	nfsroot="${nfsserver}:/home/${global.user}/nfsroot/${global.hostname}"
--	ip_route_get -b ${global.net.server} global.linux.bootargs.dyn.ip
--	global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
-+	global linux.bootargs.ip
-+	ip_route_get -b ${global.net.server} global.linux.bootargs.ip
-+	global linux.bootargs.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
- fi
-diff --git a/defaultenv/defaultenv-2-base/data/boot-template b/defaultenv/defaultenv-2-base/data/boot-template
-index 689d98e1e9..b63eb86d1a 100644
---- a/defaultenv/defaultenv-2-base/data/boot-template
-+++ b/defaultenv/defaultenv-2-base/data/boot-template
-@@ -6,4 +6,4 @@ global.bootm.image=<path to image>
++	scope = boot_globalvar_scope_push();
++
+ 	system = basprintf("bootchooser.active=%s", target->name);
+ 	globalvar_add_simple("linux.bootargs.bootchooser", system);
+ 	free(system);
+@@ -887,7 +891,7 @@ static int bootchooser_boot_one(struct bootchooser *bc, int *tryagain,
  
- #bootargs-ip
+ 	*tryagain = 1;
+ out:
+-	globalvar_set_match("linux.bootargs.bootchooser", NULL);
++	globalvar_scope_pop(scope);
  
--global.linux.bootargs.dyn.root="root=<rootfs here>"
-+global linux.bootargs.root="root=<rootfs here>"
-diff --git a/defaultenv/defaultenv-2-dfu/boot/dfu b/defaultenv/defaultenv-2-dfu/boot/dfu
-index 682091141e..56a88ae0a3 100644
---- a/defaultenv/defaultenv-2-dfu/boot/dfu
-+++ b/defaultenv/defaultenv-2-dfu/boot/dfu
-@@ -23,8 +23,8 @@ if [ ! -f "$kernel" ]; then
- fi
+ 	bootentries_free(entries);
  
- if [ -f "$cmdline" ]; then
--	global linux.bootargs.dyn.dfu
--	readf $cmdline global.linux.bootargs.dyn.dfu
-+	global linux.bootargs.dfu
-+	readf $cmdline global.linux.bootargs.dfu
- fi
- 
- if [ -f "$dtb" ]; then
 
 -- 
 2.47.3
