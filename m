@@ -1,46 +1,46 @@
-Delivery-date: Mon, 02 Nov 2026 15:53:47 +0100
+Delivery-date: Mon, 02 Nov 2026 15:54:16 +0100
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xNtPv-006PtQ-0F
+	id 1xNtQO-006Pub-1F
 	for lore@lore.pengutronix.de;
-	Mon, 02 Nov 2026 15:53:47 +0100
+	Mon, 02 Nov 2026 15:54:16 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 30B06201B73
-	for <lore@pengutronix.de>; Mon, 02 Nov 2026 15:53:43 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 835A82016D6
+	for <lore@pengutronix.de>; Mon, 02 Nov 2026 15:54:12 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=zyz64q9n;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=eGABVqlv;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=x3uyKEyX;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b="IzQwu/ya";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793631223;
+	s=20260414; t=1793631252;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=RgJtu1eKhjY1nPGRSnWy81VDfH1f6Lhist1gKXMAoa8=;
-	b=PW+7Dp0rMcn1ZUdYnPVb85UNXTq+yjL8pmNWBUArnpG6Rc+1jNHHpZWNvvXBYnul5tOlNX
-	4fOvv6as4XOT+eeZd+SP1GByi+QT6WiDKrr3aTt4/7gqdZXnPQcuIy4od1Qywuvj2WkBmK
-	nRl4CDyThpEX6E/5LP5lTsK/tRS7OFdk4OR8+HsNCn72K90V/zpMNDXjL6+0RHbGo2C9mm
-	2tAGiNXcvWmPkrWhRvJw/z7SCX4+4kuUaemi/ez8PPkQl5AMJeFpQ47XUhy/qj0FjLn/Mx
-	mGS/kwcAUyFwa4395+/53Snn168wQMCF/RPpaw4EkLY5NDpvLtLv0m6uJSPU/w==
+	bh=fNFA7ExHUQIqH5u7dyUtJbq5YrYAMCm0yzAjS1l5QsM=;
+	b=LB+YLbholFf9O6ytFin0+6nJSzOMBE0S/74j00jKGx43a8GhygdbPwkz8A144ysRGPyUZg
+	PH8pTA5FhdfOpQnJgONtR4ilsHpbAM6WTI2smKxmSJXf813Y4mafJYyZtp31A+PdJDvc3u
+	kHVagQe4QmOysGE9RH9pzfJbnSESm1N4F1DYjmgCwhpQEAkKIc4gQOmRrcqpJXWVrTnwT4
+	wnBi4lXacnCt/JbhUvf215FH5G3AeXLrR5dhiv7JAKT3q/70kWUzYpO0V9tIKfQF1OHmV+
+	Sb22DD5Qmd6h1kiY/xGSWkoTKt2RV1+HbEbun7IYwQoxmg7C5HWE+HOFa/ze4w==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=zyz64q9n;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=eGABVqlv;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=x3uyKEyX;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b="IzQwu/ya";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1793631223; a=rsa-sha256;
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1793631252; a=rsa-sha256;
 	cv=fail;
-	b=V7daOcDqMXvxWnkEmZsizLj4lhcNTtnHSkKF9lWyZWgwLTxe6uzSMiPgAi0Q8VnAKzanyY
-	FSwTQsU+dcEe29fCgpkGRMy0yjRcCKnSDU+sEy77YEQp/eo3iTd5D+Uh8Wj5wiZsTKp3kd
-	88KKV6PlZMyRUicRczmjHW8OeYvEdK0sY8UUq3fwU/+kKf1To7SOvLMONypzhdgnKj9tzl
-	IeKuIOszydwlswEq+AdIKwk0qHrUpMtNwDKOCTRiDzpefspz2m+RpWY4n6YzFfnlGOLesu
-	3+J+OA77QHYF0/340ZTf4Wi2ZHcOgiWRP0PZVgPnMVWPGmbUJHKcZZT+OVaUUg==
+	b=XwYkrmHCUaNUU/1wRzFJ6zE6Ht+M6OxfPTA8oA2YTO+FEy9+Ndsfsjm0lN6/SdW60Dq+1c
+	M4GZaUGAYAFGR1ADtAMUOb+TUkg7XHT+pbyq5q+PWmCQwi8ylQUyo2j8k+FS4KmhaYxoMT
+	qcK0cfozqVu+R3Cac4/OLZf1SgaljtK76twGp4gftackJJK6S9nbbIPeFPU7jlC+kwLcZn
+	HqdrJuvNjhlGyp0jn6qKoD2ZMaJYYKYEHmLRALTQ+4mAVe8sJXUcrf/WesgtKdL05J00u8
+	rSTt4/aTzhXlddCAR+ODCMq3xUApGRjkRvft2suWd12mDK21RlCCrjUpDSIXIg==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
@@ -48,68 +48,68 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
 	List-Unsubscribe-Post:List-Owner;
-	bh=RgJtu1eKhjY1nPGRSnWy81VDfH1f6Lhist1gKXMAoa8=; b=zyz64q9nLaD+L3jB/DE6K8nIue
-	iNYKvNeUgBCh9o04xGu7bLLWrOyym8gXCT0t4HZPtBiKwgxK8kHk2++x1mOd8JX4U+W2y3Y9hu2Ww
-	B7oAp8sWU+94DUQztoAhB1/+GGd/dK01OTrp2eZCdKXJPlDhGlmAIF1hmTSddLDRbh1sPLHQ49xKw
-	fIbCR+jAMJqJwsR8aVDN7S2zIQSbgOzEQZJdXh3O9XB2uw1nepGpDEdRwTGrUIK9baKBvFYH7Bms0
-	YeSdkobVk/sFrVB68fdi+6F5o7ciK2++0OdiiBsU0iJgNgR4Cx/PdGOny/a7DlSzVz0+I/aO4QERv
-	l6lc+Pxw==;
+	bh=fNFA7ExHUQIqH5u7dyUtJbq5YrYAMCm0yzAjS1l5QsM=; b=x3uyKEyXsAMSAYEiHPoaqyEKRO
+	HXcfrt78KWzODTgv0ln7dSOO/hMXMqgby7cjxTfxEwYEnNVYjNmf8aTvMdm4YMLWPxHzFAaGfXP9y
+	ZbREuMKOop6IIxtdopiNuzOmBlDJY4xv3yWokSQAu84MM0Xg28ZqNQMeAioC/uwNOWSZI67f1vlZT
+	0j1n5LsJs4EsruxweA2EWtX1KsqSobEjB/Y6JkGgMGpj24ClBlHEMG9LRuwoRHzko2DqkkOdsVWoD
+	KhXcWSloUMAlw4hMJ+c7iJzm24a3fYHT5QTLxuFjIM9BQXCgZBCu94StUnOhhlubzT3du3W4uUGgd
+	Vu3fIyBQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xNtOd-0000000Guk2-3dOo;
-	Mon, 02 Nov 2026 14:52:27 +0000
+	id 1xNtPL-0000000Gv28-2xeg;
+	Mon, 02 Nov 2026 14:53:11 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xNtOb-0000000Guj5-26Xt
+	id 1xNtPJ-0000000Gv12-214p
 	for barebox@lists.infradead.org;
-	Mon, 02 Nov 2026 14:52:26 +0000
+	Mon, 02 Nov 2026 14:53:10 +0000
 Received: from dharma.fritz.box (unknown [IPv6:2a02:560:5ca5:d100:9ebf:dff:fe00:fdb5])
 	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 5DF702009CF;
-	Mon, 02 Nov 2026 15:52:19 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C36952009CF;
+	Mon, 02 Nov 2026 15:53:03 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793631139;
+	s=20260414; t=1793631183;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=RgJtu1eKhjY1nPGRSnWy81VDfH1f6Lhist1gKXMAoa8=;
-	b=eGABVqlvXpejH45Uf5SecEBIf+30C82AfEW6Cf3DsKnJXn6LqxiLfVUfuHnVJd0YURQSbv
-	unH+eqJv4ocbtgrGL+OL81ZbBDI5A9YuYj5uVipF/RvWchjqviTDskENGgiSt/mpMCINBx
-	gOevJeIpi3gAxviyVhIwiFf01EV3m+QimZXgYe5A+ZvuhErAOkViZma2VYoYrUhS6V76/m
-	wHzD9tdF92nXB4+fTSImGsXMMGx6G77UBMqfuzJ3KAfk58nWhubiadm0FwBQ3e74Ddt78r
-	GEWfUSUMievcbcLa5S5ruvErZs/UscKJOyi6UpHnGF9JK3gk6rvsHhwgamUFUQ==
+	bh=fNFA7ExHUQIqH5u7dyUtJbq5YrYAMCm0yzAjS1l5QsM=;
+	b=IzQwu/yaZ+PrnuSDumfCMNyBmhZ6Z6n/I3/hVd1aHW0lvaS8sfGgYcLX9Wr3CaV/kZC2fc
+	Zzjbm8jXbWKOHtPsswYq6/2FxXkHkTebldvU8+HY7LLA4dWU3UF44cMqN0EC8/esWxXiCF
+	m6zm0i2kfG8K94OVJs3FjFPtmzLitx3bSzlhze1DdTkvNiPvd5Up64TUujljDcyHOs/goU
+	U3mT3IC60DACHnD582dnyeET5Y2TaI3GJe0bSKjM4aqt7A88vgx/Slt5kaMQKJh0MBTns1
+	a+wnfEAzy0A7CJlfrk1FnGLwmWv9QYlqUxkdSijvbRvEWFVUYQDiKcxLv8BX4Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793631139;
+	s=20260414; t=1793631183;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=RgJtu1eKhjY1nPGRSnWy81VDfH1f6Lhist1gKXMAoa8=;
-	b=ftc6xbAJW+a0NopQKBXqiHVEIWei682LfTJkPMWb2dadKgxVF2aSYRQ3rOL9Ze3Wzzz/Z7
-	/pU5gOpJGddmoBLLcTu5hDJDKzqwrcUm3iaWJRstp9dBmQw37U6atAzD7O3zJ/9NCxKUHz
-	qL+QqrI9CIOGw0Zi/6APTBAKM+mbDpwhW4MvU93nHAPvEnq4kxVIY/lJo/wvnopXDTGheN
-	dWcFqErH5HSrRYoF5AJCKKFJn2+CNOcnuJ6gNSOUpx2R3Xs+GjKZM5qAMSeBFrPNT+Kuow
-	si5tR2Yy8aXFALaSyGv3/iN2Vbnd+W2q0TsfVnbBsKUhVhhLwWpcv7PuT+VBkg==
+	bh=fNFA7ExHUQIqH5u7dyUtJbq5YrYAMCm0yzAjS1l5QsM=;
+	b=gyQLHprelJbLfMRetpmkiEuocdvh5sNUYlzFbupEFDu9EA0BpcPTEc2FRevekXIq8SDU4c
+	5jbTNnBnEZemI6DAKeAd7wIEjV1KEDuOtAkgNIs8cNUPwo/iQAcmcMGJgheh2noV6fN59n
+	PqysOictDJBkLGKRgGxG0l81jVcyjvIbbJj1CWcAjyNPb1agmVDfjsXKqa3pUValf29RLn
+	L/JWh/uoqYBdMd4afLcBkLDrqlx4EK4zdTYzFLrRkaGZ1Vyd67IoJJOZSxA6wBz40L7ZAG
+	wFVdbEDp7N2hn21w4RMM+tObSqiBVjgAAJ2tz7z5m7kEhqNHaiVq8Vm4zG1FLA==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=sha@pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793631139; a=rsa-sha256;
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793631183; a=rsa-sha256;
 	cv=none;
-	b=gLrl138PXt+49nZT2ZAkQiJOwHNVWMaE6a/TLODpq11CqIuSNlWK3nTmOhadrk/QPBuo2T
-	Oob/FuQEzjLYCkmRqz+noHZ5ErR0kP++joZpCbIwVjHX1fgIKBFZ4CjuFMx5Jjb591U/uq
-	KqYXv5hpvvqm+XKWt81vnLopLkrXDEM2H0ex+pNmQXgWZa4SUFYMc12rqSjlsT7bIyt0sq
-	WBbm8C/K6i17Ua3us+xTe5qqdUnQb/eB8Ppg7k2JnhZxcfQj46RU8yG733f7TuhA9QPAom
-	p7e0/s5KqPUkvaNeVeeenvTAx6hln6J4CPEdk9ux/3l17NFTKO/D++xRVMLQUA==
+	b=BimaJNm59JX87URiNs91Lkc329UZsucE6i0ZSdmizaBSPFttS5jdjST1LVIltldt6xvkIr
+	TXwYRWXnWeKsxqaaoWA4XYwe3OHZRHLUf8CNLthhEs0LILIGYZfwT0k2hS/WpNgjBvp/Lx
+	2YDNSs80qyXHowLdyGsVI80le08osS4RIZYWBvcWq+EOHJRx9qtjcRdlKm0vRvypI6X6j/
+	gk+pZK4SCA8wTc8v93zqsGDxXV+KPv6ImKAUEs6k7KCuOmXZrjvyn6yw9sXD9eFCFgIRsF
+	zUrKDSfOoEPhJnNpRj4KkrT12daCNt1UdWuwZlvLY6xre3JrCBqXH3rZtIQ9JA==
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
 Subject: [PATCH 1/2] fs: ubifs: don't free the symlink target twice
-Date: Mon,  2 Nov 2026 15:52:11 +0100
-Message-ID: <20261102145212.3022411-1-s.hauer@pengutronix.de>
+Date: Mon,  2 Nov 2026 15:53:01 +0100
+Message-ID: <20261102145302.3025815-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261102_065225_710571_54D81783 
-X-CRM114-Status: UNSURE (   9.53  )
+X-CRM114-CacheID: sfid-20261102_065309_699102_407176DE 
+X-CRM114-Status: UNSURE (   9.63  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -185,8 +185,8 @@ X-Spamd-Result: default: False [-54.91 / 15.00];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Stat-Signature: ch7hbkfxoccjfcumn5ob4r6r1zjpqhww
-X-Rspamd-Queue-Id: 30B06201B73
+X-Stat-Signature: hjdkrqyqomfa8e68rg3ejegkd9yz54s6
+X-Rspamd-Queue-Id: 835A82016D6
 
 ubifs_iget() makes ui->data the inode's i_link for symlinks. Since
 commit 66666e887c ("fs: free inode->i_link") the VFS frees i_link when
@@ -203,6 +203,7 @@ inode's i_link.
 
 Fixes: 66666e887c ("fs: free inode->i_link")
 Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
  fs/ubifs/super.c | 2 ++
  1 file changed, 2 insertions(+)
