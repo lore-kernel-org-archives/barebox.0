@@ -1,120 +1,128 @@
-Delivery-date: Tue, 03 Nov 2026 16:06:44 +0100
+Delivery-date: Tue, 03 Nov 2026 22:32:52 +0100
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xOG5z-006poQ-2e
+	id 1xOM7f-006wWF-2V
 	for lore@lore.pengutronix.de;
-	Tue, 03 Nov 2026 16:06:44 +0100
+	Tue, 03 Nov 2026 22:32:52 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 07BAB202831
-	for <lore@pengutronix.de>; Tue, 03 Nov 2026 16:06:40 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 86D7220282F
+	for <lore@pengutronix.de>; Tue, 03 Nov 2026 22:32:47 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=CNgPet8t;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=F7LcVCzK;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=B9qAweKo;
+	dkim=pass header.d=puzzle.ch header.s=20211230 header.b=E62RmuA4;
+	dkim=pass header.d=puzzle.ch header.s=20211209 header.b=PcbQNozl;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
-	dmarc=none;
-	arc=pass ("pengutronix.de:s=20260414:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793718400;
+	dmarc=pass (policy=reject) header.from=puzzle.ch
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1793741567;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=+sp5rgt0HRzkGfIZFaG7YR0AuwAsv163DU3Qf1XjwCs=;
-	b=BgZjaFgWnv7ctCj8ymzs+/Ei9lTM0Cg1UuWB3uXz5exLxnUMt3L532ZlgiSbJP3hX2fUMn
-	w07JRoK8BQrAGJA9SY6ayLsl/ScgmJswktWdAxlzuTiCaSHU8+Il35xhi/cnATaIaQBRRn
-	lbdG17XpyviqhWLI1ZPm9AJf+PNYAvjPswkePFg+wDINDTawku3agewgUPWXPrXF6+vMh2
-	U6kmtqXGj+hff/cJ8O2wvXo22E+Wnb8EXdOUURlDqZKtqmfS+pAp55uKKsFkm/K9kOEFzM
-	h9j9fDTHlZGwkJ8WxiQmqS03saPshjtjqEHyCX966HTYQi/77Ter7tQ5IdsLmw==
-ARC-Authentication-Results: i=2;
+	bh=D1kqs4tTynbJTuVJWstrHRHKedZU47lKIG37QqASgf0=;
+	b=T4NUZx/lyT99nkiekv5AdqGfuEyOCol+n62/5KEcBxH4ulstY1snQ6zn6/vL/X0qfBjqOa
+	Y1abYTJZmQMJaUqa2+ei9IO01b4F0nYGK0h5S0cM6Z00llbwAgFAHKUa6Qq6xe8/fYuMkG
+	jj+NSiNsYcbExaH6ty/J+tif3VOGvgPVOoQn8cB1xaZ4VbMI5L1089Vp8KqFOyz9yQcaMK
+	oTnavm1jlUwtRiM+16TtFWjrrK1gr2Iy/gAj1AqHpfJVBN1welkrgiH2jUqGGOLPL5ntKG
+	sMK0vzHCGtquUi7p+PirDSQn7vNIsxui01cg17WLxSVbqGxRoyruFVm3CvmoSg==
+ARC-Authentication-Results: i=1;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=CNgPet8t;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=F7LcVCzK;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=B9qAweKo;
+	dkim=pass header.d=puzzle.ch header.s=20211230 header.b=E62RmuA4;
+	dkim=pass header.d=puzzle.ch header.s=20211209 header.b=PcbQNozl;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
-	dmarc=none;
-	arc=pass ("pengutronix.de:s=20260414:i=1")
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1793718400; a=rsa-sha256;
-	cv=pass;
-	b=P12ClwYjYa0hZUYpShN7GgUe+vACOI45v3Y0fCuuloOn55cMXZY0KAhIDGCK/9p/5GFV3S
-	2rDAXXknZYpEvEAN2462cWb9gTpqi9RNyCH6hi3fic2RaR3FwY4c9cMRUqyHGNZYKPNqs3
-	87l0kxz3I7Ss+DQgEqZY+25DJCy1aw4P/9fIN7C+PEu+62jQAv92Ucz/LMpmm0HSqxxhv0
-	bt06cEAmx+yZkvpoaGB7QwGGJkEKBtJS6bC4h7y0yoF+U+7MZE0tUKDZ0qOayFOEEen9Sv
-	bNk9arMpyhQrhkZCii3gzTu+YZHyYscySzAza7sOkeEJMLEgpdN8dLVsJ2YV3w==
+	dmarc=pass (policy=reject) header.from=puzzle.ch
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793741567; a=rsa-sha256;
+	cv=none;
+	b=GeJn8KVVsptUdqYddayPqo4kC+258LKwIyRZSPOFw88zMicdxVaF+G0PQBPC+4DX/U3gCq
+	0XovZYRFToXarhoLLOeTpgeGsz/vUlfutVcIO5zD8pPgaIemfn0Lt2WCE9tUZ+Xhk02TO3
+	gi6YBU8pk3fqYJALBiiUPvVy9q5J2jMpPrR/QKMBt1MMn+jgEvc1PIG4leSQ1S691DkxEO
+	c6rhdGWtzhL5m32fhWBZf03QeXRpLlfY/ISLsRwaB5Eyk8QeZpTMKuLvcO3nm14ASnfWT8
+	wK6Xp6czO3N1gVvzu5bhXiIzlttM7UAo0EbzvKrP8aeSREcDzXCO5EvHw2KhWQ==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Unsubscribe-Post:List-Owner;
-	bh=+sp5rgt0HRzkGfIZFaG7YR0AuwAsv163DU3Qf1XjwCs=; b=CNgPet8ts0Y3y1Jz9/VVeHgLRd
-	eTmJo8hl3a9Coch1gsyPcujpvaJzPPOxOCealhp0z0Y3j+LCbZ2HfiBAxU/HiRyk/jt0ddHXPyuB/
-	w3e4nmKn0WdccfDKJwcruluRswZSJjNOfbBSSAhhJFRo2/z3/fGJSrHgC1+iaFR8eoDCtqibmiqIG
-	tvllvO5TYVXJEePrCsYw8lAXpJDP8NTgxdZVP0SYgW5B1ZEGqnwru8b/pA19qpUt+vsJeM9Gmfs0U
-	4zoUuLYxl3Ykw0TPtt7l/nizQNMpsysYQAbVbp2oR+7C75YjU2NyOzxFNiau/oZlzfB4GQYOnWOUO
-	FSiBob5Q==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
+	List-Owner; bh=D1kqs4tTynbJTuVJWstrHRHKedZU47lKIG37QqASgf0=; b=B9qAweKoP9Qxnq
+	i/DAFWVellWDUUq0yVHffwf6PmpJyIMJ1z/ZoNlD5ZstgHzk0Qj9eU5F3XMr+II5f/fLcvxP37vnT
+	hx6qZsktHxZAoRVp/WK531R1rSDccch5bnnu3q785mPiNu3amJqwXGuWyxxxaA5HmVRTcODTIuUdt
+	JCl3XsSyikRFBheCubdLoQcuOys9bruI5afDTJKoJfOsOjVfe1iPa9H7m62m5UCZoD2hXy5ZfCZR0
+	0hiiGviCYpxiEESQ1ngmkrULwUDsn3YgH5uBf2N9jK0aCBlp3sacgelNhLb3UnLB6mpGWxevpS0bi
+	mYO4vJwLLNDor/rWpdHQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xOG4x-00000002qYI-4AJV;
-	Tue, 03 Nov 2026 15:05:39 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1xOM6P-00000003iBo-2Nbk;
+	Tue, 03 Nov 2026 21:31:33 +0000
+Received: from mx03.puzzle.ch ([45.81.71.124])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xOG4v-00000002qX7-1cV6
+	id 1xOM6K-00000003i3T-2dWr
 	for barebox@lists.infradead.org;
-	Tue, 03 Nov 2026 15:05:38 +0000
-Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.4.pengutronix.de [10.17.1.19])
-	(Authenticated sender: relay-from-dude05.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 650612006C0;
-	Tue, 03 Nov 2026 16:05:31 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793718331;
+	Tue, 03 Nov 2026 21:31:31 +0000
+Received: from mailstore02.cloud.puzzle.ch (mail.puzzle.ch [45.81.71.99])
+	by mx03.puzzle.ch (Postfix) with ESMTPS id 193041C3;
+	Tue,  3 Nov 2026 22:31:19 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=puzzle.ch; s=20211230;
+	t=1793741479;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=+sp5rgt0HRzkGfIZFaG7YR0AuwAsv163DU3Qf1XjwCs=;
-	b=F7LcVCzKSWpZSIKoMjQp09ne0y3ZUkwd6We7epqIUyQ4iyupUxNJrwT8QcMcTDyORNyA2+
-	p52lpinCyyh6D5aqYMXTgWXgrr+Jxy+D/d5HXE5eDUoal8H7OcvWJq22rQa0PLgz0J9nNK
-	MFMogpnikZgj+7S1sSc+2pgOTi4/aSJqUHrXTwof+eeWjTD5IovobyOROeLyxjfK+gC0Dr
-	g0P5gCodCILfMsDYyiUxtL7hJ6q1MPDvFvYSUd4V6kh66bSfU2RKzXPYVDZV3v9EYd4ICX
-	xzA6ZNyxzIyPMhV22OfMvYbZkbQ7zkpDzgCSBW8hgQBR5hqlfXdyYk6BJtL9uw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793718331;
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=D1kqs4tTynbJTuVJWstrHRHKedZU47lKIG37QqASgf0=;
+	b=E62RmuA4ZAhc/EOW4ICGe7w0BPbtNJ73eS1Xi0XvM2Aso1czjEm/Zv4nwmp5WNjPbqPual
+	NswpRyhkL7lZmoGghcUx5+l+PeIDSgNej++/M+/E6e8c8HqUD0/nUS+a5F6cRH6iCtLWlL
+	FZIeOXlgT/wbziItHR//jYwws8pgncEPwDO/bP+2WoSdP77Q47mryHJjgxmc9v/ivgBvyv
+	NUlljjZYgaOloBAA+zdgqLAqaBU2IrrF8L/zVEQbODfw2A9U91GdltU1Ccd4FLimIfiTe9
+	v0c0bDtCeyQ+4LuyITEFsK84oN8ULn3fXwR6UbvFsWm0nCAlIWMuXuiu8D7rLQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=puzzle.ch; s=20211209;
+	t=1793741479;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=+sp5rgt0HRzkGfIZFaG7YR0AuwAsv163DU3Qf1XjwCs=;
-	b=O5e3oLBwFtniwnmTK98mUQdSeaWWn3ftyi9ktkjNzaZCzelGEhqoXKY/BI/0p+Kl1EjybU
-	8b/D06tCJVIG3Iy+ZVWcTicBM2tkGHU9MH745K1SaCjU/jHfNJ7nMsGYi4KCN+Ib9Dc/PH
-	XU5+BRTX1vtFjOqYKpbAUf/cLuWap8AdWbdecn3BhPGUSYUUwAW8DleVSWxcGq+e/gn8FV
-	Ish5TBgCrWc41QaaOwS4NMZgXN7sInXOt2OXzF4UBvRScADkcaBkJ3kyEgtafJXbcy/b60
-	wVrzvJyruZnYsU9rwZCsMdM/ABp85fAis7tbv9To/s3t1+ZYrtDuN8u7LwpKkw==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=relay-from-dude05.red.stw.pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793718331; a=rsa-sha256;
-	cv=none;
-	b=hH4Zhmt99XZ5xggwLzopQIjI35vdL8xdRZjaMzggAflUybqcXX9TUmxy3AWnSd05HvMWbL
-	U81WKH8flECDvDKBpF407k8zOFzLDwNBb9y6Q6GNGSVj8jsnqQ9up/qo4KIfqQc2/UHbRg
-	R0iasFt3KWmgT6MHOYyh3bMhWlG88aktGX8J/Xw/B4yDbyKi/+Tysvv2f2uJ0+Ebo9K4Am
-	vLGO608b8VKuIjjSF7DaSC0fDUALZpdY7ZXULTzwpIwxyFOtXI9GKZJ7oKopiqzgY4zmu0
-	XX5ZepTi6GmyRfqnKGrxJYKuwOfrRYVJqh/ch6uziUvkXeOedgZCgRJBth8Qug==
-Received: from dude05.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id 3AAFF7406DD;
-	Tue, 03 Nov 2026 16:05:31 +0100 (CET)
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Subject: [PATCH] usb: xhci: keep the transaction count out of Max Packet Size
-Date: Tue,  3 Nov 2026 16:05:10 +0100
-Message-ID: <20261103150522.1573809-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=D1kqs4tTynbJTuVJWstrHRHKedZU47lKIG37QqASgf0=;
+	b=PcbQNozlAQPO91mceSNFrfX3v+Q040NUdVZwKB24Gvaec6AW7wurMYHzJqiu6fQI7/G1r/
+	4EqQ+ae1Dh2rWUEAhGyJ+5b1QaCPXEWjNKXwa+AINSeMtBotPLuO173rmf0mxYZDzrHieC
+	Y7JL2GUMtaQpgH5PSrm3z+ypgNzYmcTVO5PHiEf7LzdJKrVu1RLy35NTisJV5696j0QhGZ
+	xHfuRC01O6Ougj9gv7TXNHMj6eE9Q8y273jmvpyQ410/BkT8e96vhrOLbYUvtr1VSbvGza
+	haqoP4qA6KChG7V1IouecyubdzaosVKjczXsh/H4zGL40XXhlQRIBWNK9ZEXiA==
+From: Michael Grzeschik <grzeschik@puzzle.ch>
+x-ms-reactions: disallow
+Date: Tue, 03 Nov 2026 22:31:09 +0100
+Subject: [PATCH 3/6] gpio: orion: do not let banks without alias collide
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261103-orion_kw_mvebu-v1-3-86442c0d283e@puzzle.ch>
+References: <20261103-orion_kw_mvebu-v1-0-86442c0d283e@puzzle.ch>
+In-Reply-To: <20261103-orion_kw_mvebu-v1-0-86442c0d283e@puzzle.ch>
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ "open list:BAREBOX" <barebox@lists.infradead.org>
+Cc: Michael Grzeschik <grzeschik@puzzle.ch>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2107; i=grzeschik@puzzle.ch;
+ h=from:subject:message-id; bh=6bc4IBoZQMHxywIQXh5vX3WHEw+MuLTlO5IZNnM+Sco=;
+ b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBq6lKkwAN4WHxLnmuJSkHWLwS1jLXimQBPJu1mz
+ VnXDPhkcKCJAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCaupSpAAKCRC/aVhE+XH0
+ qz6sEACcVmdfs/uQL95S/Rhm6UAqXkTr2QfWTYp2LPFemR/sLrBn5ShGI+w3uQudtlpN+7AdhDx
+ oJ8XXHR3pt4eRzN9hB6P6RuYVw06+9koWEot6rWnGZ4kN7brVnbMRrdGwLV8Oi68K22DUDaTbwq
+ bZABqAM+Z+CRnlvWgpr3iVqzu/UzJ6XINJx6nsTr1wqpeSrAM9bfABms1T3C1jB0861vK39nU8V
+ Zm1yMPUgsMQs87rCAa4IEg9Z4mpU2OL9VWogafnlAHZh3boA8J+PtSlFBqR5OTEVLb4qh3v3LCH
+ 4MPA4bFokJ9qtFgibXka9xt+hqWwwzqVHC+6f5gZgkVxW/dYjgfBN7Ol98owrrt8csEa5KATRsF
+ gwE8DljBRA7ulEToOHLDM7ULiiUQWEZzmntzrNlQJQ4+pqXHVTMZDRJ4jpdTLMey4050pdfygkw
+ dDw3tN5HPrhjsDOV6EeD6X+TtaoPpmfbbZLDVBKPUoermCT4Z9rluOBPzkpPzebA1vOIjBd0Ici
+ 7S8nToj4kHfBpFhNkgfI3Nls9aDLT+iXSjchJB24cMSdzqrZsY6CmLLHQ6kTbt/gwFwBS8/2izX
+ lVyX+o5YHQ8CusfQHuVhAhAxbCWRHnKTjF8GBpLmdtLzfquU7bfH59v+UfueXiakD0SpyglfuSw
+ N717sHUcryTr0fA==
+X-Developer-Key: i=grzeschik@puzzle.ch; a=openpgp;
+ fpr=957BC452CE953D7EA60CF4FC0BE9E3157A1E2C64
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261103_070537_582835_A9ABA0F4 
-X-CRM114-Status: UNSURE (   9.55  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20261103_133128_882569_DAB0AEFF 
+X-CRM114-Status: GOOD (  11.88  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -122,10 +130,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> Bits 12:11 of wMaxPacketSize
-    hold the number of additional transactions per microframe of high-speed isochronous
-    and interrupt endpoints. xhci_get_endpoint_max_burst() already programs them
-    as Max Bur [...] 
+ Content preview:  The driver uses the "gpio" alias index to place a bank in
+   the global GPIO number space and leaves the base at 0 when there is no alias.
+    The Kirkwood device trees have no gpio aliases, so both banks we [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -141,7 +148,7 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
   0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
  -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
                              [score: 0.0000]
-  0.0 DMARC_MISSING          Missing DMARC policy
+ -0.0 DMARC_PASS             DMARC pass policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -155,80 +162,105 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 07BAB202831
-X-Spamd-Result: default: False [-58.91 / 15.00];
-	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
+X-Rspamd-Queue-Id: 86D7220282F
+X-Spamd-Result: default: False [-7.91 / 15.00];
 	BAYES_HAM(-3.00)[99.99%];
-	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	MID_CONTAINS_FROM(1.00)[];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
-	R_MISSING_CHARSET(0.50)[];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
+	DMARC_POLICY_ALLOW(-0.50)[puzzle.ch,reject];
 	R_SPF_ALLOW(-0.20)[+mx:c];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,puzzle.ch:s=20211230,puzzle.ch:s=20211209];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
 	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
-	RCPT_COUNT_TWO(0.00)[2];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DMARC_NA(0.00)[pengutronix.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[4];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
+	RCVD_COUNT_THREE(0.00)[3];
 	FROM_HAS_DN(0.00)[];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	FORGED_SENDER(0.00)[grzeschik@puzzle.ch,barebox-bounces@lists.infradead.org];
 	RCVD_TLS_LAST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	FORGED_SENDER_FORWARDING(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	TO_DN_ALL(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,puzzle.ch:+];
+	RCPT_COUNT_THREE(0.00)[3];
+	FROM_NEQ_ENVFROM(0.00)[grzeschik@puzzle.ch,barebox-bounces@lists.infradead.org];
+	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=1];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Stat-Signature: s1eea5as46cqa89tiggfiy8m5z3fhyzn
+X-Stat-Signature: ab3s9fw6jmy74tkwn6xce76uj7ch7ot6
 
-From: Ahmad Fatoum <a.fatoum@barebox.org>
+The driver uses the "gpio" alias index to place a bank in the global
+GPIO number space and leaves the base at 0 when there is no alias. The
+Kirkwood device trees have no gpio aliases, so both banks were
+registered at base 0. gpiochip_add() then rejected the second bank with
+-EBUSY, which the driver ignored, so every user of gpio1 deferred
+forever:
 
-Bits 12:11 of wMaxPacketSize hold the number of additional transactions
-per microframe of high-speed isochronous and interrupt endpoints.
-xhci_get_endpoint_max_burst() already programs them as Max Burst Size,
-but xhci_set_configuration() copies them into Max Packet Size as well,
-so a high-bandwidth endpoint ends up with a Max Packet Size beyond the
-1024 bytes a high-speed endpoint can have.
+  gpio-leds gpio-leds.of: error Requested probe deferral: getting gpio for /gpio-leds/led-level
+  gpio_keys gpio_keys.of: error Requested probe deferral: requesting gpio #0
 
-Mask them off, like Linux does since commit f94e0186312b ("USB: xhci:
-Bandwidth allocation support"), with the mask fixed to cover bit 10 in
-commit dc07c91b9b40 ("xHCI: fix wMaxPacketSize mask").
+Let gpiolib choose the base when there is no alias, and fail the probe
+with an error message if the chip cannot be registered.
 
-Fixes: 105b2eabd55a ("usb: Add U-Boot xhci driver")
-Assisted-by: Claude:opus-5.5
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
+Assisted-by: Claude:claude-opus-5-5
+Signed-off-by: Michael Grzeschik <grzeschik@puzzle.ch>
 ---
- drivers/usb/host/xhci.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-orion.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index 661dc0dde0b8..1bb1758ac25d 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -574,8 +574,8 @@ static int xhci_set_configuration(struct usb_device *udev)
+diff --git a/drivers/gpio/gpio-orion.c b/drivers/gpio/gpio-orion.c
+index ef7d1ff114..994ba1926e 100644
+--- a/drivers/gpio/gpio-orion.c
++++ b/drivers/gpio/gpio-orion.c
+@@ -83,7 +83,7 @@ static int orion_gpio_probe(struct device *dev)
+ {
+ 	struct resource *iores;
+ 	struct orion_gpio_chip *gpio;
+-	int id;
++	int id, ret;
  
- 		ep_ctx[ep_index]->ep_info2 = cpu_to_le32(EP_TYPE(ep_type));
- 		ep_ctx[ep_index]->ep_info2 |=
--			cpu_to_le32(MAX_PACKET
--			(get_unaligned(&endpt_desc->wMaxPacketSize)));
-+			cpu_to_le32(MAX_PACKET(get_unaligned(&endpt_desc->wMaxPacketSize) &
-+					       USB_ENDPOINT_MAXP_MASK));
+ 	gpio = xzalloc(sizeof(*gpio));
+ 	iores = dev_request_mem_resource(dev, 0);
+@@ -95,14 +95,26 @@ static int orion_gpio_probe(struct device *dev)
+ 	gpio->chip.dev = dev;
+ 	gpio->chip.ops = &orion_gpio_ops;
  
- 		/* Allow 3 retries for everything but isoc, set CErr = 3 */
- 		if (!usb_endpoint_xfer_isoc(endpt_desc))
++	/*
++	 * Without a gpio alias, let gpiolib pick the base. Defaulting to 0
++	 * made the second bank of Kirkwood SoCs collide with the first one.
++	 */
+ 	id = of_alias_get_id(dev->of_node, "gpio");
+ 	if (id >= 0)
+ 		gpio->chip.base = id * 32;
++	else
++		gpio->chip.base = -1;
+ 
+ 	gpio->chip.ngpio = 32;
+ 	of_property_read_u32(dev->of_node, "ngpios", &gpio->chip.ngpio);
+ 
+-	gpiochip_add(&gpio->chip);
++	ret = gpiochip_add(&gpio->chip);
++	if (ret) {
++		dev_err(dev, "failed to register gpio chip: %pe\n", ERR_PTR(ret));
++		release_region(iores);
++		free(gpio);
++		return ret;
++	}
+ 
+ 	dev_dbg(dev, "probed gpio%d with base %d\n", dev->id, gpio->chip.base);
+ 
+
 -- 
-2.47.3
+2.53.0
 
 
 
