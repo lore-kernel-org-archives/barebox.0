@@ -1,124 +1,126 @@
-Delivery-date: Tue, 03 Nov 2026 14:18:37 +0100
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Tue, 03 Nov 2026 14:43:27 +0100
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xOEPM-006nww-31
+	id 1xOEnP-006oJK-0M
 	for lore@lore.pengutronix.de;
-	Tue, 03 Nov 2026 14:18:37 +0100
+	Tue, 03 Nov 2026 14:43:27 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id A30C7201CE0
-	for <lore@pengutronix.de>; Tue, 03 Nov 2026 14:18:32 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 40E5320282F
+	for <lore@pengutronix.de>; Tue, 03 Nov 2026 14:43:23 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="lBKR/14X";
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=YbrXy2f6;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=YO5NPX2f;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=ZtI9LbRk;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793711913;
+	s=20260414; t=1793713403;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=Ym1ufjGKTZZckZQ8PgmqEQq8cn7UVy385wZreHSPWK0=;
-	b=JvLvgTfAyA4hvn5GYx7IuZ/gap5ZkUFSiB0IaaerQgGX9wp/f1A1p3xkRegE+EqPog01kV
-	29MDGai+ImSKxXk7smzLMkFh8AIegKhadvX6JhfJ0TnNwdBa1DltZ7+6nGDpbUjkMSVBIy
-	7NrE1vOxLEWenaiiTjkFxp/pjJEsDd3jA5iHq4gFsOR6ZjduWS5a45PjC+KkjYcmOedSRk
-	ktEqAzbIjV4NR5ikL1Y9xl0NptAPu5DVrMZ2gIRcRq6T7cCAu1lxciIWlPS/kChR+r1v/5
-	128zrx3vfVGbz6WVrIzLNG7hZGmuyEB3hub6UEJWbZC4GhUspdxaJWxmqiQPqg==
+	bh=BGeOaNJdkWSK41hWsnuHwwkOvAMGChzzOArMPAz+bCI=;
+	b=MvyG1d30RNO2gT14b4rgJ/yvZpdxU1RWQipzBFHWL6NQr7d9K3lPeYIHbWCWlC/n9oZSSt
+	WUEnI6ecuXL9mg8za+ELazlHS7EBRVwkdlAS9pof1u848g3v4QrM+cguv4s0oNdQWXYig6
+	RMOwGd5wFwJJtUTjyaIMrJIx6vi/rGSt8ySrK0DlY8awifSUcftku6yiw/g2TBXmjY/kIW
+	927pnRvefQABUJNnGFijYgbr1opvM1kpHykR88UmTu1ZHKAu9Y3pkEMOuqdm6nOTNtQv56
+	HWZguMt9MO+ugzFFBF6UX8bdhnlrLI3F1nv9n2w/qeAJ3RJUQU8j4EHz7etr/Q==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="lBKR/14X";
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=YbrXy2f6;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=YO5NPX2f;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=ZtI9LbRk;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1793711913; a=rsa-sha256;
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1793713403; a=rsa-sha256;
 	cv=pass;
-	b=WnJk2sNQyYKG4ww0BhCVaUMFDQBrlVdtmHBRMRmWI/LQqUYk9pSxhfi+n5XI30BeQdGYZZ
-	4gFRV7iRNQRhTvXwDuX6Zd2SM6uVT9DMT6mRASRrwk6aTSYUwKBBxViFEGdvT2hISFliGT
-	9GFB24NtEu1odZwuTeV/TW5TVfWbKpw6s/hykspFFszh4GlqWNAvRmk5gj9U81EmsZb27w
-	yLBrWWiG10shMCwygHZWKupY8ahRkDe/U3k9Z3M30+JI+9pMI5hUCX1eZ4khWKaB8m3+vL
-	yGpQElh+IMnZiYD28HzGxWHoWwPoKFamnUQ21SFpFGMetDCpXzJYArIXtWpFzw==
+	b=VCVFpmeeCmWOIarIY8vRXh/PeWWt39kMpA4XpUCSygpMFqtp/b2YT1+ExmUgs4VOm+g4ps
+	5kaQsmdMj2Q0DFHOo/Vnc1gEa1xQZ4bjT5Eim79uwb2PDSRFUhAOKWoTw1JHQqlPOjob03
+	70VmBI9BuflxnDSeX+G7n0I2+7batQ1TYa3oy0aHH/oaxYRmHFM8kCm8udCzSqgICQWcnw
+	JIJwgRnx4ziNOshk3RRjPwoWQfqNYTn8UmGtS/hSb9DfcbcNf9llRFp9HLDi1Iph14WGIA
+	pi83ixWvP3MWUO9in6sdoUyBFFirsm0NAbwJvGfRBFotZuGTrVMkf39fawYxKA==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=Ym1ufjGKTZZckZQ8PgmqEQq8cn7UVy385wZreHSPWK0=; b=lBKR/14X3R09Ob
-	zXPOIM30tuLf8e8hcXTLBpsoysrSt8TK/D9PNJQj614+KkWUIVDLmRwvN63CWy0OZQdq438xvXLGk
-	jln92Bf1l3QMVZvSWVsp+f8Wr3TL1RwMqAKWZ6dbvl9v1r/TmcpMA0kp7RYeT9kDM3bDNVvrNMinb
-	DhKiZ1VimNz8oZQBBHI6uDhYza6aNnIISmU3j7ikC+PFMG1ePf+uAFIBDCQMq3btdTsi9SnP23sv5
-	xaJES6KGbdHmyMWLwNWU4Ju8yvN96yvWiacnm3ytQojMpOpavRQ3LHXej7DhxfdT4j5vWPXyJnGsm
-	YxC2yoFD2gcviuZZZ2CQ==;
+	List-Owner; bh=BGeOaNJdkWSK41hWsnuHwwkOvAMGChzzOArMPAz+bCI=; b=YO5NPX2fj7hJQm
+	QX+UNOnobPyMFFDnmw+fSJJMwtii2hGs4AEqpsE2ACfNtmrd1cZbI9G+mSBQBj3ckflOkvsl3QrRa
+	3iBYwGRFNCnEX4nvA4gZc8lHtLamXs4K+lw6JhSaKeEwu27589QAgXopA/TJFOemPLoiT6YTmcJdZ
+	h2L3YdfklBg3ibhzjd/uHKBljZ87cpLwMURiqUSV0BKd0jVHhrTAI44QGv3ynNLdXFUB3oJnMPDln
+	lsWqNqaCZBDSPfUqwpFx3hhAxyfc/jkuuWpbz83XpreDmx7VBtEKvwHBJBqYm3DcEUWhSbownGM3Z
+	qhxbR4TEaC6+aRd5FPuQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xOENu-00000002WBR-0zBZ;
-	Tue, 03 Nov 2026 13:17:06 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1xOEmM-00000002bFW-1tL3;
+	Tue, 03 Nov 2026 13:42:22 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xOENq-00000002W9h-35lZ
+	id 1xOEmI-00000002bCr-24jJ
 	for barebox@lists.infradead.org;
-	Tue, 03 Nov 2026 13:17:04 +0000
-Received: from dude05.red.stw.pengutronix.de (dude05.red.stw.4.pengutronix.de [10.17.1.19])
-	(Authenticated sender: relay-from-dude05.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id E3BBB202BA0;
-	Tue, 03 Nov 2026 14:16:54 +0100 (CET)
+	Tue, 03 Nov 2026 13:42:20 +0000
+Received: from dude02.red.stw.pengutronix.de (dude02.red.stw.pengutronix.de [IPv6:2a0a:edc0:0:1101:1d::28])
+	(Authenticated sender: relay-from-dude02.red.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 491A9202806;
+	Tue, 03 Nov 2026 14:42:10 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793711814;
+	s=20260414; t=1793713330;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Ym1ufjGKTZZckZQ8PgmqEQq8cn7UVy385wZreHSPWK0=;
-	b=YbrXy2f64ohlgrb+H6ahdFUM+AUQ16ZpUf4Vy5MF2ecFuVvK9GgFwW6BS3fVdlDXsbNaQJ
-	HzP/FWyq6/mivRbHKaIW8Qhorms9ia6KUKLtNcK5RITUMtKzADUyeQp6Y40IfkUROnnuAK
-	CG8S2k31XNr0JbZUQa4huRLFEwQTeJJYNIMbguCGUbyWz/wrQEOP39kK8hH7axN7my39un
-	rF8pSHlAF75sUk7LkmOT5efA4pGj+sLt/Ftfsqk18EeclIIGVq1LU4xUh+TPX1atJzIUXU
-	BPg1jxpgO8zbBcS9os1nKp3mgKKkCtzyjL2Yklxbve6SbAbMoVWWeLFvuxKPQA==
+	bh=BGeOaNJdkWSK41hWsnuHwwkOvAMGChzzOArMPAz+bCI=;
+	b=ZtI9LbRkSpJZ1gW4hFx0CtqvP0L14ZYGUSPq4FNQVRBu6YUvAnLqsgxtyUlx9nw8bgz7i3
+	5C5gi4OUNGxsXNO8rM2BVx2jTbe/FwsGMURnTz6W1bvBl2thY5UHpOsgUWm8zOWX5mMrgv
+	VQhVyJ4/PLwhToV5xhk4iGdnGb0dzupOew+HTRIVUIs3BqtVMj5r8PRin+KAISt+bvD1Jl
+	H/lf946qSE9rKzSjJyc3YBB5iDABYMcd8HyiEQbK5zbLZMltJru81T3Yk61mkeR33JczKq
+	Z+PdHTWVJBTTBVE+ydyLWJMHtvluw0keOZzgh7n7WvGkKrirZYMpOdZe0h+4QA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793711814;
+	s=20260414; t=1793713330;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Ym1ufjGKTZZckZQ8PgmqEQq8cn7UVy385wZreHSPWK0=;
-	b=YpAEA8MAFYMyG1d0t30N8wnFa65pW9IgnB28sQofc7PosAH3svXtB/93mUfqrGRnJWojMA
-	uEv6hiaDJhsoag+1BElg+hvusCzvaMDS7Doyp2UMSFQJZMQsNUt7X3x2rtkOSs9CBzkcc2
-	YyFezrhMHhltW33sF57tzbWOP9RPd2+DLiEjfYt27/ruy5nMj5MI+l792sEQv1W//t+ta1
-	qW/UPcxj1IWoOBHhfsSw7g7+G0miEVXMtQ0KPZoePsR7A09Isgs8KD/qaRqf9dFuz2zDIB
-	UBhyW7T6Eov43Ae7Zm3s3wlytB+So9jj+NfAJ0WaM9rNkcxGD2mYj1h8zN0OEg==
+	bh=BGeOaNJdkWSK41hWsnuHwwkOvAMGChzzOArMPAz+bCI=;
+	b=PzoKnmqicERk3sCnxS46DDIUGTF2vaUfFzUiZezAUC2zr8uvsQH0G9cEdt43Az+sKtvkjz
+	PWLTy2FTPzft6ylMvsaPKjiClVqjqWbPmN/HL+UitCb1G0YyZVcmhByyH6oyhcLrvuyfGA
+	3RTC+Xy0MkL+TX5eo/cWBxjY7FSMRMTXcizwNT/Bhko7qeTW5EiLJsoYMRKWNw2t5zHn84
+	kka+vuUHZhBbiuxEHWRxjsYROltKsRVaiJO+RwYYFMBhMWAUNu8hUXMeQ0cUmup7jefxT0
+	c+KbacJOjd26ltXdyaM58tOfe6a6kedllT4ddJUXqNTih9+oKYG6cAVAyqCWBQ==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
-	auth=pass smtp.auth=relay-from-dude05.red.stw.pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793711814; a=rsa-sha256;
+	auth=pass smtp.auth=relay-from-dude02.red.stw.pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793713330; a=rsa-sha256;
 	cv=none;
-	b=NWeWRNjcC999zmz4ijRnyr3p+fVGFh5kINQJL7gOJ4U+DRZCud3i7DEW8+GBOOAEPmY0ML
-	+gNLm1pil6ASNzStb4xSetFBgEZ9euKHYwdVig3QswGiGoDpxm/eHnGi5Uq/ouRe6ZeNer
-	W62f96iOOZLqe8y9TBp4MwSdv49l/+jCvaEWDEcf7uyDDdFTs4FTZ7b/8KPECWhklComsq
-	BPo4B7+WkpIJAY60YWWD/RjwePkFDPjmCX508iRe6dj210isf4uQEWCI7P2EjAz7pbJ0rk
-	TwzzpeC64uTaCIeof2luvwh9X2Xh9sSz06UYAyEuVB0JV7Yvwpr735K5ZtMfLw==
-Received: from dude05.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude05.red.stw.pengutronix.de (Postfix) with ESMTP id C518B741157;
-	Tue, 03 Nov 2026 14:16:54 +0100 (CET)
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: lst@pengutronix.de,
-	Ahmad Fatoum <a.fatoum@barebox.org>
-Subject: [PATCH 2/2] habv4: drop cache maintenance around HAB SiP calls
-Date: Tue,  3 Nov 2026 14:16:09 +0100
-Message-ID: <20261103131652.663786-2-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261103131652.663786-1-a.fatoum@pengutronix.de>
-References: <20261103131652.663786-1-a.fatoum@pengutronix.de>
+	b=a4v+HN6xmKHXWlc288qNUNGHiLg7bDva2Wo3S40MaGJMeVTYtDl0jEixD5MqsRX/BcxoYk
+	lXa+4ISitwuaxOxDSgJsjujfrI6Tm/X5d5dKVtnHmm10ACkmO/eyECH5M8IAFptSUM3/bX
+	csIOr1TRyN+P4QjK8NTNPO7GvzhYA+d1hbGTdhZgsr1s+nlK3d6dKNxs4j77cKZ2xlol/v
+	n6Gru3m+TVokResOYAH11vMMMzCBSvMH2YhIs1lQ3JtOfk/dQmFE3BLK0tDs5j2ViPPos3
+	AS3lnW9Lr8qsMoy3kHTiSZX2jpNjV9U1l8MotOEztmFf0sY5wLX8wWEyiA2Xng==
+Received: from dude02.red.stw.pengutronix.de (localhost [IPv6:::1])
+	by dude02.red.stw.pengutronix.de (Postfix) with ESMTP id 3CF1EFFA72;
+	Tue, 03 Nov 2026 14:42:10 +0100 (CET)
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20261102145302.3025815-1-s.hauer@pengutronix.de>
+References: <20261102145302.3025815-1-s.hauer@pengutronix.de>
+Subject: Re: [PATCH 1/2] fs: ubifs: don't free the symlink target twice
+Message-Id: <179371333023.3383937.9268461331664526999.b4-ty@pengutronix.de>
+Date: Tue, 03 Nov 2026 14:42:10 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261103_051702_951727_42094573 
-X-CRM114-Status: GOOD (  16.35  )
+X-CRM114-CacheID: sfid-20261103_054218_772012_9B3AFB57 
+X-CRM114-Status: UNSURE (   6.55  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -126,10 +128,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  From: Ahmad Fatoum <a.fatoum@barebox.org> On i.MX8M, barebox
-    runs in non-secure EL2 and queries the HAB status and, except on i.MX8MQ,
-    the HAB events via SMC. So far, we cleaned and invalidated the caller's variables
-    before the SMC and only i [...] 
+ Content preview:  On Mon, 02 Nov 2026 15:53:01 +0100, Sascha Hauer wrote: >
+    ubifs_iget() makes ui->data the inode's i_link for symlinks. Since > commit
+    66666e887c ("fs: free inode->i_link") the VFS frees i_link when > [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -159,181 +160,65 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: A30C7201CE0
-X-Spamd-Result: default: False [-58.91 / 15.00];
+X-Rspamd-Queue-Id: 40E5320282F
+X-Spamd-Result: default: False [-60.61 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
+	BAYES_HAM(-3.00)[99.99%];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
-	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	MID_CONTAINS_FROM(1.00)[];
+	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
+	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_MISSING_CHARSET(0.50)[];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
-	R_SPF_ALLOW(-0.20)[+mx:c];
+	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received];
 	MAILLIST(-0.20)[mailman];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
+	DMARC_NA(0.00)[pengutronix.de];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWO(0.00)[2];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	DMARC_NA(0.00)[pengutronix.de];
-	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
-	FROM_HAS_DN(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_ALL(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Stat-Signature: ac54976b8hkrwquwmsobqm5am5kypmai
+X-Stat-Signature: gf6w41suxkie4s64tsqau4agnafpa9yk
 
-From: Ahmad Fatoum <a.fatoum@barebox.org>
 
-On i.MX8M, barebox runs in non-secure EL2 and queries the HAB status and,
-except on i.MX8MQ, the HAB events via SMC. So far, we cleaned and
-invalidated the caller's variables before the SMC and only invalidated
-them afterwards.
+On Mon, 02 Nov 2026 15:53:01 +0100, Sascha Hauer wrote:
+> ubifs_iget() makes ui->data the inode's i_link for symlinks. Since
+> commit 66666e887c ("fs: free inode->i_link") the VFS frees i_link when
+> destroying an inode, and ubifs_destroy_inode() then frees ui->data
+> again. Unmounting a UBIFS that had a symlink looked up thus ends in a
+> double free:
+> 
+>   !block_is_free(block) && "block already marked as free"common/tlsf.c 1069
+>   ...
+>   (ubifs_destroy_inode+0x18/0x2c) from (destroy_inode+0x38/0x4c)
+> 
+> [...]
 
-TF-A doesn't do any cache maintenance itself on the buffers and the
-BootROM doesn't do any either: The BootROM disables the MMU it had setup
-and cleans and invalidates the D-cache before jumping to the boot image.
+Applied, thanks!
 
-The results are thus written through TF-A's mapping of DRAM
-(SCTLR_EL3.{M,C} = 1, MT_MEMORY | MT_RW | MT_NS), i.e. Normal
-Write-Back, Inner Shareable, Non-secure, and may still be dirty in the
-cache when the SMC returns. Now that barebox maps normal memory the same
-way, no maintenance is needed at all and no alignment requirements exist
-for buffers.
+[1/2] fs: ubifs: don't free the symlink target twice
+      https://git.pengutronix.de/cgit/barebox/commit/?id=0d77ce844730 (link may not be stable)
+[2/2] fs: jffs2: don't free the symlink target twice
+      https://git.pengutronix.de/cgit/barebox/commit/?id=ba365e56c385 (link may not be stable)
 
-Dropping the cache maintenance also fixes a bug: The invalidate after
-the SMC was wrong, as it may discard updates not yet cleaned from the
-cache, such as unrelated stack data in the same lines.
-
-This was not observed to cause issues thus far, presumably because the
-Cortex-A53 on the i.MX8M cleans dirty lines on DC IVAC when invalidating
-them[1].
-
-So let's drop the maintenance. With the MMU disabled, our accesses would
-be Device-nGnRnE and need it again, so make HABV4 depend on MMU for
-ARMv8 systems instead.
-
-[1]: Arm DDI 0500J, Cortex-A53 TRM, 6.2.4 Data cache maintenance
-     considerations, 6-3
-
-Fixes: 6c4d5bb5acfe ("i.MX: HABv4: implement interface for i.MX8MQ")
-Fixes: 3177ed294444 ("habv4: use hab rom implementation of report_event")
-Assisted-by: Claude:opus-5.5
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
----
-While a fix, I am not in a hurry to get this merged. next is fine to get
-some more testing.
----
- arch/arm/mach-imx/Kconfig |  2 +-
- drivers/hab/habv4.c       | 33 ++-------------------------------
- 2 files changed, 3 insertions(+), 32 deletions(-)
-
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 5a5931f1a33d..0910eaa439c8 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -907,7 +907,7 @@ config HABV4
- 	select HAB
- 	select NVMEM
- 	select IMX_OCOTP
--	depends on ARCH_IMX6 || ARCH_IMX8M
-+	depends on ARCH_IMX6 || (ARCH_IMX8M && MMU)
- 	help
- 	  High Assurance Boot, as found on i.MX28/i.MX6/i.MX8M.
- 
-diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
-index 83ee06a6aa46..e6244c96556e 100644
---- a/drivers/hab/habv4.c
-+++ b/drivers/hab/habv4.c
-@@ -7,16 +7,13 @@
- 
- #define pr_fmt(fmt)  "HABv4: " fmt
- 
--#include <common.h>
- #include <hab.h>
- #include <init.h>
- #include <types.h>
- #include <mmu.h>
--#include <dma.h>
- #include <zero_page.h>
- #include <linux/sizes.h>
- #include <linux/arm-smccc.h>
--#include <asm/cache.h>
- 
- #include <mach/imx/generic.h>
- #include <mach/imx/imx8mq.h>
-@@ -196,24 +193,10 @@ static enum hab_status hab_sip_report_event(enum hab_status status,
- {
- 	struct arm_smccc_res res;
- 
--	v8_flush_dcache_range((unsigned long)bytes,
--			      (unsigned long)bytes + sizeof(*bytes));
--
--	if (event)
--		v8_flush_dcache_range((unsigned long)event,
--				      (unsigned long)event + *bytes);
--
- 	arm_smccc_smc(FSL_SIP_HAB, FSL_SIP_HAB_REPORT_EVENT,
- 		      (unsigned long)index, (unsigned long)event,
- 		      (unsigned long)bytes, 0, 0, 0, &res);
- 
--	v8_inv_dcache_range((unsigned long)bytes,
--			    (unsigned long)bytes + sizeof(*bytes));
--
--	if (event)
--		v8_inv_dcache_range((unsigned long)event,
--				    (unsigned long)event + *bytes);
--
- 	return (enum hab_status)res.a0;
- }
- 
-@@ -222,22 +205,10 @@ static enum hab_status hab_sip_report_status(enum hab_config *config,
- {
- 	struct arm_smccc_res res;
- 
--	if (state)
--		v8_flush_dcache_range((unsigned long)state,
--				      (unsigned long)state + sizeof(*config));
--	if (config)
--		v8_flush_dcache_range((unsigned long)config,
--				      (unsigned long)config + sizeof(*state));
--
- 	arm_smccc_smc(FSL_SIP_HAB, FSL_SIP_HAB_REPORT_STATUS,
- 		      (unsigned long) config,
- 		      (unsigned long) state, 0, 0, 0, 0, &res);
--	if (state)
--		v8_inv_dcache_range((unsigned long)state,
--				    (unsigned long)state + sizeof(*config));
--	if (config)
--		v8_inv_dcache_range((unsigned long)config,
--				    (unsigned long)config + sizeof(*state));
-+
- 	return (enum hab_status)res.a0;
- }
- 
-@@ -587,7 +558,7 @@ static uint8_t *hab_get_event(const struct habv4_rvt *rvt, int index, size_t *le
- 	if (err != HAB_STATUS_SUCCESS)
- 		return NULL;
- 
--	buf = dma_alloc(*len);
-+	buf = malloc(*len);
- 	if (!buf)
- 		return NULL;
- 
+Best regards,
 -- 
-2.47.3
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
