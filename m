@@ -1,128 +1,129 @@
-Delivery-date: Tue, 03 Nov 2026 22:32:52 +0100
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Tue, 03 Nov 2026 22:32:56 +0100
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xOM7f-006wWE-27
+	id 1xOM7j-006wXN-2t
 	for lore@lore.pengutronix.de;
-	Tue, 03 Nov 2026 22:32:52 +0100
+	Tue, 03 Nov 2026 22:32:56 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 73C2E201B70
-	for <lore@pengutronix.de>; Tue, 03 Nov 2026 22:32:47 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id B1A3B200FB6
+	for <lore@pengutronix.de>; Tue, 03 Nov 2026 22:32:51 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=FcYl7FoH;
-	dkim=pass header.d=puzzle.ch header.s=20211209 header.b=HULnD+CP;
-	dkim=pass header.d=puzzle.ch header.s=20211230 header.b=pGcLULNb;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=T+9kxoSx;
+	dkim=pass header.d=puzzle.ch header.s=20211230 header.b=c1J4qmK2;
+	dkim=pass header.d=puzzle.ch header.s=20211209 header.b=qofaAV1i;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=pass (policy=reject) header.from=puzzle.ch
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1793741567;
+	s=20260414; t=1793741572;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=mNENCl5WWooWVnAB5J/zFRxEShvGhxlLGJ4dGcnOz4U=;
-	b=NRxFwbFAiFC2IM+BcPrAFWbvPo8MDwO2fVXDwz/hZ9MbPfHX+kCsyLruriEDL70jFqTbEA
-	hm1Zsd12iMxAWUZxdMJwWIq98ya6DqXIqwjiNktyfrYdxc6X37Tg9kOO/2DaekGPwKQwon
-	onTKRKkoEPcFOyzvGfyspj0UAt0UzP7vDQgnLSUsSWMkLaKFzmMbK8ybhRuD2I0zJuNPLP
-	nmeSKkUz3GusV72CA1XegMJf5tOtwefOwH8dCcwq5CEuMYECzw25oORuOMrzdCsH6J13Wz
-	C7pdlqXCwflXCKDSDNn4Zlfwu607UI5zQ7itiR2Hif+3NodUFlLIIPBjVwIxiQ==
+	bh=/Y/IEA1JSaAjjt27I/SrXpZrkZEISwMnCSsy8NxFxpg=;
+	b=JOVGTHdI1KkBuZltFbkwtRB/MqorWwv3zeVu3Jmv09b7qekAQq0qYjFeqhDcdLAnXZZNAt
+	Ho5cHj31tGalhWcZyLn1D5bXaTMzzxuM1v1rw8IzODgNft900tmHkuxMgbpAiyIwvrQqiK
+	bdZ6ZnP8m9neYBhCa8S/aXIW2jFz9r+kVBs7XTl7r27mOvwvL19RhDcNN60G8mBjQFdJrZ
+	CA0kWMhR/fq3XFRm6H1WWCV+9GvGgY32qYJPSmw1VpaPli7vbCOYKfdIZRqX9ojApyzgET
+	26OW16TsxJ4GbYPXUCq+gElAyNWb5LjXeqXgg1b/yxu3W6lC7AdMvcrX0Hgnag==
 ARC-Authentication-Results: i=1;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=FcYl7FoH;
-	dkim=pass header.d=puzzle.ch header.s=20211209 header.b=HULnD+CP;
-	dkim=pass header.d=puzzle.ch header.s=20211230 header.b=pGcLULNb;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=T+9kxoSx;
+	dkim=pass header.d=puzzle.ch header.s=20211230 header.b=c1J4qmK2;
+	dkim=pass header.d=puzzle.ch header.s=20211209 header.b=qofaAV1i;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=pass (policy=reject) header.from=puzzle.ch
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793741567; a=rsa-sha256;
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1793741572; a=rsa-sha256;
 	cv=none;
-	b=DMY8HoIsSEY33/GV0gwK46p+KyRYKfGfgNvLxMRa2xYC7JLLgUAvG5+r2etwH8uGDNdGb6
-	1tQRcd0PNmpmJgarb+Ez8l7GvkOn5esIl7IYdovpntqgeepselVPSjgH0o+G8UWs1SOZC1
-	BeL35Zfu7YCjN+AzFlH9IqsANnXSwhrO9hOSzJW0xS2Qob/5GUlD/Y2agHaEDkW0dIzVpO
-	uXSs9VVaqJ+2LZ/U6V0udhCu61enwvwusAtLCZ4gPz2WGnMcBowiOfTyIQsOX9Djk7YJdC
-	q/tmfOhREjXuQTQ8QMftO6zmnm+iC76WOH8+VNAMMZGpHAW65vfPl5K01cgjRg==
+	b=dqx1JpQ//sU/vELVFI+610gAIeqWSCfnrE121Mnn/I2W1Gfn8ncvo7g9C2rjq1xMsBcX4R
+	JZ0VEU1r6Ax96WtVqfMetRiAVxmdNZK+ozim3HxQ8wBdqf1IPmsu2hIUxLavNb4dQdwqiv
+	xHJqybQHfKPHt19Gs7DgS8K9HFNIqltT8ZGLN60XeeTM53kMB5aZyvCG5c/C4W1n9h2YRa
+	SCWa4sefcjaimbPFFdMOIO3pcyP8ZhlVbXYhgTUreSADHIcWIWlX8oD5QS9cN+9wcOELIX
+	tDJy6gF+s7yEuY+ocqeEC3LmxWamvGl1qpKpMjO+uUNvaa1F5lVS8gb3brz8xA==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=mNENCl5WWooWVnAB5J/zFRxEShvGhxlLGJ4dGcnOz4U=; b=FcYl7FoH/sgjqM
-	h6PvRa3PaUM8NI46mMLuMJWmySiX0BDe0lqonookIedvN76SLgsKFEbhtIBLYjlLTKR7DYdUQVUIp
-	Le5su+nRqRELh10GMCgT5nYwcwx1DuPGdPuzA/1PoOWXdjkNO/EKgtuCUMCHKV2oRe009ChLTBTYm
-	2L5QNANvrYvcBVAXaMlVM6tHeZGcl42TGdzqrk0EV+twkoCNptFN9VS5MYAkjswVfUO7kUObPBUOr
-	6C3LgProYt2/rIwl05G0pIkQagG+TOSdtQ+3B321+qMB+XHffCzVgRW+a0HSTS/4suKHjVFVvA0gw
-	APpah0cgubUq/06BgJow==;
+	List-Owner; bh=/Y/IEA1JSaAjjt27I/SrXpZrkZEISwMnCSsy8NxFxpg=; b=T+9kxoSxpT/PG8
+	8f/e/fXbboH04XlNILZ1dTacQPukJqPVVQe3ekneIx7f+8nJW3BQvleE41hOLdfA549n/lgg5TYlk
+	KUSEOSIYQdRV8jO7FKDVizx8pxwOi0HB8ESjKqnEcRjexhE9QkhQEsBndRqGpwvc7lai6NXxuNPQm
+	vk+ItVkCH0jjwUAS16Fyrh2W0pL0ytxQXVO/bllDZoLqzfOJx0X2kSKUDh6ryXs+a2ZILtlTR1y2y
+	09WuRHREsgyS82AiwHzTNzNGrwGBZxvy/FrAheLR6mKu2uhbAhue1M1fLQSd1xbwe8ocKtblRRisY
+	ud5yf6AR5l0DmYKb5ebw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xOM6R-00000003iDR-0f7A;
-	Tue, 03 Nov 2026 21:31:35 +0000
-Received: from mx03.puzzle.ch ([2a06:c00::5e55])
-	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xOM6K-00000003i5d-2cE6
-	for barebox@lists.infradead.org;
+	id 1xOM6P-00000003iBw-2pBp;
 	Tue, 03 Nov 2026 21:31:33 +0000
-Received: from mailstore02.cloud.puzzle.ch (mail.puzzle.ch [45.81.71.99])
-	by mx03.puzzle.ch (Postfix) with ESMTPS id 42D9E1C1;
-	Tue,  3 Nov 2026 22:31:22 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=puzzle.ch; s=20211209;
-	t=1793741482;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mNENCl5WWooWVnAB5J/zFRxEShvGhxlLGJ4dGcnOz4U=;
-	b=HULnD+CPMZUr7fqGs5McO8nMBNBjrYDhQXGxMkkAUbu7iuMNyIpfvCa1lHMgHG/spPOVCV
-	nLB3aVF3rUWzm+Pydrt2M9yQdPxFKrfvGHzoXAxKiG74bLx/doasUySGWrpR1/QwGmXunO
-	Tjk4UDuK6F3368Md88Q2EV5bKIpwLy+BOE/V8TVyhEZDPwG6KPwW1y/3Cq25tlQX8EO2xJ
-	vCbK+v47JbSkZFTX58tYrlMKXWRTor4d98h3j/r0qTiFZUggD1NrpsFHdJH4rpJGpe3IQN
-	QOiLqsHKHF35+nFx+fwZiu9RllXFOuPST7AyQDqiDFwDeGHvFyKIUaJKUa+MAQ==
+Received: from mx04.puzzle.ch ([2a06:c00::560f])
+	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xOM6K-00000003i3g-2cKp
+	for barebox@lists.infradead.org;
+	Tue, 03 Nov 2026 21:31:32 +0000
+Received: from mailstore02.cloud.puzzle.ch (mail.puzzle.ch [IPv6:2a06:c00::5086])
+	by mx04.puzzle.ch (Postfix) with ESMTPS id C72EF112;
+	Tue,  3 Nov 2026 22:31:18 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=puzzle.ch; s=20211230;
-	t=1793741482;
+	t=1793741478;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mNENCl5WWooWVnAB5J/zFRxEShvGhxlLGJ4dGcnOz4U=;
-	b=pGcLULNbkC0UC6kAud9Ltam9J/8art9mI3ceTXrBXLNrYyhdTjM+fNcVWtkfVZFc4QZdTQ
-	sOggkEh7xjgtckoTjlZMvSYS0PpmFKMQXqz/DiLIVIJQPpa/lXQxkCLK7CGCqgHmMF+kwv
-	DqAbWCxVNIiT6OwC39hTfbPONBZ0cjG9Tt+C9oCJuFIPVuiGe5ESELCtECEiKEqLfvS+M9
-	JFGUDMygTWYN2+MJZ03e2ggTHiy8s0REPVnGoRxxVLS3S1+rz0GV0DpOlasrh/qvIuKihu
-	+GKCSRdygZiJ0HApuLox0QPmLsgorBKlcjb8qVyr5HZvpLTyJw0d++UZb4bZcg==
+	bh=/Y/IEA1JSaAjjt27I/SrXpZrkZEISwMnCSsy8NxFxpg=;
+	b=c1J4qmK2vuusfsKzBAoNjyWbS9kXHz1hjj7ol4erB5VW2gd1fiXVFVi+SgxmpvLmY20eVD
+	jX0AALO24AHlVSrSbeP9BQ00+3539Do4j0cj5SRfdFtDUoifmGVBXPe4m5qnZUarwVcDB8
+	mtauxl3T+Yd/V12IE+EsfqNPBObl+EKF0sECyaawqTEi5aU4SxTPIMUb1yA86VT9pmMRf1
+	YQ0n7FdAHHK2jaoaNTRIxrzztvDug4imp2249ogRiDtB02RRvPxn5E811mgST/3hu3k7Au
+	Fw1PJfWKH0AteMOlPVSUeRLsgRk2RW5f1drtnIyNAo4rbvY/2Fnz+EorlxHofg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=puzzle.ch; s=20211209;
+	t=1793741478;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/Y/IEA1JSaAjjt27I/SrXpZrkZEISwMnCSsy8NxFxpg=;
+	b=qofaAV1iFUlFADM/+QCCUE+/FMl3hVL0T1yPav9+Qgp97IqMYlZZ6X2Tx+pQNdHgZ+Leik
+	eKhMDa7A6nYDCXXMNKIIQT2zfHoIp4pQW3kByRG9cq7cFbz+vG4Q567hYmPPpJCtqgkdJM
+	JL7Pd3Csg0JAS3yO0sAObpe9VId+CQa5umvfO6wvmVIB5cLtTdtYbUH6CuzToeOtREsUPQ
+	pLuydLvIr/CaEaBRFqm2CNXv8li1QPVv/A5nnhvj1txIlS3LkSYlS5bFaYEE9qLGu0EWx2
+	+Io5Y721uum4b81dnqkZ2XraOxHqTMWiYhNgkC2Pf1Eyv94QWlujzHlvM5wokA==
 From: Michael Grzeschik <grzeschik@puzzle.ch>
 x-ms-reactions: disallow
-Date: Tue, 03 Nov 2026 22:31:11 +0100
-Subject: [PATCH 5/6] mtd: nand: orion: register the NAND device as "nand"
+Date: Tue, 03 Nov 2026 22:31:07 +0100
+Subject: [PATCH 1/6] images: mvebu: skip images whose binary header is
+ missing
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261103-orion_kw_mvebu-v1-5-86442c0d283e@puzzle.ch>
+Message-Id: <20261103-orion_kw_mvebu-v1-1-86442c0d283e@puzzle.ch>
 References: <20261103-orion_kw_mvebu-v1-0-86442c0d283e@puzzle.ch>
 In-Reply-To: <20261103-orion_kw_mvebu-v1-0-86442c0d283e@puzzle.ch>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  "open list:BAREBOX" <barebox@lists.infradead.org>
 Cc: Michael Grzeschik <grzeschik@puzzle.ch>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1175; i=grzeschik@puzzle.ch;
- h=from:subject:message-id; bh=vh+AJaqLj7aDqOVNQX4yMSQ4XCt/hceqQpbzcpCkz7Q=;
- b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBq6lKlSYpDfKoXrJCGFr72Qw6W8e1MTH0KZlZ2u
- T/t/RnV8umJAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCaupSpQAKCRC/aVhE+XH0
- q54XD/0cqaSya1fgdWXspXTmWpRlU9UOdKNitGtymy/AXbOzAsBV4SjCxxsHNqOGWP8OPryL1yL
- +FWhX8Qb0z+4jZ0BRGnelUvXF1kXNSRxPvIiegL71IXe9J2S7m7PVJqY8+7YlM/m161vNoB2jzn
- SDEHBbIHaWBciUfIsGLL+pdRc+MtPMizKMqqIOJEwq6VZOjRXCyL02tTc3sG3ass3XK+CX1zR8e
- MTBQw+P2Kbr088oh8MJno2QJg6rc7j7cNVuT4T67XajeLisKI5INEcli31t3GZeBT3YiFRkHvpd
- 2LmTTRrShJFhIEI3D5y3YepQdLofep4y4X1tKfldL5qIOQA/bI7T8ApUevsfRU2IjoZsPpCKfAk
- 43/OaAIaPc6/E9sXb+ZoHmyXOpvtSAwavknmy5aZkyQJzlaPy69zok7meyJudZcpUUfcmYk5hi9
- dY6WuvjVR5+WSiegczC/YWdWUAagegQ5777GvDCYDWpfRGO5eVhCL4LNuaQrgCS+gOjKVMxEPYW
- OPeTvlBrZA6zeJltc1jt8/KI29pCMeFOj55iQea6qYvMXt/VFTIXQhiRzz6U7vXe+LhP361Cyj0
- hVIJ2m3xOXEmbqSZLa/Bjk45el5ncV5ULcE0Ov2/z/XUFgJyYDq66kUCHgseySKL9BJUltk3f5+
- timAI7qyjrtGzMA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2893; i=grzeschik@puzzle.ch;
+ h=from:subject:message-id; bh=tUbQUPm6CUE9KiudAKoIP3GY2lvd8aNgqyL44cLHrdg=;
+ b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBq6lKk0T4qIuO1IcVpQ1akwMSMZvmfQOsntvvHe
+ 18UUui5gCWJAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCaupSpAAKCRC/aVhE+XH0
+ qyrkEACa5WJtLGupKIJa1rftKW5Fi2iclZsAdYPf9YKVV3yIMzvy1F3MJskdY/Je26M7LQwTL9E
+ P3/VEw/4kWzWuhRC/NqPWsFYsERJVmJUCbOdyX1K+D0c6FoMP3kiOzGCxGrpt5WdM01+mjuwATo
+ SOERcTjKwIC/kXk3JPGuSRLnAKa0rJCQafDk9lg7jbzWq0kwSR+GDrpCJRyLU0coEjsE1T8zjUR
+ /u1QpGRDcC4L6vWzqfDqt/Qr5phnIIWpidO14s2yloi3eD1cdmkMTeecjOEXKgOt/BFbCAPs8OB
+ x5RYB15PYWnT57Pkh2MlmiXR5NvpYNKF9ouWXPElBfzIyYA5LOsIFbQSwWZEWHoK9FuDRTtgZId
+ O3qDs2UTmb+07kX49wBEdWthD00WpcYHxnceLpYWGSX7pLWM4udM/4YrOGiJF6zMeUB79Q1pwAL
+ c9jGVn9eoODdgIxVrOKqvRM9w0v8Q6SrjjNpMrpGjTa3WOTmUVM6kEVTwxg8DSo2krLOk5GBXYi
+ x63w6M41qqpQRrOliTyJIT1inEIOHcTNoBQzqMecJCPqB0N+H9EcvC3Ev29NyRF1agfUmiox1wj
+ NKRn0jr3eoyEBxt1GJ7RrvL6EhG17l3fMKHbjN0RYWOtSIkSi3zZkWwanOHmenvRB9U1dXdrbFR
+ AxKXjE2k+fDeKGA==
 X-Developer-Key: i=grzeschik@puzzle.ch; a=openpgp;
  fpr=957BC452CE953D7EA60CF4FC0BE9E3157A1E2C64
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261103_133128_918315_8E5D0F00 
-X-CRM114-Status: GOOD (  11.71  )
+X-CRM114-CacheID: sfid-20261103_133128_921007_4B55B9A0 
+X-CRM114-Status: GOOD (  11.40  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -130,9 +131,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  All other raw NAND drivers register their device as "nand",
-    so the flash shows up as /dev/nand0 with partitions like /dev/nand0.barebox.
-    The orion driver used "orion_nand", giving /dev/orion_nand0 and [...] 
+ Content preview:  The Armada 370/XP/38x boards embed DDR training code from
+   arch/arm/boards/*/binary.0, which is not part of barebox. A missing file stopped
+    the whole build: No rule to make target 'arch/arm/boards/globalscale-mirabox/binary.0',
+    needed by 'images/start_globalscale_mirabox.pblb.mvebu1img'. Stop. 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -162,73 +164,105 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 73C2E201B70
+X-Rspamd-Queue-Id: B1A3B200FB6
 X-Spamd-Result: default: False [-7.91 / 15.00];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[100.00%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	DMARC_POLICY_ALLOW(-0.50)[puzzle.ch,reject];
-	R_SPF_ALLOW(-0.20)[+mx:c];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,puzzle.ch:s=20211209,puzzle.ch:s=20211230];
+	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,puzzle.ch:s=20211230,puzzle.ch:s=20211209];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
-	FROM_HAS_DN(0.00)[];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	FORGED_SENDER(0.00)[grzeschik@puzzle.ch,barebox-bounces@lists.infradead.org];
 	RCVD_TLS_LAST(0.00)[];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
+	TO_DN_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
 	FORGED_SENDER_FORWARDING(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	MID_RHS_MATCH_FROM(0.00)[];
 	NEURAL_HAM(-0.00)[-1.000];
-	TO_DN_ALL(0.00)[];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	MISSING_XM_UA(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,puzzle.ch:+];
+	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=1];
 	RCPT_COUNT_THREE(0.00)[3];
 	FROM_NEQ_ENVFROM(0.00)[grzeschik@puzzle.ch,barebox-bounces@lists.infradead.org];
-	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=1];
-	FORGED_SENDER_MAILLIST(0.00)[]
+	DKIM_TRACE(0.00)[lists.infradead.org:+,puzzle.ch:+]
 X-Rspamd-Action: no action
-X-Stat-Signature: jmcjodywtbnq6qrpzuowzhixgw63h4gq
+X-Stat-Signature: mn8cxiyhqcjzuob4tfxfqgajp49h6wgf
 
-All other raw NAND drivers register their device as "nand", so the
-flash shows up as /dev/nand0 with partitions like /dev/nand0.barebox.
-The orion driver used "orion_nand", giving /dev/orion_nand0 and
-/dev/orion_nand0.barebox, so board code, environments and documentation
-written for the common name did not find the device:
+The Armada 370/XP/38x boards embed DDR training code from
+arch/arm/boards/*/binary.0, which is not part of barebox. A missing file
+stopped the whole build:
 
-  update barebox on /dev/nand0.barebox.bb from /barebox-ram.img using handler nand.
-  update failed
-  barebox_update: No such file or directory
+  No rule to make target 'arch/arm/boards/globalscale-mirabox/binary.0',
+  needed by 'images/start_globalscale_mirabox.pblb.mvebu1img'.  Stop.
 
-Use the common name. Nothing in barebox refers to the old one.
+so mvebu_defconfig could not be built without the firmware for every
+board, not even for boards that need none.
+
+Use the missing firmware handling that the Rockchip images already use:
+depend on the binary headers only if they exist, and if one is missing,
+record it in <image>.missing-firmware and create an empty image. The
+images step then reports the image as skipped, or fails the build with
+CONFIG_MISSING_FIRMWARE_ERROR=y.
 
 Assisted-by: Claude:claude-opus-5-5
 Signed-off-by: Michael Grzeschik <grzeschik@puzzle.ch>
 ---
- drivers/mtd/nand/raw/nand_orion.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ images/Makefile.mvebu | 23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mtd/nand/raw/nand_orion.c b/drivers/mtd/nand/raw/nand_orion.c
-index 68797b9b38..eb58cba399 100644
---- a/drivers/mtd/nand/raw/nand_orion.c
-+++ b/drivers/mtd/nand/raw/nand_orion.c
-@@ -152,7 +152,7 @@ static int orion_nand_probe(struct device *dev)
- 		goto no_dev;
- 	}
+diff --git a/images/Makefile.mvebu b/images/Makefile.mvebu
+index 7c918cb9f1..d4f2476aae 100644
+--- a/images/Makefile.mvebu
++++ b/images/Makefile.mvebu
+@@ -8,11 +8,24 @@
+ $(obj)/%.kwbimg: $(obj)/% FORCE
+ 	$(call if_changed,kwb_image)
  
--	add_mtd_nand_device(mtd, "orion_nand");
-+	add_mtd_nand_device(mtd, "nand");
- 	return 0;
- no_dev:
- 	if (!IS_ERR(clk))
++# Binary headers (DDR training code, arch/arm/boards/*/binary.0) are not part
++# of barebox. If one is missing, report the image as missing firmware instead
++# of failing the build, so multi-board builds produce all other images. The
++# image is only skipped unless CONFIG_MISSING_FIRMWARE_ERROR=y.
++mvebu_missing_binhdr = $(filter-out $(wildcard $(BINHDR_$(@F))),$(BINHDR_$(@F)))
++
++define mvebu_binhdr_image
++	$(Q)$(if $(mvebu_missing_binhdr), \
++		echo $(patsubst $(srctree)/%,%,$(mvebu_missing_binhdr)) >$@.missing-firmware, \
++		rm -f $@.missing-firmware)
++	$(call if_changed,$(if $(mvebu_missing_binhdr),0size,$(1)))
++endef
++
+ $(obj)/%.mvebu0img: $(obj)/% scripts/mvebuimg FORCE
+-	$(call if_changed,mvebu0_image)
++	$(call mvebu_binhdr_image,mvebu0_image)
+ 
+ $(obj)/%.mvebu1img: $(obj)/% scripts/mvebuimg FORCE
+-	$(call if_changed,mvebu1_image)
++	$(call mvebu_binhdr_image,mvebu1_image)
+ 
+ KWBOPTS = -c -d 0x1000000 -e 0x1000000
+ 
+@@ -127,6 +140,6 @@ pblb-$(CONFIG_MACH_USI_TOPKICK) += start_usi_topkick
+ image-$(CONFIG_MACH_USI_TOPKICK) += barebox-usi-topkick.img
+ image-$(CONFIG_MACH_USI_TOPKICK) += barebox-usi-topkick-2nd.img
+ 
+-# ensure that an image depends on its included binhdrs
+-$(foreach f,$(pblb-y),$(eval $$(obj)/$f.pblb.mvebu0img: $$(BINHDR_$f.pblb.mvebu0img)))
+-$(foreach f,$(pblb-y),$(eval $$(obj)/$f.pblb.mvebu1img: $$(BINHDR_$f.pblb.mvebu1img)))
++# ensure that an image depends on its included binhdrs, as far as they exist
++$(foreach f,$(pblb-y),$(eval $$(obj)/$f.pblb.mvebu0img: $$(wildcard $$(BINHDR_$f.pblb.mvebu0img))))
++$(foreach f,$(pblb-y),$(eval $$(obj)/$f.pblb.mvebu1img: $$(wildcard $$(BINHDR_$f.pblb.mvebu1img))))
 
 -- 
 2.53.0
