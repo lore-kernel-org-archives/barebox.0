@@ -1,74 +1,74 @@
-Delivery-date: Sun, 08 Nov 2026 09:48:03 +0100
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Sun, 08 Nov 2026 10:35:03 +0100
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xPyZG-008ckb-28
+	id 1xPzIl-008dS9-1K
 	for lore@lore.pengutronix.de;
-	Sun, 08 Nov 2026 09:48:03 +0100
+	Sun, 08 Nov 2026 10:35:03 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id D4567201F43
-	for <lore@pengutronix.de>; Sun, 08 Nov 2026 09:48:02 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 97D642006B6
+	for <lore@pengutronix.de>; Sun, 08 Nov 2026 10:35:03 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ztnAkG0G;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="kn/rmlBV";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794127682;
+	s=20260414; t=1794130503;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=oBRKl2ZuV0NdGam5uIk5SZeEPFjM4IXabY8QGictcQU=;
-	b=ChsxGLBM1+Ou7cZ/WnI1MJZiH+7xnktM7wSy5rDn5tc/LTxu6UWyejSNTJoBIpetVm+xNI
-	aWbIz26rLajmYpQBPXC9vhxh3EEilsbD/iyuyCulRwJGqQYl087JmGJhc6z3y3AzjO87ew
-	gEle71PASnm3i0j2w0gsworonWGu71Pr1HzZ8MiQssLKRddHnhJwUacPRFSfGt1yYT5Rt2
-	weLJUpNDIMnhxYnn2ZcbiRovCDOjpck4AxaJ7rGawoQEiQq3VRLLE6n7Kk2JiX2Enlnv6X
-	SZ8kc/JRv2I6TNF6Wu0BLoqN1t/VNvn0rZabpfuDGmGdecFZF/Ipjj+ReiY29A==
+	bh=Hi1T/MAln/ldKTY3QchqA64YBPgyrBveQsN5pS+Cg0k=;
+	b=S7qVqWnAILRM9WbSF7oj9kKtleY8hyr02PgvpbYgNANhkIhH3S2tS54ZM4zQni378zIlUQ
+	E10Y4aUsZszNpkyppSds7cKYAEHfsAEmWk8PTCM/EQLQcD52uFSkBOq2PI1nK2a2HDO1Vq
+	UzjSJ7nOvRXrL5wJ8XCSr+soHhP0LxZjEvas4wz9bmOAI4/IBaqrDm/U3k2TO52FWdJSmk
+	5ldmKheOZXhntcnTDtqTg4GVH+zYRSVaYVc/wuFGorXHzlMt3e0cZFug1S1+Dy04MPcDdY
+	3P4DlEdQ0q5EvhjH/4H5dKoZINbzOG34qjHIwMvWfepDVmvtckOITelIZZ/AJg==
 ARC-Authentication-Results: i=1;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ztnAkG0G;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="kn/rmlBV";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794127682; a=rsa-sha256;
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794130503; a=rsa-sha256;
 	cv=none;
-	b=NT1KXSyNnmYnu63T6yG2QHph6eIWO4N6pVgatPHVN/mv2NM+V8MjcnRucrjlnag2SPzHs4
-	iSLAMHKSEk+895jwwPzuG4xmkR1tYe2dQnI4CDUkbwawJvktjZa7c48xJ4vDIG3Ik1w2fN
-	WtvQIQfQVAWt/nVV0KGTmNKHqbuUW5dhle7FHA0k6EIuxGaGvWwHXSABCl5a1TrpHLtr6a
-	kBL4SD6nGRfpgUJL61Y/lRRCcMg6eiH1Y4iLRiX/DAJkMo2icArlLyNnQuZTO6XRAnLKcH
-	GmzpTw7W6k50CnLsB9CSVOAmelkmA2cETPwf4If5x6tZbfY3C1f+nLV9AwTsRA==
+	b=FYYiIzUuqLswvFZKpv/qc6QDC6dHNtMxjJaDeMM9YjhFGnaT+dKq8/EnMyAz5gXn/C192B
+	FuGVqL0yiyFwQppbbofDp+celQ+GooK7twpRX7ZjCmInxaAmdyi2KeU4XWx46G9Q/gXhvM
+	jLVBjefy41F1Qyx2ICpZOMXltKqJt1BVQFoHE73FrAZoagqEQ4hnsVu3yTqzraz+HJpf0x
+	8JKvt16F0XseE26aQwtPksz93xxKlaVahtYBMWVPxdkZx9KGY3GebNyguloHvLoTLg+zdc
+	O5pOXwu75yvyN5pSHYrcjz36AZdGku4DWCRB4zeWs9pwMwdOeNSt+AeIcH038w==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
 	List-Unsubscribe-Post:List-Owner;
-	bh=oBRKl2ZuV0NdGam5uIk5SZeEPFjM4IXabY8QGictcQU=; b=ztnAkG0GbVD5YubVRZXoOkZch6
-	eEW0kat27X+bKZGcKleORJwD1TjLPV24E0K+VxV2gZfex9LNaO0S9lZrg2qi9HaFr0fJI0k672AeS
-	hx1zsJf69sQynCYAN2hyjnL2TtJ2WYzURarv15ZWrNLnVgMZX4Y7EGS3VNxBmNA4w2K+9Q2xHMOeH
-	bUDFvZsz44RuHG263joJrUjkm5MuhoSr/YDCZ95VsKS/jj19bD41oYiivzeowktjfvVfhp6CCSCi/
-	BjrvVHg/pXYoC044ZAMOV1TF6bZ+a4voDmybqOxeEMmRo7mhaL7Mg6ZiYRb4r2wDPPl28Z92fCxM5
-	zzYZOHEw==;
+	bh=Hi1T/MAln/ldKTY3QchqA64YBPgyrBveQsN5pS+Cg0k=; b=kn/rmlBV8WA9PQ5PzRNuQxV30Y
+	iWFT9YMwB7zzVzkYAD6ZNwyurwlo7f5XqSXeTpvGa06QRsKAp9ITLBy6z2WC2cN0NB8a+JlrSpWdZ
+	13uO01IYtUuDD5mGfwIuuVOCEFX41aMFb/EHBih4YUnMdiSiXa9dTbcUvN2Zll2Md4XWAXod7L+Rb
+	e2dXStaXTWJqNeJ1dg1RgVWYgeYb3+RM8w0t2bkncZ5j74dbwiLkcdqdqiZZH7BB8K2jnZTmbLBcu
+	hsuX51W9MKWy0rzK8P2GzVdmcbeA2XIyjmgKMOshobT+Qj5PQk7eMJVu+yy9uj7z79Gf7nrZIGhT6
+	AlD/Pgfw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xPyYF-0000000FrqX-1hzA;
-	Sun, 08 Nov 2026 08:46:59 +0000
+	id 1xPzHi-0000000FuQt-2ukf;
+	Sun, 08 Nov 2026 09:33:58 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xPyYC-0000000FrqA-3gp5
+	id 1xPzHh-0000000FuP9-07DM
 	for barebox@lists.infradead.org;
-	Sun, 08 Nov 2026 08:46:57 +0000
+	Sun, 08 Nov 2026 09:33:58 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1xPyYB-00078r-47; Sun, 08 Nov 2026 09:46:55 +0100
+	id 1xPzHf-0008Mb-GI
+	for barebox@lists.infradead.org; Sun, 08 Nov 2026 10:33:55 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@barebox.org>
-Subject: [PATCH] usb: xhci: keep the transaction count out of Max Packet Size
-Date: Sun,  8 Nov 2026 09:46:48 +0100
-Message-ID: <20261108084652.1231859-1-a.fatoum@barebox.org>
+Subject: [PATCH 0/5] console: escape sequence handling improvement
+Date: Sun,  8 Nov 2026 10:32:02 +0100
+Message-ID: <20261108093354.1247607-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -76,8 +76,8 @@ X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
 X-SA-Exim-Mail-From: a.fatoum@barebox.org
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261108_004656_921115_0DF65565 
-X-CRM114-Status: UNSURE (   9.43  )
+X-CRM114-CacheID: sfid-20261108_013357_066973_6BE78994 
+X-CRM114-Status: UNSURE (   8.02  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -86,9 +86,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Bits 12:11 of wMaxPacketSize hold the number of additional
-    transactions per microframe of high-speed isochronous and interrupt endpoints.
-    xhci_get_endpoint_max_burst() already programs them as Max Bur [...] 
+ Content preview:  The v2026.07.0 update broke arrow key usage in the web demo
+    for some users. Proper fix is on the riscvemu side, but there's still some
+    things we can do at the barebox side to make escape sequence hand [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -116,9 +116,9 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: D4567201F43
+X-Rspamd-Queue-Id: 97D642006B6
 X-Spamd-Result: default: False [-6.11 / 15.00];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-3.00)[99.98%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	MID_CONTAINS_FROM(1.00)[];
@@ -130,60 +130,48 @@ X-Spamd-Result: default: False [-6.11 / 15.00];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[barebox.org];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=1];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_COUNT_THREE(0.00)[3];
-	FROM_NEQ_ENVFROM(0.00)[a.fatoum@barebox.org,barebox-bounces@lists.infradead.org];
-	DKIM_TRACE(0.00)[lists.infradead.org:+];
-	RCPT_COUNT_TWO(0.00)[2];
+	MIME_TRACE(0.00)[0:+];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_IN_DNSWL_NONE(0.00)[2a0a:edc0:2:b01:1d::104:received];
-	RCVD_TLS_LAST(0.00)[];
+	DMARC_NA(0.00)[barebox.org];
+	RCPT_COUNT_ONE(0.00)[1];
+	ARC_NA(0.00)[];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	FORGED_SENDER_MAILLIST(0.00)[]
+	FROM_HAS_DN(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=1];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_TLS_LAST(0.00)[];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	TO_DN_NONE(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	FROM_NEQ_ENVFROM(0.00)[a.fatoum@barebox.org,barebox-bounces@lists.infradead.org];
+	DKIM_TRACE(0.00)[lists.infradead.org:+]
 X-Rspamd-Action: no action
-X-Stat-Signature: 4ut9fi8j3q4zx3ayy1rksyngyykw3hzj
+X-Stat-Signature: p6bjpkbz4cjdoenjyedjynhikckjs71r
 
-Bits 12:11 of wMaxPacketSize hold the number of additional transactions
-per microframe of high-speed isochronous and interrupt endpoints.
-xhci_get_endpoint_max_burst() already programs them as Max Burst Size,
-but xhci_set_configuration() copies them into Max Packet Size as well,
-so a high-bandwidth endpoint ends up with a Max Packet Size beyond the
-1024 bytes a high-speed endpoint can have.
+The v2026.07.0 update broke arrow key usage in the web demo for some
+users. Proper fix is on the riscvemu side, but there's still some things
+we can do at the barebox side to make escape sequence handling more
+robust.
 
-Mask them off, like Linux does since commit f94e0186312b ("USB: xhci:
-Bandwidth allocation support"), with the mask fixed to cover bit 10 in
-commit dc07c91b9b40 ("xHCI: fix wMaxPacketSize mask").
+Ahmad Fatoum (5):
+  readkey: wait for the rest of an escape sequence
+  lib: term: ask the terminal when a console can't tell its size
+  serial: virtio_console: report the console size
+  console: give each console implementation its own console_ctrlc()
+  console: keep the keys typed ahead when checking for Ctrl-C
 
-Fixes: 105b2eabd55a ("usb: Add U-Boot xhci driver")
-Assisted-by: Claude:opus-5.5
-Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
----
- drivers/usb/host/xhci.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ common/console.c                | 35 +++++++++++++++++++++++++++++++++
+ common/console_ctrlc.c          | 10 ++++------
+ common/console_simple.c         | 10 ++++++++++
+ drivers/serial/virtio_console.c | 27 +++++++++++++++++++++++++
+ include/console.h               |  4 ++--
+ lib/readkey.c                   |  4 +++-
+ lib/term.c                      |  5 +++--
+ 7 files changed, 84 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index 661dc0dde0b8..1bb1758ac25d 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -574,8 +574,8 @@ static int xhci_set_configuration(struct usb_device *udev)
- 
- 		ep_ctx[ep_index]->ep_info2 = cpu_to_le32(EP_TYPE(ep_type));
- 		ep_ctx[ep_index]->ep_info2 |=
--			cpu_to_le32(MAX_PACKET
--			(get_unaligned(&endpt_desc->wMaxPacketSize)));
-+			cpu_to_le32(MAX_PACKET(get_unaligned(&endpt_desc->wMaxPacketSize) &
-+					       USB_ENDPOINT_MAXP_MASK));
- 
- 		/* Allow 3 retries for everything but isoc, set CErr = 3 */
- 		if (!usb_endpoint_xfer_isoc(endpt_desc))
 -- 
 2.47.3
 
