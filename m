@@ -1,45 +1,45 @@
-Delivery-date: Mon, 09 Nov 2026 11:06:08 +0100
+Delivery-date: Mon, 09 Nov 2026 11:10:59 +0100
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xQMGN-008zCT-2R
+	id 1xQML4-008zFf-2s
 	for lore@lore.pengutronix.de;
-	Mon, 09 Nov 2026 11:06:08 +0100
+	Mon, 09 Nov 2026 11:10:59 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id B83032006AF
-	for <lore@pengutronix.de>; Mon, 09 Nov 2026 11:06:07 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 1DC8E2006AF
+	for <lore@pengutronix.de>; Mon, 09 Nov 2026 11:10:59 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=uJMIZUe0;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=QQplG1zp;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=iDkyHDyW;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=Pl1Vnu5r;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794218767;
+	s=20260414; t=1794219059;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=+IvYWzjWQSXFJ5d8X8bqE+GikM/64KED3z2/qpduYW0=;
-	b=BdYUB5hHbRlS3mBbinR3fRdJGZD/WbRvqr32tm9aFX7ZZrNoWlScvrCft8WujEJ5sld86K
-	FNG5vLbzLvn6TS5I+Vfw+TS4KuIZNF3Nmc90UE/2AH9nHs1th6PYEleL7fTj2Nt4a3esDD
-	x9zaKfgrl71RFWClBDndUcZ2Q9FvQ8DZYMtHX1eiZk35ZhxJZ/6LLvpa2yhMX3dk/jAjJf
-	WA7EQsMwgOFgEok+yQZgZSdYcakRI/MWf5AUzFoJUCtAhrsbsxkPZOG5Np0FIt70QJkNl7
-	iuecRhWT+5LVDf+lEPk4VYHKYsRB/ODxAULS8ClXF32gD0nypSRPOigLjJS4eg==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1794218767; a=rsa-sha256;
+	bh=LLLeSq/tbJUR1vqL0BuGQah/EwYPjeowL5rKrLHd5Ns=;
+	b=GeCgbYOqbpIwHD1ynm7j5kzKiNRxwVvgpKUp/T3/9TKIrzylX1KfVUFv1msdiwMXPtwBsv
+	IMvVahl8blL/7VD0ZMxvKj3LqxFX7bV40IJSbkYOLsX2d2DVOpPnmPv9sx0yTAysxFyqF/
+	N5IRG449QJsL4EUFLtSONgTsVXbL1LsozGgu9iWX5Bdis0pxlSuDWL/hNowkLNZ0r2/maG
+	lUU97LYDgCryK/cWsY6uIKSoL1RmlTUZrvMYpvOyA5tctGSqJ03Hp7JzK6v9dQJ4GA9kNH
+	qxhoi8cHGUBAjOxyoUBzQ/sGs+LDS2R/ssJFZcAv8WaXYdHSxBBpuo0STjEAUw==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1794219059; a=rsa-sha256;
 	cv=pass;
-	b=fPmn3rZtEPd3utqDvwGyyEnH7aHwki64hQG0rvdyEctSv1mIFGNEDG/1ZjPaRhzDzcok9s
-	+KtPg5TXD8odav+/510Zt/snywLGj/RLrNBfsbErdncR5ylwF40vSodbd0sr0dW4EOzNmQ
-	80DcgCfFsyOA7yjYpoWR1qn3NVM4IqX/6t7oVfEpAH4KkLEos3S1Ao2u7Ao2bZBoSrjsMP
-	forhOjhbRVzWf74+C0B7K3BEXFfBuL7Z6zny2Tn1HJAVtOOcTqbSU2s5LvL+5PxLN8B3GS
-	1Z5/w+PcRrMCEjbkbmL1IGV46AYow37jWM1DODm5EepHFGffUHDnJ10lp7P+0A==
+	b=Mq8XJ1AG69aJZNUN8J/uili2B6wDUR7JsZbR65OZ5H44rEhVPbwEA4Se2V0ycQsHpnVHqs
+	u2GgXDqTmw1+mgFPQGdm39tSK6VwCEjMK8r0QZPtIrUPqBCTXLeMhnylkAmxHbDKn9vXfa
+	J4Y+dTxNEqB7xx3CV0EgTpOVOXxFcGp+fwRVS1hLzPXz1ZntqESjUiszvfUHEw9S4BwMPG
+	hadAjF4AUjt38Ut3nky4/y0fsDnPiqYY6dQk7OiQ0TfsK5VAJ39VhIyyUur8FveJ3ErbWF
+	g30OWNkbg9UlZSvaQc2W1kBzyZs7fGkk+VQz4JkHKC0e1BXWOyygitL23UJiuA==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=uJMIZUe0;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=QQplG1zp;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=iDkyHDyW;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=Pl1Vnu5r;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
@@ -49,76 +49,77 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=+IvYWzjWQSXFJ5d8X8bqE+GikM/64KED3z2/qpduYW0=; b=uJMIZUe0eO+y9w
-	9b1jSnIu1VIB2z/4KIRvXTYeHGLgG19/QhLBMe5pZwIXgwVaCxH41QSOCpF2DXo/ZhwLFebgvlnlY
-	44zJE88GXUfyx5sp0jV2tjKKZ+CR60BG034FrvPbrWFUcc8u5HXMYGzraZTzLtW9xOpPSmC00f0W5
-	7pw60oc0xLi9LjRuQi4VXTVz8Cxp/j+OmLKF86co/MSh3pM6TRiFNgr1qbT8LjcKrK03bdtC+HQPE
-	v0zk0hd+rnW2JDtH0WoTCUSwTrANIKCqJQ7dg/nYOcJHlVzhuIUqFQDPzTwjm15MPEiPHcmFQaPtN
-	amsZhkDDyKBoNVtIrEPA==;
+	List-Owner; bh=LLLeSq/tbJUR1vqL0BuGQah/EwYPjeowL5rKrLHd5Ns=; b=iDkyHDyWTNZAAU
+	/6OYmQw/o4KY5MfwTvSefO0Y22cBRIBQTn3PUUS8bHqCSzI8+XIb0srjV+E7lqQn3Rc9DLGkOgpR8
+	yMjG2Luu4nvBX6ht7CJpbsJrsbESCz9t1Z9yQ5nNw+juon/u7KMvwjvFptZmAfi+RJnklvJ86S13b
+	2odW2f5SeHX5HStUoSwOoyfz3VebPPjsfDwVbKHrQ+RSegtbxSRHu1HGj54PVPNBkBiqHO4P2yy1Y
+	zW3ePEOlS/1MIFgTdPGRJhGReKM1csWjWoA6GVJS2gRo7LoZpo3b9lzYrzSrySKKowrW2gxo+EauH
+	k8PnTqkDP0kLia0rVGeQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xQLEX-000000009rK-319F;
-	Mon, 09 Nov 2026 09:00:09 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1xQMJc-00000000N5Y-2V1r;
+	Mon, 09 Nov 2026 10:09:28 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xQLEU-000000009qw-1auk
+	id 1xQMJZ-00000000N4M-0A3x
 	for barebox@lists.infradead.org;
-	Mon, 09 Nov 2026 09:00:08 +0000
-Received: from dude02.red.stw.pengutronix.de (dude02.red.stw.4.pengutronix.de [10.17.1.16])
+	Mon, 09 Nov 2026 10:09:27 +0000
+Received: from dude02.red.stw.pengutronix.de (dude02.red.stw.pengutronix.de [IPv6:2a0a:edc0:0:1101:1d::28])
 	(Authenticated sender: relay-from-dude02.red.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 7CB33200FB6;
-	Mon, 09 Nov 2026 10:00:04 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 2D8642006B6;
+	Mon, 09 Nov 2026 11:09:23 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794214804;
+	s=20260414; t=1794218963;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+IvYWzjWQSXFJ5d8X8bqE+GikM/64KED3z2/qpduYW0=;
-	b=QQplG1zpZrluvv4UUMYd5u8A6V3H1uhvh5ExyWsi+ixRex/fg2bJSrMkcJ6SU7pF2+PjWJ
-	VErq19XputPAJMndqXvMTMKY+RJrP04U5gFr0aBc7LaKOOjRF0u2K0Ln8gOVqq35Fq+eVK
-	5V7sWgApPLzQPAPFEkp6C5FCh+Ho5vV5tSopcYBZ+dWmBc/lkuhB5/zs1QtTHIpXpEePKB
-	N/D2A1PNAq6+87PzgqP/snttEsx8sGbmYz+pluOyNfdSaR+3v3pWTiYvZXeYNWid6tvRMt
-	Odg9ciHPFHvyxCv0DDxYY+ye3n2x513yvSJwVsImoI9BLLHdsTvkgQBBHeBoYA==
+	bh=LLLeSq/tbJUR1vqL0BuGQah/EwYPjeowL5rKrLHd5Ns=;
+	b=Pl1Vnu5rHpvSI+ey7WzIje8jkuUcFwwb81ybO2IW1RuMI+E6gcjMQiivOLUOREN66DYcFP
+	qLE9cB+hFbBAkwYEM9c5em5Pu0C59/wfY0eqZ3sGHvrIqp0PlJO1bolf0oJabjeIwaoghG
+	Oca7Th/C5Dd4HK0md0mcubYNOto9svYw/A2zUBKd5zsp+ClYo1gX/46gERxozPrc9fv8pc
+	vAWoBQKtcSWxGqSMHvluV2uOC92oODbZzaivQs0hyzzG5rUNt/ZwUPNIk75hNupZpcr191
+	4+8p85jaaPiV1NkqaYVWCsqZ1nUPqP1za+VHbcRaL2GZnMsIetXUUYngAJEgaA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794214804;
+	s=20260414; t=1794218963;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+IvYWzjWQSXFJ5d8X8bqE+GikM/64KED3z2/qpduYW0=;
-	b=MtZDRIxPoYKFHZhOJeCqFIoY705JFHl8WVXA1aUBn1AXN3vI4Kq0/tWM2GWnksgy6sNeZ/
-	BH0ZFKXmmwpmT6RPCaqqGhkeVkStPotekrwocTOdn1434I3/5SsfIO4R2bCCdLuS5ZblJq
-	aXPljgYip0OghxUYNOtIX10wofO1rUPJEFHozTwW7xeDYoSe50/5wLNtl6LO7imH2SXJJh
-	WUmY7BX2+8ZBl628vvi5HeWXAay+sI/UwQ91kM0lNa0BZAtwFNaF1QzcWUnRNApcS4hLFX
-	K562KsXqIq/ZqwZ7JLn8OPDKq6s9M5e2i7QZSuHMpPJBNjiZlh6G4F1aX9htYQ==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794214804; a=rsa-sha256;
+	bh=LLLeSq/tbJUR1vqL0BuGQah/EwYPjeowL5rKrLHd5Ns=;
+	b=ey2YK6ydjsQ5gvA3IiwnoHgsH2uR7gMc/E98cTBnQPSI+Ynqr0/dVrs6b1pDVtvv9pD9QV
+	faFrHVSn4pW9XyoN3ghQQetDAU9Qc8LRa+KryZ9cWflOagcy1XNfK8R4JYboPJZKV8RsXk
+	su8018XifdphqCG5Jz4Xm0KwUlNVh5Guj+oyRB9V2Zs0F3uUpnIE1denF1lG38zynxB1bN
+	8nnlI6McdsIRj4P76ERrQ2EFiZuwSJ/eHW/ngUpb2EO3YbyqxHmI6z38nbj1pT2Pgl2IAn
+	NDQ2d2OZ3nlvOk/eUMlpduTUBZ0vXxoME6a9g7MBXdUDlplPzOX3myOhF+W1xQ==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794218963; a=rsa-sha256;
 	cv=none;
-	b=aA2UlA0Uqj1UhO5Snj0DdpjME6x234z9QaTqBzCJrBYBHqEv3zO4TswY3Dzew+9Y0RtH5y
-	t5HX6EPDmNInratOdzAVNoFcmeoHZvXHCiuT/Vw1RiZJz3r6Iu0YPFZZW+LAsd6M0118+4
-	ERIZzandEpA90JHKWJRFIudBa2md7QknZ02YzgUrDOO39ymw6rxVZZcNRkCI1dHfHGAwHW
-	mBBbiIrtJGVJ01B813D+xNxd/1l+NaTFgChNxDP8H8d81AcgzkR/DvR3fPxA05vmqfLj65
-	UXB1nFEMQ0/LE86qdiETqkSWRao+nt3iuPPrvhB48F/LgQjWxb+Yo1FBYeFFiA==
+	b=Bo+W2cPJ1tM9UX0fg1m1f2krHNQV2FSTMTBW0Z0gKLSe4v92gWY9KAlE+2ovSHT7TTvRKk
+	lk1gfnUu9r2fw9IzF1u4gXCTyVjxB7BS2kuVuu1+cy6YJCDdAwTtH4y6OLBNbCwjmKMrQw
+	Jo4eNXdhou8ktyzfBhBULzjUVzokB7YtFK4BopAu6fgwqF8WP9xR9w4wdKVrOPmN1AnOYk
+	xE+HiZsnwC0ffLsrlusg1mjFFi42s4Qwu8yU1u9Vt9lZlfRrNcsTx2z38mPhsUUUthKgcV
+	45thanDU/k0kR3w0iwmOT4+Y1gWjjsz6H+Vqg3q/IwU9Hkgo0cuJkwe0/JVQfQ==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-dude02.red.stw.pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
 Received: from dude02.red.stw.pengutronix.de (localhost [IPv6:::1])
-	by dude02.red.stw.pengutronix.de (Postfix) with ESMTP id 6788AFF898;
-	Mon, 09 Nov 2026 10:00:04 +0100 (CET)
+	by dude02.red.stw.pengutronix.de (Postfix) with ESMTP id 120C3FF961;
+	Mon, 09 Nov 2026 11:09:23 +0100 (CET)
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@barebox.org>
-In-Reply-To: <20261108201605.1401306-1-a.fatoum@barebox.org>
-References: <20261108201605.1401306-1-a.fatoum@barebox.org>
-Subject: Re: [PATCH] commands: go: start files 4 KiB aligned
-Message-Id: <179421480440.492723.16820878652952095553.b4-ty@pengutronix.de>
-Date: Mon, 09 Nov 2026 10:00:04 +0100
+To: "open list:BAREBOX" <barebox@lists.infradead.org>, 
+ Michael Grzeschik <grzeschik@puzzle.ch>
+In-Reply-To: <20261103-orion_kw_mvebu-v1-0-86442c0d283e@puzzle.ch>
+References: <20261103-orion_kw_mvebu-v1-0-86442c0d283e@puzzle.ch>
+Subject: Re: [PATCH 0/6] orion/kw/mvebu: stability/usability patches
+Message-Id: <179421896305.547123.11345581951597704816.b4-ty@pengutronix.de>
+Date: Mon, 09 Nov 2026 11:09:23 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261109_010006_621286_33F35DF5 
-X-CRM114-Status: UNSURE (   7.39  )
+X-CRM114-CacheID: sfid-20261109_020925_232924_24750913 
+X-CRM114-Status: UNSURE (   6.57  )
 X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
@@ -127,10 +128,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On Sun, 08 Nov 2026 21:15:42 +0100, Ahmad Fatoum wrote: >
-    go memmaps the file and jumps to wherever its data happens to be. For a >
-    file in ramfs, that's a malloc'ed chunk, but barebox on ARM64 addre [...]
-    
+ Content preview:  On Tue, 03 Nov 2026 22:31:06 +0100, Michael Grzeschik wrote:
+    > While porting an older iomega iConnect machine to the latest version of
+    > barebox, several shortcomings were identified. This patch seri [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -159,27 +159,27 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-60.41 / 15.00];
+X-Spamd-Result: default: False [-60.45 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[99.99%];
+	BAYES_HAM(-2.84)[99.32%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
-	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
+	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
+	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
 	MAILLIST(-0.20)[mailman];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	TO_DN_SOME(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
 	RCPT_COUNT_TWO(0.00)[2];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
 	DMARC_NA(0.00)[pengutronix.de];
-	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_ALL(0.00)[];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
 	NEURAL_HAM(-0.00)[-1.000];
@@ -192,26 +192,32 @@ X-Spamd-Result: default: False [-60.41 / 15.00];
 	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: B83032006AF
-X-Stat-Signature: kbhpknwi9m5pdhfhoakcsu7yedcoq9ye
+X-Rspamd-Queue-Id: 1DC8E2006AF
+X-Stat-Signature: icw8x44jxgzmitsywjjkjnshhj8czsyu
 X-Rspamd-Action: no action
 
 
-On Sun, 08 Nov 2026 21:15:42 +0100, Ahmad Fatoum wrote:
-> go memmaps the file and jumps to wherever its data happens to be. For a
-> file in ramfs, that's a malloc'ed chunk, but barebox on ARM64 addresses
-> its data with adrp and needs to run 4 KiB aligned.
+On Tue, 03 Nov 2026 22:31:06 +0100, Michael Grzeschik wrote:
+> While porting an older iomega iConnect machine to the latest version of
+> barebox, several shortcomings were identified. This patch series
+> addresses and resolves these issues.
 > 
-> Let's read files that can't be memmapped 4 KiB aligned into an aligned
-> buffer instead. This also makes go work with files that can't be
-> memmapped at all, like those on TFTP.
 > 
-> [...]
 
 Applied, thanks!
 
-[1/1] commands: go: start files 4 KiB aligned
-      https://git.pengutronix.de/cgit/barebox/commit/?id=7fa5fc73ccf4 (link may not be stable)
+[1/6] images: mvebu: skip images whose binary header is missing
+      https://git.pengutronix.de/cgit/barebox/commit/?id=416f2bb9116b (link may not be stable)
+[2/6] mtd: nand: orion: set Hamming ECC algorithm in ->attach_chip()
+      https://git.pengutronix.de/cgit/barebox/commit/?id=cb123a5a4372 (link may not be stable)
+[3/6] gpio: orion: do not let banks without alias collide
+      https://git.pengutronix.de/cgit/barebox/commit/?id=510832890a99 (link may not be stable)
+[4/6] filetype: detect kwbimage v0 images for NAND boot
+      https://git.pengutronix.de/cgit/barebox/commit/?id=cd895a734a3b (link may not be stable)
+[5/6] mtd: nand: orion: register the NAND device as "nand"
+      https://git.pengutronix.de/cgit/barebox/commit/?id=2cdd3e96572f (link may not be stable)
+[6/6] gpio: orion: register at coredevice level
+      https://git.pengutronix.de/cgit/barebox/commit/?id=35c777ebfc40 (link may not be stable)
 
 Best regards,
 -- 
