@@ -1,41 +1,41 @@
-Delivery-date: Tue, 10 Nov 2026 22:30:07 +0100
+Delivery-date: Tue, 10 Nov 2026 22:30:10 +0100
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xQtPq-009UJf-2x
+	id 1xQtPu-009UK1-0a
 	for lore@lore.pengutronix.de;
-	Tue, 10 Nov 2026 22:30:07 +0100
+	Tue, 10 Nov 2026 22:30:10 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 1D753201BFB
-	for <lore@pengutronix.de>; Tue, 10 Nov 2026 22:30:03 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 5C0322017D7
+	for <lore@pengutronix.de>; Tue, 10 Nov 2026 22:30:06 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=eYqwLEB8;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=H2HurFjU;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794346203;
+	s=20260414; t=1794346206;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=yOlbv5VkjfdF25YP3t0SxZhFewxCrMzJZnlmcw6kMMY=;
-	b=NPFegZuSC5WPnO62oZ6pqFLsxKnHGkIbg54ubfYsN8VHXyPAaW0Dt5WHNe36orHm+pw6z8
-	AtMzOOifinbJKU4eCGUQsqcWHlfmfeOxVM2PvzWxF4toasiiqfUhE6dX/3aK0SVW4c525I
-	nKGbtCtqkcHuBkXUFBhkNoJelh+MGF/3MsRDY1pTjewncQNoce3AORAMgWAo1S2ptZKkOh
-	f/ZD5BD+nkWUhUI4H8+1hNu1pW6pokXuWSjx3GErBwI5nktsTGUAv2+cC7Vtjyf4axPP8i
-	6JEez/cSwaFmdBegGoOBx+Yedi7VAQZZoJQXHlvAfpGo5nrh70QDo6YLd890DA==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794346203; a=rsa-sha256;
+	bh=kuCCiVFb0J71vmpufIbG/BsXYCxyPMX3vf9wF4qSp08=;
+	b=CSKGXUTm5eVzYzQi96QgfYit/U2A4neGA6ZTJ0uUZ1M3h0I1C7tC8W+EBfjqdkpBH8n0/+
+	VUby4jel5fhZqgUkCUDCCN0E6qDKqZxki/FUXFwss42TTr0JAlhNaoNImb1ujUHCsRKyxf
+	Revoh38EmnNIfmMsEXYpkOPf558dAEnW6u+zovqI+hqzdSXI8cIhO0dQo7dMbwtIrAP4sn
+	YUP4qH9tFYOkXjJnd2nWv/bbTHR+iPw5kjNnrP7keDNNGY/jW6U0zzkrwSXKMiT9RzxYgT
+	VK8kqYct6n2/zMy9MFbbUy5GSs+6RIbGXhi1MtQwg987f87ol30OtE2bgnq2eg==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794346206; a=rsa-sha256;
 	cv=none;
-	b=Wm0YNzxCZRD81xc5/IOvFO7dq9/Dc+QU0OZd9J/yaM0SzUpsT76t6/aR8GtHdQ3gtadX3s
-	Z43qT7oBm3NFYYQT8lXHH/cSsHLQL22FiUBLu5P1v50GNu30tgFacPI8aczKxS9MF3n9a7
-	OkA401aZIjE3p9ivpSJQWMYR7Y3l3VryO7nyZfdYU5ruW0lHB0VidhQZMDzxu6VJNdu+Ro
-	NT2PlRfL2FSieBi7JpNneaFkk8qrgB0d4Q2fLVTVnFE8h+YRCc+QMhfCnZHTboX8/R0B65
-	Jx1VwWO3q9CJwh5sUpYuzsAWNw2/YvuA+9l7gmtC2zmoVhkvrTuQ3zrwnmkEJA==
+	b=LP8r5+Eev3yKWJBKI5cZDLyktx9mofplcAvODYzb1TqA+eADR8u6G4Hhv0r3HuxQm6c6D7
+	1VTwfxziY1kbUySpv2IX20VAevNBZD5u3kxXLZYssGQGBLquaOsBfl+0JPy8m9fhmPfXS4
+	kF8AscXWUNQGPuYXPpITY2wegabEbtmXu8LrQbXpNnU6SUMA01RdtX6G8PHHaBQJL92K8v
+	m9vulKKM7MIIpnb/H27gtA7h0DKUXnwLJDFNq0bf1U8BzxbMTP5r015QfPc2VOXlIkL+XE
+	rkwItTSAexTP8x9+hDqX1j5LHpxvlGUtQWv8ItNQ1Cb6L647kLWwwPfNeiQkmg==
 ARC-Authentication-Results: i=1;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=eYqwLEB8;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=H2HurFjU;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
@@ -44,41 +44,42 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=yOlbv5VkjfdF25YP3t0SxZhFewxCrMzJZnlmcw6kMMY=; b=eYqwLEB8Y7dMIu
-	vqvzWWiVBNSFGMjma6v9+LnKjg1EIHAtAd+6kNnS2dWwIaiJyNs3VvBOGbys7Qku2SSFDOVtB0uEc
-	pLscaJ/c7BdBgpyA3tT9F8SVmrbbfvWtSUNtT9WN2TguIMGuElftzbeNjku/BORLw5MDoOce1rLq7
-	NqSykDQqBkOpOE9/krJF+P58Nn5hOVomp6LPJs875ztNYBYTyczwdafXqPCXuDilbfJhDrOdgNGeT
-	rx9gXhQMC8siqX+J9zydpPyDx8kVFRmOpXiQrXQ7VvscrfGTUCEBs8wLQF3vm5l0WgFhmf3YxRnSf
-	WTHyWry/KErHbLvt+myg==;
+	List-Owner; bh=kuCCiVFb0J71vmpufIbG/BsXYCxyPMX3vf9wF4qSp08=; b=H2HurFjUWISTbR
+	yZPpI1smilF4mUiQA7X2Fjj0CAHSoNkkplfAfJfZ1QXXjQCrHjgJykyS0UWsFimWAaVHzN2IJBaev
+	1H19JDcd6EwIZ2XWETTVCCLCTp0xLPtvBv7DdsMzLHgBgNecLbwrmBjBezXRst/9ICzJkYYVBwrzi
+	qLvZR7bVy/8/+X4FMqiq4h1eZCjVqsLnmPu4Me4JPa9BvAxwNMyI2GQVkb1NzxgxK2LEP4rjJ4MH1
+	q0ZFPogqqea8lRvb8vqCpQ3T/GzAHpjd8IfI70RKfoz6G1ffgAlCCjiRbaZUPovO3yxUXelIsZfTa
+	0k6syh++VOv1EiC23AdA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xQtOa-000000053Ip-0OUD;
-	Tue, 10 Nov 2026 21:28:50 +0000
+	id 1xQtOd-000000053Je-27sT;
+	Tue, 10 Nov 2026 21:28:51 +0000
 Received: from vs10.datenmanufaktur-hosting.net ([213.160.73.65] helo=vs81.iboxed.net)
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xQtOX-000000053Hs-05el
+	id 1xQtOX-000000053Hu-2sGP
 	for barebox@lists.infradead.org;
-	Tue, 10 Nov 2026 21:28:46 +0000
+	Tue, 10 Nov 2026 21:28:47 +0000
 Received: from blala.de (localhost [127.0.0.1])
-	by vs81.iboxed.net (8.18.1/8.18.1/Debian-6) with ESMTP id 6AALSik1029743;
-	Tue, 10 Nov 2026 21:28:44 GMT
+	by vs81.iboxed.net (8.18.1/8.18.1/Debian-6) with ESMTP id 6AALSjBw029752;
+	Tue, 10 Nov 2026 21:28:45 GMT
 Received: (from akurz@localhost)
-	by blala.de (8.18.1/8.18.1/Submit) id 6AALSiji029742;
-	Tue, 10 Nov 2026 21:28:44 GMT
+	by blala.de (8.18.1/8.18.1/Submit) id 6AALSjnN029751;
+	Tue, 10 Nov 2026 21:28:45 GMT
 From: Alexander Kurz <akurz@blala.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
 Cc: Alexander Kurz <akurz@blala.de>
-Subject: [PATCH v2 1/2] ARM: boards: kindle mx50/mx6sl: remove bootm -c option
-Date: Tue, 10 Nov 2026 21:28:41 +0000
-Message-ID: <20261110212842.29724-2-akurz@blala.de>
+Subject: [PATCH v2 2/2] ARM: i.MX: do kindle-mx50 defconfig maintenance
+Date: Tue, 10 Nov 2026 21:28:42 +0000
+Message-ID: <20261110212842.29724-3-akurz@blala.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20261110212842.29724-1-akurz@blala.de>
 References: <20261110212842.29724-1-akurz@blala.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261110_132845_365029_3D1CD890 
-X-CRM114-Status: GOOD (  10.59  )
+X-CRM114-CacheID: sfid-20261110_132846_037161_0355F99D 
+X-CRM114-Status: UNSURE (   9.05  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -1.9 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -86,11 +87,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Support for the bootm -c option has been dropped with the
-   2026.10 release. Remove it in the boot scripts as well. Fixes: 93e0ed81f13a
-    ("commands: bootm: remove -c and -s options") Signed-off-by: Alexander Kurz
-    <akurz@blala.de> --- .../boards/kindle-mx50/defaultenv-kindle-mx50/boot/mmc_kernel
-    | 2 +- .../boards/kin [...] 
+ Content preview:  The sleep command is used in the D01200 boot script, bootz
+    and go commands are handy tools to have. Add them to the defconfig. Furthermore,
+    remove DEBUG_BUGVERBOSE and USB_GADGET_FASTBOOT to reduce th [...] 
  
  Content analysis details:   (-1.9 points, 5.0 required)
  
@@ -100,6 +99,7 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  -0.0 SPF_PASS               SPF: sender matches SPF record
  -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
                              [score: 0.0000]
+  0.0 UPPERCASE_50_75        message body is 50-75% uppercase
   0.0 DMARC_MISSING          Missing DMARC policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -146,40 +146,88 @@ X-Spamd-Result: default: False [-5.91 / 15.00];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 1D753201BFB
-X-Stat-Signature: hatby3srw6poekrkur4yahgfnun9cy8e
+X-Rspamd-Queue-Id: 5C0322017D7
+X-Stat-Signature: byb7aggm6if3jokm7om6tuxpgr6mixbb
 X-Rspamd-Action: no action
 
-Support for the bootm -c option has been dropped with the 2026.10 release.
-Remove it in the boot scripts as well.
+The sleep command is used in the D01200 boot script, bootz and go commands
+are handy tools to have. Add them to the defconfig.
+Furthermore, remove DEBUG_BUGVERBOSE and USB_GADGET_FASTBOOT to reduce the
+image size, giving some additional margin below the maximum compatible
+258048 byte image size.
 
-Fixes: 93e0ed81f13a ("commands: bootm: remove -c and -s options")
 Signed-off-by: Alexander Kurz <akurz@blala.de>
 ---
- .../boards/kindle-mx50/defaultenv-kindle-mx50/boot/mmc_kernel   | 2 +-
- .../boards/kindle-mx6sl/defaultenv-kindle-mx6sl/boot/mmc_kernel | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/configs/kindle-mx50_defconfig | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/boards/kindle-mx50/defaultenv-kindle-mx50/boot/mmc_kernel b/arch/arm/boards/kindle-mx50/defaultenv-kindle-mx50/boot/mmc_kernel
-index b8d93be593..3109f137bf 100644
---- a/arch/arm/boards/kindle-mx50/defaultenv-kindle-mx50/boot/mmc_kernel
-+++ b/arch/arm/boards/kindle-mx50/defaultenv-kindle-mx50/boot/mmc_kernel
-@@ -12,4 +12,4 @@ armlinux_system_serial="$global.board.ocotp_serial"
- 
- global linux.bootargs.dyn.root="root=/dev/mmcblk0p1 rootwait ro"
- 
--bootm -c /dev/mmc2.kernel
-+bootm /dev/mmc2.kernel
-diff --git a/arch/arm/boards/kindle-mx6sl/defaultenv-kindle-mx6sl/boot/mmc_kernel b/arch/arm/boards/kindle-mx6sl/defaultenv-kindle-mx6sl/boot/mmc_kernel
-index 518110b8fd..5d451276e2 100644
---- a/arch/arm/boards/kindle-mx6sl/defaultenv-kindle-mx6sl/boot/mmc_kernel
-+++ b/arch/arm/boards/kindle-mx6sl/defaultenv-kindle-mx6sl/boot/mmc_kernel
-@@ -8,4 +8,4 @@ global.bootm.boot_atag=true
- global linux.bootargs.dyn.log="log_pos_goal=0x8fff0000"
- global linux.bootargs.dyn.root="rootwait root=/dev/mmcblk0p1 ro"
- 
--bootm -c /dev/mmc1.kernel
-+bootm /dev/mmc1.kernel
+diff --git a/arch/arm/configs/kindle-mx50_defconfig b/arch/arm/configs/kindle-mx50_defconfig
+index 331e0eae6d..e3111683dc 100644
+--- a/arch/arm/configs/kindle-mx50_defconfig
++++ b/arch/arm/configs/kindle-mx50_defconfig
+@@ -1,14 +1,12 @@
+ CONFIG_ARCH_IMX=y
+ CONFIG_MACH_KINDLE_MX50=y
+ CONFIG_THUMB2_BAREBOX=y
+-CONFIG_BOOT_ATAGS=y
+ CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+ CONFIG_ARM_UNWIND=y
+-CONFIG_IMAGE_COMPRESSION_XZKERN=y
+ CONFIG_NAME="kindle-mx50_defconfig"
++CONFIG_IMAGE_COMPRESSION_XZKERN=y
+ CONFIG_MMU=y
+ CONFIG_MALLOC_SIZE=0x0
+-CONFIG_MALLOC_TLSF=y
+ CONFIG_KALLSYMS=y
+ CONFIG_HUSH_FANCY_PROMPT=y
+ CONFIG_CMDLINE_EDITING=y
+@@ -16,21 +14,23 @@ CONFIG_AUTO_COMPLETE=y
+ CONFIG_BOOTM_SHOW_TYPE=y
+ CONFIG_BOOTM_VERBOSE=y
+ CONFIG_BOOTM_INITRD=y
+-CONFIG_BOOTM_OFTREE=y
+ CONFIG_CONSOLE_ACTIVATE_ALL=y
+ CONFIG_CONSOLE_ALLOW_COLOR=y
++# CONFIG_DEBUG_BUGVERBOSE is not set
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+-CONFIG_FASTBOOT_CMD_OEM=y
+ CONFIG_CMD_DMESG=y
+ CONFIG_LONGHELP=y
+ CONFIG_CMD_MEMINFO=y
+ CONFIG_CMD_REGULATOR=y
++CONFIG_CMD_BOOTZ=y
++CONFIG_CMD_GO=y
+ CONFIG_CMD_LOADY=y
+ CONFIG_CMD_RESET=y
+ CONFIG_CMD_EXPORT=y
+ CONFIG_CMD_PRINTENV=y
+ CONFIG_CMD_MAGICVAR=y
+ CONFIG_CMD_MAGICVAR_HELP=y
++CONFIG_CMD_SLEEP=y
+ CONFIG_CMD_EDIT=y
+ CONFIG_CMD_MEMTEST=y
+ CONFIG_CMD_CLK=y
+@@ -41,7 +41,6 @@ CONFIG_CMD_I2C=y
+ CONFIG_CMD_SPI=y
+ CONFIG_CMD_USBGADGET=y
+ CONFIG_CMD_OFTREE=y
+-CONFIG_OFDEVICE=y
+ CONFIG_OF_BAREBOX_DRIVERS=y
+ CONFIG_MTD=y
+ CONFIG_MTD_M25P80=y
+@@ -50,7 +49,6 @@ CONFIG_USB_IMX_CHIPIDEA=y
+ CONFIG_USB_EHCI=y
+ CONFIG_USB_GADGET=y
+ CONFIG_USB_GADGET_SERIAL=y
+-CONFIG_USB_GADGET_FASTBOOT=y
+ CONFIG_MCI=y
+ CONFIG_MCI_STARTUP=y
+ CONFIG_MCI_MMC_BOOT_PARTITIONS=y
+@@ -62,4 +60,3 @@ CONFIG_USB_NOP_XCEIV=y
+ CONFIG_FS_EXT4=y
+ CONFIG_FS_FAT=y
+ CONFIG_FS_FAT_WRITE=y
+-CONFIG_FS_FAT_LFN=y
 -- 
 2.39.5
 
