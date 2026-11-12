@@ -1,45 +1,45 @@
-Delivery-date: Thu, 12 Nov 2026 09:33:32 +0100
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Thu, 12 Nov 2026 09:49:47 +0100
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xRQFQ-009yHM-0A
+	id 1xRQV8-009yaP-2u
 	for lore@lore.pengutronix.de;
-	Thu, 12 Nov 2026 09:33:32 +0100
+	Thu, 12 Nov 2026 09:49:47 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id AC5CC201A86
-	for <lore@pengutronix.de>; Thu, 12 Nov 2026 09:33:31 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 1BB782004B4
+	for <lore@pengutronix.de>; Thu, 12 Nov 2026 09:49:47 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=NiEssQbb;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b="cZqbgH/T";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=VRaDYzV2;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b="Pqz6H/ij";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794472412;
+	s=20260414; t=1794473387;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=xhP82YaBXp5GaicgMjkdRRerTxH3FSbdiKk8lZVyxeQ=;
-	b=Bdu3Bgr3iUGseLxUJVXKuR4MI89XMQIrO309wAt3YVTrtmhFgPM00YwhXlUzWuMxydNe+h
-	tEeiEfk9ULxyhDeqYz0bqre1H48oDcy9/yrdXOgCN3Z37sF2482BYFejgOEJpSWtc3EpmN
-	flJmqwuLEqdzFD8E05fLwCGgtCYKZifpqzyq3SViU429Itay8DecF0juHKqc0JwLRnUdMd
-	Q1gmBUHtTCd1aFxjrS49PRjLpTmQiktckIBsc1TNs2rdjFq7Ql9+YEw8jT/6zHewSDKBZ5
-	/61uwK5KOJqxBp+/XxdnLRV27y5cBzoMVyFgWE39kTsM+F64dbyQYLx5BeaU+g==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1794472412; a=rsa-sha256;
+	bh=rZPD6IoCItScFMxLc49PJA0KgeIYB98aBPkZloWqFbw=;
+	b=GTURkgfzfIgtSPJ6liMMy4snG6JOyxp6Vd3TsPq5hH+tGnHXKg+X1YEyGYwTgka/GeeiPi
+	W375pLdcxSuGuEJlsjzEq1KaphEK6BjoMoTBo5u3qeF4bgDP8qjtLbpRKXVyOibCSMjBhU
+	fYXAKoRsBxs6gYmhAIw70QNCEPFqAe9nfv7EtG0fWvZvJnRVUCLrLzTCercSzM1EGm9lzg
+	eejm2rewwtERJKtTWlXvRr5sbrvHsd4gapyfiMWMc2XzUehkxT08RkbxW13M7YRST03mQX
+	d1Z/kuvFFlqVrx0YaiegWl4/6aZ2GxQIwUg0PFfzEI1vynJPqASbkDKE+qpaYQ==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1794473387; a=rsa-sha256;
 	cv=pass;
-	b=NWlE0RiuS92c8+UNYvRbXlwa2moAyaXPl6BwlWYMKsmJ0wGITSptcAPjj3/0DmmqCwCoSf
-	7QYlVVMj4MxzKjpMvKh5yG/NJyNzzNDc5Sczkl/SzAivTp6m9CVjsH4+1HMcBpM6AqUozt
-	mYq2NIUFr0e+KIXNVv9lp3y8oSxOjzeyevpJ3/+SmTxu189lr9y9DBqY4z6nqeil4tHdYW
-	q62N3eUXEOvvHAV9W9gSUikHKT9b753zW9vKVEBBScIRGxTAPJ5ylvryrnw/a9Qp6XAk5s
-	eNkcIhAirNEfQA0LtaqC7bB47xIcg2QofvWag084Lyu8fR7qYRh2/8xbU18U/w==
+	b=LD7vGEzVR+XqVbnAtrzZ5aIhVqVSGZ3WogY/f9EcydyBQWp/rXtF3B8R+FJ757KB6cVFI6
+	6Nh40BnKO3u8Quoikzb+bxMLlslmm7ay+QAW1Ueb5uDDhjreGuavm60TpGx44/2KWTxED0
+	SypeucC2M3zzMZqH6qA3HXyENCxLt4dZp194hZbptU9HDy2yGdyU0cxBcNVZQDdKbiJdBs
+	2QtOry9scjFrVkjAEw016PnUBDD7qwawnaZVsbiuGaPFjcYzzH9dcUj/Kbt7sLZvMG/+XF
+	xDscF0q4b4kmPrHC4qY66Y7u3oB2ErwKWGH7CBtZYhf+mXVV8lLR5iggDs0L/Q==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=NiEssQbb;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b="cZqbgH/T";
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=VRaDYzV2;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b="Pqz6H/ij";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
@@ -49,76 +49,76 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=xhP82YaBXp5GaicgMjkdRRerTxH3FSbdiKk8lZVyxeQ=; b=NiEssQbbNLslvw
-	utr+CzUD+Gz4esZetPerlCyZGYGTA6wHrGjbMAE1Hw43HN46sXf2TFb5+NDhU5wAeXDWpUTpespB5
-	aHUuQ9mXfkRvgZ2stqhir3RN7omOEKVM0MYLneYYoFaIIUAIIvioFBB0g/IZ9nmYMSg4J+Z1l05F1
-	jXzujXRHQi6SqmMLoPPgLPWkMggl+si7o/IjAfIDharEzAzbMlbYVUZ5cbQl9gVXBgQWu9LS9wsPX
-	wsBWZL2yq/92e+nTcUJivVadzbqdsnG4n2vjBzY9/gPP2nDwcsq5DdGT4xpz7fs9fU0ri4FmNX905
-	j5K3+XkhcK0+2qM41T8A==;
+	List-Owner; bh=rZPD6IoCItScFMxLc49PJA0KgeIYB98aBPkZloWqFbw=; b=VRaDYzV2l5BCY/
+	0prmHvvd9Awh5YvLbDCBZF1l17iYSRXTRm4f240p2exdFr1gW6yO++vEb2eEtR4GFsB4xgIIlgUF9
+	S40BlfYfK78/v2Gg0fRfT0bgLw4osskdgQxGpJGbusnK0DYinlzSm+pnDVoHG1uYh2PeRtupVIDyj
+	1CuRaq7fLQGXkvJK8ZTdG/oEaMiY8UGe+CFmfrQe23IBXat/Z+HlHuqdzcngYAkOU2obcDmDpxzST
+	y1NzS77klYKZvABseG9urfGTuiwCZ1ps93DJKWL4fBNNb0Moa0zeZKN0RWE7hhX3EQXY0TB/S7SAh
+	czLFty8Pe/3HBaVutCzg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRPbk-00000008yWR-2Fbi;
-	Thu, 12 Nov 2026 07:52:32 +0000
+	id 1xRQU8-00000009EPw-0wlf;
+	Thu, 12 Nov 2026 08:48:44 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRPbf-00000008yV4-3tqy
+	id 1xRQTt-00000009EM0-2c6i
 	for barebox@lists.infradead.org;
-	Thu, 12 Nov 2026 07:52:30 +0000
+	Thu, 12 Nov 2026 08:48:40 +0000
 Received: from [0.0.0.0] (ptz.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::77])
 	(Authenticated sender: afa@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 06FCC201A86;
-	Thu, 12 Nov 2026 08:52:25 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 8ADCE201A86;
+	Thu, 12 Nov 2026 09:48:27 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794469946;
+	s=20260414; t=1794473307;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xhP82YaBXp5GaicgMjkdRRerTxH3FSbdiKk8lZVyxeQ=;
-	b=cZqbgH/Tn3Uiy+8OX+G5R1sJ0Z+kxfUReOWniqj+w6sQtPJ66LxsLo0TBVZbf5QDioOa4L
-	GZqQ1SDHt72ncMNNplwrGU5Y5XYB7FlRq4EyEXJyofH1xZTsHsz/dfZWdJAAowSKCokXaB
-	juV4jFVdvNw0Ack+1Y936PpayiGlARlSPaGRqXw82j40qhb7uSF6nBs+ulljRqttfstSEt
-	n3/d4aSZKWb94TZuXCl6BphtK1Cmt3Mcf+bDlg99wv0xZM8B+HPBXp8M0XTGOwAdN9kNEU
-	NFanIfR05g2aTEnRNh/7PPCkVGiy2Ed4imUX5Z64lYCP0roGdk84BderU86KUA==
+	bh=rZPD6IoCItScFMxLc49PJA0KgeIYB98aBPkZloWqFbw=;
+	b=Pqz6H/ijgM5w396PKkRMtbXcKN9CuUIOaSTgBpaD9rS/0l+acOf1CEEiFE4rfBNk3XyoAL
+	ho5vXoYSz2uq4muNHkm/SASeAcPtaykPff0IOIb7vF3JX88Uvy/XMyhaa9Zt5tDcpusJWh
+	7+bRxr3BUKNHf4/c2ICni+4XTO5IZ9GIe/+ineUBwT+c2qXaMilRc++6D93Dqh+EmWc7tm
+	k5LzOXWVtrGdqmZ1Fqzt+QWyeDY0VCdTdes+DlvwJfEAjJ0MbJURh15kUtE7HNd0G13G70
+	wL+wOEhZrRbh2SXzviybxTVPulA/klszFwn6L2xnz+zn337zQAdjIAcTb4xfuw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794469946;
+	s=20260414; t=1794473307;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xhP82YaBXp5GaicgMjkdRRerTxH3FSbdiKk8lZVyxeQ=;
-	b=CINCnqXXnJoIsAwElqI5TukDDFXwBtokSvMShziwPyYlZOIsUKx/agOA5T8BtmA1LoS9Kb
-	pdMdaNvt7uMsLn28kLPLHsUfh8l22YTKU84qlHNGsuAmRYrPwv4jIq/UR/l9OqA+Raqe2N
-	Irv7XBTBTNjNnOQaiSVdCO7ggBDf9TybIdFI5NcsOA2YY0YmrOac8URex8K195/nQKHvSq
-	42kzNFvKGQCwllJHm2UFkipy84GocFyRavimvZAvNxsGNNmLYMz4R3jajAkdDXUCHd0He5
-	zAocLp8MCDGUPXgJvEgKbu9dIDkmYgmkeFDsAIv4MPnYdSyMJGDDUIV94GpdOA==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794469946; a=rsa-sha256;
+	bh=rZPD6IoCItScFMxLc49PJA0KgeIYB98aBPkZloWqFbw=;
+	b=LmE7dUSsLa1uzpceAGsVZaGDWdi4Rwk0R1TDYzRrqtuSHYtugbmZPYM/asuTXkDdfZJyHr
+	kKI9muJ/R5YtL79wf/uxLMZCx02CWcHneFGibp+CiFzLMqPEMruU7XV2ZoZ7Ymc9YLHyLU
+	Ww252V3nrdlN2stTVQQHdy6jbnUMadP/JiQn2bUX56hGK5tITaH0SDzRQGw5HgFarvh6BC
+	qnMHTVoZOVm013NYIgiz3j5tZnc3eg4uvZVdFUBVt0GFS3s+wcO8Q0DhNLDHCDNO7GSGDx
+	gbBtOIKCOV5XCut+VFp1+a3XLV33CRdlzWPq7YGIlhlhCAbECazxUJTOGeZVFg==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794473307; a=rsa-sha256;
 	cv=none;
-	b=X13GngvnGxKX+Ys8getL1SkOgfm2yyVMC7MvBK7YYg2+g8x8r9BF7tygh6HIuwNB7k2Srs
-	4bxaK5QLJBfBCZBOofwc8zI7r91FiEbF+SL7FpZk+d2QuAS4G7x9yVsru1A9VH23+m6jiB
-	FT3NRxMQS8BB/b1rGexv3elRg/pfNNAV+xaO6R/Kn+grDhlSw/Dknb5R0DMu4hx1Fv16gE
-	XyZ+coYj5cfXHdvwnGKzDUFdmmbL1823DkPBVFeGDWRCeW1uXnJ43Dd7A94LOV2UtKe70j
-	vfL1vdHCKvpLOQdU1nU9tEp/WVGOcReTrNw0nYQOMohjBygkkc/FU25Lr5hL8A==
+	b=FLbKGB37+O07JxPhNWvZ/dD4CAiNvyuNmMcrvAaPJbjSOz4TsBcAqvgzBphJ8pGCRu8Al7
+	fC7bPCduCNnoD3G+euLK2BpagICXWlfFd8P14DVB9dPhy6lXiBEYdfMtcvr1QkQePZ9Q9O
+	rpb6BUWm8xGbsp+NY9kv3Y++QLsaKe5goB4Ci8WJFmt4RUKvUYO3Jz5LNYZ4ehi8PoVz4l
+	LmlUBM9xdt7CaVY2U3QDcPYLSkJ1ukvwSHpjk6sxIpyQIE61c1CR6Tr2SAD1/gx83wLPa4
+	FP6sgwozn0sVlaLx4NvlKtTeY12fNVKtmqf9Dcki/ZMngaoy7B+5NMO7BoYvuw==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=afa@pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
-Message-ID: <9b8c30c1-6d66-4a2f-bee5-569d87361a56@pengutronix.de>
-Date: Thu, 12 Nov 2026 08:52:25 +0100
+Message-ID: <13ab8584-d716-4047-be42-4b67fa7032e6@pengutronix.de>
+Date: Thu, 12 Nov 2026 09:48:27 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 06/10] bootargs: remove unused linux_bootargs_overwrite()
+Subject: Re: [PATCH 5/5] sandbox: defconfig: enable boot overrides and devboot
 To: Sascha Hauer <s.hauer@pengutronix.de>,
  BAREBOX <barebox@lists.infradead.org>
-References: <20261030-boot-globalvar-stack-v1-0-a03803e1100c@pengutronix.de>
- <20261030-boot-globalvar-stack-v1-6-a03803e1100c@pengutronix.de>
+References: <20261030-devboot-v1-0-ab9dd3a92c66@pengutronix.de>
+ <20261030-devboot-v1-5-ab9dd3a92c66@pengutronix.de>
 Content-Language: en-US
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20261030-boot-globalvar-stack-v1-6-a03803e1100c@pengutronix.de>
+In-Reply-To: <20261030-devboot-v1-5-ab9dd3a92c66@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261111_235228_420206_A27B3E4F 
-X-CRM114-Status: GOOD (  17.91  )
+X-CRM114-CacheID: sfid-20261112_004834_273629_632133F9 
+X-CRM114-Status: GOOD (  14.14  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -126,9 +126,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On 10/30/26 11:54, Sascha Hauer wrote: > linux_bootargs_overwrite()
-    lost its last user with commit fe1e02cc68cd > ("bootm: add generic android
-    image handler"), which replaced the > old ARM32 specific [...] 
+ Content preview:  On 10/30/26 15:13, Sascha Hauer wrote: > Enable boot overrides
+    and with it devboot along with the devboot > snippets, so that the devboot
+    tests run on sandbox as well. > > Assisted-by: Claude:claude-o [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -160,24 +160,24 @@ Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Spamd-Result: default: False [-60.61 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[100.00%];
-	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
+	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:900:1d::77:received,2607:7c80:54:3::133:from];
-	R_SPF_ALLOW(-0.20)[+mx:c];
+	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:900:1d::77:received];
 	MAILLIST(-0.20)[mailman];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCPT_COUNT_TWO(0.00)[2];
 	RCVD_COUNT_THREE(0.00)[3];
-	DMARC_NA(0.00)[pengutronix.de];
-	FORGED_SENDER(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWO(0.00)[2];
+	DMARC_NA(0.00)[pengutronix.de];
 	FORWARDED(0.00)[barebox@lists.infradead.org];
+	FORGED_SENDER(0.00)[a.fatoum@pengutronix.de,barebox-bounces@lists.infradead.org];
+	MIME_TRACE(0.00)[0:+];
 	RCVD_TLS_LAST(0.00)[];
 	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
@@ -192,15 +192,13 @@ X-Spamd-Result: default: False [-60.61 / 15.00];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: AC5CC201A86
-X-Stat-Signature: zw9bd78i8wtux9rsx3zidgfdo6xko3fa
+X-Rspamd-Queue-Id: 1BB782004B4
+X-Stat-Signature: 8f7c6mcxjxs4b4uqfnpdz8gm57aexp5b
 X-Rspamd-Action: no action
 
-On 10/30/26 11:54, Sascha Hauer wrote:
-> linux_bootargs_overwrite() lost its last user with commit fe1e02cc68cd
-> ("bootm: add generic android image handler"), which replaced the
-> old ARM32 specific Android image handler calling it. Remove it together
-> with the linux_bootargs_overwritten state it maintained.
+On 10/30/26 15:13, Sascha Hauer wrote:
+> Enable boot overrides and with it devboot along with the devboot
+> snippets, so that the devboot tests run on sandbox as well.
 > 
 > Assisted-by: Claude:claude-opus-5-5
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
@@ -208,75 +206,28 @@ On 10/30/26 11:54, Sascha Hauer wrote:
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
 > ---
->  common/bootargs.c  | 17 -----------------
->  include/bootargs.h |  5 -----
->  2 files changed, 22 deletions(-)
+>  arch/sandbox/configs/sandbox_defconfig | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> diff --git a/common/bootargs.c b/common/bootargs.c
-> index 6373d9ccb1..06623bb60b 100644
-> --- a/common/bootargs.c
-> +++ b/common/bootargs.c
-> @@ -12,7 +12,6 @@
->  #include <environment.h>
->  
->  static char *linux_bootargs;
-> -static int linux_bootargs_overwritten;
->  
->  /*
->   * This returns the Linux bootargs
-> @@ -28,9 +27,6 @@ const char *linux_bootargs_get(void)
->  {
->  	char *bootargs, *parts;
->  
-> -	if (linux_bootargs_overwritten)
-> -		return linux_bootargs;
-> -
->  	free(linux_bootargs);
->  	linux_bootargs = NULL;
->  
-> @@ -65,19 +61,6 @@ const char *linux_bootargs_get(void)
->  	return linux_bootargs;
->  }
->  
-> -int linux_bootargs_overwrite(const char *bootargs)
-> -{
-> -	if (bootargs) {
-> -		free(linux_bootargs);
-> -		linux_bootargs = xstrdup(bootargs);
-> -		linux_bootargs_overwritten = 1;
-> -	} else {
-> -		linux_bootargs_overwritten = 0;
-> -	}
-> -
-> -	return 0;
-> -}
-> -
->  char *linux_bootargs_append_rootwait(char *rootarg_old)
->  {
->  	char *rootarg = xasprintf("%s rootwait=%d",
-> diff --git a/include/bootargs.h b/include/bootargs.h
-> index 4a51e81173..93ec621ad1 100644
-> --- a/include/bootargs.h
-> +++ b/include/bootargs.h
-> @@ -8,7 +8,6 @@ extern int linux_rootwait_secs;
->  
->  #ifdef CONFIG_FLEXIBLE_BOOTARGS
->  const char *linux_bootargs_get(void);
-> -int linux_bootargs_overwrite(const char *bootargs);
->  char *linux_bootargs_append_rootwait(char *rootarg_old);
->  #else
->  static inline const char *linux_bootargs_get(void)
-> @@ -16,10 +15,6 @@ static inline const char *linux_bootargs_get(void)
->  	return getenv("bootargs");
->  }
->  
-> -static inline int linux_bootargs_overwrite(const char *bootargs)
-> -{
-> -	return setenv("bootargs", bootargs);
-> -}
->  static inline char *linux_bootargs_append_rootwait(char *rootarg)
->  {
->  	return rootarg;
+> diff --git a/arch/sandbox/configs/sandbox_defconfig b/arch/sandbox/configs/sandbox_defconfig
+> index 5b2cfdd515..46f1270178 100644
+> --- a/arch/sandbox/configs/sandbox_defconfig
+> +++ b/arch/sandbox/configs/sandbox_defconfig
+> @@ -4,12 +4,14 @@ CONFIG_HUSH_FANCY_PROMPT=y
+>  CONFIG_CMDLINE_EDITING=y
+>  CONFIG_AUTO_COMPLETE=y
+>  CONFIG_MENU=y
+> +CONFIG_BOOT_OVERRIDE=y
+>  CONFIG_CONSOLE_ACTIVATE_ALL=y
+>  CONFIG_CONSOLE_ALLOW_COLOR=y
+>  CONFIG_PARTITION_DISK_EFI=y
+>  CONFIG_DEFAULT_COMPRESSION_GZIP=y
+>  CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+>  CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE=y
+> +CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_DEVBOOT=y
+>  CONFIG_DEFAULT_ENVIRONMENT_PATH=""
+>  CONFIG_STATE=y
+>  CONFIG_STATE_CRYPTO=y
 > 
 
 
