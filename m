@@ -1,45 +1,45 @@
-Delivery-date: Thu, 12 Nov 2026 09:01:18 +0100
+Delivery-date: Thu, 12 Nov 2026 09:08:35 +0100
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xRPkE-009xZT-0k
+	id 1xRPrG-009xdV-23
 	for lore@lore.pengutronix.de;
-	Thu, 12 Nov 2026 09:01:18 +0100
+	Thu, 12 Nov 2026 09:08:35 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 1236F201C9E
-	for <lore@pengutronix.de>; Thu, 12 Nov 2026 09:01:18 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id A5D65201AD6
+	for <lore@pengutronix.de>; Thu, 12 Nov 2026 09:08:33 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=yIObgHnx;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=N5Oj3wGz;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=FVDYiKKu;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=GxF1NqKm;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794470478;
+	s=20260414; t=1794470914;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=xK+NK1R9Ns+AgnW7K6+YXjTYetxdV8wOGVk8vh31DbI=;
-	b=e38pimTnFqYCVNg5lnL7RaU/i/D3POg6qQHuZK10XUM+xJl3cy6tkxZ+Y87NL5YcxAM/Vi
-	WtW3wLoPeICRcMMNlWGbf1juClpa+D2OSpjp0aO33G4Xxdqi3m6lvqTuTUed05TFhzf6yG
-	wlqQ7QuZtB7jG68bIp15o127ANYUKukYea1itAe7etXO47zZ5vNngxD9kGlR7N3Mse4Esb
-	01xfzbOmD/dXdX96f9/JTq834c2Aj0cWxMf8VLQUoKsrWoepvRlAJ6/pFOL+PgyET50zSm
-	pOn1iG7QGUSTBOH875NXc+DzLmM+B9zc5C6Tiu4dUHj+3TCC5RE0e8u7mQy0pg==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1794470478; a=rsa-sha256;
+	bh=ZUo4u/QaHQ+DNdEej1e1nfO3xuswHRACkTOZm8ZEukM=;
+	b=UfzKzXkEvKX6i00oPAr4NdT6LSaeQa2+p54nAxoFFZxhW5FHdClZ8nD/XSEcj/b5IKGqMJ
+	Qx1Av6LIkIi8xhj18Ehdkr/WrcWTw38YJeU8XtkyGEvmzpyuKlT0uildwFDIuWr1/eo1Ti
+	J90Yz9HJ3B7cR4ZfC7TtqkwbaxkZsMMHRvDOjCn5gOzrJy+vlZvALe8b7/f4TQBEPLAMi2
+	ghil6su7jA5ZxGRzzD6KUx28IEaXumB4ByYQyS8YhWhmKGoy/WzKS7uexqg+wYhuh0KgGY
+	Jmrm6a5s0jHAZcM/Cq4qpoeLOg00y0/7fxnAIUripeeq4ikBBoJF+A8cDqCHXQ==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1794470914; a=rsa-sha256;
 	cv=pass;
-	b=GD3YYCPWdfsgNusy2H6bBr3deFbJGs1ZkeiLE9h1L8b19+ZfnBDdA8Dqmv/PGWjldzz3hW
-	iq6vTYmAeeoSkki9h9LiSAZnrbiDKmDpUUXLXknxPYrteOwvNZoDnTcOnCNWRE4j3GpD5Q
-	mEgncRbIfX4NeZs60SsY16Ez79J+eelhhjXqJdqHh6zTVcfB9S8AL7uvjGb5kR3I8tlVaJ
-	xEZhoUGKDZZx1BgExKyPp4o3jNHENEeuAj0D/WmPqvGWovZSCMK2PxrlZi1BKOUZ5gozAY
-	J7mTmOa8LkydhOC09/KZQiHmZU5bToV1hWOo6at7scfxkfRrMW8lsFGVJlq7MQ==
+	b=PdzoMhQCAlLjxqtCpT6F1BVDEmuNb+FvMRedfZodrY6y22YDZudcF8IbcPQ9Gd67OINegR
+	Cwi+abRn1NThnXNa7LPUpGCNwDAh7H3Ctc6/sBa/3q/lCtcDuZSnLI1U27Q4SiYjiLv1wX
+	5SYXXjP4egWInwUN6IiuGFv9Dvvw1Fl4AYt/J3QQzhBVqvZp/wJmOsrCZyGEisUNjTSRFp
+	rVtmXcHmddoTXQMSZeusdu90LLMyw0AL/K5gQ2Jf/FwS3amSHNFIzPDbgkFQCpAs7lmzqD
+	2RoubqpCqESkJYGGArmi4WhQcc1VRFqlNMiaO0gE4N7k/0MS8ktH6AL7VHn5WA==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=yIObgHnx;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=N5Oj3wGz;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=FVDYiKKu;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=GxF1NqKm;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
@@ -49,77 +49,77 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=xK+NK1R9Ns+AgnW7K6+YXjTYetxdV8wOGVk8vh31DbI=; b=yIObgHnxpHDOmT
-	vLaO34fsf/N6Wnxov3OSCRO6pJBxsytAi6wsXQcWhle1t9yM/wR3teti6mWwooCUHhrQF6xE5dbbs
-	MiRvHxMRsxZFUNNsRoUlGPk1ySjfzMKHigFH96YiS9ObqVhPPG49mXPMD8by11utAd5YnZE8gGnb4
-	F0JLSDn4PrWq1Po2nYBvkYLe8C5ARTOQ7NKh8no24yZWT5vyL+dI5p8soVJs6yepvBSmxu6spGRux
-	ZRjsVhPl4m2fxLxu4JOxBfZOIGnWtnAbKsz1ujeu7MRqTUrh+qYh9w+gC5QE1r3RNIvXQmWVZtRbV
-	PGm9w2gyNwOtjIMUDyjw==;
+	List-Owner; bh=ZUo4u/QaHQ+DNdEej1e1nfO3xuswHRACkTOZm8ZEukM=; b=FVDYiKKu0TBV6s
+	w8WWnBO8p41zlrTHHfC4pV2ZTevv3l2YPimABHu+OEa1rNv0iKXsYU1sa+rUYYoV/cu4C6rrYa4rN
+	nWTy3Z4zek71llY+gVQrenvtaYd853+yTtwcMoQUxscuJykScNBRS4DGEydthW+aknJC1Iur2nnhp
+	7DYEuyp7igFOzCjSPriQO4vosjQ7n/gDmd5MeULlrZJjJDEGSR3ayE+bEPY/Ge71cCgktUIXWKe0T
+	NsL6JTezZIUVxfYjt5dZ/UJEC590ZgrI+otvFfSQwXiLFLuiEEWnIwHnqs4bCf6btpfbdxffwJ9tA
+	jZTC9D1NvH3wvp5qifOw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRPiT-000000090AC-18Dl;
-	Thu, 12 Nov 2026 07:59:29 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1xRPXY-00000008xBc-3qq8;
+	Thu, 12 Nov 2026 07:48:12 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRPiP-0000000909P-38EQ
+	id 1xRPXU-00000008xAS-0Bdq
 	for barebox@lists.infradead.org;
-	Thu, 12 Nov 2026 07:59:27 +0000
+	Thu, 12 Nov 2026 07:48:11 +0000
 Received: from [0.0.0.0] (ptz.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::77])
 	(Authenticated sender: afa@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B781E200563;
-	Thu, 12 Nov 2026 08:59:23 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B9974201A86;
+	Thu, 12 Nov 2026 08:48:05 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794470363;
+	s=20260414; t=1794469685;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xK+NK1R9Ns+AgnW7K6+YXjTYetxdV8wOGVk8vh31DbI=;
-	b=N5Oj3wGzAHdOltOR2J4XmN6NkCfMz6V5rJ324TWUXA+zll//9jWsDzyuRISdq5GDgXDfhn
-	FQsyMQyOASfrQcwgmJfnaLMbSKkGnTZG8o8MN6yEiaoG/7yEaOms80WKUB6+VpiHfNOdLg
-	89JnT38Egc/WXO3cHtoe4bKNfyhpOjYf1SqdF22am6Bpp8aZZI3grUSBmspUKQuUMYt7l0
-	7mDquAV1t+FARwg6Me5OFkYUwQMqkvodw/dKbszcl5pexdKCbCBidkhlEIYb4gGT9lTpEA
-	cWgpN+5NjK5zvRckQUzRSZPy7FekVD6xmZd35kj3ofSYVxZ7ubPstEUscvUr3Q==
+	bh=ZUo4u/QaHQ+DNdEej1e1nfO3xuswHRACkTOZm8ZEukM=;
+	b=GxF1NqKmk0oNvhumibc9MUe6CjIOKnoMnkmASbSFHK7RLNmUEI2baPcoBUNhdNetwbsJKQ
+	FDmKAgHAVYPL0bX+iIggnumwEw0eaxkOudAIlqKBD+F1eVTVddibbK9JMBx2ZOuPvP8FSF
+	wCe4uahBXBhIyAZBmrbYbd0AsxU6Refv/sS8Dt2fDSxmB0hDa6TISCUFJ9LYGU5sUQ5oFn
+	WaWNHr0dzI8YmvCR6h2XkMHBC2z9a5kMhb8BBvCy+/GYMtTGn5Oc/7btHlFuqDntbMH1WB
+	U32KiM4QF51xoDFvOBqTDpp+hyanYdivwqv5lbb8IKrUJ51LtrxNcaEbjurCcA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794470363;
+	s=20260414; t=1794469685;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xK+NK1R9Ns+AgnW7K6+YXjTYetxdV8wOGVk8vh31DbI=;
-	b=KutFbLSNquzGGn+6xtKteR6B2wIXKNxojL5RIPDXpvjncZ6z3DxbBOASOr1qyX+DC31kfd
-	+T8GFhFBkRQ0HMbf6Z7fSPeGpxkhjU+pXGiJWbeCUDhhFB81FCzbwgcARuGpdkQWD117Tj
-	zvNh+gGKvutyWLIDKVr03y2780UT8FWri+HDGqvBqqzT07U30Hw7C116UH7tAI5DNSxaGR
-	MiaW5mB6ETG1mdB4apyAjgjkblg49E383iuB+/1GHWQ+Eer+BhH9UjcLLv+umah2RqJMQV
-	hhtY97nDT/00BGAsn2QYSB3/mTXnLb9CJ2kHnnRJV/b9TE+vO2LKACwStBWNMQ==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794470363; a=rsa-sha256;
+	bh=ZUo4u/QaHQ+DNdEej1e1nfO3xuswHRACkTOZm8ZEukM=;
+	b=b08Ng6db6/oOk0Up+ofOa8UaVcrc5NvbRCnngeHZnW+3CSDbjzppnbjugobn8t1zVv47uj
+	IexXZJSPWschpMFkb3X1DB+4/uMKEE79yTio/yJinZl10JWQR1G3S8vb2I1k5YAgVNqeIM
+	Tdb7FBTfb9N5wLtVRd3QObjv0tJwH7oavdHwHONpt8y7QKIer7tiuuJC9y4vciPn/3zWug
+	IKyFe0qKV7OSxAwlw2FwBEMw5Ao7mzgqEEFwV2Zd8fKL4YjgiNvvm/7sAlUAcxe2eFc1Fq
+	XAMU99msqWmMahf2zU7UwBHqkP839eJZbwDIv34lxMePS540FJE7/gPTch7Hyg==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794469685; a=rsa-sha256;
 	cv=none;
-	b=ccKs+Wn+4lRIl8gcJGpFh6ixOxV+SwtHGsJmEeLy1Gcz9+sNGVVFmZB0jM7RpwUSIVsqK6
-	s00LO9ZyPiBpnC4zXxZkI1CiHTMqpCKYkNgxrOTjv9bHqHWmqIqiN1Sm3jfATuOayk6iE0
-	uYueg2db2XBUjlLixdxZi5kfBRkjqsK65UnYofVJbQ0eo2PgeOeMjimq/TarfVSqmQFCF1
-	euQpEZCADSEFJyc3bYVcbpQP+givEWSm1iMatoVjQoC7BriR74bGXtelVw3AwlVie/h1DD
-	+tzVVP9EmJRU7ux6QmqaQTGDI+ti4X97wdbDMDrqHMsxZXz0hH176JyT0Nu+nQ==
+	b=bILnW63wXiMkJhifXwFuOoUAj3ulx+4lysC0E/SjJDg1PGogdsscRuiP38Xw/diXYujja7
+	nY7df6P/nHTZ3NxUnpOZCuRKJse4Jb6MuHxN7htpbaoj0rMfjl23E4a7lBwY75IQz59vqe
+	KZT+vWzh2VQsC31kbbIvFhGrFKPEBzAybcZgk58DgIKzJsjFohRjWq7AmPyW27iVyeaCYa
+	NmDtQLdH02fbv3ikrcK3fBwhg2F0D76BJ/QYld8SniuC3kaBe0GdB3II/rWYHmXwRFfOJl
+	E//fawGHXzt8w36dsMrKF3yoWUUhXFi/tdXJUfFpMTKKpa6BwnVxxpBqMKudgA==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=afa@pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
-Message-ID: <e158d2c2-62cf-46f2-a2f7-c935dba05900@pengutronix.de>
-Date: Thu, 12 Nov 2026 08:59:23 +0100
+Message-ID: <65d296cb-a301-493b-963c-2c9c6e69dd87@pengutronix.de>
+Date: Thu, 12 Nov 2026 08:48:05 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 07/10] of: add watchdog bootarg directly instead of via a
- globalvar
+Subject: Re: [PATCH 03/10] boot: revert globalvar changes after each boot
+ entry
 To: Sascha Hauer <s.hauer@pengutronix.de>,
  BAREBOX <barebox@lists.infradead.org>
 References: <20261030-boot-globalvar-stack-v1-0-a03803e1100c@pengutronix.de>
- <20261030-boot-globalvar-stack-v1-7-a03803e1100c@pengutronix.de>
+ <20261030-boot-globalvar-stack-v1-3-a03803e1100c@pengutronix.de>
 Content-Language: en-US
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20261030-boot-globalvar-stack-v1-7-a03803e1100c@pengutronix.de>
+In-Reply-To: <20261030-boot-globalvar-stack-v1-3-a03803e1100c@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261111_235925_965017_8E79EE21 
-X-CRM114-Status: GOOD (  33.14  )
+X-CRM114-CacheID: sfid-20261111_234809_362219_4E43FB5A 
+X-CRM114-Status: GOOD (  44.14  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -127,9 +127,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On 10/30/26 11:54, Sascha Hauer wrote: > With CONFIG_SYSTEMD_OF_WATCHDOG,
-    the device tree bootargs fixup puts > systemd.watchdog_device= into global.linux.bootargs.dyn.watchdog
-    only to > read it back [...] 
+ Content preview:  On 10/30/26 11:54, Sascha Hauer wrote: > Boot entries, especially
+    boot scripts, configure the boot by setting > global.bootm.* and global.linux.bootargs.*
+    variables. To keep these from > leaking into [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -193,158 +193,245 @@ X-Spamd-Result: default: False [-60.61 / 15.00];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 1236F201C9E
-X-Stat-Signature: hsj41n3weir88bpshf5bnok8rz8x3fam
+X-Rspamd-Queue-Id: A5D65201AD6
+X-Stat-Signature: tzqsxx3sxkupywksjt18t6q61im9pjuz
 X-Rspamd-Action: no action
 
 On 10/30/26 11:54, Sascha Hauer wrote:
-> With CONFIG_SYSTEMD_OF_WATCHDOG, the device tree bootargs fixup puts
-> systemd.watchdog_device= into global.linux.bootargs.dyn.watchdog only to
-> read it back right away via linux_bootargs_get(). This has side effects
-> beyond the fixup:
+> Boot entries, especially boot scripts, configure the boot by setting
+> global.bootm.* and global.linux.bootargs.* variables. To keep these from
+> leaking into the boot entries tried afterwards, there are currently two
+> mechanisms:
 > 
->  - The variable is created whenever the fixup runs, so also for of_dump
->    -F, oftree -s or of_diff after a boot attempt has enabled the
->    watchdog, and stays around afterwards.
->  - Its mere existence makes linux_bootargs_get() ignore the legacy
->    bootargs environment variable, which is only used when no
->    global.linux.bootargs.* variables exist.
+>  - bootscript_boot() saves the global.bootm.* variables that are part of
+>    struct bootm_data and restores them afterwards. Variables not part of
+>    this struct, like global.bootm.tee, are not restored, and empty load
+>    addresses come back as the hex values of UIMAGE_SOME_ADDRESS resp.
+>    UIMAGE_INVALID_ADDRESS.
 
-That's outdated. on next, there is no fallback to bootargs any longer
-when CONFIG_FLEXIBLE_BOOTARGS is enabled. For details, see
-Documentation/migration-guides/migration-master/flexible-bootargs-legacy-fallback.rst
+global.bootm.tee is a bad example, because support has been remove (in favor
+of earlier OP-TEE loading). The variable only exists so an error can be thrown
+if it's used. Scoping it would have been unnecessary.
 
+>  - Kernel command line options have to be put into
+>    global.linux.bootargs.dyn.*, which boot_entry() clears after each boot
+>    entry. Options set by a boot entry in any other variable stay.
 > 
-> Return the option from watchdog_build_bootargs() and append it to the
-> bootargs in of_write_bootargs() instead. Note this moves the option to
-> the end of the command line, while it was previously sorted among the
-> global.linux.bootargs.* variables.
+> Replace both with a globalvar scope around the boot entry in
+> boot_entry(). This reverts all changes to the globalvars covered by
+> boot_globalvar_scope_push(), whatever the variable, and also restores
+> values that were set before the boot entry instead of clearing them.
+> This includes global.boot.watchdog_timeout, which boot_entry() reads
+> before running the boot entry, so a value set by a boot entry so far only
+> took effect for the following ones.
+> 
+> global.linux.bootargs.dyn.* still works as before for boot entries, but
+> values set in this namespace before calling boot are now kept instead of
+> being cleared once the first boot entry returns.
+
+This is worth a short migration guide entry IMO.
+
+> bootm_data_restore_defaults() has no users anymore, so remove it.
 > 
 > Assisted-by: Claude:claude-opus-5-5
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-With commit message adjusted:
+
+With above point addressed:
 
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
 > ---
->  Documentation/user/booting-linux.rst |  2 ++
->  common/Kconfig                       |  6 +++---
->  common/oftree.c                      | 41 ++++++++++++++++++++----------------
->  3 files changed, 28 insertions(+), 21 deletions(-)
+>  Documentation/user/booting-linux.rst | 20 ++++++++++++++------
+>  Documentation/user/devboot.rst       |  4 ++--
+>  common/boot.c                        | 35 ++++++++---------------------------
+>  common/bootm.c                       | 21 ---------------------
+>  include/bootm.h                      |  1 -
+>  5 files changed, 24 insertions(+), 57 deletions(-)
 > 
 > diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
-> index 0fbdc52c68..158aa8b313 100644
+> index afc705ac86..0fbdc52c68 100644
 > --- a/Documentation/user/booting-linux.rst
 > +++ b/Documentation/user/booting-linux.rst
-> @@ -124,6 +124,8 @@ interleaved with externally provided command-line arguments:
->    * ``systemd.machine_id=`` controlled by :ref:`global.bootm.provide_machine_id <magicvar_global_bootm_provide_machine_id>`
->    * ``systemd.hostname=`` controlled by :ref:`global.bootm.provide_hostname <magicvar_global_bootm_provide_hostname>`
->    * ``barebox.security.policy=`` controlled by :ref:`global.bootm.provide_policy <magicvar_global_bootm_provide_policy>`
-> +  * ``systemd.watchdog_device=`` controlled by ``CONFIG_SYSTEMD_OF_WATCHDOG``,
-> +    only when booting with a device tree
+> @@ -164,16 +164,24 @@ A simple boot entry in ``/env/boot/mmc`` could look like this:
+>    global.bootm.image=/mnt/mmc1/zImage
+>    global.bootm.oftree=/env/oftree
 >  
->  Creating root= options for the Kernel
->  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> diff --git a/common/Kconfig b/common/Kconfig
-> index 9adecfd2e4..da4cc8a5c9 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -1443,9 +1443,9 @@ config SYSTEMD_OF_WATCHDOG
->  	bool "inform devicetree-enabled kernel of used watchdog"
->  	depends on WATCHDOG && OFTREE && FLEXIBLE_BOOTARGS
->  	help
-> -	  Sets the linux.bootargs.dyn.watchdog global variable with a value of
-> -	  systemd.watchdog_device=/dev/WDOG if barebox succeeded in enabling
-> -	  the watchdog WDOG prior to boot. WDOG is the alias of the watchdog
-> +	  Appends systemd.watchdog_device=/dev/WDOG to the Kernel command line
-> +	  in the device tree if barebox succeeded in enabling the watchdog
-> +	  WDOG prior to boot. WDOG is the alias of the watchdog
->  	  in the kernel device tree. If the kernel is booted without a device
->  	  tree or with one that lacks aliases, nothing is added.
+> -  global linux.bootargs.dyn.root="root=PARTUUID=deadbeef:01"
+> +  global linux.bootargs.root="root=PARTUUID=deadbeef:01"
 >  
-> diff --git a/common/oftree.c b/common/oftree.c
-> index 7aaed70e40..5f9b2e50cb 100644
-> --- a/common/oftree.c
-> +++ b/common/oftree.c
-> @@ -160,22 +160,18 @@ static int of_fixup_bootargs_reset_source(struct device_node *root,
->  	return of_property_write_string(chosen, "reset-source-device", np->full_name);
->  }
+>  This takes the kernel from ``/mnt/mmc1/zImage`` (which could be an
+>  :ref:`automount` path registered earlier). The devicetree will be used from
+>  ``/env/oftree``. The Kernel gets the command line
+> -``root=PARTUUID=deadbeef:01``. Note the ``.dyn`` in the bootargs variable name.
+> -boot entries should always add Kernel command line parameters to variables with
+> -``.dyn`` in it. These will be cleared before booting different boot entries.
+> -This is done so that following boot entries do not leak command line
+> -parameters from the previous boot entries.
+> +``root=PARTUUID=deadbeef:01``.
+> +
+> +All changes a boot entry makes to ``global.bootm.*``, ``global.linux.*``,
+> +``global.of.*`` and
+> +:ref:`global.boot.watchdog_timeout <magicvar_global_boot_watchdog_timeout>`
+> +are reverted when the boot entry returns:
+> +modified variables get their previous value back, variables created by
+> +the boot entry are removed and variables it removed are created again.
+> +This way a boot entry that fails to boot doesn't leak its settings into
+> +the following boot entries. Older boot entries put their Kernel command
+> +line parameters into ``global.linux.bootargs.dyn.*`` for this reason,
+> +which still works, but is no longer necessary. Settings meant for all
+> +boot entries belong into an init script or an nv variable instead.
 >  
-> -static void watchdog_build_bootargs(struct watchdog *watchdog, struct device_node *root)
-> +static char *watchdog_build_bootargs(struct watchdog *watchdog, struct device_node *root)
->  {
->  	int alias_id;
-> -	char *buf;
+>  This entry can be booted with ``boot mmc``. It can also be made the default by
+>  setting the :ref:`global.boot.default <magicvar_global_boot_default>` variable
+> diff --git a/Documentation/user/devboot.rst b/Documentation/user/devboot.rst
+> index e319636994..62cc357c3a 100644
+> --- a/Documentation/user/devboot.rst
+> +++ b/Documentation/user/devboot.rst
+> @@ -191,8 +191,8 @@ when ``CONFIG_BOOTM_OFTREE_FALLBACK`` is enabled), and appends the
+>  contains.
 >  
->  	if (!watchdog)
-> -		return;
-> +		return NULL;
->  
->  	alias_id = watchdog_get_alias_id_from(watchdog, root);
->  	if (alias_id < 0)
-> -		return;
-> -
-> -	buf = xasprintf("systemd.watchdog_device=/dev/watchdog%d", alias_id);
-> +		return NULL;
->  
-> -	globalvar_add_simple("linux.bootargs.dyn.watchdog", buf);
-> -	free(buf);
-> +	return xasprintf("systemd.watchdog_device=/dev/watchdog%d", alias_id);
->  }
->  
->  static int bootargs_append = 0;
-> @@ -183,31 +179,40 @@ BAREBOX_MAGICVAR(global.linux.bootargs_append, "append to original oftree bootar
->  
->  static int of_write_bootargs(struct device_node *node)
->  {
-> -	const char *str;
-> +	const char *str, *oldstr;
-> +	char *watchdog = NULL;
->  	char *buf = NULL;
+>  Kernel command line fragments set by the script should use the
+> -``global.linux.bootargs.devboot.`` namespace. Unlike
+> -``global.linux.bootargs.dyn.``, which is cleared whenever a boot entry
+> +``global.linux.bootargs.devboot.`` namespace. Unlike variables set
+> +by the boot entries themselves, which are reverted whenever a boot entry
+>  returns, it survives falling through to the next boot target, e.g. for
+>  ``devboot system0 system1``. The ``devboot`` command removes the
+>  namespace after the boot command returns, so a subsequent plain
+> diff --git a/common/boot.c b/common/boot.c
+> index 1d8768b864..eaeff7796e 100644
+> --- a/common/boot.c
+> +++ b/common/boot.c
+> @@ -97,7 +97,7 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
+>  	int bootm_nattempts;
 >  	int ret;
 >  
->  	if (IS_ENABLED(CONFIG_SYSTEMD_OF_WATCHDOG))
-> -		watchdog_build_bootargs(boot_get_enabled_watchdog(), of_get_parent(node));
-> +		watchdog = watchdog_build_bootargs(boot_get_enabled_watchdog(),
-> +						   of_get_parent(node));
+> -	struct bootm_data backup = {}, data = {};
+> +	struct bootm_data data = {};
 >  
-> -	str = linux_bootargs_get();
-> -	if (!str)
-> -		return 0;
-> +	str = skip_spaces(linux_bootargs_get() ?: "");
-> +
-> +	if (watchdog) {
-> +		if (*str)
-> +			str = buf = xasprintf("%s %s", str, watchdog);
-> +		else
-> +			str = watchdog;
-> +	}
->  
-> -	str = skip_spaces(str);
->  	if (strlen(str) == 0)
+>  	if (dryrun == 1) {
+>  		printf("Would run %s%s%s\n", bs->entry.path,
+> @@ -105,18 +105,6 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
 >  		return 0;
->  
->  	if (bootargs_append) {
-> -		const char *oldstr;
-> -
->  		ret = of_property_read_string(node, "bootargs", &oldstr);
-> -		if (!ret)
-> -			str = buf = xasprintf("%s %s", oldstr, str);
-> +		if (!ret) {
-> +			char *tmp = xasprintf("%s %s", oldstr, str);
-> +
-> +			free(buf);
-> +			str = buf = tmp;
-> +		}
 >  	}
 >  
->  	ret = of_property_write_string(node, "bootargs", str);
->  	free(buf);
-> +	free(watchdog);
->  	return ret;
+> -	bootm_data_init_defaults(&backup);
+> -
+> -	/*
+> -	 * The strings point to the globalvars' current values, which the
+> -	 * script frees when it assigns new ones. Keep our own copies.
+> -	 */
+> -	backup.os_file = xstrdup(backup.os_file);
+> -	backup.initrd_file = xstrdup(backup.initrd_file);
+> -	backup.oftree_file = xstrdup(backup.oftree_file);
+> -	backup.root_dev = xstrdup(backup.root_dev);
+> -	backup.root_param = xstrdup(backup.root_param);
+> -
+>  	globalvar_add_simple("linux.bootargs.dyn.ip", NULL);
+>  	globalvar_add_simple("linux.bootargs.dyn.root", NULL);
+>  
+> @@ -129,12 +117,12 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
+>  	ret = execute_binfmt(bs->args ? 2 : 1, argv);
+>  	if (ret) {
+>  		pr_err("Running script '%s' failed: %s\n", bs->entry.path, strerror(-ret));
+> -		goto out;
+> +		return ret;
+>  	}
+>  
+>  	/* No point in repeating bootm if script already called it */
+>  	if (bootm_nattempts != bootm_command_attempts())
+> -		goto out;
+> +		return 0;
+>  
+>  	bootm_data_init_defaults(&data);
+>  
+> @@ -143,17 +131,7 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
+>  	if (dryrun >= 2)
+>  		data.dryrun = dryrun - 1;
+>  
+> -	ret = bootm_entry(entry, &data);
+> -out:
+> -	bootm_data_restore_defaults(&backup);
+> -
+> -	free_const(backup.os_file);
+> -	free_const(backup.initrd_file);
+> -	free_const(backup.oftree_file);
+> -	free_const(backup.root_dev);
+> -	free_const(backup.root_param);
+> -
+> -	return ret;
+> +	return bootm_entry(entry, &data);
 >  }
 >  
+>  static unsigned int boot_watchdog_timeout;
+> @@ -210,6 +188,7 @@ BAREBOX_MAGICVAR(global.user,
+>  
+>  int boot_entry(struct bootentry *be, int verbose, int dryrun)
+>  {
+> +	struct globalvar_scope *scope;
+>  	int ret;
+>  
+>  	pr_info("Booting entry '%s'\n", be->title);
+> @@ -224,11 +203,13 @@ int boot_entry(struct bootentry *be, int verbose, int dryrun)
+>  		}
+>  	}
+>  
+> +	scope = boot_globalvar_scope_push();
+> +
+>  	ret = be->boot(be, verbose, dryrun);
+>  	if (ret && ret != -ENOMEDIUM)
+>  		pr_err("Booting entry '%s' failed: %pe\n", be->title, ERR_PTR(ret));
+>  
+> -	globalvar_set_match("linux.bootargs.dyn.", "");
+> +	globalvar_scope_pop(scope);
+>  
+>  	return ret;
+>  }
+> diff --git a/common/bootm.c b/common/bootm.c
+> index 22f2ca4081..2ad8c34bb4 100644
+> --- a/common/bootm.c
+> +++ b/common/bootm.c
+> @@ -101,27 +101,6 @@ void bootm_data_init_defaults(struct bootm_data *data)
+>  	data->efi_boot = bootm_efi_mode;
+>  }
+>  
+> -void bootm_data_restore_defaults(const struct bootm_data *data)
+> -{
+> -	globalvar_set("bootm.oftree", data->oftree_file);
+> -	globalvar_set("bootm.image", data->os_file);
+> -	pr_setenv("global.bootm.image.loadaddr", "0x%lx", data->os_address);
+> -	if (IS_ENABLED(CONFIG_BOOTM_INITRD)) {
+> -		pr_setenv("global.bootm.initrd.loadaddr", "0x%lx", data->initrd_address);
+> -		globalvar_set("bootm.initrd", data->initrd_file);
+> -	}
+> -	globalvar_set("bootm.root_dev", data->root_dev);
+> -	globalvar_set("bootm.root_param", data->root_param);
+> -	bootm_set_verify_mode(data->verify);
+> -	bootm_appendroot = data->appendroot;
+> -	bootm_provide_machine_id = data->provide_machine_id;
+> -	bootm_provide_hostname = data->provide_hostname;
+> -	bootm_provide_policy = data->provide_policy;
+> -	bootm_verbosity = data->verbose;
+> -	bootm_dryrun = data->dryrun;
+> -	bootm_efi_mode = data->efi_boot;
+> -}
+> -
+>  static enum bootm_verify bootm_verify_mode = BOOTM_VERIFY_AVAILABLE;
+>  
+>  enum bootm_verify bootm_get_verify_mode(void)
+> diff --git a/include/bootm.h b/include/bootm.h
+> index bbdbb8e69d..06eb90c5ed 100644
+> --- a/include/bootm.h
+> +++ b/include/bootm.h
+> @@ -196,7 +196,6 @@ static inline int bootm_verbose(struct image_data *data)
+>  #endif
+>  
+>  void bootm_data_init_defaults(struct bootm_data *data);
+> -void bootm_data_restore_defaults(const struct bootm_data *data);
+>  
+>  const struct resource *
+>  bootm_load_os(struct image_data *data,
 > 
 
 
