@@ -1,45 +1,45 @@
-Delivery-date: Thu, 12 Nov 2026 09:08:35 +0100
+Delivery-date: Thu, 12 Nov 2026 09:20:57 +0100
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xRPrG-009xdV-23
+	id 1xRQ3E-009y6B-1m
 	for lore@lore.pengutronix.de;
-	Thu, 12 Nov 2026 09:08:35 +0100
+	Thu, 12 Nov 2026 09:20:56 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id A5D65201AD6
-	for <lore@pengutronix.de>; Thu, 12 Nov 2026 09:08:33 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 67C9F2016F4
+	for <lore@pengutronix.de>; Thu, 12 Nov 2026 09:20:56 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=FVDYiKKu;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=GxF1NqKm;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=OFy5nfEd;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=BPzE8U+W;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794470914;
+	s=20260414; t=1794471656;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=ZUo4u/QaHQ+DNdEej1e1nfO3xuswHRACkTOZm8ZEukM=;
-	b=UfzKzXkEvKX6i00oPAr4NdT6LSaeQa2+p54nAxoFFZxhW5FHdClZ8nD/XSEcj/b5IKGqMJ
-	Qx1Av6LIkIi8xhj18Ehdkr/WrcWTw38YJeU8XtkyGEvmzpyuKlT0uildwFDIuWr1/eo1Ti
-	J90Yz9HJ3B7cR4ZfC7TtqkwbaxkZsMMHRvDOjCn5gOzrJy+vlZvALe8b7/f4TQBEPLAMi2
-	ghil6su7jA5ZxGRzzD6KUx28IEaXumB4ByYQyS8YhWhmKGoy/WzKS7uexqg+wYhuh0KgGY
-	Jmrm6a5s0jHAZcM/Cq4qpoeLOg00y0/7fxnAIUripeeq4ikBBoJF+A8cDqCHXQ==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1794470914; a=rsa-sha256;
+	bh=PSVu3KUtS5tlfI1BIG4WHkRD3cHhjNHyozZDJQFoS2M=;
+	b=CG6uusaNBSfe85hWRXNWO/bRn2oA6j7PgKlaODc9Xzu+BW3TVirPPdwlmkMdZ2xLd7iY2F
+	aVUps5ZctXxpCqAHx0p/TkMfU5JUeiT79BatvueU0frJja1M3kSeNpI3LEPv/s1MgKRXc4
+	geMEbq5fGKGG3MHaoRyUpt2NkugeLnXCadUp78haP8ZK8y3l3FEte/7nWIPRxFidZfVXgc
+	LYK0WfwzwCh11bCLPEh9oLk3KQ4J9zIWnIAGczP1YwFiFM7FF8oVNoBbeEkldN+JdKVj/g
+	ReNvh0RGlKCXscdFdaLBWE77enpgze550JRLDmoHc1dodDk1EVgA9tWgHamJXg==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1794471656; a=rsa-sha256;
 	cv=pass;
-	b=PdzoMhQCAlLjxqtCpT6F1BVDEmuNb+FvMRedfZodrY6y22YDZudcF8IbcPQ9Gd67OINegR
-	Cwi+abRn1NThnXNa7LPUpGCNwDAh7H3Ctc6/sBa/3q/lCtcDuZSnLI1U27Q4SiYjiLv1wX
-	5SYXXjP4egWInwUN6IiuGFv9Dvvw1Fl4AYt/J3QQzhBVqvZp/wJmOsrCZyGEisUNjTSRFp
-	rVtmXcHmddoTXQMSZeusdu90LLMyw0AL/K5gQ2Jf/FwS3amSHNFIzPDbgkFQCpAs7lmzqD
-	2RoubqpCqESkJYGGArmi4WhQcc1VRFqlNMiaO0gE4N7k/0MS8ktH6AL7VHn5WA==
+	b=DibL7I7OS5BIPSoXr1HQep0PWkMAz59bZZeE9ehpl2RLINdm9J+nnGd6T0ENC7M3dZfxrg
+	BUD4KCo8WMy6v8ZS8l+OlZNQHRzrZjVMSfLuk5gxru05QCqbmmcqpW/qLp6lxr/dX7AaF+
+	a81HI6LafefJ2k5CX8WJHP9UPwJZODrep5j4U0mdph4ofY/c9TJrvyzc6pjlXrKyr4Iqn0
+	Z7xOVHuvxmuQr98grdxAjdgk9MsHLuPZWsX/d/Y1vG1TV0+OkfZ9D//AmVLVcf1y4ikW4P
+	Re0wyumEVuXRQxt1G746b3hhZkHimE3xxkcpcJxKbfVTt1Kt8oH4h1KOGt09QA==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=FVDYiKKu;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=GxF1NqKm;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=OFy5nfEd;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=BPzE8U+W;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
@@ -49,77 +49,77 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=ZUo4u/QaHQ+DNdEej1e1nfO3xuswHRACkTOZm8ZEukM=; b=FVDYiKKu0TBV6s
-	w8WWnBO8p41zlrTHHfC4pV2ZTevv3l2YPimABHu+OEa1rNv0iKXsYU1sa+rUYYoV/cu4C6rrYa4rN
-	nWTy3Z4zek71llY+gVQrenvtaYd853+yTtwcMoQUxscuJykScNBRS4DGEydthW+aknJC1Iur2nnhp
-	7DYEuyp7igFOzCjSPriQO4vosjQ7n/gDmd5MeULlrZJjJDEGSR3ayE+bEPY/Ge71cCgktUIXWKe0T
-	NsL6JTezZIUVxfYjt5dZ/UJEC590ZgrI+otvFfSQwXiLFLuiEEWnIwHnqs4bCf6btpfbdxffwJ9tA
-	jZTC9D1NvH3wvp5qifOw==;
+	List-Owner; bh=PSVu3KUtS5tlfI1BIG4WHkRD3cHhjNHyozZDJQFoS2M=; b=OFy5nfEdxwYncb
+	d6XV2zfuuQRs37nYAVn+1dh8VQZTcKLG97QIRGXI/kgeTqAN9twDUoPmuKViN46fQlqtHt95+rxcU
+	rdGbf5wWuw0VqdNHXJ3GZeTS2FRZHC402gx+B77oAeZFJI+uywUUWngYxrQ+kgUq9RB8ZD5eMLn/n
+	bY3HemNEA/3ISSiLQXQDPJFuT+SwxylpkVQvda2cNKheTxCiKoKA5IpokU0gtre2RJiOd4kVMcfYt
+	ToKUQIwoFB9eipk9W65WsOEoOOYfwwD1M3Y4JvuO3GeHN7ZlAQeCTI2bmP4fmBH6hZf6j64ynrY5z
+	fsM1DgImjDM418knijxQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRPXY-00000008xBc-3qq8;
-	Thu, 12 Nov 2026 07:48:12 +0000
+	id 1xRQ2A-000000093zS-1mKB;
+	Thu, 12 Nov 2026 08:19:50 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRPXU-00000008xAS-0Bdq
+	id 1xRQ25-000000093yq-3hwu
 	for barebox@lists.infradead.org;
-	Thu, 12 Nov 2026 07:48:11 +0000
+	Thu, 12 Nov 2026 08:19:48 +0000
 Received: from [0.0.0.0] (ptz.office.stw.pengutronix.de [IPv6:2a0a:edc0:0:900:1d::77])
 	(Authenticated sender: afa@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id B9974201A86;
-	Thu, 12 Nov 2026 08:48:05 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id A1F01200563;
+	Thu, 12 Nov 2026 09:19:43 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794469685;
+	s=20260414; t=1794471584;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZUo4u/QaHQ+DNdEej1e1nfO3xuswHRACkTOZm8ZEukM=;
-	b=GxF1NqKmk0oNvhumibc9MUe6CjIOKnoMnkmASbSFHK7RLNmUEI2baPcoBUNhdNetwbsJKQ
-	FDmKAgHAVYPL0bX+iIggnumwEw0eaxkOudAIlqKBD+F1eVTVddibbK9JMBx2ZOuPvP8FSF
-	wCe4uahBXBhIyAZBmrbYbd0AsxU6Refv/sS8Dt2fDSxmB0hDa6TISCUFJ9LYGU5sUQ5oFn
-	WaWNHr0dzI8YmvCR6h2XkMHBC2z9a5kMhb8BBvCy+/GYMtTGn5Oc/7btHlFuqDntbMH1WB
-	U32KiM4QF51xoDFvOBqTDpp+hyanYdivwqv5lbb8IKrUJ51LtrxNcaEbjurCcA==
+	bh=PSVu3KUtS5tlfI1BIG4WHkRD3cHhjNHyozZDJQFoS2M=;
+	b=BPzE8U+WJMzxxwnVehy972pFcZW8UZlLg85zCdKmzdD3sEFCO2syCtOeiREJ1lrEPdRUpE
+	jzpdbBNFhjbMTLzDxMUzeURmNWOISC8oYD8DIhsLwjD6o3a7paUiNdU9v19jM9ViY86blL
+	AUj9g1vSIyBNCGSfRYGOJGXz4n+bSx4KdFgC4kWtzHaajpUtGj+Mr2uin4itFlpATBAI/s
+	t3r0U/UwnSNzDqItdASkkcZz1uIOPQXSLtn/CVnk6OVs1e/W9ah3mak0jENn0vlVE6Ez4p
+	3CsjVRWgmsCHUv9BZWR0XbZkx2qZjsKCJ2hC5KHl6ObI9A+lM45d7bmqL/gXGw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794469685;
+	s=20260414; t=1794471584;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZUo4u/QaHQ+DNdEej1e1nfO3xuswHRACkTOZm8ZEukM=;
-	b=b08Ng6db6/oOk0Up+ofOa8UaVcrc5NvbRCnngeHZnW+3CSDbjzppnbjugobn8t1zVv47uj
-	IexXZJSPWschpMFkb3X1DB+4/uMKEE79yTio/yJinZl10JWQR1G3S8vb2I1k5YAgVNqeIM
-	Tdb7FBTfb9N5wLtVRd3QObjv0tJwH7oavdHwHONpt8y7QKIer7tiuuJC9y4vciPn/3zWug
-	IKyFe0qKV7OSxAwlw2FwBEMw5Ao7mzgqEEFwV2Zd8fKL4YjgiNvvm/7sAlUAcxe2eFc1Fq
-	XAMU99msqWmMahf2zU7UwBHqkP839eJZbwDIv34lxMePS540FJE7/gPTch7Hyg==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794469685; a=rsa-sha256;
+	bh=PSVu3KUtS5tlfI1BIG4WHkRD3cHhjNHyozZDJQFoS2M=;
+	b=MzqxGQeQsIuIdi+Su1JF2sT7YJasPFBG3oLdheHXFlna5yoP6/C/adxfkmWACKSmY3K/6U
+	buaD5N6puThj8k0V3kybeQ3eYarNhRcos/bYli29ndoJPn0Nr8F/T2OUzSaQwZDHdrMvJT
+	NevHqfQYntHjLOL2e1xlZmf6bi2Rwb575zPkhcxsNESR5xWZOQnzgTq2fpBFa+4tYrx/pY
+	KUeiQbyONsX6Z3uc/4RrakVscd9j1uuLrxEUu6wUI3nDhrKGft3urQIPW31aEko6ihU7rG
+	cBKGkGdVS1C89ZvhTn6cZ5mFhqBzGQM5zWiInBQDWB2d2qKQGdVfoNaqNUXRtg==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794471584; a=rsa-sha256;
 	cv=none;
-	b=bILnW63wXiMkJhifXwFuOoUAj3ulx+4lysC0E/SjJDg1PGogdsscRuiP38Xw/diXYujja7
-	nY7df6P/nHTZ3NxUnpOZCuRKJse4Jb6MuHxN7htpbaoj0rMfjl23E4a7lBwY75IQz59vqe
-	KZT+vWzh2VQsC31kbbIvFhGrFKPEBzAybcZgk58DgIKzJsjFohRjWq7AmPyW27iVyeaCYa
-	NmDtQLdH02fbv3ikrcK3fBwhg2F0D76BJ/QYld8SniuC3kaBe0GdB3II/rWYHmXwRFfOJl
-	E//fawGHXzt8w36dsMrKF3yoWUUhXFi/tdXJUfFpMTKKpa6BwnVxxpBqMKudgA==
+	b=VKuiGmpuObxKrB46s5HV2Q6XknleRnZgK4lSXGkvOP/GVcYJekzbxXD1yWgEjcB91LVcKM
+	Jjytq22C+z47I2usM0CeTjGGx+hLychwC51ZboW9UqvX3lp02HYZRFrKMGZyWrg+jB+thT
+	rc+WpfA5JinH5zKsQax/KQ98Q/MYK1rzbs3ASbEnthjCaD7BOSd36LNHUvG48Y98uWNrh0
+	fg9gCcgHVIsXfl2p0rqDwhOOgm/NdO50djFXACHA6929ovbzgvVp9xym4nnG9pbn6Yk19u
+	wYKkLFfvXHvsPdeDawo5+CtQTjhfq1Rn2IXsgk5kGvitf7v0Pe1GKU9scWB4hw==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=afa@pengutronix.de smtp.mailfrom=a.fatoum@pengutronix.de
-Message-ID: <65d296cb-a301-493b-963c-2c9c6e69dd87@pengutronix.de>
-Date: Thu, 12 Nov 2026 08:48:05 +0100
+Message-ID: <55e296a7-8d50-46db-ab5c-a719ee79166b@pengutronix.de>
+Date: Thu, 12 Nov 2026 09:19:42 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 03/10] boot: revert globalvar changes after each boot
- entry
+Subject: Re: [PATCH 09/10] defaultenv: don't use global.linux.bootargs.dyn.*
+ in boot entries
 To: Sascha Hauer <s.hauer@pengutronix.de>,
  BAREBOX <barebox@lists.infradead.org>
 References: <20261030-boot-globalvar-stack-v1-0-a03803e1100c@pengutronix.de>
- <20261030-boot-globalvar-stack-v1-3-a03803e1100c@pengutronix.de>
+ <20261030-boot-globalvar-stack-v1-9-a03803e1100c@pengutronix.de>
 Content-Language: en-US
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20261030-boot-globalvar-stack-v1-3-a03803e1100c@pengutronix.de>
+In-Reply-To: <20261030-boot-globalvar-stack-v1-9-a03803e1100c@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261111_234809_362219_4E43FB5A 
-X-CRM114-Status: GOOD (  44.14  )
+X-CRM114-CacheID: sfid-20261112_001946_082326_6E9AE558 
+X-CRM114-Status: GOOD (  20.48  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -127,9 +127,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  On 10/30/26 11:54, Sascha Hauer wrote: > Boot entries, especially
-    boot scripts, configure the boot by setting > global.bootm.* and global.linux.bootargs.*
-    variables. To keep these from > leaking into [...] 
+ Content preview:  On 10/30/26 11:54, Sascha Hauer wrote: > Boot entries no longer
+    need to put their Kernel command line options > into global.linux.bootargs.dyn.*,
+    as boot_entry() reverts all changes to > global.linux. [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -193,245 +193,89 @@ X-Spamd-Result: default: False [-60.61 / 15.00];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: A5D65201AD6
-X-Stat-Signature: tzqsxx3sxkupywksjt18t6q61im9pjuz
+X-Rspamd-Queue-Id: 67C9F2016F4
+X-Stat-Signature: tchuq4r38zwizcph5abj5zi69fqa66im
 X-Rspamd-Action: no action
 
 On 10/30/26 11:54, Sascha Hauer wrote:
-> Boot entries, especially boot scripts, configure the boot by setting
-> global.bootm.* and global.linux.bootargs.* variables. To keep these from
-> leaking into the boot entries tried afterwards, there are currently two
-> mechanisms:
+> Boot entries no longer need to put their Kernel command line options
+> into global.linux.bootargs.dyn.*, as boot_entry() reverts all changes to
+> global.linux.bootargs.* when the boot entry returns. Use plain names in
+> the net and dfu boot entries, the boot entry template and the matching
+> example in the documentation.
 > 
->  - bootscript_boot() saves the global.bootm.* variables that are part of
->    struct bootm_data and restores them afterwards. Variables not part of
->    this struct, like global.bootm.tee, are not restored, and empty load
->    addresses come back as the hex values of UIMAGE_SOME_ADDRESS resp.
->    UIMAGE_INVALID_ADDRESS.
-
-global.bootm.tee is a bad example, because support has been remove (in favor
-of earlier OP-TEE loading). The variable only exists so an error can be thrown
-if it's used. Scoping it would have been unnecessary.
-
->  - Kernel command line options have to be put into
->    global.linux.bootargs.dyn.*, which boot_entry() clears after each boot
->    entry. Options set by a boot entry in any other variable stay.
-> 
-> Replace both with a globalvar scope around the boot entry in
-> boot_entry(). This reverts all changes to the globalvars covered by
-> boot_globalvar_scope_push(), whatever the variable, and also restores
-> values that were set before the boot entry instead of clearing them.
-> This includes global.boot.watchdog_timeout, which boot_entry() reads
-> before running the boot entry, so a value set by a boot entry so far only
-> took effect for the following ones.
-> 
-> global.linux.bootargs.dyn.* still works as before for boot entries, but
-> values set in this namespace before calling boot are now kept instead of
-> being cleared once the first boot entry returns.
-
-This is worth a short migration guide entry IMO.
-
-> bootm_data_restore_defaults() has no users anymore, so remove it.
+> Unlike the dyn.ip and dyn.root variables, which bootscript_boot()
+> creates for compatibility with existing boot scripts, the new variables
+> don't exist beforehand, so create them with the global command.
 > 
 > Assisted-by: Claude:claude-opus-5-5
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-
-With above point addressed:
-
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
 > ---
->  Documentation/user/booting-linux.rst | 20 ++++++++++++++------
->  Documentation/user/devboot.rst       |  4 ++--
->  common/boot.c                        | 35 ++++++++---------------------------
->  common/bootm.c                       | 21 ---------------------
->  include/bootm.h                      |  1 -
->  5 files changed, 24 insertions(+), 57 deletions(-)
+>  Documentation/user/booting-linux.rst            | 5 +++--
+>  defaultenv/defaultenv-2-base/boot/net           | 5 +++--
+>  defaultenv/defaultenv-2-base/data/boot-template | 2 +-
+>  defaultenv/defaultenv-2-dfu/boot/dfu            | 4 ++--
+>  4 files changed, 9 insertions(+), 7 deletions(-)
 > 
 > diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
-> index afc705ac86..0fbdc52c68 100644
+> index 158aa8b313..85f7694fe8 100644
 > --- a/Documentation/user/booting-linux.rst
 > +++ b/Documentation/user/booting-linux.rst
-> @@ -164,16 +164,24 @@ A simple boot entry in ``/env/boot/mmc`` could look like this:
->    global.bootm.image=/mnt/mmc1/zImage
->    global.bootm.oftree=/env/oftree
+> @@ -442,9 +442,10 @@ If the preconfigured paths or names are not suitable, they can be adjusted in
+>    fi
 >  
-> -  global linux.bootargs.dyn.root="root=PARTUUID=deadbeef:01"
-> +  global linux.bootargs.root="root=PARTUUID=deadbeef:01"
+>    nfsroot="/home/${global.user}/nfsroot/${global.hostname}"
+> -  ip_route_get -b ${global.net.server} global.linux.bootargs.dyn.ip
+> +  global linux.bootargs.ip
+> +  ip_route_get -b ${global.net.server} global.linux.bootargs.ip
 >  
->  This takes the kernel from ``/mnt/mmc1/zImage`` (which could be an
->  :ref:`automount` path registered earlier). The devicetree will be used from
->  ``/env/oftree``. The Kernel gets the command line
-> -``root=PARTUUID=deadbeef:01``. Note the ``.dyn`` in the bootargs variable name.
-> -boot entries should always add Kernel command line parameters to variables with
-> -``.dyn`` in it. These will be cleared before booting different boot entries.
-> -This is done so that following boot entries do not leak command line
-> -parameters from the previous boot entries.
-> +``root=PARTUUID=deadbeef:01``.
-> +
-> +All changes a boot entry makes to ``global.bootm.*``, ``global.linux.*``,
-> +``global.of.*`` and
-> +:ref:`global.boot.watchdog_timeout <magicvar_global_boot_watchdog_timeout>`
-> +are reverted when the boot entry returns:
-> +modified variables get their previous value back, variables created by
-> +the boot entry are removed and variables it removed are created again.
-> +This way a boot entry that fails to boot doesn't leak its settings into
-> +the following boot entries. Older boot entries put their Kernel command
-> +line parameters into ``global.linux.bootargs.dyn.*`` for this reason,
-> +which still works, but is no longer necessary. Settings meant for all
-> +boot entries belong into an init script or an nv variable instead.
+> -  global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
+> +  global linux.bootargs.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
 >  
->  This entry can be booted with ``boot mmc``. It can also be made the default by
->  setting the :ref:`global.boot.default <magicvar_global_boot_default>` variable
-> diff --git a/Documentation/user/devboot.rst b/Documentation/user/devboot.rst
-> index e319636994..62cc357c3a 100644
-> --- a/Documentation/user/devboot.rst
-> +++ b/Documentation/user/devboot.rst
-> @@ -191,8 +191,8 @@ when ``CONFIG_BOOTM_OFTREE_FALLBACK`` is enabled), and appends the
->  contains.
+>  ``boot net`` will then retrieve the kernel (and also the device tree and
+>  initramfs, if used) over TFTP and boot it.
+> diff --git a/defaultenv/defaultenv-2-base/boot/net b/defaultenv/defaultenv-2-base/boot/net
+> index 8408ceaf39..f025bb4098 100644
+> --- a/defaultenv/defaultenv-2-base/boot/net
+> +++ b/defaultenv/defaultenv-2-base/boot/net
+> @@ -23,6 +23,7 @@ if [ -f "${initramfs}" ]; then
+>  	global.bootm.initrd="$initramfs"
+>  else
+>  	nfsroot="${nfsserver}:/home/${global.user}/nfsroot/${global.hostname}"
+> -	ip_route_get -b ${global.net.server} global.linux.bootargs.dyn.ip
+> -	global.linux.bootargs.dyn.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
+> +	global linux.bootargs.ip
+> +	ip_route_get -b ${global.net.server} global.linux.bootargs.ip
+> +	global linux.bootargs.root="root=/dev/nfs nfsroot=$nfsroot,v3,tcp"
+>  fi
+> diff --git a/defaultenv/defaultenv-2-base/data/boot-template b/defaultenv/defaultenv-2-base/data/boot-template
+> index 689d98e1e9..b63eb86d1a 100644
+> --- a/defaultenv/defaultenv-2-base/data/boot-template
+> +++ b/defaultenv/defaultenv-2-base/data/boot-template
+> @@ -6,4 +6,4 @@ global.bootm.image=<path to image>
 >  
->  Kernel command line fragments set by the script should use the
-> -``global.linux.bootargs.devboot.`` namespace. Unlike
-> -``global.linux.bootargs.dyn.``, which is cleared whenever a boot entry
-> +``global.linux.bootargs.devboot.`` namespace. Unlike variables set
-> +by the boot entries themselves, which are reverted whenever a boot entry
->  returns, it survives falling through to the next boot target, e.g. for
->  ``devboot system0 system1``. The ``devboot`` command removes the
->  namespace after the boot command returns, so a subsequent plain
-> diff --git a/common/boot.c b/common/boot.c
-> index 1d8768b864..eaeff7796e 100644
-> --- a/common/boot.c
-> +++ b/common/boot.c
-> @@ -97,7 +97,7 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
->  	int bootm_nattempts;
->  	int ret;
+>  #bootargs-ip
 >  
-> -	struct bootm_data backup = {}, data = {};
-> +	struct bootm_data data = {};
+> -global.linux.bootargs.dyn.root="root=<rootfs here>"
+> +global linux.bootargs.root="root=<rootfs here>"
+> diff --git a/defaultenv/defaultenv-2-dfu/boot/dfu b/defaultenv/defaultenv-2-dfu/boot/dfu
+> index 682091141e..56a88ae0a3 100644
+> --- a/defaultenv/defaultenv-2-dfu/boot/dfu
+> +++ b/defaultenv/defaultenv-2-dfu/boot/dfu
+> @@ -23,8 +23,8 @@ if [ ! -f "$kernel" ]; then
+>  fi
 >  
->  	if (dryrun == 1) {
->  		printf("Would run %s%s%s\n", bs->entry.path,
-> @@ -105,18 +105,6 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
->  		return 0;
->  	}
+>  if [ -f "$cmdline" ]; then
+> -	global linux.bootargs.dyn.dfu
+> -	readf $cmdline global.linux.bootargs.dyn.dfu
+> +	global linux.bootargs.dfu
+> +	readf $cmdline global.linux.bootargs.dfu
+>  fi
 >  
-> -	bootm_data_init_defaults(&backup);
-> -
-> -	/*
-> -	 * The strings point to the globalvars' current values, which the
-> -	 * script frees when it assigns new ones. Keep our own copies.
-> -	 */
-> -	backup.os_file = xstrdup(backup.os_file);
-> -	backup.initrd_file = xstrdup(backup.initrd_file);
-> -	backup.oftree_file = xstrdup(backup.oftree_file);
-> -	backup.root_dev = xstrdup(backup.root_dev);
-> -	backup.root_param = xstrdup(backup.root_param);
-> -
->  	globalvar_add_simple("linux.bootargs.dyn.ip", NULL);
->  	globalvar_add_simple("linux.bootargs.dyn.root", NULL);
->  
-> @@ -129,12 +117,12 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
->  	ret = execute_binfmt(bs->args ? 2 : 1, argv);
->  	if (ret) {
->  		pr_err("Running script '%s' failed: %s\n", bs->entry.path, strerror(-ret));
-> -		goto out;
-> +		return ret;
->  	}
->  
->  	/* No point in repeating bootm if script already called it */
->  	if (bootm_nattempts != bootm_command_attempts())
-> -		goto out;
-> +		return 0;
->  
->  	bootm_data_init_defaults(&data);
->  
-> @@ -143,17 +131,7 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
->  	if (dryrun >= 2)
->  		data.dryrun = dryrun - 1;
->  
-> -	ret = bootm_entry(entry, &data);
-> -out:
-> -	bootm_data_restore_defaults(&backup);
-> -
-> -	free_const(backup.os_file);
-> -	free_const(backup.initrd_file);
-> -	free_const(backup.oftree_file);
-> -	free_const(backup.root_dev);
-> -	free_const(backup.root_param);
-> -
-> -	return ret;
-> +	return bootm_entry(entry, &data);
->  }
->  
->  static unsigned int boot_watchdog_timeout;
-> @@ -210,6 +188,7 @@ BAREBOX_MAGICVAR(global.user,
->  
->  int boot_entry(struct bootentry *be, int verbose, int dryrun)
->  {
-> +	struct globalvar_scope *scope;
->  	int ret;
->  
->  	pr_info("Booting entry '%s'\n", be->title);
-> @@ -224,11 +203,13 @@ int boot_entry(struct bootentry *be, int verbose, int dryrun)
->  		}
->  	}
->  
-> +	scope = boot_globalvar_scope_push();
-> +
->  	ret = be->boot(be, verbose, dryrun);
->  	if (ret && ret != -ENOMEDIUM)
->  		pr_err("Booting entry '%s' failed: %pe\n", be->title, ERR_PTR(ret));
->  
-> -	globalvar_set_match("linux.bootargs.dyn.", "");
-> +	globalvar_scope_pop(scope);
->  
->  	return ret;
->  }
-> diff --git a/common/bootm.c b/common/bootm.c
-> index 22f2ca4081..2ad8c34bb4 100644
-> --- a/common/bootm.c
-> +++ b/common/bootm.c
-> @@ -101,27 +101,6 @@ void bootm_data_init_defaults(struct bootm_data *data)
->  	data->efi_boot = bootm_efi_mode;
->  }
->  
-> -void bootm_data_restore_defaults(const struct bootm_data *data)
-> -{
-> -	globalvar_set("bootm.oftree", data->oftree_file);
-> -	globalvar_set("bootm.image", data->os_file);
-> -	pr_setenv("global.bootm.image.loadaddr", "0x%lx", data->os_address);
-> -	if (IS_ENABLED(CONFIG_BOOTM_INITRD)) {
-> -		pr_setenv("global.bootm.initrd.loadaddr", "0x%lx", data->initrd_address);
-> -		globalvar_set("bootm.initrd", data->initrd_file);
-> -	}
-> -	globalvar_set("bootm.root_dev", data->root_dev);
-> -	globalvar_set("bootm.root_param", data->root_param);
-> -	bootm_set_verify_mode(data->verify);
-> -	bootm_appendroot = data->appendroot;
-> -	bootm_provide_machine_id = data->provide_machine_id;
-> -	bootm_provide_hostname = data->provide_hostname;
-> -	bootm_provide_policy = data->provide_policy;
-> -	bootm_verbosity = data->verbose;
-> -	bootm_dryrun = data->dryrun;
-> -	bootm_efi_mode = data->efi_boot;
-> -}
-> -
->  static enum bootm_verify bootm_verify_mode = BOOTM_VERIFY_AVAILABLE;
->  
->  enum bootm_verify bootm_get_verify_mode(void)
-> diff --git a/include/bootm.h b/include/bootm.h
-> index bbdbb8e69d..06eb90c5ed 100644
-> --- a/include/bootm.h
-> +++ b/include/bootm.h
-> @@ -196,7 +196,6 @@ static inline int bootm_verbose(struct image_data *data)
->  #endif
->  
->  void bootm_data_init_defaults(struct bootm_data *data);
-> -void bootm_data_restore_defaults(const struct bootm_data *data);
->  
->  const struct resource *
->  bootm_load_os(struct image_data *data,
+>  if [ -f "$dtb" ]; then
 > 
 
 
