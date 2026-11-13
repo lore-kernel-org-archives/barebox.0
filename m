@@ -1,72 +1,73 @@
-Delivery-date: Fri, 13 Nov 2026 10:59:32 +0100
+Delivery-date: Fri, 13 Nov 2026 11:00:22 +0100
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xRo4C-00ANdu-0c
+	id 1xRo50-00ANex-10
 	for lore@lore.pengutronix.de;
-	Fri, 13 Nov 2026 10:59:32 +0100
+	Fri, 13 Nov 2026 11:00:22 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 083FC202C91
-	for <lore@pengutronix.de>; Fri, 13 Nov 2026 10:59:32 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 2CA80202266
+	for <lore@pengutronix.de>; Fri, 13 Nov 2026 11:00:22 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=FH4EQIX2;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=JqlWSNty;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=yql5wL7u;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=LSf2H0uD;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794563972;
+	s=20260414; t=1794564022;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=dfs8f5gB30ifn7avAvvVZzxvinLwkDYS8At8NwXvqNM=;
-	b=W5HiWPrZ1LnTz8/SYWKt4pSvDk/Qwz2Dd2XosK8We5jBo7jkdXczmcJeVRKmdI/Q9RAF9x
-	VQ0V6WMaITHjvDP1UfM5oWogT5S+xvNuBnX26vZn7MfJeKTcdiPrfMnQWmXhsd4UYDyiSY
-	zfz9eYFD5FUwVYpikDXMVX8idXhXDDoX/6kAMXzdE2uacCf+RXZxyuCgMLpYn1U4xdcJBx
-	CSbS0JLx2nHfW6UsyBq2PKWVvQzPX1eVPO5G5w4YOmfNWVau4sMeEwGg0k7Z4A6v023QyM
-	O4KcXWQ9tmBMW7bNtwAN79/7dXaLFVLkyIcMd859XQXHaM2bX4Q3TFtkpLf4Bg==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1794563972; a=rsa-sha256;
+	bh=Fo45/mCzwMsSVCi8vYANqsPQ1b4zLtVoMUcqpQ0ZJL8=;
+	b=dt9ORHtZNMqMdIwDrdHxp2sxHy8ldHyjbRL9IXNbnDOlWqlhXrmXCYWmuIolqVA3a9CQtK
+	r71a6qARQNlkgCPqVKzfBCXHGZYBEZR6O3F4MCQ4Xfd57k90/uNoH3AjKvr23ZDppSxOAw
+	ShSy2j+YiUVBSd/+F5VnTjzl0I+6t+rKbo/HBP+F7LC7/zz8VfjBID2w0D92tiP9Dg2sgy
+	n/sfEWIHnckdACHVg/Yzhwi0ie4/KSyKNBUpGmxO+FQm7qxiyiGt3yFhK0L3RPuVXEDNdD
+	mv/69UuAgB8YLuTGTi5lWgnopb8q3UgomL1PzEVSjOtHqakD+Ow8baf6dFJ7eQ==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1794564022; a=rsa-sha256;
 	cv=fail;
-	b=J+jWRpso7TfdPbkT8Y7l0/M2us5C3bTENUFQdU6q5f850DcHO+l41im7nXEOZmsVk4VBPC
-	e8EN2qiZ8DKqgVsPoAiw6idrmWYrq7swQztmtGZU5FT6RbpwM9dCXciLD2utCGyog2cwis
-	StaLTBIpG3O1wS/CE/NPtGnFAbBFu+cTLN0fcMcuqzVGf4SYXJT47uz7oqyC1ftGJhS2KG
-	tuUaJqNbAvza3odMo+pjjfZJ9aO3j2AUVBYvHTGLpkLmvAWKpGQpD/tO5cAZ7DZZppuJjt
-	CaEbzwR7cnzT0jkp77rEIxaxM9WnI+yp165qctMAMdSlK8T0httcOOCebVdPKQ==
+	b=HCOuxtSHnyEyONtmS8X8o+Ly7Abzzs4X+mdrE+IIe8wwO2HijE8ZPqe0RB79fJJh4g7JuI
+	lBUiTQgjWoANak2TsrRh5UyZ8VGKSYO3Y6f3nZPLRY5xci4+JxpPfRIH6KaBTvjZolRNri
+	FHvhWeIoPmePh0ZCL90hEXZoOevvcAAMR/xpc4wjfu8sqg9q7z59YdyTG/hGgCQj+FPiLj
+	X2PBh6gAdz5eBuDqHnfojUZN3VpzJCJyYdLJe14cOfwD7jLIos+kUaQRjyV6FYLW4qYl38
+	WoBSFjyAEnof/LhNBTHAw/4Bdc8kYADEVNOUsTI9iURNJb7AKuCufbUFULjBeQ==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=FH4EQIX2;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=JqlWSNty;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=yql5wL7u;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=LSf2H0uD;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=dfs8f5gB30ifn7avAvvVZzxvinLwkDYS8At8NwXvqNM=; b=FH4EQIX2NxATRV
-	HGS4K2eJhTMHTNJhUIG/Zh4moRkd5nREO9O5STX/qQSiWfNF6dC/u+pc4PucXw7JYejlASSGPyf7I
-	QJdsnB9anlw1Ex6hLLutLP5L0YgZ+I+m2i8pGxpo6cRXGSCSt5K0MxRXGJQYDf/161DZsQtaphRHF
-	PnRGZuzturLpW6FA4Zt5zG0iieB5DGdRQ8yTqRaqgHS9io3f9XzYGqtYqOqQd0He6lKmYYslKxcV+
-	2/x88eKB2Z24IyVvycFvEtpaDBD5HSSVrovyf6aBLxvoB+n9f9s4rXSVyvLlnqV9urjkJQeaO5A18
-	7G8Ekla6qy5qUQelZ9TA==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
+	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Unsubscribe-Post:List-Owner;
+	bh=Fo45/mCzwMsSVCi8vYANqsPQ1b4zLtVoMUcqpQ0ZJL8=; b=yql5wL7ue74ZhiatvE1P/ugjwg
+	vcwn/QnAJHogDs9EQVrUjNmkV/ThvdQNi7mD/Mwy5XBu/nXPDt3Cc+1LnXg8n0zrc8uaQ6AnCOfCH
+	vScmIHCE1Njjgkvu9oBVlY1X7c0eXP2ljByrcozz1coT6VcHeKqDp5cZV5xAIIf0aYahjmSIULVv6
+	1I5wF5uywBO2zbYmGsqEcdUmsbOJ5D6OmLkN0ojum0gHThlzPLVCgtuWOm1mG4m1ZE8qeoAZLPmJI
+	OwCWkdZGuBqLOMqqndMwxQrQ/9CX2z0dhFqMDfXTVX0/x7Cjh6baXbopIB3JsoUbqKCP+HcgRfpto
+	PNaMzm9g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRo3I-0000000CHSo-2r8Y;
-	Fri, 13 Nov 2026 09:58:36 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
-	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRo3C-0000000CHO0-2oSy
-	for barebox@lists.infradead.org;
+	id 1xRo3G-0000000CHRB-2HDg;
 	Fri, 13 Nov 2026 09:58:34 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xRo3C-0000000CHNy-3EQD
+	for barebox@lists.infradead.org;
+	Fri, 13 Nov 2026 09:58:33 +0000
 Received: from [127.0.1.1] (unknown [IPv6:2a02:560:5d79:c700:9ebf:dff:fe00:fdb5])
 	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id E3301205848;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C7FCB202266;
 	Fri, 13 Nov 2026 10:58:28 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1794563908;
@@ -74,56 +75,56 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dfs8f5gB30ifn7avAvvVZzxvinLwkDYS8At8NwXvqNM=;
-	b=JqlWSNty1wlI1L6sIzGmuSQjsyeMkdJa9HhmDjnSokXxCHZupIZEMudQPlFG3z99VEuqhm
-	asT0+Jk4+U7djNTAwHAFrJZlQG/I57+VfeH5BOqgRnKbIW8xTKjzZu59UnYGKgcANTHq2g
-	XzaJm/Q4Tz8EKif+1MrDFeJovtwh7CiR+fT353rUwyU3QWCqcNzmMTOIr8z418pJEZlTYP
-	u75/WxoJ0AooXLajWHa1EhA8emxA/wlPydKG5gT066XzV2wOPLUT8dK1UNV8bnQIv2e6kZ
-	Sc3aMoGC7cD2jhgJeTOJFGh+Vl6lQ4CXnYR6SuIqeq1ItpxNvjJ3zWIA01qapw==
+	bh=Fo45/mCzwMsSVCi8vYANqsPQ1b4zLtVoMUcqpQ0ZJL8=;
+	b=LSf2H0uDct4/TEEb6u+evgNLqhhgjqHx9cpgcql84Cr3eIIspLldb3p3VHpASJHWzDgMRm
+	tGxoEsCIenZLHCXM0b+JE39ST2sGv770wWrYUsr+JmcZrAcdNCxiYTJPQ22uuL80MwUfRy
+	cpkgr3aHxj8pmxWG+n2Qqv2uAnlMW8UYjRk5jBZgQF78po22VPqDscn2OuV/ep7xKZJj/6
+	7YX5vYr6XmloSUZcfyV1Iv6kUb9/WV0z4th9U7+o6KisuUpYYfCMfLeWcw2q1QhY2qXYTj
+	uAt73IlrmPzkijUAjYJmWIA+N5FkYbCHNTjHdrgjpxfTPZR5KIZhpj7TJBA+8A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1794563908;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dfs8f5gB30ifn7avAvvVZzxvinLwkDYS8At8NwXvqNM=;
-	b=Cr+hLuohV9YaAXTa/GJtw9fVgDZeTGD9YGJwIyrvc86F8hWqME/QID2w26MNrbC13rFRKs
-	muH/lrPG8lLsZNWUd+FD8Lh0IDzUR7Pg/mAbSq8w00jp0ni+Y16k8eUO0UAbrNYeM9NFsw
-	38z6+QuoYNza59LGyctrGZcZLFlmk5wLgFcqBgL/7ORUQhAs+khXrILmtk8MINVjGYV20x
-	ajvsW+pMZLwFyp82UvKA7Vefmd+l9d411UnPEqa6D7AkOyuaBQ4GR8eJl/1K76bX4qjQlp
-	/vfphQRVKduhagEXZ5oTxSnYiNZ+i1/wuiD0q1pvR8uR2rz3+dk0C+12xjaS1Q==
+	bh=Fo45/mCzwMsSVCi8vYANqsPQ1b4zLtVoMUcqpQ0ZJL8=;
+	b=WgBMGZXRHzz0MR5EOruRnxNHWG3QP89rszfDUyy7gSBZTvhFo/qgQ5JVH34YjGuv/8+btz
+	MdCExH31svnSchvpnSxgSLWWOoOw+vflfhz9xGa6hmGTq0oILLvxyvH6KQtsLLfN8XhVXY
+	Smfdb8wxJrvTy8a3FziXLvHg3+Jqe2+koDr+lFnj9Nd0rSywDh+CDl4cZGHnw3+R8JKz0y
+	EuK1nGQqYMYMkcQyLEHNLEsuLyRYnJOqjEbQhIJjBqj3zT7eNzts0K6oNWWdkVKEavhMtR
+	1YbTPuN55ImX0Ckycy15/V79MU7XtWNrsFfkbVTKUrTdDn2hxcy/RGh//BK+hg==
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794563908; a=rsa-sha256;
 	cv=none;
-	b=YxdiiwSLMgjZq1GHrfZL+C2cPLoIlA9uIaYJHhHHbJr4S9wbEZMUw2STTISZL2DwBj1E9T
-	4iucOqGGW3AhWLfrpdTZa1sRvDRQiT3Fc76RpyuB8TUz9QvnwXkU/GMa5nWKPejK8xRq61
-	XRyEkdhKvbwA/9tp4xD7Zz2QKX/rprb2xUueEo7bonpUpRJqzuyy/PtFrtWiqUuAEMAkEp
-	F0T1MLQcT3XYlKwBdIMFnXgVgeJ0s7VPHmDudMwYST6UpRIr8sUkGDrAoJEFrLNAUYYpnS
-	ZFbvSdU6NmDD3g6u4a+EV7lKp+kwdA/hXAVtMhVxp7Fe8dxFVFbehsXuUWUHZQ==
+	b=dC8EwForLKV2is7OuFORstpg9S+6JlHGNDCsgpqle/omkhCHNY71t35WRbn6yULaVrM3H8
+	FbzorU+WF+ogGv5/eQKCauOscf8iRM/SlNBcn0HMs9OYjf9SpF2VqDS4wVmth6apQdh5sv
+	oTY4CZ7qQBK+khn7qK6XzDJ6fNDXTIdJx9TRn7D0jRbxVtVqyX8j1eQa8XF5IwoolaeYLW
+	ryAhVv8U9W8DXCalOgficWvjASZp8pIcGpsvsBDMAG4pZuGTzbZUhJmeFb+OL+jvQBh0Cm
+	1lo+zFg9OW6OF5CRVn14GH9TQzTaEqy3sgTIaQOYr1YHoUm74YqFNKCmWDIl5Q==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=sha@pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 13 Nov 2026 10:58:26 +0100
-Subject: [PATCH v2 3/6] boot: hand overrides on to nested boots and the
- bootm command
+Date: Fri, 13 Nov 2026 10:58:24 +0100
+Subject: [PATCH v2 1/6] boot: report the exit status of failing boot
+ scripts
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-devboot-v2-3-f6853990006d@pengutronix.de>
+Message-Id: <20261113-devboot-v2-1-f6853990006d@pengutronix.de>
 References: <20261113-devboot-v2-0-f6853990006d@pengutronix.de>
 In-Reply-To: <20261113-devboot-v2-0-f6853990006d@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794563908; l=12777;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794563908; l=3244;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=gviUWrkQ8mhFhNSB88wMCi/3OPgHg0+ryTjWF2vE/OY=;
- b=jLxh5ruKVTCgoMoDTml43f5yZEpbYKWkUXGIcxrUBGFy5RkrMGl2hWcuU5R3V8U6OfFLQ0u3V
- 8N13dCTkZsNBY/y2NqSxy1wRjbH281nJFRpTdvyOucXc7W2XGR6Afj1
+ bh=dXI6gv6EGss4R0qY4LNHmJ1EW2w2H3+bjlRPmJ0C1do=;
+ b=l3MkBNijSrXZowQFJdMKeFpA0L0hFNLQLexirHleC8Ekpa+IlMdo6CmSYFCcN+eeZKikJy5DG
+ rS4vaDw/A7ICchrkpxrnJrtnbI6zs8fGO/pYiUYJu9N3vGhnMPoGt5N
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261113_015831_022089_7EF43E9E 
-X-CRM114-Status: GOOD (  30.16  )
+X-CRM114-CacheID: sfid-20261113_015830_976072_78717AF0 
+X-CRM114-Status: GOOD (  15.93  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -131,9 +132,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Overrides are stored in the boot entry they are given for
-   and only applied by bootm_entry(). They get lost when a boot entry boots something
-    else, like a boot script calling boot, or calling the bootm [...] 
+ Content preview:  When a boot script exits with a non-zero status, execute_binfmt()
+    returns that status as a positive value. bootscript_boot() passes it to strerror(-ret)
+    and boot_entry() to %pe, both of which expect a [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -161,6 +162,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Spamd-Result: default: False [-56.41 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
@@ -175,402 +177,113 @@ X-Spamd-Result: default: False [-56.41 / 15.00];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_ALL(0.00)[];
 	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
 	RCVD_COUNT_THREE(0.00)[3];
-	RCPT_COUNT_ONE(0.00)[1];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	DKIM_MIXED(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
+	TO_DN_ALL(0.00)[];
+	R_DKIM_REJECT(0.00)[pengutronix.de:s=20260414];
 	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
 	NEURAL_HAM(-0.00)[-1.000];
 	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	R_DKIM_REJECT(0.00)[pengutronix.de:s=20260414];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:-];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
+	DKIM_MIXED(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 083FC202C91
-X-Stat-Signature: 9t7gej8j38srwpbmwnoe35r8e141dhrk
+X-Rspamd-Queue-Id: 2CA80202266
+X-Stat-Signature: c45r6o5g6tz5s8tq78xzmky6jh9bjquf
 X-Rspamd-Action: no action
 
-Overrides are stored in the boot entry they are given for and only
-applied by bootm_entry(). They get lost when a boot entry boots something
-else, like a boot script calling boot, or calling the bootm command.
+When a boot script exits with a non-zero status, execute_binfmt()
+returns that status as a positive value. bootscript_boot() passes it to
+strerror(-ret) and boot_entry() to %pe, both of which expect a negative
+errno, resulting in messages like:
 
-Keep track of the overrides of the boot entry being booted. Hand them on
-to boot entries booted from there, with the ones of the outer entry
-taking precedence, and apply them in the bootm command. bootchooser no
-longer needs to merge the overrides into its targets itself.
+  ERROR: Running script '/env/boot/mmc' failed: error -1
+  ERROR: Booting entry 'mmc' failed: 0000000000000001
 
-This is done in do_bootm() and not in bootm_boot(), which the Android
-image handler calls while a bootm is already running, so it would apply
-the overrides a second time.
+Allow boot entries to return a boot script's exit status and have
+boot_entry() report it as such. bootscript_boot() now only reports
+errors of its own, so a failing script results in a single
 
+  ERROR: Booting entry 'mmc' failed: exit status 1
+
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- Documentation/user/devboot.rst |  4 ++
- commands/bootm.c               |  3 +-
- common/boot.c                  | 44 ++++++++++++--------
- common/bootchooser.c           | 13 ++----
- common/bootm.c                 | 22 +++++++++-
- include/boot.h                 |  8 ++++
- include/bootchooser.h          |  2 +-
- include/bootm.h                |  3 ++
- test/py/test_boot_overrides.py | 92 ++++++++++++++++++++++++++++++++++++++++++
- 9 files changed, 163 insertions(+), 28 deletions(-)
+ common/boot.c               | 11 +++++++----
+ include/boot.h              |  1 +
+ test/py/test_boot_script.py | 13 +++++++++++++
+ 3 files changed, 21 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/user/devboot.rst b/Documentation/user/devboot.rst
-index 227048be97..efcfde918c 100644
---- a/Documentation/user/devboot.rst
-+++ b/Documentation/user/devboot.rst
-@@ -38,6 +38,10 @@ Overrides are applied after the boot entry has been loaded, so the original
- entry still selects the boot handler, kernel arguments, etc. Only the
- specified components are replaced.
- 
-+Overrides also apply to whatever a boot entry boots itself, like a boot script
-+calling ``boot`` or ``bootm``, even if that is passed an image explicitly. If
-+a nested ``boot`` has overrides of its own, the outer ones take precedence.
-+
- Override rules
- ^^^^^^^^^^^^^^
- 
-diff --git a/commands/bootm.c b/commands/bootm.c
-index 44abb953f6..0d6a95edae 100644
---- a/commands/bootm.c
-+++ b/commands/bootm.c
-@@ -16,6 +16,7 @@
- #include <fcntl.h>
- #include <fs.h>
- #include <errno.h>
-+#include <boot.h>
- #include <bootm.h>
- #include <rtc.h>
- #include <init.h>
-@@ -94,7 +95,7 @@ static int do_bootm(int argc, char *argv[])
- 		goto err_out;
- 	}
- 
--	ret = bootm_boot(&data);
-+	ret = bootm_boot_overrides(&data, boot_get_active_overrides());
- 	if (ret) {
- 		printf("handler failed with: %pe\n", ERR_PTR(ret));
- 		goto err_out;
 diff --git a/common/boot.c b/common/boot.c
-index b993cabf65..271cfd3a29 100644
+index 023eaf5145..b993cabf65 100644
 --- a/common/boot.c
 +++ b/common/boot.c
-@@ -187,8 +187,23 @@ BAREBOX_MAGICVAR(global.boot.watchdog_timeout,
- BAREBOX_MAGICVAR(global.user,
- 		"Username used by the default environment to construct network boot paths");
+@@ -115,10 +115,11 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
+ 	 * without the shell expanding or splitting it first.
+ 	 */
+ 	ret = execute_binfmt(bs->args ? 2 : 1, argv);
+-	if (ret) {
+-		pr_err("Running script '%s' failed: %s\n", bs->entry.path, strerror(-ret));
++	if (ret < 0)
++		pr_err("Running script '%s' failed: %pe\n", bs->entry.path, ERR_PTR(ret));
++	/* positive values are the exit status, reported by boot_entry() */
++	if (ret)
+ 		return ret;
+-	}
  
-+/* The overrides of the boot entry currently being booted */
-+static const struct bootm_overrides *boot_active_overrides;
-+
-+/**
-+ * boot_get_active_overrides - get the overrides of the current boot entry
-+ *
-+ * Return: the overrides of the boot entry currently being booted, NULL if
-+ * there is none
-+ */
-+const struct bootm_overrides *boot_get_active_overrides(void)
-+{
-+	return boot_active_overrides;
-+}
-+
- int boot_entry(struct bootentry *be, int verbose, int dryrun)
- {
-+	const struct bootm_overrides *outer = boot_active_overrides;
- 	struct globalvar_scope *scope;
- 	int ret;
- 
-@@ -206,7 +221,19 @@ int boot_entry(struct bootentry *be, int verbose, int dryrun)
- 
+ 	/* No point in repeating bootm if script already called it */
+ 	if (bootm_nattempts != bootm_command_attempts())
+@@ -206,7 +207,9 @@ int boot_entry(struct bootentry *be, int verbose, int dryrun)
  	scope = boot_globalvar_scope_push();
  
-+	/*
-+	 * A boot entry may boot other entries, for example a boot script
-+	 * calling boot. Hand the overrides on to them, the ones of the outer
-+	 * entry take precedence.
-+	 */
-+	if (outer)
-+		bootm_merge_overrides(&be->overrides, outer);
-+	boot_active_overrides = &be->overrides;
-+
  	ret = be->boot(be, verbose, dryrun);
-+
-+	boot_active_overrides = outer;
-+
- 	if (ret > 0)
- 		pr_err("Booting entry '%s' failed: exit status %d\n", be->title, ret);
- 	else if (ret && ret != -ENOMEDIUM)
-@@ -642,20 +669,5 @@ BAREBOX_MAGICVAR(global.boot.default, "default boot order");
-  */
- int bootm_entry(struct bootentry *be, const struct bootm_data *bootm_data)
- {
--	struct image_data *data;
--	int ret;
--
--	data = bootm_boot_prep(bootm_data);
--	if (IS_ERR(data))
--		return PTR_ERR(data);
--
--	ret = bootm_apply_overrides(data, &be->overrides);
--	if (ret)
--		goto out;
--
--	ret = bootm_boot_handler(data);
--
--out:
--	bootm_boot_cleanup(data);
--	return ret;
-+	return bootm_boot_overrides(bootm_data, &be->overrides);
- }
-diff --git a/common/bootchooser.c b/common/bootchooser.c
-index 2049425ab3..c8f72871f3 100644
---- a/common/bootchooser.c
-+++ b/common/bootchooser.c
-@@ -840,8 +840,7 @@ void bootchooser_lock_attempts(bool locked)
- 	attempts_locked = locked;
- }
+-	if (ret && ret != -ENOMEDIUM)
++	if (ret > 0)
++		pr_err("Booting entry '%s' failed: exit status %d\n", be->title, ret);
++	else if (ret && ret != -ENOMEDIUM)
+ 		pr_err("Booting entry '%s' failed: %pe\n", be->title, ERR_PTR(ret));
  
--static int bootchooser_boot_one(struct bootchooser *bc, int *tryagain,
--				struct bootentry *parent_entry)
-+static int bootchooser_boot_one(struct bootchooser *bc, int *tryagain)
- {
- 	char *system;
- 	struct bootentries *entries;
-@@ -878,10 +877,6 @@ static int bootchooser_boot_one(struct bootchooser *bc, int *tryagain,
- 	ret = -ENOENT;
- 
- 	bootentries_for_each_entry(entries, entry) {
--		if (parent_entry)
--			bootm_merge_overrides(&entry->overrides,
--					      &parent_entry->overrides);
--
- 		ret = boot_entry(entry, bc->verbose, bc->dryrun);
- 		if (!ret) {
- 			*tryagain = 0;
-@@ -898,12 +893,12 @@ static int bootchooser_boot_one(struct bootchooser *bc, int *tryagain,
- 	return ret;
- }
- 
--int bootchooser_boot(struct bootchooser *bc, struct bootentry *entry)
-+int bootchooser_boot(struct bootchooser *bc)
- {
- 	int ret, tryagain;
- 
- 	do {
--		ret = bootchooser_boot_one(bc, &tryagain, entry);
-+		ret = bootchooser_boot_one(bc, &tryagain);
- 
- 		if (!retry)
- 			break;
-@@ -924,7 +919,7 @@ int bootchooser_entry_boot(struct bootentry *entry, int verbose, int dryrun)
- 	bc->verbose = verbose;
- 	bc->dryrun = dryrun;
- 
--	ret = bootchooser_boot(bc, entry);
-+	ret = bootchooser_boot(bc);
- 
- 	bootchooser_put(bc);
- 
-diff --git a/common/bootm.c b/common/bootm.c
-index 4e0b688910..a65aa64ddf 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -794,7 +794,15 @@ void bootm_boot_cleanup(struct image_data *data)
- /*
-  * bootm_boot - Boot an application image described by bootm_data
-  */
--int bootm_boot(const struct bootm_data *bootm_data)
-+/**
-+ * bootm_boot_overrides - boot with overrides applied
-+ * @bootm_data: bootm data
-+ * @overrides: overrides to apply, may be NULL
-+ *
-+ * Return: 0 on success, or negative error code otherwise
-+ */
-+int bootm_boot_overrides(const struct bootm_data *bootm_data,
-+			 const struct bootm_overrides *overrides)
- {
- 	struct image_data *data;
- 	int ret;
-@@ -803,12 +811,24 @@ int bootm_boot(const struct bootm_data *bootm_data)
- 	if (IS_ERR(data))
- 		return PTR_ERR(data);
- 
-+	if (overrides) {
-+		ret = bootm_apply_overrides(data, overrides);
-+		if (ret)
-+			goto out;
-+	}
-+
- 	ret = bootm_boot_handler(data);
- 
-+out:
- 	bootm_boot_cleanup(data);
- 	return ret;
- }
- 
-+int bootm_boot(const struct bootm_data *bootm_data)
-+{
-+	return bootm_boot_overrides(bootm_data, NULL);
-+}
-+
- bool bootm_efi_check_image(struct image_handler *handler,
- 			   struct image_data *data,
- 			   enum filetype detected_filetype)
+ 	globalvar_scope_pop(scope);
 diff --git a/include/boot.h b/include/boot.h
-index dad45592a6..a55adc3c38 100644
+index 1ae689732d..dad45592a6 100644
 --- a/include/boot.h
 +++ b/include/boot.h
-@@ -56,6 +56,14 @@ int bootentry_create_from_name(struct bootentries *bootentries,
- void bootsources_menu(struct bootentries *bootentries, unsigned default_entry, int timeout);
- void bootsources_list(struct bootentries *bootentries);
- int boot_entry(struct bootentry *be, int verbose, int dryrun);
-+#ifdef CONFIG_BOOT
-+const struct bootm_overrides *boot_get_active_overrides(void);
-+#else
-+static inline const struct bootm_overrides *boot_get_active_overrides(void)
-+{
-+	return NULL;
-+}
-+#endif
- 
- struct bootm_data;
- int bootm_entry(struct bootentry *be, const struct bootm_data *data);
-diff --git a/include/bootchooser.h b/include/bootchooser.h
-index da3b974ef6..36cbd0dd0a 100644
---- a/include/bootchooser.h
-+++ b/include/bootchooser.h
-@@ -14,7 +14,7 @@ int bootchooser_put(struct bootchooser *bootchooser);
- 
- void bootchooser_info(struct bootchooser *bootchooser);
- 
--int bootchooser_boot(struct bootchooser *bc, struct bootentry *entry);
-+int bootchooser_boot(struct bootchooser *bc);
- 
- struct bootchooser_target *bootchooser_get_last_chosen(struct bootchooser *bootchooser);
- void bootchooser_lock_attempts(bool locked);
-diff --git a/include/bootm.h b/include/bootm.h
-index 06eb90c5ed..d63e9fc4f6 100644
---- a/include/bootm.h
-+++ b/include/bootm.h
-@@ -75,6 +75,9 @@ struct bootm_data {
- int bootm_image_name_and_part(const char *name, char **filename, char **part);
- 
- int bootm_boot(const struct bootm_data *data);
-+struct bootm_overrides;
-+int bootm_boot_overrides(const struct bootm_data *data,
-+			 const struct bootm_overrides *overrides);
- 
- struct image_data *bootm_boot_prep(const struct bootm_data *bootm_data);
- int bootm_open_os_compressed(struct image_data *data);
-diff --git a/test/py/test_boot_overrides.py b/test/py/test_boot_overrides.py
+@@ -20,6 +20,7 @@ struct bootentry {
+ 	const char *title;
+ 	char *description;
+ 	const char *path;
++	/* 0 on success, else negative errno or a boot script's exit status */
+ 	int (*boot)(struct bootentry *entry, int verbose, int dryrun);
+ 	void (*release)(struct bootentry *entry);
+ 	struct bootm_overrides overrides;
+diff --git a/test/py/test_boot_script.py b/test/py/test_boot_script.py
 new file mode 100644
-index 0000000000..674b3a2116
+index 0000000000..be08e964d9
 --- /dev/null
-+++ b/test/py/test_boot_overrides.py
-@@ -0,0 +1,92 @@
++++ b/test/py/test_boot_script.py
+@@ -0,0 +1,13 @@
 +# SPDX-License-Identifier: GPL-2.0-or-later
 +
-+import pytest
-+from .helper import skip_disabled
-+from .test_boot_globalvar_scope import write_bootscript
 +
-+OVERRIDE = "/tmp/override-image"
-+BASE = "/tmp/base-image"
-+OUTER = "/tmp/outer-image"
++def test_boot_script_exit_status(barebox):
++    barebox.run_check("echo -o /env/boot/exit3 '#!/bin/sh'")
++    barebox.run_check("echo -a /env/boot/exit3 'exit 3'")
 +
++    stdout, _, ret = barebox.run("boot exit3")
++    assert ret != 0
++    assert "ERROR: Booting entry 'exit3' failed: exit status 3" in stdout
++    assert not any("Running script" in line for line in stdout)
 +
-+def make_image(barebox, path):
-+    # bootm wants a full page of a known image type. There's no handler for
-+    # ELF images here, but it only fails after reporting the image it boots
-+    barebox.run_check(f"echo -o {path} image")
-+    for _ in range(6):
-+        barebox.run_check(f"cat -o {path}.tmp {path} {path}")
-+        barebox.run_check(f"cat -o {path} {path}.tmp {path}.tmp")
-+    barebox.run_check(f"rm {path}.tmp")
-+    barebox.run_check(f"mw -b -d {path} 0 0x7f 0x45 0x4c 0x46")
-+
-+
-+def booted(stdout):
-+    return [line for line in stdout if line.startswith("Loading ")]
-+
-+
-+@pytest.fixture(scope="function")
-+def override_env(barebox, barebox_config):
-+    skip_disabled(barebox_config, "CONFIG_BOOT_OVERRIDE", "CONFIG_CMD_ECHO",
-+                  "CONFIG_CMD_CAT", "CONFIG_CMD_MW")
-+
-+    make_image(barebox, BASE)
-+    make_image(barebox, OVERRIDE)
-+    make_image(barebox, OUTER)
-+
-+    write_bootscript(barebox, "ovr-target", [
-+        f"global.bootm.image={BASE}",
-+    ])
-+    write_bootscript(barebox, "ovr-nested", [
-+        "boot ovr-target",
-+    ])
-+    write_bootscript(barebox, "ovr-nested-override", [
-+        f"boot -o bootm.image={OVERRIDE} ovr-target",
-+    ])
-+    write_bootscript(barebox, "ovr-bootm", [
-+        f"bootm {BASE}",
-+    ])
-+
-+    yield
-+
-+    barebox.run(f"rm {BASE} {OVERRIDE} {OUTER}")
-+    barebox.run("rm /env/boot/ovr-target /env/boot/ovr-nested "
-+                "/env/boot/ovr-nested-override /env/boot/ovr-bootm")
-+
-+
-+@pytest.mark.usefixtures("override_env")
-+def test_override_entry(barebox):
-+    stdout, _, _ = barebox.run("boot ovr-target")
-+    assert any(BASE in line for line in booted(stdout))
-+
-+    stdout, _, _ = barebox.run(f"boot -o bootm.image={OVERRIDE} ovr-target")
-+    assert any(OVERRIDE in line for line in booted(stdout))
-+
-+
-+@pytest.mark.usefixtures("override_env")
-+def test_override_nested_boot(barebox):
-+    stdout, _, _ = barebox.run(f"boot -o bootm.image={OVERRIDE} ovr-nested")
-+    assert any(OVERRIDE in line for line in booted(stdout))
-+    assert not any(BASE in line for line in booted(stdout))
-+
-+
-+@pytest.mark.usefixtures("override_env")
-+def test_override_outer_takes_precedence(barebox):
-+    stdout, _, _ = barebox.run(f"boot -o bootm.image={OUTER} ovr-nested-override")
-+    assert any(OUTER in line for line in booted(stdout))
-+    assert not any(OVERRIDE in line for line in booted(stdout))
-+
-+
-+@pytest.mark.usefixtures("override_env")
-+def test_override_bootm_command(barebox):
-+    stdout, _, _ = barebox.run(f"boot -o bootm.image={OVERRIDE} ovr-bootm")
-+    assert any(OVERRIDE in line for line in booted(stdout))
-+    assert not any(BASE in line for line in booted(stdout))
-+
-+
-+@pytest.mark.usefixtures("override_env")
-+def test_override_ends_with_boot(barebox):
-+    # the override must not stick to a later bootm outside of the boot command
-+    barebox.run(f"boot -o bootm.image={OVERRIDE} ovr-target")
-+
-+    stdout, _, _ = barebox.run(f"bootm {BASE}")
-+    assert any(BASE in line for line in booted(stdout))
++    barebox.run_check("rm /env/boot/exit3")
 
 -- 
 2.47.3
