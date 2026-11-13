@@ -1,130 +1,129 @@
-Delivery-date: Fri, 13 Nov 2026 11:00:22 +0100
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Fri, 13 Nov 2026 11:00:55 +0100
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xRo50-00ANex-10
+	id 1xRo5X-00ANfo-0E
 	for lore@lore.pengutronix.de;
-	Fri, 13 Nov 2026 11:00:22 +0100
+	Fri, 13 Nov 2026 11:00:55 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 2CA80202266
-	for <lore@pengutronix.de>; Fri, 13 Nov 2026 11:00:22 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id A9C96202266
+	for <lore@pengutronix.de>; Fri, 13 Nov 2026 11:00:54 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=yql5wL7u;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=LSf2H0uD;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=nfxo4eRy;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=CKUYll31;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794564022;
+	s=20260414; t=1794564055;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:list-id:list-help:
+	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=Fo45/mCzwMsSVCi8vYANqsPQ1b4zLtVoMUcqpQ0ZJL8=;
-	b=dt9ORHtZNMqMdIwDrdHxp2sxHy8ldHyjbRL9IXNbnDOlWqlhXrmXCYWmuIolqVA3a9CQtK
-	r71a6qARQNlkgCPqVKzfBCXHGZYBEZR6O3F4MCQ4Xfd57k90/uNoH3AjKvr23ZDppSxOAw
-	ShSy2j+YiUVBSd/+F5VnTjzl0I+6t+rKbo/HBP+F7LC7/zz8VfjBID2w0D92tiP9Dg2sgy
-	n/sfEWIHnckdACHVg/Yzhwi0ie4/KSyKNBUpGmxO+FQm7qxiyiGt3yFhK0L3RPuVXEDNdD
-	mv/69UuAgB8YLuTGTi5lWgnopb8q3UgomL1PzEVSjOtHqakD+Ow8baf6dFJ7eQ==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1794564022; a=rsa-sha256;
+	bh=ka+2j08Rv/SnJV4jb4EA4Fq3tQ+mvdMWzrnyh4f8Dwo=;
+	b=UvtDd4zHRT+7XdpXqa53pBh2tEK7gVzAr6g/KMfeLiMDLtVXwL+6+xLswE0RZ+SoLNz5qE
+	HMxJoGiAerR8CjeanMtAH60WKXe9qH0WOln/dvzGrtFgf3ytK/JPTCnSZMx9qs2OpiKMn7
+	W5tSRgSYLjuoM5eqQetjxtBtyQk/Bi2IoaXjbDMZt2TREelNY31JaQ30WKp8MBC8Dxe1+3
+	FVwpp15HgE9NijrT0R/QvRjUAOQDAFsObV4a0NSVt+4v/j/9Jue8ifomHn1D/SKQdlNeCo
+	6hdNSeDCv6sN5WEVHUKVGMKdLzlR/dtq/ndtTWFZqvwW5pU0vgau7X7aUXXLvw==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1794564055; a=rsa-sha256;
 	cv=fail;
-	b=HCOuxtSHnyEyONtmS8X8o+Ly7Abzzs4X+mdrE+IIe8wwO2HijE8ZPqe0RB79fJJh4g7JuI
-	lBUiTQgjWoANak2TsrRh5UyZ8VGKSYO3Y6f3nZPLRY5xci4+JxpPfRIH6KaBTvjZolRNri
-	FHvhWeIoPmePh0ZCL90hEXZoOevvcAAMR/xpc4wjfu8sqg9q7z59YdyTG/hGgCQj+FPiLj
-	X2PBh6gAdz5eBuDqHnfojUZN3VpzJCJyYdLJe14cOfwD7jLIos+kUaQRjyV6FYLW4qYl38
-	WoBSFjyAEnof/LhNBTHAw/4Bdc8kYADEVNOUsTI9iURNJb7AKuCufbUFULjBeQ==
+	b=PbHkyOw9fDCnRQf6/Azn8/giVkIm8OEKbDLICZleH3bKj3ZihpVs6LIXPxFwE7smFAp0jd
+	xpfkvqXhtq3evd8jGKCQ5AJu8xqt8871wSRm7aN/2yWjuIxnxLpNp3KjUZi3+rlyongeTq
+	X9PVBJsQ00SWqVLudM9rlR+QRufz4MEbMOaFfq6fl2UkRvYonostFUj03eOI+8QS8ua9Hm
+	KwP45snAomCQjCQJMhmyiXTA++1h4kYS/6b9Aam2Jr3eBE/Re8+bH/Zw0dDMlhEPKacJTO
+	YkLHU+ZsPtIW6sv+WhBnZ5tSoKGGC1LuPa4YtL3XseFF0zh6ZBZFJfSjdjgQVQ==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=yql5wL7u;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=LSf2H0uD;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=nfxo4eRy;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=CKUYll31;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}")
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:
-	References:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:
-	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
 	List-Unsubscribe-Post:List-Owner;
-	bh=Fo45/mCzwMsSVCi8vYANqsPQ1b4zLtVoMUcqpQ0ZJL8=; b=yql5wL7ue74ZhiatvE1P/ugjwg
-	vcwn/QnAJHogDs9EQVrUjNmkV/ThvdQNi7mD/Mwy5XBu/nXPDt3Cc+1LnXg8n0zrc8uaQ6AnCOfCH
-	vScmIHCE1Njjgkvu9oBVlY1X7c0eXP2ljByrcozz1coT6VcHeKqDp5cZV5xAIIf0aYahjmSIULVv6
-	1I5wF5uywBO2zbYmGsqEcdUmsbOJ5D6OmLkN0ojum0gHThlzPLVCgtuWOm1mG4m1ZE8qeoAZLPmJI
-	OwCWkdZGuBqLOMqqndMwxQrQ/9CX2z0dhFqMDfXTVX0/x7Cjh6baXbopIB3JsoUbqKCP+HcgRfpto
-	PNaMzm9g==;
+	bh=ka+2j08Rv/SnJV4jb4EA4Fq3tQ+mvdMWzrnyh4f8Dwo=; b=nfxo4eRyD/EmoQ4OHJLVfCpilc
+	KTfca8tiQNIo7EXMY0cK36DuJErc3qA3tO/Lbh24liHc1kcbcPuNPPALUDK4Mi9RYVuNhSqQsIxIW
+	0JPsB+sJfKqhOilugYx1jL2DGxrr1MJZnodmvamgSOAj81PRkQ2FysjgqsYvIa6P2ecjXK4Kh+4g7
+	vN+8itRlxYkOTZyfc9UDzMFxhkhGXaPS+JvTpzLUiZCp0PmrkI1Mpsu1ikOy+phEazF2ISVTNPKoF
+	aieeTVjCO1rQVXITxko2/RuWhniy+b2A0NdJ2in6Cf9ykDhMIzw1v3gPeGUDaB6vWd+eYXmdFnykK
+	IXF42eXg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRo3G-0000000CHRB-2HDg;
+	id 1xRo3G-0000000CHQf-1HTX;
 	Fri, 13 Nov 2026 09:58:34 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRo3C-0000000CHNy-3EQD
+	id 1xRo3C-0000000CHNx-2o9s
 	for barebox@lists.infradead.org;
-	Fri, 13 Nov 2026 09:58:33 +0000
+	Fri, 13 Nov 2026 09:58:32 +0000
 Received: from [127.0.1.1] (unknown [IPv6:2a02:560:5d79:c700:9ebf:dff:fe00:fdb5])
 	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id C7FCB202266;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id BA1B02020ED;
 	Fri, 13 Nov 2026 10:58:28 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1794563908;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Fo45/mCzwMsSVCi8vYANqsPQ1b4zLtVoMUcqpQ0ZJL8=;
-	b=LSf2H0uDct4/TEEb6u+evgNLqhhgjqHx9cpgcql84Cr3eIIspLldb3p3VHpASJHWzDgMRm
-	tGxoEsCIenZLHCXM0b+JE39ST2sGv770wWrYUsr+JmcZrAcdNCxiYTJPQ22uuL80MwUfRy
-	cpkgr3aHxj8pmxWG+n2Qqv2uAnlMW8UYjRk5jBZgQF78po22VPqDscn2OuV/ep7xKZJj/6
-	7YX5vYr6XmloSUZcfyV1Iv6kUb9/WV0z4th9U7+o6KisuUpYYfCMfLeWcw2q1QhY2qXYTj
-	uAt73IlrmPzkijUAjYJmWIA+N5FkYbCHNTjHdrgjpxfTPZR5KIZhpj7TJBA+8A==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ka+2j08Rv/SnJV4jb4EA4Fq3tQ+mvdMWzrnyh4f8Dwo=;
+	b=CKUYll31DyDFOqVF1QBNZTC2rveDLSI9rmnm2Xo7Vo8Q2UWM67w0apImi5nYOciex3tNqe
+	LrR9diWjXRMeapptamJV8lsUHRxhqCJm06VAIQi3CEfNRAPevH365c3p8fMq7P/EQKWgk/
+	GrCU9Afix7jMe2LQ01m/LZAfWvie7jblBzXUBnsO8E5FB6lggEJD5G573jTN5+al8izqWq
+	n33uzHWDsqAwRnHG3XD8vF0HOfrW9BtejJ1tD65z1z1pdY/bNsw1/J+ZhoIuiDuhXYsaZ8
+	I1Ra/liFX8zb4yhwv21SP3cvAHoz7Qz8oKpcqwDSZMxerme3SK5OM7m8GVkiEw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1794563908;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Fo45/mCzwMsSVCi8vYANqsPQ1b4zLtVoMUcqpQ0ZJL8=;
-	b=WgBMGZXRHzz0MR5EOruRnxNHWG3QP89rszfDUyy7gSBZTvhFo/qgQ5JVH34YjGuv/8+btz
-	MdCExH31svnSchvpnSxgSLWWOoOw+vflfhz9xGa6hmGTq0oILLvxyvH6KQtsLLfN8XhVXY
-	Smfdb8wxJrvTy8a3FziXLvHg3+Jqe2+koDr+lFnj9Nd0rSywDh+CDl4cZGHnw3+R8JKz0y
-	EuK1nGQqYMYMkcQyLEHNLEsuLyRYnJOqjEbQhIJjBqj3zT7eNzts0K6oNWWdkVKEavhMtR
-	1YbTPuN55ImX0Ckycy15/V79MU7XtWNrsFfkbVTKUrTdDn2hxcy/RGh//BK+hg==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ka+2j08Rv/SnJV4jb4EA4Fq3tQ+mvdMWzrnyh4f8Dwo=;
+	b=Qd6GOo7ECCucJlo1FOuUb36HCctF76ytNPBxY/SMyOM45ZAWF0KxZm8mzod39zkdH0pYuO
+	99rGJ/sKth/QvkUwIm8mao5UAo+hXtcMiwaki7NFEMTQQX56q/awbimAnjtvBkcpcV9QSi
+	XZ97iyys/h+h1iHPnERJihIw+joY1RxtPrnhfahgbUPmjD62QL8rZzHJqYGrDgfTT6GiAC
+	U/oW6yox0rJPt3ebKOcAmk4eNtzlVHZ3V526H6iK5gPHkT+q81phWAE77VHeUXsL/5X9sK
+	DmoGrYuW1Xluvm3xvgBsnaNn/Fsof/EnRI2oIXtGVyXVG7RosgyAwe5BwOTO0A==
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794563908; a=rsa-sha256;
 	cv=none;
-	b=dC8EwForLKV2is7OuFORstpg9S+6JlHGNDCsgpqle/omkhCHNY71t35WRbn6yULaVrM3H8
-	FbzorU+WF+ogGv5/eQKCauOscf8iRM/SlNBcn0HMs9OYjf9SpF2VqDS4wVmth6apQdh5sv
-	oTY4CZ7qQBK+khn7qK6XzDJ6fNDXTIdJx9TRn7D0jRbxVtVqyX8j1eQa8XF5IwoolaeYLW
-	ryAhVv8U9W8DXCalOgficWvjASZp8pIcGpsvsBDMAG4pZuGTzbZUhJmeFb+OL+jvQBh0Cm
-	1lo+zFg9OW6OF5CRVn14GH9TQzTaEqy3sgTIaQOYr1YHoUm74YqFNKCmWDIl5Q==
+	b=GXG9fYkK6y2EnsUrmrcKUplCvaQ4pasXxJmRqAhcHJjcWopnrMpodsWrUPkmvlVjcBHX3B
+	AeBeocv8phhXt24XBTnnPPb40YKiaLuHg7KJ3fLOtCQHw+73XUpEc/vFeJnfiT/97xqIcM
+	70ei5001QCdyRO3bsfkKNuPxFEUauyw7RfDev4CQ1kdU3uqhvZxC3G3HR7EYpWUXC4Q7e6
+	CEDK7JLdbFxiZcc5sf/8Aq3AkuuDtJmcTVHjPqurjjvOz3ETaw4Blk1qYjQCllmQ+bp7yI
+	phYSwplTKZ0RAqtfR6BulxIgJ+JIH75G5lt7ZCYHHhYytDAiUxpo33pe+9qUXw==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=sha@pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 13 Nov 2026 10:58:24 +0100
-Subject: [PATCH v2 1/6] boot: report the exit status of failing boot
- scripts
+Subject: [PATCH v2 0/6] boot: implement devboot in C
+Date: Fri, 13 Nov 2026 10:58:23 +0100
+Message-Id: <20261113-devboot-v2-0-f6853990006d@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-devboot-v2-1-f6853990006d@pengutronix.de>
-References: <20261113-devboot-v2-0-f6853990006d@pengutronix.de>
-In-Reply-To: <20261113-devboot-v2-0-f6853990006d@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAD/f9moC/22MQQ6DIBQFr2JYlwZQUVz1Ho0LlK/+DRigxMZ49
+ 6LLtst5eTM7CeARAumKnXhIGNDZDOJWkHHRdgaKJjMRTEjOSkYNpMG5SPVUqaqWDLiSJL9XDxN
+ uV+nZZ14wROffVzjxc/1tJE4ZVQ2TbQvNWNXtYwU7v6J3Fre7gbP7X9KDMqbUSoxSfkv9cRwf+
+ MwxGtgAAAA=
+X-Change-ID: 20261030-devboot-af494560e196
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794563908; l=3244;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1794563908; l=3669;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=dXI6gv6EGss4R0qY4LNHmJ1EW2w2H3+bjlRPmJ0C1do=;
- b=l3MkBNijSrXZowQFJdMKeFpA0L0hFNLQLexirHleC8Ekpa+IlMdo6CmSYFCcN+eeZKikJy5DG
- rS4vaDw/A7ICchrkpxrnJrtnbI6zs8fGO/pYiUYJu9N3vGhnMPoGt5N
+ bh=F2jz8RtsJvrUvukibuBaWOaTpfz9/ljqUMb4u2htnGQ=;
+ b=L5qAXGVHlxnf/8sq7FPhMpoT0gIraqInYnuJHI1KruuTIpwEKV/OCGyc738ZQ13iaflranRe+
+ uNsiLmhyBrXCoLxkSAlBq1qS3rOOEdjbnfug4GyDo8LnZ8/XUFPx6B3
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261113_015830_976072_78717AF0 
-X-CRM114-Status: GOOD (  15.93  )
+X-CRM114-CacheID: sfid-20261113_015830_863997_780C3D9A 
+X-CRM114-Status: GOOD (  15.79  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -132,9 +131,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  When a boot script exits with a non-zero status, execute_binfmt()
-    returns that status as a positive value. bootscript_boot() passes it to strerror(-ret)
-    and boot_entry() to %pe, both of which expect a [...] 
+ Content preview:  devboot is a script on top of the boot command, and the devboot
+    boot target needed to boot with it by default is another one on top of that.
+    Booting with devboot thus means nested boot commands, and b [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -166,7 +165,7 @@ Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Spamd-Result: default: False [-56.41 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[100.00%];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	ARC_REJECT(1.00)[signature check failed: fail, {[1] = sig:pengutronix.de:reject}];
@@ -197,96 +196,84 @@ X-Spamd-Result: default: False [-56.41 / 15.00];
 	DKIM_MIXED(0.00)[];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 2CA80202266
-X-Stat-Signature: c45r6o5g6tz5s8tq78xzmky6jh9bjquf
+X-Rspamd-Queue-Id: A9C96202266
+X-Stat-Signature: z33uj5bmdtizeriz9stsj47g6xbafijm
 X-Rspamd-Action: no action
 
-When a boot script exits with a non-zero status, execute_binfmt()
-returns that status as a positive value. bootscript_boot() passes it to
-strerror(-ret) and boot_entry() to %pe, both of which expect a negative
-errno, resulting in messages like:
+devboot is a script on top of the boot command, and the devboot boot
+target needed to boot with it by default is another one on top of that.
+Booting with devboot thus means nested boot commands, and booting with it
+by default means rewriting global.boot.default as devboot@<target>.
+Also, boot overrides get lost when a boot script calls boot or bootm
+itself, and the boot menu ignores them altogether.
 
-  ERROR: Running script '/env/boot/mmc' failed: error -1
-  ERROR: Booting entry 'mmc' failed: 0000000000000001
+This series hands overrides on to whatever a boot entry boots, applies
+them to entries booted from the menu, and turns devboot into what it
+really is, an option to the boot command: boot -D, or
+global.boot.devboot=1 to enable it independently of the boot targets.
+The devboot command remains as a shorthand for boot -D. The devboot boot
+target is removed, see the migration guide entry for how to replace it.
 
-Allow boot entries to return a boot script's exit status and have
-boot_entry() report it as such. bootscript_boot() now only reports
-errors of its own, so a failing script results in a single
+The series is based on the "Add and use file_exists() helper" and "boot:
+revert boot related globalvars after booting" series.
 
-  ERROR: Booting entry 'mmc' failed: exit status 1
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Assisted-by: Claude:claude-opus-5-5
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/boot.c               | 11 +++++++----
- include/boot.h              |  1 +
- test/py/test_boot_script.py | 13 +++++++++++++
- 3 files changed, 21 insertions(+), 4 deletions(-)
+Changes in v2:
+- New patch "commands: boot: apply -o overrides to boot entries in the
+  menu"
+- "boot: implement devboot in C":
+  - devboot also applies to the boot menu
+  - depend on BOOTM_OPTIONAL_SIGNED_IMAGES and refuse devboot when signed
+    images are forced at runtime
+  - use globalvar_get() and pushd()/popd()
+  - add a migration guide entry for the removed devboot boot target
+  - rework commit message
+- Rebase onto the current "boot: revert boot related globalvars after
+  booting" series
+- Collect tags
+- Link to v1: https://lore.barebox.org/20261030-devboot-v1-0-ab9dd3a92c66@pengutronix.de
 
-diff --git a/common/boot.c b/common/boot.c
-index 023eaf5145..b993cabf65 100644
---- a/common/boot.c
-+++ b/common/boot.c
-@@ -115,10 +115,11 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
- 	 * without the shell expanding or splitting it first.
- 	 */
- 	ret = execute_binfmt(bs->args ? 2 : 1, argv);
--	if (ret) {
--		pr_err("Running script '%s' failed: %s\n", bs->entry.path, strerror(-ret));
-+	if (ret < 0)
-+		pr_err("Running script '%s' failed: %pe\n", bs->entry.path, ERR_PTR(ret));
-+	/* positive values are the exit status, reported by boot_entry() */
-+	if (ret)
- 		return ret;
--	}
- 
- 	/* No point in repeating bootm if script already called it */
- 	if (bootm_nattempts != bootm_command_attempts())
-@@ -206,7 +207,9 @@ int boot_entry(struct bootentry *be, int verbose, int dryrun)
- 	scope = boot_globalvar_scope_push();
- 
- 	ret = be->boot(be, verbose, dryrun);
--	if (ret && ret != -ENOMEDIUM)
-+	if (ret > 0)
-+		pr_err("Booting entry '%s' failed: exit status %d\n", be->title, ret);
-+	else if (ret && ret != -ENOMEDIUM)
- 		pr_err("Booting entry '%s' failed: %pe\n", be->title, ERR_PTR(ret));
- 
- 	globalvar_scope_pop(scope);
-diff --git a/include/boot.h b/include/boot.h
-index 1ae689732d..dad45592a6 100644
---- a/include/boot.h
-+++ b/include/boot.h
-@@ -20,6 +20,7 @@ struct bootentry {
- 	const char *title;
- 	char *description;
- 	const char *path;
-+	/* 0 on success, else negative errno or a boot script's exit status */
- 	int (*boot)(struct bootentry *entry, int verbose, int dryrun);
- 	void (*release)(struct bootentry *entry);
- 	struct bootm_overrides overrides;
-diff --git a/test/py/test_boot_script.py b/test/py/test_boot_script.py
-new file mode 100644
-index 0000000000..be08e964d9
---- /dev/null
-+++ b/test/py/test_boot_script.py
-@@ -0,0 +1,13 @@
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+
-+def test_boot_script_exit_status(barebox):
-+    barebox.run_check("echo -o /env/boot/exit3 '#!/bin/sh'")
-+    barebox.run_check("echo -a /env/boot/exit3 'exit 3'")
-+
-+    stdout, _, ret = barebox.run("boot exit3")
-+    assert ret != 0
-+    assert "ERROR: Booting entry 'exit3' failed: exit status 3" in stdout
-+    assert not any("Running script" in line for line in stdout)
-+
-+    barebox.run_check("rm /env/boot/exit3")
+---
+Sascha Hauer (6):
+      boot: report the exit status of failing boot scripts
+      hush: export source_script()
+      boot: hand overrides on to nested boots and the bootm command
+      commands: boot: apply -o overrides to boot entries in the menu
+      boot: implement devboot in C
+      sandbox: defconfig: enable boot overrides and devboot
 
+ .../migration-master/devboot-boot-option.rst       |  22 +++
+ Documentation/user/devboot.rst                     |  81 ++++----
+ arch/sandbox/configs/sandbox_defconfig             |   2 +
+ commands/boot.c                                    |  30 ++-
+ commands/bootm.c                                   |   3 +-
+ common/Kconfig                                     |  12 +-
+ common/Makefile                                    |   1 +
+ common/boot.c                                      |  63 ++++---
+ common/bootchooser.c                               |  13 +-
+ common/bootm.c                                     |  22 ++-
+ common/devboot.c                                   | 206 +++++++++++++++++++++
+ common/hush.c                                      |  17 +-
+ defaultenv/defaultenv-2-base/bin/devboot           |  52 +-----
+ defaultenv/defaultenv-2-base/boot/devboot          |   8 -
+ include/boot.h                                     |   9 +
+ include/bootchooser.h                              |   2 +-
+ include/bootm.h                                    |   3 +
+ include/devboot.h                                  |  31 ++++
+ include/shell.h                                    |   8 +
+ test/py/test_boot_overrides.py                     |  92 +++++++++
+ test/py/test_boot_script.py                        |  13 ++
+ test/py/test_devboot.py                            | 131 +++++++++++++
+ 22 files changed, 691 insertions(+), 130 deletions(-)
+---
+base-commit: 8df700d8f4fc86df09dca13e53fb7c1d64cc9680
+change-id: 20261030-devboot-af494560e196
+
+Best regards,
 -- 
-2.47.3
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
