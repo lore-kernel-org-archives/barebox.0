@@ -1,130 +1,125 @@
-Delivery-date: Fri, 13 Nov 2026 08:28:32 +0100
+Delivery-date: Fri, 13 Nov 2026 08:28:59 +0100
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xRli3-00AL5E-1n
+	id 1xRliU-00AL5v-2q
 	for lore@lore.pengutronix.de;
-	Fri, 13 Nov 2026 08:28:31 +0100
+	Fri, 13 Nov 2026 08:28:59 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 6707C2023BD
-	for <lore@pengutronix.de>; Fri, 13 Nov 2026 08:28:31 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 19C522023BD
+	for <lore@pengutronix.de>; Fri, 13 Nov 2026 08:28:59 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=uDgpR8RB;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=fIgGZmPg;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=h2RzDarh;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=DjCJX9Q8;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794554911;
+	s=20260414; t=1794554939;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=Xh+DAgI8P7rtg4/V4wz5L/pbKXtsT625balYAozBzCA=;
-	b=QlOqeDcB1dEVq1nrvNWJPSPej4cUeK5QzVcJkcUmpaH6odiZzBzrQWDczt0MHe7J/sSegy
-	k/HjDEYyulPdTGNl4iK9M3E24jq5k5XbjqJ8HMBOj9OWSOTznJbrfY6LH9Jd6IEapPpgSt
-	r6AAE0c3SB5nZjWTfamlFZfvZaDAYcqbRknZQzkCMN0gSh63eqS6fOhebzID5iPCq5/X7u
-	GZvAGySahDp0++fMgXB2xRP4w9mwU6t9B5W1HIbT5/4povxrGasgIHXAuTOozJQB3vx/U4
-	MJTOmZlCUQOUsXT4IfIQbV7/kGZ8On1rBMNb/yKA4TA8YpnQCx8OaNav00EQ3g==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1794554911; a=rsa-sha256;
+	bh=Qj9c1rcbUXmOfgpI6gu8w7GxYeV5nwylogzNYe+DXr0=;
+	b=PfIn7/CWWIdX0ziSx6PDqHtNyD0hZeP7izDC9QW35CLMCWmxOk57jGhU7ykypKElZM8PT3
+	/tUH/ewyFWAt0w32EgMhOagdc4G6Pz4TeVLSZVs/wuVtwGkG+LrIK1SLm/yFg/RknuvGDR
+	VAJEfuDJmn9RUeam73UVmcxJaB0X4/BElyECa1vMl3Zxmb8v1YejBrLyr8hyT16vutIzTQ
+	W8RV+ojR7VjUML6lfNHzuq4G2zyKHxUYC43r7z8SuJfXwjJSd2VhVLsO93gphOc9Ijw6/v
+	ATI7hETC+VaxxSG5rLv2R7I9f/6c6cltaMuMHaEq05eT5rodePfN0RVzANLKzA==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1794554939; a=rsa-sha256;
 	cv=pass;
-	b=W2+BQObWrMkdnZ6TezCQBNkQCr9hHFYhlfhN4H9zj3K9uUQ/X3WwP1qnGW9U3d7Szb9b07
-	M3IDxW9+LNRxgphPdeE0LRiPFOJMDx4GYz5oxblDynid2tQGWCQvL7XQjWDuxGVzDruYZL
-	4pwcBCMZuJJ9nF++7qaTVtLBpU5pHeSrhPbTmOw6b3raWACC1tOmLDdBNdATuXa09E0lp6
-	o1XdnDUMVHQ4yD7D9H4Vqjg0dMDLUaTOZaXKByFIZCxLZNzUbsYv49Z82CoNYBSs04KrHk
-	OjLng/NxTy8s1H57Jqd6ZygPKpS8ydsL4DnKzO0u4EEHGbL0JZMT2U09KTat3Q==
+	b=JQ2Sz0j/JtZen/BkJwbKgIkReQHN12GAMLTJ0up9VyXtOoVWuS2ZhxIeR9ltIMSXRwt0Kl
+	rGxR4UbVOltsSNj1OsAUisWiOBmuQRkJqwq8VuJ0EBnRv+UAz6ogLUnyCwaGYbyYGDefzV
+	5LJJ9X+Y8dwUsaOaRI7IgkCEn8JzU8M91Q7/QslzcIzZZQdNrzrmajHScjXGOIi8jJ1xpP
+	kYZPR6KFwuOfb4BI/PZUI0M3pQHSbNLgmgUq0gqiJcKoB6jt/eRxjdJhC8cUXNzFc3eBMv
+	u3ZkjxfwO1FEr4Nn3YOrE9uMfIKdNOVfvZ/LQtO98KaiiQfm3CshVygDSWGp4g==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=uDgpR8RB;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=fIgGZmPg;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=h2RzDarh;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=DjCJX9Q8;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=Xh+DAgI8P7rtg4/V4wz5L/pbKXtsT625balYAozBzCA=; b=uDgpR8RBzzCJcU
-	Wytp+jMT3Riu1P5W39bfS0sjyDfUc/7R1jVliTGkMPk00lwevQW6OHEUfBw18SDIyiLEK+LvvCT5J
-	/qMvF7dNiu3m7fdIkHVHnUtFu6uMh4GZZsELLW6Vm7nOHS49lhW6/lDsZoj1uIDUcaHAmWbKlpH2F
-	rFvr4mZD5JspyPOWshPvCssYBy2zzd6geUV9s0iRrnQpI5s3QpD2ZFbmw89H81HdwcfdqSUb2Ubkl
-	NRYWoXrovXHe16PvkQlA1TY/ttmZc/cC6fBO4ohPpVl+knBZgSCyd2ZY9QITgSpri6cAa+LUhM+ZC
-	Mqz/dVsqub40BziPX1zA==;
+	List-Owner; bh=Qj9c1rcbUXmOfgpI6gu8w7GxYeV5nwylogzNYe+DXr0=; b=h2RzDarhYQOEVm
+	HOucUr78j4+C9p0MV0ppGayM3aIYwrXmBUx0Ut/nFU2lk6oecppTrLcUTewM0jOoPDPxbktf0G7vM
+	ZIifWFEjbQdYaWGT5N3wwBCofvbHE3sHsE5VQ+vgzJ+0QCkn1jO3tA5kbARmH53/kQAJkaxBjEG0t
+	cw3rLXpI8xqMxZsRM2rM6yPljl5TBV7JEw6LcOVS3BGGFRSIswEtteGtWZzgd5dZoH8T3klyc53t1
+	yvdc4SquDMrRNyXAPjYQTJiu8Byno25/+Ge99uLfO1YemFxD1dLb+JynGrNE0OcxwhoFfUijsMoz5
+	2co02Sv6UvBXha0DjlFQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRlac-0000000Bt4G-1I7w;
-	Fri, 13 Nov 2026 07:20:50 +0000
+	id 1xRlfx-0000000BuP9-3bNi;
+	Fri, 13 Nov 2026 07:26:21 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xRlaV-0000000BszR-2xe8
+	id 1xRlfu-0000000BuO6-2rR3
 	for barebox@lists.infradead.org;
-	Fri, 13 Nov 2026 07:20:47 +0000
-Received: from [127.0.1.1] (unknown [IPv6:2a02:560:5d79:c700:9ebf:dff:fe00:fdb5])
-	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 96B1F2020ED;
-	Fri, 13 Nov 2026 08:20:41 +0100 (CET)
+	Fri, 13 Nov 2026 07:26:20 +0000
+Received: from dude02.red.stw.pengutronix.de (dude02.red.stw.4.pengutronix.de [10.17.1.16])
+	(Authenticated sender: relay-from-dude02.red.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id DEC4B201544;
+	Fri, 13 Nov 2026 08:26:16 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794554441;
+	s=20260414; t=1794554776;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Xh+DAgI8P7rtg4/V4wz5L/pbKXtsT625balYAozBzCA=;
-	b=fIgGZmPgFZng64WGGeoc0WHvDZ3SU04cquwe3yNuyQV9WB4sTKz/TrQLK8pBn1R+oVocHm
-	ZA4abKekO2/WkDqKAFhf+CstMCygFqjk3xEeyMTrC1ylSxLoet6vsZ+4VSguKN59bJL52D
-	APbFRAIHHE6hUwQC9hT3h7fzTRCU96G12kjDodn+bVB+S4mnHEmUg/wiwbZoTgqwntMBcH
-	VArHYaNXw1K8JeOVCplZ8goPKhfRy2EeB4b1RQHwuHkoKZZyvOxZDKgZrsmM/Kw3+ENer4
-	6vvg1/id2cwsRHid6OgE1Sf9USdYv69kNuaO+sFTiJnqb0UoGVeuXccA1321+w==
+	bh=Qj9c1rcbUXmOfgpI6gu8w7GxYeV5nwylogzNYe+DXr0=;
+	b=DjCJX9Q8n6MdUcvxDhyTIM3RxfyZiRSIXGrNmyAlQjI2T+sa8Gm8rpNvhoUj9gkZOU5+wE
+	lzX7n7iBiBf/S+TSRNY6c4yP2gabBKAsbl150nED0HVFr5g33OJgWzhdI5jls5rRBglQBx
+	rFji9otUqaV1GTfmrpSCtCs5glRzgd2Hn8WKyR0TUO5A+q75jyMQmVrdZxiglxE2ag+lEc
+	J+wS/+3gL589UIzKBzjkriaTmbpZJ0I/O+irZvYjZcQwhHW7x6Bw74XkW8e1ifpEmyQio2
+	of3EXL373X4BsPqnRc227faxjZP1u31ynEGKfrQHN5p8T9twiMhAY4qtFx5m4w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794554441;
+	s=20260414; t=1794554776;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Xh+DAgI8P7rtg4/V4wz5L/pbKXtsT625balYAozBzCA=;
-	b=T3Tqnoskf8QOBoJBfYPoONs2a+04r256oC252njlenvq+gfP/fAT4a+nMyL4kq7dd839J5
-	C/QmVlzEecvBOYDzJ94AXBCSQa6Hs9RL5ONfKUNmb2JtvKflWiGYIjWlpTtDTyjLlxdwyQ
-	s6IQgzvDLb3oK1hMW0VOZhMYDxe+JCvFryNyj8FX7yVJxVFHmOP1mV9W6CQOTvsAVF4822
-	sUR/vQsHzWw2ekSQf+MAwaESwmzHRL2/eykC+gwhINipIJlAzH6WAm3qRsuyBLRof0xfpI
-	++gINFx9UwYvmpGvEo6GVzijooFrm4bqmPMvaL89WxgGzsxjQAbpWF/EFlRRmA==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794554441; a=rsa-sha256;
+	bh=Qj9c1rcbUXmOfgpI6gu8w7GxYeV5nwylogzNYe+DXr0=;
+	b=Tat+y0eNtdtGk7ChmAvqTrtMNKfn02fPoi3qfC0oZJIWfLz7qCN5eM4kFLRx176N8ao0KB
+	ykhTGX8RdKS6ub3NFSY7IEanj4auGdlPZ5sv3PyNj7uo3ooJ/ibkVvITfPIPbjP7ahoEhm
+	MdJ6rMbUA2ndkUbZ3ljilf/fHTsooJw87gI3xlKEhQbiGTDDKinl5hsxfik7qytwsRBMMl
+	lLBHWXY0rDxBk1YGOrm5m895gGFz9C8JX5YZDyhCRrWC4mTlQbxk0jAOE/pw8MWVL7E1Q8
+	+AQ8VL3bCuz2ObVC6yHuPj60WoJn7wKXowmiIEYXHxNBL9PCq/kH6VztPE/x9g==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794554776; a=rsa-sha256;
 	cv=none;
-	b=fHgJESYgIf6Jznl4zxps6IG5ffkKbB0SyNbrC3g+Ux44KeU1Jb+IeY20STQxMbMrHMef3S
-	Es+Amn/883l4bWzM/husgNpdtGpDzBheMjCLmF9MF+T1qM0Mp8xSFiihQMMlf2QOlE7wXY
-	xtg/5NM6TJNUpQqWmwS3aezc9aGAZyfq4HMMbhFo02QTFemimGV3ivSZh8k+luesl4jw61
-	r8UZekv3I3jZwY/Ry59I+nlgieqQNVVzMod6Nk6wnHMcih9o/W3HFLbffj0r0k0D+AgW41
-	6l5iaa/mHkAzb3Ko3wDlYE2ahGN+SKdCYQ/6S6GP6UQ+nd7jzoy9B9YbJKvQKw==
+	b=V7IdvUink95xU4ZvVNRPgHrHem7bGvq1Y/wBq7hC7Whwj0He6gZ7ViqL/BokR5Ear9SneI
+	DdC7J8bzu7vtpFYehUe4jf8AMRCjTNSnZO0qJlVBiqD+r/e7UToZKQo01mozAX7nfgNq48
+	qHX+8UCweWnQSHitF57e3habyq7XDq4X9Tste+lGFMXsmC6cCa1d7n+BsTusU0dx5tlrVa
+	wVO5CJ6flkx+75TX0lDhP1HAOZb6mJdWNcAzxnQsljXwhC6aVijkv2IRD/EgpXI0dBaIgL
+	LdNezzLuphJ+eW4318ju83zxezIJibrXBdnOqiEWvut0rrVzGFMt9luf5aGgpQ==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
-	auth=pass smtp.auth=sha@pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
+	auth=pass smtp.auth=relay-from-dude02.red.stw.pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
+Received: from dude02.red.stw.pengutronix.de (localhost [IPv6:::1])
+	by dude02.red.stw.pengutronix.de (Postfix) with ESMTP id D3DD8FF8F3;
+	Fri, 13 Nov 2026 08:26:16 +0100 (CET)
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 13 Nov 2026 08:20:37 +0100
-Subject: [PATCH v2 2/9] bootm: revert globalvar changes in
- bootm_boot_cleanup()
+To: barebox@lists.infradead.org, Alexander Kurz <akurz@blala.de>
+In-Reply-To: <20261110212842.29724-1-akurz@blala.de>
+References: <20261110212842.29724-1-akurz@blala.de>
+Subject: Re: [PATCH v2 0/2] Kindle maintenance
+Message-Id: <179455477685.1737005.575101905804493589.b4-ty@pengutronix.de>
+Date: Fri, 13 Nov 2026 08:26:16 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261113-boot-globalvar-stack-v2-2-14c0f0a0986e@pengutronix.de>
-References: <20261113-boot-globalvar-stack-v2-0-14c0f0a0986e@pengutronix.de>
-In-Reply-To: <20261113-boot-globalvar-stack-v2-0-14c0f0a0986e@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>, 
- BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1794554441; l=4856;
- i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=3qQiUoVeEyaHwV3u33zDjBJIfegpWXtQGAhAxtQhLtw=;
- b=SYjqHU9uQ81Iwxq+YLzsHgZQQbxBtCQ/yTa1yNSOvB1oKTVg0AuGN9oWBUuXHoeeOGd2te4g0
- Kg16gd/dJmFC5kY50x7lCfUksx06SKoSYKxOrhdTzM3PQFXHWhXyqiV
-X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
- pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261112_232044_108867_55659826 
-X-CRM114-Status: GOOD (  18.96  )
+X-CRM114-CacheID: sfid-20261112_232618_873155_6B52A2E3 
+X-CRM114-Status: UNSURE (   7.96  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -132,9 +127,10 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  bootm adds the Kernel command line options it generates itself
-    as global.linux.bootargs.!bootm.* and global.linux.bootargs.~bootm.* variables
-    and removes them again in bootm_boot_cleanup(). Anything e [...] 
+ Content preview:  On Tue, 10 Nov 2026 21:28:40 +0000, Alexander Kurz wrote:
+    > Changed to v1: exended the bootm -c patch also an the iMX6sl-variant. >
+    > Alexander Kurz (2): > ARM: boards: kindle mx50/mx6sl: remove boot [...]
+    
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -165,169 +161,66 @@ List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-Spamd-Result: default: False [-60.41 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[100.00%];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
-	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
+	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
-	R_SPF_ALLOW(-0.20)[+mx:c];
 	MAILLIST(-0.20)[mailman];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCPT_COUNT_TWO(0.00)[2];
-	RCVD_COUNT_THREE(0.00)[3];
+	RCVD_COUNT_THREE(0.00)[4];
 	DMARC_NA(0.00)[pengutronix.de];
-	FORGED_SENDER(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	TO_DN_SOME(0.00)[];
 	RCVD_TLS_LAST(0.00)[];
+	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	FORGED_SENDER_FORWARDING(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
 	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_ALL(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: 6707C2023BD
-X-Stat-Signature: yqb77e4xge3uftfe13oskt6hjcugwgyx
+X-Rspamd-Queue-Id: 19C522023BD
+X-Stat-Signature: c4qjxcs4zkhsqtqz173dono9c6mcbmy6
 X-Rspamd-Action: no action
 
-bootm adds the Kernel command line options it generates itself as
-global.linux.bootargs.!bootm.* and global.linux.bootargs.~bootm.*
-variables and removes them again in bootm_boot_cleanup(). Anything else
-bootm or the image handlers change in the global namespace while booting
-stays, for example global.linux.bootargs.dyn.watchdog which is added by
-the devicetree fixups and only cleared again when booting through the
-boot command.
 
-Add boot_globalvar_scope_push() which snapshots the globalvars that
-configure booting, take a snapshot in bootm_boot_prep() and restore it in
-bootm_boot_cleanup(). This covers the variables bootm removed so far, so
-drop the explicit removal.
+On Tue, 10 Nov 2026 21:28:40 +0000, Alexander Kurz wrote:
+> Changed to v1: exended the bootm -c patch also an the iMX6sl-variant.
+> 
+> Alexander Kurz (2):
+>   ARM: boards: kindle mx50/mx6sl: remove bootm -c option
+>   ARM: i.MX: do kindle-mx50 defconfig maintenance
+> 
+> .../defaultenv-kindle-mx50/boot/mmc_kernel          |  2 +-
+>  .../defaultenv-kindle-mx6sl/boot/mmc_kernel         |  2 +-
+>  arch/arm/configs/kindle-mx50_defconfig              | 13 +++++--------
+>  3 files changed, 7 insertions(+), 10 deletions(-)
+> 
+> [...]
 
-Besides global.bootm.* and global.linux.bootargs.*, the scope covers the
-rest of global.linux.*, like global.linux.bootargs_append, which
-global.linux.bootargs.* doesn't match, or global.linux.rootwait, then
-global.of.*, which includes the global.of.overlay.* variables selecting
-the overlays applied to the Kernel device tree, and
-global.boot.watchdog_timeout.
+Applied, thanks!
 
-It deliberately doesn't cover all globalvars: booting legitimately
-changes others, which must persist. For example DHCP sets
-global.net.server, global.net.gateway and global.hostname, and reverting
-them while the interface stays up would leave the network unusable, as a
-later ifup doesn't run DHCP again.
+[1/2] ARM: boards: kindle mx50/mx6sl: remove bootm -c option
+      https://git.pengutronix.de/cgit/barebox/commit/?id=894cd989a320 (link may not be stable)
+[2/2] ARM: i.MX: do kindle-mx50 defconfig maintenance
+      https://git.pengutronix.de/cgit/barebox/commit/?id=cf91f5c67f8c (link may not be stable)
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- common/bootm.c  |  6 ++++--
- include/boot.h  | 16 ++++++++++++++++
- include/bootm.h |  8 +++++++-
- 3 files changed, 27 insertions(+), 3 deletions(-)
-
-diff --git a/common/bootm.c b/common/bootm.c
-index 26dba7244e..0798324b14 100644
---- a/common/bootm.c
-+++ b/common/bootm.c
-@@ -2,6 +2,7 @@
- 
- #include <common.h>
- #include <bootargs.h>
-+#include <boot.h>
- #include <bootm.h>
- #include <fs.h>
- #include <fcntl.h>
-@@ -542,6 +543,8 @@ struct image_data *bootm_boot_prep(const struct bootm_data *bootm_data)
- 
- 	data = xzalloc(sizeof(*data));
- 
-+	data->globalvar_scope = boot_globalvar_scope_push();
-+
- 	bootm_image_name_and_part(bootm_data->os_file, &data->os_file, &data->os_part);
- 	bootm_image_name_and_part(bootm_data->oftree_file, &data->oftree_file, &data->oftree_part);
- 	bootm_image_name_and_part(bootm_data->initrd_file, &data->initrd_file, &data->initrd_part);
-@@ -801,8 +804,7 @@ void bootm_boot_cleanup(struct image_data *data)
- 	if (data->of_root_node)
- 		of_delete_node(data->of_root_node);
- 
--	globalvar_remove(LINUX_BOOTARGS_BOOTM_EARLY "*");
--	globalvar_remove(LINUX_BOOTARGS_BOOTM_LATE  "*");
-+	globalvar_scope_pop(data->globalvar_scope);
- 	free(data->os_header);
- 	free(data->os_file);
- 	free(data->oftree_file);
-diff --git a/include/boot.h b/include/boot.h
-index 57f9cb409b..1ae689732d 100644
---- a/include/boot.h
-+++ b/include/boot.h
-@@ -7,6 +7,7 @@
- #include <environment.h>
- #include <bootm-overrides.h>
- #include <bootargs.h>
-+#include <globalvar.h>
- 
- struct bootentries {
- 	struct list_head entries;
-@@ -58,4 +59,19 @@ int boot_entry(struct bootentry *be, int verbose, int dryrun);
- struct bootm_data;
- int bootm_entry(struct bootentry *be, const struct bootm_data *data);
- 
-+/*
-+ * Snapshot all globalvars that configure booting. Whatever a boot script,
-+ * a boot entry or bootm itself changes there is reverted again by
-+ * globalvar_scope_pop(), so it doesn't leak into the next boot attempt.
-+ *
-+ * This deliberately doesn't cover all globalvars: booting may change
-+ * others that must persist, e.g. DHCP sets global.net.* and
-+ * global.hostname while the interface stays up.
-+ */
-+static inline struct globalvar_scope *boot_globalvar_scope_push(void)
-+{
-+	return globalvar_scope_push("bootm.*", "linux.*", "of.*",
-+				    "boot.watchdog_timeout");
-+}
-+
- #endif /* __BOOT_H */
-diff --git a/include/bootm.h b/include/bootm.h
-index 8e574040f4..bbdbb8e69d 100644
---- a/include/bootm.h
-+++ b/include/bootm.h
-@@ -16,7 +16,8 @@
-  *   !		0x21 is less than any non-space printable character
-  *   ~		0x7e is greater than any printable character
-  *
-- * Users will never see those as bootm_boot_cleanup() will delete them again.
-+ * Users will never see those as bootm_boot_cleanup() reverts the globalvars
-+ * to the state before bootm_boot_prep().
-  */
- #define LINUX_BOOTARGS_BOOTM_EARLY	"linux.bootargs.!bootm."
- #define LINUX_BOOTARGS_BOOTM_LATE	"linux.bootargs.~bootm."
-@@ -80,7 +81,12 @@ int bootm_open_os_compressed(struct image_data *data);
- int bootm_boot_handler(struct image_data *data);
- void bootm_boot_cleanup(struct image_data *data);
- 
-+struct globalvar_scope;
-+
- struct image_data {
-+	/* globalvars to restore in bootm_boot_cleanup() */
-+	struct globalvar_scope *globalvar_scope;
-+
- 	/* simplest case. barebox has already loaded the os here */
- 	struct resource *os_res;
- 
-
+Best regards,
 -- 
-2.47.3
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
