@@ -1,149 +1,164 @@
-Delivery-date: Tue, 17 Nov 2026 23:20:57 +0100
+Delivery-date: Wed, 18 Nov 2026 12:55:42 +0100
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xTRXs-000Z4t-2K
+	id 1xTeGL-000krQ-0O
 	for lore@lore.pengutronix.de;
-	Tue, 17 Nov 2026 23:20:57 +0100
+	Wed, 18 Nov 2026 12:55:42 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id A4307201CD2
-	for <lore@pengutronix.de>; Tue, 17 Nov 2026 23:20:52 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 4ABC4205AD3
+	for <lore@pengutronix.de>; Wed, 18 Nov 2026 12:55:41 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=uOQMLHSK;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=WEEyZTMG;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ShmUXCS+;
+	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=ayfgpJHB;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=VeoNZy4T;
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794954053;
+	s=20260414; t=1795002941;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
-	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=u6jC/TdLzsVqDSR2RJSgxn4tqATEp9S0iqCgjet2fEY=;
-	b=QbaFvKr4Y9pZzRT06wNRi9tVl/s4idy+4Lqac2mQn/DFs1PgbyAR/VVGXb0MuoCnPI3PS/
-	smpCDleiZlOXz/2kX2bP9EK+8FUXhukzsxjUnSF7ipkZNuq0BOhkMt9FbW9eGHXaVhOh10
-	ocjETQpZn4mQNW5t6Ew1hXvl0e5N1FRdy2e3KoZejjQ6JVEFatN2aNsMWP74EDhmVCTS+A
-	5Hea5Do0V1kGTNOuW/MnU4RUU9KdfFbM+Ea3UpclYaT4sFWaO6Bu4EIqEDeXbYUnG8AR4W
-	p5GI+lf6paSEAb/nJCpv8pHjebH+6enoXr/YOWljuwvIMpFiVjaaqPGWD09Mmw==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1794954053; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:in-reply-to:in-reply-to:
+	 references:references:list-id:list-help:list-unsubscribe:
+	 list-subscribe:list-post:dkim-signature;
+	bh=QcHXerSnB6ncfsUITz6YpJj/u0veJy5vpFSJcTJji3A=;
+	b=BmWGlUOjsRczqpK3MZa2Murn4Zz02Ea8c08jwcOIdTLmMAgtK8IGKVDgxDGMlD6JssDxX7
+	xQSWmo2Oe1hC4AMgr/cXW+oInulEbUjArnmwgKN0eFLKcWWIqoTNbrVW/u5v3nMW3VbF3R
+	CzTIFdsDgROKl0jew6YuTlqh7a+dCbNswapc4k0ibdhvy5VwdqfP8lW7OC+JbaiutkL5ri
+	ueL34PY0Xpp/VTxsb1ZtRdLO8pHnbloB22Nuf6p74f8SfJ1Ym7l1G4hwMy01Vj+UGm1hdy
+	tg8mUmnOUMoYMQ4IqOR2YmG0koG2EVr9XeZF1/WvrUwkOeKQ1bYvCHwZ9afKjw==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1795002941; a=rsa-sha256;
 	cv=pass;
-	b=ApbXbxomKpu5EQQcXuuQWBuv5drgbVrpVvaCzD28dKuaoF7fDIv1UKnPHPkvaeHxDsql7Z
-	EFDiDVvwOoVeCxBhRX03XcqBXq8BBu1L/37HBYt162rnw6SrvMtJjdT4lKaxgeWVCp+TCv
-	UvdMP1R7gGNcOf58JYC8Wfvwxm2+/qVfD4V0URBINevZ7QE4v3/K90aw2XLHYNV+Wwi4cn
-	gPAzOMNvvhDaOYT1x1sZ5K8B0oF9rWqgugY7EQFNUpbCuYZaCv1vqwRIv7XkrPRESBD+k3
-	tgtBIa3b7L9TfK9HcLGhm3KbN7vYEoSLkaLSuX7I+JrvQEkVz9QLvl46cYeh0A==
+	b=cZfNLPUNvL1BMSSyXh5FglpFzIzNkp9RK37XkUGhURvsDQ7sZ5QQLBJtVV0unUmOutfvgT
+	04bU612jUcJxGn1uh+zSVdBYt0mmDD0AcQPbyA5PNFBdK/dV1AMebHj019A/p6AO41cF3Q
+	FDvQT1z6fVzNgnadOhFdn4h4JIhAq1pWM3DL4zlmkK9L80qp11Kye9Qiissk4zL4qifQdQ
+	T2SxY+xqQm+CevitN8AGvNpuTQtN/UawBfwV/YRiuS4uZV282iaMrQK9b4pcBw6BX3mk6o
+	LAnZef1mLGmZFEP7/UpumYe1yU8bypsn0TgIwJL61lyQCywiKlEe5XXS0R/kIg==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=uOQMLHSK;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=WEEyZTMG;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ShmUXCS+;
+	dkim=fail ("headers rsa verify failed") header.d=infradead.org header.s=desiato.20200630 header.b=ayfgpJHB;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=VeoNZy4T;
 	arc=pass ("pengutronix.de:s=20260414:i=1");
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Date:
-	Content-Transfer-Encoding:Content-Type:To:Subject:From:Message-ID:Reply-To:Cc
-	:MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
 	List-Unsubscribe-Post:List-Owner;
-	bh=u6jC/TdLzsVqDSR2RJSgxn4tqATEp9S0iqCgjet2fEY=; b=uOQMLHSKidsE8M7p8iqnV6atWK
-	JYQUCROyEWCTJ1VP8mo5AzBN/T0EiXHqNLoY1tWaFYN9fvxeFQIGQQggzgirDrVPthJc1UmFughkt
-	WKr/drimHL8hnqavMvCMG5p6KRMXWu+iqBfXHWovd8x2Wh8I4AHKQXbRAYdddWIsbtZw3PpkvQ/rU
-	PwY+CY1qwnKmy//bGydhJQu/BJl0sXcWGmpnVzzWEJ85S7R7ggwcOsMzZMiMUDVQC1BcmlY3JMUXn
-	SLWFZhqUaYwiilo/m0y4ZEBzCmRxz2gk6yTI+dxLRUpfzalZ2dpfov20bUuzuT+PthuTAddDE2AO3
-	wt/o6iRQ==;
+	bh=QcHXerSnB6ncfsUITz6YpJj/u0veJy5vpFSJcTJji3A=; b=ShmUXCS+Ai2QoYJ0oTsai5/29R
+	cGD0n7Ma4RiQABk4yTrabmkYbAincFfvyE9/uUdoRMixOZaRtGI93N/RGCPUTSgvWrExYuvBwYSGo
+	GNWUg9FWPmH46v/wJA/v6SUE3lWlVZqZBNFU+XijlK5noyWoJLEkOvyLk2vclxhD3mfXVO2diOVW3
+	3mJXA58eceOz8RQlHYdLWauaOwq6XTc23H5Ql2IDmmEWrK9Nb8gvJuxPU1UcyikZhNDWhfnMVAnco
+	+NOYpNE2YiDSPeagdLl1zRHbjL6GBXmHyMctAxhjPRiL1j4VAfwc3M2huT2/gn3PBb5R69ydSDZoc
+	enzpudoQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xTRWW-00000007DGb-0dwK;
-	Tue, 17 Nov 2026 22:19:32 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+	id 1xTd3d-00000008aRh-1tHT;
+	Wed, 18 Nov 2026 10:38:29 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xTRWP-00000007DF5-0L8V
+	id 1xTd3b-00000008aR0-0WMl
+	for barebox@bombadil.infradead.org;
+	Wed, 18 Nov 2026 10:38:27 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=QcHXerSnB6ncfsUITz6YpJj/u0veJy5vpFSJcTJji3A=; b=ayfgpJHBolJGQkq1Ejt38VVe8s
+	hzX7VC8Vdph5o4c0fL0p+O/GOVrwS5KvOjnAt78m+arHIIe7D0fqOVNrcKI8usMUyoU+QR74SD+Vd
+	h6rI4lM6hccVaudsgUA3o3KtLAT2rf27mLkqhe2Yp46FpxOwWJ7cTilG+hwkJTAE8nD94N5rHDrpW
+	MOodinvapZztlAxep+XjNaJ13VfSDLnGX0BI4U+msvzRr+My6iAoQM0PCv5kh0VL+JoretRJoWr5c
+	42V6JRDVpSYWSVflQrhytOTVkGbCTsf8rp2uQ8zZwdg2ENZFA2rQ0SkFvh7DVHuSZ0YoLKja4DORr
+	9CUELzpQ==;
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	by desiato.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xTd3Y-0000000Fvgn-0RLQ
 	for barebox@lists.infradead.org;
-	Tue, 17 Nov 2026 22:19:30 +0000
-Received: from [127.0.0.1] (unknown [IPv6:2a02:560:5d79:c700:9ebf:dff:fe00:fdb5])
-	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id A2EF320062C
-	for <barebox@lists.infradead.org>; Tue, 17 Nov 2026 23:19:18 +0100 (CET)
+	Wed, 18 Nov 2026 10:38:25 +0000
+Received: from ptx.office.stw.pengutronix.de (ptx.office.stw.4.pengutronix.de [10.9.0.3])
+	(Authenticated sender: relay-from-ptx.office.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 557D5201CD2;
+	Wed, 18 Nov 2026 11:38:21 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794953958;
+	s=20260414; t=1794998301;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=u6jC/TdLzsVqDSR2RJSgxn4tqATEp9S0iqCgjet2fEY=;
-	b=WEEyZTMGOn/A/xk5BGrynzh6DQqoU5ofGifoXyTuZwe8qevgvraHzHS3t4Jesc0vVCa6Rw
-	J2amZdwxnbYwzP14BUtjU3UlVF31Oc6HaXtZ7trGrGuA9CT0yIW7TdwUW62zxvtrVrm/Zr
-	S9YVLGZ8yLo95aq4hdf9cA5wm9MGvCQkDT54bh9Kn62krr99IKZO10ER+9bEDRt+SEIQ68
-	+zGuO2JkHG/1H5bYbefgEfIYBEY21Ww2OYe3rcAAxZFCsFilLVX+YlxvS8VhFWzdVM/YJV
-	9XBrQIq4JCtBQz5gjRahCjDQaAs250E5xWY0OCqm2Y5WHiqzEXArRz/7LylrDg==
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QcHXerSnB6ncfsUITz6YpJj/u0veJy5vpFSJcTJji3A=;
+	b=VeoNZy4TNgO+z7MSTwANacpWPpI1LB6ZU1izSarIM/x1so0cS/HyqaxQssvPxonSjqnMUU
+	4Xmg3D06+YcQjOMzbIlekgG7KkVCiU82zUf0ZmMf8YcTTZO6lf8Df6fOZ9++qnEDyK+3fX
+	8jKJIuqZq6UOm3Jt33+fP8jrLvD84EsZy9XYMoWcFz+hKDmc/3etr8++uuqOEVU6GQVh9i
+	VIlEXXPp5WDNDDAPXBg8mLUHQKFYpikQGg3vEeUWOrGXZJ/CUa/ol1yjhig3vr7bkEBtMY
+	5wgtkMbGWBA08zhO6nTt8ArOlLHmmGPkmQDH50uS2jopieo7G5ljZkXDxw2ebg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1794953958;
+	s=20260414; t=1794998301;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=u6jC/TdLzsVqDSR2RJSgxn4tqATEp9S0iqCgjet2fEY=;
-	b=T0mj3mXgRfvT/lNVVgz0hZFsXEA4w3zfp4FJ/o4T1hsaNAn6lHaNVVpjC56BPUEKnKxHgl
-	59Qgpao7J6Wk4bJNZL9ATq5ToLVY4HQh1Vbmr2q6COinbBhkmjftyiMMH4qK43XdRlqUxB
-	obHSMCpeZ3BXJhdRD1u7+TPpXuA3FAuYaxv+ROpEnr1sUvclJCMs8ZuA/ZqkRcFxlhQWXA
-	eWklNSdsax+f7eJbm/zpL38tMqa3XeTrrUYdbZRE4oAQIEaSPYT5eCWp1Bsk2xWoDI1ViX
-	oOtW+JYnq5h+ut/NZA8Kk77VqqcAMOoAnHnEX5yz16fEjd/hwLqxKsOgMxfAjg==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794953958; a=rsa-sha256;
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QcHXerSnB6ncfsUITz6YpJj/u0veJy5vpFSJcTJji3A=;
+	b=f4X61yeXrHWwl8rNTh5KOkc4dXVeWJkEPN+coLK5pM04qwYH5dGv5ACgC5WrT5HrNphj3w
+	OApkwbYsWHAVdSgsWhRglHZlKhB3rez4DZNXngDQXrMS+WnewVTuUdGdRN+9SBU/4SH3Eo
+	CRAUuhYpjglIknOpDgQw+VSww6p6tsTOwSCaa/yoDUKXJzJebS5aNkoqmv05c2fVIIMaup
+	o+FkAiDiqBCEq0EfJ7Wc2/DGAgSZRnbdO7bCD3+vOx5hJrjdIHJG7rVM/HqqDmRGMqLAYw
+	+xCVknnQmKhe4a1bpi6trOH65U/bimhKscNiW1l4r2/6d9b7apz8YCklC6Vf/g==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1794998301; a=rsa-sha256;
 	cv=none;
-	b=cO3k3MRcCvEVlP2/FBD1PUnFoQfsUHCdBv2roOWxa1CmvKl9peh9fe4LbzgHzQrfPTdP++
-	qBnKH8TAjHA19Io5SazIMiAdNhfJrQIyfN3jcecl5kWOzxn2lZ5yDd5GyIEp21CZt68hOi
-	+2ZVzyyB4P0HHScWywnWCXpMZiKb4VzhMk2SHTbAGy0P6GBHl6zfm6oE57WoEEWPdf7Irp
-	Dfoah8m0W0fVDY068BYTquQ3fisDrAD5cz3+uwpCasXuZ5nR2IaOtK4ckIAhSdoR9U1dcq
-	UT92i6Q61k3b4JHlDr1kJECnNoA3wpviy9W5mbki/11O4lvFeUh7cCq9ajAz1A==
+	b=BLxBAU/H/OYHygpIIUOEiwFKsXeEhWXFwfMFoB+9zeTFxHIJHdQCjdNzeJUaGb2bzto0oq
+	A1N1cuuvccHNImawBVVMS8QwTo9R4eGsSP1aRL7Yo8TvG36Hefp7LPOR0odUlMQokzSyux
+	kzpyyzl5noJETWURpkqEmePb5d9g7KudiAIMBPGRtNqyXgj6jklDZZxnDI1vS78StZHqDc
+	vX7cLWQAQz9+VUGzOCfi2MFwIEVudHsv351jKDk3ym0yha+WqDO5sZ+WCpSG46vE5l4B1F
+	5bsg/NWZWRaiubULetVGtUuqRCP3rRdUqdFVOL++M7+R0++H4gTKeAM3QElVYQ==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
-	auth=pass smtp.auth=sha@pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
-Message-ID: <90927807-a626-4318-b5fd-fda4b8dcf14b@pengutronix.de>
-From: "Sascha Hauer" <s.hauer@pengutronix.de>
-Subject: v2026.11.0
-To: barebox@lists.infradead.org
+	auth=pass smtp.auth=relay-from-ptx.office.stw.pengutronix.de smtp.mailfrom=m.tretter@pengutronix.de
+Received: by ptx.office.stw.pengutronix.de (Postfix, from userid 1056)
+	id 368941BF88A; Wed, 18 Nov 2026 11:38:21 +0100 (CET)
+Date: Wed, 18 Nov 2026 11:38:21 +0100
+From: Michael Tretter <m.tretter@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Subject: Re: [PATCH 2/2] arm: socfpga: agilex5: add SSBL verification
+Message-ID: <av2AHZSRTa-gfZF3@pengutronix.de>
+References: <20261021-socfpga-agilex5-verify-ssbl-v1-0-0463e94669ab@pengutronix.de>
+ <20261021-socfpga-agilex5-verify-ssbl-v1-2-0463e94669ab@pengutronix.de>
+ <15cbf71b-3da6-4993-98f9-0d5357fdbc54@pengutronix.de>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 17 Nov 2026 22:19:16 +0000
+Content-Disposition: inline
+In-Reply-To: <15cbf71b-3da6-4993-98f9-0d5357fdbc54@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261117_141925_446782_B98B0C33 
-X-CRM114-Status: GOOD (  24.87  )
-X-Spam-Score: -2.1 (--)
-X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
+X-CRM114-CacheID: sfid-20261118_103824_101880_BB843146 
+X-CRM114-Status: GOOD (  46.19  )
+X-Spam-Score: -0.2 (/)
+X-Spam-Report: Spam detection software, running on the system "desiato.infradead.org",
  has NOT identified this incoming email as spam.  The original
  message has been attached to this so you can view it or label
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Hi All, I am happy to announce the barebox release for November.
-    The largest part of this release is hardening driven by fuzzing. ext4 and
-    squashfs gained several bound and sanity checks. USB descriptor parsing has
-    been hardened against malicious devices. Network f [...] 
+ Content preview:  On Mon, 26 Oct 2026 13:32:40 +0000, Sascha Hauer wrote: >
+   On 2026-10-21 22:33, Michael Tretter wrote: > > Altera VAB usually uses a
+   certificate that is appended to the SSBL image > > using the fcs_pre [...]
+    
  
- Content analysis details:   (-2.1 points, 5.0 required)
+ Content analysis details:   (-0.2 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
- -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/, no
-                             trust
-                             [185.203.200.13 listed in list.dnswl.org]
  -0.0 SPF_PASS               SPF: sender matches SPF record
  -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
- -0.1 DKIM_VALID_AU          Message has a valid DKIM or DK signature from author's
-                             domain
  -0.1 DKIM_VALID             Message has at least one valid DKIM or DK signature
  -0.1 DKIM_VALID_EF          Message has a valid DKIM or DK signature from
                              envelope-from domain
+ -0.1 DKIM_VALID_AU          Message has a valid DKIM or DK signature from author's
+                             domain
   0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
-  0.0 URIBL_BLOCKED          ADMINISTRATOR NOTICE: The query to URIBL was blocked.
-                             See
-                             http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-                              for more information.
-                             [URI: fetch-release-mail.py]
-                             [URI: pengutronix.de]
- -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
-                             [score: 0.0000]
   0.0 DMARC_MISSING          Missing DMARC policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -157,529 +172,293 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-58.41 / 15.00];
+X-Spamd-Result: default: False [-60.61 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[99.98%];
-	MISSING_MIME_VERSION(2.00)[];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
+	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2001:8b0:10b:1:d65d:64ff:fe57:4e05:received];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	MAILLIST(-0.20)[mailman];
-	R_SPF_ALLOW(-0.20)[+mx:c];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[barebox@lists.infradead.org];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	NEURAL_HAM(-0.00)[-0.999];
-	DMARC_NA(0.00)[pengutronix.de];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_ONE(0.00)[1];
-	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
-	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	RCVD_TLS_LAST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_IN_DNSWL_NONE(0.00)[185.203.200.13:received];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_ALL(0.00)[];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_TWO(0.00)[2];
+	FORWARDED(0.00)[barebox@bombadil.infradead.org];
+	MIME_TRACE(0.00)[0:+];
+	DMARC_NA(0.00)[pengutronix.de];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	TO_DN_NONE(0.00)[];
+	FORGED_SENDER(0.00)[m.tretter@pengutronix.de,barebox-bounces@lists.infradead.org];
 	MISSING_XM_UA(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[]
+	DKIM_TRACE(0.00)[lists.infradead.org:+,infradead.org:-,pengutronix.de:+];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	RCVD_COUNT_FIVE(0.00)[5];
+	FROM_NEQ_ENVFROM(0.00)[m.tretter@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	R_DKIM_REJECT(0.00)[infradead.org:s=desiato.20200630];
+	NEURAL_HAM(-0.00)[-1.000];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_MIXED(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: A4307201CD2
+X-Rspamd-Queue-Id: 4ABC4205AD3
 X-Rspamd-Server: mx1
-X-Stat-Signature: 7gh74pubkpg98u56pehpddsnzrykdys4
+X-Stat-Signature: bbcg3zzfpt15q9u94a31akq8wu9ma3km
 
-Hi All,
+On Mon, 26 Oct 2026 13:32:40 +0000, Sascha Hauer wrote:
+> On 2026-10-21 22:33, Michael Tretter wrote:
+> > Altera VAB usually uses a certificate that is appended to the SSBL image
+> > using the fcs_prepare [0] tool. The certificate contains a sha384
+> > checksum and is signed using a key chain that ends with the root key
+> > that is written to the hardware.
+> > 
+> > Assume that the certificate is appended to the SSBL image. Read the
+> > certificate from the same flash partition as the SSBL, pass it to the
+> > SDM firmware for verification and check against the root key, and
+> > finally verify the contained checksum in barebox.
+> > 
+> > The SDM firmware returns success for the certificate verification if VAB
+> > is disabled. Create a dummy certificate to check if VAB boot is disabled
+> > and accept an unsigned SSBL in this case. If there is a valid
+> > certificate attached, the checksum has to match, even if VAB is
+> > disabled.
+> > 
+> > The implementation is a bit quirky, because
+> > 
+> > 1. it needs to deal with the broken SDM firmware behavior, which expects
+> >    a 32 bit word with value 0 in front of the certificate,
+> > 
+> > 2. needs to walk and parse the (still untrusted) key chain to find the
+> >    actual size of the certificate, and
+> > 
+> > 3. I haven't found a better way if VAB is enabled than to check a dummy
+> >    certificate.
+> > 
+> > The VAB code could be moved to a separate module to make it available to
+> > other SoCFPGA platforms or to barebox proper. Since it's only used for
+> > SSBL verification for now and is mingled with the SSBL loading, I kept
+> > it in the xload code.
+> > 
+> > [0] https://github.com/altera-fpga/libfcs
+> > 
+> > Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+> > ---
+> >  arch/arm/mach-socfpga/agilex5-xload.c | 157 ++++++++++++++++++++++++++++++++++
+> >  1 file changed, 157 insertions(+)
+> > 
+> > diff --git a/arch/arm/mach-socfpga/agilex5-xload.c b/arch/arm/mach-socfpga/agilex5-xload.c
+> > index 9e55252c04cc..077f67014945 100644
+> > --- a/arch/arm/mach-socfpga/agilex5-xload.c
+> > +++ b/arch/arm/mach-socfpga/agilex5-xload.c
+> > @@ -5,6 +5,11 @@
+> >  #include <linux/sizes.h>
+> >  #include <mach/socfpga/generic.h>
+> >  #include <pbl/bio.h>
+> > +#include <mach/socfpga/mailbox_s10.h>
+> > +#include <mach/socfpga/soc64-system-manager.h>
+> > +
+> > +#include <crypto/pbl-sha.h>
+> > +#include <crypto/sha.h>
+> >  
+> >  static inline u32 barebox_arm_size(const char *head)
+> >  {
+> > @@ -52,9 +57,128 @@ static ssize_t agilex5_bl33_read(struct pbl_bio *bio, void *bl33,
+> >  	return size;
+> >  }
+> >  
+> > +struct vab_certificate_data {
+> > +	u32 magic;
+> > +	u32 flags;
+> > +	u32 reserved0;
+> > +	u32 reserved1;
+> > +	u8 hash[SHA384_DIGEST_SIZE];
+> > +	u32 measurement;
+> > +	u32 reserved2;
+> > +};
+> > +
+> > +struct vab_certificate_int {
+> > +	u32 magic;
+> > +	u32 size;
+> > +	u32 version;
+> > +	u32 type;
+> > +	struct vab_certificate_data d;
+> > +	u32 keychain[0];
+> > +};
+> > +
+> > +/*
+> > + * Use a wrapper struct that starts with a zero word to be able to pass the
+> > + * certificate to the SDM firmware as it. Let the code that reads the
+> > + * certificate deal with it to avoid a copy of the certificate.
+> > + */
+> > +struct vab_certificate {
+> > +	u32 zero;
+> > +	struct vab_certificate_int cert;
+> > +};
+> > +
+> > +static ssize_t vab_get_cert_size(struct vab_certificate_int *cert,
+> > +				 size_t size)
+> > +{
+> > +	struct {
+> > +		u32 magic;
+> > +		u32 size;
+> > +	} *header;
+> > +	ssize_t offset = 0;
+> > +
+> > +	/*
+> > +	 * Each element in the key chain has a header with some magic and the
+> > +	 * size of the element. The length of the entire key chain is attached
+> > +	 * to the end of the key chain. Walk the entire key chain to find the
+> > +	 * actual size of the key chain.
+> > +	 *
+> > +	 * Note that the header is still untrusted!
+> > +	 */
+> > +	while (offset < size) {
+> > +		header = ((void *)cert) + offset;
+> > +		if (header->magic == offset)
+> > +			break;
+> > +		offset += header->size;
+> > +		if (offset < 0 || offset > size)
+> > +			return -EINVAL;
+> > +	}
+> > +
+> > +	return offset;
+> > +}
+> > +
+> > +static ssize_t agilex5_vab_read(struct pbl_bio *bio,
+> > +				struct vab_certificate *cert,
+> > +				off_t start, size_t size)
+> > +{
+> > +	ssize_t ret;
+> > +	struct vab_certificate_int *tmp = &(cert->cert);
+> > +	size_t tmp_size = size - sizeof(u32);
+> > +
+> > +	cert->zero = 0;
+> > +	ret = pbl_bio_read(bio, start, tmp, tmp_size);
+> > +	if (ret < 0)
+> > +		return -EINVAL;
+> > +
+> > +	if (tmp->magic != 0x25d04e7f) {
+> > +		pr_err("vab cert: invalid magic 0x%x\n", tmp->magic);
+> > +		return -EINVAL;
+> > +	}
+> > +	if (tmp->size != sizeof(*tmp)) {
+> > +		pr_err("vab cert: invalid size %u", tmp->size);
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	ret = vab_get_cert_size(tmp, tmp_size);
+> > +	if (ret <= 0) {
+> > +		pr_err("vab cert: invalid certificate chain\n");
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	pr_info("read vab cert to %p from %lx (%zu bytes)\n",
+> > +		tmp, start, ret);
+> > +
+> > +	return ret + sizeof(u32);
+> > +}
+> > +
+> > +static ssize_t agilex5_vab_dummy(struct vab_certificate *cert)
+> > +{
+> > +	struct vab_certificate_int *tmp = &(cert->cert);
+> > +
+> > +	tmp->magic = 0x25d04e7f;
+> > +	tmp->size = sizeof(*tmp);
+> > +	tmp->version = 1;
+> > +	tmp->type = 6;
+> > +
+> > +	return tmp->size;
+> > +}
+> > +
+> > +static int agilex5_vab_verify(const void *data, size_t size,
+> > +			      struct vab_certificate *cert)
+> > +{
+> > +	char computed_hash[SHA384_DIGEST_SIZE];
+> > +	char *hash = cert->cert.d.hash;
+> > +
+> > +	pbl_sha384(data, size, computed_hash);
+> > +
+> > +	return memcmp(hash, computed_hash, SHA384_DIGEST_SIZE);
+> > +}
+> > +
+> >  int agilex5_xload_bl33(struct pbl_bio *bio, void *bl33)
+> >  {
+> >  	ssize_t size;
+> > +	off_t cert_offset;
+> > +	ssize_t cert_size;
+> > +	struct vab_certificate *cert;
+> > +	int ret;
+> >  
+> >  	if (!bio) {
+> >  		pr_warn("source device for SSBL is not configured\n");
+> > @@ -70,5 +194,38 @@ int agilex5_xload_bl33(struct pbl_bio *bio, void *bl33)
+> >  	if (size < 0)
+> >  		return size;
+> >  
+> > +	/*
+> > +	 * The certificate is 8 byte aligned and attached to the SSBL binary.
+> > +	 * The certificate must not be larger than the partition and is
+> > +	 * usually smaller than 4K.
+> > +	 */
+> > +	size = ALIGN(size, 8);
+> > +	cert_offset = barebox_part->nor_offset + size;
+> > +	cert_size = min_t(size_t, SZ_4K, barebox_part->nor_size - size);
+> > +
+> > +	/* Use the SDRAM behind the bl33 for the certificate */
+> > +	cert = bl33 + size;
+> > +	cert_size = agilex5_vab_read(bio, cert, cert_offset, cert_size);
+> > +	if (cert_size < 0) {
+> > +		/*
+> > +		 * There is no valid certificate. Generate a dummy certificate
+> > +		 * to ask the firmware if authentication bypass is allowed.
+> > +		 */
+> > +		cert_size = agilex5_vab_dummy(cert);
+> > +	}
+> > +
+> > +	ret = mbox_vab_src_cert(cert, cert_size);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	ret = agilex5_vab_verify(bl33, size, cert);
+> > +	if (ret) {
+> > +		if (cert_size != sizeof(*cert)) {
+> > +			pr_err("SSBL hash mismatch\n");
+> > +			return ret;
+> > +		}
+> 
+> This is unnecessary hard to read. I assume cert_size != sizeof(*cert)
+> means "This is not the dummy cert generated above", because a real cert
+> must always have data besides the header, right?
 
-I am happy to announce the barebox release for November.
+Correct. A real cert has a certificate chain attached as data.
 
-The largest part of this release is hardening driven by fuzzing. ext4
-and squashfs gained several bound and sanity checks. USB descriptor
-parsing has been hardened against malicious devices. Network frames are
-checked against the packet length more thoroughly. Several heap
-overflows have been fixed in the FDT support.
+> 
+> > +		pr_debug("SSBL hash mismatch: Bypass authentication\n");
+> 
+> The dummy cert never passes agilex5_vab_verify(), so it's not necessary
+> to check its sha384 sum.
+> 
+> I think you should rather have a dummy_cert boolean and return
+> successfully in the dummy case right after calling mbox_vab_src_cert().
+> With this you would also not have to return successfully after a failed
+> verification, which raises eyebrows.
 
-Tobias Waldekranz has added initial LVM support. barebox now parses LVM
-metadata and the new lwm command lists volume groups and activates
-logical volumes.
+I think I first wanted to accept images with an invalid signature on
+devices that don't have VAB enabled, but warn the developer about it,
+before I changed my mind to always reject signed images that have an
+invalid signature.
 
-Agilex 5 now has xload support to load barebox proper from SPI-NOR in
-the PBL which means we no longer have to build two barebox images here.
+I'll fix this and send a v2.
 
-barebox often depends on some additions to the Linux device tree.
-Traditionally full device trees have been compiled into the barebox
-binary. With this release the barebox additions can be compiled as
-an overlay which is then applied to an externally provided device tree.
-This is currently used on STM32MP, but could be extended to other
-SoCs as needed.
-
-Have Fun!
-  Sascha
-
-Migration notes for v2026.11.0
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Generated MAC addresses now depend on the network device name
--------------------------------------------------------------
-
-With ``CONFIG_NET_ETHADDR_FROM_MACHINE_ID`` enabled, barebox derives the MAC
-address of a network device without one from the machine ID and the
-hostname. Network devices used to be told apart by adding their number to
-the derived address, which only works as long as all of them are named
-``ethX``. Now that network devices may be named otherwise, like ``usb0`` of
-the new CDC EEM gadget, the device name is hashed in instead.
-
-This changes the generated MAC address of every network device, so hosts
-that knew a board by its previous address, e.g. a DHCP server handing out
-a fixed lease, will see a new one. Addresses set by board code, NVMEM or
-the environment are not affected.
-
-Deep probe is now the default on STM32MP13 and STM32MP15
---------------------------------------------------------
-
-barebox now enables deep probe for every ``st,stm32mp1xx`` compatible, even
-over ``barebox,disable-deep-probe``. Report to the mailing list if that
-breaks your board.
-
-devboot artifacts follow the boot net naming
---------------------------------------------
-
-devboot now looks up ``user-linux-<hostname>`` and
-``user-initramfs-<hostname>`` instead of ``user-image-<hostname>`` and
-``user-initrd-<hostname>``, so the same files work for ``boot net``.
-
-FIT default configuration wins
-------------------------------
-
-When several FIT configurations match the barebox device tree equally
-well, the one named by ``default`` is now chosen instead of the first
-
-Device tree node names are compared case-sensitively
-----------------------------------------------------
-
-Lookups by node name, including unit address, and alias stems are now
-case-sensitive, as in Linux.
-
--------------------------------------8<--------------------------------
-
-Ahmad Fatoum (191):
-      of: use of_node_name_eq() for comparing node names
-      of: add of_node_is_type() and use it for device_type comparisons
-      of: compare node names case-sensitively
-      ci: labgrid-pytest: exercise the security policy configurator targets
-      kbuild: drop unused build-time policy-list generation
-      common: ratp: send the response of failed commands as well
-      common: ratp: gpio: byte-swap the set-direction error code
-      scripts: bbremote: fix Controller._handle clash with Thread._handle
-      scripts: bbremote: fix mw writing data larger than the path
-      scripts: bbremote: report a timeout instead of a traceback
-      scripts: bbremote: unpack single values instead of tuples
-      scripts: bbremote: print the error of a failed md, mw or i2c command
-      scripts: bbremote: fix Ctrl-P in the interactive console
-      scripts: bbremote: fix reassembly of single-octet packets
-      scripts: bbremote: keep '..' out of the exported directory
-      scripts: bbremote: don't choke on -vvv and repeated -w
-      scripts: bbremote: report a failed gpio-set-direction
-      scripts: bbremote: reject arguments that don't fit the protocol
-      scripts: bbremote: drop the Python 2 leftovers
-      scripts: bbremote: don't report a successful reset as an error
-      Documentation: user: document the remaining bbremote subcommands
-      common: boards: drop the duplicate BOARD_QEMU_VIRT
-      ARM: stm32mp: provide the BSEC MAC address as an nvmem cell
-      of: overlay: apply built-in overlays to the tree barebox is given
-      scripts/dtc: import fdtoverlay
-      kbuild: give overlays the node paths of a base device tree
-      kbuild: apply built-in overlays to their base device tree
-      ARM: qemu-virt: apply the flash overlays through the overlay table
-      ARM: stm32mp: describe the barebox additions as built-in overlays
-      kbuild: allow building the device trees in dts/ by name
-      ARM: lxa-mc1: describe the barebox additions as a built-in overlay
-      ARM: stm32mp: look the SoC code up in a match table
-      ARM: stm32mp: enable deep probe for every STM32MP
-      scripts: genenv: make the temporary directory writable
-      commands: rksecure: exit if invalid integer passed to -b
-      firmware-zynqmp: don't ignore the kstrtouint() result in parse_reg()
-      include: compiler: make __must_check a yes-op
-      malloc: add __free() cleanup handlers
-      test: self: add cleanup selftest
-      sandbox: power: register power device without a DT node
-      video: stm32-ltdc: reset the controller on probe
-      clk: imx: pll14xx: hit 393216000 and 361267200 Hz exactly
-      ARM: lib32: bootm: always pass a device tree to barebox images
-      scripts: keytoc: mark the key hash as possibly unused
-      scripts: keytoc: support stand-alone ECDSA keys
-      Documentation: document built-in public keys and keytoc
-      scripts: keytoc: add symbol=3D to name stand-alone keys
-      test: self: jwt: switch to the snakeoil RSA 4096 key
-      test: py: fit: sign the test image with the snakeoil RSA 4096 key
-      test: remove the development RSA 2048 key
-      test: self: make REGENERATE_KEYTOC work for out-of-tree builds
-      ci: labgrid-pytest: check that shipped files are up to date
-      pstore: ram: make the RAM backend depend on OFTREE
-      include: linux/slab.h: add kmalloc_obj() and friends
-      include: linux/spinlock.h: add raw_spinlock_t
-      include: add linux/kmsg_dump.h
-      lib: reed_solomon: clean up whitespace damage
-      lib: reed_solomon: export the symbols next to their definitions
-      lib: reed_solomon: update to Linux v7.2
-      pstore: ram: clean up whitespace
-      pstore: ram: move the zone definitions into ram_internal.h
-      pstore: ram: define the driver ahead of ramoops_register_dummy()
-      pstore: update to Linux v7.2
-      pstore: ram: show dmesg records without a valid header
-      pstore: ram_core: reset zones only when writing to them
-      pstore: ram: enable ramoops without a device tree node by default
-      pstore: ram: add a RAM retention test mode
-      fs: skip directory entries whose name does not fit struct dirent
-      fs: reject negative lengths in ftruncate()
-      fs: ubootvarfs: range-check the new size in truncate
-      fs: ubootvarfs: do not form pointers past the end of the environment
-      fs: ubootvarfs: reject variable names containing '=3D'
-      fs: ubootvarfs: handle removal of variables that are still open
-      sandbox: hostfile: keep "syscon" compatible on the stickypage
-      bootm: define LINUX_BOOTARGS_BOOTM_EARLY/LATE in <bootm.h>
-      FIT: prefer the default configuration when several match equally well
-      test: py: add test for fit cmdline parameter order
-      efi: payload: ignore ESP state.dtb if device tree is populated
-      kbuild: dtc: introduce empty fallback device tree
-      efi: payload: export device tree in barebox-dtb EFI variable
-      Documentation: efi: describe device tree handling
-      net: eth: reset the generated flag for every device in populate_ethad=
-dr
-      net: cs8900: zero-initialize the eth_device
-      net: fec_mpc5200: zero-initialize the eth_device and private data
-      net: assign a missing MAC address on receive as well
-      net: eth: allow drivers to choose the network device name
-      net: derive generated MAC addresses from the device name
-      net: make net_alloc_packet return NULL on OOM
-      net: add simple sk_buff implementation
-      usb: gadget: add USB ethernet link layer (u_ether)
-      usb: gadget: add CDC EEM (Ethernet Emulation Model) function driver
-      usb: gadget: multi: add CDC EEM function support
-      net: usb: usbnet: support drivers without MDIO bus
-      net: usb: usbnet: handle devices without PHY and MAC address
-      net: usb: usbnet: support sk_buff based rx/tx fixups
-      usb: add module_usb_driver()
-      net: usb: import cdc_eem.c from Linux
-      net: usb: usbnet: take the endpoints from the matched interface
-      treewide: avoid clang -Wempty-body warning
-      images: remove unused FIT.ITS rule
-      blspec: allow devicetree-overlay to be specified multiple times
-      nvmem: core: add nvmem_cell_nbits()
-      fs: efivarfs: skip variables whose name does not fit struct dirent
-      commands: truncate: report errors from ftruncate()
-      of: reject alias values that are not NUL-terminated
-      ubootvar: reject copies too small for their header
-      efi: loader: in-place patch the runtime services on ExitBootServices
-      efi: runtime: accept 1:1 mappings in SetVirtualAddressMap
-      .mailmap: map Sascha's sha@pengutronix.de address
-      scripts: add fetch-release-mail.py to generate GitHub release notes
-      CI: add workflow creating GitHub releases for pushed release tags
-      Documentation: migration-guides: turn migration-master into directory
-      scripts: fetch-release-mail: recognize the migration-master directory
-      commands: bthread: don't count console output against printer periods
-      ci: labgrid-pytest: enable full.config
-      of: fdt: fix heap overflow when growing the flattened tree
-      commands: of_property: handle of_flatten_dtb() failure
-      of: fdt: fix out-of-bounds writes for long names when flattening
-      tlv: limit the number of Ethernet addresses
-      decompress_bunzip2: stop decoding symbols after input EOF
-      decompress_bunzip2: off by one in get_next_block()
-      decompress_bunzip2: fix rare decompression failure
-      clk: handle get_parent callbacks returning an error
-      commands: bthread: disable for EFI payloads without TSC clocksource
-      lib: loadable: allow fixing up the address of chained loadables
-      bootm: pad chained initrds to a 4-byte boundary
-      checkpatch: import as-is from Linux v7.3-rc7
-      checkpatch: detect the barebox top-level directory
-      checkpatch: treat printf like printk
-      checkpatch: count strdup and xstrdup as allocation functions
-      checkpatch: drop ENOSYS warning
-      checkpatch: look up DT bindings in dts/Bindings as well
-      checkpatch: don't ask for MAINTAINERS updates
-      checkpatch: allow DT bindings and code in the same patch
-      checkpatch: don't enable --strict for networking code
-      checkpatch: accept Origin-URL comments
-      checkpatch: accept the barebox vendor prefix
-      checkpatch: accept the %pJP format specifier
-      checkpatch: drop logging checks based on Linux behaviour
-      checkpatch: don't ask for comments on lock definitions
-      checkpatch: don't suggest APIs that barebox lacks
-      checkpatch: only look up commits named in Fixes: tags
-      checkpatch: skip the device trees imported from Linux
-      usb: xhci: reset EP0 after transaction, babble and split errors
-      usb: leave a microframe between control transfers
-      fs: don't read or write past the end of a file in pread()/pwrite()
-      fs: fat: read and write at the position given to pread()/pwrite()
-      fs: ext4: don't overflow the group descriptor on the stack
-      usb: hub: don't free scan entries from under usb_device_list_scan()
-      usb: read the first device descriptor into a buffer large enough
-      usb: dwc2: host: don't reset toggles past the end of the toggle arrays
-      usb: musb: don't dequeue URBs that have been given back
-      usb: ohci: change the NUM_EDs from 8 to 32
-      usb: ohci: drop the TDs of a timed out transfer
-      net: phy: unregister the bus device in mdiobus_unregister()
-      net: usb: ax88179_178a: unregister the MDIO bus on unbind
-      usb: gadget: f_mass_storage: don't send padding when stall=3Dn
-      usb: gadget: fsl_udc: fix the usage of udc->max_ep
-      usb: gadget: fsl_udc: check the endpoint of GET_STATUS requests
-      net: validate frame length before parsing headers
-      net: dhcp: don't read past the received packet
-      fs: nfs: fix double free and leak when reading a directory fails
-      fs: nfs: don't let lengths from the server wrap the bounds check
-      scripts: qemu_interactive: don't activate the QEMUDriver
-      test: Containerfile: update labgrid to current master
-      test: strategy: drop the QEMU states superseded by qemu_interactive.py
-      compiler-clang.h: define __SANITIZE_ADDRESS__ only when undefined
-      sandbox: os: remove unused erase_char
-      test: Containerfile: update GCC and LLVM to newest versions
-      test: Containerfile: build the musl OpenSSL from the 4.x series
-      defaultenv: devboot: name module CPIO after hostname, not arch
-      defaultenv: devboot: adopt same variable names as in /env/boot/net
-      mci: don't read past tran_speed_unit[] for reserved units
-      mci: don't leak a struct mci_data per data command
-      mci: zero the EXT_CSD buffer of MMC cards
-      mci: sdhci: reset the CMD and DATA lines after data errors
-      ARM: socfpga: arria10: don't read the partition table onto the stack
-      ARM: socfpga: arria10: fix eMMC boot after the switch to pbl_bio
-      mci: atmel-sdhci: don't ignore errors in the data phase
-      mci: atmel-sdhci: pbl: read all requested blocks
-      mci: cadence: allocate the PHY parameters along with the private data
-      tee: optee: improve error message for unprogrammed auth key
-      efi: loader: disk: don't install a file system on raw disks
-      fs: pstore: don't claim uImages
-      fs: jffs2: refuse to mount non-MTD devices
-      bootsource: point bootsource_set() kernel-doc at /chosen
-      kbuild: don't expect a Kbuild file in dts/src
-      input: virtio_input: don't free poller-enabled beeper on remove
-      FIP: don't free the buffer twice when parsing fails
-      arch: provide <asm/atomic.h> on all architectures
-      powerpc, openrisc: add <asm/pci.h>
-
-Alexander Kurz (2):
-      ARM: boards: kindle mx50/mx6sl: remove bootm -c option
-      ARM: i.MX: do kindle-mx50 defconfig maintenance
-
-Ana Bobillo (56):
-      fs: squashfs: fail lookup and mount on inode read errors
-      fs: squashfs: don't read an inode in use again
-      fs: squashfs: return an error pointer from squashfs_get_link()
-      fs: squashfs: check the id table against the start of the xattr table
-      squashfs: add more sanity checks in id lookup
-      squashfs: fix divide error in calculate_skip()
-      squashfs: verify inode mode when loading from disk
-      Squashfs: check metadata block offset is within range
-      squashfs: Add dictionary size range check to prevent shift-out-of-bou=
-nds
-      Squashfs: check block offset is not negative
-      fs: squashfs: don't free the root dentry on unmount
-      block: allow block devices without ops in cdev_get_linux_root_and_opt=
-s()
-      fs: squashfs: free the buffer when a device read fails
-      fs: free the fs_device of a failed mount
-      fs: use the cached link target in readlinkat()
-      fs: squashfs: zero the page buffers when a read fails
-      fs: squashfs: free the device buffers when there is no decompressor
-      fs: squashfs: stop zstd decompression when the input runs out
-      fs: squashfs: zero what squashfs_fill_page() didn't copy
-      fs: squashfs: keep the file position 64 bit when reading
-      fs: release the file when opening it fails after its open
-      fs: squashfs: refuse a root inode that isn't a directory
-      fs: squashfs: add fuzz test
-      test: Containerfile: add squashfs-tools
-      test: py: add squashfs test
-      ubi: fastmap: check PEB numbers read from the fastmap
-      ubi: fastmap: bound the size of a volume's EBA table
-      ubi: vtbl: check the size of a static volume's last LEB
-      fs: ext4: validate the group descriptor size
-      fs: ext4: validate the inode size
-      fs: ext4: validate inode numbers
-      fs: ext4: fix the triple indirect block lookup
-      fs: ext4: reject file blocks beyond what an inode can map
-      fs: ext4: compute block and sector numbers in 64 bit
-      fs: ext4: fix holes in indirect block maps
-      fs: ext4: check the depth of extent tree nodes
-      fs: ext4: fix reading holes at the start of extent trees
-      fs: ext4: read unwritten extents as holes
-      fs: ext4: bound the length of symlinks
-      fs: ext4: read directories one block at a time
-      fs: ext4: free the mount data when mounting fails
-      fs: close the directory when opendir() fails
-      fs: ext4: reject a root inode that is not a directory
-      ubi: attach: count fastmap PEBs in self_check_ai()
-      test: self: add UBI attach tests
-      fs: share the squashfs fuzz test with other file systems
-      fs: ext4: add fuzz test
-      test: py: share the squashfs test with other file systems
-      test: py: add ext4 test
-      usb: keep interface and endpoint counts within what was parsed
-      usb: skip endpoint descriptors for endpoint zero
-      usb: don't attach an endpoint companion to another interface's endpoi=
-nt
-      usb: hub: bound the port bitmaps by the number of ports used
-      usb: don't store more interfaces or endpoints than there is room for
-      usb: refuse devices whose configuration can't be parsed
-      usb: add a fuzz test for the configuration descriptor parser
-
-Christian Berry (1):
-      nvme: check for readiness more quickly to speed up boot
-
-Johannes Schneider (1):
-      usb: dwc3: gadget: ack pending events while waiting for the halt
-
-Michael Tretter (20):
-      arm: socfpga: agilex5: define QSPI flash registers
-      arm: socfpga: mailbox_s10: add wrapper for RSU status
-      arm: socfpga: mailbox_s10: add wrapper for CONFIG_STATUS
-      mci: cadence: adjust name of reset line to dt binding
-      crypto: make sha384 and sha512 available in PBL
-      PBL: rename sha256.c to generic sha.c
-      PBL: add oneshot helper for sha384 and sha512
-      arm: socfpga: agilex5: select GPIOLIB
-      arm: socfpga: axe5-eagle: drop hard-coded PHY reset in board code
-      mtd: spi-nor: drop requirement for device field
-      mtd: spi-nor: enable module in PBL
-      mtd: spi-nor: cadence: extract common part for use in PBL
-      mtd: spi-nor: cadence: add a PBL driver
-      arm: socfpga: agilex5: add bl33 xload support
-      arm: socfpga: agilex5: separate load and start of bl33
-      arm: socfpga: agilex5: enable xload for bl33
-      arm: socfpga: agilex5: initialize QSPI flash in PBL
-      arm: socfpga: agilex5: add agilex5_barebox_entry_xload
-      arm: socfpga: axe5-eagle: move lowlevel init to separate function
-      arm: socfpga: axe5-eagle: build FSBL without piggy data
-
-Nathan Chancellor (1):
-      scripts/dtc: Remove unused dts_version in dtc-lexer.l
-
-Sascha Hauer (71):
-      Merge remote-tracking branch 'github/pr/68' into for-next/github/pr/6=
-8/of-compare-node-names-case-sensitively
-      Merge remote-tracking branch 'github/pr/70' into for-next/github/pr/7=
-0/ci-labgrid-pytest-exercise-the-security-policy-configurator-targets
-      Merge remote-tracking branch 'github/pr/75' into for-next/github/pr/7=
-5/ratp
-      dts: update to v7.3-rc3
-      dts: update to v7.3-rc4
-      test: check-security-policies: mark the source tree safe for git
-      clk: imx: pll14xx: use register defines consistently
-      clk: imx: pll14xx: Drop wrong shifting
-      clk: imx: pll14xx: Use FIELD_GET/FIELD_PREP
-      treewide: drop PRE_IMAGE linker script hook
-      ARM/RISC-V: pbl.lds: drop ALIGN before _text and assert entry at start
-      dts: update to v7.3-rc5
-      ARM: rockchip: move to the load address with the MMU enabled
-      ARM: rockchip: boards: leave moving to the load address to atf.c
-      ARM: rockchip: pack the device tree passed to TF-A and OP-TEE
-      dts: update to v7.3-rc6
-      Merge remote-tracking branch 'github/pr/81' into for-next/github/pr/8=
-1/overhaul-pstore-ramoops-support-and-sync-with-linux
-      bootm: fit: open FIT images only once per loadable
-      FIT: do not cache uncompressed data
-      dts: update to v7.3-rc7
-      dma: add dma_xalloc() and dma_xzalloc()
-      treewide: use dma_xalloc()/dma_xzalloc() where the result isn't check=
-ed
-      dma: let dma_alloc() and dma_zalloc() fail
-      Merge branch 'for-next/cleanup-malloc-free'
-      Merge branch 'for-next/dts'
-      Merge branch 'for-next/eem'
-      Merge branch 'for-next/efi'
-      Merge branch 'for-next/fit'
-      Merge branch 'for-next/fs'
-      Merge branch 'for-next/github/pr/68/of-compare-node-names-case-sensit=
-ively'
-      Merge branch 'for-next/github/pr/70/ci-labgrid-pytest-exercise-the-se=
-curity-policy-configurator-targets'
-      Merge branch 'for-next/github/pr/72/treewide-avoid-clang-wempty-body-=
-warning'
-      Merge branch 'for-next/github/pr/73/describe-the-barebox-additions-as=
--a-built-in-overlay'
-      Merge branch 'for-next/github/pr/75/ratp'
-      Merge branch 'for-next/github/pr/80/fix-support-for-standalone-keys'
-      Merge branch 'for-next/github/pr/81/overhaul-pstore-ramoops-support-a=
-nd-sync-with-linux'
-      Merge branch 'for-next/lvm'
-      Merge branch 'for-next/misc'
-      Merge branch 'for-next/of-overlay'
-      Merge branch 'for-next/rockchip'
-      Merge remote-tracking branch 'github/pr/89'
-      Merge branch 'for-next/socfpga'
-      Merge remote-tracking branch 'github/pr/95'
-      Merge remote-tracking branch 'github/pr/91'
-      Merge remote-tracking branch 'github/pr/90'
-      Merge remote-tracking branch 'github/pr/94'
-      Merge remote-tracking branch 'github/pr/98'
-      Merge remote-tracking branch 'github/pr/107'
-      Merge remote-tracking branch 'github/pr/105'
-      Merge remote-tracking branch 'github/pr/106'
-      Merge remote-tracking branch 'github/pr/104'
-      Merge remote-tracking branch 'github/pr/103'
-      Merge remote-tracking branch 'github/pr/102'
-      boot: fix use-after-free when restoring bootm variables
-      bootargs: fix double free in linux_bootargs_get()
-      commands: boot: fix use-after-free of overrides taken from globalvars
-      commands: boot: list bootm.image in the -o help text again
-      Merge remote-tracking branch 'github/pr/92'
-      fs: cramfs: don't ignore decompression errors
-      fs: cramfs: return an error pointer from cramfs_get_link()
-      fs: ext4: return an error pointer from ext_get_link()
-      fs: legacy: return an error pointer from legacy_get_link()
-      fs: ubifs: don't free the symlink target twice
-      fs: jffs2: don't free the symlink target twice
-      Merge remote-tracking branch 'github/pr/112'
-      Merge remote-tracking branch 'github/pr/113'
-      Merge remote-tracking branch 'github/pr/114'
-      Merge remote-tracking branch 'github/pr/116'
-      Merge remote-tracking branch 'barebox-ghsa-c7qr-8rm7-6ch6/anabobilo/u=
-sb-hardening'
-      Merge remote-tracking branch 'github/pr/119'
-      Release v2026.11.0
-
-Stefan Kerkmann (8):
-      of: overlay: of_overlay_fix_path: skip symbols without __overlay__ no=
-de
-      of: overlay: fix_path/apply_symbols: add more debugging calls
-      tests: of_overlay: add selftests skeleton
-      tests: of_overlay: add __symbols__ merging tests
-      tests: of_overlay: add fragment application tests
-      tests: of_overlay: surpress expected error log message
-      ci: labgrid-pytest: migrate allyesconfig manipulation into fragment
-      ci: labgrid-pytest: fix test_barebox_no_err for allyesconfig
-
-Stefan Riedmueller (3):
-      ARM: dts: imx6: phycore: Add phy-reset-post-delay
-      ARM: dts: imx6: phycore: Fix pin settings for ADIN1300 PHY
-      ARM: boards: phytec-som-imx6: Add ADIN1300 PHY fixup
-
-Thomas Bonnefille (3):
-      bootm: add fitimage command line to bootargs
-      test: py: add test for fit cmdline parameter
-      FIT: add cmdline to whitelist of non-hashed properties
-
-Tobias Waldekranz (5):
-      dm: lvm: Initial Logical Volume Management support
-      dm: lvm: Add fuzz testers for metadata parser and binary headers
-      test: self: lvm: Add tests for metadata parser and binary headers
-      commands: lvm: inspect VGs, activate LVs
-      test: py: lvm: Add basic LV activation test
-
-
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+Michael
 
 
