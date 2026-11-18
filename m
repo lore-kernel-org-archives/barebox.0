@@ -1,45 +1,45 @@
-Delivery-date: Wed, 18 Nov 2026 15:53:26 +0100
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Wed, 18 Nov 2026 15:53:27 +0100
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xTh2L-000nf3-1U
+	id 1xTh2M-000nfO-15
 	for lore@lore.pengutronix.de;
-	Wed, 18 Nov 2026 15:53:26 +0100
+	Wed, 18 Nov 2026 15:53:27 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 8D8F320102E
-	for <lore@pengutronix.de>; Wed, 18 Nov 2026 15:53:21 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 74E62205AD4
+	for <lore@pengutronix.de>; Wed, 18 Nov 2026 15:53:22 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=XnPtZ3mz;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=ZClHLOxZ;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=vAph1puz;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=M7aCNxlb;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}");
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795013601;
+	s=20260414; t=1795013602;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=rEVhZ80xPhZnyq2C2UAn9/rIU9PPna+3WA5Ls70DyW0=;
-	b=eeG+lqVQTRBLLJiuJWinmMUFUTMVMUXs1Dt2bEv2kOunVdhh9SfXz1/yc9vKeQKP3tPK0+
-	m5a9sTklCW0zuO/qdaHPFlU1VCOyl/ebpOe1/LyCazHdrkP+p8qR65u0K6iPeqkbzg5PpO
-	1CBO9dHQG0YGMEudI0vloYkFkmb0xN7Bctpy5zyHEGmz+wxVVpVUHxPoxMuQTN3re1ttYd
-	J5cZb9XonuJCZF3ixJeFR0L76n1k05qk6Axd4ER7MI/eSbWjrmJ9yAcUX17ZS/h6+ZfdLU
-	CYKVNLIlrF7fGHkNdalFKfglsUmlPhhaj9a17AL5CK2W49Ydex00Wf3DfSALWA==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1795013601; a=rsa-sha256;
+	bh=eOyHIqYbOUOwlEMF+0mClXu3NMbZUTeU4T3QtOIQi6M=;
+	b=PPFaMQ96jYYvvoblNvzz3H3EguDQwN3HNf9uG3c+ljtoFVbIE8iuVgAESR6amdw8UvOwEn
+	qtu60f1yMbLnzeMBeonwZULq++5WIF/AJFqTZXKZPQGLlC/bcCTY4gLgvIj+UpQWMOBjPM
+	8HRm33DUVy3PFDQSxPPnFJdSuH2v/61Bu1spw4JozpufVvBjh+tlsjpmAiHyAxolwJXr4t
+	f70pdBbR5Dzqjr6dWHZrtNHdbUX5twMTPbDiCxzqUiqj6Tk3wXpZ28T5L+/hyxKQZ/GEnB
+	nAsZ9AD3i8A+Kol84UF8CLNargbi/3xKVco9drgnD1NCgiRpxhGcKuFclhuDCg==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1795013602; a=rsa-sha256;
 	cv=fail;
-	b=O/Vm15exux8gKO2l5G11RBLsedB1TtlzHObsZAGf8qy1cywkfI0dbJYS2jup8CuKnXo3c1
-	Uoz73jF+xCHNMoIaiJ4ohPuVuUQtZZbO18s00A8iJkyxKrr+d5C7PEHCYXE3/1Hx5bAmOW
-	ZOon96BSPUmOeXxfhtz722YvMXXUzz4XuU+bSpRC1LGhzKgxdRkdpc3yMq3umaYZZAP5om
-	0lZy7FnUlw2pcS86leSCciDi5wEjU2SWLJT0gJ6vCzyfLPOEN64cpI6MkM3Tz4q+/BSYCU
-	RQxXq3XyIRlyzNNjtUW61QGozkR9hy4ia5gqtV3P8GUSzLrzydqGoX8lk0SNWg==
+	b=Cokbij+SaL8cdYC8XTin1hc4uks0I5MVqXyf57rXQlxmZiyLLeS5nXGmB2mhtcNKE+WBUm
+	yg5gdG66ZBXMlQkhKRXhDN7/vNx4d6Wtom8Yb6u9xzoTPMw2qHGmvKaqJft7sjDhSs6G3E
+	ME9UTF8hMiq0cY65LSNzH5EFGtb8oOYtpMHZpLfLtwYEnrohEB3TfSw+2zsfigzIT235ct
+	6wMdoEbp7I0jcIZ3yKIU06G5o6ut89OZSdR5ghYtZkdUG8blY71WsdhQjcpYJnFOUzYjpa
+	LGrDaExJc4chQJUtf2jH5Lehy2y3RLP36FNk/EKzdWEnLF0yNj9tAzRFCn3zfw==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=XnPtZ3mz;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=ZClHLOxZ;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=vAph1puz;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=M7aCNxlb;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}");
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
@@ -49,81 +49,80 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=rEVhZ80xPhZnyq2C2UAn9/rIU9PPna+3WA5Ls70DyW0=; b=XnPtZ3mz/NmYnu
-	dIIvGB9IKeqfABVOlmsrCfaLJ68NU8slC1Ao2IntyIdkFtATO225Qy+QjvMpMeeWojOJeo3ugPUhT
-	ydTAMnk4qEzt0IZAgPEFRWb7HThTDiKYYjCoInhfd37QcTMXxXfegoY7IwPASo/BP2NALfo1vaBls
-	VxQSwPOX/wiurnRhSahYYZXtZTZZtjfp8mCfALUstl1F6oagTMfezdBAtAka41z7LXxhQ/ZdQFDR6
-	IOxyX+xIVkhoHta1Z++G+dA31JCeXHBkJ/oY0erEwANsYXgUoGO967JFhr++1h96BVvMaSqV2ZS6u
-	EOVYV+VSgJ+jwOnJ5rNg==;
+	List-Owner; bh=eOyHIqYbOUOwlEMF+0mClXu3NMbZUTeU4T3QtOIQi6M=; b=vAph1puztqrcjQ
+	MUp6QTFHdLEOvxcoiJaj3ExmTq8eInQFMfVaqLidAFXBAMu1UAURxhE0m0d58CLjf6b2kVpRtvTTO
+	59FslVCUtfIMIjNfT2q89Y2FbW2HDMZnlMFNBD2Bg4YMSKuZx25FLo93QCLfri86XdwxyOZK1eD4W
+	b7gpAA5dxUK6JWqBROpbjgdFgJxt/PnUvduuHequJsXVZFSpX9ygwa6hp+rqs124hA0zeFIPw8UeH
+	LzZ3AWP9bWNphxqnRb9PqrYP9wmw2LkppmZ1Dp/5mkJbjozE8NtEHb3TupQoNStgwEkiEgnaxmtKw
+	u12tuyA5/zl4CvJxTHig==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xTh1K-000000099qw-0Pxn;
-	Wed, 18 Nov 2026 14:52:22 +0000
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	id 1xTh19-000000099kM-46D7;
+	Wed, 18 Nov 2026 14:52:11 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xTh1H-000000099nq-0D0A
+	id 1xTh17-000000099i2-1K7T
 	for barebox@lists.infradead.org;
-	Wed, 18 Nov 2026 14:52:20 +0000
+	Wed, 18 Nov 2026 14:52:10 +0000
 Received: from [127.0.1.1] (unknown [IPv6:2a02:560:5d79:c700:9ebf:dff:fe00:fdb5])
 	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 04BB1205A6A;
-	Wed, 18 Nov 2026 15:52:12 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 8C4A4200467;
+	Wed, 18 Nov 2026 15:52:03 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795013532;
+	s=20260414; t=1795013523;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rEVhZ80xPhZnyq2C2UAn9/rIU9PPna+3WA5Ls70DyW0=;
-	b=ZClHLOxZ4udNheGn+Vg01edTau1xvKIhPSCl+MbK3miX71xRg5H5bq/ZoYAzumtwzDLH/O
-	oMiexVO7LLW5xHSMI/DSk1kt+FbQMy8F2d62UYu+iu/8FTP4/rMNPJEMn/1aOPU+sI2dJo
-	t078xsa4F3FmO/k7hgNZDWfcwLnmWsr2kTehoO0XWfQ1peshZ6HC67s9kEnTxRhqmU/pwS
-	27SihNucHPmyDSzjfVO4+ExoZ/GUV775A2fyVw1ecluNO+io4xCX7Cer04UhKrjT6+I7hK
-	v1JI5P2qsFV/+ok2S1xL68JZTasdV8/dO/Cqa7BbWwXUdcvav1p5DpS84dip2g==
+	bh=eOyHIqYbOUOwlEMF+0mClXu3NMbZUTeU4T3QtOIQi6M=;
+	b=M7aCNxlbAKp/xfyXbqt6l6OHxobGHPXwfNPfomFpats0UlOI27TwWYxDSvoV+wgyNG7NSW
+	KxAL64rmg9rULEnMfTgHLZUTMTerKMiTc+bHtIyPI+4BBxM8lPJlSaWakgQGhRJCy2lyjL
+	31cwDLysvbqiyTzgvlaFLzJMTMQgQk2cN925XKublvspQNddCuI2rwcg1hx69zeZS8g9JN
+	x9r/1AOwG6JtpKFbxsseEs99UMYOPxE7pUzi87o5jqcOEhokNoaBFMCn6NFZyMMn5vOHjC
+	UgFApKSc6QJY2gdTSdgsP9rP2hl4EmN49T1iZNQjKoOhj5snovUGFZtRKHvy3A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795013532;
+	s=20260414; t=1795013523;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rEVhZ80xPhZnyq2C2UAn9/rIU9PPna+3WA5Ls70DyW0=;
-	b=HZvD4kzSMTBAY/anD3HAsHruPHalMK2pNVIjnp19/j8oOjVwoyiyZ/aMU3zuyrGzSa6qog
-	Mg3EUyEEdH/mJ0K1dZeA47bpTTESRkf/5NSOqBdtruBO35fA8lT5fA5pBDdR3QV3YQScP4
-	ygqP0rUJ+Ff1xUVV8ir6Z88qiuEO0M+L+vcDvf5ExN9q2dHAsHi6Yd2fkslcb0ToKXyxiP
-	QDmLcPmNCz08eog0JpXt0ZG0UcNGl1IhdOYYpPIjd6pC47g2EaQkU58s29YWaiB9/HMONx
-	FlDE8iAM6QyHSQf1hWovcTkSD4jJX8D1CfLah7g4LxZzmO4C+Zti0NHl9YVwKQ==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795013532; a=rsa-sha256;
+	bh=eOyHIqYbOUOwlEMF+0mClXu3NMbZUTeU4T3QtOIQi6M=;
+	b=NNDNZHJOWXghr6SV7rFN31fRoQv0DrzGRh4gjLRrnx0Zzlcqs5Lwfvb+pPjjJkZutujT9x
+	9ejp4R3uhhr0hvmSIsnUB9axWJ3x78Wd071bxf3XiBgpoHgGoWv4eVdMw7fyYlGmNN6QI1
+	icGpnNwPUF95YR/t4f+xt7lGkJC81SMCIffUiS695ChT8+UOVY/rYa4wYOe3ExdnbxHEcH
+	VljdPA3RoectnQFs6948X8u8rddIAEXk7tE0YisD1fWDqaeuTzUYtoh+qgJ/b0/hkehifA
+	B+JTfaPZ6XE2uSEBCbEwjvHVD0o2JkiL+1Qpac/s1cncUCDkGTDa6AfQlea37w==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795013523; a=rsa-sha256;
 	cv=none;
-	b=ZwJidO7yCUUtxT0I6LV6NwXTuW6QqCVCXv5LaDDLqE1H88qtqJhc9Sh72XVElpgGCSSwmV
-	EGpT8YOnUS1TjSAIjO+inNGnYu0L415vjqSMqq3DADkL01oXF4g+qOkFQwvp5hxF5vbR9X
-	2i7iK9m8uTEtDaz6FqG9Oh1/Te+RyUU4zv1/l+MGNI28Qx7/6VxmqXyiKw9OqQPHLoDCze
-	IATFDFVFKRIf/gnGIJfhLNW0cchzwkinRkIF1rO+mJlN5B10A9mI4nnkUUT90HqE+OEkVp
-	Zld0ZA+zC7Of5zAqx/xm63FU5jwmG+Q3FFTtAXpfHf33wl04N/0iPo/lC6zdYw==
+	b=gMVBshTF2NxSEaFNjRWSYoBOk2Zx/agvjSC79OQfT+I1DbX7XCqq2SnPuEPRizNJUJzPuk
+	om5KrYW1oUsERNdAWAS5OBHJfNUbiunD/c8lHZ1Yby4OolbgnqpRhj7VdqVViyfK1souOE
+	THALWkwtAwwbYjV9QUod0fmJmgGfB7pczqAXrepjjdmaleojukVpJ1Ve4bmfHUkVq39s7s
+	Bibhlb8kkCtyFhVcEKwpBx3Z9B2gPXZwqlF0QSqyIH+c7s5mleC7eyW55zjSMMv2WuKjT/
+	umgAilvkUiwwRuQiFspreY1ZZdNTF6r0jTwQMBTG3yfHj7oypSrF3GfiMgBNpA==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=sha@pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 18 Nov 2026 15:51:54 +0100
-Subject: [PATCH 04/13] fs: legacy: return -EPERM when a driver can't create
- symlinks
+Date: Wed, 18 Nov 2026 15:51:52 +0100
+Subject: [PATCH 02/13] fs: fat: zero-fill files grown by truncate
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261118-fs-conformance-fixes-v1-4-59b59ec15d47@pengutronix.de>
+Message-Id: <20261118-fs-conformance-fixes-v1-2-59b59ec15d47@pengutronix.de>
 References: <20261118-fs-conformance-fixes-v1-0-59b59ec15d47@pengutronix.de>
 In-Reply-To: <20261118-fs-conformance-fixes-v1-0-59b59ec15d47@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795013515; l=964;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795013515; l=2485;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=mzanWexsc+YXGpuYiphF3TdsWH7NGOIKQUdGOFxfk3E=;
- b=ynA0McpHgZsmKmWSDErrf2c8asco8faD45pVoUOwW9n/H1VUxPI0hp9fEZP6tgCZWeGLFjGvE
- j3tEkgM3twICRxVJbpeuIuVZC0a+X8yF+qejsGBW/SGI5N+hoq/zvJL
+ bh=gZnYbqwp3POIxtQrlTbpIAURe+dtUB1MgUwvvADrrGk=;
+ b=96UlMV8c3KXT/OK3LTj/478x2JZ+6g5FBGIGXeqYPoOu/FORjAVcAQphv6ktCar9/LVcr+B+G
+ TiNMz4965QLBzrZkA9JNAHusLLc849unnLU24uiyXaNqOsQJXTiAiUb
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261118_065219_285396_60CD07EF 
-X-CRM114-Status: GOOD (  11.58  )
+X-CRM114-CacheID: sfid-20261118_065209_564315_5DED50F5 
+X-CRM114-Status: GOOD (  14.58  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -131,14 +130,17 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  The VFS returns -EPERM from symlink() when a file system has
-    no symlink operation, like Linux. The legacy layer has one for all file systems
-    using it and returns -ENOSYS from it instead when the drive [...] 
+ Content preview:  fat_truncate() grows a file by seeking beyond its end, which
+    makes FatFs extend the cluster chain without clearing anything. Whatever
+   the newly allocated clusters held before, e.g. the contents of del [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
+ -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/, no
+                             trust
+                             [185.203.200.13 listed in list.dnswl.org]
   0.0 URIBL_BLOCKED          ADMINISTRATOR NOTICE: The query to URIBL was blocked.
                              See
                              http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
@@ -174,18 +176,19 @@ X-Spamd-Result: default: False [-56.41 / 15.00];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	ARC_REJECT(1.00)[signature check failed: fail, {[1] = sig:pengutronix.de:reject}];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	MAILLIST(-0.20)[mailman];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
 	R_SPF_ALLOW(-0.20)[+mx:c];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	MAILLIST(-0.20)[mailman];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
 	TO_DN_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
 	RCVD_COUNT_THREE(0.00)[3];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	DMARC_NA(0.00)[pengutronix.de];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_ONE(0.00)[1];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	DKIM_MIXED(0.00)[];
@@ -199,40 +202,97 @@ X-Spamd-Result: default: False [-56.41 / 15.00];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:-];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	FORGED_SENDER_MAILLIST(0.00)[]
+	RCVD_IN_DNSWL_NONE(0.00)[185.203.200.13:received]
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 8D8F320102E
+X-Rspamd-Queue-Id: 74E62205AD4
 X-Rspamd-Server: mx1
-X-Stat-Signature: xb7nrzagjwh3dib4s5w4wnhj5b4ooszg
+X-Stat-Signature: yeoigck4z6waikedshmr1cj7idzjaorn
 
-The VFS returns -EPERM from symlink() when a file system has no symlink
-operation, like Linux. The legacy layer has one for all file systems
-using it and returns -ENOSYS from it instead when the driver can't
-create symlinks, so the error depends on which API a file system
-happens to use. Return -EPERM there as well.
+fat_truncate() grows a file by seeking beyond its end, which makes FatFs
+extend the cluster chain without clearing anything. Whatever the newly
+allocated clusters held before, e.g. the contents of deleted files, and
+whatever followed the old end in its last cluster, e.g. data cut off by
+an earlier truncate, becomes part of the file:
 
-Fixes: b3fbfad7ae ("fs: dentry cache implementation")
+  write 10000 bytes, ftruncate(3000), ftruncate(6000)
+  -> bytes 3000..5999 hold the old data instead of zeroes
+
+Grow files by writing zeroes from the old end instead. The VFS extends a
+file by truncating it before writing beyond its end, so this also fills
+the hole such a write leaves with zeroes.
+
+Fixes: 17e91068b1 ("fs: add fat filesystem support")
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/legacy.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/fat/fat.c | 46 ++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 40 insertions(+), 6 deletions(-)
 
-diff --git a/fs/legacy.c b/fs/legacy.c
-index 5344737fa6..d90232623e 100644
---- a/fs/legacy.c
-+++ b/fs/legacy.c
-@@ -257,8 +257,9 @@ static int legacy_symlink(struct inode *dir, struct dentry *dentry,
- 	char *pathname;
- 	int ret;
+diff --git a/fs/fat/fat.c b/fs/fat/fat.c
+index b6f9fd8fe5..1c5aa257b4 100644
+--- a/fs/fat/fat.c
++++ b/fs/fat/fat.c
+@@ -159,6 +159,34 @@ static int fat_write(struct file *f, const void *buf, size_t insize)
+ 	return outsize;
+ }
  
-+	/* like the VFS does when a file system can't create symlinks */
- 	if (!legacy_ops->symlink)
--		return -ENOSYS;
-+		return -EPERM;
++/*
++ * Grow @f_file to @size bytes. Seeking past the end would extend the file as
++ * well, but leave whatever the newly allocated clusters and the rest of the
++ * last one held before, so write zeroes instead.
++ */
++static int fat_extend(FIL *f_file, loff_t size)
++{
++	static const u8 zeroes[SZ_4K];
++	UINT now, written;
++	int ret;
++
++	ret = f_lseek(f_file, f_file->fsize);
++	if (ret)
++		return ret;
++
++	while (f_file->fsize < size) {
++		now = min_t(loff_t, size - f_file->fsize, sizeof(zeroes));
++
++		ret = f_write(f_file, zeroes, now, &written);
++		if (ret)
++			return ret;
++		if (written != now)
++			return -ENOSPC;
++	}
++
++	return 0;
++}
++
+ static int fat_truncate(struct file *f, loff_t size)
+ {
+ 	FIL *f_file = f->private_data;
+@@ -171,13 +199,19 @@ static int fat_truncate(struct file *f, loff_t size)
  
- 	pathname = dpath(dentry, fsdev->vfsmount.mnt_root);
+ 	lastofs = f_file->fptr;
  
+-	ret = f_lseek(f_file, size);
+-	if (ret)
+-		return ret;
++	if (size > f_file->fsize) {
++		ret = fat_extend(f_file, size);
++		if (ret)
++			return ret;
++	} else {
++		ret = f_lseek(f_file, size);
++		if (ret)
++			return ret;
+ 
+-	ret = f_truncate(f_file);
+-	if (ret)
+-		return ret;
++		ret = f_truncate(f_file);
++		if (ret)
++			return ret;
++	}
+ 
+ 	/* don't extend the file again in case it was shrunk */
+ 	ret = f_lseek(f_file, min_t(loff_t, lastofs, size));
 
 -- 
 2.47.3
