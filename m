@@ -1,45 +1,45 @@
-Delivery-date: Wed, 18 Nov 2026 15:53:50 +0100
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
+Delivery-date: Wed, 18 Nov 2026 15:53:52 +0100
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xTh2k-000nh8-0D
+	id 1xTh2l-000nhU-2H
 	for lore@lore.pengutronix.de;
-	Wed, 18 Nov 2026 15:53:50 +0100
+	Wed, 18 Nov 2026 15:53:52 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 30A52205AC0
-	for <lore@pengutronix.de>; Wed, 18 Nov 2026 15:53:46 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 5FFB0202045
+	for <lore@pengutronix.de>; Wed, 18 Nov 2026 15:53:47 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=A31VBsrv;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=QKGbMx0W;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=Te+glneA;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=U6JE2qE9;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}");
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795013626;
+	s=20260414; t=1795013628;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=MyJxr+V0a4/+HuAZKPe1H3u+ybLe6JE9XlqiCdx5LFk=;
-	b=J36PUmv2Lh+hKOdq2SeecbdqozAVBUiAUmtCyfdxLBmV4ulPKGD4uch6AUp5jus0hIxNUL
-	V1Tqh85XnW4w34866c8kRdU+K49GSKmmTP/o+CMQon4LN0ElpkamlWmosae1nqYeM54dHX
-	xEmJen066P1ocm6g/KCfs7hHzkrWyU3R5ogMQjRZ+VPd0bS1WSesnbNRBxZa0d2ggZhfo5
-	crctXB+Kohkcu0hgen/3lopbUwuq7SUlo6Uq/LdDxc7Wt0qNsMavDm97YFTzSuN7p/iJWB
-	4ZMlZzI5kZDa36UbQVH3thPPJ/6sVMXzy/GK1CvL0H0I2bT1XtPdFyUJ9A6YmQ==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1795013626; a=rsa-sha256;
+	bh=f8Ap4yYJkQ6eP0rxc0WujX6qqpbHltiVm+b/5b8Dkrg=;
+	b=Cmu8fmRJN4EXafwqDMPWNY00MpYvpTgv+j6tIWv3uHF0+7r9dAedOEbpWrW+zEgWArtwpH
+	uk0+oNX+iV4aLPAODKig4FQVRSkBUOMwXK3vAcTdVG5Xw5vW8SygzdEnA2YKQTjsd5iJ8v
+	v2l755tswGhEtqogxoewCzPwhAy34YVhYUxGGqhY97ESNc2B4f8usO/yj7dBaxDBvin2dC
+	aadyZMG3AoQKqPe5R2Ktw4au+bZvse241vvbvi2pkrnxnTkebxjOQScmWGr8bXNtr4ODII
+	OnEO/WQoTDUzN9GQ+y9pSHWbtFIKsO3+hBdY7fRhTthcQ3tcQbob9Xb/TBXJyQ==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1795013628; a=rsa-sha256;
 	cv=fail;
-	b=Kyp3oysG+h9ZWrUNLpHsimBODbOF+WIfQnf/jCZ1CTVkoFdvpuZcsP9enD8jeCnWFoDbBa
-	N1j1ZSjdabeyHvRHRCXy9sxQiiNCm8mEy9+KTxoUPnfmA7cv55JIc1j1w133yVmp4P5DZ4
-	iCx4su7RoK6/lqPGkoyDZhuWpiGLMgIj5U5RmdGrWPKNm3JQGHO4eCUXryQhutULxJ3V6r
-	hnohrFul0rxPUlmL9G5WXYpqsnqramKdAccDxevFV+AefufyZ/4jYbTdXnqh4tVPRINryb
-	Y18mMTUP9GWTCH/m2WdV+SjHQ1/kqBZE3jyrtGwnyBHaFWfH2Uk1AtB+HLbWbQ==
+	b=NAjaXdQ7bPCTvYpgC/++cmI6hThx+FSZwqqbMLL/ChdHRYcMBwf7P+nDECx5L2JHlEqerd
+	lWG7U1lox5xK59L95UpYf/+N9tijeH6/Jjkv1OvCdIdfa9JmsSmyPTdYcp24/QpteD0toR
+	PgJnF8pGNE/n4YjfqQtJIMK2x6kik8AmToEnOZXk2nWb8uZcHq/+tNXNmPnHBO4tZuoA3b
+	XBNeT3xaJp8cLagwBYJBpKY/ADLcUT2tYVqm5Sh89poSvjdlxYvdRHTmnGC9sLzVflY01U
+	lkRDFSw1oifcbd7sUeBvtoeqhjIo2RDy8RxuC45H2+kviZhyTq264WJU1h55zQ==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=A31VBsrv;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=QKGbMx0W;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=Te+glneA;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=U6JE2qE9;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}");
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
@@ -49,81 +49,80 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=MyJxr+V0a4/+HuAZKPe1H3u+ybLe6JE9XlqiCdx5LFk=; b=A31VBsrv6o/NFW
-	JK118gAb5+dTQg64Y39QQBc6xbdT/V+zKVf0E1+nx8i2BHz/Thj+u7N3FwWSYwGJ6Fmd+4InMTm07
-	NSxuJ2dogfqNyWLD5fe7wbCIM3hRBYtTuPnX7P9IlTIA9uhWpwsZLD0/a9ZJdXhqV1o9Y3JKZkaME
-	8qKxF5w8Q9+1QSk4uKRMWS2yMavuLLeX2NegeWBqwGi0tilPKjrla20JCssM+uSkoNIbIv7MsFn8R
-	RxTujIkLlMhn8O++mVkCRKsa0iU1+xRyrr+ouoW0ztYYrGTRR9t0i9PlkYJLGTxLELCQQYWhkSeh9
-	W5bcJEJRo7FOGOxgTIkQ==;
+	List-Owner; bh=f8Ap4yYJkQ6eP0rxc0WujX6qqpbHltiVm+b/5b8Dkrg=; b=Te+glneAlqlLFu
+	Bti7UFsf8j2aRbitrZRzYrzDDifctKnFWPuYXnBbq/oMqMzYsnPemPZ33jYnsU4m273EESafPQNZq
+	5cKhtm7THqN+UtVh5yQPBvXgJFT25Lp+8lU9aLAhi7EJi8CsUoyAX7Cxgf1pLW5Per6dwXyrA5/TC
+	12Qb5k82P7LGu/dqWGOJakR9UIMg+IA/0S/7TZtVZXjngkQMw+WLajEgmeRf91zWXvFpIoMeL8kuT
+	H9albTJQDSmSVAKP7PdvPm0HXhoaPiegoirzyTB7uWBfdcveSS6+yhr8xso4l03lvzWQHmO6+tnnc
+	WbhYkYeF9BcScX3+kjlg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xTh1k-00000009AAq-0VeP;
-	Wed, 18 Nov 2026 14:52:48 +0000
+	id 1xTh1N-000000099t6-0qVG;
+	Wed, 18 Nov 2026 14:52:25 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xTh1e-00000009A6D-3Zzm
+	id 1xTh1J-000000099qN-3tbc
 	for barebox@lists.infradead.org;
-	Wed, 18 Nov 2026 14:52:46 +0000
+	Wed, 18 Nov 2026 14:52:23 +0000
 Received: from [127.0.1.1] (unknown [IPv6:2a02:560:5d79:c700:9ebf:dff:fe00:fdb5])
 	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 1F19A205AFE;
-	Wed, 18 Nov 2026 15:52:37 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 2E6ED201F17;
+	Wed, 18 Nov 2026 15:52:16 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795013557;
+	s=20260414; t=1795013536;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MyJxr+V0a4/+HuAZKPe1H3u+ybLe6JE9XlqiCdx5LFk=;
-	b=QKGbMx0WEgclTALpqQPjFCw0te1X0GNokX2XuuBGWBIlE/WjxV0lylfS0pNpSBV9JZE8yt
-	u+GVOtFYx5K9e4JgZ3epIHw5PjMl86PH8Jd6ceEc8SKvd1j+U3lhFYfgD7idfX3NTU7+Lf
-	fXHkuQrZLR7VmSnN9CNgln+m57KRGnM367DjZdM25CI1LH2va6FyINCXHQ0BuJDIGdrYKS
-	ANYxYThaMLVrqKQdqzmvhUy3FVbK60gCIsfSc1kak1rEsebJqJm+dfDUFTdse0jco7wLvc
-	jRE32NCbdSNlc2sC90I0xuQphucGulYMct3O8OV5o2D9ldc0PONx/CKoX2ZusQ==
+	bh=f8Ap4yYJkQ6eP0rxc0WujX6qqpbHltiVm+b/5b8Dkrg=;
+	b=U6JE2qE9UeaTwI8s318JtpPpnOz4O81W/wBzUtkOMYtt3V9aFE7QWRd1lVY79gx45+H1A5
+	Jymhg/0feeaNPbEwtZ9bd9BNhFT6jKQsA0QT5ySC7hMCkydXGCuUs1HK3zTo27Wv7946tw
+	UkJaJG5LjWg1ZLOLBcO0imVimN7suO2w4iQR4GK0wpO7k1SCrnb8zUpzCplVtqA6xB47sj
+	Zp/axvd7DbGE/dMGNRrRRg8MBngt8GkU5VJmsYIn8Do1vk53m2eXM3fjnKMsVkCLR/Shq4
+	RNMEyP2J0+R0ctwYTN8KLM01sgKlPyGD7lx84TyN9ZPyte8ZoLLCrn55L9jqmA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795013557;
+	s=20260414; t=1795013536;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MyJxr+V0a4/+HuAZKPe1H3u+ybLe6JE9XlqiCdx5LFk=;
-	b=F1MXY+rvwA0uKv2nzGoAd6uRFp46jR+IHhsaNADk/9t4LH7XEKTV8wmOIDgRCQ+LFK2HfC
-	0Ng74iMdx9F/iZq/soEAagotUnpuwhmp4OMXWZwcIq+JRaax/CAiP4hRnIft+ffbO61LWn
-	d4k6OLSRfTrmEJYQsQRIVqjhA9G1zZES+nmVNyjlfo/z0MeOFS9g9c4ynEMGFNKJzgCEGA
-	LrAcB5DiKYk4XQxVe5hnByQ4OWRiCGtoy+cGcPKvxgI4iw9hjWXw70KnqBlVTMDQqIFtqo
-	r/B1chAKstED+8JOe+yvNvWX2rpRGZ6ITog7KmjUI32n5OYyjGHW5U8X/OCqTA==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795013557; a=rsa-sha256;
+	bh=f8Ap4yYJkQ6eP0rxc0WujX6qqpbHltiVm+b/5b8Dkrg=;
+	b=DEKA0WaHb7ZMsTRfPtpzmOqirOEcXXXHtvpUAKRsIJ9nr/GVTo0Cx0/Ut2npclConximYe
+	eNks0PXNzYW9hi8EC4YZ2noJMPKor/1c/W22FAq3h8EgrsMcgBRqVtyFZ/U7Lof3xJnYkH
+	IvLPzNN/F9dLPY/JTPm6woYrOth6ODzdYWPsDFh5jSHmMIZfwPoPg3Ov21+v4PRtLOgzoq
+	O9AlDmtyUrREf/3VX193wAgZOg4AaXue5LAsF+19/Qp5AxT9a9uNRGWVIYXkG9UdCf5Q8l
+	36RTFLM2LDPbydKZJdrBA9VfvALg98ui/JFqcgd39VFQpk6Pkce/Ht5ELHY0qQ==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795013536; a=rsa-sha256;
 	cv=none;
-	b=GTteZFP5raq+30bU+PCcDojtJzGjPr7IxftoBf5Y/RILuwaaSUxvXal7v2zNFsmETBgGwo
-	P8p2jiEwRdqlo/nQELKaq3iFQt+IsS7o/xSHeaPKwPr7JVdXw5TjfCgYGGRwTCe6C4YNvP
-	DjMbOdu/q/CrJ5HOnJADJQZULNdVySyCOHrRykMh4CJDkjvtpyK5tWzE/a7ZXwiH0Tw4Qw
-	c7sWouMO0uo4OdU4pvXjbqXY36pWWDLa06XcAyKPoyyNifgJip2ptANyEi0nU9j1DCUBa9
-	8ATG8kVwbK8fZCqPtzKMLjbMoFKjPX0I6OtNVA/ZUgK3dHVmrFMClxj+c3q8pw==
+	b=RMgM/87SHo19ZeBmHFgDUPUe46dXxrJEXyw3WEx1pBiV9afsHfLmToiaO2PO99qcLmM7kj
+	a5Uv27mt/nNDR0Kj+HaEkT1GV1r46oLLYGm/WsWQPZmDO1SX2v3oPrIdbIiYfzUSGxWVO5
+	Ux/w2JyBRxE9y/WOVPzlU97hLtbaMnBug0pp8ZWrKESuh4WftpY0mTi28sGfhvQ+lBO5rl
+	pwlmGnFhMaPbmSfWfM+967miS2+4ZFHz9JuWxQzMSAAamIXUt6wbMx3etoeYxkmFmccZWy
+	7Dtx+rDZfgvRkYbf/+PzHAMPsRTqYtiSSJ/nushPt4P6hTx3LfFP+LbOhLCV1g==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=sha@pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 18 Nov 2026 15:52:00 +0100
-Subject: [PATCH 10/13] fs: bpkfs: make room for the NUL after the checksum
- string
+Date: Wed, 18 Nov 2026 15:51:55 +0100
+Subject: [PATCH 05/13] fs: uimagefs: allow opening a file more than once
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261118-fs-conformance-fixes-v1-10-59b59ec15d47@pengutronix.de>
+Message-Id: <20261118-fs-conformance-fixes-v1-5-59b59ec15d47@pengutronix.de>
 References: <20261118-fs-conformance-fixes-v1-0-59b59ec15d47@pengutronix.de>
 In-Reply-To: <20261118-fs-conformance-fixes-v1-0-59b59ec15d47@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795013515; l=959;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795013515; l=3021;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=nTm8iT3WKyf/+uNQ0hyoOaKGhkI4MLKN9K31+qx7VSg=;
- b=S9bCMG6b5pk5Tn3p/T/fdAzL9xuhDl7AxFawOxIKfC8/UMdq2/UidCRfew8ZTiMrI4BIZDtl9
- KR8EWgbWnpXB1JhvR9+v6xapoFe8HbdRQ0yjmFbgYfoWMPZopCuqF1b
+ bh=BOlWAGxkX8ImyMAft8TX88kJbOhX7qgFXEUoXm3ByGk=;
+ b=ZD9NfrbTDO2uEYmSSDAmdHtNctcfYSdkpH2Oh69w0sytnXL1FxLzvk29xLIKjaErTuT4Pgaxi
+ BhInZG+T5l9Bwp0ouJ/EVsCd0iMVkqvG2bYzJD38gJ7BMBXRaXHujhc
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261118_065243_092086_4F2319FB 
-X-CRM114-Status: GOOD (  10.58  )
+X-CRM114-CacheID: sfid-20261118_065222_154133_1D6E8F8E 
+X-CRM114-Status: GOOD (  17.18  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -131,9 +130,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  The .crc file of each image holds its checksum as 8 hex digits,
-    which bpkfs prints into an 8-byte array with sprintf(), so the terminating
-    NUL is written behind it, into the list head following it in [...] 
+ Content preview:  uimagefs keeps the descriptor of the uImage a data file is
+    read from in the uimagefs_handle_data of that file, which all opens of the
+    file share. Opening it a second time overwrites the descriptor of [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -205,38 +204,122 @@ X-Spamd-Result: default: False [-56.41 / 15.00];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
 	RCVD_IN_DNSWL_NONE(0.00)[185.203.200.13:received]
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 30A52205AC0
+X-Rspamd-Queue-Id: 5FFB0202045
 X-Rspamd-Server: mx1
-X-Stat-Signature: q5nohcjuwu1uqz88nouj1ogqthyznqt3
+X-Stat-Signature: nf1xg6fksiou7agmcr59ab4ecnx7791h
 
-The .crc file of each image holds its checksum as 8 hex digits, which
-bpkfs prints into an 8-byte array with sprintf(), so the terminating
-NUL is written behind it, into the list head following it in struct
-bpkfs_handle_data. It's overwritten right after by adding the entry to
-the list, so this went unnoticed.
+uimagefs keeps the descriptor of the uImage a data file is read from in
+the uimagefs_handle_data of that file, which all opens of the file
+share. Opening it a second time overwrites the descriptor of the first,
+which is leaked, and closing either closes the one the other reads
+from:
 
-Make the array 9 bytes. The file still is the 8 digits without the NUL.
+  fd1 = open("data0"); fd2 = open("data0");
+  close(fd1);
+  read(fd2) -> -EBADF
 
-Fixes: 2f677b9b1ed5 ("fs: add BPKFS support")
+Keep the descriptor in a structure of its own for each open file.
+
+Fixes: 12158a28d4 ("fs: add uimagefs")
+
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/bpkfs.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/uimagefs.c      | 36 ++++++++++++++++++++++++++++--------
+ include/uimagefs.h |  1 -
+ 2 files changed, 28 insertions(+), 9 deletions(-)
 
-diff --git a/include/bpkfs.h b/include/bpkfs.h
-index 252cee90a6..9a12f5a1ba 100644
---- a/include/bpkfs.h
-+++ b/include/bpkfs.h
-@@ -50,7 +50,8 @@ struct bpkfs_handle_data {
+diff --git a/fs/uimagefs.c b/fs/uimagefs.c
+index b805b357ac..52dc7182ef 100644
+--- a/fs/uimagefs.c
++++ b/fs/uimagefs.c
+@@ -68,10 +68,18 @@ static struct uimagefs_handle_data *uimagefs_get_by_name(
+ 	return NULL;
+ }
+ 
++/* an open file, the same one can be open more than once */
++struct uimagefs_file {
++	struct uimagefs_handle_data *d;
++	/* the uImage for data files, -1 otherwise */
++	int fd;
++};
++
+ static int uimagefs_open(struct device *dev, struct file *file, const char *filename)
+ {
+ 	struct uimagefs_handle *priv = dev->priv;
+ 	struct uimagefs_handle_data *d;
++	struct uimagefs_file *uf;
+ 
+ 	if (filename[0] == '/')
+ 		filename++;
+@@ -80,36 +88,48 @@ static int uimagefs_open(struct device *dev, struct file *file, const char *file
+ 	if (!d)
+ 		return -EINVAL;
+ 
++	uf = xzalloc(sizeof(*uf));
++	uf->d = d;
++	uf->fd = -1;
++
+ 	if (uimagefs_is_data_file(d)) {
+-		d->fd = open(priv->filename, O_RDONLY);
+-		if (d->fd < 0)
+-			return d->fd;
++		uf->fd = open(priv->filename, O_RDONLY);
++		if (uf->fd < 0) {
++			int ret = uf->fd;
++
++			free(uf);
++			return ret;
++		}
+ 	}
+ 
+ 	file->f_size = d->size;
+-	file->private_data = d;
++	file->private_data = uf;
+ 
+ 	return 0;
+ }
+ 
+ static int uimagefs_close(struct device *dev, struct file *file)
+ {
+-	struct uimagefs_handle_data *d = file->private_data;
++	struct uimagefs_file *uf = file->private_data;
++
++	if (uf->fd >= 0)
++		close(uf->fd);
+ 
+-	close(d->fd);
++	free(uf);
+ 
+ 	return 0;
+ }
+ 
+ static int uimagefs_read(struct file *file, void *buf, size_t insize)
+ {
+-	struct uimagefs_handle_data *d = file->private_data;
++	struct uimagefs_file *uf = file->private_data;
++	struct uimagefs_handle_data *d = uf->d;
+ 
+ 	if (!uimagefs_is_data_file(d)) {
+ 		memcpy(buf, &d->data[file->f_pos], insize);
+ 		return insize;
+ 	} else {
+-		return pread(d->fd, buf, insize, d->offset + file->f_pos);
++		return pread(uf->fd, buf, insize, d->offset + file->f_pos);
+ 	}
+ }
+ 
+diff --git a/include/uimagefs.h b/include/uimagefs.h
+index 6b34982e4e..88cc84b634 100644
+--- a/include/uimagefs.h
++++ b/include/uimagefs.h
+@@ -31,7 +31,6 @@ struct uimagefs_handle_data {
+ 	enum uimagefs_type type;
+ 	uint64_t size;
+ 
+-	int fd;
+ 	size_t offset; /* offset in the image */
  	size_t pos; /* pos in the data */
- 	uint32_t crc;
  
--	char data[8];
-+	/* the checksum of the data as 8 hex digits for .crc files */
-+	char data[9];
- 
- 	struct list_head list;
- };
 
 -- 
 2.47.3
