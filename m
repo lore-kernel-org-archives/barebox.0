@@ -1,128 +1,129 @@
-Delivery-date: Wed, 18 Nov 2026 15:53:17 +0100
+Delivery-date: Wed, 18 Nov 2026 15:53:19 +0100
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xTh2C-000neK-2Q
+	id 1xTh2E-000nei-2U
 	for lore@lore.pengutronix.de;
-	Wed, 18 Nov 2026 15:53:17 +0100
+	Wed, 18 Nov 2026 15:53:19 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id D75C2205AE7
-	for <lore@pengutronix.de>; Wed, 18 Nov 2026 15:53:12 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 26B1B201EDB
+	for <lore@pengutronix.de>; Wed, 18 Nov 2026 15:53:14 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ufsEw3J7;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=OEiQyTCH;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=f7zYQvNa;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=Pc+R6lgl;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}");
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795013593;
+	s=20260414; t=1795013595;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:list-id:list-help:
+	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=CvNhViTSPqDsRukGaTdE1A9ZnWKKBcc2dnoZ3YGG/e0=;
-	b=M6OJmcnCXGQANV4ulc9ZQKz9v9uHddp5FxOEWTti/eAhewJqjhokVbLgh11lQxm+QiEqoR
-	JiKtM3+SghlmJU0LElX/LcwNPdV0ydTarbyjsekkdxZAdglrz9b1IFh6tbWqU/HpuoCUx0
-	DCq426s4GcxD8Yx926SlpupXm8TpI7fbaTBrFVFsHmTkNT0EXgzcMqPSaN+MBl+dCblpxS
-	dhFjp1/7KlR9HAI79McDTkyJy5oYBy37LT7jl2fY8VGkziEBsSFba0u/Ytj6aPfukTaWCG
-	Ohb+K0sfoqz+4SXVyEJfWTei0c7IsDZuDC5U75HUHky/bwNX3DW5+bdRgY6Mkg==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1795013593; a=rsa-sha256;
+	bh=aCVjJlWLPS2BQM+CE4laMfFg4TX5P0PPpS6XPVBMz1k=;
+	b=Ce/GEEshgILl+UFXT2W123qRPRpNVASJaLj7EqkjImjP7Gceciv3pC3kYABaGwwJJW2OBV
+	lvMkT8iRRKHwSYqLSwbaB9VVAm3Ox3Snl+HOrvdrmrxPPTrRpLX60X9SXwO1Mr4OsE/paG
+	yJKXl93twrUASIK1oHAPRQaHJBH2uIF+Oo84GV5TT7hpkDKtUJVYynxI1gPjOrTBdMnPfl
+	F5QVMuIPg3UaP9G8KN7w+PDuqgWz5p0ogNP4cUXhL7Poh7AqSxhOn/J/nE+B1SSU9qDebh
+	DoCic4bumszsDtlBMAJLas8FnQTJPB1wE//dYCYYHvJs0CAg4wXBLm2FHHZskw==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1795013595; a=rsa-sha256;
 	cv=fail;
-	b=cVN8XIn596KC5WHMvYywVKV/qUKISI+sVpzC8brMwgw0t0+Krkzv5hhDCTXspWz3EmyjmF
-	V2rQ8QE/3r+Yqf4X0Be1r89utEGxCZDpxDBQoveZJBimW8RQdIPYkdtz1AKxrRP5zrMhj6
-	V8mLGl95p+sAhfH+oCIabV2DoH/7R60uL6l/pWcQUa7zHMODL2Cw5errkcI7K00hyiya7x
-	/gi3rRpF5MjiDJB7KNZpMSuBYxUA4lZ3ysFKdgMIbi2gyuet5xk+vkyVyX64WHd7nPraEg
-	p8guLd+CSa1fQQzKw5iT59ZENjk9AM8X2ni3Q9qCBPT88uDnO1xyVQ/b+WOLsw==
+	b=a8g3NqWnOZAsShKMYCS2YyAFcavJNQFAG6mqmJxGWixczllFRmcVRzo2mJMbePTjo5xm4J
+	1eEWEwyjW6P1MP8nCv1gmeikiPaTMLIRaxieBRooGC+wmp8G11W/5+WlDwIY1X0x7Xh/lq
+	j1PwYblt0aWZHpkgDhXL1XFDWc2xbgz5hGjBR+cwKXzo89BntECkJDZXtwv1jPwJgnuzDJ
+	CZA2oXouNvQ8gZvVumtgAn7MBC7B0eYQvEYQTvqce1aQTEw/sT4TdOqT4HpQZLdupb55v/
+	i8wqrR2XCRU9jkg7hbjOAOPQzikWkPaQWZjRh5Y6z3DlOpWzGcwKNauk/0ecBQ==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=ufsEw3J7;
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=OEiQyTCH;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=f7zYQvNa;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=Pc+R6lgl;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}");
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=CvNhViTSPqDsRukGaTdE1A9ZnWKKBcc2dnoZ3YGG/e0=; b=ufsEw3J7ErttPs
-	TM+f6PQA1CypFmwYNFxuiitKP85Lhx9KoAi5bNk3jdHLl+dwwR/CJ/5eqzNDiTu60OMU9awjYqtDF
-	QuqW243iyA/dJMalC4sVo1QXCfH+81FyHPrujUr95qh6RNlecdWCAmBQmwbbO5F8+Z1zyg/MyKNLa
-	iQGaj7jypFZ+T/tsrlTmgQnWkTtFei6I44H0K/Di/YU2zw3F02W8Uoof6/fvM8qRJSMI2uDBzXfka
-	u0OdtyHs5dxvexx+zPIRHf6lDru/JAW8xjmA5uwMk5CLr8dCJ8DkOPvPqTdHox6vQzrmSD4/o3FSW
-	6tyPzQzVD0210OLNZmcw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:Content-Transfer-Encoding
+	:Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Unsubscribe-Post:List-Owner;
+	bh=aCVjJlWLPS2BQM+CE4laMfFg4TX5P0PPpS6XPVBMz1k=; b=f7zYQvNaB5llhTNv7A1hQEnOCP
+	3AnXve8Rq/Ysi+EiNBDkH3gtUfWhxuRJmn53m30d7ShPyBTLu5Co/hydUNw6fZd22DyH/WozRvIE+
+	YiMQS/PjcVYp6q1HdVxo6t5Us1wLZjdzqlf/mn0OzBHnhbaMhlP8AllQii/wOgsl6XLpih8cGWkG+
+	CHV30LNxCnoKF4DiM9zEUa2VNrRey9AkLg5gOpFLWRWm+vHXtEolyByI9i8dt+Yln76FD9eUARcf+
+	J+FjO+QSf7tY1WwtMUoath7M78uIu9dllQKoXJRIyjKHqOUt02lYwVcWxzBDv6xpnuNvi4eA/vPMR
+	2Jo0uGeQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xTh15-000000099hH-3XTY;
-	Wed, 18 Nov 2026 14:52:07 +0000
+	id 1xTh12-000000099eG-1G7C;
+	Wed, 18 Nov 2026 14:52:04 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xTh13-000000099e2-0RUc
+	id 1xTh0z-000000099ca-0JwU
 	for barebox@lists.infradead.org;
-	Wed, 18 Nov 2026 14:52:06 +0000
+	Wed, 18 Nov 2026 14:52:02 +0000
 Received: from [127.0.1.1] (unknown [IPv6:2a02:560:5d79:c700:9ebf:dff:fe00:fdb5])
 	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 561E6205AE7;
-	Wed, 18 Nov 2026 15:51:59 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 2BE99200467;
+	Wed, 18 Nov 2026 15:51:55 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795013519;
+	s=20260414; t=1795013515;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CvNhViTSPqDsRukGaTdE1A9ZnWKKBcc2dnoZ3YGG/e0=;
-	b=OEiQyTCHQZnFLEsGFrmjcZf4Dtp8l9paSMNfkm1WMtOnWVzNtirQWIY5RK35tcSGl2Hjaf
-	rjKb7embylPWLKOSYhrOjHbPNZneJl+9EstGPvPJpkmHe8IjE5wZgPTK+Y+ZGu+3Ni2Y7h
-	TNDHISPEBm1OA6QIOgEI8hlhSDSOslueRH3twV/TILRpIujXR+QmhxehHda+nakb3IaIMO
-	mUprjzPOgrK+HMczIveHIu08JQaXz5tfa09GG6OuBLz9Uw+4ZnErrgbZC1Cwt+8MAhDE1c
-	KeHIlBALz0woBBLZD0ZmsOwD0k7dLboc6Auq4cv5Kza2RfK4gwHAJ5wNcw79Lg==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=aCVjJlWLPS2BQM+CE4laMfFg4TX5P0PPpS6XPVBMz1k=;
+	b=Pc+R6lgljiWIBn6fXOHxMG5kX3gaUmZNZPrbSt4keuRuOjC6Si6ME2autseeDUp2JPcTNS
+	FkdVL8fQZavVGenR63jHgfoL9NI0SAqgcMy+ZRBLEDcjbrOyaIZNQJsfO3xtSmJRPmiYKM
+	YxWcEUrIK2adZq9BCRc6WGuYt73+ukAxxhyUviyMkL2cUyV6p5xLsrfZGb1tHQUOI1m9VF
+	+Te7KQmpntV8BBTe36ADYshK7nneWilU2zNdHO/wdLl8wYsO5krNcA7D7OrPIbK6UhPVfl
+	bZa/CJhRV/8gRPNkjsYlMWTbJUrtBcJDqGRNp03ig+4hIZ/LNvu3qeyCvOG0dw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795013519;
+	s=20260414; t=1795013515;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CvNhViTSPqDsRukGaTdE1A9ZnWKKBcc2dnoZ3YGG/e0=;
-	b=TPKWcufYhEesad4Sbd2eQIOmZxYKCocpyZ++w9/BmXasbGrs+bFmZ2R9+cWd5saXjb8Yl7
-	k2jfUj3OhsrUgQQdcDOs4KC0FPDxIbq1U/K2JztNW5MQDTuXmmSp4QLY8nGC8JbRyMQ0Lx
-	Wps92ymuo9PedR6Hz5DfIqLp7lKrL6tIwD5o8LEWOw1b2hG1vmUPis9ollsy0EbPnfN3lN
-	H3zG/hmtLH2AHS/irhwrbWeFzYUaXdcjY71u1/tuqQTiEvQ7V6UDScIUkSD5hEAWlwlhOB
-	o0w0TdurirazWSxi11BGzCdnhoxJAwAPA4iJw5Bu5VeRxtJQy9HX1T6cJW8bgQ==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795013519; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=aCVjJlWLPS2BQM+CE4laMfFg4TX5P0PPpS6XPVBMz1k=;
+	b=A8akmwyrlZNRTiWbfTTZ5fzF/v73sPbefoHGMMLKldyxPEAq7pQehC59eeGep7TJAwFXik
+	9DzmCoq8t32mFX2vfzvYSdTSuDxMQe8F/f4+oMHD4CGREOCWxqy8fOVFQVwrZuCRdH1dpv
+	Bct8aLofbTsRhh5iQwtgYllatZrX73RwKznnJyONUwwLXN6UL+pxbpy5NmNlRyFCa9+xbl
+	bs3BYp1h9MObPjO9SZWipwFMwjiN4HcZDglItA2NbGYgA4+20NkMY/PfoubkzlhAckuKO0
+	r1TfjsIR7ZSzf5WPqX2X5spu1m9LOGhfL9tk8Htqu43XJLhr91x8/bmuBEWa5Q==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795013515; a=rsa-sha256;
 	cv=none;
-	b=YN7hm7vA40s5gWFkCaHVKWeQChe1CUHbTEPb4zc+vbeAzOCTl6He3NlcuTfPhEn9AfyGOs
-	GNkoVJPXpoMZ+f9DfIPMy/syPEe7NPBosmfvMQeRhwvkI3XpE0DeLz4dtlkvlRnrjOsTVf
-	pwXStQOhHY6YXYjux5uapAEWrBwUsvegGua3FNj6EycqXCfiVgcZ/nJZr4WOcgkqd/WesI
-	bB2ZjfPzMnjoeI+4zj2NtkGX0Ik3DVVzpPkXOMIQqldBV/tc7qvVsBZ6VMP96xOhtxG+Fa
-	UIOz/+0zimYNgzQZxQlYP74OMWtUqc2kY9PYUF9qAtxOYkhkmgzBn/j8bKbfog==
+	b=DDoDkzwQNJjXag4W62Nrm2gfzxksqibwI5OL7uvYs4D3SImRn2HfxyINjleV2a90eijB3/
+	nLFscEQs0Fxjfx+oYYLbiHKBpUcxZN363anGil7jyZbQw20TwdRToumAt/h0dy2FCC40rS
+	ESW8oIJZyMth5amN88eLZbGbBiswOZBIBhv8ja1hqKNlFWn+5tCIeWE78Oa2DzjsGT9rM8
+	sRRI87NlNY0P00tj5+k02r2aWE7/JMrvKHoLgBDpu8avVHgSo6XPoOyWW7sr6PptmCIzEt
+	dzWzS2QiLjyeYTOJW+AnOrcVxMIkygq5bZUgEMFzzymr2HJYkeITWGOaO/aYqg==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=sha@pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 18 Nov 2026 15:51:51 +0100
-Subject: [PATCH 01/13] fs: ramfs: zero the rest of a chunk when truncating
+Subject: [PATCH 00/13] fs: fixes found by file system conformance tests
+Date: Wed, 18 Nov 2026 15:51:50 +0100
+Message-Id: <20261118-fs-conformance-fixes-v1-0-59b59ec15d47@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261118-fs-conformance-fixes-v1-1-59b59ec15d47@pengutronix.de>
-References: <20261118-fs-conformance-fixes-v1-0-59b59ec15d47@pengutronix.de>
-In-Reply-To: <20261118-fs-conformance-fixes-v1-0-59b59ec15d47@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAIe7/WoC/x3LQQqAIBBG4avErBtIiYquEi1Ef2sWaTgQQXT3p
+ OXH4z2kKAKluXmo4BKVnCpM25DfXdrAEqrJdnYwxkwclX1OMZfDJQ+OckMZ4zABIfbOjlTXs+A
+ P9VzW9/0A406GqGYAAAA=
+X-Change-ID: 20261118-fs-conformance-fixes-e768eedf4a27
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795013515; l=1267;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795013515; l=1760;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=nbR5qltWBeCLNTI+d3Vit7rdyKpCt3MP2QbpK2LUqXE=;
- b=jULaIq7emM3vO3H5Pp44ZlYK8IgPgLGWdUr9FgXb+YRGYuH1z6U64DPRJCFrHQ+yrFJo1I72R
- qchGBvKaIW7Dc7/xtD5PIl/iYVjB2SEahcCiW8v5rRKL+k1g+pBjQRZ
+ bh=VUIRXISUBWNrsF1bkaExnTSnSV8GCvnXFLMAg9/Dd4M=;
+ b=7OiSdePqVK5h2vfoGdZfOdm7Xw4cHkFXHJ4EqenNzMpFLAxh4l7utK4npnj582R2YgMUxx/xr
+ QAFXfiIelODCpelAgy0u4EaK0ckJcYgA18zW+T2zttYNo0JvQvE5HKd
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261118_065205_335665_DC86FA91 
-X-CRM114-Status: GOOD (  11.80  )
+X-CRM114-CacheID: sfid-20261118_065201_566920_4C12E37F 
+X-CRM114-Status: UNSURE (   9.73  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -130,9 +131,12 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Shrinking a file only frees the chunks entirely beyond the
-    new size. The chunk the new end falls into keeps its old contents past it,
-    and as growing the file again doesn't allocate anything as long as [...] 
+ Content preview:  I am currently working on filesystem conformance tests and
+    removal of the legacy filesystem layer. While this is not ready yet, here
+    are fixes for several issues that the tests have found. Assisted-by: Claude:claude-opus-5-5
+    Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de> --- Sascha Hauer (13):
+    fs: ramfs: zero the rest of a chunk when truncating fs: fat: zero-fill files
+    grown by tr [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -169,83 +173,86 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-56.40 / 15.00];
+X-Spamd-Result: default: False [-56.38 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-2.99)[99.97%];
+	BAYES_HAM(-2.97)[99.85%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	ARC_REJECT(1.00)[signature check failed: fail, {[1] = sig:pengutronix.de:reject}];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_SPF_ALLOW(-0.20)[+mx:c];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
-	MAILLIST(-0.20)[mailman];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
+	R_SPF_ALLOW(-0.20)[+mx:c];
+	MAILLIST(-0.20)[mailman];
+	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	TO_DN_ALL(0.00)[];
 	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
+	FORGED_SENDER_MAILLIST(0.00)[];
+	RCVD_TLS_LAST(0.00)[];
+	RCVD_IN_DNSWL_NONE(0.00)[185.203.200.13:received];
+	DMARC_NA(0.00)[pengutronix.de];
 	MIME_TRACE(0.00)[0:+];
 	RCPT_COUNT_ONE(0.00)[1];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	TO_DN_ALL(0.00)[];
+	R_DKIM_REJECT(0.00)[pengutronix.de:s=20260414];
 	DKIM_MIXED(0.00)[];
-	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
 	NEURAL_HAM(-0.00)[-1.000];
 	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	R_DKIM_REJECT(0.00)[pengutronix.de:s=20260414];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	MID_RHS_MATCH_FROM(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:-];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_IN_DNSWL_NONE(0.00)[185.203.200.13:received]
+	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2]
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: D75C2205AE7
+X-Rspamd-Queue-Id: 26B1B201EDB
 X-Rspamd-Server: mx1
-X-Stat-Signature: rcz7zmh15spyn7zsg7sdgqrwt9b7kymt
+X-Stat-Signature: xaq7xcsnz6zctghu97c695qn483mh4fm
 
-Shrinking a file only frees the chunks entirely beyond the new size. The
-chunk the new end falls into keeps its old contents past it, and as
-growing the file again doesn't allocate anything as long as the chunks
-are big enough, it brings them back:
+I am currently working on filesystem conformance tests and removal of
+the legacy filesystem layer. While this is not ready yet, here are
+fixes for several issues that the tests have found.
 
-  write 10000 bytes, ftruncate(3000), ftruncate(6000)
-  -> bytes 3000..5999 hold the old data instead of zeroes
-
-Newly allocated chunks are zeroed, so clear the remainder of the chunk
-when shrinking to keep everything beyond the end of a file zero.
-
+Assisted-by: Claude:claude-opus-5-5
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/ramfs.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+Sascha Hauer (13):
+      fs: ramfs: zero the rest of a chunk when truncating
+      fs: fat: zero-fill files grown by truncate
+      fs: keep the file size when O_TRUNC fails
+      fs: legacy: return -EPERM when a driver can't create symlinks
+      fs: uimagefs: allow opening a file more than once
+      fs: nfs: drop the write and truncate stubs
+      fs: fat: fix building without CONFIG_FS_FAT_LFN
+      fs: bpkfs: skip the data of ignored duplicates
+      fs: bpkfs: allow opening a file more than once
+      fs: bpkfs: make room for the NUL after the checksum string
+      fs: pstore: read from the file position
+      fs: pstore: don't free the records when unmounting
+      fs: efivarfs: zero-fill variables grown by truncate
 
-diff --git a/fs/ramfs.c b/fs/ramfs.c
-index d86bf6144e..0df4af5294 100644
---- a/fs/ramfs.c
-+++ b/fs/ramfs.c
-@@ -311,6 +311,14 @@ static void ramfs_truncate_down(struct ramfs_inode *node, unsigned long size)
- 			list_del(&data->list);
- 			node->alloc_size -= data->size;
- 			ramfs_put_chunk(data);
-+		} else if (data->ofs + data->size > size) {
-+			/*
-+			 * Growing the file again reuses the rest of this
-+			 * chunk, which must read back as zeroes then, like
-+			 * newly allocated chunks do.
-+			 */
-+			memset(data->data + size - data->ofs, 0,
-+			       data->ofs + data->size - size);
- 		}
- 	}
- 
+ fs/bpkfs.c         | 49 ++++++++++++++++++++++++++++++++--------------
+ fs/efivarfs.c      |  5 ++++-
+ fs/fat/fat.c       | 57 ++++++++++++++++++++++++++++++++++++++++++++----------
+ fs/fs.c            |  2 +-
+ fs/legacy.c        |  3 ++-
+ fs/nfs.c           | 12 ------------
+ fs/pstore/fs.c     | 25 +-----------------------
+ fs/ramfs.c         |  8 ++++++++
+ fs/uimagefs.c      | 36 ++++++++++++++++++++++++++--------
+ include/bpkfs.h    |  4 ++--
+ include/uimagefs.h |  1 -
+ 11 files changed, 128 insertions(+), 74 deletions(-)
+---
+base-commit: 09dbb295e9107a256d73e218dca96f420f4e344d
+change-id: 20261118-fs-conformance-fixes-e768eedf4a27
 
+Best regards,
 -- 
-2.47.3
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
