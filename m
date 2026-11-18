@@ -1,45 +1,45 @@
-Delivery-date: Wed, 18 Nov 2026 15:54:12 +0100
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Wed, 18 Nov 2026 16:13:24 +0100
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xTh35-000njg-0r
+	id 1xThLf-000oAu-1e
 	for lore@lore.pengutronix.de;
-	Wed, 18 Nov 2026 15:54:12 +0100
+	Wed, 18 Nov 2026 16:13:24 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 62CDA205ABD
-	for <lore@pengutronix.de>; Wed, 18 Nov 2026 15:54:07 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 4529620102E
+	for <lore@pengutronix.de>; Wed, 18 Nov 2026 16:13:19 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="IBS4DJ/q";
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=bg+7OZwP;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=Shqe2Vut;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=X8wSdvdX;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}");
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795013647;
+	s=20260414; t=1795014800;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=WCpMJBl/fbTtyOHBlsUgjvCfiJcg3XAgHor3EFw+Ixk=;
-	b=U199Xl2PZHqQBKoZxf49ALnqO+tBGkZEs0Xq0WveffRVcBx18huMPJM14opRgCbtd6qzGS
-	iZ2q5ZvEqTAvfDICFDy+DCOtXHsm3B0gDRAiLAF8EuQXboiVbd0/sidgP9qABF5MgCvsR+
-	1NlHYrq+JbfB0qRU1TuXuJj4QcU2etZNw381WrIS1kYMdhqDSThbDW52adlvW3SEE/tTu0
-	EWuzFaKq3akVD7MlzQZtRFTl3/WFtlkK0P2mVl40K/WcNIqdY/Xc3tDAEV2NDqhqSkCfuj
-	7QqjNIQ1V7YqqYtYHkj3W0NKb3pq+vqdv8GOs4NDMbo2PlpExdAGWZIr4aREbA==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1795013647; a=rsa-sha256;
+	bh=1vm33w0Jd2aGQ8i/d+DBNqyIjARxAQah3bcMRODohR0=;
+	b=JPvf53QvSRP7aEhgEaJNaDISiwFX57E98VdBX9t3+Vg1Przx0VNzTe+M0sMMzalCyWgxu9
+	zqNiTjLU8vPxbOmKpNW/b/yND8fLIFCC3jc1vABVuc7Mo7oBMxzt0gacWzvM+bZXUUgVnB
+	2Peea7YvkMevM+cIEQ8hF04kKzCQFPatHD6lt/DjK9YlriN84Q6ZLjg/9HZgAhcBOfTTl7
+	+2YdyilKIWHEydzD3OSIXGemyL1NCx83MSgN1CAjew7a95wBXrOenAZyPbb71Oeso8KOqw
+	BXRyykOnOLPnzft0WjQmKAXSFwZbFclTsM8aU3Aei/2XhpFxKB4Z5MpEtYaAJA==
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1795014800; a=rsa-sha256;
 	cv=fail;
-	b=Zx6BoimyDqQyBZhHjNB/qM3pav8Uc8d9yuasZ5Lon8aUAwLsBjeIFx0CLzBnObVBSDsnVQ
-	X5D/gxkidwt4nrVQEkM8NMX/X5IsNYp98WPPoUJMROYs9hk7/Mlh55iQF/EXuQYbG7LdGF
-	VvrLHdkthM9XY0+wM/1G1hrV9OITXxut9VAjQ3pQwyLC83Ho8ZVj+Be5J157dZcpFkDCgN
-	r+cR8q/qgu4tEMiO2rtdwe7CH4ACqRpVbTJvuwZGZ9qZRBKGAJUTHuYYl/nfl6upx5Y+kI
-	B2hV2fqp+VhEgr2oPj6mQX1lMWzuwZSOTqM9vjjysoAuPoknZ6i3MoU4+sRWLw==
+	b=L30OCPaxkP6gANiz7//d0xGU8dyeddg3kcH1FqqztnHF4W6SG+S65TZ5g4OAbG9DE8mhs3
+	hoa1gipzeJWO5xZiwm4ZOFSv577kCcWvBWxPYLT/UDgtT/jOml19hCkiKRsK6/pnfnXAwB
+	OADP4xvuEhhRtRzp7mPvkjvbvqQvdU6RDfdzNP3YennCyS9j3ziscgDP903uFy0oUJKEfp
+	M8GDvFXxn5NOxpmOYQlzzKHlNREG9TeY+alMxWitsx512GrK5ooAMH1pmfdVqlF/waHWtQ
+	lahzBm+sLFvhyA3fL197u2sTnlkHTur8xUqtEM5JtCy17iMOY0zAxsdIChtLfQ==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="IBS4DJ/q";
-	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=bg+7OZwP;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=Shqe2Vut;
+	dkim=fail ("headers rsa verify failed") header.d=pengutronix.de header.s=20260414 header.b=X8wSdvdX;
 	arc=reject ("signature check failed: fail, {[1] = sig:pengutronix.de:reject}");
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none
@@ -49,80 +49,80 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=WCpMJBl/fbTtyOHBlsUgjvCfiJcg3XAgHor3EFw+Ixk=; b=IBS4DJ/q33AVvX
-	ZZP7XzxkHGm+unwzdi/14XIKdcM7Hqlo60Hj7p8ED27ZpUHFu/CJZhsKgfY1y7qRtX+0yY+EuTxA2
-	n1lP7DPT1K7/5F353s3UEriQGC4WEG+S5JbTRQ9Xi27WbFhQ76U66cpCWHcSABBQ27jamV5v7X59E
-	+lK++W/MOHqXKvaQEwMcUclMHgxiHiRYRcCxQqEHobUqfzCaCbfHIPIkXQEyzEvN36rmz+3WuAZk8
-	VoC2U2rfHAZy2vanNxc00ETK9PrMfEzuC8Au0Dy0FMu8M/RyYNkSiPfI1EUU+xUxBiQHzsP2WYKYB
-	ealmP5k+SKSyu1opyqYA==;
+	List-Owner; bh=1vm33w0Jd2aGQ8i/d+DBNqyIjARxAQah3bcMRODohR0=; b=Shqe2VutrE8gH6
+	KX288QVR7/Hcfe5zbUdUUYIShqaKdWosNC7N6NyIvwr1Ae/2O31298sHYw9tyo8U+hIxqoPjWHxbB
+	4cTqYLY5Yzot4UF2nimnWfHusQYw2zuaZ/fguwZdqKC8IYWr8DVPuo6WB0Pm/PCA7CZ8BvB0XScxm
+	lDB/3ndbCKdllTvDz1NJ4X+AQeO/FFf+QVW2HRpu72gVVQ9v94Jw4txPsjnQA2ngHGQfLmw6L9VfV
+	Vc1+dwAxNcPBN9SkZi7ZWxThJgw++IF5e7Q22rwC2/IDFDy9wfyZD8sPa94RA1wQekVOcqgxWHpaw
+	Bc+fNZ4Yrx3mrgluiK5w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xTh1t-00000009AID-3RWH;
-	Wed, 18 Nov 2026 14:52:57 +0000
+	id 1xTh1o-00000009ACI-2LQj;
+	Wed, 18 Nov 2026 14:52:52 +0000
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xTh1r-00000009AFg-1ko3
+	id 1xTh1j-00000009A8y-00ij
 	for barebox@lists.infradead.org;
-	Wed, 18 Nov 2026 14:52:56 +0000
+	Wed, 18 Nov 2026 14:52:48 +0000
 Received: from [127.0.1.1] (unknown [IPv6:2a02:560:5d79:c700:9ebf:dff:fe00:fdb5])
 	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id AB9E3205AF3;
-	Wed, 18 Nov 2026 15:52:49 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 4FE88205AE7;
+	Wed, 18 Nov 2026 15:52:41 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795013569;
+	s=20260414; t=1795013561;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WCpMJBl/fbTtyOHBlsUgjvCfiJcg3XAgHor3EFw+Ixk=;
-	b=bg+7OZwPJrKw6J5sSkL3hhFeTugrcvm629wcsA62Y/KCABD8RMb8fut1cd5Zf7zpx4HRpv
-	DKZlPCrbWC+cLkG8sONlquGaFdF6slxNp3f94QVXF6T9zQOm/SRH8tGNSdJKoV/T06XgwF
-	SBv7bZDJb5PscQfvy1iMH+xYmfbsjY2eDth9rCsJrwpU1DpWrtyyHDDo/iUhFvEEzkn0o/
-	tuB4ZENAjzgViyik6VLgtU+GYQmnvZkliv5Q24RakbhltfcSRr3T99Fwv3+3QAV0oEft9f
-	I0nLVTARjtNXs0xXu9KXIVD9sVL8hjXCZgG34Rgz9Phm1f73+BwKvt4XBFbsmA==
+	bh=1vm33w0Jd2aGQ8i/d+DBNqyIjARxAQah3bcMRODohR0=;
+	b=X8wSdvdXclcxQhharItzWnoONNihqj0eR2vlmbRBeofDG1sycomBvSLX+wV1u94zYdkb4i
+	N96DLfpW7vk65MPvTEh9U1VNtYWGavhzsJF2MpvwC+IRVWWcWyW+uAsDfza4SQ9MKCQgBj
+	vyQAE8yN5rQEF8qZkjaYB0WXD9Jlg0e35TyeiUNsherX38+c7Dd2Dx2uINRRf4WblQXROV
+	OR2hmcJcQjtq3C/MPEBE+Nr2Mdc0Aq/aH4ltYRdrBe2Ql9uPewqsHhnG1kWz/PoVS3RG3z
+	X2VAF6Z3Tns4cj9uH2nzsugvSQqZXQgwlE6EBwp8R+OpV7SHtHFxQaBO3v98aw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795013569;
+	s=20260414; t=1795013561;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WCpMJBl/fbTtyOHBlsUgjvCfiJcg3XAgHor3EFw+Ixk=;
-	b=NqA+jr68h8HH1jZz1xxmVdRt1VSS7oRPKTOc/BXdJ2ImKL26FCE6rIpL3lY8K+w3bZWxi6
-	V8suAqebtd8VAoZQXMOuhdYEsi6URTWCoQfELVwl/HQcvEKtJcE/rig9f1uz/1lfdi8Ti5
-	F1/CPlK2q2o4eI8RsDtE1UFap7J38q7VDB3VuI58KjRMkh1ZRxe2WqYRRTMx9QlWMeJxMD
-	8nh45ouAWbjz3niBloh8uRF0RfWZBm8p3MzE+7lMGBRIt9OXY+5uxlgALPbatKcggOGWra
-	pIk83SMKNCZNj7LqlYjSSF2PqJrboXAPDfBwfyxjfIdBEwfy3m9Lavb5jeDnxQ==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795013569; a=rsa-sha256;
+	bh=1vm33w0Jd2aGQ8i/d+DBNqyIjARxAQah3bcMRODohR0=;
+	b=EkI2pRDTc7eGc0mk4s2TPBDTzyVNUp0dRacFNI57ILRvUzLM00yn8ClaS1QRmHZc7r/oM9
+	W1IfJW6mAKxbswHhajAdRt7D0NoU/Erone9lvW+ZvchveFX9ED0fV4/egV0oZS5IVcPsT8
+	v09BJBZQJ2NxqPCfanuk82I3j7Nt+/lXAqZRJgL0Q5Gqo39pLTgWXT6oyiHWQPtm5jhVz1
+	l6YWArAnP1LDfJ7Ii8RnANtBThqyVunuhRJ3+KxrVceFR4igBzAeDPJmaaCYrJuxR62qkx
+	QgqJ0YT8+WjJjXAZ8IPO8YsZmvZnnN5Y52SKxCPH2NvC/Dg8F3s7VfggnzN+ig==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795013561; a=rsa-sha256;
 	cv=none;
-	b=cqd/ShAHvLHQk4Hk8RadcGWuD+PG+LRUeCMqKsDGCHdZLO/OK74DA1DVYtsxfxp7QD1XXB
-	MiOd/u0LN8K6Vc5fLyTOOwAdwaznNSyryy6as8od+C7G5kjcErqfuzXca7b2Z7Ip5KCnox
-	/LJisEFHUiKZoOQnLLySdIHJdPF68mx4UE3q+QsL1N+x1PhK/1oh+qwWWk63o4gumz2Yk1
-	7FxNhQB736KK4jJlwj1fxBuSzh2sbdk4MLwOlKSp7piVyhI7BL4TjuLtOKzdEWcLCFh6tB
-	d50CvBaikyIpjI4yVM4IqCI1OK+5YnkSsYHi7nBy9hYZrSzQbzesxB07/5FpwQ==
+	b=U57LIRH5Tm164QSDCTCpbvnEK3Fa1PtNj5f/2ByC2EzKnz3bwRcqrJ60CDr/QdKtuJkuwN
+	A4QbAOc1v5NvGg/a+oVZeCERO1V+Sg4G7KDO1pgXtyfhgvruFqtG1bWUTdhvvn7vawX8iH
+	rNDcpm6amL2ZvLsfKFZLepaZJ8MZ5UDbX/Aoez+8sCDAvS2TGbL6jWiZjOsbKjoKrzBumK
+	qJBepjXRAeYC24msJrmL6izB56i+KdMOBrKapfjW8SeuC9log6OF+Xa7xCkZyZqXVk0LyR
+	JQoEphpS4BTzp6Vo0fqOUH/LQQcNyQF+W5judVibjZxyw1rKZ/f6w7U7yNoO5A==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=sha@pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 18 Nov 2026 15:52:03 +0100
-Subject: [PATCH 13/13] fs: efivarfs: zero-fill variables grown by truncate
+Date: Wed, 18 Nov 2026 15:52:01 +0100
+Subject: [PATCH 11/13] fs: pstore: read from the file position
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261118-fs-conformance-fixes-v1-13-59b59ec15d47@pengutronix.de>
+Message-Id: <20261118-fs-conformance-fixes-v1-11-59b59ec15d47@pengutronix.de>
 References: <20261118-fs-conformance-fixes-v1-0-59b59ec15d47@pengutronix.de>
 In-Reply-To: <20261118-fs-conformance-fixes-v1-0-59b59ec15d47@pengutronix.de>
 To: BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1795013515; l=1170;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1795013515; l=1923;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=ffLC1S46TcZEzhfyT9TPvtR4UBuyDbKr0g94Z4N5bvc=;
- b=a66ikHChYGB4gwZQSf15wYrMWU4kUP/4rwRwA3LdxKIrRhkTA8utHbXDvDtU4RPwuIojuGQ8t
- UTR7382AbtnBAJiIo+7ZqbLV6F50eO7zBm4KoNKNDIHqYm/fwhmxxFm
+ bh=qIZFnaxaByeJfevJnXKrJPYQrpZ+Nwh6R9d+yy5amSc=;
+ b=SJ/IPRjhVdzfj3kuU3jST0w79fqNKDj5ohoQ5FXgocFdnB5wpm7EAvCDZfd8OI8uvsdtuFy3g
+ AgwZqQSoHbkDm96XweGcArRC7474S9TIkHX8+GEyjkVJDXdl93QIXix
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261118_065255_646153_6480BC0E 
-X-CRM114-Status: GOOD (  10.69  )
+X-CRM114-CacheID: sfid-20261118_065247_205980_07E8EEDE 
+X-CRM114-Status: GOOD (  11.84  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -130,10 +130,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  efivarfs_truncate() grows the buffer of a variable with realloc(),
-    which leaves the new bytes uninitialized, and stores the variable with them:
-    write 1000 bytes, ftruncate(300), ftruncate(600) -> bytes 300..599 hold whatever
-    was in memory 
+ Content preview:  pstore reads at a position of its own, which it keeps in the
+    pstore_private of the file and resets on open. Reads at another position,
+    like pread(), get data from the wrong place, and so does any read [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -174,72 +173,106 @@ X-Spamd-Result: default: False [-56.41 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
 	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	ARC_REJECT(1.00)[signature check failed: fail, {[1] = sig:pengutronix.de:reject}];
+	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_SPF_ALLOW(-0.20)[+mx:c];
 	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
-	MAILLIST(-0.20)[mailman];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
+	MAILLIST(-0.20)[mailman];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
 	RCVD_TLS_LAST(0.00)[];
-	TO_DN_ALL(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	DMARC_NA(0.00)[pengutronix.de];
-	RECEIVED_HELO_LOCALHOST(0.00)[];
 	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_ONE(0.00)[1];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	DKIM_MIXED(0.00)[];
+	TO_DN_ALL(0.00)[];
 	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
-	NEURAL_HAM(-0.00)[-1.000];
-	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
+	RCVD_COUNT_THREE(0.00)[3];
+	RECEIVED_HELO_LOCALHOST(0.00)[];
+	RCPT_COUNT_ONE(0.00)[1];
+	DMARC_NA(0.00)[pengutronix.de];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
 	FROM_HAS_DN(0.00)[];
 	R_DKIM_REJECT(0.00)[pengutronix.de:s=20260414];
+	FORGED_SENDER_MAILLIST(0.00)[];
 	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:-];
 	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	RCVD_IN_DNSWL_NONE(0.00)[185.203.200.13:received]
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	RCVD_IN_DNSWL_NONE(0.00)[185.203.200.13:received];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:-];
+	DKIM_MIXED(0.00)[]
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 62CDA205ABD
+X-Rspamd-Queue-Id: 4529620102E
 X-Rspamd-Server: mx1
-X-Stat-Signature: eh9hq6aippa4mepujhpbaoeeygaw8w8d
+X-Stat-Signature: 8kb5r6bscrqwui9ni3z69au5bem6b4mj
 
-efivarfs_truncate() grows the buffer of a variable with realloc(), which
-leaves the new bytes uninitialized, and stores the variable with them:
+pstore reads at a position of its own, which it keeps in the
+pstore_private of the file and resets on open. Reads at another
+position, like pread(), get data from the wrong place, and so does
+any read when the same file is open more than once.
 
-  write 1000 bytes, ftruncate(300), ftruncate(600)
-  -> bytes 300..599 hold whatever was in memory
+Read from the file position like other file systems do. That makes the
+lseek() operation and the position of its own unnecessary.
 
-Clear what the variable grows by.
-
-Fixes: 46b5a6d6527f ("fs: efivars: implement write support")
+Fixes: 160d2ed0ba18 ("fs: Add pstore filesystem")
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- fs/efivarfs.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/pstore/fs.c | 15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
 
-diff --git a/fs/efivarfs.c b/fs/efivarfs.c
-index da826234b9..efc6d9a12b 100644
---- a/fs/efivarfs.c
-+++ b/fs/efivarfs.c
-@@ -232,8 +232,11 @@ static int efivarfs_truncate(struct file *f, loff_t size)
- 	struct efi_runtime_services *rt = efile->priv->rt;
- 	efi_status_t efiret;
+diff --git a/fs/pstore/fs.c b/fs/pstore/fs.c
+index 49ea5edf74..1a0eba4fa4 100644
+--- a/fs/pstore/fs.c
++++ b/fs/pstore/fs.c
+@@ -41,7 +41,6 @@ struct pstore_private {
+ 	struct list_head list;
+ 	struct pstore_record *record;
+ 	ssize_t	size;
+-	ssize_t pos;
+ };
  
-+	efile->buf = realloc(efile->buf, size + sizeof(uint32_t));
-+	/* what a variable grows by reads back as zeroes */
-+	if (size > efile->size)
-+		memset(efile->buf + efile->size, 0, size - efile->size);
- 	efile->size = size;
--	efile->buf = realloc(efile->buf, efile->size + sizeof(uint32_t));
+ static void free_pstore_private(struct pstore_private *private)
+@@ -118,7 +117,6 @@ static int pstore_open(struct device *dev, struct file *file, const char *filena
  
- 	efiret = rt->set_variable(efile->name, &efile->vendor,
- 				  efile->attributes,
+ 	file->f_size = d->size;
+ 	file->private_data = d;
+-	d->pos = 0;
+ 
+ 	return 0;
+ }
+@@ -133,21 +131,11 @@ static int pstore_read(struct file *file, void *buf,
+ {
+ 	struct pstore_private *d = file->private_data;
+ 
+-	memcpy(buf, &d->record->buf[d->pos], insize);
+-	d->pos += insize;
++	memcpy(buf, &d->record->buf[file->f_pos], insize);
+ 
+ 	return insize;
+ }
+ 
+-static int pstore_lseek(struct file *file, loff_t pos)
+-{
+-	struct pstore_private *d = file->private_data;
+-
+-	d->pos = pos;
+-
+-	return 0;
+-}
+-
+ static int pstore_unlink(struct device *dev, const char *filename)
+ {
+ 	struct list_head *head = dev->priv;
+@@ -249,7 +237,6 @@ static const struct fs_legacy_ops pstore_ops = {
+ 	.closedir  = pstore_closedir,
+ 	.stat      = pstore_stat,
+ 	.read      = pstore_read,
+-	.lseek     = pstore_lseek,
+ };
+ 
+ static struct fs_driver pstore_driver = {
 
 -- 
 2.47.3
