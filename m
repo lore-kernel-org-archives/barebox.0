@@ -1,86 +1,84 @@
-Delivery-date: Thu, 19 Nov 2026 20:00:05 +0100
+Delivery-date: Thu, 19 Nov 2026 20:00:06 +0100
 Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xU7Ma-001Bsn-3C
+	id 1xU7Mc-001BtA-0O
 	for lore@lore.pengutronix.de;
-	Thu, 19 Nov 2026 20:00:05 +0100
+	Thu, 19 Nov 2026 20:00:06 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 6A42A205B35
-	for <lore@pengutronix.de>; Thu, 19 Nov 2026 20:00:01 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 9E3F1202284
+	for <lore@pengutronix.de>; Thu, 19 Nov 2026 20:00:02 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=FSwNXSSo;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=1dBLKhm+;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=barebox.org (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795114801;
+	s=20260414; t=1795114802;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:list-id:list-help:
+	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=edHldbVhbA2l1S8Fx/kk5QwYELutz9QbywjlqoBlYzY=;
-	b=Lt7nj7wEoZ0QHWk5rh/QIKt/Sn9TVcDLs2kz7rHonezZB6FAjof8pQ2bmfD601pmQtd45a
-	WL4CzCXpPrOWI6yKcU+HXT4GUV7vfCpKs0giNEyDR/oM3BKaQIR4ocgbG+zznF7G0ewd5U
-	vZTRMzCGNbq9YEUKWm5S2XbLIq8A2ZXl47xZ9/z0W66ORz+46HPV+5uJjlMIRDF6oVmWVZ
-	vMUlEXJn+KaSCKjnr2lsI4YvISDyf0JAQQaA0e2o19xUY8T1iwWtYNy+tkRmUI9sHsdbX6
-	V1TyS+1WtD0YftQFEOyK85ilaCpR69/i9FwFNmqIukOCjhIONjKovYA1uwl7BA==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795114801; a=rsa-sha256;
+	bh=uqNjrO5wmu4RDG+fdI3I72SiUg5h8+ApdFLfOfFXXOc=;
+	b=EQeM8pu8zhB4oHUn8yYsvgohMBxeWjPtx76ZDNlZMNNr1IaTpwZmSy8nxlzzPWnRk5UISU
+	Kkf/4kOFn3Qa/Fr+lB4tcTFQr3Jdprg6HFuWY9dene+5miAcDtK78/iPl7Rt4IEVqjtij3
+	6yLbaK2NKa9BrekfGvKjjRQiZgbGFKz7SapOZLacCp5+ypy9X7WfO4XmA+fxwvvpTScOnM
+	kloCja3t8kruSWgDUK7lmV/IyEb80quLtoVRUmxcwdVhsw3QBLdjCECbE/6b03V5WLFfLS
+	AzX5PeOocS5IM1xrNvG8fWc7VNDDOxTha4HzzHl4LgDn4FrtwGV0sWIBAL6Tzg==
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795114802; a=rsa-sha256;
 	cv=none;
-	b=Vo+qiF4xQ3FuyLmeUzM0TuRuNBsWPdZCWBt/sXH46buxpcqXCS4vkdQbb+aSkQ/kSFlnLy
-	9l8pTrtUdpCq5AcT0h+i4Zrx8w14LuUeOAXuHWKBdWYDkVSMt3TUFnceYgyjtEmyPEVflT
-	AODJPs/Z9ranY20+nYgU2FCQXsv8Nnh33jwWqEl1k3ekBpJ13sxy2qPjxRGdp+J0McHQhe
-	9MxAsXZUxu9kdTgPYaSIDfRdJ3bnJdeAIxb7TNPiL6JBNMnzwhj9+k5jpVFtlJ/hL70zyr
-	3PU6LcRtzB7JL2KuBNZJkHcFCM2fTTZxlnK8zhw76xQCGtgSJ1Yi3OQ9678KSw==
+	b=KRPCQ8QVU0cLkA2LDb3m+Zj1cPewugKPvh631kTLp2k7XuLlTbdRdDlknW3Cst/pjbvifN
+	S7S6RFZ5Tm/c8qaE0igGhkNj+AwFe0QXhwmp5LiqMPBPV3+CdGo/QIT44dlLrg6viddhNc
+	rSEDSIafOCa8UZt3L3M6hTZW1MQtx+fbmmhNRxUAUNhi+02erWZmUyYmSzM2myjhWCfcjd
+	8rqLdBicPcWMzxZJGlt/TLuZP5Q01K6LrpW7gEW9vS9l05L7AyNEpuw3SJa/TW5MCHNxQn
+	dgusox8N9DQj5triaTuA5bq99ME5n9n+r55deaCuQsztHbOJmDRl80dZufamag==
 ARC-Authentication-Results: i=1;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=FSwNXSSo;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=1dBLKhm+;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=fail reason="SPF not aligned (relaxed), DKIM not aligned (relaxed)" header.from=barebox.org (policy=none)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=edHldbVhbA2l1S8Fx/kk5QwYELutz9QbywjlqoBlYzY=; b=FSwNXSSo+RPnrz
-	4mIQyT5s0QhkBbl3aa3eU0IqkbF4M77WFA2Sy2+sWuFWM6Nv+oKQCbK/n/nKRGcAKi0wCDnTtgzef
-	tM/VlFGo7X/cvcEiEQ8TADZG4VZNEcEJqAIKE6yc5UAMcKrv08VSCBs12/Y3J8kP9ztF7FUP0MA08
-	BZPx/UhMXWcB3ra4cLDssW7thKPLS050GXAxXNoeALMGiCJqZGTbPOJ8/GBPjIpEAT0j0HgFbYUxH
-	Rwj7PuzcYt2zkFn4O0bxeAJ7JEuc4j/DMdC8IubfXz+cIIZNqOBN0c6zAD9Cqfm0/JymGyDEWiwk7
-	zo3BHRUJAKyA3AiN+Y6w==;
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Unsubscribe-Post:List-Owner;
+	bh=uqNjrO5wmu4RDG+fdI3I72SiUg5h8+ApdFLfOfFXXOc=; b=1dBLKhm+zQSa4+Ccid5BOvsR4v
+	/XEn4IMfN+NQaMYsAcdPtSqHk5klhy/LX1l8AbkFa6UnNxH2Uq6i4q1IOqGsQ/a5Zh6dW7L56ES+b
+	WTfj6O/wuDKDrZslaHAkBS2puiJd9nUlBjS3IrPsK0ZAgqY5rI9WTRd5eWe9InusNUzd29FHvEP9l
+	Q3ZnUV77m7AnGu3LV/5vvb/f2Y8fOUefv1ab8RAaArHqCH3vHe/ydFabATrTtSZ+DU4UinP+Y5IN/
+	ev+8z4+MruGz3wzJ8hSlq/QvfbrZ+QBgHbBSZ2U1NQK/AfK22IRTmdvMAKiy3HIRPkdFxmfmqr4bH
+	wuVh15lQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xU7LK-0000000D7q3-0PyX;
-	Thu, 19 Nov 2026 18:58:46 +0000
+	id 1xU7LI-0000000D7pT-3GwI;
+	Thu, 19 Nov 2026 18:58:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xU7LC-0000000D7ll-10LX
+	id 1xU7LC-0000000D7le-12Q0
 	for barebox@lists.infradead.org;
-	Thu, 19 Nov 2026 18:58:43 +0000
+	Thu, 19 Nov 2026 18:58:42 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=geraet.lan)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@barebox.org>)
-	id 1xU7L8-0003xr-4J; Thu, 19 Nov 2026 19:58:34 +0100
+	id 1xU7L7-0003xr-Lv; Thu, 19 Nov 2026 19:58:33 +0100
 From: Ahmad Fatoum <a.fatoum@barebox.org>
 To: barebox@lists.infradead.org
 Cc: Alexander Shiyan <eagle.alexander923@gmail.com>,
 	Ahmad Fatoum <a.fatoum@barebox.org>
-Subject: [PATCH 3/6] i2c: factor out of_i2c_register_device()
-Date: Thu, 19 Nov 2026 19:58:13 +0100
-Message-ID: <20261119185828.92337-3-a.fatoum@barebox.org>
+Subject: [PATCH 1/6] spi: fix NULL pointer dereference for board info devices
+Date: Thu, 19 Nov 2026 19:58:11 +0100
+Message-ID: <20261119185828.92337-1-a.fatoum@barebox.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20261119185828.92337-1-a.fatoum@barebox.org>
-References: <20261119185828.92337-1-a.fatoum@barebox.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
 X-SA-Exim-Mail-From: a.fatoum@barebox.org
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261119_105838_325843_8DA9DA03 
-X-CRM114-Status: GOOD (  10.72  )
+X-CRM114-CacheID: sfid-20261119_105838_338278_04881F7A 
+X-CRM114-Status: GOOD (  10.99  )
 X-Spam-Score: -1.0 (-)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -88,11 +86,11 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Let's move the registration of a single device node into its
-    own function. A follow-up commit will use it to register only the node requested
-    by the rescan hook. No functional change. Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
-    --- drivers/i2c/i2c.c | 72 +++++++++++++++++++++++++ 1 file changed, 38 insertions(+),
-    34 deletions(-) 
+ Content preview:  Devices registered with spi_register_board_info() have no
+   device node, but spi_new_device() unconditionally stores the new device in
+    it. The at91sam9m10g45ek board, which has the Atmel SPI driver enabled in
+    its defconfig, still registers its devices this way. Let's add an of_node_set_dev()
+    helper that only sets the node's device if the [...] 
  
  Content analysis details:   (-1.0 points, 5.0 required)
  
@@ -126,7 +124,7 @@ X-Spamd-Result: default: False [-6.11 / 15.00];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
 	R_MISSING_CHARSET(0.50)[];
-	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:900:1d::77:received];
+	RCVD_IN_DNSWL_MED(-0.40)[2a0a:edc0:0:900:1d::77:received,2607:7c80:54:3::133:from];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309];
 	MAILLIST(-0.20)[mailman];
@@ -153,111 +151,55 @@ X-Spamd-Result: default: False [-6.11 / 15.00];
 	DKIM_TRACE(0.00)[lists.infradead.org:+];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 6A42A205B35
+X-Rspamd-Queue-Id: 9E3F1202284
 X-Rspamd-Server: mx1
-X-Stat-Signature: s6fonwfwp8pdenydk934rqki6dp9n54t
+X-Stat-Signature: hyx7fjawzukgtxn6mj39yntmybsx3bx3
 
-Let's move the registration of a single device node into its own
-function. A follow-up commit will use it to register only the node
-requested by the rescan hook.
+Devices registered with spi_register_board_info() have no device node,
+but spi_new_device() unconditionally stores the new device in it.
 
-No functional change.
+The at91sam9m10g45ek board, which has the Atmel SPI driver enabled in
+its defconfig, still registers its devices this way. Let's add an
+of_node_set_dev() helper that only sets the node's device if there is
+a node and use it here.
 
+Fixes: cd23b6facf33 ("common: add initial barebox deep-probe support")
 Signed-off-by: Ahmad Fatoum <a.fatoum@barebox.org>
 ---
- drivers/i2c/i2c.c | 72 +++++++++++++++++++++++++----------------------
- 1 file changed, 38 insertions(+), 34 deletions(-)
+ drivers/spi/spi.c | 2 +-
+ include/of.h      | 6 ++++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
-index cfc340736309..ef92854eefe0 100644
---- a/drivers/i2c/i2c.c
-+++ b/drivers/i2c/i2c.c
-@@ -427,6 +427,42 @@ void i2c_unregister_device(struct i2c_client *client)
- 	devinfo_del(&client->dev, i2c_info);
- }
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index b64e20664985..53bcd22b8c56 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -125,7 +125,7 @@ struct spi_device *spi_new_device(struct spi_controller *ctrl,
+ 	if (status)
+ 		goto fail;
  
-+static void of_i2c_register_device(struct i2c_adapter *adap,
-+				   struct device_node *n)
+-	chip->device_node->dev = &proxy->dev;
++	of_node_set_dev(chip->device_node, &proxy->dev);
+ 
+ 	return proxy;
+ fail:
+diff --git a/include/of.h b/include/of.h
+index 07d435f91475..993315247bf0 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -134,6 +134,12 @@ static inline struct device_node *of_node_get(struct device_node *node)
+ static inline void of_node_put(struct device_node *node) { }
+ DEFINE_FREE(device_node, struct device_node *, if (_T) of_node_put(_T))
+ 
++static inline void of_node_set_dev(struct device_node *np, struct device *dev)
 +{
-+	struct i2c_board_info info = {};
-+	struct i2c_client *result;
-+	const __be32 *addr;
-+	int len;
-+
-+	if (n->dev) {
-+		dev_dbg(&adap->dev, "of_i2c: skipping already registered %s\n",
-+			dev_name(n->dev));
-+		return;
-+	}
-+
-+	of_modalias_node(n, info.type, I2C_NAME_SIZE);
-+
-+	info.of_node = n;
-+
-+	addr = of_get_property(n, "reg", &len);
-+	if (!addr || (len < sizeof(int))) {
-+		dev_err(&adap->dev, "of_i2c: invalid reg on %pOF\n", n);
-+		return;
-+	}
-+
-+	info.addr = be32_to_cpup(addr);
-+	if (info.addr > (1 << 10) - 1) {
-+		dev_err(&adap->dev, "of_i2c: invalid addr=%x on %pOF\n",
-+			info.addr, n);
-+		return;
-+	}
-+
-+	result = i2c_new_device(adap, &info);
-+	if (!result)
-+		dev_err(&adap->dev, "of_i2c: Failure registering %pOF\n", n);
++	if (np)
++		np->dev = dev;
 +}
 +
- static void of_i2c_register_devices(struct i2c_adapter *adap)
- {
- 	struct device_node *n;
-@@ -435,40 +471,8 @@ static void of_i2c_register_devices(struct i2c_adapter *adap)
- 	if (!IS_ENABLED(CONFIG_OFDEVICE) || !adap->dev.of_node)
- 		return;
+ void of_print_property(const void *data, int len);
+ void of_print_cmdline(struct device_node *root);
  
--	for_each_available_child_of_node(adap->dev.of_node, n) {
--		struct i2c_board_info info = {};
--		struct i2c_client *result;
--		const __be32 *addr;
--		int len;
--
--		if (n->dev) {
--			dev_dbg(&adap->dev, "of_i2c: skipping already registered %s\n",
--				dev_name(n->dev));
--			continue;
--		}
--
--		of_modalias_node(n, info.type, I2C_NAME_SIZE);
--
--		info.of_node = n;
--
--		addr = of_get_property(n, "reg", &len);
--		if (!addr || (len < sizeof(int))) {
--			dev_err(&adap->dev, "of_i2c: invalid reg on %pOF\n", n);
--			continue;
--		}
--
--		info.addr = be32_to_cpup(addr);
--		if (info.addr > (1 << 10) - 1) {
--			dev_err(&adap->dev, "of_i2c: invalid addr=%x on %pOF\n",
--				info.addr, n);
--			continue;
--		}
--
--		result = i2c_new_device(adap, &info);
--		if (!result)
--			dev_err(&adap->dev, "of_i2c: Failure registering %pOF\n",
--			        n);
--	}
-+	for_each_available_child_of_node(adap->dev.of_node, n)
-+		of_i2c_register_device(adap, n);
- }
- 
- int of_i2c_register_devices_by_node(struct device_node *node)
 -- 
 2.47.3
 
