@@ -1,114 +1,126 @@
-Delivery-date: Fri, 20 Nov 2026 15:41:27 +0100
-Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+Delivery-date: Tue, 24 Nov 2026 07:54:05 +0100
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xUPnq-001Td5-2B
+	id 1xVkPi-002iBD-2I
 	for lore@lore.pengutronix.de;
-	Fri, 20 Nov 2026 15:41:27 +0100
+	Tue, 24 Nov 2026 07:54:05 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id CFA9F20188D
-	for <lore@pengutronix.de>; Fri, 20 Nov 2026 15:41:22 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 459A2205A0C
+	for <lore@pengutronix.de>; Tue, 24 Nov 2026 07:54:03 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=SGBPwtP0;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=Te4TF057;
-	arc=pass ("pengutronix.de:s=20260414:i=1");
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="obbrU/Cu";
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b="YJtx/EyZ";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
-	dmarc=none
+	dmarc=none;
+	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795185683;
+	s=20260414; t=1795503243;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:list-id:list-help:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=OClAt9tW7eU9H2O6Fu/PuLHxRbUxW/qg91l99BqErp8=;
-	b=Wy1vqWjkDLI7IpAASifI2BRt4no49yzGiFEt0d3rJadE2hkyATH8gFiapT/r+smG8F9XmZ
-	8PsI7R6KMiK1XxmzUZhUGccr0Io0YwhJ71iiSvZ3LJlkkkJ6+e4o7y8QMmHsXOBn4kVasV
-	G+jMVutCit4ucy7TDPRqLp2KMv1PUwAf8HE8VyC3sy+uunEPWh/OhSzM7Xs9it6byrev+j
-	j81dHtMAelGshIsP9m/WHvTLwimA0WNV8j388IdVJ6Y34FyIAldLYxhvvpSifv2/2gzquU
-	anAy/WX3vO0+TNLDwwhVe4EVHHpLHKeI6RxJRvYe1dRkHAOyFRR4OwwkKXEEZA==
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1795185683; a=rsa-sha256;
-	cv=pass;
-	b=bIMlaAMXoF6xP0pubuJ+mekODteh9DUMrFmmnYUxQn71tviuEjwVuhsuYG7h7PrZFZxdZl
-	PRz0yx3GlndANlK/68ei3ZjTYIcBYP7Nd1OOMK9Kb5N7Si/inTqpBSYcF+9+IYPBpYUOGC
-	d+2UqkiVKeV4RE/BmnNnmzhlURrg7fZs6OyQIAXwl8+SQNtFIjdav/2lEasOe3a80xAp+v
-	TgkUxLNLIbsugcSoD14VfxSx0fBQduE8zV2utEQSKSzmFZYBQEQOyOxoKlwMHahAXYW2e5
-	NKGOeARJluCIJK/78V0YkUNbQn1oG8l5oB0RT4aMvFa4D2NlHKny9bvWLL8g6A==
+	bh=0Hh+BeMEUEmsOfFZUoQn536du+i1oEoQovP29muTNuA=;
+	b=LK15Ej0KShPNn52ACZJBKqVmeFF3xkJnzo5zK1sPBM/fx4yW/kfCeeaVdgU+xMkPTqpq1w
+	HmTLZsNr+b90qWxemtOfsFbHOGwaWwAeU0ZbGBIfzPQvvP6HXHRnQQxcPHkGX51RpDzAOt
+	FOHx52dDKIHeNexgs9u7FSTeEJ0jbcTZbliceIVRThyg/MK91d+l0snrzT2IPLNH8qLrAc
+	ErCUiwJEuVyH3Iefh64dhzjgOOAJKch+PW6NWASavX/aUu4BItAJAaEpf157AVKrya1JkS
+	VO3llz1Tv5tKKk6pc4O0/udsl0cabfrSDsUEZjSMyhK1hn4MLkmvz3pls/GkNw==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=SGBPwtP0;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=Te4TF057;
-	arc=pass ("pengutronix.de:s=20260414:i=1");
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b="obbrU/Cu";
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b="YJtx/EyZ";
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
-	dmarc=none
+	dmarc=none;
+	arc=pass ("pengutronix.de:s=20260414:i=1")
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1795503243; a=rsa-sha256;
+	cv=pass;
+	b=L5HQHpR+s2CnZGTCQJBc84EeU+HhP1OzxTK2ZGbDyRLbgBS/zO0rDnQln9CkZygC8nk/1T
+	cRcNRpyR2xUraML41JqfPtJouX9+jj4gyqHDBQpNQe+vVk1ndM3vz0b7qP9hzyTqfAKQp/
+	ojInc7mLx2kBFG+xV+mQBx5Jhch8jMOxxpjBz5Qp+ZgE5tygXWQxYuCM9g2TFWngSq0cpo
+	tWOextmPSl0XSLFSJeGSvC6N5MpgahaiGqbVZCflYl4N/j5FQiw1AEA8cbUrYbDhlGL5EL
+	HKlOddN8KWDE7YoJOsrsrlyXNyk8RRcypqwyYZ2rIKoN55ZsKy3yCSmHT/ZBRw==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Date:
-	Content-Transfer-Encoding:Content-Type:To:Subject:From:Message-ID:Reply-To:Cc
-	:MIME-Version:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Unsubscribe-Post:List-Owner;
-	bh=OClAt9tW7eU9H2O6Fu/PuLHxRbUxW/qg91l99BqErp8=; b=SGBPwtP0+ZG0fBxLyUd8UFiTDz
-	M3SmfmEvIM6BbjwXDTgfCa7WkDnWVicXDRpnf/z++P44gmqM3JY+EAeWs6uvgpiVFW6AGQFkornLV
-	PT+vbexixaTBWrAoCEU28dCsmg4CDfiPJxni4iqhWoiRpKFCEoxTFLxOBxGj8Ob6v9tvr+j0IKf2K
-	bNo4c/oHJp98fdPqZAFXNZ7gIivqt7JuJeL0DgtwyC2524wpcYVaNW3jFkSp0iKn0XNkjgxzGQjTG
-	4KXIhYnfXOYpGR859y/XZsImEswh9oyBeKl06yu4dgd1Urqwsi+Ym4ZKNn+Ojuf82o0OCkvUIlLtT
-	4Hq8+S2Q==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
+	List-Owner; bh=0Hh+BeMEUEmsOfFZUoQn536du+i1oEoQovP29muTNuA=; b=obbrU/CuDe79oa
+	LtqjlgY1atilRwsrIYd7UeVOTiVqvl5sCAeH/O4SiUXfiibAFsJZ8xwlBs4tBVy7vG+lSYtyywI19
+	ZOpz8v+vfBwtXXZAGN8MaS7sk3kjdJvuVoFxlNdTuCjNfUV++MuN4Ozr9XPMjcQfEAD8oGEeUwBB2
+	KSwNgPPTbGPhP5FFWgVGG4lEXvdbDN8hERjte/E+aEuBKSJB2FyY646h11A55Ub2NaSYZPkhLjooF
+	/TU2dZl/6SskushDLZdgx1PTKSGin3gUOsP3lnWMFekXJTKFdKNa/stZKTN1fNniW8iVnY7K+lYi0
+	+zQwq2TnNvSgEE8rbYFw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xUPmR-0000000FHPz-0cX5;
-	Fri, 20 Nov 2026 14:39:59 +0000
+	id 1xVkOY-00000005g2Q-2IRu;
+	Tue, 24 Nov 2026 06:52:50 +0000
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xUPmN-0000000FHOU-0kfD
+	id 1xVkOR-00000005g0a-3C9W
 	for barebox@lists.infradead.org;
-	Fri, 20 Nov 2026 14:39:57 +0000
-Received: from [127.0.0.1] (unknown [IPv6:2a02:560:5c0a:3200:9ebf:dff:fe00:fdb5])
-	(Authenticated sender: sha@pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 30FFA20188D
-	for <barebox@lists.infradead.org>; Fri, 20 Nov 2026 15:39:49 +0100 (CET)
+	Tue, 24 Nov 2026 06:52:46 +0000
+Received: from dude02.red.stw.pengutronix.de (dude02.red.stw.pengutronix.de [IPv6:2a0a:edc0:0:1101:1d::28])
+	(Authenticated sender: relay-from-dude02.red.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id 181F1205A19;
+	Tue, 24 Nov 2026 07:52:40 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795185589;
+	s=20260414; t=1795503160;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=OClAt9tW7eU9H2O6Fu/PuLHxRbUxW/qg91l99BqErp8=;
-	b=Te4TF057KH8HJTyNuTT9qmarA9NF6nLE2DBA2loNtKyaUpPn+DItA0sflKp2nwwlG4deAY
-	kMedfpMpLu+5L+gYafruvBlavDTbCv1DjwtCt8Cld9spbS5o19tgsM90T5EhVlxfTWB2wW
-	sESs+E0pe84eYHdJXG8ue/x/KGEQetj9jy2Us76TD3TEHxPjxDWkYgM0tAZWsJQfQU0xnj
-	q6DiKBJvhMdScBBk+jkbz2CBmlYEzM7UN4ABx3wCZudz2GnBAD/C24KtYAEGLKDw9u7Yav
-	USwqLEc4kmPL8ZPIMeoWskFnVK68nMDUZ9bAn8+Oof9cSbF6qso6mXxwWFZFag==
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0Hh+BeMEUEmsOfFZUoQn536du+i1oEoQovP29muTNuA=;
+	b=YJtx/EyZcrxQKfEKX7EfNMjLGlDebJBAW/pRICrA9bSCD5/bGD40Aw0YL5tKlIlM0r/OAB
+	tOKujN1RMllpx6s0pJKdqdkDDLyBVOui59NqsB+8JUmN9ip+qF0+BOM3SpTiwLRjyqbLNY
+	O6smIQt3ZMlgpSLGK0wn8hvDgL0M8e2f6lB+HQcp6oJogWm7xXMpjbcFKXjYQWcKHFxpkb
+	VCX3wQakO97k0dWFD/eHLVDxFAzzROkHOz81ZZapqHyOKY0omlq7Ns7KCUkiFReUlPXgfk
+	Hk3VyfRK77v6hxfJPqHX/Zi3jVfA3C9U1oDOgUOqkPd1qysQtA/D9aTRy2U7dA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795185589;
+	s=20260414; t=1795503160;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=OClAt9tW7eU9H2O6Fu/PuLHxRbUxW/qg91l99BqErp8=;
-	b=Vomb/RQO7S+FXam412cXUTO5Xz34ibEKsoydT/x0fsB1oRVjkvVhS+B5gkX3/DHkJkfM/2
-	9XPqIIkxwwCTkeYvzEkdGy83eKdS6jhHbr1rSyrC2Ww8DrfwXC/Qis9Rt9ZuGNWaHyBTol
-	fYZ03pG1rkiffU0QC8ZaMVFVatPdu1RB4UKXnv7v/vNbo1jK7ZeOSoDoaAhvyjyy8H5G5w
-	mmFxHIcmXuVJSEAzNd9dcri22QN18P6Lhm8kyuxNxygIwXGG3nszxR3MNZ5ora0PK89e3V
-	8ZFTZy+CxYOvqZIfqmtFUJjpzAuD3NOppvXJpU0yX00QtOgP9T+rjDKhiFWQPw==
-ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795185589; a=rsa-sha256;
-	cv=none;
-	b=bhablhQTU9+zy8W9kDPtCs9+tViQs2nWuueZruva8bW9KNketQr6mDIh9CquobFMw/A1/y
-	xPyLNU5tllbplk7KP5Gn40a7y5bFwdIIPW6219KL/MUONFS3y6X9WixNa2Ug07WLffIkuX
-	SZwmSmtwsaOmaqerNA6iKQGNtqsycWdWAxk6amRJfhqCYz7nMJT6Zx7bxY6ZjJOm5VlBbG
-	Fc4cBppxdBgTaP/NRGXkUyt3XObaKXb4UStukMfvxdIBwPxAdHFHrIaxSNveYwrmw/zd/2
-	rFl1TlMZngYf6LwNhZvQRwzHQd1p/4FPcjpZlouhrVQAMMQCzfcj5Iw60zfxbA==
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0Hh+BeMEUEmsOfFZUoQn536du+i1oEoQovP29muTNuA=;
+	b=PDqi/8QDw4wUJjBEp9ZDY9XzA61Rlow15tfx6HYxuGj0hfYIFYpwAzsv4lBkw8vCDrwvNA
+	fPRAfCqthRXoOyjnPzkZVkkTQiwg+Jph4mVQqb1yVKnYqpLhZXDEO0YX0E2lbpk4wAlaLR
+	f0H9p3W/dBS86F1K2GyEU9vhnnhJV+yrm22qWTiP6rv7rzqoc6EbGpPuQWQLvu/x7QzNio
+	OXZLuX19m2teptIjIP8XHbRZADQaHz7r7+xiYzK+qzcISD22m8GwLj4hBU72xhXnXSuT0v
+	HzZfKHQ5ZQdlSj7aBYnc6Vq6Yx83hHWTZNS3SxFyIpK4kVypRsjwpEdWSpxqYA==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
-	auth=pass smtp.auth=sha@pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
-Message-ID: <0e3d7da7-e988-4e7d-8191-40c6f119dfdd@pengutronix.de>
-From: "Sascha Hauer" <s.hauer@pengutronix.de>
-Subject: v2026.04.3
-To: barebox@lists.infradead.org
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 20 Nov 2026 14:39:48 +0000
+	auth=pass smtp.auth=relay-from-dude02.red.stw.pengutronix.de smtp.mailfrom=s.hauer@pengutronix.de
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795503160; a=rsa-sha256;
+	cv=none;
+	b=KdduqYhok/PzJ+A5ieFPNmU+UaxenpNVd+iz3VbzkBhcDBfTMZ5P3R4kITT5UKJnMvcaCu
+	RRrahw/9Wv9Tk9RuMofvVSWAvmwY3px7pcKXcxeB5N6U7/KIAEl0xNIKDssX7RjQNgFz/b
+	CPIM9acD183uy3/8iI3HZsFRMHybkIkZT3MCE6hS0HvwIl7uWh3waVCa2FdU9N4efWmEkA
+	/aIwKpbXB4FVpM2yMxinZPyzNOhEc8qLU41MdgTq1NQ8aPmToyVI8l6Gl0WkHRPyOTKUGK
+	I+A2cmS3FFHqYEU3Dmm28U7SRgCbc941ERBbMXA6Bew0f6LBt80e9rg0Na4n/Q==
+Received: from dude02.red.stw.pengutronix.de (localhost [IPv6:::1])
+	by dude02.red.stw.pengutronix.de (Postfix) with ESMTP id 009B9FFBC0;
+	Tue, 24 Nov 2026 07:52:40 +0100 (CET)
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20261113100926.1764058-1-s.hauer@pengutronix.de>
+References: <20261113100926.1764058-1-s.hauer@pengutronix.de>
+Subject: Re: [PATCH] boot: rename BOOTM_OPTIONAL_SIGNED_IMAGES
+Message-Id: <179550315999.350571.371214851873889223.b4-ty@pengutronix.de>
+Date: Tue, 24 Nov 2026 07:52:39 +0100
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261120_063955_523008_7CDD8E0C 
-X-CRM114-Status: GOOD (  23.40  )
+X-CRM114-CacheID: sfid-20261123_225243_996434_5D7264EF 
+X-CRM114-Status: UNSURE (   7.49  )
+X-CRM114-Notice: Please train this message.
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -116,10 +128,9 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Hi All, We have a stable release update: v2026.04.3. - Filesystems:
-    many fixes for squashfs and ubootvarfs, plus fixes in ext4, cramfs, FAT,
-   NFS, jffs2, envfs and the generic fs layer - USB: stricter descriptor parsing,
-    hub fixes, and fixes in the xHCI, [...] 
+ Content preview:  On Fri, 13 Nov 2026 11:09:26 +0100, Sascha Hauer wrote: >
+    BOOTM_OPTIONAL_SIGNED_IMAGES is easily misread as an option that adds > support
+    for signed images which are then optional. The option doesn't [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -130,7 +141,6 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
                              http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
                               for more information.
                              [URI: pengutronix.de]
-                             [URI: fetch-release-mail.py]
  -0.0 SPF_PASS               SPF: sender matches SPF record
  -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
  -0.1 DKIM_VALID_AU          Message has a valid DKIM or DK signature from author's
@@ -154,282 +164,61 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Spamd-Result: default: False [-57.93 / 15.00];
+X-Stat-Signature: 7iw3bxm3nkbcftxca3b35u34hxxrftf3
+X-Spamd-Result: default: False [-60.60 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-2.52)[97.82%];
-	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	MISSING_MIME_VERSION(2.00)[];
+	BAYES_HAM(-2.99)[99.96%];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
+	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
+	RCVD_IN_DNSWL_MED(-0.40)[2607:7c80:54:3::133:from,2a0a:edc0:0:1101:1d::28:received];
 	MAILLIST(-0.20)[mailman];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
 	DMARC_NA(0.00)[pengutronix.de];
-	RCVD_COUNT_THREE(0.00)[3];
-	RCPT_COUNT_ONE(0.00)[1];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_TWO(0.00)[2];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FORGED_RECIPIENTS_MAILLIST(0.00)[];
-	PREVIOUSLY_DELIVERED(0.00)[barebox@lists.infradead.org];
-	TO_DN_NONE(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	NEURAL_HAM(-0.00)[-0.977];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
-	FORGED_SENDER_MAILLIST(0.00)[];
-	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
-	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
-	MISSING_XM_UA(0.00)[];
+	RCVD_COUNT_THREE(0.00)[4];
+	RCVD_TLS_LAST(0.00)[];
 	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
-	RCVD_VIA_SMTP_AUTH(0.00)[]
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[s.hauer@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_ALL(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
+	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: CFA9F20188D
 X-Rspamd-Server: mx1
-X-Stat-Signature: 961b8zgs78xmt1a3fhujkei759wrskpk
+X-Rspamd-Queue-Id: 459A2205A0C
 
-Hi All,
 
-We have a stable release update: v2026.04.3.
+On Fri, 13 Nov 2026 11:09:26 +0100, Sascha Hauer wrote:
+> BOOTM_OPTIONAL_SIGNED_IMAGES is easily misread as an option that adds
+> support for signed images which are then optional. The option doesn't
+> add support for anything, it's merely the opposite of
+> BOOTM_FORCE_SIGNED_IMAGES.  Rename it to BOOTM_ALLOW_UNSIGNED_IMAGES to
+> make that clear.
+> 
+> 
+> [...]
 
-- Filesystems: many fixes for squashfs and ubootvarfs, plus fixes in
-  ext4, cramfs, FAT, NFS, jffs2, envfs and the generic fs layer
-- USB: stricter descriptor parsing, hub fixes, and fixes in the xHCI,
-  OHCI, musb, dwc2 and gadget drivers
-- Network: frame length is now validated, plus DHCP and 9p fixes
-- Boot: use-after-free fixes in boot/bootm, and FIT and FDT fixes
-- bunzip2: fixes for heap overflows and decompression failures
-- MCI: EXT_CSD fixes and an eMMC boot fix for Arria10
-- i.MX8M: early clock initialization now matches U-Boot
-- Board fixes for phyCORE i.MX6, RPi and the QNAP TS433eU
-- EFI loader: fixes to the runtime services and GetTime
-- bbremote: about a dozen fixes
+Applied, thanks!
 
-----------------------------------------------------------------
-Ahmad Fatoum (121):
-      ci: pytest: hardcode Debian netinstall ISO version at single place
-      common: ratp: send the response of failed commands as well
-      common: ratp: gpio: byte-swap the set-direction error code
-      scripts: bbremote: fix Controller._handle clash with Thread._handle
-      scripts: bbremote: fix mw writing data larger than the path
-      scripts: bbremote: report a timeout instead of a traceback
-      scripts: bbremote: unpack single values instead of tuples
-      scripts: bbremote: print the error of a failed md, mw or i2c command
-      scripts: bbremote: fix Ctrl-P in the interactive console
-      scripts: bbremote: fix reassembly of single-octet packets
-      scripts: bbremote: keep '..' out of the exported directory
-      scripts: bbremote: don't choke on -vvv and repeated -w
-      scripts: bbremote: report a failed gpio-set-direction
-      scripts: bbremote: reject arguments that don't fit the protocol
-      scripts: bbremote: don't report a successful reset as an error
-      treewide: replace git.pengutronix.de addresses
-      sandbox: route malloc_usable_size() through the PBL glue again
-      usb: dwc3: imx8mp: check dev_request_mem_resource return with IS_ERR
-      defaultenv: bin/devboot: propagate exit status of boot command
-      scripts: genenv: make the temporary directory writable
-      .mailmap: fix Bruno Produit's author name
-      commands: rksecure: exit if invalid integer passed to -b
-      block: ramdisk: keep num_blocks in sync with the size
-      fs: devfs: reject cdev aliases containing a slash
-      video: stm32-ltdc: reset the controller on probe
-      ARM: i.MX8MP: variscite-dt8mcustomboard: use i.MX8MP early clock init
-      ARM: lib32: bootm: always pass a device tree to barebox images
-      net: 9p: client: don't wait forever for a flush
-      commands: mkdir: create directories with mode 0777
-      usb: gadget: u_serial: don't wait for a host that isn't reading
-      sandbox: console: only look for ^\q on consoles used for input
-      console: don't unregister a console whose device file is open
-      nvmem: core: default to a stride and word size of 1
-      of: fdt: fix out-of-bounds read of the root node name
-      decompress_bunzip2: fix heap-buffer-overflow on truncated input
-      decompress_bunzip2: fix heap overflow on long symbol runs
-      fs: skip directory entries whose name does not fit struct dirent
-      fs: reject negative lengths in ftruncate()
-      fs: ubootvarfs: fix tail relocation length computation
-      fs: ubootvarfs: bound environment parsing to the mapped size
-      fs: ubootvarfs: let the filesystem own the parsed variables
-      fs: ubootvarfs: implement flush
-      fs: ubootvarfs: range-check the new size in truncate
-      fs: ubootvarfs: do not form pointers past the end of the environment
-      fs: ubootvarfs: reject variable names containing '=3D'
-      fs: ubootvarfs: handle removal of variables that are still open
-      clk: imx: pll14xx: enable PLL output in clk_pll1416x_early_set_rate()
-      ARM: i.MX8MM/8MN: clock NOC from SYS_PLL3 in early clock init
-      ARM: i.MX8M: feed A53 cores from ARM PLL via CORE_SEL_CFG in early cl=
-ock init
-      ARM: i.MX8M: source dram_apb from sys_pll2_200m in early clock init
-      ARM: i.MX8M: order early clock init like U-Boot
-      ARM: rockchip: rk3568-qnap-ts433eu: re-enable combphy0, disable sata2
-      ARM: rpi: look up emmc2bus by alias for dma-ranges fixup
-      defaultenv: bin/devboot: fix typo in final exit
-      net: eth: reset the generated flag for every device in populate_ethad=
-dr
-      net: cs8900: zero-initialize the eth_device
-      net: fec_mpc5200: zero-initialize the eth_device and private data
-      net: assign a missing MAC address on receive as well
-      kbuild: honour per-target DTC_FLAGS_<stem>
-      tests: of_overlay: don't check the error of a missing target
-      ci: labgrid-pytest: activate the sandbox allyesconfig console explici=
-tly
-      fs: efivarfs: skip variables whose name does not fit struct dirent
-      ubootvar: reject copies too small for their header
-      efi: loader: in-place patch the runtime services on ExitBootServices
-      efi: runtime: accept 1:1 mappings in SetVirtualAddressMap
-      commands: bthread: don't count console output against printer periods
-      of: fdt: fix heap overflow when growing the flattened tree
-      commands: of_property: handle of_flatten_dtb() failure
-      of: fdt: fix out-of-bounds writes for long names when flattening
-      tlv: limit the number of Ethernet addresses
-      decompress_bunzip2: stop decoding symbols after input EOF
-      decompress_bunzip2: off by one in get_next_block()
-      decompress_bunzip2: fix rare decompression failure
-      clk: handle get_parent callbacks returning an error
-      commands: bthread: disable for EFI payloads without TSC clocksource
-      lib: loadable: allow fixing up the address of chained loadables
-      bootm: pad chained initrds to a 4-byte boundary
-      usb: xhci: reset EP0 after transaction, babble and split errors
-      usb: leave a microframe between control transfers
-      fs: don't leak the parent path when openat() fails after the lookup
-      fs: don't read or write past the end of a file in pread()/pwrite()
-      fs: fat: read and write at the position given to pread()/pwrite()
-      fs: ext4: don't overflow the group descriptor on the stack
-      dma: add dma_xalloc() and dma_xzalloc()
-      usb: read the first device descriptor into a buffer large enough
-      usb: dwc2: host: don't reset toggles past the end of the toggle arrays
-      usb: musb: don't dequeue URBs that have been given back
-      usb: ohci: change the NUM_EDs from 8 to 32
-      usb: ohci: drop the TDs of a timed out transfer
-      net: phy: unregister the bus device in mdiobus_unregister()
-      net: usb: ax88179_178a: unregister the MDIO bus on unbind
-      usb: gadget: f_mass_storage: don't send padding when stall=3Dn
-      usb: gadget: fsl_udc: fix the usage of udc->max_ep
-      usb: gadget: fsl_udc: check the endpoint of GET_STATUS requests
-      net: validate frame length before parsing headers
-      net: dhcp: don't read past the received packet
-      fs: nfs: fix double free and leak when reading a directory fails
-      fs: nfs: don't let lengths from the server wrap the bounds check
-      compiler-clang.h: define __SANITIZE_ADDRESS__ only when undefined
-      sandbox: os: remove unused erase_char
-      usb: hub: don't free scan entries from under usb_device_list_scan()
-      of: reject alias values that are not NUL-terminated
-      efi: loader: fix year and month reported by GetTime
-      tlv: fix memory leak in __tlv_format() on duplicate parameter
-      image-fit: fix digest memory leak in fit_verify_signature()
-      CI: add workflow creating GitHub releases for pushed release tags
-      mci: don't read past tran_speed_unit[] for reserved units
-      mci: zero the EXT_CSD buffer of MMC cards
-      ARM: socfpga: arria10: don't read the partition table onto the stack
-      ARM: socfpga: arria10: fix eMMC boot after the switch to pbl_bio
-      mci: atmel-sdhci: don't ignore errors in the data phase
-      mci: atmel-sdhci: pbl: read all requested blocks
-      fs: pstore: don't claim uImages
-      fs: jffs2: refuse to mount non-MTD devices
-      input: virtio_input: don't free poller-enabled beeper on remove
-      FIP: don't free the buffer twice when parsing fails
-      arch: provide <asm/atomic.h> on all architectures
-      powerpc, openrisc: add <asm/pci.h>
-      scripts: add fetch-release-mail.py to generate GitHub release notes
-      scripts: fetch-release-mail: recognize the migration-master directory
-      .mailmap: map Sascha's sha@pengutronix.de address
+[1/1] boot: rename BOOTM_OPTIONAL_SIGNED_IMAGES
+      https://git.pengutronix.de/cgit/barebox/commit/?id=e2f558bd6e28 (link may not be stable)
 
-Alexander Kurz (1):
-      ARM: boards: kindle mx50/mx6sl: remove bootm -c option
-
-Ana Bobillo (28):
-      fs: squashfs: fail lookup and mount on inode read errors
-      fs: squashfs: don't read an inode in use again
-      fs: squashfs: return an error pointer from squashfs_get_link()
-      fs: squashfs: check the id table against the start of the xattr table
-      squashfs: add more sanity checks in id lookup
-      squashfs: fix divide error in calculate_skip()
-      squashfs: verify inode mode when loading from disk
-      Squashfs: check metadata block offset is within range
-      squashfs: Add dictionary size range check to prevent shift-out-of-bou=
-nds
-      Squashfs: check block offset is not negative
-      fs: squashfs: don't free the root dentry on unmount
-      block: allow block devices without ops in cdev_get_linux_root_and_opt=
-s()
-      fs: squashfs: free the buffer when a device read fails
-      fs: free the fs_device of a failed mount
-      fs: use the cached link target in readlinkat()
-      fs: squashfs: free the device buffers when there is no decompressor
-      fs: squashfs: stop zstd decompression when the input runs out
-      fs: squashfs: zero what squashfs_fill_page() didn't copy
-      fs: squashfs: keep the file position 64 bit when reading
-      fs: squashfs: zero the page buffers when a read fails
-      fs: squashfs: refuse a root inode that isn't a directory
-      fs: release the file when opening it fails after its open
-      usb: keep interface and endpoint counts within what was parsed
-      usb: skip endpoint descriptors for endpoint zero
-      usb: don't attach an endpoint companion to another interface's endpoi=
-nt
-      usb: hub: bound the port bitmaps by the number of ports used
-      usb: don't store more interfaces or endpoints than there is room for
-      usb: refuse devices whose configuration can't be parsed
-
-Corentin Guillevic (1):
-      x86: efi: fix objcopy flags for barebox.efi
-
-Gabriel Arnautu (1):
-      envfs: validate inode bounds before extraction
-
-Johannes Schneider (1):
-      usb: dwc3: gadget: ack pending events while waiting for the halt
-
-Nathan Chancellor (1):
-      scripts/dtc: Remove unused dts_version in dtc-lexer.l
-
-Sascha Hauer (20):
-      bootm: fit: open FIT images only once per loadable
-      FIT: do not cache uncompressed data
-      mci: wait for card to leave programming state after block writes
-      fs: remove the default automount when a cdev is removed
-      fs: track streaming and unknown-size files in dedicated inode fields
-      fs: reject inodes whose size the superblock cannot address
-      usb: don't keep a dangling root device on enumeration failure
-      usb: hub: limit the number of ports to USB_MAXCHILDREN
-      boot: fix use-after-free when restoring bootm variables
-      bootargs: fix double free in linux_bootargs_get()
-      commands: boot: fix use-after-free of overrides taken from globalvars
-      fs: cramfs: don't ignore decompression errors
-      fs: cramfs: return an error pointer from cramfs_get_link()
-      fs: ext4: return an error pointer from ext_get_link()
-      fs: legacy: return an error pointer from legacy_get_link()
-      usb: hub: cancel pending port scans of a removed device
-      commands: boot: list bootm.image in the -o help text again
-      Release v2026.04.3
-
-Stefan Kerkmann (7):
-      of: overlay: of_overlay_fix_path: skip symbols without __overlay__ no=
-de
-      tests: of_overlay: add selftests skeleton
-      tests: of_overlay: add __symbols__ merging tests
-      tests: of_overlay: add fragment application tests
-      tests: of_overlay: surpress expected error log message
-      ci: labgrid-pytest: migrate allyesconfig manipulation into fragment
-      ci: labgrid-pytest: fix test_barebox_no_err for allyesconfig
-
-Stefan Riedmueller (3):
-      ARM: dts: imx6: phycore: Add phy-reset-post-delay
-      ARM: dts: imx6: phycore: Fix pin settings for ADIN1300 PHY
-      ARM: boards: phytec-som-imx6: Add ADIN1300 PHY fixup
-
-Ulrich =C3=96lmann (2):
-      include: ocotp.h: add missing include
-      commands: sconfig: fix command description
-
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Best regards,
+-- 
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
