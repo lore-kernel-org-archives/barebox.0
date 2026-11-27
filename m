@@ -1,148 +1,129 @@
-Delivery-date: Fri, 27 Nov 2026 10:42:34 +0100
+Delivery-date: Fri, 27 Nov 2026 10:43:01 +0100
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xWsTS-003mU6-0t
+	id 1xWsTt-003mYG-1K
 	for lore@lore.pengutronix.de;
-	Fri, 27 Nov 2026 10:42:34 +0100
+	Fri, 27 Nov 2026 10:43:01 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id AEE11202492
-	for <lore@pengutronix.de>; Fri, 27 Nov 2026 10:42:33 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id DE764201AEF
+	for <lore@pengutronix.de>; Fri, 27 Nov 2026 10:43:00 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=qjVelq+1;
-	dkim=pass header.d=leica-geosystems.com header.s=selector1 header.b=FizA9Sp0;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=02LKGuv7;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=bWkUzvRX;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
-	dmarc=pass (policy=reject) header.from=leica-geosystems.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	dmarc=none;
+	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795772554;
+	s=20260414; t=1795772581;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=SLskh9+5ocgcLne5OBXZ4b0y9V2PvKJ0l9fgQwYUIJE=;
-	b=XCxSWApdFr9WoDfMOEBeSMWCOkE9LbqdSxWDJw6Ql36bb/IINsRf1SmqCC/pAZVzQFjKHG
-	AHU/HN+eLlS7tlkM2z0wT1GaMKv/7+IyTqEssQ1yL8nbdDIHBgAut3SRIm+7fcgSNUgDtg
-	+SdF9b3uW/iMjIVJX7/2QSlqzEXzKx7UW8Cg+m0T9N8gpGiJ461ZLWzI2d+3u5rO2PKMgk
-	Y2YzSkGZOVv9aTXgblGM87S9BFp9EUAa/kxIWTWDyV16WaQAomgR7Urym4Uorf5QTjkhI+
-	5xy7ru51ezeFgyqiEK5aj8D8zJk/whys7BTsi3qqBOv1+7/q7ytFY6kwb3sXQQ==
+	bh=bLEY2EgSrwPnQliEy//pUAlIcf38JlMHgTZCbJugRd8=;
+	b=KFN5/HmELfZJuYqeAELDdrQBDhg4mUXwbhExRfe1DkHs8GrlEwChF+3uciDDFaN3JbGbhL
+	hMp16Jr3nJSwoiiJpqI5e4j0f8Y4kv+T54rBKvWg5QkE+Biz32KPlI9KEL16ZBOvP1W2PJ
+	FpKNHTKAh5upsKfW/0Tn/lfDpx7J14mJCM5qE3nb5lngDoiVlNPSayP8gABTVz+KaMzPmz
+	hJF2AeqsU82GfbtVoCxOVbQ4CMXT0jYcI9ZguPpb5aZ9UjC5eI1+7W15/68/c1kah3up2q
+	5j4adr60MuXq7NlafnPqziexD1VNj3NSOeGW4g/t66+oljGJLQ//G6ZpGyVJXg==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=qjVelq+1;
-	dkim=pass header.d=leica-geosystems.com header.s=selector1 header.b=FizA9Sp0;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=02LKGuv7;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=bWkUzvRX;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
-	dmarc=pass (policy=reject) header.from=leica-geosystems.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1795772554; a=rsa-sha256;
+	dmarc=none;
+	arc=pass ("pengutronix.de:s=20260414:i=1")
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1795772581; a=rsa-sha256;
 	cv=pass;
-	b=F85cte3DsMWkYOJILUfFJBolgplYEPA5oJTf3oWbEu7vUiG8QONV94MoUUUCZVFq0gndZ/
-	FKy51COkgMGo7y8GMj33S1Zq0tWT2GfI7dGU4GcNz0zuk/0co50BzxPLdOQpSJMQf0lsgw
-	EP8fOis1YXTtm23p8vZ4Z/xP/uwEP0QOIHQ0aF4XaCPD5TKyLlirEcryrPGfH73tujmwxk
-	fQ+/3XrR0cgXCfeLL0QGW0x6povpT1ud8tex1xNmjfqnr4pxHysLqQQatLP6dxD1y9XmI+
-	5a6Pk5wN0W4hOufuq/RZMcEklqKBMqcB/iYqJ2Hb+dm7L508G6BvIFBy2ZRewg==
+	b=C8TsJrr6cQEmLSXRZyqiB/6SpMFgimi0oEWK2oBGi3nUrgw1Smmwk3S+Jahf1OYa8QKSGG
+	lA231wv4Udjwlcu6n7N1CAwnMs4S/9BBwJAoyJZMCtY1hntoBmgRdqtWSR19sQ4Mt7piuv
+	SwhU1gS04R/9SyL9OWMjv6bhk4ItoPjlS0DqluO76w3icuswUHEMjCExkeEwAf84q02ldr
+	5NYcnGUi0X82YMckksJyZHOLrEcQ4SmmfFWuSJiaXX8KMuQnvDL/gRprrxWkVgPAQAYIRh
+	+JIMMy6VQVLO2tNwC/U+20utHTo2rJQKt++3XyYhVFw9TMd+dHzCFCLuvGJQDQ==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
-	:Subject:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Unsubscribe-Post:List-Owner;
-	bh=SLskh9+5ocgcLne5OBXZ4b0y9V2PvKJ0l9fgQwYUIJE=; b=qjVelq+1chj61ocKD84wUox+Qr
-	dgr40C5L5glk8C8JnA7Q+kr+IXeoOxvNLJEMZ1vYvfgGxwKmlrZ/jcfebpmzFvUX2qSUDxyLjkcAZ
-	40y2rt631Eg+uYth+KO6EMpMNu7JoySNaomoW1YgZcxv49JGoZevuIqmWle6+xYmBi9vr8oy5o3SC
-	KUV/ol26n+qttfh0mY5YGyhcJ1GS5sF4ZaVlEThZcbfs065c1w1OOpEmMeEcFlRk4FBDLGthoFIHb
-	bI3BtF76sYM2sGbEoGb9qU5c4c/iWrW+H4Pm8OsNb4tMlt3DMEPGGwoLtNDXgzDnYNGARKDpt/+BL
-	9BfIBP4Q==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
+	List-Owner; bh=bLEY2EgSrwPnQliEy//pUAlIcf38JlMHgTZCbJugRd8=; b=02LKGuv70NTHBn
+	0YU2NC0kfQxoCVWZeP86ueaLp5P2MNamuUK6rCIGGFLCj8/XoL58KapioEUvG3jewNDQp/X5x+zfO
+	4zS+U7Wj2Nri6uCiSnIYioXXc8OezC1FhR/jXszhdfH1W33sY2ndJC8aPF5esi3r1B94IIIAWt9re
+	31RhIuBW86c4VNt8m32NudmErym5HJpZSF29Dmdn4zRmEyu5O8pzZVxxzUJIRlLVgX+xrVLT7x+F0
+	cdAeWtn9fpROwHfzzar1MzHUvJGMPeUQife2FhGfxPbu2ftwcVMVpaCwKOjOBpIiYhToOiXA8Qsra
+	RianhxhRQsZpDIguaoog==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xWsBM-0000000FQ1w-1Fz9;
-	Fri, 27 Nov 2026 09:23:52 +0000
-Received: from mail-norwayeastazlp170130007.outbound.protection.outlook.com ([2a01:111:f403:c20f::7] helo=OSPPR02CU001.outbound.protection.outlook.com)
+	id 1xWsT3-0000000FTB0-0a4B;
+	Fri, 27 Nov 2026 09:42:09 +0000
+Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
 	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xWsBI-0000000FPxP-1BHD
+	id 1xWsSw-0000000FT6k-3YQU
 	for barebox@lists.infradead.org;
-	Fri, 27 Nov 2026 09:23:50 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NOdlqtkWPpiDkSsBQ4Zbh2OrNJYyhqd3RIrYMCDcOXAcizVOnHSPVJpq973791GB3Mk55PW9gIVKYTcSGqKsHrXQKKbem4U0J+oDZtIaw3C6tWgKUpSkLJU/yOmko9yyJItmF4KuNDDdzxtJ1rcJMu/zipMUERTcnobDBOqfTvX0RqCtI58+1pyj7sryK9i0GLX00yCvURZlQG2EVbpZV/zPI9mhoBTOIDR73K1ylo4EUkrHKc9kF+Eb5l4rarnLm8gQZNzTInDtngaYdylD8g0TJSHXIkHEo/QGPnKjiQk01VlwdzSK93m+2Hg4sFLMAudJyAU9tkPpfgL+BPCARA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SLskh9+5ocgcLne5OBXZ4b0y9V2PvKJ0l9fgQwYUIJE=;
- b=a44oMtGWj/vEsfb5VmIXwbKlDZP4ZQ1WlyrPuGyThDQylD4r9/5prWHRA0JRLHW5Et/PK9wDBqJLM5cTGSCPIzO32oNXRymRwOS3nsz1geziiHe0ma2zcPps37ZLVsFFimS5wQvFsdUFOCmU2HrpCQ/SIkf5xYjvJYf3+N5LCDUvmqxhMXEFiBik132cMT8T+U9/EHFaO6xJB6x7k3iuQ2tNBKKKR4BsKGwe0Lykkpr7oFamasB8oqmebTeyo9WdrKZ+xDyXxx/WSFVPSTAuEC32xdKugK2Zz7hcAYuNDwzkO7fmewRRdTpKfEtxU5RcRW3fDhIFf704mwiTVufy6Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 193.8.40.99) smtp.rcpttodomain=lists.infradead.org
- smtp.mailfrom=leica-geosystems.com; dmarc=pass (p=reject sp=reject pct=100)
- action=none header.from=leica-geosystems.com; dkim=none (message not signed);
- arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SLskh9+5ocgcLne5OBXZ4b0y9V2PvKJ0l9fgQwYUIJE=;
- b=FizA9Sp0/r/oXilJFill+iK9AvTGkEOkADdtRDBACRiPxlmrmGEY4SdeT+gV9mQypTwwY/XlAIkucyzTo3ErL57qz/IF2u27TV7yEpO8oCZWzxdXX7VmHuW1/KcssH3lJG1iZCN5O4bS1D883YTQBpU7uNTpsYQ+jklJLTNVCKk=
-Received: from OS6P279CA0044.NORP279.PROD.OUTLOOK.COM (2603:10a6:e10:32::13)
- by GVXPR06MB8874.eurprd06.prod.outlook.com (2603:10a6:150:11d::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.662.6; Fri, 27 Nov
- 2026 09:23:41 +0000
-Received: from CPH1EPF00000523.eurprd05.prod.outlook.com
- (2603:10a6:e10:32:cafe::68) by OS6P279CA0044.outlook.office365.com
- (2603:10a6:e10:32::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.662.10 via Frontend Transport; Fri,
- 27 Nov 2026 09:23:38 +0000
-X-MS-Exchange-Authentication-Results: mx.microsoft.com 1; spf=pass (sender IP
- is 193.8.40.99) smtp.mailfrom=leica-geosystems.com; dkim=none (message not
- signed) header.d=none;dmarc=pass action=none
- header.from=leica-geosystems.com;
-Received-SPF: Pass (protection.outlook.com: domain of leica-geosystems.com
- designates 193.8.40.99 as permitted sender) receiver=protection.outlook.com;
- client-ip=193.8.40.99; helo=hexagon.com; pr=C
-Received: from hexagon.com (193.8.40.99) by
- CPH1EPF00000523.mail.protection.outlook.com (10.167.241.134) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.688.5 via Frontend Transport; Fri, 27 Nov 2026 09:23:38 +0000
-Received: from aherlnxbspsrv01.lgs-net.com ([10.61.228.61]) by hexagon.com with Microsoft SMTPSVC(10.0.17763.1697);
-	 Fri, 27 Nov 2026 10:23:38 +0100
-From: Johannes Schneider <johannes.schneider@leica-geosystems.com>
-To: barebox@lists.infradead.org
-Subject: Re: [PATCH] watchdog: imxwd: don't claim a warm reset with fsl,ext-reset-output
-Date: Fri, 27 Nov 2026 09:23:38 +0000
-Message-ID: <20261127092338.2046709-1-johannes.schneider@leica-geosystems.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <c1c28d10-9b06-408e-9c16-321465638c5a@pengutronix.de>
-References: <c1c28d10-9b06-408e-9c16-321465638c5a@pengutronix.de>
+	Fri, 27 Nov 2026 09:42:05 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
+	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id DC80A205ABC;
+	Fri, 27 Nov 2026 10:42:00 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1795772520;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bLEY2EgSrwPnQliEy//pUAlIcf38JlMHgTZCbJugRd8=;
+	b=bWkUzvRX3ntkdH+he1iRuLpHNx4XqoIHYGPQMGt+LkTNzmwJBMDlq8BfMTzDuG8KFaAxaU
+	DRwbtwWmq5az5ho+Jyrw1s/M3Y4jIqLexI5tx09KDllK/eC4xMqE44pFOIUJSwg2i+0oLM
+	9/7DMPWcKF5O2GDVpdF+bhjSw96xz7t0QnlVtVrmjN1fRTQc0mtnSLuLBga+0/zJLsO3JU
+	cSoDEYjFIpH4xEKobSlrYAELNELrCikcNOvW1f+k2QtCxSpsm3l4cfw2vRadIvQ4VSH1yH
+	hnlUNFaGtsC0p1xpOLfP2A007WizM7ZXRk+je7edRak3rz4AwLencrlsFAEU/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
+	s=20260414; t=1795772520;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bLEY2EgSrwPnQliEy//pUAlIcf38JlMHgTZCbJugRd8=;
+	b=gIKWUN9TpHXDe+15fa13r4yUmw64ijnYJfFnLs4Qk2gSpuHjVam1+jK0UNzFA9reg2ATzB
+	7IbLJQSyLWdkgPlrPtu6lF2rFIhiJAjCV29Ez+5gCdZmygMotHlTeLdtmHLRiy5kaVfWfH
+	GcAdl7FeOHVdIs0SCL6qZJl0d6xXrIb5LgelIU9KX89EcpqgEyWnTMPPHQKyJ+sHSu5J9l
+	W/xRwlKgw2atqH1nkcif0UCo2xQG3OLG/b/hzr9L41Jk9dzLLAADSDcqZXzu58C3hjENww
+	9Kyd+e5Y1Mix+9LoCXOTIbzioDRusoZ6OniBEhut/PPozX4gq+LyGxgUzIJLaw==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=f.diener@pengutronix.de
+ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795772520; a=rsa-sha256;
+	cv=none;
+	b=f3wQLYfO0KkzlCKKhgSDyYYyjgYzW6FFwYqm+hcYLi9lgMywDPICFIBLWU4oCOtPwMjRcH
+	QGAzjSGQlEoqlMk3rZya7/5T8PNL28PPF1HTe7I4wWryK8o+CYKcQAENLLI0nzWycxIKlr
+	afI8ZlKE04wstuPlRn+zJjT+kxM0ie/XX9gza8eDrV/NRMTeD0ej0W/JBLcH6KU06I0TgE
+	vyX9NmBk0uRBVSxgWtYBYbYU4uDn7batzZtWMyU33spWX7zoNYsbV2W4Lgmjjinv+vhNmn
+	+7BTnPzasGhyMaRKOUalqv2E/DTk6KfxmBjE4CmpvlTCfy4slBoODNLs4mU9AQ==
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.2])
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <f.diener@pengutronix.de>)
+	id 1xWsSu-001iwi-2c;
+	Fri, 27 Nov 2026 10:42:00 +0100
+From: Freimut Diener <f.diener@pengutronix.de>
+Date: Fri, 27 Nov 2026 10:42:02 +0100
+Subject: [PATCH 4/5] ddr: imx9: allow DDR PHY training errors to propagate
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-OriginalArrivalTime: 27 Nov 2026 09:23:38.0266 (UTC) FILETIME=[FC145FA0:01DD7E50]
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CPH1EPF00000523:EE_|GVXPR06MB8874:EE_
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: 1e238ca3-9d88-4efe-4f05-08df4c681ec0
-X-SET-LOWER-SCL-SCANNER: YES
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|23010399003|1800799024|376014|36860700016|82310400026|261026121527099003|10067099003|11063799006|56012099006|22082099003|18002099003;
-X-Microsoft-Antispam-Message-Info: FXbXJDcyHjRf5wrZ60l1M1vh6QRp80YAjz1Fg0Q30lMcaB9kRACQFVQzXtjraMG7yyuP0qOBvNcy5a+xb3JrTyhGSwh35kytx63EkvAwcJWQ9yFrRhT6GtnGsGfUqvLiXKssTUw4t3YLZjAuHB38Yw/JrZhfultSLmDpJqwY6iALx++LS60xBc3L3PGLsoU9yxTQ5cpfs401lNHGBoL6YFfaktQRMxKsybi3iVRlr9fBpgZKtmmq06LTPFw4Ih9z+grm6/FuB955FQaCRUAy71FXJGaY07AKdfgW76sHUJfizGa1zyQTdB6M9vcIvOuRv8Q9b0EPLRJoFhHwAFknBUCQip8Ae16macmNgETHcn0wk1+tjxku/hPnh3pUkkt3FjnFoXhT8KLywg+TRt+ddvBzaXjNFLYe05KiWG/+9EML32tZ3VH9XNEkGyZRjAPntzCcUCeLV2/qPTDytE/09K0yLTy8CvHwQfFFqpO1HRBSdLYdZ8G5ysxipEdKzfvEWPOE/xia9jbUtqiCOBpAfx6jsVjJoKQmgtM8QoLkYmAe6JqpwqTYrVBBjLuqRpjf/ccWN8VxJ3A8vMUv22TOoXFZ5DpuEpZGqZYxSZJ5cG+I73LC3o9WMfuhDyCO1/e+DCOiq+wEzLPpSwd0HRiY6Bi7KNq0r0iM5GzGiLV2KzKzdvvxjgi/gNaxUo3b8npNif4aopNdKSSFHrv5sS+u2A==
-X-Forefront-Antispam-Report: CIP:193.8.40.99;CTRY:CH;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:hexagon.com;PTR:ahersrvdom51.leica-geosystems.com;CAT:NONE;SFS:(13230040)(23010399003)(1800799024)(376014)(36860700016)(82310400026)(261026121527099003)(10067099003)(11063799006)(56012099006)(22082099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: fXZjrc5a86brAPJeBcTAYr8NXmOukG+1y2IYPMhn0pw51MXC44lQRQ3BtTnR409Y7e0vQS4DQf2Yowa4fvAIAoRhWMpHrzDzDhB54d68BTf5hka3KbiWfu5QnQxHdDY9E/9vL8X+HnhB4bX43E0ADvY1ADbiSsDgYL/6kDobc0KgUstI3aBGdKWVO+CrjY3cCUYLNRQGeQ2/y4SusHTrnBdfjMYqNUlJc2svsmOJQgNOLk+n3qcTQTj306PIZGyewnyNjc/GUD6DnNftK8oRIzUTnzFmat1UuanCulZDIqeTLjMt23heDZPJ4RBLTYSBUZUKfXToQ5tpV2LKdr/nZtiS4+zBA/WIgSSkQF84UWqjNgvcliz6ZehUxM8DnuQ/mushUYh8+rAkiUk3iB8MwlFidFE0o3oJI/RZzvwKf4nipmtwSfKgDIE0tVCMQ2Xz
-X-OriginatorOrg: leica-geosystems.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Nov 2026 09:23:38.5038
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e238ca3-9d88-4efe-4f05-08df4c681ec0
-X-MS-Exchange-CrossTenant-Id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a;Ip=[193.8.40.99];Helo=[hexagon.com]
-X-MS-Exchange-CrossTenant-AuthSource: CPH1EPF00000523.eurprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR06MB8874
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20261127-imx93-frdm-2cs-ddr-v1-4-64f5a99b3e4b@pengutronix.de>
+References: <20261127-imx93-frdm-2cs-ddr-v1-0-64f5a99b3e4b@pengutronix.de>
+In-Reply-To: <20261127-imx93-frdm-2cs-ddr-v1-0-64f5a99b3e4b@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ "open list:BAREBOX" <barebox@lists.infradead.org>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, 
+ Freimut Diener <f.diener@pengutronix.de>
+X-Mailer: b4 0.15.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261127_012349_134610_237FC1E2 
-X-CRM114-Status: UNSURE (   4.40  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20261127_014203_041037_5CE72EC2 
+X-CRM114-Status: GOOD (  12.67  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -150,10 +131,11 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  Hello Ahmad, On 11/27/26 10:12, Ahmad Fatoum wrote: > so a
-    reset -w should not be toggling WDOG_B. Did you observe the > toggling or
-    infer it? Inferred, and wrongly: I missed that imxwd_force_soc_reset() drops
-    ext_reset for a warm restart. Please disregard this patch. 
+ Content preview:  The i.MX93 FRDM needs to try alternative DDR timings when
+   PHY training fails. The shared training code currently hangs on failure, preventing
+    the error from propagating to the caller. Allow the i.MX9 DDR controller
+   to return -EINVAL on training failure while preserving the existing i.MX8M
+    behavior. 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
@@ -161,13 +143,12 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  ---- ---------------------- --------------------------------------------------
  -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/, no
                              trust
-                             [2a01:111:f403:c20f:0:0:0:7 listed in]
-                             [list.dnswl.org]
+                             [185.203.200.13 listed in list.dnswl.org]
   0.0 URIBL_BLOCKED          ADMINISTRATOR NOTICE: The query to URIBL was blocked.
                              See
                              http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
                               for more information.
-                             [URI: leica-geosystems.com]
+                             [URI: pengutronix.de]
  -0.0 SPF_PASS               SPF: sender matches SPF record
  -0.0 SPF_HELO_PASS          SPF: HELO matches SPF record
  -0.1 DKIM_VALID_AU          Message has a valid DKIM or DK signature from author's
@@ -178,7 +159,7 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
   0.1 DKIM_SIGNED            Message has a DKIM or DK signature, not necessarily valid
  -1.9 BAYES_00               BODY: Bayes spam probability is 0 to 1%
                              [score: 0.0000]
- -0.0 DMARC_PASS             DMARC pass policy
+  0.0 DMARC_MISSING          Missing DMARC policy
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -190,53 +171,130 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Stat-Signature: t5bn34usc9d6nux1zp8g6hghnowbu4y8
-X-Spamd-Result: default: False [-6.94 / 15.00];
-	BAYES_HAM(-2.53)[97.88%];
+X-Stat-Signature: k8efq8wfmss658878thmirq38ux9kogi
+X-Spamd-Result: default: False [-60.81 / 15.00];
+	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
+	BAYES_HAM(-3.00)[99.99%];
 	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
-	MID_CONTAINS_FROM(1.00)[];
+	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
+	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
-	ARC_ALLOW(-1.00)[microsoft.com:s=arcselector10001:i=1];
-	DMARC_POLICY_ALLOW(-0.50)[leica-geosystems.com,reject];
+	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:900:1d::77:received,2a0a:edc0:0:c01:1d::a2:received,2607:7c80:54:3::133:from];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,leica-geosystems.com:s=selector1];
-	RCVD_IN_DNSWL_MED(-0.20)[2607:7c80:54:3::133:from];
-	MAILLIST(-0.20)[mailman];
 	R_SPF_ALLOW(-0.20)[+mx:c];
+	MAILLIST(-0.20)[mailman];
+	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_IN_DNSWL_NONE(0.00)[2a01:111:f403:c20f::7:received];
 	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_TWO(0.00)[2];
-	NEURAL_HAM(-0.00)[-1.000];
-	RCVD_TLS_LAST(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,leica-geosystems.com:+];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	FORGED_SENDER(0.00)[f.diener@pengutronix.de,barebox-bounces@lists.infradead.org];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
-	RCVD_COUNT_FIVE(0.00)[6];
+	RCVD_COUNT_THREE(0.00)[4];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
+	DMARC_NA(0.00)[pengutronix.de];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_TLS_LAST(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
 	TAGGED_FROM(0.00)[lore=pengutronix.de];
-	FROM_NEQ_ENVFROM(0.00)[johannes.schneider@leica-geosystems.com,barebox-bounces@lists.infradead.org];
+	FORGED_SENDER_FORWARDING(0.00)[];
+	NEURAL_HAM(-0.00)[-1.000];
+	FROM_NEQ_ENVFROM(0.00)[f.diener@pengutronix.de,barebox-bounces@lists.infradead.org];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_ALL(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
+	RCVD_IN_DNSWL_NONE(0.00)[185.203.200.13:received];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: AEE11202492
+X-Rspamd-Queue-Id: DE764201AEF
 
-Hello Ahmad,
+The i.MX93 FRDM needs to try alternative DDR timings when PHY training
+fails. The shared training code currently hangs on failure, preventing
+the error from propagating to the caller.
 
-On 11/27/26 10:12, Ahmad Fatoum wrote:
-> so a reset -w should not be toggling WDOG_B. Did you observe the
-> toggling or infer it?
+Allow the i.MX9 DDR controller to return -EINVAL on training failure
+while preserving the existing i.MX8M behavior.
 
-Inferred, and wrongly: I missed that imxwd_force_soc_reset() drops
-ext_reset for a warm restart. Please disregard this patch.
+Keep imx93_ddr_init() fatal on training failure, as existing callers
+ignore its return value. This allows a subsequent patch to implement
+DDR timing selection using the lower-level initialization function.
 
-Thanks,
-Johannes
+Signed-off-by: Freimut Diener <f.diener@pengutronix.de>
+---
+ drivers/ddr/imx/ddrphy_utils.c  | 2 ++
+ drivers/ddr/imx/imx9_ddr_init.c | 1 +
+ include/soc/imx/ddr.h           | 1 +
+ include/soc/imx9/ddr.h          | 6 +++++-
+ 4 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/ddr/imx/ddrphy_utils.c b/drivers/ddr/imx/ddrphy_utils.c
+index fa88ab83a5..4f07dbb50c 100644
+--- a/drivers/ddr/imx/ddrphy_utils.c
++++ b/drivers/ddr/imx/ddrphy_utils.c
+@@ -93,6 +93,8 @@ int wait_ddrphy_training_complete(struct dram_controller *dram)
+ 		case PMC_TRAIN_SUCCESS:
+ 			return 0;
+ 		case PMC_TRAIN_FAIL:
++			if (dram->return_training_error)
++				return -EINVAL;
+ 			hang();
+ 		}
+ 	}
+diff --git a/drivers/ddr/imx/imx9_ddr_init.c b/drivers/ddr/imx/imx9_ddr_init.c
+index 086827d9b3..9163b289ce 100644
+--- a/drivers/ddr/imx/imx9_ddr_init.c
++++ b/drivers/ddr/imx/imx9_ddr_init.c
+@@ -619,6 +619,7 @@ struct dram_controller imx9_dram_controller = {
+ 	.phy_remap = ddrphy_addr_remap,
+ 	.get_trained_CDD = get_trained_CDD,
+ 	.set_dfi_clk = ddrphy_init_set_dfi_clk,
++	.return_training_error = true,
+ };
+ 
+ int imx9_ddr_init(struct dram_timing_info *dram_timing, enum dram_type dram_type)
+diff --git a/include/soc/imx/ddr.h b/include/soc/imx/ddr.h
+index 4039b8d6e6..cc91e0ed32 100644
+--- a/include/soc/imx/ddr.h
++++ b/include/soc/imx/ddr.h
+@@ -113,6 +113,7 @@ struct dram_controller {
+ 	void (*get_trained_CDD)(struct dram_controller *dram, u32 fsp);
+ 	void (*set_dfi_clk)(struct dram_controller *dram, unsigned int drate_mhz);
+ 	bool imx8m_ddr_old_spreadsheet;
++	bool return_training_error;
+ };
+ 
+ void ddr_get_firmware_lpddr4(void);
+diff --git a/include/soc/imx9/ddr.h b/include/soc/imx9/ddr.h
+index 6435ce9d6d..bb3864f8c6 100644
+--- a/include/soc/imx9/ddr.h
++++ b/include/soc/imx9/ddr.h
+@@ -1,6 +1,7 @@
+ #ifndef __SOC_IMX9_DDR_H
+ #define __SOC_IMX9_DDR_H
+ 
++#include <barebox.h>
+ #include <io.h>
+ #include <asm/types.h>
+ #include <soc/imx/ddr.h>
+@@ -12,7 +13,10 @@ static inline int imx93_ddr_init(struct dram_timing_info *dram_timing,
+ {
+ 	ddr_get_firmware(dram_type);
+ 
+-	return imx9_ddr_init(dram_timing, dram_type);
++	if (imx9_ddr_init(dram_timing, dram_type))
++		hang();
++
++	return 0;
+ }
+ 
+ #endif /* __SOC_IMX9_DDR_H */
+
+-- 
+2.56.0
+
 
 
