@@ -1,72 +1,72 @@
-Delivery-date: Fri, 27 Nov 2026 10:43:01 +0100
+Delivery-date: Fri, 27 Nov 2026 10:43:02 +0100
 Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1xWsTt-003mYG-1K
+	id 1xWsTu-003mYb-2y
 	for lore@lore.pengutronix.de;
-	Fri, 27 Nov 2026 10:43:01 +0100
+	Fri, 27 Nov 2026 10:43:02 +0100
 Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id DE764201AEF
-	for <lore@pengutronix.de>; Fri, 27 Nov 2026 10:43:00 +0100 (CET)
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPS id 68EA6205A77
+	for <lore@pengutronix.de>; Fri, 27 Nov 2026 10:43:02 +0100 (CET)
 Authentication-Results: mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=02LKGuv7;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=bWkUzvRX;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=tnDYcIoH;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=FCHGxBUR;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
-	s=20260414; t=1795772581;
+	s=20260414; t=1795772582;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:list-id:list-help:
 	 list-unsubscribe:list-subscribe:list-post:dkim-signature;
-	bh=bLEY2EgSrwPnQliEy//pUAlIcf38JlMHgTZCbJugRd8=;
-	b=KFN5/HmELfZJuYqeAELDdrQBDhg4mUXwbhExRfe1DkHs8GrlEwChF+3uciDDFaN3JbGbhL
-	hMp16Jr3nJSwoiiJpqI5e4j0f8Y4kv+T54rBKvWg5QkE+Biz32KPlI9KEL16ZBOvP1W2PJ
-	FpKNHTKAh5upsKfW/0Tn/lfDpx7J14mJCM5qE3nb5lngDoiVlNPSayP8gABTVz+KaMzPmz
-	hJF2AeqsU82GfbtVoCxOVbQ4CMXT0jYcI9ZguPpb5aZ9UjC5eI1+7W15/68/c1kah3up2q
-	5j4adr60MuXq7NlafnPqziexD1VNj3NSOeGW4g/t66+oljGJLQ//G6ZpGyVJXg==
+	bh=7Kk64I9uyQ3AwpjZuR1LtWZw1TbArJ3x8cWDZaVfN68=;
+	b=IKbE8oWVtOcZih7dqVCHswwQGvr6TgpesT/uvBXJP7zamH+obGjmUjJsevOGadHLKCZyRv
+	X3FvFYuSaM48WfSJC/c1Y0fJB+zEAbgioq2xUbvnqrf4BwTIVKQci9yqn/q4bF/+l/RIxG
+	QsFLAXiqRwDdXvz58874AkUKzouGaKxv+tgWegAUiRjGR4nGSdtY8s+9udRUU8PhBcUbOl
+	UHv0S5abM66HXlra3fd7YwKHYzD/pBUo6l3PkA0fz785SFHPNjtKAWsMoeLLrmUxN+xcYo
+	Y3ApxGThvw9OKArRUJNbY1FB9bJJunY23/8WP+h9Ma3d2Pf8yVw/enZ1cTkJIw==
 ARC-Authentication-Results: i=2;
 	mx1.white.stw.pengutronix.de;
-	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=02LKGuv7;
-	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=bWkUzvRX;
+	dkim=pass header.d=lists.infradead.org header.s=bombadil.20210309 header.b=tnDYcIoH;
+	dkim=pass header.d=pengutronix.de header.s=20260414 header.b=FCHGxBUR;
 	spf=pass (mx1.white.stw.pengutronix.de: domain of "barebox-bounces+lore=pengutronix.de@lists.infradead.org" designates 2607:7c80:54:3::133 as permitted sender) smtp.mailfrom="barebox-bounces+lore=pengutronix.de@lists.infradead.org";
 	dmarc=none;
 	arc=pass ("pengutronix.de:s=20260414:i=1")
-ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1795772581; a=rsa-sha256;
+ARC-Seal: i=2; s=20260414; d=pengutronix.de; t=1795772582; a=rsa-sha256;
 	cv=pass;
-	b=C8TsJrr6cQEmLSXRZyqiB/6SpMFgimi0oEWK2oBGi3nUrgw1Smmwk3S+Jahf1OYa8QKSGG
-	lA231wv4Udjwlcu6n7N1CAwnMs4S/9BBwJAoyJZMCtY1hntoBmgRdqtWSR19sQ4Mt7piuv
-	SwhU1gS04R/9SyL9OWMjv6bhk4ItoPjlS0DqluO76w3icuswUHEMjCExkeEwAf84q02ldr
-	5NYcnGUi0X82YMckksJyZHOLrEcQ4SmmfFWuSJiaXX8KMuQnvDL/gRprrxWkVgPAQAYIRh
-	+JIMMy6VQVLO2tNwC/U+20utHTo2rJQKt++3XyYhVFw9TMd+dHzCFCLuvGJQDQ==
+	b=aYu7QbQ6EJ6oSYwVqgQUuajrG31BGkuCU6U3SU8g3iDf2N1eAoOmiIsTFXnVjPT+9bSUXS
+	+dUyqp4m8X8sPyWQWDRB/cLYYqUDd/t7BguzvgIKcb6tz3X8EgdvJV4HBHMpPBC2EZZp2e
+	LxlrqYXLbJpV8S2kFoG7tYSjilLtatwaoQd4dMYJ9AZVKHpx3nCamdBO5TBE6Id6jw4KEW
+	PO4HpeNQ6Y7aGEzPwU+li/YJ/WJPQfWT4RWsecWUgZaAQ+QIV/Dsi5tzxdbLIMYDP8o7I7
+	RQgo+oKYiB19uCFJezyfQAWZe+njA9dBm3ccjTtstz06wI27MXEJDmwEpkJc5Q==
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Unsubscribe-Post:
-	List-Owner; bh=bLEY2EgSrwPnQliEy//pUAlIcf38JlMHgTZCbJugRd8=; b=02LKGuv70NTHBn
-	0YU2NC0kfQxoCVWZeP86ueaLp5P2MNamuUK6rCIGGFLCj8/XoL58KapioEUvG3jewNDQp/X5x+zfO
-	4zS+U7Wj2Nri6uCiSnIYioXXc8OezC1FhR/jXszhdfH1W33sY2ndJC8aPF5esi3r1B94IIIAWt9re
-	31RhIuBW86c4VNt8m32NudmErym5HJpZSF29Dmdn4zRmEyu5O8pzZVxxzUJIRlLVgX+xrVLT7x+F0
-	cdAeWtn9fpROwHfzzar1MzHUvJGMPeUQife2FhGfxPbu2ftwcVMVpaCwKOjOBpIiYhToOiXA8Qsra
-	RianhxhRQsZpDIguaoog==;
+	List-Owner; bh=7Kk64I9uyQ3AwpjZuR1LtWZw1TbArJ3x8cWDZaVfN68=; b=tnDYcIoHS4gwcK
+	C2YS/qIPya8DNeMy1N+OzWxr3R2MP2XzEwNNEMSOtDNt93Qt/1X9qYjHy3IoRD/UUuQexN/S1r71Z
+	mZsF6KfQsN0wF/+pbTyEnHesTIlPkTa9dWdyKw7dLfPTgYaKkMAL35V2WBOtbfL5Df76Vdhhcmxuz
+	YKB/abObZHLq0BUvJn4DGWyXJp9j3Ev+o9lBp5vIsz8ZPFFAEMo/gVWZFjasQMvlDG4m5OqWy3aK+
+	uRu7CSTbHfaTWNTpdMk9LPJPJ79gIGO67d88O5SWhB9h6ApbW3gmQUvznN2iRzsywEiiK7U6iC+BC
+	CEDqNczibE5IKZoyONZg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xWsT3-0000000FTB0-0a4B;
-	Fri, 27 Nov 2026 09:42:09 +0000
-Received: from mx1.white.stw.pengutronix.de ([185.203.200.13])
-	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
-	id 1xWsSw-0000000FT6k-3YQU
-	for barebox@lists.infradead.org;
+	id 1xWsSz-0000000FT8R-3P1D;
 	Fri, 27 Nov 2026 09:42:05 +0000
+Received: from mx1.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::107])
+	by bombadil.infradead.org with esmtps (Exim 4.100.1 #2 (Red Hat Linux))
+	id 1xWsSw-0000000FT6j-1n2P
+	for barebox@lists.infradead.org;
+	Fri, 27 Nov 2026 09:42:04 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de (drehscheibe.grey.stw.pengutronix.de [IPv6:2a0a:edc0:0:c01:1d::a2])
 	(Authenticated sender: relay-from-drehscheibe.grey.stw.pengutronix.de)
-	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id DC80A205ABC;
+	by mx1.white.stw.pengutronix.de (Postfix) with ESMTPSA id CDE7D205AB0;
 	Fri, 27 Nov 2026 10:42:00 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1795772520;
@@ -74,46 +74,47 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bLEY2EgSrwPnQliEy//pUAlIcf38JlMHgTZCbJugRd8=;
-	b=bWkUzvRX3ntkdH+he1iRuLpHNx4XqoIHYGPQMGt+LkTNzmwJBMDlq8BfMTzDuG8KFaAxaU
-	DRwbtwWmq5az5ho+Jyrw1s/M3Y4jIqLexI5tx09KDllK/eC4xMqE44pFOIUJSwg2i+0oLM
-	9/7DMPWcKF5O2GDVpdF+bhjSw96xz7t0QnlVtVrmjN1fRTQc0mtnSLuLBga+0/zJLsO3JU
-	cSoDEYjFIpH4xEKobSlrYAELNELrCikcNOvW1f+k2QtCxSpsm3l4cfw2vRadIvQ4VSH1yH
-	hnlUNFaGtsC0p1xpOLfP2A007WizM7ZXRk+je7edRak3rz4AwLencrlsFAEU/g==
+	bh=7Kk64I9uyQ3AwpjZuR1LtWZw1TbArJ3x8cWDZaVfN68=;
+	b=FCHGxBURM31TLhByjWkrdxuce5bjcIA4e3EsLXBwW/zuvCpUBw/ShMxAMnSjgvtpj3a+kW
+	V/Z6oF0oWJ6feptWqbPxgUUcFIcE9zxhup6RqKiVn5Lk71LR2Tec/shTJw/BMyKs9gXyms
+	xY1LAzev5fG5huNP5ueWOtkgmsf792qW+UfctKdr8/dby7TyJYCsV+tLhmfmV9xkBefOXM
+	xCTDbwilh8zyXtcajNbFO2NvSt5aw1/iNjJdOAcaBpY0WrHOqDfuWZ5heN8z5QYFDIfAb6
+	w4IQGYvuSz7dLMeNdbjW+jbAeKz56f8F1DoILK4ihhurY9/sDTc9/tZlFtaM/w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=pengutronix.de;
 	s=20260414; t=1795772520;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bLEY2EgSrwPnQliEy//pUAlIcf38JlMHgTZCbJugRd8=;
-	b=gIKWUN9TpHXDe+15fa13r4yUmw64ijnYJfFnLs4Qk2gSpuHjVam1+jK0UNzFA9reg2ATzB
-	7IbLJQSyLWdkgPlrPtu6lF2rFIhiJAjCV29Ez+5gCdZmygMotHlTeLdtmHLRiy5kaVfWfH
-	GcAdl7FeOHVdIs0SCL6qZJl0d6xXrIb5LgelIU9KX89EcpqgEyWnTMPPHQKyJ+sHSu5J9l
-	W/xRwlKgw2atqH1nkcif0UCo2xQG3OLG/b/hzr9L41Jk9dzLLAADSDcqZXzu58C3hjENww
-	9Kyd+e5Y1Mix+9LoCXOTIbzioDRusoZ6OniBEhut/PPozX4gq+LyGxgUzIJLaw==
+	bh=7Kk64I9uyQ3AwpjZuR1LtWZw1TbArJ3x8cWDZaVfN68=;
+	b=Wrwx181+JEMh+L1W57Uk2KM6wVMkjF8xgfneoKe50yxdAnNK8NrfARi/3HPDwnWlbowppb
+	XO+TlMUqCLPJAmvf9uivHjzt0sFENTQnoD889CGRYYOv/VPLQxlvHyIrNNweu+34rkiwBt
+	ykcwH7JLEAv79tiZZNTyzp8tl+sXuB5pjrRYuSw6I9f0TwKf4fs7/SE5e+AzzvmhOW9/3/
+	YJ/6se36n8xAy/cDaR4G1tXOAsdMHteyNvtx5mAy3+b8LI9S1yA7Bi2YSRNi/63z0GiPV0
+	AaLG+RlcZ+Iiz6exZmfLIIQAVb4WvtOn3nkyQLO7Y2OjPqFu3m7vNKoqq85GNw==
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=relay-from-drehscheibe.grey.stw.pengutronix.de smtp.mailfrom=f.diener@pengutronix.de
 ARC-Seal: i=1; s=20260414; d=pengutronix.de; t=1795772520; a=rsa-sha256;
 	cv=none;
-	b=f3wQLYfO0KkzlCKKhgSDyYYyjgYzW6FFwYqm+hcYLi9lgMywDPICFIBLWU4oCOtPwMjRcH
-	QGAzjSGQlEoqlMk3rZya7/5T8PNL28PPF1HTe7I4wWryK8o+CYKcQAENLLI0nzWycxIKlr
-	afI8ZlKE04wstuPlRn+zJjT+kxM0ie/XX9gza8eDrV/NRMTeD0ej0W/JBLcH6KU06I0TgE
-	vyX9NmBk0uRBVSxgWtYBYbYU4uDn7batzZtWMyU33spWX7zoNYsbV2W4Lgmjjinv+vhNmn
-	+7BTnPzasGhyMaRKOUalqv2E/DTk6KfxmBjE4CmpvlTCfy4slBoODNLs4mU9AQ==
+	b=NuUBQwqPLx7RhXlQygUBrvJnhHwTiMy22Jlqi2LcOzgX6f/KWJ6Yui3xV50AEq3E+4Cu8v
+	w3JAceJlTPvyrHvOmNrmTcfuGetZMJG9yfUEHRbgdR16pUy+/PS54CaBPd7xCK6XO0xxsB
+	jMkzsZTe5uhY77PSLh9yAwxbWlM4a4IRVf5udbTXn9KslMJTVLTDhGNB7K+h9q0jUNUNU1
+	XIiTyR1LPp8HXrev2n1o53JjbMqvJsBvXPJZhx14uG/19wuUNgeZB5wQ1up3rYs/bgpD6V
+	f5kcdeO5UdjrTdJU6RV+DEtR+M5Fnk1ek1KghmKpifjZ9h1NM/B5z/eBjChWmg==
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.2])
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <f.diener@pengutronix.de>)
-	id 1xWsSu-001iwi-2c;
+	id 1xWsSu-001iwi-2Q;
 	Fri, 27 Nov 2026 10:42:00 +0100
 From: Freimut Diener <f.diener@pengutronix.de>
-Date: Fri, 27 Nov 2026 10:42:02 +0100
-Subject: [PATCH 4/5] ddr: imx9: allow DDR PHY training errors to propagate
+Date: Fri, 27 Nov 2026 10:42:01 +0100
+Subject: [PATCH 3/5] ARM: nxp-imx93-frdm: adapt the 2CS DDR timings for
+ barebox
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20261127-imx93-frdm-2cs-ddr-v1-4-64f5a99b3e4b@pengutronix.de>
+Message-Id: <20261127-imx93-frdm-2cs-ddr-v1-3-64f5a99b3e4b@pengutronix.de>
 References: <20261127-imx93-frdm-2cs-ddr-v1-0-64f5a99b3e4b@pengutronix.de>
 In-Reply-To: <20261127-imx93-frdm-2cs-ddr-v1-0-64f5a99b3e4b@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -122,8 +123,8 @@ Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
  Freimut Diener <f.diener@pengutronix.de>
 X-Mailer: b4 0.15.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.9.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20261127_014203_041037_5CE72EC2 
-X-CRM114-Status: GOOD (  12.67  )
+X-CRM114-CacheID: sfid-20261127_014202_949366_1EE58246 
+X-CRM114-Status: GOOD (  11.30  )
 X-Spam-Score: -2.1 (--)
 X-Spam-Report: Spam detection software, running on the system "bombadil.infradead.org",
  has NOT identified this incoming email as spam.  The original
@@ -131,19 +132,17 @@ X-Spam-Report: Spam detection software, running on the system "bombadil.infradea
  similar future email.  If you have any questions, see
  the administrator of that system for details.
  
- Content preview:  The i.MX93 FRDM needs to try alternative DDR timings when
-   PHY training fails. The shared training code currently hangs on failure, preventing
-    the error from propagating to the caller. Allow the i.MX9 DDR controller
-   to return -EINVAL on training failure while preserving the existing i.MX8M
-    behavior. 
+ Content preview:  Use the barebox i.MX9 DDR header and give the imported timing
+    data a board-specific symbol so the FRDM board code can select it separately
+    from the existing 1CS timings. Follow the 1CS configuration by training only
+    at 3733 MT/s, with both 1D and 2D training. Drop the 1866 and 625 MT/s training
+    messages and remove those rates from the advertised frequency table so it
+    [...] 
  
  Content analysis details:   (-2.1 points, 5.0 required)
  
   pts rule name              description
  ---- ---------------------- --------------------------------------------------
- -0.0 RCVD_IN_DNSWL_NONE     RBL: Sender listed at https://www.dnswl.org/, no
-                             trust
-                             [185.203.200.13 listed in list.dnswl.org]
   0.0 URIBL_BLOCKED          ADMINISTRATOR NOTICE: The query to URIBL was blocked.
                              See
                              http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
@@ -172,126 +171,195 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-Stat-Signature: k8efq8wfmss658878thmirq38ux9kogi
+X-Stat-Signature: wws8zes3mhagc8adcncjtgwyxuzwhpji
 X-Spamd-Result: default: False [-60.81 / 15.00];
 	RECEIVED_AUTHENTICATED_BY_MX1(-50.00)[];
-	BAYES_HAM(-3.00)[99.99%];
-	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
+	BAYES_HAM(-3.00)[100.00%];
 	ARC_ALLOW_TRUSTED(-2.00)[pengutronix.de:s=20260414:i=1];
-	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
+	DWL_DNSWL_MED(-2.00)[infradead.org:dkim];
 	KNOWN_LIST_ID(-1.00)[barebox.lists.infradead.org];
+	ARC_ALLOW(-1.00)[pengutronix.de:s=20260414:i=1];
 	RCVD_IN_DNSWL_MED(-0.60)[2a0a:edc0:0:900:1d::77:received,2a0a:edc0:0:c01:1d::a2:received,2607:7c80:54:3::133:from];
 	RCVD_DKIM_ARC_DNSWL_MED(-0.50)[];
-	R_SPF_ALLOW(-0.20)[+mx:c];
-	MAILLIST(-0.20)[mailman];
 	R_DKIM_ALLOW(-0.20)[lists.infradead.org:s=bombadil.20210309,pengutronix.de:s=20260414];
+	MAILLIST(-0.20)[mailman];
+	R_SPF_ALLOW(-0.20)[+mx:c];
 	MIME_GOOD(-0.10)[text/plain];
 	HAS_LIST_UNSUB(-0.01)[];
-	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
-	FORGED_SENDER(0.00)[f.diener@pengutronix.de,barebox-bounces@lists.infradead.org];
 	RECEIVED_HELO_LOCALHOST(0.00)[];
 	RCVD_COUNT_THREE(0.00)[4];
-	FORWARDED(0.00)[barebox@lists.infradead.org];
 	DMARC_NA(0.00)[pengutronix.de];
-	MIME_TRACE(0.00)[0:+];
+	FORGED_SENDER(0.00)[f.diener@pengutronix.de,barebox-bounces@lists.infradead.org];
 	RCVD_TLS_LAST(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FORWARDED(0.00)[barebox@lists.infradead.org];
+	TO_DN_ALL(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
-	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
 	FORGED_SENDER_FORWARDING(0.00)[];
-	NEURAL_HAM(-0.00)[-1.000];
 	FROM_NEQ_ENVFROM(0.00)[f.diener@pengutronix.de,barebox-bounces@lists.infradead.org];
 	FROM_HAS_DN(0.00)[];
-	TO_DN_ALL(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
+	TAGGED_FROM(0.00)[lore=pengutronix.de];
+	NEURAL_HAM(-0.00)[-1.000];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[lists.infradead.org:+,pengutronix.de:+];
-	RCVD_IN_DNSWL_NONE(0.00)[185.203.200.13:received];
+	MID_RHS_MATCH_FROM(0.00)[];
+	ARC_SIGNED(0.00)[pengutronix.de:s=20260414:i=2];
+	ASN(0.00)[asn:7247, ipnet:2607:7c80:54::/48, country:US];
 	FORGED_SENDER_MAILLIST(0.00)[]
 X-Rspamd-Action: no action
 X-Rspamd-Server: mx1
-X-Rspamd-Queue-Id: DE764201AEF
+X-Rspamd-Queue-Id: 68EA6205A77
 
-The i.MX93 FRDM needs to try alternative DDR timings when PHY training
-fails. The shared training code currently hangs on failure, preventing
-the error from propagating to the caller.
+Use the barebox i.MX9 DDR header and give the imported timing data a
+board-specific symbol so the FRDM board code can select it separately
+from the existing 1CS timings.
 
-Allow the i.MX9 DDR controller to return -EINVAL on training failure
-while preserving the existing i.MX8M behavior.
-
-Keep imx93_ddr_init() fatal on training failure, as existing callers
-ignore its return value. This allows a subsequent patch to implement
-DDR timing selection using the lower-level initialization function.
+Follow the 1CS configuration by training only at 3733 MT/s, with both
+1D and 2D training. Drop the 1866 and 625 MT/s training messages and
+remove those rates from the advertised frequency table so it only
+lists the operating point that was trained.
 
 Signed-off-by: Freimut Diener <f.diener@pengutronix.de>
 ---
- drivers/ddr/imx/ddrphy_utils.c  | 2 ++
- drivers/ddr/imx/imx9_ddr_init.c | 1 +
- include/soc/imx/ddr.h           | 1 +
- include/soc/imx9/ddr.h          | 6 +++++-
- 4 files changed, 9 insertions(+), 1 deletion(-)
+ .../boards/nxp-imx93-frdm/lpddr4x_2cs_2gb_timing.c | 96 ++--------------------
+ 1 file changed, 5 insertions(+), 91 deletions(-)
 
-diff --git a/drivers/ddr/imx/ddrphy_utils.c b/drivers/ddr/imx/ddrphy_utils.c
-index fa88ab83a5..4f07dbb50c 100644
---- a/drivers/ddr/imx/ddrphy_utils.c
-+++ b/drivers/ddr/imx/ddrphy_utils.c
-@@ -93,6 +93,8 @@ int wait_ddrphy_training_complete(struct dram_controller *dram)
- 		case PMC_TRAIN_SUCCESS:
- 			return 0;
- 		case PMC_TRAIN_FAIL:
-+			if (dram->return_training_error)
-+				return -EINVAL;
- 			hang();
- 		}
- 	}
-diff --git a/drivers/ddr/imx/imx9_ddr_init.c b/drivers/ddr/imx/imx9_ddr_init.c
-index 086827d9b3..9163b289ce 100644
---- a/drivers/ddr/imx/imx9_ddr_init.c
-+++ b/drivers/ddr/imx/imx9_ddr_init.c
-@@ -619,6 +619,7 @@ struct dram_controller imx9_dram_controller = {
- 	.phy_remap = ddrphy_addr_remap,
- 	.get_trained_CDD = get_trained_CDD,
- 	.set_dfi_clk = ddrphy_init_set_dfi_clk,
-+	.return_training_error = true,
- };
- 
- int imx9_ddr_init(struct dram_timing_info *dram_timing, enum dram_type dram_type)
-diff --git a/include/soc/imx/ddr.h b/include/soc/imx/ddr.h
-index 4039b8d6e6..cc91e0ed32 100644
---- a/include/soc/imx/ddr.h
-+++ b/include/soc/imx/ddr.h
-@@ -113,6 +113,7 @@ struct dram_controller {
- 	void (*get_trained_CDD)(struct dram_controller *dram, u32 fsp);
- 	void (*set_dfi_clk)(struct dram_controller *dram, unsigned int drate_mhz);
- 	bool imx8m_ddr_old_spreadsheet;
-+	bool return_training_error;
- };
- 
- void ddr_get_firmware_lpddr4(void);
-diff --git a/include/soc/imx9/ddr.h b/include/soc/imx9/ddr.h
-index 6435ce9d6d..bb3864f8c6 100644
---- a/include/soc/imx9/ddr.h
-+++ b/include/soc/imx9/ddr.h
-@@ -1,6 +1,7 @@
- #ifndef __SOC_IMX9_DDR_H
- #define __SOC_IMX9_DDR_H
- 
-+#include <barebox.h>
- #include <io.h>
- #include <asm/types.h>
- #include <soc/imx/ddr.h>
-@@ -12,7 +13,10 @@ static inline int imx93_ddr_init(struct dram_timing_info *dram_timing,
- {
- 	ddr_get_firmware(dram_type);
- 
--	return imx9_ddr_init(dram_timing, dram_type);
-+	if (imx9_ddr_init(dram_timing, dram_type))
-+		hang();
+diff --git a/arch/arm/boards/nxp-imx93-frdm/lpddr4x_2cs_2gb_timing.c b/arch/arm/boards/nxp-imx93-frdm/lpddr4x_2cs_2gb_timing.c
+index 6dfa637a1c..4aaadf5bcc 100644
+--- a/arch/arm/boards/nxp-imx93-frdm/lpddr4x_2cs_2gb_timing.c
++++ b/arch/arm/boards/nxp-imx93-frdm/lpddr4x_2cs_2gb_timing.c
+@@ -8,8 +8,10 @@
+  * Align with uboot version:
+  * imx_v2022 and above version
+  */
 +
-+	return 0;
- }
+ #include <linux/kernel.h>
+-#include <asm/arch/ddr.h>
++#include <common.h>
++#include <soc/imx9/ddr.h>
  
- #endif /* __SOC_IMX9_DDR_H */
+ static struct dram_cfg_param ddr_ddrc_cfg[] = {
+ 	/** Initialize DDRC registers **/
+@@ -1280,80 +1282,6 @@ static struct dram_cfg_param ddr_fsp0_cfg[] = {
+ 	{ 0xd0000, 0x1},
+ };
+ 
+-static struct dram_cfg_param ddr_fsp1_cfg[] = {
+-	{ 0xd0000, 0x0},
+-	{ 0x54002, 0x1},
+-	{ 0x54003, 0x74a},
+-	{ 0x54004, 0x4},
+-	{ 0x54006, 0x15},
+-	{ 0x54008, 0x121f},
+-	{ 0x54009, 0xc8},
+-	{ 0x5400b, 0x4},
+-	{ 0x5400d, 0x100},
+-	{ 0x5400f, 0x100},
+-	{ 0x54012, 0x310},
+-	{ 0x54019, 0x1bb4},
+-	{ 0x5401a, 0x32},
+-	{ 0x5401b, 0x1126},
+-	{ 0x5401c, 0x1108},
+-	{ 0x5401e, 0x4},
+-	{ 0x5401f, 0x1bb4},
+-	{ 0x54020, 0x32},
+-	{ 0x54021, 0x1126},
+-	{ 0x54022, 0x1108},
+-	{ 0x54024, 0x4},
+-	{ 0x54032, 0xb400},
+-	{ 0x54033, 0x321b},
+-	{ 0x54034, 0x2600},
+-	{ 0x54035, 0x811},
+-	{ 0x54036, 0x11},
+-	{ 0x54037, 0x400},
+-	{ 0x54038, 0xb400},
+-	{ 0x54039, 0x321b},
+-	{ 0x5403a, 0x2600},
+-	{ 0x5403b, 0x811},
+-	{ 0x5403c, 0x11},
+-	{ 0x5403d, 0x400},
+-	{ 0xd0000, 0x1},
+-};
+-
+-static struct dram_cfg_param ddr_fsp2_cfg[] = {
+-	{ 0xd0000, 0x0},
+-	{ 0x54002, 0x102},
+-	{ 0x54003, 0x270},
+-	{ 0x54004, 0x4},
+-	{ 0x54006, 0x15},
+-	{ 0x54008, 0x121f},
+-	{ 0x54009, 0xc8},
+-	{ 0x5400b, 0x4},
+-	{ 0x5400d, 0x100},
+-	{ 0x5400f, 0x100},
+-	{ 0x54012, 0x310},
+-	{ 0x54019, 0x994},
+-	{ 0x5401a, 0x32},
+-	{ 0x5401b, 0x1126},
+-	{ 0x5401c, 0x1100},
+-	{ 0x5401e, 0x4},
+-	{ 0x5401f, 0x994},
+-	{ 0x54020, 0x32},
+-	{ 0x54021, 0x1126},
+-	{ 0x54022, 0x1100},
+-	{ 0x54024, 0x4},
+-	{ 0x54032, 0x9400},
+-	{ 0x54033, 0x3209},
+-	{ 0x54034, 0x2600},
+-	{ 0x54035, 0x11},
+-	{ 0x54036, 0x11},
+-	{ 0x54037, 0x400},
+-	{ 0x54038, 0x9400},
+-	{ 0x54039, 0x3209},
+-	{ 0x5403a, 0x2600},
+-	{ 0x5403b, 0x11},
+-	{ 0x5403c, 0x11},
+-	{ 0x5403d, 0x400},
+-	{ 0xd0000, 0x1},
+-};
+-
+ static struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
+ 	{ 0xd0000, 0x0},
+ 	{ 0x54003, 0xe94},
+@@ -1967,20 +1895,6 @@ static struct dram_fsp_msg ddr_dram_fsp_msg[] = {
+ 		.fsp_cfg = ddr_fsp0_cfg,
+ 		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_cfg),
+ 	},
+-	{
+-		/* P1 1866mts 1D */
+-		.drate = 1866,
+-		.fw_type = FW_1D_IMAGE,
+-		.fsp_cfg = ddr_fsp1_cfg,
+-		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp1_cfg),
+-	},
+-	{
+-		/* P2 625mts 1D */
+-		.drate = 625,
+-		.fw_type = FW_1D_IMAGE,
+-		.fsp_cfg = ddr_fsp2_cfg,
+-		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp2_cfg),
+-	},
+ 	{
+ 		/* P0 3733mts 2D */
+ 		.drate = 3733,
+@@ -1991,7 +1905,7 @@ static struct dram_fsp_msg ddr_dram_fsp_msg[] = {
+ };
+ 
+ /* ddr timing config params */
+-struct dram_timing_info dram_timing_2CS_2GB = {
++struct dram_timing_info frdm_imx93_dram_timing_2cs = {
+ 	.ddrc_cfg = ddr_ddrc_cfg,
+ 	.ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg),
+ 	.ddrphy_cfg = ddr_ddrphy_cfg,
+@@ -2002,7 +1916,7 @@ struct dram_timing_info dram_timing_2CS_2GB = {
+ 	.ddrphy_trained_csr_num = ARRAY_SIZE(ddr_ddrphy_trained_csr),
+ 	.ddrphy_pie = ddr_phy_pie,
+ 	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
+-	.fsp_table = { 3733, 1866, 625, },
++	.fsp_table = { 3733, },
+ 	.fsp_cfg = ddr_dram_fsp_cfg,
+ 	.fsp_cfg_num = ARRAY_SIZE(ddr_dram_fsp_cfg),
+ };
 
 -- 
 2.56.0
